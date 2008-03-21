@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+  <Schema name="TrailHeadType" id="TrailHeadTypeId">
+    <SimpleField type="string" name="TrailHeadName">
+      <displayName><![CDATA[<b>Trail Head Name</b>]]></displayName>
+    </SimpleField>
+    <SimpleField type="double" name="TrailLength">
+      <displayName><![CDATA[<i>The length in miles</i>]]></displayName>
+    </SimpleField>
+    <SimpleField type="int" name="ElevationGain">
+      <displayName><![CDATA[<i>change in altitude</i>]]></displayName>
+    </SimpleField>
+  </Schema>
+  <Placemark>
+    <ExtendedData>
+      <Data id="a" name="holeNumber">
+        <displayName><![CDATA[<b>This is hole </b>]]></displayName>
+        <value>5</value>
+      </Data>
+      <Data id="b" name="holePar">
+        <displayName><![CDATA[<i>The par for this hole is </i>]]></displayName>
+        <value>5</value>
+      </Data>
+      <Data id="c" name="holeYardage">
+        <displayName><![CDATA[<b><i>The yardage is </i></b>]]></displayName>
+        <value>523</value>
+      </Data>
+      <SchemaData id="d" schemaUrl="#TrailHeadTypeId">
+        <SimpleData name="TrailHeadName">Mount Everest</SimpleData>
+        <SimpleData name="TrailLength">347.45</SimpleData>
+        <SimpleData name="ElevationGain">10000</SimpleData>
+      </SchemaData>
+      <Data id="e">
+        <value>blah</value>
+      </Data>
+      <SchemaData id="f">
+        <SimpleData>blah</SimpleData>
+      </SchemaData>
+    </ExtendedData>
+  </Placemark>
+</Document>
+</kml>

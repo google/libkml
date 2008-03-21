@@ -1,0 +1,29 @@
+Support for PHP in SWIG is still under development. If you would like to use
+the SWIG-generated PHP5 wrapper file, you will first have to run our
+tweak_generated_kmldom.php script. This will copy the generated kmldom.php
+script from the build directory and apply two necessary fixes:
+- namespace issues
+- "empty" is a reserved keyword in PHP. SWIG will attempt to use this in
+  its wrapping of the std::vector class. We rename it to _empty(). If you
+  want to call it in your application, you must use $foo->_empty();
+See the tweak script for more details.
+
+TODO: we may remove raw vectors from the API.
+
+PHP 5 (since 5.2.5 ) does not permit module extensions to be loaded from paths
+that contain directory names (see PHP bug 44037:
+http://bugs.php.net/bug.php?id=44037 ). This means that you can't use any
+path-munging hacks to execute extensions in local directories.
+
+To run these examples, you should copy the kmldom extension module to your
+PHP extension directory. You can discover what your extension directory is by
+executing this command in a terminal:
+php-config --extension-dir
+
+The extension module is built under the main project build directory:
+../../build/php/kmldom
+
+Be sure the the extension is world-readable before you copy.
+
+(An alternative is to supply a custom extension directory via your php.ini.)
+
