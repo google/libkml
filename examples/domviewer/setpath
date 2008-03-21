@@ -1,0 +1,3 @@
+# TODO: "make install" in src/swig to normal python lib dir to avoid
+# this script and/or any special PYTHONPATH handling.
+export PYTHONPATH=../../build/python

@@ -1,0 +1,12 @@
+Welcome to libkml!
+
+This is the source code for the libkml project.
+
+See doc/guide-0.1.html to get started.
+
+Style Notes:
+- The "using namespace xxx" declaration is explicitly forbidden.
+- Declarations of the form "using kmldom::Element*" are permissible. However,
+  we explicitly avoid the use of "using std::string".
+
+March 2008
