@@ -27,7 +27,6 @@
 // and the concrete elements coordinates, Point, LineString, LinearRing,
 // outerBoundaryIs, innerBoundaryIs and Polygon.
 
-//#include <iostream>
 #include "kml/dom/geometry.h"
 #include <ctype.h>
 #include <stdlib.h>
@@ -48,9 +47,7 @@ void Vec3::Serialize(Serializer& serializer) const {
 
 Coordinates::Coordinates() {}
 
-Coordinates::~Coordinates() {
-//std::cerr << "Coordinates dtor " << coordinates_array_.size() << std::endl;
-}
+Coordinates::~Coordinates() {}
 
 // This parses off a Vec3 from the given string and returns a pointer
 // to the end of chars consumed.  The purpose is for use in the inner loop
