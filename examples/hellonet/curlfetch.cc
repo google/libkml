@@ -35,7 +35,6 @@ using std::string;
 static size_t FetchToString(void* ptr, size_t size, size_t nmemb, void* user) {
   // static function, only user is DoCurlToString which uses CURLOPT_WRITEDATA
   // to set the "user" arg which is the C++ string (buffer) to write to.
-  assert(user);
   size_t nbytes = size * nmemb;
   string *output_buffer = reinterpret_cast<string*>(user);
   output_buffer->append(reinterpret_cast<char*>(ptr), nbytes);
