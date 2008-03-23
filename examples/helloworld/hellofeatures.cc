@@ -37,7 +37,6 @@ using kmldom::Element;
 using kmldom::Feature;
 using kmldom::Kml;
 
-// TODO: This can be an official KML utility function someday.
 static const Feature* GetRootFeature(const Element* root) {
   if (root) {
     const Kml* kml = kmldom::AsKml(root);

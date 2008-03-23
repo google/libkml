@@ -25,13 +25,13 @@
 
 // This program prints the hrefs in the supplied KML file.
 // The following elements have hrefs:
-//   NetworkLink/Link or Url (TODO)
+//   NetworkLink/Link or Url
 //   Overlay/Icon
 //   Model/Link
 //   IconStyle/Icon
 //   ItemIcon/href
-// TODO: styleUrl, schemaUrl, targetHref, sourceHref
-// TODO: move this logic into "engine" in some way
+// These are also "hrefs", but are not printed by this program:
+//   styleUrl, schemaUrl, targetHref, sourceHref
 
 #include <iostream>
 #include <string>

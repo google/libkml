@@ -26,7 +26,6 @@
 
 // An example of coding from/to parse/serialize of enumerations.
 // For example <altitudeMode>absolute</altitudeMode>.
-// TODO: make this a unittest once bactrian is cppunitized
 
 #include <assert.h>
 #include <iostream>

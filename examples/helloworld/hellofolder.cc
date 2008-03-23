@@ -64,7 +64,6 @@ int main(int argc, char** argv) {
   cout << "Creating " << kHowManyPoints << " Placemarks:" << endl;
   Folder* folder = factory->CreateFolder();
   for (int i = 0 ; i < kHowManyPoints ; ++i) {
-    // TODO: create a name and lon, lat based on i and verify below
     folder->add_feature(CreatePlacemark(factory, "hi", 1.1, 2.2));
   }
 
@@ -74,8 +73,6 @@ int main(int argc, char** argv) {
   for (int i = 0; i < folder->feature_array_size(); ++i) {
     assert("hi" == folder->feature_array_at(i)->name());
     assert(kmldom::Type_Placemark == folder->feature_array_at(i)->Type());
-    // TODO: verify order is preserved based on generated name,lat,lon
-    // TODO: dig out the Point blah blah
   }
 
   // Deletes everything within.

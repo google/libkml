@@ -28,8 +28,6 @@
 // aspects shown here include: parsing, element type inspection, arrays,
 // getting attributes and simple elements.
 
-// TODO: Is this proper Java?
-
 public class WalkFeatures {
 
   static {
@@ -103,8 +101,7 @@ public class WalkFeatures {
     if (feature != null) {
       VisitFeature(feature, 0);
     }
-    // TODO: funky to get the factory just for the deleter
-    // TODO: KmlDoc would improve this...
+    // Get the factory just for the deleter.
     KmlFactory factory = KmlFactory.GetFactory();
     factory.DeleteElement(root);
   }

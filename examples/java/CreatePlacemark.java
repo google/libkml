@@ -28,8 +28,6 @@
 // use of the factory, setting complex child elements, setting
 // simple elements, and serializing out to XML.
 
-// TODO: is this proper Java?
-
 public class CreatePlacemark {
 
   static {
@@ -42,7 +40,7 @@ public class CreatePlacemark {
   }
 
   public static void main(String argv[]) {
-    // TODO: why does this _not_ want kmldom.?
+    // NOTE: KmlFactory does _not_ use kmldom.
     KmlFactory factory = KmlFactory.GetFactory();
 
     // <coordinates>1,2</coordinates>
@@ -64,7 +62,7 @@ public class CreatePlacemark {
     Kml kml = factory.CreateKml();
     kml.set_feature(placemark);
 
-    // TODO: why does this _require_ kmldom.?
+    // NOTE: this _requires_ kmldom.
     System.out.print(kmldom.SerializePretty(kml));
 
     factory.DeleteElement(kml);
