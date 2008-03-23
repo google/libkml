@@ -24,8 +24,6 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This program makes some basic use of the KML DOM API.
-// TODO: this is mostly a unit test. Ideally this illustrates a broad sweep
-// of our API in a minimal way.
 
 #include <assert.h>
 #include <iostream>
