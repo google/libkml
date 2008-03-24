@@ -43,6 +43,7 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestWriteString);
   CPPUNIT_TEST(TestSaveStringFieldById);
   CPPUNIT_TEST(TestCdataHandling);
+  CPPUNIT_TEST(TestCdataEscaping);
   CPPUNIT_TEST(TestSaveBoolFieldByIdAsBool);
   CPPUNIT_TEST(TestSaveBoolFieldByIdAsInt);
   CPPUNIT_TEST(TestSaveContent);
@@ -60,6 +61,7 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
   void TestWriteString();
   void TestSaveStringFieldById();
   void TestCdataHandling();
+  void TestCdataEscaping();
   void TestSaveBoolFieldByIdAsBool();
   void TestSaveBoolFieldByIdAsInt();
   void TestSaveContent();
@@ -140,6 +142,16 @@ void SerializerTest::TestCdataHandling() {
     s_.WriteString(&output);
     CPPUNIT_ASSERT_EQUAL(testdata[i].expected, output);
   }
+}
+
+void SerializerTest::TestCdataEscaping() {
+  // Assert that data that should be escaped in a CDATA is so quoted.
+  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  placemark->set_name("<i>One</i> two");
+  std::string xml = SerializePretty(*placemark);
+  std::string expected("<Placemark>\n  <name><![CDATA[<i>One</i> two]]></name>\n</Placemark>\n");
+  CPPUNIT_ASSERT_EQUAL(expected, xml);
+  delete placemark;
 }
 
 void SerializerTest::TestSaveBoolFieldByIdAsBool() {

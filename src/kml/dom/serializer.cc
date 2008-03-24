@@ -73,7 +73,7 @@ Serializer::Serializer(const char* newline, const char* indent)
 // Avoids CDATA-ing any string that's already a CDATA.
 // Returns a string that's legal for an XML value.
 const std::string Serializer::MaybeQuoteString(const std::string& value) {
-  if ((value.find_first_of("<![CDATA[",0) != 0) &&
+  if ((value.find("<![CDATA[",0) != 0) &&
       (value.find_first_of("&'<>\"", 0) != std::string::npos))
     return "<![CDATA[" + value + "]]>";
   else
