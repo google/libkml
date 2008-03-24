@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/util/kmz.h"
+#include <cstring>
 #include "kml/util/fileio.h"
 #include "minizip/unzip.h"
 
