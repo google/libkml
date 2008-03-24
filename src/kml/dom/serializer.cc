@@ -28,6 +28,7 @@
 
 #include "kml/dom/serializer.h"
 #include "kml/dom/kml_funcs.h"
+#include <cstring>
 #include <stack>
 #include <string>
 #include <sstream>
