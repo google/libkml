@@ -25,6 +25,7 @@
 
 import os
 import os.path
+import sys
 from SCons.Script.SConscript import SConsEnvironment
 
 # -------------------------------------
@@ -62,10 +63,15 @@ opts.AddOptions(
 
 # Build options and locations of third-party dependencies.
 # By default we'll look for our dependent libraries and headers in these
-# locations.
+# locations. In the case of mac/linux, we guess at the default by looking for
+# expat.h, which is required.
 if env['PLATFORM'] in ['posix', 'darwin']:
-  default_incdir = '/usr/local/include'
-  default_libdir = '/usr/local/lib'
+  if os.path.exists('/usr/include/expat.h'):
+    prefix = '/usr/'
+  else:
+    prefix = '/usr/local'
+  default_incdir = os.path.join(prefix, 'include')
+  default_libdir = os.path.join(prefix, 'lib')
 else:
   default_incdir = ''
   default_libdir = ''
@@ -115,7 +121,7 @@ else:
 # -------------------------------------
 # Configure contexts
 # -------------------------------------
-if not env.GetOption('clean'):
+if not env.GetOption('clean') and '-h' not in sys.argv:
   conf = Configure(env.Clone())
   if not conf.CheckLibWithHeader(
       env['EXPAT'],
