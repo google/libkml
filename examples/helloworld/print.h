@@ -28,29 +28,22 @@
 #ifndef PRINT_H__
 #define PRINT_H__
 
-#include <iostream>
 #include <string>
-#include <vector>
-#include "kml/dom/kmldom.h"
-#include "kml/dom/kml22.h"
 
-using std::cout;
-using std::endl;
-using std::string;
-using std::vector;
-using kmldom::Container;
-using kmldom::Feature;
-using kmldom::Folder;
+namespace kmldom {
+class Container;
+class Feature;
+}
 
 // All PrintXXX() functions print to stdout.
 
 // Print the given string indented according to depth.
-void PrintIndented(string item, int depth);
+void PrintIndented(std::string item, int depth);
 
 // Print each Feature in the container recursively.
-void PrintContainer(const Container* container, int depth);
+void PrintContainer(const kmldom::Container* container, int depth);
 
 // Print the name of the Feature.  This recurses on Container.
-void PrintFeature(const Feature* feature, int depth);
+void PrintFeature(const kmldom::Feature* feature, int depth);
 
 #endif  // PRINT_H__
