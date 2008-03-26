@@ -2,7 +2,8 @@ Welcome to libkml!
 
 This is the source code for the libkml project.
 
-See doc/guide-0.1.html to get started.
+See the wiki release notes to get started:
+http://code.google.com/p/libkml/wiki/UserGuide01x
 
 Style Notes:
 - The "using namespace xxx" declaration is explicitly forbidden.
