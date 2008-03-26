@@ -120,6 +120,9 @@ if not env.GetOption('clean'):
 # -------------------------------------
 env.Library('helloutil', ['print.cc'])
 
+env.Program('createkml', 'createkml.cc',
+        LIBS=['kmldom'])
+
 env.Program('helloattrs', 'helloattrs.cc',
         LIBS=['kmldom', 'expat'])
 
@@ -136,11 +139,10 @@ env.Program('hellogeometry', 'hellogeometry.cc',
         LIBS=['kmldom', 'expat'])
 
 env.Program('hellohref', 'hellohref.cc',
-        LIBS=['helloutil', 'kmldom', 'kmlutil', 'expat'])
+        LIBS=['kmldom', 'kmlutil', 'expat'])
 
 env.Program('hellokmz', 'hellokmz.cc',
-        LIBS=['helloutil', 'kmldom', 'kmlutil',
-              'minizip', 'expat', env['LIBZ']])
+        LIBS=['kmldom', 'kmlutil', 'minizip', 'expat', env['LIBZ']])
 
 env.Program('helloregion', 'helloregion.cc',
         LIBS=['kmldom', 'expat', 'kmlutil'])
@@ -151,7 +153,9 @@ env.Program('helloserializer', 'helloserializer.cc',
 env.Program('helloworld', 'helloworld.cc',
         LIBS=['kmldom'])
 
+env.Program('parsekml', 'parsekml.cc',
+        LIBS=['kmldom','expat'])
+
 env.Program('prettykml', 'prettykml.cc',
-        LIBS=['helloutil', 'kmldom', 'kmlutil',
-              'expat', 'minizip', env['LIBZ']])
+        LIBS=['kmldom', 'kmlutil', 'expat', 'minizip', env['LIBZ']])
 
