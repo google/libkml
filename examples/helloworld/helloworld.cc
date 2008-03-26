@@ -32,7 +32,6 @@
 using std::cout;
 using std::endl;
 using kmldom::Coordinates;
-using kmldom::Geometry;
 using kmldom::KmlFactory;
 using kmldom::Placemark;
 using kmldom::Point;
