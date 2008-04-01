@@ -159,3 +159,6 @@ env.Program('parsekml', 'parsekml.cc',
 env.Program('prettykml', 'prettykml.cc',
         LIBS=['kmldom', 'kmlutil', 'expat', 'minizip', env['LIBZ']])
 
+env.Program('printgeometry', 'printgeometry.cc',
+        LIBS=['kmldom', 'kmlutil', 'expat'])
+
