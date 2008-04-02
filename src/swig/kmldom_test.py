@@ -590,6 +590,27 @@ class SimpleUpdateTestCase(unittest.TestCase):
 class SimpleStyleMapTestCase(unittest.TestCase):
   """  TODO: This tests the StyleMap element."""
 
+class SimpleIconStyleIconTestCase(unittest.TestCase):
+  """ This tests the IconStyleIcon element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.iconstyleicon= self.factory.CreateIconStyleIcon()
+
+  def tearDown(self):
+    self.factory.DeleteElement(self.iconstyleicon)
+
+  def testBasic(self):
+    assert not self.iconstyleicon.has_href() # default state
+    assert '' == self.iconstyleicon.href()
+    href = 'http://blah.blah'
+    self.iconstyleicon.set_href(href)
+    assert self.iconstyleicon.has_href()
+    assert href == self.iconstyleicon.href()
+    self.iconstyleicon.clear_href()
+    assert not self.iconstyleicon.has_href() # back in default state
+    assert '' == self.iconstyleicon.href()
+
 
 def suite():
   suite = unittest.TestSuite()
@@ -620,6 +641,7 @@ def suite():
   suite.addTest(SimpleSchemaDataTestCase('testDefault'))
   suite.addTest(SimpleSimpleFieldTestCase('testDefault'))
   suite.addTest(SimpleUpdateTestCase('testDefault'))
+  suite.addTest(SimpleIconStyleIconTestCase('testBasic'))
   return suite
 
 

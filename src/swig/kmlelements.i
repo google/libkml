@@ -407,6 +407,20 @@ public:
 
 };
 
+%nodefaultctor IconStyleIcon;
+class IconStyleIcon : public BasicLink {
+public:
+  virtual kmldom::KmlDomType Type();
+  virtual bool IsA(kmldom::KmlDomType type_id);
+
+  // <href>
+  const std::string& href() const;
+  bool has_href() const;
+  void set_href(const std::string& href);
+  void clear_href();
+
+};
+
 %nodefaultctor Overlay;
 class Overlay : public Feature {
 public:
@@ -698,6 +712,12 @@ public:
   void set_scale(double scale);
   bool has_scale() const;
   void clear_scale();
+
+  // <Icon> (different from Overlay Icon)
+  const IconStyleIcon* icon() const;
+  void set_icon(IconStyleIcon* icon);
+  bool has_icon() const;
+  void clear_icon();
 
   // <heading>
   double heading() const;
