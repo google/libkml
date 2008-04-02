@@ -201,7 +201,7 @@ void CoordinatesTest::TestParseVec3() {
   CPPUNIT_ASSERT(0.0 == vec.latitude());
   CPPUNIT_ASSERT(0.0 == vec.altitude());
 
-  const char* junk_coords4 = "\n";  // Will parse successfully.
+  const char* junk_coords4 = "\n";  // Will fail parsing.
   CPPUNIT_ASSERT(false == Coordinates::ParseVec3(junk_coords4, &endp, &vec));
 }
 
