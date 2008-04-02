@@ -124,7 +124,7 @@ public:
   HotSpot* CreateHotSpot() const;
   Icon* CreateIcon() const;
   IconStyle* CreateIconStyle() const;
-  // TODO IconStyleIcon* CreateIconStyleIcon() const;
+  IconStyleIcon* CreateIconStyleIcon() const;
   ImagePyramid* CreateImagePyramid() const;
   InnerBoundaryIs* CreateInnerBoundaryIs() const;
   ItemIcon* CreateItemIcon() const;
