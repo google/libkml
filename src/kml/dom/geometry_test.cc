@@ -177,6 +177,32 @@ void CoordinatesTest::TestParseVec3() {
                                    "  ";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(line_with_newlines, &endp,
                                                 &vec));
+
+  const char* exponential_2d_pt = "1E-02, 2E-02";  // 0.01, 0.02
+  CPPUNIT_ASSERT(true == Coordinates::ParseVec3(exponential_2d_pt, &endp,
+                                                &vec));
+  CPPUNIT_ASSERT(0.01 == vec.longitude());
+  CPPUNIT_ASSERT(0.02 == vec.latitude());
+  CPPUNIT_ASSERT(0.0 == vec.altitude());
+
+  // Ensure junk data is handled gracefully.
+  const char* junk_coords1 = "this will not parse correctly";
+  CPPUNIT_ASSERT(false== Coordinates::ParseVec3(junk_coords1, &endp, &vec));
+
+  const char* junk_coords2 = "0,foo";  // Will parse successfully.
+  CPPUNIT_ASSERT(true == Coordinates::ParseVec3(junk_coords2, &endp, &vec));
+  CPPUNIT_ASSERT(0.0 == vec.longitude());
+  CPPUNIT_ASSERT(0.0 == vec.latitude());
+  CPPUNIT_ASSERT(0.0 == vec.altitude());
+
+  const char* junk_coords3 = "bar,0";  // Will parse successfully.
+  CPPUNIT_ASSERT(true == Coordinates::ParseVec3(junk_coords3, &endp, &vec));
+  CPPUNIT_ASSERT(0.0 == vec.longitude());
+  CPPUNIT_ASSERT(0.0 == vec.latitude());
+  CPPUNIT_ASSERT(0.0 == vec.altitude());
+
+  const char* junk_coords4 = "\n";  // Will parse successfully.
+  CPPUNIT_ASSERT(false == Coordinates::ParseVec3(junk_coords4, &endp, &vec));
 }
 
 void CoordinatesTest::TestParsePoint() {

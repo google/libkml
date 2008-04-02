@@ -90,6 +90,14 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
 
     // Latitude next.
     while (isspace(*endp) || *endp != ',') {
+      // We check here to make sure the parse is sane. If we've been passed
+      // an invalid coordinate string, this loop will reach the null
+      // terminator. If we see it, we set the nextp pointer to the end and
+      // return which will let Coordinates::Parse know that it's finished.
+      if (*endp == '\0') {
+        *nextp = endp;
+        return done;
+      }
       // Eat whitespace between double and comma.
       ++endp;
     }
