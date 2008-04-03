@@ -41,7 +41,7 @@ using kmldom::Placemark;
 using std::cout;
 using std::endl;
 
-static void WalkGeometry(const Placemark* placemark);
+static void WalkGeometry(const Geometry* geometry);
 static void WalkFeature(const Feature* feature);
 static void WalkContainer(const Container& container);
 static const Feature* GetRootFeature(const Element* root);
