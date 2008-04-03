@@ -87,6 +87,11 @@ void ParserTest::TestJunkInput() {
   // Since the parse failed there will be an error string and NULL is returned.
   CPPUNIT_ASSERT(!errors.empty());
   CPPUNIT_ASSERT(!root);
+
+  // An unescaped ampersand is a basic XML parse error.
+  root = Parse("<Document><name>&</name></Document>", &errors);
+  CPPUNIT_ASSERT(!errors.empty());
+  CPPUNIT_ASSERT(!root);
 }
 
 void ParserTest::TestFullyUnknownXml() {
@@ -103,17 +108,17 @@ void ParserTest::TestFullyUnknownXml() {
   CPPUNIT_ASSERT(!errors.empty());
 
   errors.clear();
-  root = Parse("<gml></gml>", &errors); 
+  root = Parse("<gml></gml>", &errors);
   CPPUNIT_ASSERT(!root);
   CPPUNIT_ASSERT(!errors.empty());
 
   errors.clear();
-  root = Parse("<gml/>\n", &errors); 
+  root = Parse("<gml/>\n", &errors);
   CPPUNIT_ASSERT(!root);
   CPPUNIT_ASSERT(!errors.empty());
 
   errors.clear();
-  root = Parse("<gml></gml>\n", &errors); 
+  root = Parse("<gml></gml>\n", &errors);
   CPPUNIT_ASSERT(!root);
   CPPUNIT_ASSERT(!errors.empty());
 
