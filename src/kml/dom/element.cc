@@ -43,6 +43,9 @@ Element::Element(KmlDomType type_id)
 
 Element::~Element() {
   delete unknown_attributes_;
+  for (size_t i = 0; i < unknown_legal_elements_array_.size(); ++i) {
+    delete unknown_legal_elements_array_[i];
+  }
 }
 
 // Anything reaching this level is an known (KML) element found in an illegal

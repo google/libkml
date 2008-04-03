@@ -86,6 +86,12 @@ void Feature::AddElement(Element* element) {
     case Type_open:
       has_open_ = element->SetBool(&open_);
       break;
+    case Type_address:
+      has_address_ = element->SetString(&address_);
+      break;
+    case Type_phoneNumber:
+      has_phonenumber_ = element->SetString(&phonenumber_);
+      break;
     case Type_Snippet:
       set_snippet(static_cast<Snippet*>(element));
       break;
