@@ -78,11 +78,7 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
   XML_SetCdataSectionHandler(parser, startCdata, endCdata);
   XML_SetCharacterDataHandler(parser, charData);
   XML_Status status = XML_Parse(parser, xml.c_str(), xml.size(), xml.size());
-  XML_ParserFree(parser);
-  if (status == XML_STATUS_OK) {
-    return true;
-  }
-  if (errors) {
+  if (status != XML_STATUS_OK && errors) {
     // This is the other half of XML_StopParser() which is our way of
     // stopping expat if the root element is not KML.
     if (status == XML_STATUS_SUSPENDED) {
@@ -97,7 +93,8 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
       *errors = strstream.str();
     }
   }
-  return false;
+  XML_ParserFree(parser);
+  return status == XML_STATUS_OK;
 }
 
 // This is the implementation of the public API to parse KML from a memory
