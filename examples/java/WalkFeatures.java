@@ -101,8 +101,5 @@ public class WalkFeatures {
     if (feature != null) {
       VisitFeature(feature, 0);
     }
-    // Get the factory just for the deleter.
-    KmlFactory factory = KmlFactory.GetFactory();
-    factory.DeleteElement(root);
   }
 }

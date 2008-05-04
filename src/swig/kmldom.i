@@ -25,9 +25,6 @@
 
 // This is the SWIG interface file for the KML DOM.
 // This was developed with SWIG version 1.3.35.
-#if SWIG_VERSION != 0x010335
-#error "SWIG version 1.3.35 is required"
-#endif
 
 %module kmldom
 

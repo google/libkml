@@ -1,4 +1,4 @@
-# copy this and *.java to ../../build/swig
+# copy this and *.java to ../../build/java
 javac CreatePlacemark.java
 java CreatePlacemark
 

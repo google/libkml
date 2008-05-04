@@ -34,12 +34,12 @@
 #include "kml/dom.h"
 #include "curlfetch.h"
 
-using kmldom::Container;
-using kmldom::Element;
-using kmldom::Feature;
-using kmldom::Link;
-using kmldom::NetworkLink;
-using kmldom::Kml;
+using kmldom::ContainerPtr;
+using kmldom::ElementPtr;
+using kmldom::FeaturePtr;
+using kmldom::LinkPtr;
+using kmldom::NetworkLinkPtr;
+using kmldom::KmlPtr;
 using std::cout;
 using std::endl;
 
@@ -47,25 +47,25 @@ static void ComputeChild(const std::string& parent_url,
                          const std::string& child_url,
                          std::string* absolute_child);
 static void CountFeature(int type_id);
-static Element* FetchAndParse(const std::string& url);
-static bool GetNetworkLinkHref(const NetworkLink& networklink,
+static ElementPtr FetchAndParse(const std::string& url);
+static bool GetNetworkLinkHref(const NetworkLinkPtr& networklink,
                                std::string* href);
-static const Feature* GetRootFeature(const Element* root);
+static const FeaturePtr GetRootFeature(const ElementPtr& root);
 static void PrintFeatureCounts();
 static void PrintFileCounts();
 static void WalkContainer(const std::string& parent_url,
-                          const Container& container);
+                          const ContainerPtr& container);
 static void WalkFeature(const std::string& parent_url,
-                        const Feature* feature);
+                        const FeaturePtr& feature);
 static void WalkFile(const std::string& url);
 static void WalkNetworkLink(const std::string& parent_url,
-                            const NetworkLink& networklink);
+                            const NetworkLinkPtr& networklink);
 static void WalkUrl(const std::string& parent_url,
                     const std::string& child_url);
 
 static int file_count;
 
-static Element* FetchAndParse(const std::string& url) {
+static ElementPtr FetchAndParse(const std::string& url) {
   std::string kml;
   if (!CurlToString(url.c_str(), &kml)) {
     cout << "fetch failed " << url << endl;
@@ -74,7 +74,7 @@ static Element* FetchAndParse(const std::string& url) {
 
   // Parse it.
   std::string errors;
-  Element* root = kmldom::Parse(kml, &errors);
+  ElementPtr root = kmldom::Parse(kml, &errors);
   if (root == NULL) {
     cout << "parse failed " << url << endl;
     cout << errors;
@@ -88,15 +88,12 @@ static void PrintFileCount() {
   cout << "files " << file_count << endl;
 }
 
-static const Feature* GetRootFeature(const Element* root) {
-  if (root) {
-    const Kml* kml = kmldom::AsKml(root);
-    if (kml && kml->has_feature()) {
-      return kml->feature();
-    }
-    return kmldom::AsFeature(root);
+static const FeaturePtr GetRootFeature(const ElementPtr& root) {
+  const KmlPtr kml = kmldom::AsKml(root);
+  if (kml && kml->has_feature()) {
+    return kml->feature();
   }
-  return NULL;
+  return kmldom::AsFeature(root);
 }
 
 static void ComputeChild(const std::string& parent_url,
@@ -107,8 +104,8 @@ static void ComputeChild(const std::string& parent_url,
     *absolute_child = child_url;
     return;
   }
-  // TODO: doesn't detect local files (c:\foo\foo.kml, etc)
-  // TODO: assumes at least one / in the parent_url.
+  // NOTE: This does not detect local files (c:\foo\foo.kml, etc).
+  // NOTE: And, this assumes at least one / in the parent_url.
   int last_component = parent_url.rfind("/");
   if (last_component != std::string::npos) {
     *absolute_child = parent_url.substr(0,last_component+1);  // keep '/'
@@ -125,10 +122,10 @@ static void WalkUrl(const std::string& parent_url,
   WalkFile(absolute_child);
 }
 
-static bool GetNetworkLinkHref(const NetworkLink& networklink,
+static bool GetNetworkLinkHref(const NetworkLinkPtr& networklink,
                                std::string* href) {
-  if (networklink.has_link()) {
-    const Link* link = networklink.link();
+  if (networklink->has_link()) {
+    const LinkPtr link = networklink->link();
     if (link->has_href()) {
       *href = link->href();
       return true;
@@ -138,7 +135,7 @@ static bool GetNetworkLinkHref(const NetworkLink& networklink,
 }
 
 static void WalkNetworkLink(const std::string& parent_url,
-                            const NetworkLink& networklink) {
+                            const NetworkLinkPtr& networklink) {
   std::string url;
   GetNetworkLinkHref(networklink, &url);
   if (!url.empty()) {
@@ -147,9 +144,9 @@ static void WalkNetworkLink(const std::string& parent_url,
 }
 
 static void WalkContainer(const std::string& parent_url,
-                          const Container& container) {
-  for (size_t i = 0; i < container.feature_array_size(); ++i) {
-    WalkFeature(parent_url, container.feature_array_at(i));
+                          const ContainerPtr& container) {
+  for (size_t i = 0; i < container->feature_array_size(); ++i) {
+    WalkFeature(parent_url, container->feature_array_at(i));
   }
 }
 
@@ -200,24 +197,23 @@ static void PrintFeatureCounts() {
 }
 
 static void WalkFeature(const std::string& parent_url,
-                        const Feature* feature) {
+                        const FeaturePtr& feature) {
   if (feature) {
     CountFeature(feature->Type());
-    if (const Container* container = kmldom::AsContainer(feature)) {
-      WalkContainer(parent_url, *container);
-    } else if (const NetworkLink* networklink =
+    if (const ContainerPtr container = kmldom::AsContainer(feature)) {
+      WalkContainer(parent_url, container);
+    } else if (const NetworkLinkPtr networklink =
                kmldom::AsNetworkLink(feature)) {
-      WalkNetworkLink(parent_url, *networklink);
+      WalkNetworkLink(parent_url, networklink);
     }
   }
 }
 
 static void WalkFile(const std::string& url) {
   cout << url << endl;
-  Element* root = FetchAndParse(url);
+  ElementPtr root = FetchAndParse(url);
   if (root) {
     WalkFeature(url, GetRootFeature(root));
-    delete root;  // deletes everything including feature
   }
 }
 
