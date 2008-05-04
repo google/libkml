@@ -36,7 +36,7 @@
 
 using std::cout;
 using std::endl;
-using kmldom::Element;
+using kmldom::ElementPtr;
 
 int main(int argc, char** argv) {
   if (argc != 2) {
@@ -64,15 +64,15 @@ int main(int argc, char** argv) {
 
   // Parse it.
   std::string errors;
-  Element* root = kmldom::Parse(kml, &errors);
+  ElementPtr root = kmldom::Parse(kml, &errors);
   if (!root) {
     cout << errors << endl;
     return 1;
   }
 
   // Serialize it and output to stdout.
-  cout << kmldom::SerializePretty(*root);
+  cout << kmldom::SerializePretty(root);
 
-  // Free the storage created by Parse().
-  delete root;
+  // ElementPtr releases root and all children automatically when it goes
+  // out of scope.
 }

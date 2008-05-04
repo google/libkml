@@ -1,10 +1,84 @@
-INCLUDES = -I$(top_srcdir)/src -I$(top_srcdir)/examples/helloworld
+AM_CPPFLAGS = -I$(top_srcdir)/src \
+	      -I$(top_srcdir)/examples/helloworld \
+	      -I$(top_srcdir)/third_party/boost_1_34_1
 
-noinst_PROGRAMS = prettykml
+noinst_LTLIBRARIES = libhelloutil.la
+
+libhelloutil_la_SOURCES = print.cc
+libhelloutil_la_LIBADD = $(top_builddir)/third_party/libminizip.la
+
+noinst_PROGRAMS = createkml helloattrs helloenum hellofeatures hellofolder \
+		  hellogeometry hellohref hellokmz helloregion \
+		  helloworld parsekml prettykml printgeometry sortplacemarks
+
+createkml_SOURCES = createkml.cc
+createkml_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+helloattrs_SOURCES = helloattrs.cc
+helloattrs_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+helloenum_SOURCES = helloenum.cc
+helloenum_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+hellofeatures_SOURCES = hellofeatures.cc
+hellofeatures_LDADD = \
+	libhelloutil.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+hellofolder_SOURCES = hellofolder.cc
+hellofolder_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+hellogeometry_SOURCES = hellogeometry.cc
+hellogeometry_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+hellohref_SOURCES = hellohref.cc
+hellohref_LDADD = \
+	libhelloutil.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+hellokmz_SOURCES = hellokmz.cc
+hellokmz_LDADD = \
+	$(top_builddir)/third_party/libminizip.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+helloregion_SOURCES = helloregion.cc
+helloregion_LDADD = \
+	libhelloutil.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+helloworld_SOURCES = helloworld.cc
+helloworld_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
+parsekml_SOURCES = parsekml.cc
+parsekml_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la
+
 prettykml_SOURCES = prettykml.cc
 prettykml_LDADD = \
 	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
-prettykml_LDFLAGS = -lexpat -lz
 
+printgeometry_SOURCES = printgeometry.cc
+printgeometry_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+sortplacemarks_SOURCES = sortplacemarks.cc
+sortplacemarks_LDADD = \
+	$(top_builddir)/third_party/libminizip.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
+EXTRA_DIST = \
+	print.h

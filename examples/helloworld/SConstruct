@@ -96,7 +96,8 @@ if env['PLATFORM'] == 'win32':
 else:
   env.Append(LIBZ='z')
 
-env.Append(CPPPATH=[env['LIBKML_INCDIR'], '../../src',])
+env.Append(CPPPATH=[env['LIBKML_INCDIR'], '../../src',
+                        '../../third_party/boost_1_34_1'])
 env.Append(LIBPATH=['.', env['LIBKML_LIBDIR'], '../../build',
                     '../../build/kml/dom', '../../build/kml/util'])
 
@@ -146,9 +147,6 @@ env.Program('hellokmz', 'hellokmz.cc',
 
 env.Program('helloregion', 'helloregion.cc',
         LIBS=['kmldom', 'expat', 'kmlutil'])
-
-env.Program('helloserializer', 'helloserializer.cc',
-        LIBS=['kmldom'])
 
 env.Program('helloworld', 'helloworld.cc',
         LIBS=['kmldom'])

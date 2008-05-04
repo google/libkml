@@ -29,11 +29,7 @@
 #define PRINT_H__
 
 #include <string>
-
-namespace kmldom {
-class Container;
-class Feature;
-}
+#include "kml/dom.h"
 
 // All PrintXXX() functions print to stdout.
 
@@ -41,9 +37,9 @@ class Feature;
 void PrintIndented(std::string item, int depth);
 
 // Print each Feature in the container recursively.
-void PrintContainer(const kmldom::Container* container, int depth);
+void PrintContainer(const kmldom::ContainerPtr& container, int depth);
 
 // Print the name of the Feature.  This recurses on Container.
-void PrintFeature(const kmldom::Feature* feature, int depth);
+void PrintFeature(const kmldom::FeaturePtr& feature, int depth);
 
 #endif  // PRINT_H__

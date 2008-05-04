@@ -30,25 +30,25 @@
 #include <string>
 #include "kml/dom.h"
 
-using kmldom::Element;
-using kmldom::HotSpot;
-using kmldom::IconStyle;
-using kmldom::Placemark;
+using kmldom::ElementPtr;
+using kmldom::HotSpotPtr;
+using kmldom::IconStylePtr;
+using kmldom::PlacemarkPtr;
 
 void CheckHotSpot() {
   const std::string kml(
       "<IconStyle id=\"is42\">"
       "<hotSpot x=\"0.5\" y=\"123\" xunits=\"fraction\" yunits=\"pixels\"/>"
       "</IconStyle>");
-  Element* root = kmldom::Parse(kml, NULL);
+  ElementPtr root = kmldom::Parse(kml, NULL);
 
   // Verify the parse went fine.
   assert(root);  // The kml is perfect.
 
-  const IconStyle* iconstyle = kmldom::AsIconStyle(root);
+  const IconStylePtr iconstyle = kmldom::AsIconStyle(root);
   assert(true == iconstyle->has_hotspot());
 
-  const HotSpot* hotspot = iconstyle->hotspot();
+  const HotSpotPtr hotspot = iconstyle->hotspot();
   assert(true == hotspot->has_x());
   assert(0.5 == hotspot->x());
   assert(true == hotspot->has_y());
@@ -59,32 +59,26 @@ void CheckHotSpot() {
   assert(kmldom::UNITS_PIXELS == hotspot->yunits());
 
   // Serialize the sample.
-  std::string parsed_kml = kmldom::SerializePretty(*hotspot);
+  std::string parsed_kml = kmldom::SerializePretty(hotspot);
   std::cout << parsed_kml << std::endl;
-
-  // Free all resources allocated by the parser.
-  delete root;
 }
 
 void CheckId() {
   // Parse some KML with an attribute.
   const std::string kml(
       "<Placemark id=\"placemark123\"><name>x</name></Placemark>");
-  Element* root = kmldom::Parse(kml, NULL);
+  ElementPtr root = kmldom::Parse(kml, NULL);
 
   // Verify the parse went fine.
   assert(root);  // The kml is perfect.
 
-  const Placemark* placemark = kmldom::AsPlacemark(root);
+  const PlacemarkPtr placemark = kmldom::AsPlacemark(root);
 
   assert("placemark123" == placemark->id());
 
   // Serialize the sample.
-  std::string parsed_kml = kmldom::SerializePretty(*placemark);
+  std::string parsed_kml = kmldom::SerializePretty(placemark);
   std::cout << parsed_kml << std::endl;
-
-  // Free all resources allocated by the parser.
-  delete root;
 }
 
 int main(int argc, char** argv) {

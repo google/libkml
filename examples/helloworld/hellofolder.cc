@@ -31,23 +31,23 @@
 using std::cout;
 using std::endl;
 using std::string;
-using kmldom::Coordinates;
-using kmldom::Feature;
-using kmldom::Folder;
+using kmldom::CoordinatesPtr;
+using kmldom::FeaturePtr;
+using kmldom::FolderPtr;
 using kmldom::KmlFactory;
-using kmldom::Placemark;
-using kmldom::Point;
+using kmldom::PlacemarkPtr;
+using kmldom::PointPtr;
 
-Placemark* CreatePlacemark(kmldom::KmlFactory* factory,
-                           const string& name,
-                           double lat, double lon) {
-  Placemark* placemark(factory->CreatePlacemark());
+PlacemarkPtr CreatePlacemark(kmldom::KmlFactory* factory,
+                             const string& name,
+                             double lat, double lon) {
+  PlacemarkPtr placemark(factory->CreatePlacemark());
   placemark->set_name(name);
 
-  Coordinates* coordinates(factory->CreateCoordinates());
+  CoordinatesPtr coordinates(factory->CreateCoordinates());
   coordinates->add_point2(lon, lat);
 
-  Point* point(factory->CreatePoint());
+  PointPtr point(factory->CreatePoint());
   point->set_coordinates(coordinates);
 
   placemark->set_geometry(point);
@@ -62,7 +62,7 @@ int main(int argc, char** argv) {
 
   // Create a Folder, fill it with Placemarks.
   cout << "Creating " << kHowManyPoints << " Placemarks:" << endl;
-  Folder* folder = factory->CreateFolder();
+  FolderPtr folder = factory->CreateFolder();
   for (int i = 0 ; i < kHowManyPoints ; ++i) {
     folder->add_feature(CreatePlacemark(factory, "hi", 1.1, 2.2));
   }
@@ -74,10 +74,6 @@ int main(int argc, char** argv) {
     assert("hi" == folder->feature_array_at(i)->name());
     assert(kmldom::Type_Placemark == folder->feature_array_at(i)->Type());
   }
-
-  // Deletes everything within.
-  cout << "Deleting Folder" << endl;
-  delete folder;
 
   return 0;
 }

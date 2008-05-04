@@ -41,95 +41,92 @@
 using std::string;
 using std::cout;
 using std::endl;
-using kmldom::BasicLink;
-using kmldom::Container;
-using kmldom::Document;
-using kmldom::Element;
-using kmldom::Feature;
-using kmldom::Geometry;
-using kmldom::IconStyle;
-using kmldom::ItemIcon;
-using kmldom::Kml;
-using kmldom::ListStyle;
-using kmldom::Model;
-using kmldom::MultiGeometry;
-using kmldom::NetworkLink;
-using kmldom::Overlay;
-using kmldom::Pair;
-using kmldom::Placemark;
-using kmldom::Style;
-using kmldom::StyleMap;
-using kmldom::StyleSelector;
+using kmldom::BasicLinkPtr;
+using kmldom::ContainerPtr;
+using kmldom::DocumentPtr;
+using kmldom::ElementPtr;
+using kmldom::FeaturePtr;
+using kmldom::GeometryPtr;
+using kmldom::IconStylePtr;
+using kmldom::ItemIconPtr;
+using kmldom::KmlPtr;
+using kmldom::ListStylePtr;
+using kmldom::ModelPtr;
+using kmldom::MultiGeometryPtr;
+using kmldom::NetworkLinkPtr;
+using kmldom::OverlayPtr;
+using kmldom::PairPtr;
+using kmldom::PlacemarkPtr;
+using kmldom::StylePtr;
+using kmldom::StyleMapPtr;
+using kmldom::StyleSelectorPtr;
 
 // Declare all functions used here.
-static const Feature* GetRootFeature(const Element* root);
-static void PrintBasicLinkHref(const string what, const BasicLink* link);
-static void PrintIconStyleIconHref(const IconStyle* iconstyle);
-static void PrintModelLinkHref(const Model* model);
-static void PrintNetworkLinkHref(const NetworkLink* networklink);
-static void PrintOverlayIconHref(const Overlay* overlay);
-static void VisitContainer(const Container* container);
-static void VisitFeature(const Feature* feature);
-static void VisitFeatureStyle(const Feature* feature);
-static void VisitGeometry(const Geometry* geometry);
-static void VisitListStyle(const ListStyle* liststyle);
-static void VisitPlacemark(const Placemark* placemark);
-static void VisitStyle(const Style* style);
-static void VisitStyleMap(const StyleMap* stylemap);
-static void VisitStyleSelector(const StyleSelector* styleselector);
+static const FeaturePtr GetRootFeature(const ElementPtr& root);
+static void PrintBasicLinkHref(const string what, const BasicLinkPtr& link);
+static void PrintIconStyleIconHref(const IconStylePtr& iconstyle);
+static void PrintModelLinkHref(const ModelPtr& model);
+static void PrintNetworkLinkHref(const NetworkLinkPtr& networklink);
+static void PrintOverlayIconHref(const OverlayPtr& overlay);
+static void VisitContainer(const ContainerPtr& container);
+static void VisitFeature(const FeaturePtr& feature);
+static void VisitFeatureStyle(const FeaturePtr& feature);
+static void VisitGeometry(const GeometryPtr& geometry);
+static void VisitListStyle(const ListStylePtr& liststyle);
+static void VisitPlacemark(const PlacemarkPtr& placemark);
+static void VisitStyle(const StylePtr& style);
+static void VisitStyleMap(const StyleMapPtr& stylemap);
+static void VisitStyleSelector(const StyleSelectorPtr& styleselector);
 
-static const Feature* GetRootFeature(const Element* root) {
-  if (root) {
-    const Kml* kml = kmldom::AsKml(root);
-    if (kml && kml->has_feature()) {
-      return kml->feature();
-    }
-    return kmldom::AsFeature(root);
+static const FeaturePtr GetRootFeature(const ElementPtr& root) {
+  const KmlPtr kml = kmldom::AsKml(root);
+  if (kml && kml->has_feature()) {
+    return kml->feature();
   }
-  return NULL;
+  return kmldom::AsFeature(root);
 }
 
 // Link, Icon, Url are all BasicLink
-static void PrintBasicLinkHref(const string what, const BasicLink* link) {
+static void PrintBasicLinkHref(const string what, const BasicLinkPtr& link) {
   if (link) {
     cout << what << " " << link->href() << endl;
   }
 }
 
-static void PrintNetworkLinkHref(const NetworkLink* networklink) {
+static void PrintNetworkLinkHref(const NetworkLinkPtr& networklink) {
   PrintBasicLinkHref("NetworkLink", networklink->link());
 }
 
-static void PrintOverlayIconHref(const Overlay* overlay) {
+static void PrintOverlayIconHref(const OverlayPtr& overlay) {
   PrintBasicLinkHref("Overlay", overlay->icon());
 }
 
-static void PrintIconStyleIconHref(const IconStyle* iconstyle) {
+static void PrintIconStyleIconHref(const IconStylePtr& iconstyle) {
   PrintBasicLinkHref("IconStyle", iconstyle->icon());
 }
 
-static void PrintModelLinkHref(const Model* model) {
+static void PrintModelLinkHref(const ModelPtr& model) {
   PrintBasicLinkHref("Model", model->link());
 }
 
-static void VisitGeometry(const Geometry* geometry) {
-  const MultiGeometry* multigeometry = kmldom::AsMultiGeometry(geometry);
+static void VisitGeometry(const GeometryPtr& geometry) {
+  const MultiGeometryPtr multigeometry = kmldom::AsMultiGeometry(geometry);
   if (multigeometry) {
     for (size_t i = 0; i < multigeometry->geometry_array_size(); ++i) {
       VisitGeometry(multigeometry->geometry_array_at(i));
     }
-  } else if (const Model* model = kmldom::AsModel(geometry)) {
+  } else if (const ModelPtr model = kmldom::AsModel(geometry)) {
     PrintModelLinkHref(model);
   }
 }
 
-static void VisitPlacemark(const Placemark* placemark) {
+static void VisitPlacemark(const PlacemarkPtr& placemark) {
   if (placemark->has_geometry()) {
     VisitGeometry(placemark->geometry());
   }
 }
 
-static void VisitListStyle(const ListStyle* liststyle) {
+static void VisitListStyle(const ListStylePtr& liststyle) {
   for (size_t i = 0; i < liststyle->itemicon_array_size(); ++i) {
     // ItemIcon is not a BasicLink.
     if (liststyle->itemicon_array_at(i)->has_href()) {
@@ -138,7 +135,7 @@ static void VisitListStyle(const ListStyle* liststyle) {
   }
 }
 
-static void VisitStyle(const Style* style) {
+static void VisitStyle(const StylePtr& style) {
   if (style->has_iconstyle()) {
     PrintIconStyleIconHref(style->iconstyle());
   }
@@ -147,15 +144,15 @@ static void VisitStyle(const Style* style) {
   }
 }
 
-static void VisitStyleSelector(const StyleSelector* styleselector) {
-  if (const Style* style = kmldom::AsStyle(styleselector)) {  // for IconStyle
+static void VisitStyleSelector(const StyleSelectorPtr& styleselector) {
+  if (const StylePtr style = kmldom::AsStyle(styleselector)) {  // for IconStyle
     VisitStyle(style);
-  } else if (const StyleMap* stylemap = kmldom::AsStyleMap(styleselector)) {
+  } else if (const StyleMapPtr stylemap = kmldom::AsStyleMap(styleselector)) {
     VisitStyleMap(stylemap);
   }
 }
 
-static void VisitStyleMap(const StyleMap* stylemap) {
+static void VisitStyleMap(const StyleMapPtr& stylemap) {
   for (int i = 0; i < stylemap->pair_array_size(); ++i) {
     if (stylemap->pair_array_at(i)->has_styleselector()) {
       VisitStyleSelector(stylemap->pair_array_at(i)->styleselector());
@@ -163,33 +160,34 @@ static void VisitStyleMap(const StyleMap* stylemap) {
   }
 }
 
-static void VisitFeatureStyle(const Feature* feature) {
+static void VisitFeatureStyle(const FeaturePtr& feature) {
   if (feature->has_styleselector()) {
     VisitStyleSelector(feature->styleselector());
   }
   // visit list if Document
-  if (const Document* document = kmldom::AsDocument(feature)) {
+  if (const DocumentPtr document = kmldom::AsDocument(feature)) {
     for (size_t i = 0; i < document->styleselector_array_size(); ++i) {
       VisitStyleSelector(document->styleselector_array_at(i));
     }
   }
 }
 
-static void VisitContainer(const Container* container) {
+static void VisitContainer(const ContainerPtr& container) {
   for (int i = 0; i < container->feature_array_size(); ++i) {
     VisitFeature(container->feature_array_at(i));
   }
 }
 
-static void VisitFeature(const Feature* feature) {
+static void VisitFeature(const FeaturePtr& feature) {
   VisitFeatureStyle(feature);
-  if (const Container* container = kmldom::AsContainer(feature)) {
+  if (const ContainerPtr container = kmldom::AsContainer(feature)) {
     VisitContainer(container);
-  } else if (const NetworkLink* networklink = kmldom::AsNetworkLink(feature)) {
+  } else if (const NetworkLinkPtr networklink =
+             kmldom::AsNetworkLink(feature)) {
     PrintNetworkLinkHref(networklink);
-  } else if (const Overlay* overlay = kmldom::AsOverlay(feature)) {
+  } else if (const OverlayPtr overlay = kmldom::AsOverlay(feature)) {
     PrintOverlayIconHref(overlay);
-  } else if (const Placemark* placemark = kmldom::AsPlacemark(feature)) {
+  } else if (const PlacemarkPtr placemark = kmldom::AsPlacemark(feature)) {
     VisitPlacemark(placemark);  // Model
   }
 }
@@ -202,14 +200,13 @@ static void HandleFile(const char* kmlfile) {
     return;
   }
   string errors;
-  Element* root = kmldom::Parse(kml, &errors);
+  ElementPtr root = kmldom::Parse(kml, &errors);
   if (!root) {
     return;
   }
-  if (const Feature* feature = GetRootFeature(root)) {
+  if (const FeaturePtr feature = GetRootFeature(root)) {
     VisitFeature(feature);
   }
-  delete root;  // deletes everything including feature
 }
 
 int main(int argc, char** argv) {

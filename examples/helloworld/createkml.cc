@@ -32,40 +32,37 @@
 #include "kml/dom.h"
 
 // libkml types are in the kmldom namespace
-using kmldom::Coordinates;
-using kmldom::Kml;
+using kmldom::CoordinatesPtr;
+using kmldom::KmlPtr;
 using kmldom::KmlFactory;
-using kmldom::Placemark;
-using kmldom::Point;
+using kmldom::PlacemarkPtr;
+using kmldom::PointPtr;
 
 int main() {
   // Get the factory singleton to create KML elements.
   KmlFactory* factory = KmlFactory::GetFactory();
 
   // Create <coordinates>.
-  Coordinates* coordinates = factory->CreateCoordinates();
+  CoordinatesPtr coordinates = factory->CreateCoordinates();
   // Create <coordinates>-122.0816695,37.42052549<coordinates>
   coordinates->add_point2(-122.0816695,37.42052549);
 
   // Create <Point> and give it <coordinates>.
-  Point* point = factory->CreatePoint();
+  PointPtr point = factory->CreatePoint();
   point->set_coordinates(coordinates);  // point takes ownership
 
   // Create <Placemark> and give it a <name> and the <Point>.
-  Placemark* placemark = factory->CreatePlacemark();
+  PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_name("Cool Statue");
   placemark->set_geometry(point);  // placemark takes ownership
 
   // Create <kml> and give it <Placemark>.
-  Kml* kml = factory->CreateKml();
+  KmlPtr kml = factory->CreateKml();
   kml->set_feature(placemark);  // kml takes ownership.
 
   // Serialize to XML
-  std::string xml = kmldom::SerializePretty(*kml);
+  std::string xml = kmldom::SerializePretty(kml);
 
   // Print to stdout
   std::cout << xml;
-
-  // Release memory
-  delete kml;  // Frees all child elements
 }
