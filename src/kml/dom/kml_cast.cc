@@ -24,502 +24,518 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml_cast.h"
+#include "kml_ptr.h"
+#include "boost/intrusive_ptr.hpp"
 
 namespace kmldom {
 
-const AbstractView* AsAbstractView(const Element* element) {
+const AbstractViewPtr AsAbstractView(const ElementPtr element) {
   if (element && element->IsA(Type_AbstractView)) {
-    return static_cast<const AbstractView*>(element);
+    return boost::static_pointer_cast<AbstractView>(element);
   }
   return NULL;
 }
 
-const ColorStyle* AsColorStyle(const Element* element) {
+const ColorStylePtr AsColorStyle(const ElementPtr element) {
   if (element && element->IsA(Type_ColorStyle)) {
-    return static_cast<const ColorStyle*>(element);
+    return boost::static_pointer_cast<ColorStyle>(element);
   }
   return NULL;
 }
 
-const Container* AsContainer(const Element* element) {
+const ContainerPtr AsContainer(const ElementPtr element) {
   if (element && element->IsA(Type_Container)) {
-    return static_cast<const Container*>(element);
+    return boost::static_pointer_cast<Container>(element);
   }
   return NULL;
 }
 
-const Feature* AsFeature(const Element* element) {
+const FeaturePtr AsFeature(const ElementPtr element) {
   if (element && element->IsA(Type_Feature)) {
-    return static_cast<const Feature*>(element);
+    return boost::static_pointer_cast<Feature>(element);
   }
   return NULL;
 }
 
-const Geometry* AsGeometry(const Element* element) {
+const GeometryPtr AsGeometry(const ElementPtr element) {
   if (element && element->IsA(Type_Geometry)) {
-    return static_cast<const Geometry*>(element);
+    return boost::static_pointer_cast<Geometry>(element);
   }
   return NULL;
 }
 
-const Object* AsObject(const Element* element) {
+const ObjectPtr AsObject(const ElementPtr element) {
   if (element && element->IsA(Type_Object)) {
-    return static_cast<const Object*>(element);
+    return boost::static_pointer_cast<Object>(element);
   }
   return NULL;
 }
 
-const Overlay* AsOverlay(const Element* element) {
+const OverlayPtr AsOverlay(const ElementPtr element) {
   if (element && element->IsA(Type_Overlay)) {
-    return static_cast<const Overlay*>(element);
+    return boost::static_pointer_cast<Overlay>(element);
   }
   return NULL;
 }
 
-const StyleSelector* AsStyleSelector(const Element* element) {
+const StyleSelectorPtr AsStyleSelector(const ElementPtr element) {
   if (element && element->IsA(Type_StyleSelector)) {
-    return static_cast<const StyleSelector*>(element);
+    return boost::static_pointer_cast<StyleSelector>(element);
   }
   return NULL;
 }
 
-const SubStyle* AsSubStyle(const Element* element) {
+const SubStylePtr AsSubStyle(const ElementPtr element) {
   if (element && element->IsA(Type_SubStyle)) {
-    return static_cast<const SubStyle*>(element);
+    return boost::static_pointer_cast<SubStyle>(element);
   }
   return NULL;
 }
 
-const TimePrimitive* AsTimePrimitive(const Element* element) {
+const TimePrimitivePtr AsTimePrimitive(const ElementPtr element) {
   if (element && element->IsA(Type_TimePrimitive)) {
-    return static_cast<const TimePrimitive*>(element);
+    return boost::static_pointer_cast<TimePrimitive>(element);
   }
   return NULL;
 }
 
-const Alias* AsAlias(const Element* element) {
+const AliasPtr AsAlias(const ElementPtr element) {
   if (element && element->Type() == Type_Alias) {
-    return static_cast<const Alias*>(element);
+    return boost::static_pointer_cast<Alias>(element);
   }
   return NULL;
 }
 
-const BalloonStyle* AsBalloonStyle(const Element* element) {
+const BalloonStylePtr AsBalloonStyle(const ElementPtr element) {
   if (element && element->Type() == Type_BalloonStyle) {
-    return static_cast<const BalloonStyle*>(element);
+    return boost::static_pointer_cast<BalloonStyle>(element);
   }
   return NULL;
 }
 
-const Camera* AsCamera(const Element* element) {
+const CameraPtr AsCamera(const ElementPtr element) {
   if (element && element->Type() == Type_Camera) {
-    return static_cast<const Camera*>(element);
+    return boost::static_pointer_cast<Camera>(element);
   }
   return NULL;
 }
 
-const Change* AsChange(const Element* element) {
+const ChangePtr AsChange(const ElementPtr element) {
   if (element && element->Type() == Type_Change) {
-    return static_cast<const Change*>(element);
+    return boost::static_pointer_cast<Change>(element);
   }
   return NULL;
 }
 
-const Create* AsCreate(const Element* element) {
+const CoordinatesPtr AsCoordinates(const ElementPtr element) {
+  if (element && element->Type() == Type_coordinates) {
+    return boost::static_pointer_cast<Coordinates>(element);
+  }
+  return NULL;
+}
+
+const CreatePtr AsCreate(const ElementPtr element) {
   if (element && element->Type() == Type_Create) {
-    return static_cast<const Create*>(element);
+    return boost::static_pointer_cast<Create>(element);
   }
   return NULL;
 }
 
-const Data* AsData(const Element* element) {
+const DataPtr AsData(const ElementPtr element) {
   if (element && element->Type() == Type_Data) {
-    return static_cast<const Data*>(element);
+    return boost::static_pointer_cast<Data>(element);
   }
   return NULL;
 }
 
-const Delete* AsDelete(const Element* element) {
+const DeletePtr AsDelete(const ElementPtr element) {
   if (element && element->Type() == Type_Delete) {
-    return static_cast<const Delete*>(element);
+    return boost::static_pointer_cast<Delete>(element);
   }
   return NULL;
 }
 
-const Document* AsDocument(const Element* element) {
+const DocumentPtr AsDocument(const ElementPtr element) {
   if (element && element->Type() == Type_Document) {
-    return static_cast<const Document*>(element);
+    return boost::static_pointer_cast<Document>(element);
   }
   return NULL;
 }
 
-const ExtendedData* AsExtendedData(const Element* element) {
+const ExtendedDataPtr AsExtendedData(const ElementPtr element) {
   if (element && element->Type() == Type_ExtendedData) {
-    return static_cast<const ExtendedData*>(element);
+    return boost::static_pointer_cast<ExtendedData>(element);
   }
   return NULL;
 }
 
-const Folder* AsFolder(const Element* element) {
+const FolderPtr AsFolder(const ElementPtr element) {
   if (element && element->Type() == Type_Folder) {
-    return static_cast<const Folder*>(element);
+    return boost::static_pointer_cast<Folder>(element);
   }
   return NULL;
 }
 
-const GroundOverlay* AsGroundOverlay(const Element* element) {
+const GroundOverlayPtr AsGroundOverlay(const ElementPtr element) {
   if (element && element->Type() == Type_GroundOverlay) {
-    return static_cast<const GroundOverlay*>(element);
+    return boost::static_pointer_cast<GroundOverlay>(element);
   }
   return NULL;
 }
 
-const HotSpot* AsHotSpot(const Element* element) {
+const HotSpotPtr AsHotSpot(const ElementPtr element) {
   if (element && element->Type() == Type_hotSpot) {
-    return static_cast<const HotSpot*>(element);
+    return boost::static_pointer_cast<HotSpot>(element);
   }
   return NULL;
 }
 
-const Icon* AsIcon(const Element* element) {
+const IconPtr AsIcon(const ElementPtr element) {
   if (element && element->Type() == Type_Icon) {
-    return static_cast<const Icon*>(element);
+    return boost::static_pointer_cast<Icon>(element);
   }
   return NULL;
 }
 
-const IconStyle* AsIconStyle(const Element* element) {
+const IconStylePtr AsIconStyle(const ElementPtr element) {
   if (element && element->Type() == Type_IconStyle) {
-    return static_cast<const IconStyle*>(element);
+    return boost::static_pointer_cast<IconStyle>(element);
   }
   return NULL;
 }
 
-const ImagePyramid* AsImagePyramid(const Element* element) {
+const IconStyleIconPtr AsIconStyleIcon(const ElementPtr element) {
+  if (element && element->Type() == Type_IconStyleIcon) {
+    return boost::static_pointer_cast<IconStyleIcon>(element);
+  }
+  return NULL;
+}
+
+const ImagePyramidPtr AsImagePyramid(const ElementPtr element) {
   if (element && element->Type() == Type_ImagePyramid) {
-    return static_cast<const ImagePyramid*>(element);
+    return boost::static_pointer_cast<ImagePyramid>(element);
   }
   return NULL;
 }
 
-const InnerBoundaryIs* AsInnerBoundaryIs(const Element* element) {
+const InnerBoundaryIsPtr AsInnerBoundaryIs(const ElementPtr element) {
   if (element && element->Type() == Type_innerBoundaryIs) {
-    return static_cast<const InnerBoundaryIs*>(element);
+    return boost::static_pointer_cast<InnerBoundaryIs>(element);
   }
   return NULL;
 }
 
-const ItemIcon* AsItemIcon(const Element* element) {
+const ItemIconPtr AsItemIcon(const ElementPtr element) {
   if (element && element->Type() == Type_ItemIcon) {
-    return static_cast<const ItemIcon*>(element);
+    return boost::static_pointer_cast<ItemIcon>(element);
   }
   return NULL;
 }
 
-const LabelStyle* AsLabelStyle(const Element* element) {
+const LabelStylePtr AsLabelStyle(const ElementPtr element) {
   if (element && element->Type() == Type_LabelStyle) {
-    return static_cast<const LabelStyle*>(element);
+    return boost::static_pointer_cast<LabelStyle>(element);
   }
   return NULL;
 }
 
-const LatLonAltBox* AsLatLonAltBox(const Element* element) {
+const LatLonAltBoxPtr AsLatLonAltBox(const ElementPtr element) {
   if (element && element->Type() == Type_LatLonAltBox) {
-    return static_cast<const LatLonAltBox*>(element);
+    return boost::static_pointer_cast<LatLonAltBox>(element);
   }
   return NULL;
 }
 
-const LatLonBox* AsLatLonBox(const Element* element) {
+const LatLonBoxPtr AsLatLonBox(const ElementPtr element) {
   if (element && element->Type() == Type_LatLonBox) {
-    return static_cast<const LatLonBox*>(element);
+    return boost::static_pointer_cast<LatLonBox>(element);
   }
   return NULL;
 }
 
-const LineString* AsLineString(const Element* element) {
+const LineStringPtr AsLineString(const ElementPtr element) {
   if (element && element->Type() == Type_LineString) {
-    return static_cast<const LineString*>(element);
+    return boost::static_pointer_cast<LineString>(element);
   }
   return NULL;
 }
 
-const LineStyle* AsLineStyle(const Element* element) {
+const LineStylePtr AsLineStyle(const ElementPtr element) {
   if (element && element->Type() == Type_LineStyle) {
-    return static_cast<const LineStyle*>(element);
+    return boost::static_pointer_cast<LineStyle>(element);
   }
   return NULL;
 }
 
-const LinearRing* AsLinearRing(const Element* element) {
+const LinearRingPtr AsLinearRing(const ElementPtr element) {
   if (element && element->Type() == Type_LinearRing) {
-    return static_cast<const LinearRing*>(element);
+    return boost::static_pointer_cast<LinearRing>(element);
   }
   return NULL;
 }
 
-const Link* AsLink(const Element* element) {
+const LinkPtr AsLink(const ElementPtr element) {
   if (element && element->Type() == Type_Link) {
-    return static_cast<const Link*>(element);
+    return boost::static_pointer_cast<Link>(element);
   }
   return NULL;
 }
 
-const LinkSnippet* AsLinkSnippet(const Element* element) {
+const LinkSnippetPtr AsLinkSnippet(const ElementPtr element) {
   if (element && element->Type() == Type_linkSnippet) {
-    return static_cast<const LinkSnippet*>(element);
+    return boost::static_pointer_cast<LinkSnippet>(element);
   }
   return NULL;
 }
 
-const ListStyle* AsListStyle(const Element* element) {
+const ListStylePtr AsListStyle(const ElementPtr element) {
   if (element && element->Type() == Type_ListStyle) {
-    return static_cast<const ListStyle*>(element);
+    return boost::static_pointer_cast<ListStyle>(element);
   }
   return NULL;
 }
 
-const Location* AsLocation(const Element* element) {
+const LocationPtr AsLocation(const ElementPtr element) {
   if (element && element->Type() == Type_Location) {
-    return static_cast<const Location*>(element);
+    return boost::static_pointer_cast<Location>(element);
   }
   return NULL;
 }
 
-const Lod* AsLod(const Element* element) {
+const LodPtr AsLod(const ElementPtr element) {
   if (element && element->Type() == Type_Lod) {
-    return static_cast<const Lod*>(element);
+    return boost::static_pointer_cast<Lod>(element);
   }
   return NULL;
 }
 
-const LookAt* AsLookAt(const Element* element) {
+const LookAtPtr AsLookAt(const ElementPtr element) {
   if (element && element->Type() == Type_LookAt) {
-    return static_cast<const LookAt*>(element);
+    return boost::static_pointer_cast<LookAt>(element);
   }
   return NULL;
 }
 
-const Kml* AsKml(const Element* element) {
+const KmlPtr AsKml(const ElementPtr element) {
   if (element && element->Type() == Type_kml) {
-    return static_cast<const Kml*>(element);
+    return boost::static_pointer_cast<Kml>(element);
   }
   return NULL;
 }
 
-const Model* AsModel(const Element* element) {
+const ModelPtr AsModel(const ElementPtr element) {
   if (element && element->Type() == Type_Model) {
-    return static_cast<const Model*>(element);
+    return boost::static_pointer_cast<Model>(element);
   }
   return NULL;
 }
 
-const MultiGeometry* AsMultiGeometry(const Element* element) {
+const MultiGeometryPtr AsMultiGeometry(const ElementPtr element) {
   if (element && element->Type() == Type_MultiGeometry) {
-    return static_cast<const MultiGeometry*>(element);
+    return boost::static_pointer_cast<MultiGeometry>(element);
   }
   return NULL;
 }
 
-const NetworkLink* AsNetworkLink(const Element* element) {
+const NetworkLinkPtr AsNetworkLink(const ElementPtr element) {
   if (element && element->Type() == Type_NetworkLink) {
-    return static_cast<const NetworkLink*>(element);
+    return boost::static_pointer_cast<NetworkLink>(element);
   }
   return NULL;
 }
 
-const NetworkLinkControl* AsNetworkLinkControl(const Element* element) {
+const NetworkLinkControlPtr AsNetworkLinkControl(const ElementPtr element) {
   if (element && element->Type() == Type_NetworkLinkControl) {
-    return static_cast<const NetworkLinkControl*>(element);
+    return boost::static_pointer_cast<NetworkLinkControl>(element);
   }
   return NULL;
 }
 
-const Orientation* AsOrientation(const Element* element) {
+const OrientationPtr AsOrientation(const ElementPtr element) {
   if (element && element->Type() == Type_Orientation) {
-    return static_cast<const Orientation*>(element);
+    return boost::static_pointer_cast<Orientation>(element);
   }
   return NULL;
 }
 
-const OuterBoundaryIs* AsOuterBoundaryIs(const Element* element) {
+const OuterBoundaryIsPtr AsOuterBoundaryIs(const ElementPtr element) {
   if (element && element->Type() == Type_outerBoundaryIs) {
-    return static_cast<const OuterBoundaryIs*>(element);
+    return boost::static_pointer_cast<OuterBoundaryIs>(element);
   }
   return NULL;
 }
 
-const OverlayXY* AsOverlayXY(const Element* element) {
+const OverlayXYPtr AsOverlayXY(const ElementPtr element) {
   if (element && element->Type() == Type_overlayXY) {
-    return static_cast<const OverlayXY*>(element);
+    return boost::static_pointer_cast<OverlayXY>(element);
   }
   return NULL;
 }
 
-const Pair* AsPair(const Element* element) {
+const PairPtr AsPair(const ElementPtr element) {
   if (element && element->Type() == Type_Pair) {
-    return static_cast<const Pair*>(element);
+    return boost::static_pointer_cast<Pair>(element);
   }
   return NULL;
 }
 
-const PhotoOverlay* AsPhotoOverlay(const Element* element) {
+const PhotoOverlayPtr AsPhotoOverlay(const ElementPtr element) {
   if (element && element->Type() == Type_PhotoOverlay) {
-    return static_cast<const PhotoOverlay*>(element);
+    return boost::static_pointer_cast<PhotoOverlay>(element);
   }
   return NULL;
 }
 
-const Placemark* AsPlacemark(const Element* element) {
+const PlacemarkPtr AsPlacemark(const ElementPtr element) {
   if (element && element->Type() == Type_Placemark) {
-    return static_cast<const Placemark*>(element);
+    return boost::static_pointer_cast<Placemark>(element);
   }
   return NULL;
 }
 
-const Point* AsPoint(const Element* element) {
+const PointPtr AsPoint(const ElementPtr element) {
   if (element && element->Type() == Type_Point) {
-    return static_cast<const Point*>(element);
+    return boost::static_pointer_cast<Point>(element);
   }
   return NULL;
 }
 
-const PolyStyle* AsPolyStyle(const Element* element) {
+const PolyStylePtr AsPolyStyle(const ElementPtr element) {
   if (element && element->Type() == Type_PolyStyle) {
-    return static_cast<const PolyStyle*>(element);
+    return boost::static_pointer_cast<PolyStyle>(element);
   }
   return NULL;
 }
 
-const Polygon* AsPolygon(const Element* element) {
+const PolygonPtr AsPolygon(const ElementPtr element) {
   if (element && element->Type() == Type_Polygon) {
-    return static_cast<const Polygon*>(element);
+    return boost::static_pointer_cast<Polygon>(element);
   }
   return NULL;
 }
 
-const Region* AsRegion(const Element* element) {
+const RegionPtr AsRegion(const ElementPtr element) {
   if (element && element->Type() == Type_Region) {
-    return static_cast<const Region*>(element);
+    return boost::static_pointer_cast<Region>(element);
   }
   return NULL;
 }
 
-const ResourceMap* AsResourceMap(const Element* element) {
+const ResourceMapPtr AsResourceMap(const ElementPtr element) {
   if (element && element->Type() == Type_ResourceMap) {
-    return static_cast<const ResourceMap*>(element);
+    return boost::static_pointer_cast<ResourceMap>(element);
   }
   return NULL;
 }
 
-const RotationXY* AsRotationXY(const Element* element) {
+const RotationXYPtr AsRotationXY(const ElementPtr element) {
   if (element && element->Type() == Type_rotationXY) {
-    return static_cast<const RotationXY*>(element);
+    return boost::static_pointer_cast<RotationXY>(element);
   }
   return NULL;
 }
 
-const Scale* AsScale(const Element* element) {
+const ScalePtr AsScale(const ElementPtr element) {
   if (element && element->Type() == Type_Scale) {
-    return static_cast<const Scale*>(element);
+    return boost::static_pointer_cast<Scale>(element);
   }
   return NULL;
 }
 
-const Schema* AsSchema(const Element* element) {
+const SchemaPtr AsSchema(const ElementPtr element) {
   if (element && element->Type() == Type_Schema) {
-    return static_cast<const Schema*>(element);
+    return boost::static_pointer_cast<Schema>(element);
   }
   return NULL;
 }
 
-const SchemaData* AsSchemaData(const Element* element) {
+const SchemaDataPtr AsSchemaData(const ElementPtr element) {
   if (element && element->Type() == Type_SchemaData) {
-    return static_cast<const SchemaData*>(element);
+    return boost::static_pointer_cast<SchemaData>(element);
   }
   return NULL;
 }
 
-const ScreenOverlay* AsScreenOverlay(const Element* element) {
+const ScreenOverlayPtr AsScreenOverlay(const ElementPtr element) {
   if (element && element->Type() == Type_ScreenOverlay) {
-    return static_cast<const ScreenOverlay*>(element);
+    return boost::static_pointer_cast<ScreenOverlay>(element);
   }
   return NULL;
 }
 
-const ScreenXY* AsScreenXY(const Element* element) {
+const ScreenXYPtr AsScreenXY(const ElementPtr element) {
   if (element && element->Type() == Type_screenXY) {
-    return static_cast<const ScreenXY*>(element);
+    return boost::static_pointer_cast<ScreenXY>(element);
   }
   return NULL;
 }
 
-const SimpleData* AsSimpleData(const Element* element) {
+const SimpleDataPtr AsSimpleData(const ElementPtr element) {
   if (element && element->Type() == Type_SimpleData) {
-    return static_cast<const SimpleData*>(element);
+    return boost::static_pointer_cast<SimpleData>(element);
   }
   return NULL;
 }
 
-const SimpleField* AsSimpleField(const Element* element) {
+const SimpleFieldPtr AsSimpleField(const ElementPtr element) {
   if (element && element->Type() == Type_SimpleField) {
-    return static_cast<const SimpleField*>(element);
+    return boost::static_pointer_cast<SimpleField>(element);
   }
   return NULL;
 }
 
-const Size* AsSize(const Element* element) {
+const SizePtr AsSize(const ElementPtr element) {
   if (element && element->Type() == Type_size) {
-    return static_cast<const Size*>(element);
+    return boost::static_pointer_cast<Size>(element);
   }
   return NULL;
 }
 
-const Snippet* AsSnippet(const Element* element) {
+const SnippetPtr AsSnippet(const ElementPtr element) {
   if (element && element->Type() == Type_Snippet) {
-    return static_cast<const Snippet*>(element);
+    return boost::static_pointer_cast<Snippet>(element);
   }
   return NULL;
 }
 
-const Style* AsStyle(const Element* element) {
+const StylePtr AsStyle(const ElementPtr element) {
   if (element && element->Type() == Type_Style) {
-    return static_cast<const Style*>(element);
+    return boost::static_pointer_cast<Style>(element);
   }
   return NULL;
 }
 
-const StyleMap* AsStyleMap(const Element* element) {
+const StyleMapPtr AsStyleMap(const ElementPtr element) {
   if (element && element->Type() == Type_StyleMap) {
-    return static_cast<const StyleMap*>(element);
+    return boost::static_pointer_cast<StyleMap>(element);
   }
   return NULL;
 }
 
-const TimeSpan* AsTimeSpan(const Element* element) {
+const TimeSpanPtr AsTimeSpan(const ElementPtr element) {
   if (element && element->Type() == Type_TimeSpan) {
-    return static_cast<const TimeSpan*>(element);
+    return boost::static_pointer_cast<TimeSpan>(element);
   }
   return NULL;
 }
 
-const TimeStamp* AsTimeStamp(const Element* element) {
+const TimeStampPtr AsTimeStamp(const ElementPtr element) {
   if (element && element->Type() == Type_TimeStamp) {
-    return static_cast<const TimeStamp*>(element);
+    return boost::static_pointer_cast<TimeStamp>(element);
   }
   return NULL;
 }
 
-const Update* AsUpdate(const Element* element) {
+const UpdatePtr AsUpdate(const ElementPtr element) {
   if (element && element->Type() == Type_Update) {
-    return static_cast<const Update*>(element);
+    return boost::static_pointer_cast<Update>(element);
   }
   return NULL;
 }
 
-const ViewVolume* AsViewVolume(const Element* element) {
+const ViewVolumePtr AsViewVolume(const ElementPtr element) {
   if (element && element->Type() == Type_ViewVolume) {
-    return static_cast<const ViewVolume*>(element);
+    return boost::static_pointer_cast<ViewVolume>(element);
   }
   return NULL;
 }

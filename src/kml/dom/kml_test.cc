@@ -25,6 +25,7 @@
 
 #include "kml/dom/kml.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -42,7 +43,6 @@ class KmlTest : public CPPUNIT_NS::TestFixture {
     kml_ = KmlFactory::GetFactory()->CreateKml();
   }
   void tearDown() {
-    delete kml_;
   }
 
  protected:
@@ -52,7 +52,7 @@ class KmlTest : public CPPUNIT_NS::TestFixture {
   void TestHint();
 
  private:
-  Kml* kml_;
+  KmlPtr kml_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmlTest);

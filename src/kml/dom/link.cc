@@ -22,6 +22,7 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//
 
 #include "kml/dom/link.h"
 #include "kml/dom/attributes.h"
@@ -36,12 +37,31 @@ BasicLink::BasicLink()
 BasicLink::~BasicLink() {
 }
 
-void BasicLink::AddElement(Element* element) {
+// TODO: fix CDATA parsing in general
+static const char *kCdataOpen = "<![CDATA[";
+
+static bool SetStringInsideCdata(ElementPtr element,
+                                 const std::string& char_data,
+                                 std::string* val) {
+  if (!element) {
+    return false;
+  }
+  std::string::size_type offset = strlen(kCdataOpen);
+  if (char_data.compare(0, offset, kCdataOpen, offset) == 0) {
+    *val = char_data.substr(offset, char_data.size() - offset - 3);
+    return true;
+  }
+  return element->SetString(val);
+}
+
+void BasicLink::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->Type() == Type_href) {
-      has_href_ = element->SetString(&href_);
+      // TODO: use a generalized approach
+      //has_href_ = element->SetString(&href_);
+      has_href_ = SetStringInsideCdata(element, element->char_data(), &href_);
   } else {
       Object::AddElement(element);
   }
@@ -73,7 +93,7 @@ AbstractLink::AbstractLink()
 AbstractLink::~AbstractLink() {
 }
 
-void AbstractLink::AddElement(Element* element) {
+void AbstractLink::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }

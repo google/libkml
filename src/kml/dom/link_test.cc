@@ -29,8 +29,10 @@
 #include "kml/dom/link.h"
 #include <string>
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -41,6 +43,8 @@ class LinkTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestDefaults);
   CPPUNIT_TEST(TestSetToDefaultValues);
   CPPUNIT_TEST(TestSetGetHasClear);
+  CPPUNIT_TEST(TestParse);
+  CPPUNIT_TEST(TestAcceptCdataInHref);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -49,7 +53,6 @@ class LinkTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-    delete link_;
   }
 
  protected:
@@ -57,9 +60,11 @@ class LinkTest : public CPPUNIT_NS::TestFixture {
   void TestDefaults();
   void TestSetToDefaultValues();
   void TestSetGetHasClear();
+  void TestParse();
+  void TestAcceptCdataInHref();
 
  private:
-  Link* link_;
+  LinkPtr link_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LinkTest);
@@ -168,6 +173,36 @@ void LinkTest::TestSetGetHasClear() {
   TestDefaults();
 }
 
+
+void LinkTest::TestParse() {
+  const std::string kContent = "foo.kml";
+  const std::string kHref = "<href>" + kContent + "</href>";
+  const std::string kLink = "<Link>" + kHref + "</Link>";
+  std::string errors;
+  ElementPtr root = Parse(kLink, &errors);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(errors.empty());
+  const LinkPtr link = AsLink(root);
+  CPPUNIT_ASSERT(link);
+  CPPUNIT_ASSERT(link->has_href());
+  CPPUNIT_ASSERT(kContent == link->href());
+}
+
+void LinkTest::TestAcceptCdataInHref() {
+  const std::string kContent = "abl?output=kml&ab_cl=erth&fname=p7_8_9.kmz";
+  const std::string kCdata = "<![CDATA[" + kContent + "]]>";
+  const std::string kHref = "<href>" + kCdata + "</href>";
+  const std::string kLink = "<Link>" + kHref + "</Link>";
+  std::string errors;
+  ElementPtr root = Parse(kLink, &errors);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(errors.empty());
+  const LinkPtr link = AsLink(root);
+  CPPUNIT_ASSERT(link);
+  CPPUNIT_ASSERT(link->has_href());
+  CPPUNIT_ASSERT(kContent == link->href());
+}
+
 class UrlTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(UrlTest);
   CPPUNIT_TEST(TestType);
@@ -182,7 +217,6 @@ class UrlTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-    delete url_;
   }
 
  protected:
@@ -192,7 +226,7 @@ class UrlTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Url* url_;
+  UrlPtr url_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UrlTest);
@@ -315,7 +349,6 @@ class IconTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-    delete icon_;
   }
 
  protected:
@@ -325,7 +358,7 @@ class IconTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Icon* icon_;
+  IconPtr icon_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IconTest);
@@ -449,7 +482,6 @@ class IconStyleIconTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-    delete iconstyleicon_;
   }
 
  protected:
@@ -460,7 +492,7 @@ class IconStyleIconTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  IconStyleIcon* iconstyleicon_;
+  IconStyleIconPtr iconstyleicon_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IconStyleIconTest);
@@ -510,7 +542,7 @@ void IconStyleIconTest::TestSetGetHasClear() {
 void IconStyleIconTest::TestSerialize() {
   // This is a special case in KML.
   // Verify that IconStyleIcon is serialized as "<Icon>".
-  std::string xml_output = SerializeRaw(*iconstyleicon_);
+  std::string xml_output = SerializeRaw(iconstyleicon_);
   // The following presumes the serializer does _not_ handle nil elements.
   CPPUNIT_ASSERT_EQUAL(0, xml_output.compare("<Icon/>"));
 }

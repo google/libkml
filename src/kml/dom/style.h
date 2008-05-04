@@ -29,6 +29,7 @@
 #include "kml/dom/balloonstyle.h"
 #include "kml/dom/iconstyle.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/labelstyle.h"
 #include "kml/dom/liststyle.h"
 #include "kml/dom/linestyle.h"
@@ -48,114 +49,78 @@ class Style : public StyleSelector {
   }
 
   // <IconStyle>
-  const IconStyle* iconstyle() const { return iconstyle_; }
+  const IconStylePtr& iconstyle() const { return iconstyle_; }
   bool has_iconstyle() const { return iconstyle_ != NULL; }
-  void set_iconstyle(IconStyle* iconstyle) {
-    if (iconstyle == NULL) {
-      clear_iconstyle();
-    } else if (iconstyle->set_parent(this)) {
-      delete iconstyle_;
-      iconstyle_ = iconstyle;
-    }
+  void set_iconstyle(const IconStylePtr& iconstyle) {
+    SetComplexChild(iconstyle, &iconstyle_);
   }
   void clear_iconstyle() {
-    delete iconstyle_;
-    iconstyle_ = NULL;
+    set_iconstyle(NULL);
   }
 
   // <LabelStyle>
-  const LabelStyle* labelstyle() const { return labelstyle_; }
+  const LabelStylePtr& labelstyle() const { return labelstyle_; }
   bool has_labelstyle() const { return labelstyle_ != NULL; }
-  void set_labelstyle(LabelStyle* labelstyle) {
-    if (labelstyle == NULL) {
-      clear_labelstyle();
-    } else if (labelstyle->set_parent(this)) {
-      delete labelstyle_;
-      labelstyle_ = labelstyle;
-    }
+  void set_labelstyle(const LabelStylePtr& labelstyle) {
+    SetComplexChild(labelstyle, &labelstyle_);
   }
   void clear_labelstyle() {
-    delete labelstyle_;
-    labelstyle_ = NULL;
+    set_labelstyle(NULL);
   }
 
   // <LineStyle>
-  const LineStyle* linestyle() const { return linestyle_; }
+  const LineStylePtr& linestyle() const { return linestyle_; }
   bool has_linestyle() const { return linestyle_ != NULL; }
-  void set_linestyle(LineStyle* linestyle) {
-    if (linestyle == NULL) {
-      clear_linestyle();
-    } else if (linestyle->set_parent(this)) {
-      delete linestyle_;
-      linestyle_ = linestyle;
-    }
+  void set_linestyle(const LineStylePtr& linestyle) {
+    SetComplexChild(linestyle, &linestyle_);
   }
   void clear_linestyle() {
-    delete linestyle_;
-    linestyle_ = NULL;
+    set_linestyle(NULL);
   }
 
   // <PolyStyle>
-  const PolyStyle* polystyle() const { return polystyle_; }
+  const PolyStylePtr& polystyle() const { return polystyle_; }
   bool has_polystyle() const { return polystyle_ != NULL; }
-  void set_polystyle(PolyStyle* polystyle) {
-    if (polystyle == NULL) {
-      clear_polystyle();
-    } else if (polystyle->set_parent(this)) {
-      delete polystyle_;
-      polystyle_ = polystyle;
-    }
+  void set_polystyle(const PolyStylePtr& polystyle) {
+    SetComplexChild(polystyle, &polystyle_);
   }
   void clear_polystyle() {
-    delete polystyle_;
-    polystyle_ = NULL;
+    set_polystyle(NULL);
   }
 
   // <BalloonStyle>
-  const BalloonStyle* balloonstyle() const { return balloonstyle_; }
+  const BalloonStylePtr& balloonstyle() const { return balloonstyle_; }
   bool has_balloonstyle() const { return balloonstyle_ != NULL; }
-  void set_balloonstyle(BalloonStyle* balloonstyle) {
-    if (balloonstyle == NULL) {
-      clear_balloonstyle();
-    } else if (balloonstyle->set_parent(this)) {
-      delete balloonstyle_;
-      balloonstyle_ = balloonstyle;
-    }
+  void set_balloonstyle(const BalloonStylePtr& balloonstyle) {
+    SetComplexChild(balloonstyle, &balloonstyle_);
   }
   void clear_balloonstyle() {
-    delete balloonstyle_;
-    balloonstyle_ = NULL;
+    set_balloonstyle(NULL);
   }
 
   // <ListStyle>
-  const ListStyle* liststyle() const { return liststyle_; }
+  const ListStylePtr& liststyle() const { return liststyle_; }
   bool has_liststyle() const { return liststyle_ != NULL; }
-  void set_liststyle(ListStyle* liststyle) {
-    if (liststyle == NULL) {
-      clear_liststyle();
-    } else if (liststyle->set_parent(this)) {
-      delete liststyle_;
-      liststyle_ = liststyle;
-    }
+  void set_liststyle(const ListStylePtr& liststyle) {
+    SetComplexChild(liststyle, &liststyle_);
   }
   void clear_liststyle() {
-    delete liststyle_;
-    liststyle_ = NULL;
+    set_liststyle(NULL);
   }
 
  private:
   friend class KmlFactory;
   Style ();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  IconStyle* iconstyle_;
-  LabelStyle* labelstyle_;
-  LineStyle* linestyle_;
-  PolyStyle* polystyle_;
-  BalloonStyle* balloonstyle_;
-  ListStyle* liststyle_;
+  IconStylePtr iconstyle_;
+  LabelStylePtr labelstyle_;
+  LineStylePtr linestyle_;
+  PolyStylePtr polystyle_;
+  BalloonStylePtr balloonstyle_;
+  ListStylePtr liststyle_;
   DISALLOW_EVIL_CONSTRUCTORS(Style);
 };
 

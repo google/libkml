@@ -25,6 +25,7 @@
 
 #include "kml/dom/document.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -41,7 +42,6 @@ class DocumentTest : public CPPUNIT_NS::TestFixture {
     document_ = KmlFactory::GetFactory()->CreateDocument();
   }
   void tearDown() {
-    delete document_;
   }
 
  protected:
@@ -50,7 +50,7 @@ class DocumentTest : public CPPUNIT_NS::TestFixture {
   void TestStyleSelectors();
 
  private:
-  Document* document_;
+  DocumentPtr document_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(DocumentTest);
@@ -65,9 +65,9 @@ void DocumentTest::TestType() {
 
 void DocumentTest::TestSchema() {
   CPPUNIT_ASSERT(0 == document_->schema_array_size());
-  Schema* s0(KmlFactory::GetFactory()->CreateSchema());
-  Schema* s1(KmlFactory::GetFactory()->CreateSchema());
-  Schema* s3(KmlFactory::GetFactory()->CreateSchema());
+  SchemaPtr s0(KmlFactory::GetFactory()->CreateSchema());
+  SchemaPtr s1(KmlFactory::GetFactory()->CreateSchema());
+  SchemaPtr s3(KmlFactory::GetFactory()->CreateSchema());
   document_->add_schema(s0);
   document_->add_schema(s1);
   document_->add_schema(s3);
@@ -79,9 +79,9 @@ void DocumentTest::TestSchema() {
 
 void DocumentTest::TestStyleSelectors() {
   CPPUNIT_ASSERT(0 == document_->styleselector_array_size());
-  Style* s0(KmlFactory::GetFactory()->CreateStyle());
-  Style* s1(KmlFactory::GetFactory()->CreateStyle());
-  StyleMap* sm(KmlFactory::GetFactory()->CreateStyleMap());
+  StylePtr s0(KmlFactory::GetFactory()->CreateStyle());
+  StylePtr s1(KmlFactory::GetFactory()->CreateStyle());
+  StyleMapPtr sm(KmlFactory::GetFactory()->CreateStyleMap());
   document_->add_styleselector(s0);
   document_->add_styleselector(s1);
   document_->add_styleselector(sm);

@@ -36,11 +36,12 @@
 #include <stack>
 #include <string>
 #include "expat.h"  // XML_Char
+#include "kml/dom/element.h"
 #include "kml/dom/expat_handler.h"
+#include "kml/dom/kml_ptr.h"
 
 namespace kmldom {
 
-class Element;
 class KmlFactory;
 
 // This class implements the expat handlers for parsing KML.  This class is
@@ -58,11 +59,11 @@ public:
   // This destructively removes the Element on the top of the stack and
   // transfers ownership of it to the caller.  The intention is to use this
   // after a successful parse.
-  Element* PopRoot();
+  ElementPtr PopRoot();
 
 private:
   const KmlFactory& kml_factory_;
-  std::stack<Element*> stack_;
+  std::stack<ElementPtr> stack_;
   // Char data is managed as a stack to allow for gathering all character data
   // inside unknown elements.
   std::stack<std::string> char_data_;

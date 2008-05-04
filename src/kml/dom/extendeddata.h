@@ -29,15 +29,15 @@
 #ifndef KML_DOM_EXTENDEDDATA_H__
 #define KML_DOM_EXTENDEDDATA_H__
 
+#include <string>
 #include <vector>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/util/util.h"
 
 namespace kmldom {
-
-class serializer;
 
 // <SimpleData>
 class SimpleData : public Element {
@@ -77,7 +77,7 @@ class SimpleData : public Element {
   SimpleData();
   friend class KmlHandler;
   virtual void ParseAttributes(const Attributes& attributes);
-  virtual void AddElement(Element* child);
+  virtual void AddElement(const ElementPtr& child);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;
@@ -124,17 +124,15 @@ class SchemaData : public ExtendedDataMember {
     has_schemaurl_ = false;
   }
 
-  void add_simpledata(SimpleData* simpledata) {
-    if (simpledata && simpledata->set_parent(this)) {
-      simpledata_array_.push_back(simpledata);
-    }
+  void add_simpledata(const SimpleDataPtr& simpledata) {
+    AddComplexChild(simpledata, &simpledata_array_);
   }
 
   const size_t simpledata_array_size() const {
     return simpledata_array_.size();
   }
 
-  const SimpleData* simpledata_array_at(unsigned int index) const {
+  const SimpleDataPtr& simpledata_array_at(unsigned int index) const {
     return simpledata_array_[index];
   }
 
@@ -142,14 +140,14 @@ class SchemaData : public ExtendedDataMember {
   friend class KmlFactory;
   SchemaData();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;
   std::string schemaurl_;
   bool has_schemaurl_;
-  std::vector<SimpleData*> simpledata_array_;
+  std::vector<SimpleDataPtr> simpledata_array_;
   DISALLOW_EVIL_CONSTRUCTORS(SchemaData);
 };
 
@@ -202,7 +200,7 @@ class Data : public ExtendedDataMember {
   friend class KmlFactory;
   Data();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
@@ -225,17 +223,15 @@ class ExtendedData : public Element {
     return type == Type_ExtendedData;
   }
 
-  void add_extendeddatamember(ExtendedDataMember* extendeddatamember) {
-    if (extendeddatamember && extendeddatamember->set_parent(this)) {
-      extendeddatamember_array_.push_back(extendeddatamember);
-    }
+  void add_extendeddatamember(const ExtendedDataMemberPtr& extendeddatamember) {
+    AddComplexChild(extendeddatamember, &extendeddatamember_array_);
   }
 
   const size_t extendeddatamember_array_size() const {
     return extendeddatamember_array_.size();
   }
 
-  const ExtendedDataMember* extendeddatamember_array_at(unsigned int index)
+  const ExtendedDataMemberPtr& extendeddatamember_array_at(unsigned int index)
     const {
     return extendeddatamember_array_[index];
   }
@@ -244,13 +240,13 @@ class ExtendedData : public Element {
   friend class KmlFactory;
   ExtendedData();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<ExtendedDataMember*> extendeddatamember_array_;
+  std::vector<ExtendedDataMemberPtr> extendeddatamember_array_;
   DISALLOW_EVIL_CONSTRUCTORS(ExtendedData);
 };
 
-}  // namespace kmldom
+}  // end namespace kmldom
 
 #endif  // KML_DOM_EXTENDEDDATA_H__

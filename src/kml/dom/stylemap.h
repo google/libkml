@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/dom/styleselector.h"
 
@@ -80,33 +81,27 @@ class Pair : public Object {
   }
 
   // StyleSelector
-  const StyleSelector* styleselector() const { return styleselector_; }
+  const StyleSelectorPtr& styleselector() const { return styleselector_; }
   bool has_styleselector() const { return styleselector_ != NULL; }
-  void set_styleselector(StyleSelector* styleselector) {
-    if (styleselector == NULL) {
-      clear_styleselector();
-    } else if (styleselector->set_parent(this)) {
-      delete styleselector_;
-      styleselector_ = styleselector;
-    }
+  void set_styleselector(const StyleSelectorPtr& styleselector) {
+    SetComplexChild(styleselector, &styleselector_);
   }
   void clear_styleselector() {
-    delete styleselector_;
-    styleselector_ = NULL;
+    set_styleselector(NULL);
   }
 
  private:
   friend class KmlFactory;
-  Pair ();
+  Pair();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   int key_;
   bool has_key_;
   std::string styleurl_;
   bool has_styleurl_;
-  StyleSelector* styleselector_;
+  StyleSelectorPtr styleselector_;
   DISALLOW_EVIL_CONSTRUCTORS(Pair);
 };
 
@@ -119,26 +114,26 @@ class StyleMap : public StyleSelector {
     return type == Type_StyleMap || StyleSelector::IsA(type);
   }
 
-  void add_pair(Pair* pair) {
-    pair_array_.push_back(pair);
+  void add_pair(const PairPtr& pair) {
+    AddComplexChild(pair, &pair_array_);
   }
 
   const size_t pair_array_size() const {
     return pair_array_.size();
   }
 
-  const Pair* pair_array_at(unsigned int index) const {
+  const PairPtr& pair_array_at(unsigned int index) const {
     return pair_array_[index];
   }
 
-private:
+ private:
   friend class KmlFactory;
-  StyleMap ();
+  StyleMap();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Pair*> pair_array_;
+  std::vector<PairPtr> pair_array_;
   DISALLOW_EVIL_CONSTRUCTORS(StyleMap);
 };
 

@@ -30,28 +30,28 @@
 #define KML_DOM_KML_FUNCS_H__
 
 #include <string>
+#include "kml/dom/element.h"
+#include "kml/dom/kml_ptr.h"
 
 namespace kmldom {
-
-class Element;
 
 // Parse the KML in the given memory buffer.  On success this returns an
 // Element* to the root of the KML.  On failure 0 is returned and a human
 // readable error string is stored to errors if such is supplied.
-Element* Parse(const std::string& xml, std::string* errors);
+ElementPtr Parse(const std::string& xml, std::string* errors);
 
 // This is a simplified interface for the benefit of SWIG.
-Element* ParseKml(const std::string& xml);
+ElementPtr ParseKml(const std::string& xml);
 
 // This function is the public API for generating "pretty" XML for the KML
 // hierarchy rooted at the given Element.  "pretty" is 2 space indent for
 // each level of XML depth.
-std::string SerializePretty(const Element& root);
+std::string SerializePretty(const ElementPtr& root);
 
 // This function is the public API for generating "raw" XML for the KML
 // hierarchy rooted at the given Element.  "raw" is no indentation white space
 // and no newlines.
-std::string SerializeRaw(const Element& root);
+std::string SerializeRaw(const ElementPtr& root);
 
 }  // end namespace kmldom
 

@@ -34,6 +34,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/feature.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/util/util.h"
 
@@ -64,15 +65,15 @@ class Create : public UpdateOperation {
   }
 
   // Create targets containers.
-  void add_container(Container* container) {
-    container_array_.push_back(container);
+  void add_container(const ContainerPtr& container) {
+    AddComplexChild(container, &container_array_);
   }
 
   const size_t container_array_size() const {
     return container_array_.size();
   }
 
-  const Container* container_array_at(unsigned int index) const {
+  const ContainerPtr& container_array_at(unsigned int index) const {
     return container_array_[index];
   }
 
@@ -80,10 +81,10 @@ class Create : public UpdateOperation {
   friend class KmlFactory;
   Create();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Container*> container_array_;
+  std::vector<ContainerPtr> container_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Create);
 };
 
@@ -97,15 +98,15 @@ class Delete : public UpdateOperation {
   }
 
   // Delete targets Features.
-  void add_feature(Feature* feature) {
-    feature_array_.push_back(feature);
+  void add_feature(const FeaturePtr& feature) {
+    AddComplexChild(feature, &feature_array_);
   }
 
   const size_t feature_array_size() const {
     return feature_array_.size();
   }
 
-  const Feature* feature_array_at(unsigned int index) const {
+  const FeaturePtr& feature_array_at(unsigned int index) const {
     return feature_array_[index];
   }
 
@@ -113,10 +114,10 @@ class Delete : public UpdateOperation {
   friend class KmlFactory;
   Delete();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Feature*> feature_array_;
+  std::vector<FeaturePtr> feature_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Delete);
 };
 
@@ -130,15 +131,15 @@ class Change : public UpdateOperation {
   }
 
   // Change targets Objects.
-  void add_object(Object* object) {
-    object_array_.push_back(object);
+  void add_object(const ObjectPtr& object) {
+    AddComplexChild(object, &object_array_);
   }
 
   const size_t object_array_size() const {
     return object_array_.size();
   }
 
-  const Object* object_array_at(unsigned int index) const {
+  const ObjectPtr& object_array_at(unsigned int index) const {
     return object_array_[index];
   }
 
@@ -146,10 +147,10 @@ class Change : public UpdateOperation {
   friend class KmlFactory;
   Change();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Object*> object_array_;
+  std::vector<ObjectPtr> object_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Change);
 };
 
@@ -175,15 +176,15 @@ class Update : public Element {
   }
 
   // <Create>, <Delete> and <Change> elements.
-  void add_updateoperation(UpdateOperation* updateoperation) {
-    updateoperation_array_.push_back(updateoperation);
+  void add_updateoperation(const UpdateOperationPtr& updateoperation) {
+    AddComplexChild(updateoperation, &updateoperation_array_);
   }
 
   const size_t updateoperation_array_size() const {
     return updateoperation_array_.size();
   }
 
-  const UpdateOperation* updateoperation_array_at(unsigned int index) const {
+  const UpdateOperationPtr& updateoperation_array_at(unsigned int index) const {
     return updateoperation_array_[index];
   }
 
@@ -191,12 +192,12 @@ class Update : public Element {
   friend class KmlFactory;
   Update();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::string targethref_;
   bool has_targethref_;
-  std::vector<UpdateOperation*> updateoperation_array_;
+  std::vector<UpdateOperationPtr> updateoperation_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Update);
 };
 
@@ -282,19 +283,13 @@ class NetworkLinkControl : public Element {
   }
 
   // <linkSnippet>
-  const LinkSnippet* linksnippet() const { return linksnippet_; }
+  const LinkSnippetPtr& linksnippet() const { return linksnippet_; }
   bool has_linksnippet() const { return linksnippet_ != NULL; }
-  void set_linksnippet(LinkSnippet* linksnippet) {
-    if (linksnippet == NULL) {
-      clear_linksnippet();
-    } else if (linksnippet->set_parent(this)) {
-      delete linksnippet_;  // last one wins
-      linksnippet_ = linksnippet;
-    }
+  void set_linksnippet(LinkSnippetPtr linksnippet) {
+    SetComplexChild(linksnippet, &linksnippet_);
   }
   void clear_linksnippet() {
-    delete linksnippet_;
-    linksnippet_ = NULL;
+    set_linksnippet(NULL);
   }
 
   // <expires>
@@ -310,42 +305,30 @@ class NetworkLinkControl : public Element {
   }
 
   // <Update>
-  const Update* update() const { return update_; }
+  const UpdatePtr& update() const { return update_; }
   bool has_update() const { return update_ != NULL; }
-  void set_update(Update* update) {
-    if (update == NULL) {
-      clear_update();
-    } else if (update->set_parent(this)) {
-      delete update_;  // last one wins
-      update_ = update;
-    }
+  void set_update(const UpdatePtr& update) {
+    SetComplexChild(update, &update_);
   }
   void clear_update() {
-    delete update_;
-    update_ = NULL;
+    set_update(NULL);
   }
 
   // AbstractView
-  const AbstractView* abstractview() const { return abstractview_; }
+  const AbstractViewPtr& abstractview() const { return abstractview_; }
   bool has_abstractview() const { return abstractview_ != NULL; }
-  void set_abstractview(AbstractView* abstractview) {
-    if (abstractview == NULL) {
-      clear_abstractview();
-    } else if (abstractview->set_parent(this)) {
-      delete abstractview_;  // note: "last one wins".
-      abstractview_ = abstractview;
-    }
+  void set_abstractview(const AbstractViewPtr& abstractview) {
+    SetComplexChild(abstractview, &abstractview_);
   }
   void clear_abstractview() {
-    delete abstractview_;
-    abstractview_ = NULL;
+    set_abstractview(NULL);
   }
 
  private:
   friend class KmlFactory;
   NetworkLinkControl();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double minrefreshperiod_;
@@ -360,11 +343,11 @@ class NetworkLinkControl : public Element {
   bool has_linkname_;
   std::string linkdescription_;
   bool has_linkdescription_;
-  LinkSnippet* linksnippet_;
+  LinkSnippetPtr linksnippet_;
   std::string expires_;
   bool has_expires_;
-  Update* update_;
-  AbstractView* abstractview_;
+  UpdatePtr update_;
+  AbstractViewPtr abstractview_;
   DISALLOW_EVIL_CONSTRUCTORS(NetworkLinkControl);
 };
 

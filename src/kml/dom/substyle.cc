@@ -31,7 +31,7 @@ SubStyle::SubStyle() {}
 
 SubStyle::~SubStyle() {}
 
-void SubStyle::AddElement(Element* element) {
+void SubStyle::AddElement(const ElementPtr& element) {
   Object::AddElement(element);
 }
 

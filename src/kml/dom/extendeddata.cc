@@ -28,6 +28,8 @@
 
 #include "kml/dom/extendeddata.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -54,7 +56,7 @@ void SimpleData::GetAttributes(Attributes* attributes) const {
 }
 
 // SimpleData needs to parse its own character data (like Snippet).
-void SimpleData::AddElement(Element* element) {
+void SimpleData::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -86,9 +88,8 @@ SchemaData::SchemaData()
 }
 
 SchemaData::~SchemaData() {
-  for (size_t i = 0; i < simpledata_array_.size(); ++i) {
-    delete simpledata_array_[i];
-  }
+  // simpledata_array_'s destructor calls the destructor of each SimpleDataPtr
+  // releasing the reference and potentially freeing the SimpleData storage.
 }
 
 static const char kSchemaUrl[] = "schemaUrl";
@@ -104,12 +105,9 @@ void SchemaData::GetAttributes(Attributes* attributes) const {
   }
 }
 
-void SchemaData::AddElement(Element* element) {
-  if (!element) {
-    return;
-  }
-  if (element->Type() == Type_SimpleData) {
-    add_simpledata(static_cast<SimpleData*>(element));
+void SchemaData::AddElement(const ElementPtr& element) {
+  if (SimpleDataPtr simpledata = AsSimpleData(element)) {
+    add_simpledata(simpledata);
   } else {
     Object::AddElement(element);
   }
@@ -150,7 +148,7 @@ void Data::GetAttributes(Attributes* attributes) const {
   }
 }
 
-void Data::AddElement(Element* element) {
+void Data::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -183,19 +181,16 @@ void Data::Serialize(Serializer& serializer) const {
 ExtendedData::ExtendedData() {}
 
 ExtendedData::~ExtendedData() {
-  for (size_t i = 0; i < extendeddatamember_array_.size(); i++) {
-    delete extendeddatamember_array_[i];
-  }
+  // extendeddatamember_array_'s destructor calls the destructor of each
+  // ExtendedDataMemberPtr releasing the reference and potentially freeing the
+  // ExtendedDataMember storage.
 }
 
-void ExtendedData::AddElement(Element* element) {
-  if (!element) {
-    return;
-  }
-  if (element->Type() == Type_Data) {
-    add_extendeddatamember(static_cast<Data*>(element));
-  } else if (element->Type() == Type_SchemaData) {
-    add_extendeddatamember(static_cast<SchemaData*>(element));
+void ExtendedData::AddElement(const ElementPtr& element) {
+  if (DataPtr data = AsData(element)) {
+    add_extendeddatamember(data);
+  } else if (SchemaDataPtr schemadata = AsSchemaData(element)) {
+    add_extendeddatamember(schemadata);
   } else {
     Element::AddElement(element);
   }

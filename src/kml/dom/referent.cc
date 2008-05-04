@@ -23,34 +23,34 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_DOM_SUBSTYLE_H__
-#define KML_DOM_SUBSTYLE_H__
+// This file contains the implementation of the free functions used by
+// boost::intrusive_ptr.  See boost/intrusive_ptr.hpp for more information.
 
-#include "kml/dom/object.h"
-#include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/dom/referent.h"
 
 namespace kmldom {
 
-class SubStyle : public Object {
- public:
-  virtual ~SubStyle();
-  virtual KmlDomType Type() const { return Type_SubStyle; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_SubStyle || Object::IsA(type);
+// This function is used from within boost::intrusive_ptr to increment the
+// reference count when a new intrusive_ptr to a Referent-derived object is
+// created.  This function is to be used only from within boost::intrusive_ptr.
+void intrusive_ptr_add_ref(kmldom::Referent* r) {
+  r->add_ref();
+} 
+
+// This function is used from within boost::intrusive_ptr to decrement the
+// reference count when an intrusive_ptr to a Referent-derived object goes out
+// of scope.  This is the only call to delete of a Referent-derived type.
+// This function is to be used only from within boost::intrusive_ptr.
+void intrusive_ptr_release(kmldom::Referent* r) {
+  // Strictly speaking this need only be "if (r->release() == 0)" given that
+  // under normal operations with no direct use of these functions or
+  // methods on Referent the reference count should never go negative.
+  // A full "non-negative" here makes the implementation more robust.
+  // An alternative implementation might assert r->release >= 0 to catch
+  // usage that goes around the API in some way.
+  if (r->release() <= 0) {
+    delete r;
   }
-
-  virtual void AddElement(const ElementPtr& element);
-  virtual void Serialize(Serializer& serializer) const;
-
- protected:
-  // SubStyle is abstract.
-  SubStyle();
-
- private:
-  DISALLOW_EVIL_CONSTRUCTORS(SubStyle);
-};
+} 
 
 }  // end namespace kmldom
-
-#endif  // KML_DOM_SUBSTYLE_H__

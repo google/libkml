@@ -23,34 +23,52 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_DOM_SUBSTYLE_H__
-#define KML_DOM_SUBSTYLE_H__
+#ifndef KML_DOM_REFERENT_H__
+#define KML_DOM_REFERENT_H__
 
-#include "kml/dom/object.h"
-#include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+// This file contains the implementation of the Referent class which holds
+// the reference counter used by boost::intrusive_ptr.  The Referent class
+// is a base class of all KML DOM Elements.  Neither the Referent class nor
+// the methods here are part of the KML DOM public API.
 
 namespace kmldom {
 
-class SubStyle : public Object {
+// This class implements the reference count used by boost::intrusive_ptr.
+class Referent {
  public:
-  virtual ~SubStyle();
-  virtual KmlDomType Type() const { return Type_SubStyle; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_SubStyle || Object::IsA(type);
+  // The constructor only constructs the Referent object.  The reference
+  // count is incremented if and when the Referent-derived object is assigned
+  // to a boost::intrusive_ptr.
+  Referent() : ref_count_(0) {}
+  virtual ~Referent() {}
+
+  // This method is used by intrusive_ptr_add_ref() to increment the reference
+  // count of a given Referent-derived object.
+  void add_ref() {
+    ++ref_count_;
   }
 
-  virtual void AddElement(const ElementPtr& element);
-  virtual void Serialize(Serializer& serializer) const;
+  // This method is used by intrusive_ptr_release() to decrement the reference
+  // count of a given Referent-derived object.
+  int release() {
+    return --ref_count_;
+  }
 
- protected:
-  // SubStyle is abstract.
-  SubStyle();
+  // This is for debugging purposes only.
+  int ref_count() const {
+    return ref_count_;
+  }
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(SubStyle);
+  int ref_count_;
 };
 
-}  // end namespace kmldom
+// These declarations are for the implementation of the functions used within
+// boost::intrusive_ptr to manage Referent-derived objects..  See referent.cc
+// and boost/intrusive_ptr.hpp.
+void intrusive_ptr_add_ref(kmldom::Referent* r);
+void intrusive_ptr_release(kmldom::Referent* r);
 
-#endif  // KML_DOM_SUBSTYLE_H__
+} // end namespace kmldom
+
+#endif  // KML_DOM_REFERENT_H__

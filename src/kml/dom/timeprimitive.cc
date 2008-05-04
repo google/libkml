@@ -36,7 +36,7 @@ TimePrimitive::TimePrimitive() {}
 
 TimePrimitive::~TimePrimitive() {}
 
-void TimePrimitive::AddElement(Element* element) {
+void TimePrimitive::AddElement(const ElementPtr& element) {
   Object::AddElement(element);
 }
 
@@ -47,7 +47,7 @@ TimeSpan::TimeSpan()
 
 TimeSpan::~TimeSpan() {}
 
-void TimeSpan::AddElement(Element* element) {
+void TimeSpan::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -84,7 +84,7 @@ TimeStamp::TimeStamp()
 
 TimeStamp::~TimeStamp() {}
 
-void TimeStamp::AddElement(Element* element) {
+void TimeStamp::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }

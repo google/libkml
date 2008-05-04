@@ -109,7 +109,7 @@ class BalloonStyle : public SubStyle {
   friend class KmlFactory;
   BalloonStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   std::string bgcolor_;

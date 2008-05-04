@@ -25,6 +25,7 @@
 
 #include "kml/dom/labelstyle.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/util/unit_test.h"
 
@@ -46,7 +47,6 @@ class LabelStyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete labelstyle_;
   }
 
  protected:
@@ -56,7 +56,7 @@ class LabelStyleTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  LabelStyle* labelstyle_;
+  LabelStylePtr labelstyle_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LabelStyleTest);
@@ -102,4 +102,3 @@ void LabelStyleTest::TestSetGetHasClear() {
 }  // end namespace kmldom
 
 TEST_MAIN
-

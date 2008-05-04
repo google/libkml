@@ -79,7 +79,7 @@ class SimpleField : public Element {
   friend class KmlFactory;
   SimpleField();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
@@ -125,15 +125,15 @@ class Schema : public Element {
     has_id_ = false;
   }
 
-  void add_simplefield(SimpleField* simplefield) {
-    simplefield_array_.push_back(simplefield);
+  void add_simplefield(const SimpleFieldPtr& simplefield) {
+    AddComplexChild(simplefield, &simplefield_array_);
   }
 
   const size_t simplefield_array_size() const {
     return simplefield_array_.size();
   }
 
-  const SimpleField* simplefield_array_at(unsigned int index) const {
+  const SimpleFieldPtr simplefield_array_at(unsigned int index) const {
     return simplefield_array_[index];
   }
 
@@ -141,7 +141,7 @@ class Schema : public Element {
   friend class KmlFactory;
   Schema();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
@@ -150,7 +150,7 @@ class Schema : public Element {
   bool has_name_;
   std::string id_;
   bool has_id_;
-  std::vector<SimpleField*> simplefield_array_;
+  std::vector<SimpleFieldPtr> simplefield_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Schema);
 };
 

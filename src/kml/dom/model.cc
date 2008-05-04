@@ -29,6 +29,7 @@
 #include "kml/dom/model.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/link.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
@@ -43,7 +44,7 @@ Location::Location()
 
 Location::~Location() {}
 
-void Location::AddElement(Element* element) {
+void Location::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -89,7 +90,7 @@ Orientation::Orientation()
 
 Orientation::~Orientation() {}
 
-void Orientation::AddElement(Element* element) {
+void Orientation::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -135,7 +136,7 @@ Scale::Scale()
 
 Scale::~Scale() {}
 
-void Scale::AddElement(Element* element) {
+void Scale::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -180,7 +181,7 @@ Alias::Alias()
 
 Alias::~Alias() {}
 
-void Alias::AddElement(Element* element) {
+void Alias::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -213,24 +214,18 @@ void Alias::Serialize(Serializer& serializer) const {
 
 ResourceMap::ResourceMap() {}
 
-ResourceMap::~ResourceMap() {
-  for (size_t i = 0; i < alias_array_.size(); ++i) {
-    delete alias_array_[i];
-  }
+ResourceMap::~ResourceMap() {}
+
+void ResourceMap::add_alias(const AliasPtr& alias) {
+  AddComplexChild(alias, &alias_array_);
 }
 
-void ResourceMap::add_alias(Alias* alias) {
-  if (alias && alias->IsA(Type_Alias) && alias->set_parent(this)) {
-    alias_array_.push_back(alias);
-  }
-}
-
-void ResourceMap::AddElement(Element* element) {
+void ResourceMap::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->Type() == Type_Alias) {
-    add_alias(static_cast<Alias*>(element));
+    add_alias(AsAlias(element));
   } else {
     Object::AddElement(element);
   }
@@ -248,38 +243,29 @@ void ResourceMap::Serialize(Serializer& serializer) const {
   serializer.End();
 }
 
-Model::Model()
-  : location_(NULL), orientation_(NULL), scale_(NULL), link_(NULL),
-    resourcemap_(NULL) {
-}
+Model::Model() {}
 
-Model::~Model() {
-  delete location_;
-  delete orientation_;
-  delete scale_;
-  delete link_;
-  delete resourcemap_;
-}
+Model::~Model() {}
 
-void Model::AddElement(Element* element) {
+void Model::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   switch (element->Type()) {
     case Type_Location:
-      set_location(static_cast<Location*>(element));
+      set_location(AsLocation(element));
       break;
     case Type_Orientation:
-      set_orientation(static_cast<Orientation*>(element));
+      set_orientation(AsOrientation(element));
       break;
     case Type_Scale:
-      set_scale(static_cast<Scale*>(element));
+      set_scale(AsScale(element));
       break;
     case Type_Link:
-      set_link(static_cast<Link*>(element));
+      set_link(AsLink(element));
       break;
     case Type_ResourceMap:
-      set_resourcemap(static_cast<ResourceMap*>(element));
+      set_resourcemap(AsResourceMap(element));
       break;
     default:
       AltitudeGeometryCommon::AddElement(element);

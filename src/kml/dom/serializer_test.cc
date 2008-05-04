@@ -77,15 +77,18 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
   // Called before each test.
   void setUp() {
     raw_serializer_ = new Serializer("","");
+    placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
   }
 
   // Called after each test.
   void tearDown() {
     delete raw_serializer_;
+    // PlacemarkPtr's destructor releases the underlying Placemark storage.
   }
 
  private:
   Serializer* raw_serializer_;
+  PlacemarkPtr placemark_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SerializerTest);
@@ -146,12 +149,12 @@ void SerializerTest::TestCdataHandling() {
 
 void SerializerTest::TestCdataEscaping() {
   // Assert that data that should be escaped in a CDATA is so quoted.
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  placemark->set_name("<i>One</i> two");
-  std::string xml = SerializePretty(*placemark);
-  std::string expected("<Placemark>\n  <name><![CDATA[<i>One</i> two]]></name>\n</Placemark>\n");
+  placemark_->set_name("<i>One</i> two");
+  std::string xml = SerializePretty(placemark_);
+  std::string expected("<Placemark>\n  "
+                       "<name><![CDATA[<i>One</i> two]]></name>\n"
+                       "</Placemark>\n");
   CPPUNIT_ASSERT_EQUAL(expected, xml);
-  delete placemark;
 }
 
 void SerializerTest::TestSaveBoolFieldByIdAsBool() {
@@ -208,58 +211,46 @@ void SerializerTest::TestPrecision() {
 
 // Tests the internal Indent() method.
 void SerializerTest::TestSerializePretty() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  placemark->set_name("hello");
-  std::string xml = SerializePretty(*placemark);
+  placemark_->set_name("hello");
+  std::string xml = SerializePretty(placemark_);
   std::string expected("<Placemark>\n  <name>hello</name>\n</Placemark>\n");
   CPPUNIT_ASSERT_EQUAL(expected, xml);
-  delete placemark;
 }
 
 // This tests the pretty serialization of an element with no content.
 void SerializerTest::TestSerializePrettyNil() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
   CPPUNIT_ASSERT_EQUAL(std::string("<Placemark/>\n"),
-                       SerializePretty(*placemark));
-  delete placemark;
+                       SerializePretty(placemark_));
 }
 
 // This tests the pretty serialization of an element with attributes but
 // no content.
 void SerializerTest::TestSerializePrettyNilWithAttrs() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  placemark->set_id("hi");  // Adds the id= attribute.
+  placemark_->set_id("hi");  // Adds the id= attribute.
   CPPUNIT_ASSERT_EQUAL(std::string("<Placemark id=\"hi\"/>\n"),
-                       SerializePretty(*placemark));
-  delete placemark;
+                       SerializePretty(placemark_));
 }
 
 // This tests the raw serialization of an element a child element.
 void SerializerTest::TestSerializeRaw() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  placemark->set_name("hello");
-  std::string xml = SerializeRaw(*placemark);
+  placemark_->set_name("hello");
+  std::string xml = SerializeRaw(placemark_);
   std::string expected("<Placemark><name>hello</name></Placemark>");
   CPPUNIT_ASSERT_EQUAL(expected, xml);
-  delete placemark;
 }
 
 // This tests the raw serialization of an element with no content.
 void SerializerTest::TestSerializeRawNil() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
   CPPUNIT_ASSERT_EQUAL(std::string("<Placemark/>"),
-                       SerializeRaw(*placemark));
-  delete placemark;
+                       SerializeRaw(placemark_));
 }
 
 // This tests the raw serialization of an element with attributes but
 // no content.
 void SerializerTest::TestSerializeRawNilWithAttrs() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  placemark->set_id("hi");  // Adds the id= attribute.
+  placemark_->set_id("hi");  // Adds the id= attribute.
   CPPUNIT_ASSERT_EQUAL(std::string("<Placemark id=\"hi\"/>"),
-                       SerializeRaw(*placemark));
-  delete placemark;
+                       SerializeRaw(placemark_));
 }
 
 }  // end namespace kmldom

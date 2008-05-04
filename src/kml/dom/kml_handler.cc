@@ -44,12 +44,8 @@ KmlHandler::KmlHandler()
 }
 
 KmlHandler::~KmlHandler() {
-  // If the parse failed there might be Element's on the stack.
-  // Pop them all off and delete them.
-  while (stack_.size() > 0) {
-    delete stack_.top();
-    stack_.pop();
-  }
+  // stack_'s destructor calls the destructor of each ElementPtr releasing
+  // the reference and potentially freeing the associated storage.
 }
 
 void KmlHandler::StartElement(const char *name, const char **attrs) {
@@ -63,7 +59,7 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
   if (skip_depth_ > 0) {
     // We're already inside an unknown element. Stringify the next element and
     // its attributes, increment the skip counter again, and return
-    // immediately. 
+    // immediately.
     InsertUnknownStartElement(name, attrs);
     skip_depth_++;
     return;
@@ -74,8 +70,8 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
   std::string element_char_data;
   char_data_.push(element_char_data);
 
-  Element* element = 0;
-  
+  ElementPtr element;
+
   KmlDomType type_id = (KmlDomType)Xsd::GetSchema()->ElementId(name);
   XsdType xsd_type = Xsd::GetSchema()->ElementType(type_id);
   if ((xsd_type == XSD_COMPLEX_TYPE) &&
@@ -86,7 +82,6 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
       // If there is a parent and it is IconStyle...
       if (!stack_.empty() && stack_.top()->Type() == Type_IconStyle) {
         // ... delete the Icon and create an IconStyleIcon instead.
-        delete element;
         element = kml_factory_.CreateElementById(Type_IconStyleIcon);
       }
     }
@@ -138,7 +133,7 @@ void KmlHandler::EndElement(const char *name) {
   }
 
   // The top of the stack is the begin of the element ending here.
-  Element* child = stack_.top();
+  ElementPtr child = stack_.top();
 
   std::string child_char_data_ = char_data_.top();
   char_data_.pop();
@@ -156,7 +151,7 @@ void KmlHandler::EndElement(const char *name) {
   // If stack_.size() == 1 this is the root element: leave it alone.
   if (stack_.size() >= 2) {
     // We have a parent.  Pop ourselves off and hand to parent.  Parent element
-    // always takes ownsership: 1) a known complex child, 2) a known field, 
+    // always takes ownsership: 1) a known complex child, 2) a known field,
     // or 3) unknown is passed onwards to its parent and possibly ultimately
     // to the unknown element list in Element.
     stack_.pop();
@@ -180,9 +175,9 @@ void KmlHandler::CharData(const XML_Char *s, int len) {
 // this method will detach it.  Either way the destructor will delete all
 // elements on the stack.  This should only be called after XML_Parse()
 // has completed.
-Element* KmlHandler::PopRoot() {
+ElementPtr KmlHandler::PopRoot() {
   if (!stack_.empty() && stack_.size() == 1) {
-    Element* root = stack_.top();
+    ElementPtr root = stack_.top();
     stack_.pop();
     return root;
   }

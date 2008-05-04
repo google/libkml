@@ -31,6 +31,7 @@
 #include "kml/dom/abstractview.h"
 #include "kml/dom/extendeddata.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/dom/region.h"
 #include "kml/dom/snippet.h"
@@ -109,19 +110,13 @@ class Feature : public Object {
   }
 
   // <Snippet>
-  const Snippet* snippet() const { return snippet_; }
+  const SnippetPtr snippet() const { return snippet_; }
   bool has_snippet() const { return snippet_ != NULL; }
-  void set_snippet(Snippet* snippet) {
-    if (snippet == NULL) {
-      clear_snippet();
-    } else if (snippet->set_parent(this)) {
-      delete snippet_;  // last one wins
-      snippet_ = snippet;
-    }
+  void set_snippet(const SnippetPtr& snippet) {
+    SetComplexChild(snippet, &snippet_);
   }
   void clear_snippet() {
-    delete snippet_;
-    snippet_ = NULL;
+    set_snippet(NULL);
   }
 
   // <description>
@@ -137,35 +132,23 @@ class Feature : public Object {
   }
 
   // AbstractView
-  const AbstractView* abstractview() const { return abstractview_; }
+  const AbstractViewPtr abstractview() const { return abstractview_; }
   bool has_abstractview() const { return abstractview_ != NULL; }
-  void set_abstractview(AbstractView* abstractview) {
-    if (abstractview == NULL) {
-      clear_abstractview();
-    } else if (abstractview->set_parent(this)) {
-      delete abstractview_;
-      abstractview_ = abstractview;
-    }
+  void set_abstractview(const AbstractViewPtr& abstractview) {
+    SetComplexChild(abstractview, &abstractview_);
   }
   void clear_abstractview() {
-    delete abstractview_;
-    abstractview_ = NULL;
+    set_abstractview(NULL);
   }
 
   // TimePrimitive
-  const TimePrimitive* timeprimitive() const { return timeprimitive_; }
+  const TimePrimitivePtr timeprimitive() const { return timeprimitive_; }
   bool has_timeprimitive() const { return timeprimitive_ != NULL; }
-  void set_timeprimitive(TimePrimitive* timeprimitive) {
-    if (timeprimitive == NULL) {
-      clear_timeprimitive();
-    } else if (timeprimitive->set_parent(this)) {
-      delete timeprimitive_;
-      timeprimitive_ = timeprimitive;
-    }
+  void set_timeprimitive(const TimePrimitivePtr& timeprimitive) {
+    SetComplexChild(timeprimitive, &timeprimitive_);
   }
   void clear_timeprimitive() {
-    delete timeprimitive_;
-    timeprimitive_ = NULL;
+    set_timeprimitive(NULL);
   }
 
   // <styleUrl>
@@ -182,57 +165,39 @@ class Feature : public Object {
   }
 
   // StyleSelector
-  const StyleSelector* styleselector() const { return styleselector_; }
+  const StyleSelectorPtr styleselector() const { return styleselector_; }
   bool has_styleselector() const { return styleselector_ != NULL; }
-  void set_styleselector(StyleSelector* styleselector) {
-    if (styleselector == NULL) {
-      clear_styleselector();
-    } else if (styleselector->set_parent(this)) {
-      delete styleselector_;
-      styleselector_ = styleselector;
-    }
+  void set_styleselector(const StyleSelectorPtr& styleselector) {
+    SetComplexChild(styleselector, &styleselector_);
   }
   void clear_styleselector() {
-    delete styleselector_;
-    styleselector_ = NULL;
+    set_styleselector(NULL);
   }
 
   // <Region>
-  const Region* region() const { return region_; }
+  const RegionPtr region() const { return region_; }
   bool has_region() const { return region_ != NULL; }
-  void set_region(Region* region) {
-    if (region == NULL) {
-      clear_region();
-    } else if (region->set_parent(this)) {
-      delete region_;
-      region_ = region;
-    }
+  void set_region(const RegionPtr& region) {
+    SetComplexChild(region, &region_);
   }
   void clear_region() {
-    delete region_;
-    region_ = NULL;
+    set_region(NULL);
   }
 
   // <ExtendedData>
-  const ExtendedData* extendeddata() const { return extendeddata_; }
+  const ExtendedDataPtr extendeddata() const { return extendeddata_; }
   bool has_extendeddata() const { return extendeddata_ != NULL; }
-  void set_extendeddata(ExtendedData* extendeddata) {
-    if (extendeddata == NULL) {
-      clear_extendeddata();
-    } else if (extendeddata->set_parent(this)) {
-      delete extendeddata_;
-      extendeddata_ = extendeddata;
-    }
+  void set_extendeddata(const ExtendedDataPtr& extendeddata) {
+    SetComplexChild(extendeddata, &extendeddata_);
   }
   void clear_extendeddata() {
-    delete extendeddata_;
-    extendeddata_ = NULL;
+    set_extendeddata(NULL);
   }
 
  protected:
   // Feature is abstract.
   Feature();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serialize) const;
 
  private:
@@ -246,16 +211,16 @@ class Feature : public Object {
   bool has_address_;
   std::string phonenumber_;
   bool has_phonenumber_;
-  Snippet* snippet_;
+  SnippetPtr snippet_;
   std::string description_;
   bool has_description_;
-  AbstractView* abstractview_;
-  TimePrimitive* timeprimitive_;
+  AbstractViewPtr abstractview_;
+  TimePrimitivePtr timeprimitive_;
   std::string styleurl_;
   bool has_styleurl_;
-  StyleSelector* styleselector_;
-  Region* region_;
-  ExtendedData* extendeddata_;
+  StyleSelectorPtr styleselector_;
+  RegionPtr region_;
+  ExtendedDataPtr extendeddata_;
   DISALLOW_EVIL_CONSTRUCTORS(Feature);
 };
 

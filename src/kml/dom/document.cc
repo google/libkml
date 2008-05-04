@@ -25,26 +25,21 @@
 
 #include "kml/dom/document.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
 Document::Document() {}
 
-Document::~Document() {
-  for (size_t i = 0; i < schema_array_.size(); ++i) {
-    delete schema_array_[i];
-  }
-  for (size_t i = 0; i < styleselector_array_.size(); ++i) {
-    delete styleselector_array_[i];
-  }
-}
+Document::~Document() {}
 
-void Document::AddElement(Element* element) {
-  if (element->Type() == Type_Schema) {
-    add_schema(static_cast<Schema*>(element));
-  } else if (element->IsA(Type_StyleSelector)) {
-    add_styleselector(static_cast<StyleSelector*>(element));
+void Document::AddElement(const ElementPtr& element) {
+  if (SchemaPtr schema = AsSchema(element)) {
+    add_schema(schema);
+  } else if (StyleSelectorPtr styleselector = AsStyleSelector(element)) {
+    add_styleselector(styleselector);
   } else {
     Container::AddElement(element);
   }

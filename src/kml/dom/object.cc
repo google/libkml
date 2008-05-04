@@ -28,17 +28,15 @@
 
 namespace kmldom {
 
-Object::Object() :
-  Element(),
-  has_id_(false),
-  has_targetid_(false) {}
+Object::Object()
+  : has_id_(false), has_targetid_(false) {}
 
 Object::~Object() {}
 
 static const char kId[] = "id";
 static const char kTargetId[] = "targetId";
 
-void Object::AddElement(Element* element) {
+void Object::AddElement(const ElementPtr& element) {
   // Any element passed in here is by definition unknown. Specificially,
   // it will handle a "known" element appearing in the wrong place, e.g.
   // <Placemark><Document>. We pass everything straight to Element for

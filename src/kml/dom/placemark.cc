@@ -25,23 +25,21 @@
 
 #include "kml/dom/placemark.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-Placemark::Placemark() : Feature(), geometry_(NULL) {
-}
+Placemark::Placemark() {}
 
-Placemark::~Placemark() {
-  delete geometry_;
-}
+Placemark::~Placemark() {}
 
-void Placemark::AddElement(Element* element) {
+void Placemark::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_Geometry)) {
-    set_geometry(static_cast<Geometry*>(element));
+    set_geometry(AsGeometry(element));
     return;
   }
   Feature::AddElement(element);

@@ -30,6 +30,7 @@
 
 #include <vector>
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/dom/substyle.h"
 #include "kml/util/util.h"
@@ -81,7 +82,7 @@ class ItemIcon : public Object {
   friend class KmlFactory;
   ItemIcon();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   int state_;
@@ -133,15 +134,15 @@ class ListStyle : public SubStyle {
   }
 
   // <ItemIcon>
-  void add_itemicon(ItemIcon* itemicon) {
-    itemicon_array_.push_back(itemicon);
+  void add_itemicon(const ItemIconPtr& itemicon) {
+    AddComplexChild(itemicon, &itemicon_array_);
   }
 
   const size_t itemicon_array_size() const {
     return itemicon_array_.size();
   }
 
-  const ItemIcon* itemicon_array_at(unsigned int index) const {
+  const ItemIconPtr& itemicon_array_at(unsigned int index) const {
     return itemicon_array_[index];
   }
 
@@ -149,14 +150,14 @@ class ListStyle : public SubStyle {
   friend class KmlFactory;
   ListStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   int listitemtype_;
   bool has_listitemtype_;
   std::string bgcolor_;
   bool has_bgcolor_;
-  std::vector<ItemIcon*> itemicon_array_;
+  std::vector<ItemIconPtr> itemicon_array_;
   DISALLOW_EVIL_CONSTRUCTORS(ListStyle);
 };
 

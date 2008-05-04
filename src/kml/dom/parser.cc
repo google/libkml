@@ -32,12 +32,11 @@
 #include <sstream>
 #include <string>
 #include "expat.h"
+#include "kml/dom/element.h"
 #include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_handler.h"
 
 namespace kmldom {
-
-class Element;
 
 static void XMLCALL
 startElement(void *userData, const char *name, const char **atts) {
@@ -99,7 +98,7 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
 
 // This is the implementation of the public API to parse KML from a memory
 // buffer.
-Element* Parse(const std::string& kml, std::string* errors) {
+ElementPtr Parse(const std::string& kml, std::string* errors) {
   KmlHandler kml_handler;
   bool status = ExpatParser(kml, &kml_handler, errors);
   if (status) {
@@ -110,7 +109,7 @@ Element* Parse(const std::string& kml, std::string* errors) {
 
 // Parse the KML in the given string.  NULL is returned on any parse errors,
 // but the error string is unavailable with this function.
-Element* ParseKml(const std::string& kml) {
+ElementPtr ParseKml(const std::string& kml) {
   std::string ignored;
   return Parse(kml, &ignored);
 }

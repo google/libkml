@@ -38,6 +38,8 @@
 #include <string>
 #include <vector>
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
+#include "kml/dom/referent.h"
 #include "kml/util/util.h"
 
 namespace kmldom {
@@ -46,7 +48,7 @@ class Attributes;
 class Serializer;
 class Xsd;
 
-class Element {
+class Element : public Referent {
  public:
   virtual ~Element();
   virtual KmlDomType Type() const { return type_id_; }
@@ -57,11 +59,11 @@ class Element {
   // This sets this element's parent element.  Returns false if the element
   // already has a parent.  Returns true if the parent is set successfully.
   // To directly mirror XML each element has exactly one parent.
-  bool set_parent(Element* parent) {
-    if (parent_ || (parent == this)) {
+  bool set_parent(const ElementPtr& parent) {
+    if (parent_ || (parent.get() == this)) {
       return false;
     }
-    parent_ = parent;
+    parent_ = parent.get();
     return true;
   }
 
@@ -83,7 +85,7 @@ class Element {
   // a valid child of the given concrete element the AddElement method
   // there should pass this up to its parent for consideration.  A misplaced
   // element will ultimately be attached to Element itself.
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
   // A derived class implements this to use with parsing.  A given concrete
   // element examines the passed attributes for any it is aware of and
@@ -114,24 +116,50 @@ class Element {
   }
 
   // Returns the unknown legal (misplaced) elements.
-  const std::vector<Element*>& unknown_legal_elements_array() const {
+  // TODO: a real API
+  const std::vector<ElementPtr>& unknown_legal_elements_array() const {
     return unknown_legal_elements_array_;
   }
 
   // Permits polymorphic use of Field methods.
-  virtual bool SetBool(bool* val) { delete this; return false; }
-  virtual bool SetDouble(double* val) { delete this; return false; }
-  virtual bool SetInt(int* val) { delete this; return false; }
-  virtual bool SetEnum(int* val) { delete this; return false; }
-  virtual bool SetString(std::string* val) { delete this; return false; }
+  virtual bool SetBool(bool* val) { return false; }
+  virtual bool SetDouble(double* val) { return false; }
+  virtual bool SetInt(int* val) { return false; }
+  virtual bool SetEnum(int* val) { return false; }
+  virtual bool SetString(std::string* val) { return false; }
 
  protected:
   // Element is an abstract base class and is never created directly.
   Element();
   Element(KmlDomType type_id);
 
+  // This sets the given complex child to a field of this element.
+  // The intended usage is to implement the set_child() and clear_child()
+  // methods in a concrete element.
+  template <class T>
+  bool SetComplexChild(const T& child, T* field) {
+    if (child == NULL) {
+      *field = NULL;  // Assign removes reference and possibly deletes Element.
+      return true;
+    } else if (child->set_parent(this)) {
+      *field = child;  // This first releases the reference to previous field.
+      return true;
+    }
+    return false;
+  }
+
+  // This adds the given complex child to an array in this element.
+  template <class T>
+  bool AddComplexChild(const T& child, std::vector<T>* vec) {
+    if (child && child->set_parent(this)) {  // NULL child ignored.
+      vec->push_back(child);
+      return true;
+    }
+    return false;
+  }
+
  private:
-  Element* parent_;
+  Element* parent_;  // TODO: not ElementPtr to avoid cycles.  TBD parent check
   KmlDomType type_id_;
   std::string char_data_;
   // A vector of strings to contain unknown non-KML elements discovered during
@@ -139,7 +167,7 @@ class Element {
   std::vector<std::string> unknown_elements_array_;
   // A vector of Element*'s to contain known KML elements found during parse
   // to be in illegal positions, e.g. <Placemark><Document>.
-  std::vector<Element*> unknown_legal_elements_array_;
+  std::vector<ElementPtr> unknown_legal_elements_array_;
   // Unknown attributes found during parse are copied out and a pointer is
   // stored. The object is dynamically allocated so every element is not
   // burdened with an unnecessary Attributes object.
@@ -153,28 +181,26 @@ class Field : public Element {
 
   // Sets the given bool from the character data.  If no val pointer is
   // supplied false is returned, else true is returned and the val is set.
-  // Element is ALWAYS DELETED.
   bool SetBool(bool* val);
 
   // Sets the given double from the character data.  If no val pointer is
   // supplied false is returned, else true is returned and the val is set.
-  // Element is ALWAYS DELETED.
   bool SetDouble(double *val);
 
   // Sets the given int from the character data.  If no val pointer is
   // supplied false is returned, else true is returned and the val is set.
-  // Element is ALWAYS DELETED.
   bool SetInt(int* val);
 
   // Sets the given enum from the character data.  If no val pointer is
   // supplied false is returned, else true is returned and the val is set.
-  // Element is ALWAYS DELETED.
   bool SetEnum(int* enum_val);
 
+  // Sets the given string from the character data.  If no val pointer is
+  // supplied false is returned, else true is returned and the val is set.
   bool SetString(std::string* val);
 
  private:
-  Xsd* xsd_;
+  const Xsd& xsd_;
   DISALLOW_EVIL_CONSTRUCTORS(Field);
 };
 

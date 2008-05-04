@@ -28,6 +28,7 @@
 #include "kml/dom/abstractview.h"
 #include "kml/util/unit_test.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 
 namespace kmldom {
 
@@ -43,12 +44,11 @@ class LookAtTest : public CPPUNIT_NS::TestFixture {
   // Called before each test.
   void setUp() {
     lookat_ = KmlFactory::GetFactory()->CreateLookAt();
-  } 
-  
+  }
+
   // Called after each test.
   void tearDown() {
-    delete lookat_;
-  } 
+  }
 
  protected:
   void TestType();
@@ -57,7 +57,7 @@ class LookAtTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  LookAt* lookat_;
+  LookAtPtr lookat_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LookAtTest);
@@ -167,12 +167,12 @@ class CameraTest : public CPPUNIT_NS::TestFixture {
   // Called before each test.
   void setUp() {
     camera_ = KmlFactory::GetFactory()->CreateCamera();
-  } 
-  
+  }
+
   // Called after each test.
   void tearDown() {
-    delete camera_;
-  } 
+  }
+
  protected:
   void TestType();
   void TestDefaults();
@@ -180,7 +180,7 @@ class CameraTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Camera* camera_;
+  CameraPtr camera_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CameraTest);
@@ -281,4 +281,3 @@ void CameraTest::TestSetGetHasClear() {
 }  // end namespace kmldom
 
 TEST_MAIN
-

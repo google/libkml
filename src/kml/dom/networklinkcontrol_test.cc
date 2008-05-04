@@ -43,7 +43,6 @@ class CreateTest : public CPPUNIT_NS::TestFixture {
     create_ = KmlFactory::GetFactory()->CreateCreate();
   }
   void tearDown() {
-    delete create_;
   }
 
  protected:
@@ -51,7 +50,7 @@ class CreateTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  Create* create_;
+  CreatePtr create_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CreateTest);
@@ -82,7 +81,6 @@ class DeleteTest : public CPPUNIT_NS::TestFixture {
     delete_ = KmlFactory::GetFactory()->CreateDelete();
   }
   void tearDown() {
-    delete delete_;
   }
 
  protected:
@@ -90,7 +88,7 @@ class DeleteTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  Delete* delete_;
+  DeletePtr delete_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(DeleteTest);
@@ -121,7 +119,6 @@ class ChangeTest : public CPPUNIT_NS::TestFixture {
     change_ = KmlFactory::GetFactory()->CreateChange();
   }
   void tearDown() {
-    delete change_;
   }
 
  protected:
@@ -129,7 +126,7 @@ class ChangeTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  Change* change_;
+  ChangePtr change_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ChangeTest);
@@ -161,7 +158,6 @@ class UpdateTest : public CPPUNIT_NS::TestFixture {
     update_ = KmlFactory::GetFactory()->CreateUpdate();
   }
   void tearDown() {
-    delete update_;
   }
 
  protected:
@@ -170,7 +166,7 @@ class UpdateTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  Update* update_;
+  UpdatePtr update_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(UpdateTest);
@@ -236,7 +232,6 @@ class NetworkLinkControlTest : public CPPUNIT_NS::TestFixture {
     nlc_ = KmlFactory::GetFactory()->CreateNetworkLinkControl();
   }
   void tearDown() {
-    delete nlc_;
   }
 
  protected:
@@ -246,7 +241,7 @@ class NetworkLinkControlTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  NetworkLinkControl* nlc_;
+  NetworkLinkControlPtr nlc_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(NetworkLinkControlTest);

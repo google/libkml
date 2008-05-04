@@ -72,8 +72,10 @@
 #ifndef KML_DOM_GEOMETRY_H__
 #define KML_DOM_GEOMETRY_H__
 
+#include <string>
 #include <vector>
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/util/util.h"
 
@@ -83,7 +85,7 @@ class Serializer;
 
 // Just a basic struct of 3 doubles.  Copy and assign at will.
 class Vec3 {
-public:
+ public:
   Vec3() {
     vec_[0] = vec_[1] = vec_[2] = 0.0;
   }
@@ -107,7 +109,7 @@ public:
 
   void Serialize(Serializer& serializer) const;
 
-private:
+ private:
   double vec_[3];
 };
 
@@ -146,7 +148,7 @@ class Coordinates : public Element {
   friend class KmlFactory;
   Coordinates();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 
@@ -193,7 +195,7 @@ class AltitudeGeometryCommon : public Geometry {
     has_altitudemode_ = false;
   }
 
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  private:
   int altitudemode_;
@@ -221,7 +223,7 @@ class ExtrudeGeometryCommon : public AltitudeGeometryCommon {
 
  protected:
   ExtrudeGeometryCommon();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  private:
   bool extrude_;
@@ -238,28 +240,22 @@ class CoordinatesGeometryCommon : public ExtrudeGeometryCommon {
 
  public:
   // <coordinates>
-  const Coordinates* coordinates() const { return coordinates_; }
+  const CoordinatesPtr coordinates() const { return coordinates_; }
   bool has_coordinates() const { return coordinates_ != NULL; }
-  void set_coordinates(Coordinates* coordinates) {
-    if (coordinates == NULL) {
-      clear_coordinates();
-    } else if (coordinates->set_parent(this)) {
-      delete coordinates_;  // Last one wins.
-      coordinates_ = coordinates;
-    }
+  void set_coordinates(const CoordinatesPtr& coordinates) {
+    SetComplexChild(coordinates, &coordinates_);
   }
   void clear_coordinates() {
-    delete coordinates_;
-    coordinates_ = NULL;
+    set_coordinates(NULL);
   }
 
  protected:
   CoordinatesGeometryCommon();
   // Parser support
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  private:
-  Coordinates* coordinates_;
+  CoordinatesPtr coordinates_;
   DISALLOW_EVIL_CONSTRUCTORS(CoordinatesGeometryCommon);
 };
 
@@ -302,7 +298,7 @@ class LineCommon : public CoordinatesGeometryCommon {
  protected:
   LineCommon();
   // Parser support
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  private:
   friend class Serializer;
@@ -321,7 +317,7 @@ class LineString : public LineCommon {
     return type == Type_LineString || Geometry::IsA(type);
   }
 
-private:
+ private:
   friend class KmlFactory;
   LineString();
   DISALLOW_EVIL_CONSTRUCTORS(LineString);
@@ -336,7 +332,7 @@ class LinearRing : public LineCommon {
     return type == Type_LinearRing || Geometry::IsA(type);
   }
 
-private:
+ private:
   friend class KmlFactory;
   LinearRing();
   DISALLOW_EVIL_CONSTRUCTORS(LinearRing);
@@ -349,30 +345,24 @@ class BoundaryCommon : public Element {
   virtual ~BoundaryCommon();
 
  public:
-  const LinearRing* linearring() const { return linearring_; }
+  const LinearRingPtr linearring() const { return linearring_; }
   bool has_linearring() const { return linearring_ != NULL; }
-  void set_linearring(LinearRing* linearring) {
-    if (linearring == NULL) {
-      clear_linearring();
-    } else if (linearring->set_parent(this)) {
-      delete linearring_;  // Last one wins.
-      linearring_ = linearring;
-    }
+  void set_linearring(const LinearRingPtr& linearring) {
+    SetComplexChild(linearring, &linearring_);
   }
   void clear_linearring() {
-    delete linearring_;
-    linearring_ = NULL;
+    set_linearring(NULL);
   }
 
   // Parser support
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  protected:
   BoundaryCommon();
   virtual void Serialize(Serializer& serializer) const;
 
  private:
-  LinearRing* linearring_;
+  LinearRingPtr linearring_;
   DISALLOW_EVIL_CONSTRUCTORS(BoundaryCommon);
 };
 
@@ -385,7 +375,7 @@ class OuterBoundaryIs : public BoundaryCommon {
     return type == Type_outerBoundaryIs;
   }
 
-private:
+ private:
   friend class KmlFactory;
   OuterBoundaryIs();
   DISALLOW_EVIL_CONSTRUCTORS(OuterBoundaryIs);
@@ -428,33 +418,25 @@ class Polygon : public ExtrudeGeometryCommon {
   }
 
   // <outerBoundaryIs>
-  const OuterBoundaryIs* outerboundaryis() const { return outerboundaryis_; }
+  const OuterBoundaryIsPtr outerboundaryis() const { return outerboundaryis_; }
   bool has_outerboundaryis() const { return outerboundaryis_ != NULL; }
-  void set_outerboundaryis(OuterBoundaryIs* outerboundaryis) {
-    if (outerboundaryis == NULL) {
-      clear_outerboundaryis();
-    } else if (outerboundaryis->set_parent(this)) {
-      delete outerboundaryis_;  // Last one wins.
-      outerboundaryis_ = outerboundaryis;
-    }
+  void set_outerboundaryis(const OuterBoundaryIsPtr& outerboundaryis) {
+    SetComplexChild(outerboundaryis, &outerboundaryis_);
   }
   void clear_outerboundaryis() {
-    delete outerboundaryis_;
-    outerboundaryis_ = NULL;
+    set_outerboundaryis(NULL);
   }
 
   // <innerBoundaryIs>
-  void add_innerboundaryis(InnerBoundaryIs* innerboundaryis) {
-    if (innerboundaryis && innerboundaryis->set_parent(this)) {
-      innerboundaryis_array_.push_back(innerboundaryis);
-    }
+  void add_innerboundaryis(const InnerBoundaryIsPtr& innerboundaryis) {
+    AddComplexChild(innerboundaryis, &innerboundaryis_array_);
   }
 
   const size_t innerboundaryis_array_size() const {
     return innerboundaryis_array_.size();
   }
 
-  const InnerBoundaryIs* innerboundaryis_array_at(unsigned int index) {
+  const InnerBoundaryIsPtr& innerboundaryis_array_at(unsigned int index) {
     return innerboundaryis_array_[index];
   }
 
@@ -463,15 +445,15 @@ class Polygon : public ExtrudeGeometryCommon {
   Polygon();
 
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 
   bool tessellate_;
   bool has_tessellate_;
-  OuterBoundaryIs* outerboundaryis_;
-  std::vector<InnerBoundaryIs*> innerboundaryis_array_;
+  OuterBoundaryIsPtr outerboundaryis_;
+  std::vector<InnerBoundaryIsPtr> innerboundaryis_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Polygon);
 };
 
@@ -485,13 +467,13 @@ class MultiGeometry : public Geometry {
   }
 
   // The main KML-specific API
-  void add_geometry(Geometry* geometry);
+  void add_geometry(const GeometryPtr& geometry);
 
   const size_t geometry_array_size() const {
     return geometry_array_.size();
   }
 
-  const Geometry* geometry_array_at(unsigned int index) const {
+  const GeometryPtr& geometry_array_at(unsigned int index) const {
     return geometry_array_[index];
   }
 
@@ -499,10 +481,10 @@ class MultiGeometry : public Geometry {
   friend class KmlFactory;
   MultiGeometry();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Geometry*> geometry_array_;
+  std::vector<GeometryPtr> geometry_array_;
   DISALLOW_EVIL_CONSTRUCTORS(MultiGeometry);
 };
 

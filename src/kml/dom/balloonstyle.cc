@@ -45,7 +45,7 @@ BalloonStyle::BalloonStyle() :
 BalloonStyle::~BalloonStyle() {
 }
 
-void BalloonStyle::AddElement(Element* element) {
+void BalloonStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_bgColor:
       has_bgcolor_ = element->SetString(&bgcolor_);

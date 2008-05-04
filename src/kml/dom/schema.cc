@@ -27,6 +27,7 @@
 
 #include "kml/dom/schema.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -58,7 +59,7 @@ void SimpleField::GetAttributes(Attributes* attributes) const {
   }
 }
 
-void SimpleField::AddElement(Element* element) {
+void SimpleField::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -87,11 +88,7 @@ Schema::Schema()
     has_id_(false) {
 }
 
-Schema::~Schema() {
-  for (size_t i = 0; i < simplefield_array_.size(); ++i) {
-    delete simplefield_array_[i];
-  }
-}
+Schema::~Schema() {}
 
 static const char kSchemaNameAttr[] = "name";
 static const char kSchemaIdAttr[] = "id";
@@ -110,12 +107,12 @@ void Schema::GetAttributes(Attributes* attributes) const {
   }
 }
 
-void Schema::AddElement(Element* element) {
+void Schema::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->Type() == Type_SimpleField) {
-    add_simplefield(static_cast<SimpleField*>(element));
+    add_simplefield(AsSimpleField(element));
   } else {
     Element::AddElement(element);
   }

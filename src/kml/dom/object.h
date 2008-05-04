@@ -68,7 +68,7 @@ class Object : public Element {
  protected:
   // Object is abstract, derived class access only.
   Object();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   virtual void GetAttributes(Attributes* attributes) const;
 

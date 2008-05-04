@@ -46,7 +46,7 @@ class TimePrimitive : public Object {
   }
 
   // Internal API for parse and serialize.
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
 
  protected:
   // TimePrimitive is abstract.
@@ -89,11 +89,11 @@ class TimeSpan : public TimePrimitive {
     has_end_ = false;
   }
 
-private:
+ private:
   friend class KmlFactory;
   TimeSpan();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::string begin_;
@@ -124,11 +124,11 @@ class TimeStamp : public TimePrimitive {
     has_when_ = false;
   }
 
-private:
+ private:
   friend class KmlFactory;
   TimeStamp();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::string when_;

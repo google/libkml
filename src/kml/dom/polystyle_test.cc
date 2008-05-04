@@ -25,6 +25,7 @@
 
 #include "kml/dom/polystyle.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/util/unit_test.h"
 
@@ -46,7 +47,6 @@ class PolyStyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete polystyle_;
   }
 
  protected:
@@ -56,7 +56,7 @@ class PolyStyleTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  PolyStyle* polystyle_;
+  PolyStylePtr polystyle_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PolyStyleTest);
@@ -111,4 +111,3 @@ void PolyStyleTest::TestSetGetHasClear() {
 }  // end namespace kmldom
 
 TEST_MAIN
-

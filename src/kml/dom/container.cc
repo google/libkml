@@ -27,6 +27,8 @@
 
 #include "kml/dom/container.h"
 #include "kml/dom/feature.h"
+#include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -34,22 +36,19 @@ namespace kmldom {
 Container::Container() {}
 
 Container::~Container() {
-  for (size_t i = 0; i < feature_array_.size(); ++i) {
-    delete feature_array_[i];
-  }
+  // feature_array_'s destructor calls the destructor of each FeaturePtr
+  // releasing the reference and potentially freeing the Feature storage.
 }
 
-void Container::add_feature(Feature* feature) {
-  if (feature->IsA(Type_Feature) && feature->set_parent(this)) {
-    feature_array_.push_back(feature);
-  }
+void Container::add_feature(const FeaturePtr& feature) {
+  AddComplexChild(feature, &feature_array_);
 }
 
-void Container::AddElement(Element* element) {
-  if (element->IsA(Type_Feature)) {
-    add_feature(static_cast<Feature*>(element));
+void Container::AddElement(const ElementPtr& element) {
+  if (FeaturePtr feature = AsFeature(element)) {
+    add_feature(feature);
   } else {
-     Feature::AddElement(element);
+    Feature::AddElement(element);
   }
 }
 

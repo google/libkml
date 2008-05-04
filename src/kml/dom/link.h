@@ -63,7 +63,7 @@ class BasicLink : public Object {
  protected:
   // Internal class, not for direct instantiation.
   BasicLink();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:
@@ -193,7 +193,7 @@ class AbstractLink : public BasicLink {
  protected:
   // Internal class, not for direct instantiation.
   AbstractLink();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:

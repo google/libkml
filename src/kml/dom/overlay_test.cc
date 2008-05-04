@@ -31,6 +31,7 @@
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -56,7 +57,6 @@ class OverlayTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete overlay_;
   }
 
  protected:
@@ -66,7 +66,7 @@ class OverlayTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Overlay* overlay_;
+  OverlayPtr overlay_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(OverlayTest);
@@ -107,7 +107,7 @@ void OverlayTest::TestSetGetHasClear() {
   // Non-default values.
   const std::string kNonDefaultColor = "ff336699";
   const int kNonDefaultDrawOrder = -10000;
-  Icon* icon = KmlFactory::GetFactory()->CreateIcon();
+  IconPtr icon = KmlFactory::GetFactory()->CreateIcon();
 
   // Set all fields.
   overlay_->set_color(kNonDefaultColor);
@@ -148,7 +148,6 @@ class LatLonBoxTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete latlonbox_;
   }
 
  protected:
@@ -158,7 +157,7 @@ class LatLonBoxTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  LatLonBox* latlonbox_;
+  LatLonBoxPtr latlonbox_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LatLonBoxTest);
@@ -219,7 +218,6 @@ class GroundOverlayTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete groundoverlay_;
   }
 
  protected:
@@ -229,7 +227,7 @@ class GroundOverlayTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  GroundOverlay* groundoverlay_;
+  GroundOverlayPtr groundoverlay_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(GroundOverlayTest);
@@ -267,7 +265,7 @@ void GroundOverlayTest::TestSetGetHasClear() {
   // Non-default values.
   const std::string kNonDefaultColor = "ff223311";
   const int kNonDefaultDrawOrder = -1234;
-  LatLonBox* latlonbox = KmlFactory::GetFactory()->CreateLatLonBox();
+  LatLonBoxPtr latlonbox = KmlFactory::GetFactory()->CreateLatLonBox();
 
   // Set all fields.
   groundoverlay_->set_color(kNonDefaultColor);
@@ -307,7 +305,6 @@ class OverlayXYTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete overlayxy_;
   }
 
  protected:
@@ -316,7 +313,7 @@ class OverlayXYTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  OverlayXY* overlayxy_;
+  OverlayXYPtr overlayxy_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(OverlayXYTest);
@@ -329,18 +326,17 @@ void OverlayXYTest::TestType() {
 
 void OverlayXYTest::TestParse() {
   std::string errors;
-  Element* root = Parse(
+  ElementPtr root = Parse(
     "<overlayXY x=\"0.5\" y=\"123\" xunits=\"fraction\" yunits=\"pixels\"/>",
     &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const OverlayXY* overlayxy = AsOverlayXY(root);
+  const OverlayXYPtr overlayxy = AsOverlayXY(root);
   CPPUNIT_ASSERT(overlayxy);
   CPPUNIT_ASSERT_EQUAL(0.5, overlayxy->x());
   CPPUNIT_ASSERT_EQUAL(123., overlayxy->y());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), overlayxy->xunits());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), overlayxy->yunits());
-  delete root;
 }
 
 void OverlayXYTest::TestSerialize() {
@@ -350,7 +346,7 @@ void OverlayXYTest::TestSerialize() {
   overlayxy_->set_yunits(UNITS_PIXELS);
   std::string expected =
     "<overlayXY x=\"0.66\" xunits=\"fraction\" y=\"256\" yunits=\"pixels\"/>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*overlayxy_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(overlayxy_));
 }
 
 // This tests the ScreenXY class.
@@ -369,7 +365,6 @@ class ScreenXYTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete screenxy_;
   }
 
  protected:
@@ -378,7 +373,7 @@ class ScreenXYTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  ScreenXY* screenxy_;
+  ScreenXYPtr screenxy_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ScreenXYTest);
@@ -391,19 +386,18 @@ void ScreenXYTest::TestType() {
 
 void ScreenXYTest::TestParse() {
   std::string errors;
-  Element* root = Parse(
+  ElementPtr root = Parse(
     "<screenXY x=\"0.5\" y=\"123\" xunits=\"fraction\" "
       "yunits=\"insetPixels\"/>",
     &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const ScreenXY* screenxy = AsScreenXY(root);
+  const ScreenXYPtr screenxy = AsScreenXY(root);
   CPPUNIT_ASSERT(screenxy);
   CPPUNIT_ASSERT_EQUAL(0.5, screenxy->x());
   CPPUNIT_ASSERT_EQUAL(123., screenxy->y());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), screenxy->xunits());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_INSETPIXELS), screenxy->yunits());
-  delete root;
 }
 
 void ScreenXYTest::TestSerialize() {
@@ -414,7 +408,7 @@ void ScreenXYTest::TestSerialize() {
   std::string expected =
     "<screenXY x=\"0.66\" xunits=\"fraction\" y=\"256\" "
       "yunits=\"insetPixels\"/>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*screenxy_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(screenxy_));
 }
 
 // This tests the RotationXY class.
@@ -433,7 +427,6 @@ class RotationXYTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete rotationxy_;
   }
 
  protected:
@@ -442,7 +435,7 @@ class RotationXYTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  RotationXY* rotationxy_;
+  RotationXYPtr rotationxy_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(RotationXYTest);
@@ -455,18 +448,17 @@ void RotationXYTest::TestType() {
 
 void RotationXYTest::TestParse() {
   std::string errors;
-  Element* root = Parse(
+  ElementPtr root = Parse(
     "<rotationXY x=\"512\" y=\"0.7\" xunits=\"pixels\" yunits=\"fraction\"/>",
     &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const RotationXY* rotationxy = AsRotationXY(root);
+  const RotationXYPtr rotationxy = AsRotationXY(root);
   CPPUNIT_ASSERT(rotationxy);
   CPPUNIT_ASSERT_EQUAL(512., rotationxy->x());
   CPPUNIT_ASSERT_EQUAL(0.7, rotationxy->y());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), rotationxy->xunits());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), rotationxy->yunits());
-  delete root;
 }
 
 void RotationXYTest::TestSerialize() {
@@ -477,7 +469,7 @@ void RotationXYTest::TestSerialize() {
   std::string expected =
     "<rotationXY x=\"0.66\" xunits=\"fraction\" y=\"0.77\" "
     "yunits=\"fraction\"/>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*rotationxy_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(rotationxy_));
 }
 
 // This tests the Size class.
@@ -496,7 +488,6 @@ class SizeTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete size_;
   }
 
  protected:
@@ -505,7 +496,7 @@ class SizeTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  Size* size_;
+  SizePtr size_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SizeTest);
@@ -518,18 +509,17 @@ void SizeTest::TestType() {
 
 void SizeTest::TestParse() {
   std::string errors;
-  Element* root = Parse(
+  ElementPtr root = Parse(
     "<size x=\"512\" y=\"0.7\" xunits=\"pixels\" yunits=\"fraction\"/>",
     &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const Size* size = AsSize(root);
+  const SizePtr size = AsSize(root);
   CPPUNIT_ASSERT(size);
   CPPUNIT_ASSERT_EQUAL(512., size->x());
   CPPUNIT_ASSERT_EQUAL(0.7, size->y());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), size->xunits());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), size->yunits());
-  delete root;
 }
 
 void SizeTest::TestSerialize() {
@@ -539,7 +529,7 @@ void SizeTest::TestSerialize() {
   size_->set_yunits(UNITS_FRACTION);
   std::string expected =
     "<size x=\"66\" xunits=\"pixels\" y=\"0.5\" yunits=\"fraction\"/>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*size_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(size_));
 }
 
 // This tests the ScreenOverlay class.
@@ -559,7 +549,6 @@ class ScreenOverlayTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete screenoverlay_;
   }
 
  protected:
@@ -569,7 +558,7 @@ class ScreenOverlayTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  ScreenOverlay* screenoverlay_;
+  ScreenOverlayPtr screenoverlay_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ScreenOverlayTest);
@@ -633,7 +622,7 @@ void ScreenOverlayTest::TestSetGetHasClear() {
   screenoverlay_->clear_rotationxy();
   screenoverlay_->clear_size();
   screenoverlay_->clear_rotation();
-  
+
   // Verify ScreenOverlay is now in default state:
   TestDefaults();
 }
@@ -655,7 +644,6 @@ class ViewVolumeTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete viewvolume_;
   }
 
  protected:
@@ -665,7 +653,7 @@ class ViewVolumeTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  ViewVolume* viewvolume_;
+  ViewVolumePtr viewvolume_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ViewVolumeTest);
@@ -766,7 +754,6 @@ class ImagePyramidTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete imagepyramid_;
   }
 
  protected:
@@ -776,7 +763,7 @@ class ImagePyramidTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  ImagePyramid* imagepyramid_;
+  ImagePyramidPtr imagepyramid_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ImagePyramidTest);
@@ -866,7 +853,6 @@ class PhotoOverlayTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete photooverlay_;
   }
 
  protected:
@@ -876,7 +862,7 @@ class PhotoOverlayTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  PhotoOverlay* photooverlay_;
+  PhotoOverlayPtr photooverlay_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PhotoOverlayTest);
@@ -928,9 +914,9 @@ void PhotoOverlayTest::TestSetToDefaultValues() {
 void PhotoOverlayTest::TestSetGetHasClear() {
   // Non-default values.
   const double kNonDefaultRotation = 90.0;
-  ViewVolume* viewvolume = KmlFactory::GetFactory()->CreateViewVolume();
-  ImagePyramid* imagepyramid = KmlFactory::GetFactory()->CreateImagePyramid();
-  Point* point = KmlFactory::GetFactory()->CreatePoint();
+  ViewVolumePtr viewvolume = KmlFactory::GetFactory()->CreateViewVolume();
+  ImagePyramidPtr imagepyramid = KmlFactory::GetFactory()->CreateImagePyramid();
+  PointPtr point = KmlFactory::GetFactory()->CreatePoint();
   ShapeEnum shape = SHAPE_SPHERE;
 
   // Set all fields.

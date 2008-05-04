@@ -23,8 +23,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "kml/dom/kml_factory.h"
 #include "kml/dom/stylemap.h"
+#include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -38,14 +39,13 @@ class PairTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
  public:
-  // Called before all tests.
+  // Called before each test.
   void setUp() {
     pair_ = KmlFactory::GetFactory()->CreatePair();
   }
 
-  // Called after all tests.
+  // Called after each test.
   void tearDown() {
-    delete pair_;
   }
 
  protected:
@@ -55,7 +55,7 @@ class PairTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Pair* pair_;
+  PairPtr pair_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PairTest);
@@ -92,7 +92,7 @@ void PairTest::TestSetGetHasClear() {
   // Non-default values:
   StyleStateEnum key = STYLESTATE_HIGHLIGHT;
   std::string styleurl("#url");
-  Style* styleselector(KmlFactory::GetFactory()->CreateStyle());
+  StylePtr styleselector(KmlFactory::GetFactory()->CreateStyle());
 
   // Set all fields:
   pair_->set_key(key);
@@ -123,14 +123,13 @@ class StyleMapTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
  public:
-  // Called before all tests.
+  // Called before each test.
   void setUp() {
     stylemap_ = KmlFactory::GetFactory()->CreateStyleMap();
   }
 
-  // Called after all tests.
+  // Called after each test.
   void tearDown() {
-    delete stylemap_;
   }
 
  protected:
@@ -138,7 +137,7 @@ class StyleMapTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  StyleMap* stylemap_;
+  StyleMapPtr stylemap_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(StyleMapTest);

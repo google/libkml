@@ -25,6 +25,7 @@
 
 #include "kml/dom/liststyle.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/util/unit_test.h"
 
@@ -46,7 +47,6 @@ class ItemIconTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete itemicon_;
   }
 
  protected:
@@ -56,7 +56,7 @@ class ItemIconTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  ItemIcon* itemicon_;
+  ItemIconPtr itemicon_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ItemIconTest);
@@ -125,7 +125,6 @@ class ListStyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete liststyle_;
   }
 
  protected:
@@ -136,7 +135,7 @@ class ListStyleTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  ListStyle* liststyle_;
+  ListStylePtr liststyle_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ListStyleTest);

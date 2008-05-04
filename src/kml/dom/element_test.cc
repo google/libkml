@@ -26,6 +26,7 @@
 // This file contains the unit tests for the Element and Field classes.
 
 #include "kml/dom/element.h"
+#include "boost/intrusive_ptr.hpp"
 #include "kml/util/unit_test.h"
 #include "kml/dom/kml_factory.h"
 
@@ -35,24 +36,83 @@ namespace kmldom {
 class ElementTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(ElementTest);
   CPPUNIT_TEST(TestUnknowns);
+  CPPUNIT_TEST(TestSetComplexChild);
+  CPPUNIT_TEST(TestAddComplexChild);
   CPPUNIT_TEST_SUITE_END();
 
  public:
+  // This is called before each test.
   void setUp() {
     element_ = new TestElement();
+    child1_ = new ComplexChild(1);
+    child2_ = new ComplexChild(2);
+    child3_ = new ComplexChild(3);
   }
+  // This is called after each test.
   void tearDown() {
-    delete element_;
+    // No explicit delete needed due to use of smart pointers for everything
+    // created in setUp().
   }
 
  protected:
   void TestUnknowns();
+  void TestSetComplexChild();
+  void TestAddComplexChild();
 
  private:
-  // Default constructor is protected.
-  class TestElement : public Element {
+  // Any complex child is derived from Element.  This one takes an int in
+  // the constructor to uniquely identify instances within this test.
+  class ComplexChild : public Element {
+   public:
+    ComplexChild(int id) : id_(id) {}
+    int id() {
+      return id_;
+    }
+   private:
+    int id_;
   };
-  TestElement* element_;
+
+  // A complex child in the DOM API has a typedef like this:
+  typedef boost::intrusive_ptr<ComplexChild> ComplexChildPtr;
+  // This is a sample element with both a single-valued complex child
+  // and an array of complex children.
+  class TestElement : public Element {
+   public:
+    // This method exemplifies usage of SetComplexChild().
+    void set_child(const ComplexChildPtr& child) {
+      SetComplexChild(child, &child_);  // This is the method under test.
+    }
+    // This method exemplifies how a child is cleared.
+    void clear_child() {
+      set_child(NULL);  // Setting to NULL is well defined for intrusive_ptr.
+    }
+    // This method exemplifies how a complex child is accessed.
+    // Note the use of const reference.
+    const ComplexChildPtr& child() {
+      return child_;
+    }
+    // This method exemplifies how a complex array child is added.
+    // Note the use of const reference.
+    void add_child(const ComplexChildPtr& child) {
+      AddComplexChild(child, &child_array_);
+    }
+    // This method exemplifies how a complex array child is accessed.
+    const ComplexChildPtr& child_array_at(int i) const {
+      return child_array_[i];
+    }
+   private:
+    // A given single complex child is managed by a smart pointer whose
+    // destructor releases this element's reference to the underlying element.
+    ComplexChildPtr child_;
+    // A given array valued complex child is held in an STL vector whose
+    // destructor calls the destructor of each array element thus releasing
+    // the reference to each underlying element.
+    std::vector<ComplexChildPtr> child_array_;
+  };
+  // Smart pointer memory management is used within the test fixture as well.
+  typedef boost::intrusive_ptr<TestElement> TestElementPtr;
+  TestElementPtr element_;
+  ComplexChildPtr child1_, child2_, child3_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ElementTest);
@@ -74,13 +134,48 @@ void ElementTest::TestUnknowns() {
   Element* legal_open = KmlFactory::GetFactory()->CreateFieldById(Type_open);
   element_->AddElement(legal_name);
   element_->AddElement(legal_open);
-  const std::vector<Element*>& unknown_legal_elements_array =
+  const std::vector<ElementPtr>& unknown_legal_elements_array =
       element_->unknown_legal_elements_array();
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2),
                        unknown_legal_elements_array.size());
   CPPUNIT_ASSERT_EQUAL(Type_name, unknown_legal_elements_array[0]->Type());
   CPPUNIT_ASSERT_EQUAL(Type_open, unknown_legal_elements_array[1]->Type());
 }
+
+// This tests the SetComplexChild() method.
+void ElementTest::TestSetComplexChild() {
+  // set_child() calls SetComplexChild.
+  element_->set_child(child1_);
+  // Verify the child is child 1.
+  CPPUNIT_ASSERT_EQUAL(1, element_->child()->id());
+  CPPUNIT_ASSERT_EQUAL(2, child1_->ref_count());
+
+  // Set again releases reference of previous.
+  element_->set_child(child2_);
+  CPPUNIT_ASSERT_EQUAL(2, element_->child()->id());
+  CPPUNIT_ASSERT_EQUAL(1, child1_->ref_count());
+  CPPUNIT_ASSERT_EQUAL(2, child2_->ref_count());
+
+  // Set to NULL also release reference of previously set child.
+  element_->clear_child();
+  CPPUNIT_ASSERT_EQUAL(ComplexChildPtr(NULL), element_->child());
+  CPPUNIT_ASSERT_EQUAL(1, child2_->ref_count());
+}
+
+// This tests the AddComplexChild() method.
+void ElementTest::TestAddComplexChild() {
+  element_->add_child(child1_);
+  element_->add_child(child2_);
+  element_->add_child(child3_);
+  element_->add_child(NULL);  // NOP, but should not crash.
+  CPPUNIT_ASSERT_EQUAL(1, element_->child_array_at(0)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(0)->ref_count());
+  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(1)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(1)->ref_count());
+  CPPUNIT_ASSERT_EQUAL(3, element_->child_array_at(2)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(2)->ref_count());
+}
+
 
 // This tests the Field class.
 class FieldTest : public CPPUNIT_NS::TestFixture {

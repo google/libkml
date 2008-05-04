@@ -71,7 +71,7 @@ class SnippetCommon : public Element {
 
  protected:
   SnippetCommon();
-  virtual void AddElement(Element* child);
+  virtual void AddElement(const ElementPtr& child);
   virtual void ParseAttributes(const Attributes& attributes);
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;

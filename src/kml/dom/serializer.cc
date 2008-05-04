@@ -41,9 +41,9 @@ namespace kmldom {
 
 // This function is in the public API for converting the given Element
 // hierarchy to "pretty" xml.
-std::string SerializePretty(const Element& root) {
+std::string SerializePretty(const ElementPtr& root) {
   Serializer serializer("\n", "  ");
-  root.Serialize(serializer);
+  root->Serialize(serializer);
   std::string xml;
   serializer.WriteString(&xml);
   return xml;
@@ -52,9 +52,9 @@ std::string SerializePretty(const Element& root) {
 // This function is in the public API for converting the given Element
 // hierarchy to xml with no additional whitespace for newlines or
 // indentation.
-std::string SerializeRaw(const Element& root) {
+std::string SerializeRaw(const ElementPtr& root) {
   Serializer serializer("", "");
-  root.Serialize(serializer);
+  root->Serialize(serializer);
   std::string xml;
   serializer.WriteString(&xml);
   return xml;
@@ -63,7 +63,7 @@ std::string SerializeRaw(const Element& root) {
 // Construct the Serializer with the given strings for newline and indent.
 // Use "" for no newline and/or indent.
 Serializer::Serializer(const char* newline, const char* indent)
-  : xsd_(Xsd::GetSchema()),
+  : xsd_(*Xsd::GetSchema()),
     newline_(newline),
     indent_(indent) {
 }
@@ -82,7 +82,7 @@ const std::string Serializer::MaybeQuoteString(const std::string& value) {
 
 // This emits the begin tag of the given element: "<Placemark id="foo">.
 void Serializer::BeginById(int type_id, const Attributes& attributes) {
-  const std::string& tag_name = xsd_->ElementName(type_id);
+  const std::string& tag_name = xsd_.ElementName(type_id);
   Indent();
   std::string attrs;
   attributes.Serialize(&attrs);
@@ -160,7 +160,7 @@ void Serializer::WriteString(std::string* output) {
 // For example, type_id=Type_altitudeMode, enum_value=ALTITUDEMODE_ABSOLUTE.
 // If enum_value is not valid for the given type_id nothing is emitted.
 void Serializer::SaveEnum(int type_id, int enum_value) {
-  std::string enum_string = xsd_->EnumValue(type_id, enum_value);
+  std::string enum_string = xsd_.EnumValue(type_id, enum_value);
   if (!enum_string.empty()) {
     SaveFieldById(type_id, enum_string);
   }

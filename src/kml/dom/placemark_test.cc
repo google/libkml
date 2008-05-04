@@ -29,6 +29,7 @@
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 #include "kml/util/unit_test.h"
 
@@ -52,7 +53,6 @@ class PlacemarkTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete placemark_;
   }
 
  protected:
@@ -64,7 +64,7 @@ class PlacemarkTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  Placemark* placemark_;
+  PlacemarkPtr placemark_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PlacemarkTest);
@@ -92,7 +92,7 @@ void PlacemarkTest::TestSetToDefaultValues() {
 // Verify set, get, has, clear:
 void PlacemarkTest::TestSetGetHasClear() {
   // Non-default values:
-  Point* point = KmlFactory::GetFactory()->CreatePoint();
+  PointPtr point = KmlFactory::GetFactory()->CreatePoint();
 
   // Set geometry to point:
   placemark_->set_geometry(point);
@@ -102,7 +102,7 @@ void PlacemarkTest::TestSetGetHasClear() {
   CPPUNIT_ASSERT_EQUAL(Type_Point, placemark_->geometry()->Type());
 
   // Set geometry to model.  This frees point.
-  Model* model= KmlFactory::GetFactory()->CreateModel();
+  ModelPtr model= KmlFactory::GetFactory()->CreateModel();
   placemark_->set_geometry(model);
 
   // Verify getter and has_xxx():
@@ -126,10 +126,10 @@ void PlacemarkTest::TestParse() {
     "<Point><coordinates>1.1,2.2,3.3</coordinates></Point>"
     "</Placemark>";
   std::string errors;
-  Element* root = Parse(kPlacemark, &errors);
+  ElementPtr root = Parse(kPlacemark, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const Placemark* placemark = AsPlacemark(root);
+  const PlacemarkPtr placemark = AsPlacemark(root);
   CPPUNIT_ASSERT(placemark);
   CPPUNIT_ASSERT(false == placemark->has_id());
   CPPUNIT_ASSERT(false == placemark->has_targetid());
@@ -148,7 +148,7 @@ void PlacemarkTest::TestParse() {
   CPPUNIT_ASSERT(false == placemark->has_styleselector());
   CPPUNIT_ASSERT(false == placemark->has_region());
   CPPUNIT_ASSERT(false == placemark->has_extendeddata());
-  const Point* point = AsPoint(placemark->geometry());
+  const PointPtr point = AsPoint(placemark->geometry());
   Vec3 vec3 = point->coordinates()->coordinates_array_at(0);
   CPPUNIT_ASSERT_EQUAL(1.1, vec3.longitude());
   CPPUNIT_ASSERT_EQUAL(2.2, vec3.latitude());
@@ -173,7 +173,7 @@ void PlacemarkTest::TestSerialize() {
     "<Point/>"
     "</Placemark>"
   );
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*placemark_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(placemark_));
 }
 
 }  // end namespace kmldom

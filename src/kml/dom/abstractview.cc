@@ -50,7 +50,7 @@ LookAt::LookAt()
 
 LookAt::~LookAt() {}
 
-void LookAt::AddElement(Element* element) {
+void LookAt::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_longitude:
       has_longitude_ = element->SetDouble(&longitude_);
@@ -128,7 +128,7 @@ Camera::Camera()
 
 Camera::~Camera() {}
 
-void Camera::AddElement(Element* element) {
+void Camera::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_longitude:
       has_longitude_ = element->SetDouble(&longitude_);

@@ -61,7 +61,7 @@ class LineStyle : public ColorStyle {
   friend class KmlFactory;
   LineStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   double width_;

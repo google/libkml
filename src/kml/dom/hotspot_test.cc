@@ -26,6 +26,7 @@
 // This file contains the unit test for the hotSpot element.
 
 #include "kml/dom/hotspot.h"
+#include "kml/dom/element.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
@@ -46,7 +47,6 @@ class HotSpotTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-    delete hotspot_;
   }
 
  protected:
@@ -55,7 +55,7 @@ class HotSpotTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  HotSpot* hotspot_;
+  HotSpotPtr hotspot_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(HotSpotTest);
@@ -68,18 +68,19 @@ void HotSpotTest::TestType() {
 
 void HotSpotTest::TestParse() {
   std::string errors;
-  Element* root = Parse(
+  ElementPtr root = Parse(
     "<hotSpot x=\"32\" y=\"1\" xunits=\"pixels\" yunits=\"pixels\"/>",
     &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
+#if 0
   const HotSpot* hotspot = AsHotSpot(root);
   CPPUNIT_ASSERT(hotspot);
   CPPUNIT_ASSERT_EQUAL(32., hotspot->x());
   CPPUNIT_ASSERT_EQUAL(1., hotspot->y());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), hotspot->xunits());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), hotspot->yunits());
-  delete root;
+#endif
 }
 
 void HotSpotTest::TestSerialize() {
@@ -89,7 +90,7 @@ void HotSpotTest::TestSerialize() {
   hotspot_->set_yunits(UNITS_PIXELS);
   std::string expected =
     "<hotSpot x=\"32\" xunits=\"pixels\" y=\"1\" yunits=\"pixels\"/>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*hotspot_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(hotspot_));
 }
 
 }  // end namespace kmldom

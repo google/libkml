@@ -34,6 +34,8 @@
 #include "kml/dom/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -138,7 +140,7 @@ void Coordinates::Parse(const std::string& char_data) {
 }
 
 // Coordinates essentially parses itself.
-void Coordinates::AddElement(Element* element) {
+void Coordinates::AddElement(const ElementPtr& element) {
   Parse(char_data());
 }
 
@@ -163,7 +165,7 @@ AltitudeGeometryCommon::AltitudeGeometryCommon()
 AltitudeGeometryCommon::~AltitudeGeometryCommon() {
 }
 
-void AltitudeGeometryCommon::AddElement(Element* element) {
+void AltitudeGeometryCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -182,7 +184,7 @@ ExtrudeGeometryCommon::ExtrudeGeometryCommon()
 ExtrudeGeometryCommon::~ExtrudeGeometryCommon() {
 }
 
-void ExtrudeGeometryCommon::AddElement(Element* element) {
+void ExtrudeGeometryCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -193,30 +195,21 @@ void ExtrudeGeometryCommon::AddElement(Element* element) {
   AltitudeGeometryCommon::AddElement(element);
 }
 
-CoordinatesGeometryCommon::CoordinatesGeometryCommon()
-  : coordinates_(NULL) {
-}
+CoordinatesGeometryCommon::CoordinatesGeometryCommon() {}
 
-CoordinatesGeometryCommon::~CoordinatesGeometryCommon() {
-  delete coordinates_;
-}
+CoordinatesGeometryCommon::~CoordinatesGeometryCommon() {}
 
-void CoordinatesGeometryCommon::AddElement(Element* element) {
-  if (!element) {
-    return;
+void CoordinatesGeometryCommon::AddElement(const ElementPtr& element) {
+  if (CoordinatesPtr coordinates = AsCoordinates(element)) {
+    set_coordinates(coordinates);
+  } else {
+    ExtrudeGeometryCommon::AddElement(element);
   }
-  if (element->Type() == Type_coordinates) {
-    set_coordinates(static_cast<Coordinates*>(element));
-    return;
-  }
-  ExtrudeGeometryCommon::AddElement(element);
 }
 
-Point::Point() {
-}
+Point::Point() {}
 
-Point::~Point() {
-}
+Point::~Point() {}
 
 void Point::Serialize(Serializer& serializer) const {
   Attributes attributes;
@@ -241,10 +234,9 @@ LineCommon::LineCommon()
     has_tessellate_(false) {
 }
 
-LineCommon::~LineCommon() {
-}
+LineCommon::~LineCommon() {}
 
-void LineCommon::AddElement(Element* element) {
+void LineCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -284,20 +276,16 @@ LinearRing::LinearRing() {}
 
 LinearRing::~LinearRing() {}
 
-BoundaryCommon::BoundaryCommon()
-  : linearring_(NULL) {
-}
+BoundaryCommon::BoundaryCommon() {}
 
-BoundaryCommon::~BoundaryCommon() {
-  delete linearring_;
-}
+BoundaryCommon::~BoundaryCommon() {}
 
-void BoundaryCommon::AddElement(Element* element) {
-  if (element && element->IsA(Type_LinearRing)) {
-    set_linearring(static_cast<LinearRing*>(element));
-    return;
+void BoundaryCommon::AddElement(const ElementPtr& element) {
+  if (LinearRingPtr linearring = AsLinearRing(element)) {
+    set_linearring(linearring);
+  } else {
+    Element::AddElement(element);
   }
-  Element::AddElement(element);
 }
 
 void BoundaryCommon::Serialize(Serializer& serializer) const {
@@ -320,18 +308,12 @@ InnerBoundaryIs::~InnerBoundaryIs() {}
 
 Polygon::Polygon()
   : tessellate_(false),
-    has_tessellate_(false),
-    outerboundaryis_(NULL) {
+    has_tessellate_(false) {
 }
 
-Polygon::~Polygon() {
-  delete outerboundaryis_;
-  for (size_t i = 0; i < innerboundaryis_array_.size(); ++i) {
-    delete innerboundaryis_array_[i];
-  }
-}
+Polygon::~Polygon() {}
 
-void Polygon::AddElement(Element* element) {
+void Polygon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -340,10 +322,10 @@ void Polygon::AddElement(Element* element) {
       has_tessellate_ = element->SetBool(&tessellate_);
       break;
     case Type_outerBoundaryIs:
-      set_outerboundaryis(static_cast<OuterBoundaryIs*>(element));
+      set_outerboundaryis(AsOuterBoundaryIs(element));
       break;
     case Type_innerBoundaryIs:
-      add_innerboundaryis(static_cast<InnerBoundaryIs*>(element));
+      add_innerboundaryis(AsInnerBoundaryIs(element));
       break;
     default:
       ExtrudeGeometryCommon::AddElement(element);
@@ -376,24 +358,18 @@ void Polygon::Serialize(Serializer& serializer) const {
 
 MultiGeometry::MultiGeometry() {}
 
-MultiGeometry::~MultiGeometry() {
-  for (size_t i = 0; i < geometry_array_.size(); ++i) {
-    delete geometry_array_[i];
-  }
+MultiGeometry::~MultiGeometry() {}
+
+void MultiGeometry::add_geometry(const GeometryPtr& geometry) {
+  AddComplexChild(geometry, &geometry_array_);
 }
 
-void MultiGeometry::add_geometry(Geometry* geometry) {
-  if (geometry && geometry->IsA(Type_Geometry) && geometry->set_parent(this)) {
-    geometry_array_.push_back(geometry);
-  }
-}
-
-void MultiGeometry::AddElement(Element* element) {
+void MultiGeometry::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_Geometry)) {
-    add_geometry(static_cast<Geometry*>(element));
+    add_geometry(AsGeometry(element));
     return;
   }
   Geometry::AddElement(element);
