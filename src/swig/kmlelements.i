@@ -30,13 +30,10 @@
 // public C++ API separate from the present implementation found in the
 // private sections of the present C++ .h files.
 
+// This is AbstractObjectType in the KML 2.2 XSD.
 %nodefaultctor Object;
-
 class Object : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // id=
   const std::string& id();
   void set_id(const std::string& id);
@@ -52,29 +49,23 @@ public:
 
 %nodefaultctor SubStyle;
 class SubStyle : public Object {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor ColorStyle;
 class ColorStyle : public SubStyle {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor SnippetCommon;
 class SnippetCommon : public Element {
 public:
   // Content.
-  const std::string& text() const;
+  const std::string& text();
   void set_text(const std::string& text);
-  bool has_text() const;
+  bool has_text();
   void clear_text();
 
   // maxLines=
-  int maxlines() const;
+  int maxlines();
   void set_maxlines(int maxlines);
   bool has_maxlines();
   void clear_maxlines();
@@ -82,66 +73,48 @@ public:
 
 %nodefaultctor Snippet;
 class Snippet : public SnippetCommon {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor LinkSnippet;
 class LinkSnippet : public SnippetCommon {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor AbstractView;
 class AbstractView : public Object {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor TimePrimitive;
 class TimePrimitive : public Object {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor StyleSelector;
 class StyleSelector : public Object {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor AbstractLatLonBox;
 class AbstractLatLonBox : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <north>
-  double north() const;
-  bool has_north() const;
+  double north();
+  bool has_north();
   void set_north(double north);
   void clear_north();
 
   // <south>
-  double south() const;
-  bool has_south() const;
+  double south();
+  bool has_south();
   void set_south(double south);
   void clear_south();
 
   // <east>
-  double east() const;
-  bool has_east() const;
+  double east();
+  bool has_east();
   void set_east(double east);
   void clear_east();
 
   // <west>
-  double west() const;
-  bool has_west() const;
+  double west();
+  bool has_west();
   void set_west(double west);
   void clear_west();
 };
@@ -149,79 +122,67 @@ public:
 %nodefaultctor LatLonAltBox;
 class LatLonAltBox : public AbstractLatLonBox {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <minAltitude>
-  double minaltitude() const;
+  double minaltitude();
   void set_minaltitude(double minaltitude);
-  bool has_minaltitude() const;
+  bool has_minaltitude();
   void clear_minaltitude();
 
   // <maxAltitude>
-  double maxaltitude() const;
+  double maxaltitude();
   void set_maxaltitude(double maxaltitude);
-  bool has_maxaltitude() const;
+  bool has_maxaltitude();
   void clear_maxaltitude();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
-
 };
 
 %nodefaultctor Lod;
 class Lod : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <minLodPixels>
-  double minlodpixels() const;
+  double minlodpixels();
   void set_minlodpixels(double minlodpixels);
-  bool has_minlodpixels() const;
+  bool has_minlodpixels();
   void clear_minlodpixels();
 
   // <maxLodPixels>
-  double maxlodpixels() const;
+  double maxlodpixels();
   void set_maxlodpixels(double maxlodpixels);
-  bool has_maxlodpixels() const;
+  bool has_maxlodpixels();
   void clear_maxlodpixels();
 
   // <minFadeExtent>
-  double minfadeextent() const;
+  double minfadeextent();
   void set_minfadeextent(double minfadeextent);
-  bool has_minfadeextent() const;
+  bool has_minfadeextent();
   void clear_minfadeextent();
 
   // <maxFadeExtent>
-  double maxfadeextent() const;
+  double maxfadeextent();
   void set_maxfadeextent(double maxfadeextent);
-  bool has_maxfadeextent() const;
+  bool has_maxfadeextent();
   void clear_maxfadeextent();
-
 };
 
 %nodefaultctor Region;
 class Region : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <LatLonAltBox>
-  const LatLonAltBox* latlonaltbox() const;
-  void set_latlonaltbox(LatLonAltBox* latlonaltbox);
-  bool has_latlonaltbox() const;
+  const LatLonAltBoxPtr latlonaltbox();
+  void set_latlonaltbox(LatLonAltBoxPtr latlonaltbox);
+  bool has_latlonaltbox();
   void clear_latlonaltbox();
 
   // <Lod>
-  const Lod* lod() const;
-  void set_lod(Lod* lod);
-  bool has_lod() const;
+  const LodPtr lod();
+  void set_lod(LodPtr lod);
+  bool has_lod();
   void clear_lod();
-
 };
 
 %nodefaultctor ExtendedDataMember;
@@ -231,128 +192,113 @@ class ExtendedDataMember : public Object {
 %nodefaultctor ExtendedData;
 class ExtendedData : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <Data>, <SchemaData>...
-  void add_extendeddatamember(ExtendedDataMember* extendeddatamember);
-  const size_t extendeddatamember_array_size() const;
-  const ExtendedDataMember* extendeddatamember_array_at(unsigned int index);
+  void add_extendeddatamember(ExtendedDataMemberPtr extendeddatamember);
+  const size_t extendeddatamember_array_size();
+  const ExtendedDataMemberPtr extendeddatamember_array_at(unsigned int index);
 };
 
 %nodefaultctor Feature;
 class Feature : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <name>
-  const std::string& name() const;
+  const std::string& name();
   void set_name(const std::string& name);
-  bool has_name() const;
+  bool has_name();
   void clear_name();
 
   // <visibility>
-  bool visibility() const;
+  bool visibility();
   void set_visibility(bool visibility);
-  bool has_visibility() const;
+  bool has_visibility();
   void clear_visibility();
 
   // <open>
-  bool open() const;
+  bool open();
   void set_open(bool open);
-  bool has_open() const;
+  bool has_open();
   void clear_open();
 
   // <address>
-  const std::string& address() const;
+  const std::string& address();
   void set_address(const std::string& address);
-  bool has_address() const;
+  bool has_address();
   void clear_address();
 
   // <phoneNumber>
-  const std::string& phonenumber() const;
+  const std::string& phonenumber();
   void set_phonenumber(const std::string& phonenumber);
-  bool has_phonenumber() const;
+  bool has_phonenumber();
   void clear_phonenumber();
 
   // <Snippet>
-  const Snippet* snippet() const;
-  void set_snippet(Snippet* snippet);
-  bool has_snippet() const;
+  const SnippetPtr snippet();
+  void set_snippet(SnippetPtr snippet);
+  bool has_snippet();
   void clear_snippet();
 
   // <description>
-  const std::string& description() const;
+  const std::string& description();
   void set_description(const std::string& description);
-  bool has_description() const;
+  bool has_description();
   void clear_description();
 
   // AbstractView
-  const AbstractView* abstractview() const;
-  void set_abstractview(AbstractView* abstractview);
-  bool has_abstractview() const;
+  const AbstractViewPtr abstractview();
+  void set_abstractview(AbstractViewPtr abstractview);
+  bool has_abstractview();
   void clear_abstractview();
 
   // TimePrimitive
-  const TimePrimitive* timeprimitive() const;
-  void set_timeprimitive(TimePrimitive* timeprimitive);
-  bool has_timeprimitive() const;
+  const TimePrimitivePtr timeprimitive();
+  void set_timeprimitive(TimePrimitivePtr timeprimitive);
+  bool has_timeprimitive();
   void clear_timeprimitive();
 
   // <styleUrl>
-  const std::string& styleurl() const;
+  const std::string& styleurl();
   void set_styleurl(const std::string& styleurl);
-  bool has_styleurl() const;
+  bool has_styleurl();
   void clear_styleurl();
 
   // StyleSelector
-  const StyleSelector* styleselector() const;
-  void set_styleselector(StyleSelector* styleselector);
-  bool has_styleselector() const;
+  const StyleSelectorPtr styleselector();
+  void set_styleselector(StyleSelectorPtr styleselector);
+  bool has_styleselector();
   void clear_styleselector();
 
   // <Region>
-  const Region* region() const;
-  void set_region(Region* region);
-  bool has_region() const;
+  const RegionPtr region();
+  void set_region(RegionPtr region);
+  bool has_region();
   void clear_region();
 
   // <ExtendedData>
-  const ExtendedData* extendeddata() const;
-  void set_extendeddata(ExtendedData* extendeddata);
-  bool has_extendeddata() const;
+  const ExtendedDataPtr extendeddata();
+  void set_extendeddata(ExtendedDataPtr extendeddata);
+  bool has_extendeddata();
   void clear_extendeddata();
-
 };
 
 %nodefaultctor Container;
 class Container : public Feature {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  void add_feature(Feature* feature);
-  const size_t feature_array_size() const;
-  const kmldom::Feature* feature_array_at(unsigned int index) const;
+  // Feature...
+  void add_feature(FeaturePtr feature);
+  const size_t feature_array_size();
+  const FeaturePtr feature_array_at(unsigned int index);
 };
 
 %nodefaultctor Geometry;
 class Geometry : public Object {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor BasicLink;
 class BasicLink : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <href>
-  const std::string& href() const;
-  bool has_href() const;
+  const std::string& href();
+  bool has_href();
   void set_href(const std::string& href);
   void clear_href();
 };
@@ -360,173 +306,153 @@ public:
 %nodefaultctor Icon;
 class Icon : public BasicLink {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <refreshMode>
-  int refreshmode() const;
+  int refreshmode();
   void set_refreshmode(int refreshmode);
-  bool has_refreshmode() const;
+  bool has_refreshmode();
   void clear_refreshmode();
 
   // <refreshInterval>
-  double refreshinterval() const;
+  double refreshinterval();
   void set_refreshinterval(double refreshinterval);
-  bool has_refreshinterval() const;
+  bool has_refreshinterval();
   void clear_refreshinterval();
 
   // <viewRefreshMode>
-  int viewrefreshmode() const;
+  int viewrefreshmode();
   void set_viewrefreshmode(int viewrefreshmode);
-  bool has_viewrefreshmode() const;
+  bool has_viewrefreshmode();
   void clear_viewrefreshmode();
 
   // <viewRefreshTime>
-  double viewrefreshtime() const;
+  double viewrefreshtime();
   void set_viewrefreshtime(double viewrefreshtime);
-  bool has_viewrefreshtime() const;
+  bool has_viewrefreshtime();
   void clear_viewrefreshtime();
 
   // <viewBoundScale>
-  double viewboundscale() const;
+  double viewboundscale();
   void set_viewboundscale(double viewboundscale);
-  bool has_viewboundscale() const;
+  bool has_viewboundscale();
   void clear_viewboundscale();
 
   // <viewFormat>
-  const std::string& viewformat() const;
+  const std::string& viewformat();
   void set_viewformat(const std::string& viewformat);
-  bool has_viewformat() const;
+  bool has_viewformat();
   void clear_viewformat();
 
   // <httpQuery>
-  const std::string& httpquery() const;
+  const std::string& httpquery();
   void set_httpquery(const std::string& httpquery);
-  bool has_httpquery() const;
+  bool has_httpquery();
   void clear_httpquery();
-
 };
 
 %nodefaultctor IconStyleIcon;
 class IconStyleIcon : public BasicLink {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <href>
-  const std::string& href() const;
-  bool has_href() const;
+  const std::string& href();
+  bool has_href();
   void set_href(const std::string& href);
   void clear_href();
-
 };
 
 %nodefaultctor Overlay;
 class Overlay : public Feature {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <color>
-  const std::string& color() const;
+  const std::string& color();
   void set_color(const std::string& color);
-  bool has_color() const;
+  bool has_color();
   void clear_color();
 
   // <drawOrder>
-  int draworder() const;
+  int draworder();
   void set_draworder(int draworder);
-  bool has_draworder() const;
+  bool has_draworder();
   void clear_draworder();
 
   // <Icon>
-  const Icon* icon() const;
-  void set_icon(Icon* icon);
-  bool has_icon() const;
+  const IconPtr icon();
+  void set_icon(IconPtr icon);
+  bool has_icon();
   void clear_icon();
-
 };
 
 %nodefaultctor BalloonStyle;
 class BalloonStyle : public SubStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <bgColor>
-  const std::string& bgcolor() const;
+  const std::string& bgcolor();
   void set_bgcolor(const std::string& bgcolor);
-  bool has_bgcolor() const;
+  bool has_bgcolor();
   void clear_bgcolor();
 
   // <textColor>
-  const std::string& textcolor() const;
+  const std::string& textcolor();
   void set_textcolor(const std::string& textcolor);
-  bool has_textcolor() const;
+  bool has_textcolor();
   void clear_textcolor();
 
   // <text>
-  const std::string& text() const;
+  const std::string& text();
   void set_text(const std::string& text);
-  bool has_text() const;
+  bool has_text();
   void clear_text();
 
   // <displayMode>
-  int displaymode() const;
+  int displaymode();
   void set_displaymode(int displaymode);
-  bool has_displaymode() const;
+  bool has_displaymode();
   void clear_displaymode();
-
 };
 
 %nodefaultctor Camera;
 class Camera : public AbstractView {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <longitude>
-  double longitude() const;
+  double longitude();
   void set_longitude(double longitude);
-  bool has_longitude() const;
+  bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude() const;
+  double latitude();
   void set_latitude(double latitude);
-  bool has_latitude() const;
+  bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude() const;
+  double altitude();
   void set_altitude(double altitude);
-  bool has_altitude() const;
+  bool has_altitude();
   void clear_altitude();
 
   // <heading>
-  double heading() const;
+  double heading();
   void set_heading(double heading);
-  bool has_heading() const;
+  bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt() const;
+  double tilt();
   void set_tilt(double tilt);
-  bool has_tilt() const;
+  bool has_tilt();
   void clear_tilt();
 
   // <roll>
-  double roll() const;
+  double roll();
   void set_roll(double roll);
-  bool has_roll() const;
+  bool has_roll();
   void clear_roll();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
-
 };
 
 %nodefaultctor UpdateOperation;
@@ -536,251 +462,206 @@ class UpdateOperation : public Element {
 %nodefaultctor Change;
 class Change : public UpdateOperation {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  void add_object(Object* object);
-  const size_t object_array_size() const;
-  const Object* object_array_at(unsigned int index) const;
+  // Object...
+  void add_object(ObjectPtr object);
+  const size_t object_array_size();
+  const ObjectPtr object_array_at(unsigned int index);
 };
 
 %nodefaultctor Create;
 class Create : public UpdateOperation {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  void add_container(Container* container);
-  const size_t container_array_size() const;
-  const Container* container_array_at(unsigned int index) const;
+  // Container...
+  void add_container(ContainerPtr container);
+  const size_t container_array_size();
+  const ContainerPtr container_array_at(unsigned int index);
 };
 
 %nodefaultctor Data;
 class Data : public ExtendedDataMember {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <displayName>
-  const std::string& displayname() const;
+  const std::string& displayname();
   void set_displayname(const std::string& displayname);
-  bool has_displayname() const;
+  bool has_displayname();
   void clear_displayname();
-
 };
 
 %nodefaultctor Delete;
 class Delete : public UpdateOperation {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  void add_feature(Feature* feature);
-  const size_t feature_array_size() const;
-  const Feature* feature_array_at(unsigned int index) const;
+  // Feature...
+  void add_feature(FeaturePtr feature);
+  const size_t feature_array_size();
+  const FeaturePtr feature_array_at(unsigned int index);
 };
 
 %nodefaultctor SimpleField;
 class SimpleField : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // type=
-  const std::string& type() const;
-  bool has_type() const;
+  const std::string& type();
+  bool has_type();
   void set_type(const std::string& value);
   void clear_type();
 
   // name=
-  const std::string& name() const;
-  bool has_name() const;
+  const std::string& name();
+  bool has_name();
   void set_name(const std::string& value);
   void clear_name();
 
   // <displayName>
-  const std::string& displayname() const;
+  const std::string& displayname();
   void set_displayname(const std::string& displayname);
-  bool has_displayname() const;
+  bool has_displayname();
   void clear_displayname();
-
 };
 
 %nodefaultctor Schema;
 class Schema : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // name=
-  const std::string& name() const;
-  bool has_name() const;
+  const std::string& name();
+  bool has_name();
   void set_name(const std::string& value);
   void clear_name();
 
   // id=
-  const std::string& id() const;
-  bool has_id() const;
+  const std::string& id();
+  bool has_id();
   void set_id(const std::string& value);
   void clear_id();
 
   // <SimpleField>...
-  void add_simplefield(SimpleField* simplefield);
-  const size_t simplefield_array_size() const;
-  const SimpleField* simplefield_array_at(unsigned int index) const;
+  void add_simplefield(SimpleFieldPtr simplefield);
+  const size_t simplefield_array_size();
+  const SimpleFieldPtr simplefield_array_at(unsigned int index);
 };
 
 %nodefaultctor Document;
 class Document : public Container {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
+  // <Schema>...
+  void add_schema(SchemaPtr schema);
+  const size_t schema_array_size();
+  const SchemaPtr schema_array_at(unsigned int index);
 
-  // <Schema>
-  void add_schema(Schema* schema);
-  const size_t schema_array_size() const;
-  const Feature* schema_array_at(unsigned int index) const;
-
-  // <Style> and <StyleMap>
-  void add_styleselector(StyleSelector* styleselector);
-  const size_t styleselector_array_size() const;
-  const StyleSelector* styleselector_array_at(unsigned int index) const;
+  // <Style>,<StyleMap>...
+  void add_styleselector(StyleSelectorPtr styleselector);
+  const size_t styleselector_array_size();
+  const StyleSelectorPtr styleselector_array_at(unsigned int index);
 };
 
 %nodefaultctor Folder;
 class Folder : public Container {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor LatLonBox;
 class LatLonBox : public AbstractLatLonBox {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <rotation>
-  double rotation() const;
+  double rotation();
   void set_rotation(double rotation);
-  bool has_rotation() const;
+  bool has_rotation();
   void clear_rotation();
-
 };
 
 %nodefaultctor GroundOverlay;
 class GroundOverlay : public Overlay {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <altitude>
-  double altitude() const;
+  double altitude();
   void set_altitude(double altitude);
-  bool has_altitude() const;
+  bool has_altitude();
   void clear_altitude();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <LatLonBox>
-  const LatLonBox* latlonbox() const;
-  void set_latlonbox(LatLonBox* latlonbox);
-  bool has_latlonbox() const;
+  const LatLonBoxPtr latlonbox();
+  void set_latlonbox(LatLonBoxPtr latlonbox);
+  bool has_latlonbox();
   void clear_latlonbox();
-
 };
 
 %nodefaultctor HotSpot;
 class HotSpot : public Vec2 {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor IconStyle;
 class IconStyle : public ColorStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <scale>
-  double scale() const;
+  double scale();
   void set_scale(double scale);
-  bool has_scale() const;
+  bool has_scale();
   void clear_scale();
 
   // <Icon> (different from Overlay Icon)
-  const IconStyleIcon* icon() const;
-  void set_icon(IconStyleIcon* icon);
-  bool has_icon() const;
+  const IconStyleIconPtr icon();
+  void set_icon(IconStyleIconPtr icon);
+  bool has_icon();
   void clear_icon();
 
   // <heading>
-  double heading() const;
+  double heading();
   void set_heading(double heading);
-  bool has_heading() const;
+  bool has_heading();
   void clear_heading();
 
   // <hotSpot>
-  const HotSpot* hotspot() const;
-  void set_hotspot(HotSpot* hotspot);
-  bool has_hotspot() const;
+  const HotSpotPtr hotspot();
+  void set_hotspot(HotSpotPtr hotspot);
+  bool has_hotspot();
   void clear_hotspot();
-
 };
 
 %nodefaultctor ImagePyramid;
 class ImagePyramid : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <tileSize>
-  int tilesize() const;
+  int tilesize();
   void set_tilesize(int tilesize);
-  bool has_tilesize() const;
+  bool has_tilesize();
   void clear_tilesize();
 
   // <maxWidth>
-  int maxwidth() const;
+  int maxwidth();
   void set_maxwidth(int maxwidth);
-  bool has_maxwidth() const;
+  bool has_maxwidth();
   void clear_maxwidth();
 
   // <maxHeight>
-  int maxheight() const;
+  int maxheight();
   void set_maxheight(int maxheight);
-  bool has_maxheight() const;
+  bool has_maxheight();
   void clear_maxheight();
 
   // <gridOrigin>
-  int gridorigin() const;
+  int gridorigin();
   void set_gridorigin(int gridorigin);
-  bool has_gridorigin() const;
+  bool has_gridorigin();
   void clear_gridorigin();
-
 };
 
 %nodefaultctor ItemIcon;
 class ItemIcon : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // TODO: <state>
-  //itemIconState* state() const;
-  //void set_state(itemIconState* state);
-  //bool has_state() const;
+  //itemIconStatePtr state();
+  //void set_state(itemIconStatePtr state);
+  //bool has_state();
   //void clear_state();
 
   // <href>
-  const std::string& href() const;
+  const std::string& href();
   void set_href(const std::string& href);
-  bool has_href() const;
+  bool has_href();
   void clear_href();
 
 };
@@ -788,613 +669,535 @@ public:
 %nodefaultctor LabelStyle;
 class LabelStyle : public ColorStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <scale>
-  double scale() const;
+  double scale();
   void set_scale(double scale);
-  bool has_scale() const;
+  bool has_scale();
   void clear_scale();
-
 };
 
 %nodefaultctor LineString;
 class LineString : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <extrude>
-  bool extrude() const;
+  bool extrude();
   void set_extrude(bool extrude);
-  bool has_extrude() const;
+  bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate() const;
+  bool tessellate();
   void set_tessellate(bool tessellate);
-  bool has_tessellate() const;
+  bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const Coordinates* coordinates() const;
-  void set_coordinates(Coordinates* coordinates);
-  bool has_coordinates() const;
+  const CoordinatesPtr coordinates();
+  void set_coordinates(CoordinatesPtr coordinates);
+  bool has_coordinates();
   void clear_coordinates();
-
 };
 
 %nodefaultctor LineStyle;
 class LineStyle : public ColorStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <width>
-  double width() const;
+  double width();
   void set_width(double width);
-  bool has_width() const;
+  bool has_width();
   void clear_width();
-
 };
 
 %nodefaultctor LinearRing;
 class LinearRing : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <extrude>
-  bool extrude() const;
+  bool extrude();
   void set_extrude(bool extrude);
-  bool has_extrude() const;
+  bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate() const;
+  bool tessellate();
   void set_tessellate(bool tessellate);
-  bool has_tessellate() const;
+  bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const Coordinates* coordinates() const;
-  void set_coordinates(Coordinates* coordinates);
-  bool has_coordinates() const;
+  const CoordinatesPtr coordinates();
+  void set_coordinates(CoordinatesPtr coordinates);
+  bool has_coordinates();
   void clear_coordinates();
-
 };
 
 %nodefaultctor Link;
 class Link : public BasicLink {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <refreshMode>
-  int refreshmode() const;
+  int refreshmode();
   void set_refreshmode(int refreshmode);
-  bool has_refreshmode() const;
+  bool has_refreshmode();
   void clear_refreshmode();
 
   // <refreshInterval>
-  double refreshinterval() const;
+  double refreshinterval();
   void set_refreshinterval(double refreshinterval);
-  bool has_refreshinterval() const;
+  bool has_refreshinterval();
   void clear_refreshinterval();
 
   // <viewRefreshMode>
-  int viewrefreshmode() const;
+  int viewrefreshmode();
   void set_viewrefreshmode(int viewrefreshmode);
-  bool has_viewrefreshmode() const;
+  bool has_viewrefreshmode();
   void clear_viewrefreshmode();
 
   // <viewRefreshTime>
-  double viewrefreshtime() const;
+  double viewrefreshtime();
   void set_viewrefreshtime(double viewrefreshtime);
-  bool has_viewrefreshtime() const;
+  bool has_viewrefreshtime();
   void clear_viewrefreshtime();
 
   // <viewBoundScale>
-  double viewboundscale() const;
+  double viewboundscale();
   void set_viewboundscale(double viewboundscale);
-  bool has_viewboundscale() const;
+  bool has_viewboundscale();
   void clear_viewboundscale();
 
   // <viewFormat>
-  const std::string& viewformat() const;
+  const std::string& viewformat();
   void set_viewformat(const std::string& viewformat);
-  bool has_viewformat() const;
+  bool has_viewformat();
   void clear_viewformat();
 
   // <httpQuery>
-  const std::string& httpquery() const;
+  const std::string& httpquery();
   void set_httpquery(const std::string& httpquery);
-  bool has_httpquery() const;
+  bool has_httpquery();
   void clear_httpquery();
-
 };
 
 %nodefaultctor ListStyle;
 class ListStyle : public SubStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <listItemType>
-  int listitemtype() const;
+  int listitemtype();
   void set_listitemtype(int listitemtype);
-  bool has_listitemtype() const;
+  bool has_listitemtype();
   void clear_listitemtype();
 
   // <bgColor>
-  const std::string& bgcolor() const;
+  const std::string& bgcolor();
   void set_bgcolor(const std::string& bgcolor);
-  bool has_bgcolor() const;
+  bool has_bgcolor();
   void clear_bgcolor();
 
   // <ItemIcon>...
-  void add_itemicon(ItemIcon* itemicon);
-  const size_t itemicon_array_size() const;
-  const ItemIcon* itemicon_array_at(unsigned int index) const;
+  void add_itemicon(ItemIconPtr itemicon);
+  const size_t itemicon_array_size();
+  const ItemIconPtr itemicon_array_at(unsigned int index);
 };
 
 %nodefaultctor Location;
 class Location : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <longitude>
-  double longitude() const;
+  double longitude();
   void set_longitude(double longitude);
-  bool has_longitude() const;
+  bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude() const;
+  double latitude();
   void set_latitude(double latitude);
-  bool has_latitude() const;
+  bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude() const;
+  double altitude();
   void set_altitude(double altitude);
-  bool has_altitude() const;
+  bool has_altitude();
   void clear_altitude();
-
 };
 
 %nodefaultctor LookAt;
 class LookAt : public AbstractView {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <longitude>
-  double longitude() const;
+  double longitude();
   void set_longitude(double longitude);
-  bool has_longitude() const;
+  bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude() const;
+  double latitude();
   void set_latitude(double latitude);
-  bool has_latitude() const;
+  bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude() const;
+  double altitude();
   void set_altitude(double altitude);
-  bool has_altitude() const;
+  bool has_altitude();
   void clear_altitude();
 
   // <heading>
-  double heading() const;
+  double heading();
   void set_heading(double heading);
-  bool has_heading() const;
+  bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt() const;
+  double tilt();
   void set_tilt(double tilt);
-  bool has_tilt() const;
+  bool has_tilt();
   void clear_tilt();
 
   // <range>
-  double range() const;
+  double range();
   void set_range(double range);
-  bool has_range() const;
+  bool has_range();
   void clear_range();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
-
 };
 
 %nodefaultctor Orientation;
 class Orientation : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <heading>
-  double heading() const;
+  double heading();
   void set_heading(double heading);
-  bool has_heading() const;
+  bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt() const;
+  double tilt();
   void set_tilt(double tilt);
-  bool has_tilt() const;
+  bool has_tilt();
   void clear_tilt();
 
   // <roll>
-  double roll() const;
+  double roll();
   void set_roll(double roll);
-  bool has_roll() const;
+  bool has_roll();
   void clear_roll();
-
 };
 
 %nodefaultctor Scale;
 class Scale : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <x>
-  double x() const;
+  double x();
   void set_x(double x);
-  bool has_x() const;
+  bool has_x();
   void clear_x();
 
   // <y>
-  double y() const;
+  double y();
   void set_y(double y);
-  bool has_y() const;
+  bool has_y();
   void clear_y();
 
   // <z>
-  double z() const;
+  double z();
   void set_z(double z);
-  bool has_z() const;
+  bool has_z();
   void clear_z();
-
 };
 
 %nodefaultctor Alias;
 class Alias : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <targetHref>
-  const std::string& targethref() const;
+  const std::string& targethref();
   void set_targethref(const std::string& targethref);
-  bool has_targethref() const;
+  bool has_targethref();
   void clear_targethref();
 
   // <sourceHref>
-  const std::string& sourcehref() const;
+  const std::string& sourcehref();
   void set_sourcehref(const std::string& sourcehref);
-  bool has_sourcehref() const;
+  bool has_sourcehref();
   void clear_sourcehref();
-
 };
 
 %nodefaultctor ResourceMap;
 class ResourceMap : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <Alias>...
-  void add_alias(Alias* alias);
-  const size_t alias_array_size() const;
-  const Alias* alias_array_at(unsigned int index) const;
+  void add_alias(AliasPtr alias);
+  const size_t alias_array_size();
+  const AliasPtr alias_array_at(unsigned int index);
 };
 
 %nodefaultctor Model;
 class Model : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <Location>
-  const Location* location() const;
-  void set_location(Location* location);
-  bool has_location() const;
+  const LocationPtr location();
+  void set_location(LocationPtr location);
+  bool has_location();
   void clear_location();
 
   // <Orientation>
-  const Orientation* orientation() const;
-  void set_orientation(Orientation* orientation);
-  bool has_orientation() const;
+  const OrientationPtr orientation();
+  void set_orientation(OrientationPtr orientation);
+  bool has_orientation();
   void clear_orientation();
 
   // <Scale>
-  const Scale* scale() const;
-  void set_scale(Scale* scale);
-  bool has_scale() const;
+  const ScalePtr scale();
+  void set_scale(ScalePtr scale);
+  bool has_scale();
   void clear_scale();
 
   // <Link>
-  const Link* link() const;
-  void set_link(Link* link);
-  bool has_link() const;
+  const LinkPtr link();
+  void set_link(LinkPtr link);
+  bool has_link();
   void clear_link();
 
   // <ResourceMap>
-  const ResourceMap* resourcemap() const;
-  void set_resourcemap(ResourceMap* resourcemap);
-  bool has_resourcemap() const;
+  const ResourceMapPtr resourcemap();
+  void set_resourcemap(ResourceMapPtr resourcemap);
+  bool has_resourcemap();
   void clear_resourcemap();
-
 };
 
 %nodefaultctor MultiGeometry;
 class MultiGeometry : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // Geometry...
-  void add_geometry(Geometry* geometry);
-  const size_t geometry_array_size() const;
-  const Geometry* geometry_array_at(unsigned int index) const;
+  void add_geometry(GeometryPtr geometry);
+  const size_t geometry_array_size();
+  const GeometryPtr geometry_array_at(unsigned int index);
 };
 
 %nodefaultctor NetworkLink;
 class NetworkLink : public Feature {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <refreshVisibility>
-  bool refreshvisibility() const;
+  bool refreshvisibility();
   void set_refreshvisibility(bool refreshvisibility);
-  bool has_refreshvisibility() const;
+  bool has_refreshvisibility();
   void clear_refreshvisibility();
 
   // <flyToView>
-  bool flytoview() const;
+  bool flytoview();
   void set_flytoview(bool flytoview);
-  bool has_flytoview() const;
+  bool has_flytoview();
   void clear_flytoview();
 
   // <Link>
-  const Link* link() const;
-  void set_link(Link* link);
-  bool has_link() const;
+  const LinkPtr link();
+  void set_link(LinkPtr link);
+  bool has_link();
   void clear_link();
-
 };
 
 %nodefaultctor Update;
 class Update : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  void add_updateoperation(UpdateOperation* updateoperation);
-  const size_t updateoperation_array_size() const;
-  const UpdateOperation* updateoperation_array_at(unsigned int index) const;
+  // <Change>,<Create>,<Delete>...
+  void add_updateoperation(UpdateOperationPtr updateoperation);
+  const size_t updateoperation_array_size();
+  const UpdateOperationPtr updateoperation_array_at(unsigned int index);
 };
 
 %nodefaultctor NetworkLinkControl;
 class NetworkLinkControl : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <minRefreshPeriod>
-  double minrefreshperiod() const;
+  double minrefreshperiod();
   void set_minrefreshperiod(double minrefreshperiod);
-  bool has_minrefreshperiod() const;
+  bool has_minrefreshperiod();
   void clear_minrefreshperiod();
 
   // <maxSessionLength>
-  double maxsessionlength() const;
+  double maxsessionlength();
   void set_maxsessionlength(double maxsessionlength);
-  bool has_maxsessionlength() const;
+  bool has_maxsessionlength();
   void clear_maxsessionlength();
 
   // <cookie>
-  const std::string& cookie() const;
+  const std::string& cookie();
   void set_cookie(const std::string& cookie);
-  bool has_cookie() const;
+  bool has_cookie();
   void clear_cookie();
 
   // <message>
-  const std::string& message() const;
+  const std::string& message();
   void set_message(const std::string& message);
-  bool has_message() const;
+  bool has_message();
   void clear_message();
 
   // <linkName>
-  const std::string& linkname() const;
+  const std::string& linkname();
   void set_linkname(const std::string& linkname);
-  bool has_linkname() const;
+  bool has_linkname();
   void clear_linkname();
 
   // <linkDescription>
-  const std::string& linkdescription() const;
+  const std::string& linkdescription();
   void set_linkdescription(const std::string& linkdescription);
-  bool has_linkdescription() const;
+  bool has_linkdescription();
   void clear_linkdescription();
 
   // <linkSnippet>
-  const LinkSnippet* linksnippet() const;
-  void set_linksnippet(LinkSnippet* linksnippet);
-  bool has_linksnippet() const;
+  const LinkSnippetPtr linksnippet();
+  void set_linksnippet(LinkSnippetPtr linksnippet);
+  bool has_linksnippet();
   void clear_linksnippet();
 
   // <expires>
-  const std::string& expires() const;
+  const std::string& expires();
   void set_expires(const std::string& expires);
-  bool has_expires() const;
+  bool has_expires();
   void clear_expires();
 
   // <Update>
-  const Update* update() const;
-  void set_update(Update* update);
-  bool has_update() const;
+  const UpdatePtr update();
+  void set_update(UpdatePtr update);
+  bool has_update();
   void clear_update();
 
   // AbstractView
-  const AbstractView* abstractview() const;
-  void set_abstractview(AbstractView* abstractview);
-  bool has_abstractview() const;
+  const AbstractViewPtr abstractview();
+  void set_abstractview(AbstractViewPtr abstractview);
+  bool has_abstractview();
   void clear_abstractview();
-
 };
 
 %nodefaultctor Pair;
 class Pair : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <key>
-  int key() const;
+  int key();
   void set_key(int key);
-  bool has_key() const;
+  bool has_key();
   void clear_key();
 
   // <styleUrl>
-  const std::string& styleurl() const;
+  const std::string& styleurl();
   void set_styleurl(const std::string& styleurl);
-  bool has_styleurl() const;
+  bool has_styleurl();
   void clear_styleurl();
 
   // <StyleSelector>
-  const StyleSelector* styleselector() const;
-  void set_styleselector(StyleSelector* styleselector);
-  bool has_styleselector() const;
+  const StyleSelectorPtr styleselector();
+  void set_styleselector(StyleSelectorPtr styleselector);
+  bool has_styleselector();
   void clear_styleselector();
-
 };
 
 %nodefaultctor ViewVolume;
 class ViewVolume : public Object {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <leftFov>
-  double leftfov() const;
+  double leftfov();
   void set_leftfov(double leftfov);
-  bool has_leftfov() const;
+  bool has_leftfov();
   void clear_leftfov();
 
   // <rightFov>
-  double rightfov() const;
+  double rightfov();
   void set_rightfov(double rightfov);
-  bool has_rightfov() const;
+  bool has_rightfov();
   void clear_rightfov();
 
   // <bottomFov>
-  double bottomfov() const;
+  double bottomfov();
   void set_bottomfov(double bottomfov);
-  bool has_bottomfov() const;
+  bool has_bottomfov();
   void clear_bottomfov();
 
   // <topFov>
-  double topfov() const;
+  double topfov();
   void set_topfov(double topfov);
-  bool has_topfov() const;
+  bool has_topfov();
   void clear_topfov();
 
   // <near>
-  double near() const;
+  double near();
   void set_near(double near);
-  bool has_near() const;
+  bool has_near();
   void clear_near();
-
 };
 
 %nodefaultctor Point;
 class Point : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <extrude>
-  bool extrude() const;
+  bool extrude();
   void set_extrude(bool extrude);
-  bool has_extrude() const;
+  bool has_extrude();
   void clear_extrude();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const Coordinates* coordinates() const;
-  void set_coordinates(Coordinates* coordinates);
-  bool has_coordinates() const;
+  const CoordinatesPtr coordinates();
+  void set_coordinates(CoordinatesPtr coordinates);
+  bool has_coordinates();
   void clear_coordinates();
-
 };
 
 %nodefaultctor PhotoOverlay;
 class PhotoOverlay : public Overlay {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <rotation>
-  double rotation() const;
+  double rotation();
   void set_rotation(double rotation);
-  bool has_rotation() const;
+  bool has_rotation();
   void clear_rotation();
 
   // <ViewVolume>
-  const ViewVolume* viewvolume() const;
-  void set_viewvolume(ViewVolume* viewvolume);
-  bool has_viewvolume() const;
+  const ViewVolumePtr viewvolume();
+  void set_viewvolume(ViewVolumePtr viewvolume);
+  bool has_viewvolume();
   void clear_viewvolume();
 
   // <ImagePyramid>
-  const ImagePyramid* imagepyramid() const;
-  void set_imagepyramid(ImagePyramid* imagepyramid);
-  bool has_imagepyramid() const;
+  const ImagePyramidPtr imagepyramid();
+  void set_imagepyramid(ImagePyramidPtr imagepyramid);
+  bool has_imagepyramid();
   void clear_imagepyramid();
 
   // <Point>
-  const Point* point() const;
-  void set_point(Point* point);
-  bool has_point() const;
+  const PointPtr point();
+  void set_point(PointPtr point);
+  bool has_point();
   void clear_point();
 
   // <shape>
-  int shape() const;
-  bool has_shape() const;
+  int shape();
+  bool has_shape();
   void set_shape(int shape);
   void clear_shape();
 };
@@ -1402,280 +1205,223 @@ public:
 %nodefaultctor Placemark;
 class Placemark : public Feature {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // Geometry
-  const Geometry* geometry() const;
-  void set_geometry(Geometry* geometry);
-  bool has_geometry() const;
+  const GeometryPtr geometry();
+  void set_geometry(GeometryPtr geometry);
+  bool has_geometry();
   void clear_geometry();
-
 };
 
 %nodefaultctor PolyStyle;
 class PolyStyle : public ColorStyle {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <fill>
-  bool fill() const;
+  bool fill();
   void set_fill(bool fill);
-  bool has_fill() const;
+  bool has_fill();
   void clear_fill();
 
   // <outline>
-  bool outline() const;
+  bool outline();
   void set_outline(bool outline);
-  bool has_outline() const;
+  bool has_outline();
   void clear_outline();
-
 };
 
 %nodefaultctor OuterBoundaryIs;
 class OuterBoundaryIs : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <LinearRing>
-  const LinearRing* linearring() const;
-  void set_linearring(LinearRing* linearring);
-  bool has_linearring() const;
+  const LinearRingPtr linearring();
+  void set_linearring(LinearRingPtr linearring);
+  bool has_linearring();
   void clear_linearring();
 };
 
 %nodefaultctor InnerBoundaryIs;
 class InnerBoundaryIs : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <LinearRing>
-  const LinearRing* linearring() const;
-  void set_linearring(LinearRing* linearring);
-  bool has_linearring() const;
+  const LinearRingPtr linearring();
+  void set_linearring(LinearRingPtr linearring);
+  bool has_linearring();
   void clear_linearring();
 };
 
 %nodefaultctor Polygon;
 class Polygon : public Geometry {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <extrude>
-  bool extrude() const;
+  bool extrude();
   void set_extrude(bool extrude);
-  bool has_extrude() const;
+  bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate() const;
+  bool tessellate();
   void set_tessellate(bool tessellate);
-  bool has_tessellate() const;
+  bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode() const;
+  int altitudemode();
   void set_altitudemode(int altitudemode);
-  bool has_altitudemode() const;
+  bool has_altitudemode();
   void clear_altitudemode();
 
   // <outerBoundaryIs>
-  const OuterBoundaryIs* outerboundaryis() const;
-  void set_outerboundaryis(OuterBoundaryIs* outerboundaryis);
-  bool has_outerboundaryis() const;
+  const OuterBoundaryIsPtr outerboundaryis();
+  void set_outerboundaryis(OuterBoundaryIsPtr outerboundaryis);
+  bool has_outerboundaryis();
   void clear_outerboundaryis();
 
-  // <innerBoundaryIs>
-  void add_innerboundaryis(InnerBoundaryIs* innerboundaryis);
-  const size_t innerboundaryis_array_size() const;
-  const InnerBoundaryIs* innerboundaryis_array_at(unsigned int index);
+  // <innerBoundaryIs>...
+  void add_innerboundaryis(InnerBoundaryIsPtr innerboundaryis);
+  const size_t innerboundaryis_array_size();
+  const InnerBoundaryIsPtr innerboundaryis_array_at(unsigned int index);
 };
 
 %nodefaultctor SimpleData;
 class SimpleData : public Element {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor SchemaData;
-class SchemaData : public Object {
+class SchemaData : public ExtendedDataMember {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <SimpleData>...
-  void add_simpledata(SimpleData* simpledata);
-  const size_t simpledata_array_size() const;
-  const SimpleData* simpledata_array_at(unsigned int index) const;
+  void add_simpledata(SimpleDataPtr simpledata);
+  const size_t simpledata_array_size();
+  const SimpleDataPtr simpledata_array_at(unsigned int index);
 };
 
 %nodefaultctor OverlayXY;
 class OverlayXY : public Vec2 {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor ScreenXY;
 class ScreenXY : public Vec2 {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor RotationXY;
 class RotationXY : public Vec2 {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor Size;
 class Size : public Vec2 {
-public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
 };
 
 %nodefaultctor ScreenOverlay;
 class ScreenOverlay : public Overlay {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <OverlayXY>
-  const OverlayXY* overlayxy() const;
-  void set_overlayxy(OverlayXY* overlayxy);
-  bool has_overlayxy() const;
+  const OverlayXYPtr overlayxy();
+  void set_overlayxy(OverlayXYPtr overlayxy);
+  bool has_overlayxy();
   void clear_overlayxy();
 
   // <ScreenXY>
-  const ScreenXY* screenxy() const;
-  void set_screenxy(ScreenXY* screenxy);
-  bool has_screenxy() const;
+  const ScreenXYPtr screenxy();
+  void set_screenxy(ScreenXYPtr screenxy);
+  bool has_screenxy();
   void clear_screenxy();
 
   // <RotationXY>
-  const RotationXY* rotationxy() const;
-  void set_rotationxy(RotationXY* rotationxy);
-  bool has_rotationxy() const;
+  const RotationXYPtr rotationxy();
+  void set_rotationxy(RotationXYPtr rotationxy);
+  bool has_rotationxy();
   void clear_rotationxy();
 
   // <size>
-  const Size* size() const;
-  void set_size(Size* size);
-  bool has_size() const;
+  const SizePtr size();
+  void set_size(SizePtr size);
+  bool has_size();
   void clear_size();
 
   // <rotation>
-  double rotation() const;
+  double rotation();
   void set_rotation(double rotation);
-  bool has_rotation() const;
+  bool has_rotation();
   void clear_rotation();
-
 };
 
 %nodefaultctor Style;
 class Style : public StyleSelector {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <IconStyle>
-  const IconStyle* iconstyle() const;
-  void set_iconstyle(IconStyle* iconstyle);
-  bool has_iconstyle() const;
+  const IconStylePtr iconstyle();
+  void set_iconstyle(IconStylePtr iconstyle);
+  bool has_iconstyle();
   void clear_iconstyle();
 
   // <LabelStyle>
-  const LabelStyle* labelstyle() const;
-  void set_labelstyle(LabelStyle* labelstyle);
-  bool has_labelstyle() const;
+  const LabelStylePtr labelstyle();
+  void set_labelstyle(LabelStylePtr labelstyle);
+  bool has_labelstyle();
   void clear_labelstyle();
 
   // <LineStyle>
-  const LineStyle* linestyle() const;
-  void set_linestyle(LineStyle* linestyle);
-  bool has_linestyle() const;
+  const LineStylePtr linestyle();
+  void set_linestyle(LineStylePtr linestyle);
+  bool has_linestyle();
   void clear_linestyle();
 
   // <PolyStyle>
-  const PolyStyle* polystyle() const;
-  void set_polystyle(PolyStyle* polystyle);
-  bool has_polystyle() const;
+  const PolyStylePtr polystyle();
+  void set_polystyle(PolyStylePtr polystyle);
+  bool has_polystyle();
   void clear_polystyle();
 
   // <BalloonStyle>
-  const BalloonStyle* balloonstyle() const;
-  void set_balloonstyle(BalloonStyle* balloonstyle);
-  bool has_balloonstyle() const;
+  const BalloonStylePtr balloonstyle();
+  void set_balloonstyle(BalloonStylePtr balloonstyle);
+  bool has_balloonstyle();
   void clear_balloonstyle();
 
   // <ListStyle>
-  const ListStyle* liststyle() const;
-  void set_liststyle(ListStyle* liststyle);
-  bool has_liststyle() const;
+  const ListStylePtr liststyle();
+  void set_liststyle(ListStylePtr liststyle);
+  bool has_liststyle();
   void clear_liststyle();
-
 };
 
 %nodefaultctor StyleMap;
 class StyleMap : public StyleSelector {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
-  // <Pair>
-  void add_pair(Pair* pair);
-  const size_t pair_array_size() const;
-  const Pair* pair_array_at(unsigned int index) const;
+  // <Pair>...
+  void add_pair(PairPtr pair);
+  const size_t pair_array_size();
+  const PairPtr pair_array_at(unsigned int index);
 };
 
 %nodefaultctor TimeSpan;
 class TimeSpan : public TimePrimitive {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <begin>
-  const std::string& begin() const;
+  const std::string& begin();
   void set_begin(const std::string& begin);
-  bool has_begin() const;
+  bool has_begin();
   void clear_begin();
 
   // <end>
-  const std::string& end() const;
+  const std::string& end();
   void set_end(const std::string& end);
-  bool has_end() const;
+  bool has_end();
   void clear_end();
-
 };
 
 %nodefaultctor TimeStamp;
 class TimeStamp : public TimePrimitive {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // <when>
-  const std::string& when() const;
+  const std::string& when();
   void set_when(const std::string& when);
-  bool has_when() const;
+  bool has_when();
   void clear_when();
-
 };
 
 %nodefaultctor Kml;
 class Kml : public Element {
 public:
-  virtual kmldom::KmlDomType Type();
-  virtual bool IsA(kmldom::KmlDomType type_id);
-
   // hint=
   const std::string& hint();
   void set_hint(const std::string& hint);
@@ -1683,17 +1429,14 @@ public:
   void clear_hint();
 
   // <NetworkLinkControl>
-  const NetworkLinkControl* networklinkcontrol() const;
-  void set_networklinkcontrol(NetworkLinkControl* networklinkcontrol);
-  bool has_networklinkcontrol() const;
+  const NetworkLinkControlPtr networklinkcontrol();
+  void set_networklinkcontrol(NetworkLinkControlPtr networklinkcontrol);
+  bool has_networklinkcontrol();
   void clear_networklinkcontrol();
 
   // Feature
-  const Feature* feature() const;
-  void set_feature(Feature* feature);
-  bool has_feature() const;
+  const FeaturePtr feature();
+  void set_feature(FeaturePtr feature);
+  bool has_feature();
   void clear_feature();
-
 };
-
-
