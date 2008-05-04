@@ -33,19 +33,16 @@
 
 using std::cout;
 using std::endl;
-using kmldom::Element;
-using kmldom::Feature;
-using kmldom::Kml;
+using kmldom::ElementPtr;
+using kmldom::FeaturePtr;
+using kmldom::KmlPtr;
 
-static const Feature* GetRootFeature(const Element* root) {
-  if (root) {
-    const Kml* kml = kmldom::AsKml(root);
-    if (kml && kml->has_feature()) {
-      return kml->feature();
-    }
-    return kmldom::AsFeature(root);
+static const FeaturePtr GetRootFeature(const ElementPtr& root) {
+  const KmlPtr kml = kmldom::AsKml(root);
+  if (kml && kml->has_feature()) {
+    return kml->feature();
   }
-  return NULL;
+  return kmldom::AsFeature(root);
 }
 
 int main(int argc, char** argv) {
@@ -63,14 +60,14 @@ int main(int argc, char** argv) {
 
   // Parse it.
   std::string errors;
-  Element* root = kmldom::Parse(kml, &errors);
+  ElementPtr root = kmldom::Parse(kml, &errors);
   if (!root) {
     cout << errors;
     return 1;
   }
 
   // Print it.
-  const Feature* feature = GetRootFeature(root);
+  const FeaturePtr feature = GetRootFeature(root);
   if (feature) {
     PrintFeature(feature, 0);
   } else {

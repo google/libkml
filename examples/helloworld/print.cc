@@ -32,8 +32,8 @@ using std::cout;
 using std::endl;
 using std::string;
 
-using kmldom::Container;
-using kmldom::Feature;
+using kmldom::ContainerPtr;
+using kmldom::FeaturePtr;
 
 void PrintIndented(string item, int depth) {
   while (depth--) {
@@ -42,7 +42,7 @@ void PrintIndented(string item, int depth) {
   cout << item;
 }
 
-void PrintFeature(const Feature* feature, int depth) {
+void PrintFeature(const FeaturePtr& feature, int depth) {
   switch (feature->Type()) {
     case kmldom::Type_Document:
       PrintIndented("Document", depth);
@@ -75,12 +75,12 @@ void PrintFeature(const Feature* feature, int depth) {
   }
   cout << endl;
 
-  if (const Container* container = kmldom::AsContainer(feature)) {
+  if (const ContainerPtr container = kmldom::AsContainer(feature)) {
     PrintContainer(container, depth+1);
   }
 }
 
-void PrintContainer(const Container* container, int depth) {
+void PrintContainer(const ContainerPtr& container, int depth) {
   for (int i = 0; i < container->feature_array_size(); ++i) {
     PrintFeature(container->feature_array_at(i), depth);
   }

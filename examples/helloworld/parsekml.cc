@@ -34,17 +34,14 @@
 int main() {
   // Parse KML from a memory buffer.
   std::string errors;
-  kmldom::Element* element = kmldom::Parse(
+  kmldom::ElementPtr element = kmldom::Parse(
     "<Placemark><name>hi</name></Placemark>",
     &errors);
 
   // Convert the type of the root element of the parse.
-  const kmldom::Placemark* placemark = kmldom::AsPlacemark(element);
+  const kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(element);
 
   // Access the value of the  element.
   std::cout << "The Placemark name is: " << placemark->name()
     << std::endl;
-
-  // Release memory
-  delete element;
 }

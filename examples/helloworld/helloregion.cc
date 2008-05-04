@@ -30,29 +30,37 @@
 #include <string>
 #include "kml/dom.h"
 
-using std::cout;
-using std::string;
-using kmldom::Folder;
-using kmldom::GroundOverlay;
-using kmldom::Kml;
+using kmldom::FolderPtr;
+using kmldom::GroundOverlayPtr;
+using kmldom::KmlPtr;
 using kmldom::KmlFactory;
-using kmldom::LatLonAltBox;
-using kmldom::LatLonBox;
-using kmldom::Lod;
-using kmldom::Region;
+using kmldom::LatLonAltBoxPtr;
+using kmldom::LatLonBoxPtr;
+using kmldom::LodPtr;
+using kmldom::RegionPtr;
+
+// Declare functions defined in this file.
+static GroundOverlayPtr CreateGroundOverlay(double north, double south,
+                                            double east, double west,
+                                            const std::string& name,
+                                            const std::string& color);
+static RegionPtr CreateRegion(double north, double south,
+                              double east, double west,
+                              double minlodpixels, double maxlodpixels);
+void SwapOverlays();
 
 // This creates a Region at the given bounding box with the given Lod range.
-static Region* CreateRegion(double north, double south,
-                            double east, double west,
-                            double minlodpixels, double maxlodpixels) {
+static RegionPtr CreateRegion(double north, double south,
+                              double east, double west,
+                              double minlodpixels, double maxlodpixels) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Region* region = factory->CreateRegion();
-  LatLonAltBox* latlonaltbox = factory->CreateLatLonAltBox();
+  RegionPtr region = factory->CreateRegion();
+  LatLonAltBoxPtr latlonaltbox = factory->CreateLatLonAltBox();
   latlonaltbox->set_north(north);
   latlonaltbox->set_south(south);
   latlonaltbox->set_east(east);
   latlonaltbox->set_west(west);
-  Lod* lod = factory->CreateLod();
+  LodPtr lod = factory->CreateLod();
   lod->set_minlodpixels(minlodpixels);
   lod->set_maxlodpixels(maxlodpixels);
   region->set_latlonaltbox(latlonaltbox);
@@ -62,13 +70,14 @@ static Region* CreateRegion(double north, double south,
 
 // This creates a GroundOverlay at the given bounding box.
 // Since there is no Icon (image) a polygon of the given color is drawn.
-static GroundOverlay* CreateGroundOverlay(double north, double south,
-                                          double east, double west,
-                                          string name, string color) {
+static GroundOverlayPtr CreateGroundOverlay(double north, double south,
+                                            double east, double west,
+                                            const std::string& name,
+                                            const std::string& color) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  GroundOverlay* groundoverlay = factory->CreateGroundOverlay();
+  GroundOverlayPtr groundoverlay = factory->CreateGroundOverlay();
   groundoverlay->set_name(name);
-  LatLonBox* latlonbox = factory->CreateLatLonBox();
+  LatLonBoxPtr latlonbox = factory->CreateLatLonBox();
   latlonbox->set_north(north);
   latlonbox->set_south(south);
   latlonbox->set_east(east);
@@ -89,31 +98,29 @@ void SwapOverlays() {
   double lod_a = 128;  // 128 x 128 pixels
   double lod_b = 512;
   double lod_c = 1024;
-  string solid_red("ff0000ff");  // aabbggrr
-  string solid_blue("ffff0000");
+  std::string solid_red("ff0000ff");  // aabbggrr
+  std::string solid_blue("ffff0000");
 
   // Create a solid red GroundOverlay.
-  GroundOverlay* red =
+  GroundOverlayPtr red =
     CreateGroundOverlay(north, south, east, west, "Red", solid_red);
   // Give it a Region with lod range a - b
   red->set_region(CreateRegion(north, south, east, west, lod_a, lod_b));
   // Create a solid blue GroundOverlay.
-  GroundOverlay* blue =
+  GroundOverlayPtr blue =
     CreateGroundOverlay(north, south, east, west, "Blue", solid_blue);
   // Give it a Region with lod range b - c
   blue->set_region(CreateRegion(north, south, east, west, lod_b, lod_c));
 
-  Folder* folder = factory->CreateFolder();
+  FolderPtr folder = factory->CreateFolder();
   folder->set_name("Swap Overlays");
   folder->add_feature(red);
   folder->add_feature(blue);
 
-  Kml* kml = factory->CreateKml();
+  KmlPtr kml = factory->CreateKml();
   kml->set_feature(folder);
 
-  cout << kmldom::SerializePretty(*kml);
-
-  delete kml;  // Deletes kml and all children we attached above.
+  std::cout << kmldom::SerializePretty(kml);
 }
 
 

@@ -31,22 +31,22 @@
 #include "kml/dom.h"
 #include "kml/util/fileio.h"
 
-using kmldom::Container;
-using kmldom::Element;
-using kmldom::Feature;
-using kmldom::Geometry;
-using kmldom::Kml;
-using kmldom::MultiGeometry;
-using kmldom::Placemark;
+using kmldom::ContainerPtr;
+using kmldom::ElementPtr;
+using kmldom::FeaturePtr;
+using kmldom::GeometryPtr;
+using kmldom::KmlPtr;
+using kmldom::MultiGeometryPtr;
+using kmldom::PlacemarkPtr;
 using std::cout;
 using std::endl;
 
-static void WalkGeometry(const Geometry* geometry);
-static void WalkFeature(const Feature* feature);
-static void WalkContainer(const Container& container);
-static const Feature* GetRootFeature(const Element* root);
+static void WalkGeometry(const GeometryPtr& geometry);
+static void WalkFeature(const FeaturePtr& feature);
+static void WalkContainer(const ContainerPtr& container);
+static const FeaturePtr GetRootFeature(const ElementPtr& root);
 
-static void WalkGeometry(const Geometry* geometry) {
+static void WalkGeometry(const GeometryPtr& geometry) {
   if (!geometry) {
     return;
   }
@@ -76,48 +76,47 @@ static void WalkGeometry(const Geometry* geometry) {
   }
   cout << endl;
   // Recurse into <MultiGeometry>.
-  if (const MultiGeometry* multigeometry = kmldom::AsMultiGeometry(geometry)) {
+  if (const MultiGeometryPtr multigeometry =
+      kmldom::AsMultiGeometry(geometry)) {
     for (size_t i = 0; i < multigeometry->geometry_array_size(); ++i) {
       WalkGeometry(multigeometry->geometry_array_at(i));
     }
   }
 }
 
-static void WalkFeature(const Feature* feature) {
+static void WalkFeature(const FeaturePtr& feature) {
   if (feature) {
-    if (const Container* container = kmldom::AsContainer(feature)) {
-      WalkContainer(*container);
-    } else if (const Placemark* placemark = kmldom::AsPlacemark(feature)) {
+    if (const ContainerPtr container = kmldom::AsContainer(feature)) {
+      WalkContainer(container);
+    } else if (const PlacemarkPtr placemark = kmldom::AsPlacemark(feature)) {
       WalkGeometry(placemark->geometry());
     }
   }
 }
 
-static void WalkContainer(const Container& container) {
-  for (size_t i = 0; i < container.feature_array_size(); ++i) {
-    WalkFeature(container.feature_array_at(i));
+static void WalkContainer(const ContainerPtr& container) {
+  for (size_t i = 0; i < container->feature_array_size(); ++i) {
+    WalkFeature(container->feature_array_at(i));
   }
 }
 
-static const Feature* GetRootFeature(const Element* root) {
-  if (root) {
-    const Kml* kml = kmldom::AsKml(root);
-    if (kml && kml->has_feature()) {
-      return kml->feature();
-    }
-    return kmldom::AsFeature(root);
+static const FeaturePtr GetRootFeature(const ElementPtr& root) {
+  const KmlPtr kml = kmldom::AsKml(root);
+  if (kml && kml->has_feature()) {
+    return kml->feature();
   }
-  return NULL;
+  return kmldom::AsFeature(root);
 }
 
 int main(int argc, char** argv) {
   std::string kml;
   ReadFileToString(argv[1], &kml);
   std::string errors;
-  Element* root = kmldom::Parse(kml, &errors);
-  if (root) {
-    WalkFeature(GetRootFeature(root));
-    delete root;
+  WalkFeature(GetRootFeature(kmldom::Parse(kml, &errors)));
+  if (!errors.empty()) {
+    cout << argv[1] << ": parse error" << endl;
+    cout << errors << endl;
+    return 1;
   }
   return 0;
 }

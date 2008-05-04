@@ -31,24 +31,24 @@
 
 using std::cout;
 using std::endl;
-using kmldom::Coordinates;
+using kmldom::CoordinatesPtr;
 using kmldom::KmlFactory;
-using kmldom::Placemark;
-using kmldom::Point;
+using kmldom::PlacemarkPtr;
+using kmldom::PointPtr;
 
 void HelloKml(bool verbose) {
   KmlFactory* factory(KmlFactory::GetFactory());
   // <coordinates>
-  Coordinates* coordinates(factory->CreateCoordinates());
+  CoordinatesPtr coordinates(factory->CreateCoordinates());
   coordinates->add_point3(-122.456, 37.123, 314.159);
   // <Point><coordinates>...
-  Point* point(factory->CreatePoint());
+  PointPtr point(factory->CreatePoint());
   point->set_coordinates(coordinates);
   // <Point><altitudeMode>...<coordinates>...
   point->set_altitudemode(kmldom::ALTITUDEMODE_RELATIVETOGROUND);
   assert(point->altitudemode() == kmldom::ALTITUDEMODE_RELATIVETOGROUND);
   // <Placemark><Point><coordinates>...
-  Placemark* placemark(factory->CreatePlacemark());
+  PlacemarkPtr placemark(factory->CreatePlacemark());
   placemark->set_geometry(point);
 
   // A Placemark is (duh) a Placemark
@@ -64,7 +64,7 @@ void HelloKml(bool verbose) {
   // And we can test to see if that geometry is a Point.
   assert(placemark->geometry()->IsA(kmldom::Type_Point));
   // If it is, we can make a point from it. (Yes, API should hide casting.)
-  const Point* pt = kmldom::AsPoint(placemark->geometry());
+  const PointPtr pt = kmldom::AsPoint(placemark->geometry());
   assert(pt->altitudemode() == kmldom::ALTITUDEMODE_RELATIVETOGROUND);
   if (verbose) {
     cout.precision(6);
@@ -73,8 +73,7 @@ void HelloKml(bool verbose) {
     cout << pt->coordinates()->coordinates_array_at(0).longitude() << endl;
   }
 
-  // Free everything.
-  delete placemark;
+  // All storage is freed by smart pointers as they go out of scope.
 }
 
 int main(int argc, char** argv) {
