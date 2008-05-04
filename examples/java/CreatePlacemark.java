@@ -64,7 +64,5 @@ public class CreatePlacemark {
 
     // NOTE: this _requires_ kmldom.
     System.out.print(kmldom.SerializePretty(kml));
-
-    factory.DeleteElement(kml);
   }
 }
