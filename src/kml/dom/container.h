@@ -43,24 +43,24 @@ class Container : public Feature {
     return type == Type_Container || Feature::IsA(type);
   }
 
-  void add_feature(Feature* feature);
+  void add_feature(const FeaturePtr& feature);
 
   const size_t feature_array_size() const {
     return feature_array_.size();
   }
 
-  const Feature* feature_array_at(unsigned int index) const {
+  const FeaturePtr& feature_array_at(unsigned int index) const {
     return feature_array_[index];
   }
 
  protected:
   // Container is abstract.
   Container();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:
-  std::vector<Feature*> feature_array_;
+  std::vector<FeaturePtr> feature_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Container);
 };
 

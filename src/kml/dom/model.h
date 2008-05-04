@@ -33,6 +33,7 @@
 #include <vector>
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/link.h"
 #include "kml/dom/object.h"
 
@@ -99,7 +100,7 @@ class Location : public Object {
   friend class KmlFactory;
   Location();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double longitude_;
@@ -172,7 +173,7 @@ class Orientation : public Object {
   friend class KmlFactory;
   Orientation();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double heading_;
@@ -245,7 +246,7 @@ class Scale : public Object {
   friend class KmlFactory;
   Scale();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double x_;
@@ -302,7 +303,7 @@ class Alias : public Object {
   friend class KmlFactory;
   Alias();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::string targethref_;
@@ -321,13 +322,13 @@ class ResourceMap : public Object {
     return type == Type_ResourceMap || Object::IsA(type);
   }
 
-  void add_alias(Alias* alias);
+  void add_alias(const AliasPtr& alias);
 
   const size_t alias_array_size() const {
     return alias_array_.size();
   }
 
-  const Alias* alias_array_at(unsigned int index) const {
+  const AliasPtr& alias_array_at(unsigned int index) const {
     return alias_array_[index];
   }
 
@@ -335,10 +336,10 @@ class ResourceMap : public Object {
   friend class KmlFactory;
   ResourceMap();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Alias*> alias_array_;
+  std::vector<AliasPtr> alias_array_;
   DISALLOW_EVIL_CONSTRUCTORS(ResourceMap);
 };
 
@@ -352,82 +353,52 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <Location>
-  const Location* location() const { return location_; }
+  const LocationPtr& location() const { return location_; }
   bool has_location() const { return location_ != NULL; }
-  void set_location(Location* location) {
-    if (location == NULL) {
-      clear_location();
-    } else if (location->set_parent(this)) {
-      delete location_;
-      location_ = location;
-    }
+  void set_location(const LocationPtr& location) {
+    SetComplexChild(location, &location_);
   }
   void clear_location() {
-    delete location_;
-    location_ = NULL;
+    set_location(NULL);
   }
 
   // <Orientation>
-  const Orientation* orientation() const { return orientation_; }
+  const OrientationPtr& orientation() const { return orientation_; }
   bool has_orientation() const { return orientation_ != NULL; }
-  void set_orientation(Orientation* orientation) {
-    if (orientation == NULL) {
-      clear_orientation();
-    } else if (orientation->set_parent(this)) {
-      delete orientation_;
-      orientation_ = orientation;
-    }
+  void set_orientation(const OrientationPtr& orientation) {
+    SetComplexChild(orientation, &orientation_);
   }
   void clear_orientation() {
-    delete orientation_;
-    orientation_ = NULL;
+    set_orientation(NULL);
   }
 
   // <Scale>
-  const Scale* scale() const { return scale_; }
+  const ScalePtr& scale() const { return scale_; }
   bool has_scale() const { return scale_ != NULL; }
-  void set_scale(Scale* scale) {
-    if (scale == NULL) {
-      clear_scale();
-    } else if (scale->set_parent(this)) {
-      delete scale_;
-      scale_ = scale;
-    }
+  void set_scale(const ScalePtr& scale) {
+    SetComplexChild(scale, &scale_);
   }
   void clear_scale() {
-    delete scale_;
-    scale_ = NULL;
+    set_scale(NULL);
   }
 
   // <Link>
-  const Link* link() const { return link_; }
+  const LinkPtr& link() const { return link_; }
   bool has_link() const { return link_ != NULL; }
-  void set_link(Link* link) {
-    if (link == NULL) {
-      clear_link();
-    } else if (link->set_parent(this)) {
-      delete link_;
-      link_ = link;
-    }
+  void set_link(const LinkPtr& link) {
+    SetComplexChild(link, &link_);
   }
   void clear_link() {
-    delete link_;
-    link_ = NULL;
+    set_link(NULL);
   }
 
   // <ResourceMap>
-  const ResourceMap* resourcemap() const { return resourcemap_; }
+  const ResourceMapPtr& resourcemap() const { return resourcemap_; }
   bool has_resourcemap() const { return resourcemap_ != NULL; }
-  void set_resourcemap(ResourceMap* resourcemap) {
-    if (resourcemap == NULL) {
-      clear_resourcemap();
-    } else if (resourcemap->set_parent(this)) {
-      delete resourcemap_;
-      resourcemap_ = resourcemap;
-    }
+  void set_resourcemap(const ResourceMapPtr& resourcemap) {
+    SetComplexChild(resourcemap, &resourcemap_);
   }
   void clear_resourcemap() {
-    delete resourcemap_;
     resourcemap_ = NULL;
   }
 
@@ -435,14 +406,14 @@ class Model : public AltitudeGeometryCommon {
   friend class KmlFactory;
   Model();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  Location* location_;
-  Orientation* orientation_;
-  Scale* scale_;
-  Link* link_;
-  ResourceMap* resourcemap_;
+  LocationPtr location_;
+  OrientationPtr orientation_;
+  ScalePtr scale_;
+  LinkPtr link_;
+  ResourceMapPtr resourcemap_;
   DISALLOW_EVIL_CONSTRUCTORS(Model);
 };
 

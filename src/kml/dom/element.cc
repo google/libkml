@@ -43,14 +43,11 @@ Element::Element(KmlDomType type_id)
 
 Element::~Element() {
   delete unknown_attributes_;
-  for (size_t i = 0; i < unknown_legal_elements_array_.size(); ++i) {
-    delete unknown_legal_elements_array_[i];
-  }
 }
 
 // Anything reaching this level is an known (KML) element found in an illegal
 // position during parse. We will store it for later serialiation.
-void Element::AddElement(Element* element) {
+void Element::AddElement(const ElementPtr& element) {
   unknown_legal_elements_array_.push_back(element);
 }
 
@@ -100,7 +97,7 @@ void Element::GetAttributes(Attributes* attributes) const {
 }
 
 Field::Field(KmlDomType type_id)
-  : Element(type_id), xsd_(Xsd::GetSchema()) {
+  : Element(type_id), xsd_(*Xsd::GetSchema()) {
 }
 
 bool Field::SetBool(bool* val) {
@@ -109,40 +106,36 @@ bool Field::SetBool(bool* val) {
     *val = char_data() == "1" || char_data() == "true";
     ret = true;
   }
-  delete this;
   return ret;
 }
-  
+
 bool Field::SetDouble(double* val) {
   bool ret = false;
   if (val) {
     *val = strtod(char_data().c_str(), NULL);
     ret = true;
   }
-  delete this;
   return ret;
 }
-  
+
 bool Field::SetInt(int* val) {
   bool ret = false;
   if (val) {
     *val = atoi(char_data().c_str());
     ret = true;
   }
-  delete this;
   return ret;
 }
-  
+
 bool Field::SetEnum(int* enum_val) {
   bool ret = false;
   if (enum_val) {
-    int val = xsd_->EnumId(Type(), char_data());
+    int val = xsd_.EnumId(Type(), char_data());
     if (val != -1) {
       *enum_val = val;
       ret = true;
     }
   }
-  delete this;
   return ret;
 }
 
@@ -152,7 +145,6 @@ bool Field::SetString(std::string* val) {
     *val = char_data();
     ret = true;
   }
-  delete this;
   return ret;
 }
 

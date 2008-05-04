@@ -28,8 +28,9 @@
 
 #include <string>
 #include "kml/util/unit_test.h"
-#include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/model.h"
 
 namespace kmldom {
@@ -51,7 +52,6 @@ class LocationTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete location_;
   }
 
  protected:
@@ -61,7 +61,7 @@ class LocationTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Location* location_;
+  LocationPtr location_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LocationTest);
@@ -144,7 +144,6 @@ class OrientationTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete orientation_;
   }
 
  protected:
@@ -154,7 +153,7 @@ class OrientationTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Orientation* orientation_;
+  OrientationPtr orientation_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(OrientationTest);
@@ -237,7 +236,6 @@ class ScaleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete scale_;
   }
 
  protected:
@@ -247,7 +245,7 @@ class ScaleTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Scale* scale_;
+  ScalePtr scale_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ScaleTest);
@@ -330,7 +328,6 @@ class AliasTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete alias_;
   }
 
  protected:
@@ -340,7 +337,7 @@ class AliasTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Alias* alias_;
+  AliasPtr alias_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AliasTest);
@@ -414,7 +411,6 @@ class ResourceMapTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete resourcemap_;
   }
 
  protected:
@@ -423,7 +419,7 @@ class ResourceMapTest : public CPPUNIT_NS::TestFixture {
   void TestAddAliases();
 
  private:
-  ResourceMap* resourcemap_;
+  ResourceMapPtr resourcemap_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ResourceMapTest);
@@ -445,7 +441,7 @@ void ResourceMapTest::TestAddAliases() {
   CPPUNIT_ASSERT(0 == resourcemap_->alias_array_size());
 
   // Create an Alias:
-  Alias* alias = KmlFactory::GetFactory()->CreateAlias();
+  AliasPtr alias = KmlFactory::GetFactory()->CreateAlias();
   const std::string targethref0("target0.jpg");
   const std::string sourcehref0("source0.jpg");
   alias->set_targethref(targethref0);
@@ -496,7 +492,6 @@ class ModelTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete model_;
   }
 
  protected:
@@ -506,7 +501,7 @@ class ModelTest : public CPPUNIT_NS::TestFixture {
   void TestSetParent();
 
  private:
-  Model* model_;
+  ModelPtr model_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ModelTest);
@@ -567,11 +562,11 @@ void ModelTest::TestSetGetHasClear() {
 // (This tests the internal set_parent() method.)
 void ModelTest::TestSetParent() {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Location* location = factory->CreateLocation();
-  Orientation* orientation = factory->CreateOrientation();
-  Scale* scale = factory->CreateScale();
-  Link* link = factory->CreateLink();
-  ResourceMap* resourcemap = factory->CreateResourceMap();
+  LocationPtr location = factory->CreateLocation();
+  OrientationPtr orientation = factory->CreateOrientation();
+  ScalePtr scale = factory->CreateScale();
+  LinkPtr link = factory->CreateLink();
+  ResourceMapPtr resourcemap = factory->CreateResourceMap();
 
   // Give these all to model_.
   model_->set_location(location);
@@ -581,7 +576,7 @@ void ModelTest::TestSetParent() {
   model_->set_resourcemap(resourcemap);
 
   // Try to give these all to another model.
-  Model* model2 = factory->CreateModel();
+  ModelPtr model2 = factory->CreateModel();
   model2->set_location(location);
   model2->set_orientation(orientation);
   model2->set_scale(scale);
@@ -602,9 +597,7 @@ void ModelTest::TestSetParent() {
   CPPUNIT_ASSERT(false == model2->has_link());
   CPPUNIT_ASSERT(false == model2->has_resourcemap());
 
-  delete model2;  // Delete the model created here.
-
-  // Unit test tearDown deletes model_ and the children created here.
+  // smart pointer deletes model_ and the children created here.
 }
 
 }  // end namespace kmldom

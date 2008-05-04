@@ -29,6 +29,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/feature.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/networklinkcontrol.h"
 
 namespace kmldom {
@@ -55,51 +56,39 @@ class Kml : public Element {
     has_hint_ = false;
   }
 
-  const NetworkLinkControl* networklinkcontrol() const {
+  const NetworkLinkControlPtr& networklinkcontrol() const {
     return networklinkcontrol_;
   }
   bool has_networklinkcontrol() const { return networklinkcontrol_ != NULL; }
-  void set_networklinkcontrol(NetworkLinkControl* networklinkcontrol) {
-    if (networklinkcontrol == NULL) {
-      clear_networklinkcontrol();
-    } else if (networklinkcontrol->set_parent(this)) {
-      delete networklinkcontrol_;  // "Last one wins"
-      networklinkcontrol_ = networklinkcontrol;
-    }
+  void set_networklinkcontrol(const NetworkLinkControlPtr& networklinkcontrol) {
+    SetComplexChild(networklinkcontrol, &networklinkcontrol_);
   }
   void clear_networklinkcontrol() {
-    delete networklinkcontrol_;
-    networklinkcontrol_ = NULL;
+    set_networklinkcontrol(NULL);
   }
 
-  const Feature* feature() const { return feature_; }
+  const FeaturePtr& feature() const { return feature_; }
   bool has_feature() const { return feature_ != NULL; }
-  void set_feature(Feature* feature) {
-    if (feature == NULL) {
-      clear_feature();
-    } else if (feature->set_parent(this)) {
-      delete feature_;  // "Last one wins"
-      feature_ = feature;
-    }
+  void set_feature(const FeaturePtr& feature) {
+    SetComplexChild(feature, &feature_);
   }
   void clear_feature() {
-    delete feature_;
-    feature_ = NULL;
+    set_feature(NULL);
   }
 
  private:
   friend class KmlFactory;
   Kml();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;
   std::string hint_;
   bool has_hint_;
-  NetworkLinkControl* networklinkcontrol_;
-  Feature* feature_;
+  NetworkLinkControlPtr networklinkcontrol_;
+  FeaturePtr feature_;
   DISALLOW_EVIL_CONSTRUCTORS(Kml);
 };
 

@@ -25,6 +25,7 @@
 
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 
 namespace kmldom {
@@ -39,7 +40,7 @@ KmlFactory* KmlFactory::GetFactory() {
   return factory_;
 }
 
-Element* KmlFactory::CreateElementById(KmlDomType id) const {
+ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   switch (id) {
   case Type_Alias: return CreateAlias();
   case Type_BalloonStyle: return CreateBalloonStyle();
@@ -111,13 +112,6 @@ Element* KmlFactory::CreateElementById(KmlDomType id) const {
 
 Field* KmlFactory::CreateFieldById(KmlDomType type_id) const {
   return new Field(type_id);
-}
-
-// The SWIG bindings do not permit direct construction of any Element.
-// As such all Elements are created using the factory and must be
-// returned here for destruction.
-void KmlFactory::DeleteElement(Element* element) {
-  delete element;
 }
 
 Alias* KmlFactory::CreateAlias() const {

@@ -43,291 +43,87 @@ CPPUNIT_TEST_SUITE_REGISTRATION(KmlCastTest);
 
 void KmlCastTest::TestCasts() {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Element* e;
 
-  e = factory->CreateElementById(Type_LookAt);
-  CPPUNIT_ASSERT(AsAbstractView(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_IconStyle);
-  CPPUNIT_ASSERT(AsColorStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Folder);
-  CPPUNIT_ASSERT(AsContainer(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Placemark);
-  CPPUNIT_ASSERT(AsFeature(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Point);
-  CPPUNIT_ASSERT(AsGeometry(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Placemark);
-  CPPUNIT_ASSERT(AsObject(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_GroundOverlay);
-  CPPUNIT_ASSERT(AsOverlay(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Style);
-  CPPUNIT_ASSERT(AsStyleSelector(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_BalloonStyle);
-  CPPUNIT_ASSERT(AsSubStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_TimeSpan);
-  CPPUNIT_ASSERT(AsTimePrimitive(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Alias);
-  CPPUNIT_ASSERT(AsAlias(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_BalloonStyle);
-  CPPUNIT_ASSERT(AsBalloonStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Camera);
-  CPPUNIT_ASSERT(AsCamera(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Change);
-  CPPUNIT_ASSERT(AsChange(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Create);
-  CPPUNIT_ASSERT(AsCreate(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Data);
-  CPPUNIT_ASSERT(AsData(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Delete);
-  CPPUNIT_ASSERT(AsDelete(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Document);
-  CPPUNIT_ASSERT(AsDocument(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ExtendedData);
-  CPPUNIT_ASSERT(AsExtendedData(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Folder);
-  CPPUNIT_ASSERT(AsFolder(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_GroundOverlay);
-  CPPUNIT_ASSERT(AsGroundOverlay(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_hotSpot);
-  CPPUNIT_ASSERT(AsHotSpot(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Icon);
-  CPPUNIT_ASSERT(AsIcon(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_IconStyle);
-  CPPUNIT_ASSERT(AsIconStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ImagePyramid);
-  CPPUNIT_ASSERT(AsImagePyramid(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_innerBoundaryIs);
-  CPPUNIT_ASSERT(AsInnerBoundaryIs(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ItemIcon);
-  CPPUNIT_ASSERT(AsItemIcon(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LabelStyle);
-  CPPUNIT_ASSERT(AsLabelStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LatLonAltBox);
-  CPPUNIT_ASSERT(AsLatLonAltBox(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LatLonBox);
-  CPPUNIT_ASSERT(AsLatLonBox(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LineString);
-  CPPUNIT_ASSERT(AsLineString(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LineStyle);
-  CPPUNIT_ASSERT(AsLineStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LinearRing);
-  CPPUNIT_ASSERT(AsLinearRing(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Link);
-  CPPUNIT_ASSERT(AsLink(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_linkSnippet);
-  CPPUNIT_ASSERT(AsLinkSnippet(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ListStyle);
-  CPPUNIT_ASSERT(AsListStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Location);
-  CPPUNIT_ASSERT(AsLocation(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Lod);
-  CPPUNIT_ASSERT(AsLod(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_LookAt);
-  CPPUNIT_ASSERT(AsLookAt(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_kml);
-  CPPUNIT_ASSERT(AsKml(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Model);
-  CPPUNIT_ASSERT(AsModel(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_MultiGeometry);
-  CPPUNIT_ASSERT(AsMultiGeometry(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_NetworkLink);
-  CPPUNIT_ASSERT(AsNetworkLink(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_NetworkLinkControl);
-  CPPUNIT_ASSERT(AsNetworkLinkControl(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Orientation);
-  CPPUNIT_ASSERT(AsOrientation(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_outerBoundaryIs);
-  CPPUNIT_ASSERT(AsOuterBoundaryIs(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_overlayXY);
-  CPPUNIT_ASSERT(AsOverlayXY(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Pair);
-  CPPUNIT_ASSERT(AsPair(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_PhotoOverlay);
-  CPPUNIT_ASSERT(AsPhotoOverlay(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Placemark);
-  CPPUNIT_ASSERT(AsPlacemark(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Point);
-  CPPUNIT_ASSERT(AsPoint(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_PolyStyle);
-  CPPUNIT_ASSERT(AsPolyStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Polygon);
-  CPPUNIT_ASSERT(AsPolygon(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Region);
-  CPPUNIT_ASSERT(AsRegion(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ResourceMap);
-  CPPUNIT_ASSERT(AsResourceMap(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_rotationXY);
-  CPPUNIT_ASSERT(AsRotationXY(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Scale);
-  CPPUNIT_ASSERT(AsScale(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Schema);
-  CPPUNIT_ASSERT(AsSchema(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_SchemaData);
-  CPPUNIT_ASSERT(AsSchemaData(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ScreenOverlay);
-  CPPUNIT_ASSERT(AsScreenOverlay(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_screenXY);
-  CPPUNIT_ASSERT(AsScreenXY(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_SimpleData);
-  CPPUNIT_ASSERT(AsSimpleData(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_SimpleField);
-  CPPUNIT_ASSERT(AsSimpleField(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_size);
-  CPPUNIT_ASSERT(AsSize(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Snippet);
-  CPPUNIT_ASSERT(AsSnippet(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Style);
-  CPPUNIT_ASSERT(AsStyle(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_StyleMap);
-  CPPUNIT_ASSERT(AsStyleMap(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_TimeSpan);
-  CPPUNIT_ASSERT(AsTimeSpan(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_TimeStamp);
-  CPPUNIT_ASSERT(AsTimeStamp(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_Update);
-  CPPUNIT_ASSERT(AsUpdate(e));
-  delete e;
-
-  e = factory->CreateElementById(Type_ViewVolume);
-  CPPUNIT_ASSERT(AsViewVolume(e));
-  delete e;
+  // The temporary ElementPtr holds a reference to the created Element
+  // which is released when the As*() goes out of scope.
+  CPPUNIT_ASSERT(AsAbstractView(factory->CreateElementById(Type_LookAt)));
+  CPPUNIT_ASSERT(AsColorStyle(factory->CreateElementById(Type_IconStyle)));
+  CPPUNIT_ASSERT(AsContainer(factory->CreateElementById(Type_Folder)));
+  CPPUNIT_ASSERT(AsFeature(factory->CreateElementById(Type_Placemark)));
+  CPPUNIT_ASSERT(AsGeometry(factory->CreateElementById(Type_Point)));
+  CPPUNIT_ASSERT(AsObject(factory->CreateElementById(Type_Placemark)));
+  CPPUNIT_ASSERT(AsOverlay(factory->CreateElementById(Type_GroundOverlay)));
+  CPPUNIT_ASSERT(AsStyleSelector(factory->CreateElementById(Type_Style)));
+  CPPUNIT_ASSERT(AsSubStyle(factory->CreateElementById(Type_BalloonStyle)));
+  CPPUNIT_ASSERT(AsTimePrimitive(factory->CreateElementById(Type_TimeSpan)));
+  CPPUNIT_ASSERT(AsAlias(factory->CreateElementById(Type_Alias)));
+  CPPUNIT_ASSERT(AsBalloonStyle(factory->CreateElementById(Type_BalloonStyle)));
+  CPPUNIT_ASSERT(AsCamera(factory->CreateElementById(Type_Camera)));
+  CPPUNIT_ASSERT(AsChange(factory->CreateElementById(Type_Change)));
+  CPPUNIT_ASSERT(AsCoordinates(factory->CreateElementById(Type_coordinates)));
+  CPPUNIT_ASSERT(AsCreate(factory->CreateElementById(Type_Create)));
+  CPPUNIT_ASSERT(AsData(factory->CreateElementById(Type_Data)));
+  CPPUNIT_ASSERT(AsDelete(factory->CreateElementById(Type_Delete)));
+  CPPUNIT_ASSERT(AsDocument(factory->CreateElementById(Type_Document)));
+  CPPUNIT_ASSERT(AsExtendedData(factory->CreateElementById(Type_ExtendedData)));
+  CPPUNIT_ASSERT(AsFolder(factory->CreateElementById(Type_Folder)));
+  CPPUNIT_ASSERT(AsGroundOverlay(
+      factory->CreateElementById(Type_GroundOverlay)));
+  CPPUNIT_ASSERT(AsHotSpot(factory->CreateElementById(Type_hotSpot)));
+  CPPUNIT_ASSERT(AsIcon(factory->CreateElementById(Type_Icon)));
+  CPPUNIT_ASSERT(AsIconStyle(factory->CreateElementById(Type_IconStyle)));
+  CPPUNIT_ASSERT(AsImagePyramid(factory->CreateElementById(Type_ImagePyramid)));
+  CPPUNIT_ASSERT(AsInnerBoundaryIs(
+      factory->CreateElementById(Type_innerBoundaryIs)));
+  CPPUNIT_ASSERT(AsItemIcon(factory->CreateElementById(Type_ItemIcon)));
+  CPPUNIT_ASSERT(AsLabelStyle(factory->CreateElementById(Type_LabelStyle)));
+  CPPUNIT_ASSERT(AsLatLonAltBox(factory->CreateElementById(Type_LatLonAltBox)));
+  CPPUNIT_ASSERT(AsLatLonBox(factory->CreateElementById(Type_LatLonBox)));
+  CPPUNIT_ASSERT(AsLineString(factory->CreateElementById(Type_LineString)));
+  CPPUNIT_ASSERT(AsLineStyle(factory->CreateElementById(Type_LineStyle)));
+  CPPUNIT_ASSERT(AsLinearRing(factory->CreateElementById(Type_LinearRing)));
+  CPPUNIT_ASSERT(AsLink(factory->CreateElementById(Type_Link)));
+  CPPUNIT_ASSERT(AsLinkSnippet(factory->CreateElementById(Type_linkSnippet)));
+  CPPUNIT_ASSERT(AsListStyle(factory->CreateElementById(Type_ListStyle)));
+  CPPUNIT_ASSERT(AsLocation(factory->CreateElementById(Type_Location)));
+  CPPUNIT_ASSERT(AsLod(factory->CreateElementById(Type_Lod)));
+  CPPUNIT_ASSERT(AsLookAt(factory->CreateElementById(Type_LookAt)));
+  CPPUNIT_ASSERT(AsKml(factory->CreateElementById(Type_kml)));
+  CPPUNIT_ASSERT(AsModel(factory->CreateElementById(Type_Model)));
+  CPPUNIT_ASSERT(AsMultiGeometry(
+      factory->CreateElementById(Type_MultiGeometry)));
+  CPPUNIT_ASSERT(AsNetworkLink(factory->CreateElementById(Type_NetworkLink)));
+  CPPUNIT_ASSERT(AsNetworkLinkControl(
+          factory->CreateElementById(Type_NetworkLinkControl)));
+  CPPUNIT_ASSERT(AsOrientation(factory->CreateElementById(Type_Orientation)));
+  CPPUNIT_ASSERT(AsOuterBoundaryIs(
+      factory->CreateElementById(Type_outerBoundaryIs)));
+  CPPUNIT_ASSERT(AsOverlayXY(factory->CreateElementById(Type_overlayXY)));
+  CPPUNIT_ASSERT(AsPair(factory->CreateElementById(Type_Pair)));
+  CPPUNIT_ASSERT(AsPhotoOverlay(factory->CreateElementById(Type_PhotoOverlay)));
+  CPPUNIT_ASSERT(AsPlacemark(factory->CreateElementById(Type_Placemark)));
+  CPPUNIT_ASSERT(AsPoint(factory->CreateElementById(Type_Point)));
+  CPPUNIT_ASSERT(AsPolyStyle(factory->CreateElementById(Type_PolyStyle)));
+  CPPUNIT_ASSERT(AsPolygon(factory->CreateElementById(Type_Polygon)));
+  CPPUNIT_ASSERT(AsRegion(factory->CreateElementById(Type_Region)));
+  CPPUNIT_ASSERT(AsResourceMap(factory->CreateElementById(Type_ResourceMap)));
+  CPPUNIT_ASSERT(AsRotationXY(factory->CreateElementById(Type_rotationXY)));
+  CPPUNIT_ASSERT(AsScale(factory->CreateElementById(Type_Scale)));
+  CPPUNIT_ASSERT(AsSchema(factory->CreateElementById(Type_Schema)));
+  CPPUNIT_ASSERT(AsSchemaData(factory->CreateElementById(Type_SchemaData)));
+  CPPUNIT_ASSERT(AsScreenOverlay(
+     factory->CreateElementById(Type_ScreenOverlay)));
+  CPPUNIT_ASSERT(AsScreenXY(factory->CreateElementById(Type_screenXY)));
+  CPPUNIT_ASSERT(AsSimpleData(factory->CreateElementById(Type_SimpleData)));
+  CPPUNIT_ASSERT(AsSimpleField(factory->CreateElementById(Type_SimpleField)));
+  CPPUNIT_ASSERT(AsSize(factory->CreateElementById(Type_size)));
+  CPPUNIT_ASSERT(AsSnippet(factory->CreateElementById(Type_Snippet)));
+  CPPUNIT_ASSERT(AsStyle(factory->CreateElementById(Type_Style)));
+  CPPUNIT_ASSERT(AsStyleMap(factory->CreateElementById(Type_StyleMap)));
+  CPPUNIT_ASSERT(AsTimeSpan(factory->CreateElementById(Type_TimeSpan)));
+  CPPUNIT_ASSERT(AsTimeStamp(factory->CreateElementById(Type_TimeStamp)));
+  CPPUNIT_ASSERT(AsUpdate(factory->CreateElementById(Type_Update)));
+  CPPUNIT_ASSERT(AsViewVolume(factory->CreateElementById(Type_ViewVolume)));
 }
 
 }  // end namespace kmldom

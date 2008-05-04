@@ -25,20 +25,14 @@
 
 #include "kml/dom/kml.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-Kml::Kml()
-  : has_hint_(false),
-    networklinkcontrol_(NULL),
-    feature_(NULL) {
-}
+Kml::Kml() : has_hint_(false) {}
 
-Kml::~Kml() {
-  delete networklinkcontrol_;
-  delete feature_;
-}
+Kml::~Kml() {}
 
 static const char kHint[] = "hint";
 
@@ -54,11 +48,11 @@ void Kml::GetAttributes(Attributes* attributes) const {
   }
 }
 
-void Kml::AddElement(Element* element) {
+void Kml::AddElement(const ElementPtr& element) {
   if (element->IsA(Type_Feature)) {
-    set_feature(static_cast<Feature*>(element));
+    set_feature(AsFeature(element));
   } else if (element->Type() == Type_NetworkLinkControl) {
-    set_networklinkcontrol(static_cast<NetworkLinkControl*>(element));
+    set_networklinkcontrol(AsNetworkLinkControl(element));
   } else {
     Element::AddElement(element);
   }

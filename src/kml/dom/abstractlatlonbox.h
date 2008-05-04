@@ -109,7 +109,7 @@ class AbstractLatLonBox : public Object {
  protected:
   // Abstract element.  Access for derived types only.
   AbstractLatLonBox();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:

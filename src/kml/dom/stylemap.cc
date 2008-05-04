@@ -26,31 +26,27 @@
 #include "kml/dom/stylemap.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
 // <Pair>
-Pair::Pair() :
-  key_(STYLESTATE_NORMAL),
-  has_key_(false),
-  has_styleurl_(false),
-  styleselector_(NULL) {
+Pair::Pair()
+  : key_(STYLESTATE_NORMAL), has_key_(false), has_styleurl_(false) {
 }
 
-Pair::~Pair() {
-  delete styleselector_;
-}
+Pair::~Pair() {}
 
-void Pair::AddElement(Element* element) {
+void Pair::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_StyleSelector)) {
-    set_styleselector(static_cast<StyleSelector*>(element));
+    set_styleselector(AsStyleSelector(element));
     return;
   }
-  switch(element->Type()) {
+  switch (element->Type()) {
     case Type_key:
       has_key_ = element->SetEnum(&key_);
       break;
@@ -82,21 +78,16 @@ void Pair::Serialize(Serializer& serializer) const {
 }
 
 // <StyleMap>
-StyleMap::StyleMap() {
-}
+StyleMap::StyleMap() {}
 
-StyleMap::~StyleMap() {
-  for (size_t i = 0; i < pair_array_.size(); ++i) {
-    delete pair_array_[i];
-  }
-}
+StyleMap::~StyleMap() {}
 
-void StyleMap::AddElement(Element* element) {
+void StyleMap::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->Type() == Type_Pair) {
-    add_pair(static_cast<Pair*>(element));
+    add_pair(AsPair(element));
   } else {
     StyleSelector::AddElement(element);
   }

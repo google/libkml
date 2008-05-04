@@ -29,6 +29,7 @@
 #include "kml/dom/feature.h"
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/util.h"
 
 namespace kmldom {
@@ -41,29 +42,23 @@ class Placemark : public Feature {
     return type == Type_Placemark || Feature::IsA(type);
   }
 
-  const Geometry* geometry() const { return geometry_; }
+  const GeometryPtr& geometry() const { return geometry_; }
   bool has_geometry() const { return geometry_ != NULL; }
-  void set_geometry(Geometry* geometry) {
-    if (geometry == NULL) {
-      clear_geometry();
-    } else if (geometry->set_parent(this)) {
-      delete geometry_;  // note: "last one wins".
-      geometry_ = geometry;
-    }
+  void set_geometry(const GeometryPtr& geometry) {
+    SetComplexChild(geometry, &geometry_);
   }
   void clear_geometry() {
-    delete geometry_;
-    geometry_ = NULL;
+    set_geometry(NULL);
   }
 
  private:
   friend class KmlFactory;
   Placemark();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  Geometry* geometry_;
+  GeometryPtr geometry_;
   DISALLOW_EVIL_CONSTRUCTORS(Placemark);
 };
 

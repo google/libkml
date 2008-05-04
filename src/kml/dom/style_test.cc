@@ -28,6 +28,7 @@
 #include "kml/dom/style.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -50,7 +51,6 @@ class StyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete style_;
   }
 
  protected:
@@ -62,7 +62,7 @@ class StyleTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  Style* style_;
+  StylePtr style_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(StyleTest);
@@ -110,12 +110,12 @@ void StyleTest::TestSetToDefaultValues() {
 // Verify set, get, has, clear:
 void StyleTest::TestSetGetHasClear() {
   // Non-default values:
-  IconStyle* iconstyle = KmlFactory::GetFactory()->CreateIconStyle();
-  LabelStyle* labelstyle = KmlFactory::GetFactory()->CreateLabelStyle();
-  LineStyle* linestyle = KmlFactory::GetFactory()->CreateLineStyle();
-  PolyStyle* polystyle = KmlFactory::GetFactory()->CreatePolyStyle();
-  BalloonStyle* balloonstyle = KmlFactory::GetFactory()->CreateBalloonStyle();
-  ListStyle* liststyle = KmlFactory::GetFactory()->CreateListStyle();
+  IconStylePtr iconstyle = KmlFactory::GetFactory()->CreateIconStyle();
+  LabelStylePtr labelstyle = KmlFactory::GetFactory()->CreateLabelStyle();
+  LineStylePtr linestyle = KmlFactory::GetFactory()->CreateLineStyle();
+  PolyStylePtr polystyle = KmlFactory::GetFactory()->CreatePolyStyle();
+  BalloonStylePtr balloonstyle = KmlFactory::GetFactory()->CreateBalloonStyle();
+  ListStylePtr liststyle = KmlFactory::GetFactory()->CreateListStyle();
 
   // Set all fields:
   style_->set_iconstyle(iconstyle);
@@ -156,12 +156,12 @@ void StyleTest::TestSetGetHasClear() {
 // (This tests the internal set_parent() method.)
 void StyleTest::TestSetParent() {
   KmlFactory* factory = KmlFactory::GetFactory();
-  IconStyle* iconstyle = factory->CreateIconStyle();
-  LabelStyle* labelstyle = factory->CreateLabelStyle();
-  LineStyle* linestyle = factory->CreateLineStyle();
-  PolyStyle* polystyle = factory->CreatePolyStyle();
-  BalloonStyle* balloonstyle = factory->CreateBalloonStyle();
-  ListStyle* liststyle = factory->CreateListStyle();
+  IconStylePtr iconstyle = factory->CreateIconStyle();
+  LabelStylePtr labelstyle = factory->CreateLabelStyle();
+  LineStylePtr linestyle = factory->CreateLineStyle();
+  PolyStylePtr polystyle = factory->CreatePolyStyle();
+  BalloonStylePtr balloonstyle = factory->CreateBalloonStyle();
+  ListStylePtr liststyle = factory->CreateListStyle();
 
   // Give these all to style_.
   style_->set_iconstyle(iconstyle);
@@ -172,7 +172,7 @@ void StyleTest::TestSetParent() {
   style_->set_liststyle(liststyle);
 
   // Try to give these all to another style.
-  Style* style2 = factory->CreateStyle();
+  StylePtr style2 = factory->CreateStyle();
   style2->set_iconstyle(iconstyle);
   style2->set_labelstyle(labelstyle);
   style2->set_linestyle(linestyle);
@@ -196,8 +196,6 @@ void StyleTest::TestSetParent() {
   CPPUNIT_ASSERT(false == style2->has_balloonstyle());
   CPPUNIT_ASSERT(false == style2->has_liststyle());
 
-  delete style2;  // Delete the Style created here.
-
   // Unit test tearDown deletes style_ and the children created here.
 }
 
@@ -220,7 +218,7 @@ void StyleTest::TestSerialize() {
     "<BalloonStyle/>"
     "<ListStyle/>"
     "</Style>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(*style_));
+  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(style_));
 }
 
 }  // end namespace kmldom

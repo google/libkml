@@ -79,7 +79,7 @@ class ColorStyle : public SubStyle {
  protected:
   // ColorStyle is abstract.
   ColorStyle();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:

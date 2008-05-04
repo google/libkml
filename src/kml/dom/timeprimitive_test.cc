@@ -28,6 +28,7 @@
 #include "kml/dom/timeprimitive.h"
 #include <string>
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -84,7 +85,6 @@ class TimeSpanTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete timespan_;
   }
 
  protected:
@@ -94,7 +94,7 @@ class TimeSpanTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  TimeSpan* timespan_;
+  TimeSpanPtr timespan_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TimeSpanTest);
@@ -161,7 +161,6 @@ class TimeStampTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete timestamp_;
   }
 
  protected:
@@ -171,7 +170,7 @@ class TimeStampTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  TimeStamp* timestamp_;
+  TimeStampPtr timestamp_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TimeStampTest);

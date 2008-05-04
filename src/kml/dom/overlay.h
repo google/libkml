@@ -35,6 +35,7 @@
 #include "kml/dom/feature.h"
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/link.h"
 #include "kml/dom/object.h"
 #include "kml/dom/vec2.h"
@@ -84,25 +85,19 @@ class Overlay : public Feature {
   }
 
   // <Icon>
-  const Icon* icon() const { return icon_; }
+  const IconPtr& icon() const { return icon_; }
   bool has_icon() const { return icon_ != NULL; }
-  void set_icon(Icon* icon) {
-    if (icon == NULL) {
-      clear_icon();
-    } else if (icon->set_parent(this)) {
-      delete icon_;  // note: "last one wins".
-      icon_ = icon;
-    }
+  void set_icon(const IconPtr& icon) {
+    SetComplexChild(icon, &icon_);
   }
   void clear_icon() {
-    delete icon_;
-    icon_ = NULL;
+    set_icon(NULL);
   }
 
  protected:
   // Overlay is abstract.
   Overlay();
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   virtual void Serialize(Serializer& serializer) const;
 
  private:
@@ -110,7 +105,7 @@ class Overlay : public Feature {
   bool has_color_;
   int draworder_;
   bool has_draworder_;
-  Icon* icon_;
+  IconPtr icon_;
   DISALLOW_EVIL_CONSTRUCTORS(Overlay);
 };
 
@@ -143,7 +138,7 @@ class LatLonBox : public AbstractLatLonBox {
   friend class KmlFactory;
   LatLonBox();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 
@@ -196,26 +191,20 @@ class GroundOverlay : public Overlay {
   }
 
   // <LatLonBox>
-  const LatLonBox* latlonbox() const { return latlonbox_; }
+  const LatLonBoxPtr& latlonbox() const { return latlonbox_; }
   bool has_latlonbox() const { return latlonbox_ != NULL; }
-  void set_latlonbox(LatLonBox* latlonbox) {
-    if (latlonbox == NULL) {
-      clear_latlonbox();
-    } else if (latlonbox->set_parent(this)) {
-      delete latlonbox_;  // note: "last one wins".
-      latlonbox_ = latlonbox;
-    }
+  void set_latlonbox(const LatLonBoxPtr& latlonbox) {
+    SetComplexChild(latlonbox, &latlonbox_);
   }
   void clear_latlonbox() {
-    delete latlonbox_;
-    latlonbox_ = NULL;
+    set_latlonbox(NULL);
   }
 
  private:
   friend class KmlFactory;
   GroundOverlay();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 
@@ -224,7 +213,7 @@ class GroundOverlay : public Overlay {
   bool has_altitude_;
   int altitudemode_;
   bool has_altitudemode_;
-  LatLonBox* latlonbox_;
+  LatLonBoxPtr latlonbox_;
   DISALLOW_EVIL_CONSTRUCTORS(GroundOverlay);
 };
 
@@ -298,67 +287,43 @@ class ScreenOverlay : public Overlay {
   }
 
   // <overlayXY>
-  const OverlayXY* overlayxy() const { return overlayxy_; }
+  const OverlayXYPtr& overlayxy() const { return overlayxy_; }
   bool has_overlayxy() const { return overlayxy_ != NULL; }
-  void set_overlayxy(OverlayXY* overlayxy) {
-    if (overlayxy == NULL) {
-      clear_overlayxy();
-    } else if (overlayxy->set_parent(this)) {
-      delete overlayxy_;  // note: "last one wins".
-      overlayxy_ = overlayxy;
-    }
+  void set_overlayxy(const OverlayXYPtr& overlayxy) {
+    SetComplexChild(overlayxy, &overlayxy_);
   }
   void clear_overlayxy() {
-    delete overlayxy_;
-    overlayxy_ = NULL;
+    set_overlayxy(NULL);
   }
 
   // <screenXY>
-  const ScreenXY* screenxy() const { return screenxy_; }
+  const ScreenXYPtr& screenxy() const { return screenxy_; }
   bool has_screenxy() const { return screenxy_ != NULL; }
-  void set_screenxy(ScreenXY* screenxy) {
-    if (screenxy == NULL) {
-      clear_screenxy();
-    } else if (screenxy->set_parent(this)) {
-      delete screenxy_;  // note: "last one wins".
-      screenxy_ = screenxy;
-    }
+  void set_screenxy(const ScreenXYPtr& screenxy) {
+    SetComplexChild(screenxy, &screenxy_);
   }
   void clear_screenxy() {
-    delete screenxy_;
-    screenxy_ = NULL;
+    set_screenxy(NULL);
   }
 
   // <rotationXY>
-  const RotationXY* rotationxy() const { return rotationxy_; }
+  const RotationXYPtr& rotationxy() const { return rotationxy_; }
   bool has_rotationxy() const { return rotationxy_ != NULL; }
-  void set_rotationxy(RotationXY* rotationxy) {
-    if (rotationxy == NULL) {
-      clear_rotationxy();
-    } else if (rotationxy->set_parent(this)) {
-      delete rotationxy_;  // note: "last one wins".
-      rotationxy_ = rotationxy;
-    }
+  void set_rotationxy(const RotationXYPtr& rotationxy) {
+    SetComplexChild(rotationxy, &rotationxy_);
   }
   void clear_rotationxy() {
-    delete rotationxy_;
-    rotationxy_ = NULL;
+    set_rotationxy(NULL);
   }
 
   // <size>
-  const Size* size() const { return size_; }
+  const SizePtr& size() const { return size_; }
   bool has_size() const { return size_ != NULL; }
-  void set_size(Size* size) {
-    if (size == NULL) {
-      clear_size();
-    } else if (size->set_parent(this)) {
-      delete size_;  // note: "last one wins".
-      size_ = size;
-    }
+  void set_size(const SizePtr& size) {
+    SetComplexChild(size, &size_);
   }
   void clear_size() {
-    delete size_;
-    size_ = NULL;
+    set_size(NULL);
   }
 
   // <rotation>
@@ -381,13 +346,13 @@ class ScreenOverlay : public Overlay {
   friend class KmlFactory;
   ScreenOverlay();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  OverlayXY* overlayxy_;
-  ScreenXY* screenxy_;
-  RotationXY* rotationxy_;
-  Size* size_;
+  OverlayXYPtr overlayxy_;
+  ScreenXYPtr screenxy_;
+  RotationXYPtr rotationxy_;
+  SizePtr size_;
   double rotation_;
   bool has_rotation_;
   DISALLOW_EVIL_CONSTRUCTORS(ScreenOverlay);
@@ -486,7 +451,7 @@ class ViewVolume : public Object {
   friend class KmlFactory;
   ViewVolume();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double leftfov_;
@@ -579,7 +544,7 @@ class ImagePyramid : public Object {
   friend class KmlFactory;
   ImagePyramid();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   int tilesize_;
@@ -619,51 +584,33 @@ class PhotoOverlay : public Overlay {
   }
 
   // <ViewVolume>
-  const ViewVolume* viewvolume() const { return viewvolume_; }
+  const ViewVolumePtr& viewvolume() const { return viewvolume_; }
   bool has_viewvolume() const { return viewvolume_ != NULL; }
-  void set_viewvolume(ViewVolume* viewvolume) {
-    if (viewvolume == NULL) {
-      clear_viewvolume();
-    } else if (viewvolume->set_parent(this)) {
-      delete viewvolume_;  // note: "last one wins".
-      viewvolume_ = viewvolume;
-    }
+  void set_viewvolume(const ViewVolumePtr& viewvolume) {
+    SetComplexChild(viewvolume, &viewvolume_);
   }
   void clear_viewvolume() {
-    delete viewvolume_;
-    viewvolume_ = NULL;
+    set_viewvolume(NULL);
   }
 
   // <ImagePyramid>
-  const ImagePyramid* imagepyramid() const { return imagepyramid_; }
+  const ImagePyramidPtr& imagepyramid() const { return imagepyramid_; }
   bool has_imagepyramid() const { return imagepyramid_ != NULL; }
-  void set_imagepyramid(ImagePyramid* imagepyramid) {
-    if (imagepyramid == NULL) {
-      clear_imagepyramid();
-    } else if (imagepyramid->set_parent(this)) {
-      delete imagepyramid_;  // note: "last one wins".
-      imagepyramid_ = imagepyramid;
-    }
+  void set_imagepyramid(const ImagePyramidPtr& imagepyramid) {
+    SetComplexChild(imagepyramid, &imagepyramid_);
   }
   void clear_imagepyramid() {
-    delete imagepyramid_;
-    imagepyramid_ = NULL;
+    set_imagepyramid(NULL);
   }
 
   // <Point>
-  const Point* point() const { return point_; }
+  const PointPtr& point() const { return point_; }
   bool has_point() const { return point_ != NULL; }
-  void set_point(Point* point) {
-    if (point == NULL) {
-      clear_point();
-    } else if (point->set_parent(this)) {
-      delete point_;  // note: "last one wins".
-      point_ = point;
-    }
+  void set_point(const PointPtr& point) {
+    SetComplexChild(point, &point_);
   }
   void clear_point() {
-    delete point_;
-    point_ = NULL;
+    set_point(NULL);
   }
 
   // <shape>
@@ -686,14 +633,14 @@ class PhotoOverlay : public Overlay {
   friend class KmlFactory;
   PhotoOverlay();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double rotation_;
   bool has_rotation_;
-  ViewVolume* viewvolume_;
-  ImagePyramid* imagepyramid_;
-  Point* point_;
+  ViewVolumePtr viewvolume_;
+  ImagePyramidPtr imagepyramid_;
+  PointPtr point_;
   int shape_;
   bool has_shape_;
   DISALLOW_EVIL_CONSTRUCTORS(PhotoOverlay);

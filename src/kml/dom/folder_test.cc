@@ -51,8 +51,6 @@ class FolderTest : public CPPUNIT_NS::TestFixture {
   }
 
   void tearDown() {
-  // This is called after each test.
-    delete folder_;
   }
 
  protected:
@@ -65,7 +63,7 @@ class FolderTest : public CPPUNIT_NS::TestFixture {
   void TestAddFeatureToTwoContainers();
 
  private:
-  Folder* folder_;
+  FolderPtr folder_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FolderTest);
@@ -93,10 +91,10 @@ void FolderTest::TestParse() {
     "<ScreenOverlay/>"
     "</Folder>";
   std::string errors;
-  Element* root = Parse(kFolder, &errors);
+  ElementPtr root = Parse(kFolder, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const Folder* folder = AsFolder(root);
+  const FolderPtr folder = AsFolder(root);
   CPPUNIT_ASSERT(folder);
   // Verify the Object-ness of Folder.
   CPPUNIT_ASSERT_EQUAL(std::string("folder123"), folder->id());
@@ -117,7 +115,8 @@ void FolderTest::TestParse() {
   CPPUNIT_ASSERT_EQUAL(Type_PhotoOverlay, folder->feature_array_at(4)->Type());
   CPPUNIT_ASSERT_EQUAL(Type_Placemark, folder->feature_array_at(5)->Type());
   CPPUNIT_ASSERT_EQUAL(Type_ScreenOverlay, folder->feature_array_at(6)->Type());
-  delete root;  // Delete of Folder deletes all child elements.
+  // ElementPtr root goes out of scope and releases Folder which in turn
+  // releases all child elements.
 }
 
 // Test that a folder with an attribute, simple children and some Features
@@ -136,16 +135,16 @@ void FolderTest::TestBasicSerialize() {
     "<Placemark/>"
     "<Folder/>"
     "</Folder>";
-  CPPUNIT_ASSERT_EQUAL(kExpected, SerializeRaw(*folder_));
+  CPPUNIT_ASSERT_EQUAL(kExpected, SerializeRaw(folder_));
   // Delete of folder_ deletes all child elements.
 }
 
 // Test that an empty folder with no children serializes to a nil element.
 void FolderTest::TestNilSerialize() {
-  CPPUNIT_ASSERT_EQUAL(std::string("<Folder/>"), SerializeRaw(*folder_));
+  CPPUNIT_ASSERT_EQUAL(std::string("<Folder/>"), SerializeRaw(folder_));
   folder_->set_id("xyz");
   CPPUNIT_ASSERT_EQUAL(std::string("<Folder id=\"xyz\"/>"),
-                       SerializeRaw(*folder_));
+                       SerializeRaw(folder_));
 }
 
 // Test SerializerPretty() on a Folder.
@@ -163,37 +162,36 @@ void FolderTest::TestSerializePretty() {
     "  <Placemark/>\n"
     "  <Folder/>\n"
     "</Folder>\n";
-  CPPUNIT_ASSERT_EQUAL(kExpected, SerializePretty(*folder_));
+  CPPUNIT_ASSERT_EQUAL(kExpected, SerializePretty(folder_));
 }
 
 // Verify that a Folder won't take the same Feature more than once.
 // (This tests the internal set_parent() method.)
 void FolderTest::TestAddFeatureTwiceToSameFolder() {
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), folder_->feature_array_size());
   folder_->add_feature(placemark);
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
   folder_->add_feature(placemark);  // Ignored
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
-  // placemark is deleted with folder_ is deleted.
+  // placemark is deleted when folder_ is deleted.
 }
 
 // Verify that only one Container will take a given Feature.
 // (This tests the internal set_parent() method.)
 void FolderTest::TestAddFeatureToTwoContainers() {
-  Document* document = KmlFactory::GetFactory()->CreateDocument();
+  DocumentPtr document = KmlFactory::GetFactory()->CreateDocument();
   // Both containers initially empty.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), folder_->feature_array_size());
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), document->feature_array_size());
   // The folder takes ownership of the placemark.
-  Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
   folder_->add_feature(placemark);
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
   // The document ignores this placemark.
   document->add_feature(placemark);
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), document->feature_array_size());
-  delete document;
-  // placemark is deleted with folder_ is deleted.
+  // placemark is deleted when placemark is deleted.
 }
 
 }  // end namespace kmldom

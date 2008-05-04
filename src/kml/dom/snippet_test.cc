@@ -53,7 +53,6 @@ class SnippetTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete snippet_;
   }
 
  protected:
@@ -65,7 +64,7 @@ class SnippetTest : public CPPUNIT_NS::TestFixture {
   void TestParseMaxLines();
 
  private:
-  Snippet* snippet_;
+  SnippetPtr snippet_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SnippetTest);
@@ -122,9 +121,9 @@ void SnippetTest::TestBasicParse() {
   const std::string kSnippet = "<Snippet>" + kText + "</Snippet>";
   const std::string kPlacemark = "<Placemark>" + kSnippet + "</Placemark>";
   std::string errors;
-  Element* root = Parse(kPlacemark, &errors);
+  ElementPtr root = Parse(kPlacemark, &errors);
   CPPUNIT_ASSERT(root);
-  const Placemark* placemark = AsPlacemark(root);
+  const PlacemarkPtr placemark = AsPlacemark(root);
   CPPUNIT_ASSERT(placemark);
   CPPUNIT_ASSERT(placemark->has_snippet());
   CPPUNIT_ASSERT(false == placemark->snippet()->has_maxlines());
@@ -132,8 +131,6 @@ void SnippetTest::TestBasicParse() {
                        placemark->snippet()->maxlines());
   CPPUNIT_ASSERT(placemark->snippet()->has_text());
   CPPUNIT_ASSERT_EQUAL(kText, placemark->snippet()->text());
-
-  delete root;
 }
 
 // This tests parsing of Snippet with a maxLines attribute.
@@ -148,17 +145,15 @@ void SnippetTest::TestParseMaxLines() {
     "</Snippet>";
   const std::string kFolder = "<Folder>" + kSnippet + "</Folder>";
   std::string errors;
-  Element* root = Parse(kFolder, &errors);
+  ElementPtr root = Parse(kFolder, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const Folder* folder = AsFolder(root);
+  const FolderPtr folder = AsFolder(root);
   CPPUNIT_ASSERT(folder->has_snippet());
-  const Snippet* snippet = folder->snippet();
+  const SnippetPtr snippet = folder->snippet();
   CPPUNIT_ASSERT(snippet);
   CPPUNIT_ASSERT(snippet->has_maxlines());
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(5), snippet->maxlines());
-
-  delete root;
 }
 
 // This tests <linkSnippet>.
@@ -180,7 +175,6 @@ class LinkSnippetTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete linksnippet_;
   }
 
  protected:
@@ -192,7 +186,7 @@ class LinkSnippetTest : public CPPUNIT_NS::TestFixture {
   void TestParseMaxLines();
 
  private:
-  LinkSnippet* linksnippet_;
+  LinkSnippetPtr linksnippet_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LinkSnippetTest);
@@ -250,17 +244,15 @@ void LinkSnippetTest::TestBasicParse() {
   const std::string kNetworkLinkControl = "<NetworkLinkControl>" +
     kLinkSnippet + "</NetworkLinkControl>";
   std::string errors;
-  Element* root = Parse(kNetworkLinkControl, &errors);
+  ElementPtr root = Parse(kNetworkLinkControl, &errors);
   CPPUNIT_ASSERT(root);
-  const NetworkLinkControl* networklinkcontrol = AsNetworkLinkControl(root);
+  const NetworkLinkControlPtr networklinkcontrol = AsNetworkLinkControl(root);
   CPPUNIT_ASSERT(networklinkcontrol->has_linksnippet());
-  const LinkSnippet* linksnippet = networklinkcontrol->linksnippet();
+  const LinkSnippetPtr linksnippet = networklinkcontrol->linksnippet();
   CPPUNIT_ASSERT(false == linksnippet->has_maxlines());
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(2), linksnippet->maxlines());
   CPPUNIT_ASSERT(linksnippet->has_text());
   CPPUNIT_ASSERT_EQUAL(kText, linksnippet->text());
-
-  delete root;
 }
 
 // This tests parsing of linkSnippet with a maxLines attribute.
@@ -274,17 +266,15 @@ void LinkSnippetTest::TestParseMaxLines() {
   const std::string kNetworkLinkControl = "<NetworkLinkControl>" +
     kLinkSnippet + "</NetworkLinkControl>";
   std::string errors;
-  Element* root = Parse(kNetworkLinkControl, &errors);
+  ElementPtr root = Parse(kNetworkLinkControl, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const NetworkLinkControl* networklinkcontrol = AsNetworkLinkControl(root);
+  const NetworkLinkControlPtr networklinkcontrol = AsNetworkLinkControl(root);
   CPPUNIT_ASSERT(networklinkcontrol->has_linksnippet());
-  const LinkSnippet* linksnippet = networklinkcontrol->linksnippet();
+  const LinkSnippetPtr linksnippet = networklinkcontrol->linksnippet();
   CPPUNIT_ASSERT(linksnippet);
   CPPUNIT_ASSERT(linksnippet->has_maxlines());
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(7), linksnippet->maxlines());
-
-  delete root;
 }
 
 }  // end namespace kmldom

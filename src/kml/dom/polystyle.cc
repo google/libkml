@@ -32,17 +32,14 @@
 
 namespace kmldom {
 
-PolyStyle::PolyStyle() :
-  fill_(true),
-  has_fill_(false),
-  outline_(true),
-  has_outline_(false) {
+PolyStyle::PolyStyle()
+  : fill_(true), has_fill_(false), outline_(true), has_outline_(false) {
 }
 
 PolyStyle::~PolyStyle() {
 }
 
-void PolyStyle::AddElement(Element* element) {
+void PolyStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_fill:
       has_fill_ = element->SetBool(&fill_);

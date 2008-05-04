@@ -28,6 +28,7 @@
 
 #include "kml/dom/kml_funcs.h"
 #include <string>
+#include "kml/dom/element.h"
 #include "kml/dom/kml.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/util/unit_test.h"
@@ -55,35 +56,38 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ParserTest);
 // are known and contained by proper parents.
 void ParserTest::TestValidKml() {
   std::string errors;
-  Element* root = Parse("<kml>"
-                        "<Placemark>"
-                        "<name>a good Placemark</name>"
-                        "<Point>"
-                        "<coordinates>1,2,3</coordinates>"
-                        "</Point>"
-                        "</Placemark>"
-                        "</kml>",
-                        &errors);
+  ElementPtr root = Parse("<kml>"
+                          "<Placemark>"
+                          "<name>a good Placemark</name>"
+                          "<Point>"
+                          "<coordinates>1,2,3</coordinates>"
+                          "</Point>"
+                          "</Placemark>"
+                          "</kml>",
+                          &errors);
   // KML is valid so there are no errors and the root is <kml>.
   CPPUNIT_ASSERT(errors.empty());
   CPPUNIT_ASSERT(root);
-  const Kml* kml = AsKml(root);
+
+  const KmlPtr kml = AsKml(root);
   CPPUNIT_ASSERT(kml);
-  // Parse() gives the caller ownership of the Element.
-  delete root;
 
   errors.clear();
+  // Assigning to root releases storage allocated in Parse above.
   root = Parse(" <kml/>", &errors);  // Note leading space.
   CPPUNIT_ASSERT(errors.empty());
   CPPUNIT_ASSERT(root);
+
   CPPUNIT_ASSERT(AsKml(root));
-  delete root;
+
+  // ElementPtr root going out of scope releases storage allocated in 2nd
+  // Parse.
 }
 
 void ParserTest::TestJunkInput() {
   // Parse a garbage string.
   std::string errors;
-  Element* root = Parse("This is not even xml", &errors);
+  ElementPtr root = Parse("This is not even xml", &errors);
   // Since the parse failed there will be an error string and NULL is returned.
   CPPUNIT_ASSERT(!errors.empty());
   CPPUNIT_ASSERT(!root);
@@ -100,7 +104,7 @@ void ParserTest::TestFullyUnknownXml() {
   // is set.  The error string is considered human readable and not
   // examined further by this test.
   std::string errors;
-  Element* root;
+  ElementPtr root;
 
   // These test some subtle variations of the inner workings of expat.
   root = Parse("<gml/>", &errors);
@@ -140,16 +144,16 @@ void ParserTest::TestPartlyValidKml() {
   // This pushes several elements onto the stack within the parser to
   // excercise the destructor which frees them all.
   std::string errors;
-  Element* root = Parse("<kml>"
-                        "<Folder>"
-                        "<Document>"
-                        "<Placemark>"
-                        "<name>a good Placemark</name>"
-                        "<MultiGeometry>"
-                        "<MultiGeometry>"
-                        "<Point>"
-                        "<coordinates>",
-                        &errors);
+  ElementPtr root = Parse("<kml>"
+                          "<Folder>"
+                          "<Document>"
+                          "<Placemark>"
+                          "<name>a good Placemark</name>"
+                          "<MultiGeometry>"
+                          "<MultiGeometry>"
+                          "<Point>"
+                          "<coordinates>",
+                          &errors);
   CPPUNIT_ASSERT(!root);
   CPPUNIT_ASSERT(!errors.empty());
 }

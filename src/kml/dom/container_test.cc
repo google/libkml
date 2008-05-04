@@ -43,7 +43,6 @@ class ContainerTest : public CPPUNIT_NS::TestFixture {
     container_ = new TestContainer();
   }
   void tearDown() {
-    delete container_;
   }
 
  protected:
@@ -54,7 +53,7 @@ class ContainerTest : public CPPUNIT_NS::TestFixture {
   // Container is abstract, hence its constructor is protected.
   class TestContainer : public Container {
   };
-  TestContainer* container_;
+  boost::intrusive_ptr<TestContainer> container_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ContainerTest);

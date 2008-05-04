@@ -52,7 +52,6 @@ class NetworkLinkTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete networklink_;
   }
 
  protected:
@@ -64,7 +63,7 @@ class NetworkLinkTest : public CPPUNIT_NS::TestFixture {
   void TestSerialize();
 
  private:
-  NetworkLink* networklink_;
+  NetworkLinkPtr networklink_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(NetworkLinkTest);
@@ -102,7 +101,7 @@ void NetworkLinkTest::TestSetGetHasClear() {
   // Non-default values:
   bool refreshvisibility = true;
   bool flytoview = true;
-  Link* link = KmlFactory::GetFactory()->CreateLink();
+  LinkPtr link = KmlFactory::GetFactory()->CreateLink();
 
   // Set all fields:
   networklink_->set_refreshvisibility(refreshvisibility);
@@ -132,25 +131,24 @@ void NetworkLinkTest::TestParseUrl() {
   const std::string kNetworkLinkUrl("<NetworkLink><Url><href>");
   const std::string kUrlNetworkLink("</href></Url></NetworkLink>");
   std::string errors;
-  Element* root = Parse(kNetworkLinkUrl + kHref + kUrlNetworkLink, &errors);
+  ElementPtr root = Parse(kNetworkLinkUrl + kHref + kUrlNetworkLink, &errors);
   CPPUNIT_ASSERT(errors.empty());
-  const NetworkLink* networklink = AsNetworkLink(root);
+  const NetworkLinkPtr networklink = AsNetworkLink(root);
   CPPUNIT_ASSERT(networklink);
   // Verify that the Url was set as the Link.
   CPPUNIT_ASSERT(networklink->has_link());
   CPPUNIT_ASSERT_EQUAL(Type_Url, networklink->link()->Type());
   CPPUNIT_ASSERT(networklink->link()->has_href());
   CPPUNIT_ASSERT_EQUAL(kHref, networklink->link()->href());
-  delete root;  // Deletes Url.
 }
 
 void NetworkLinkTest::TestSerialize() {
   const std::string expect_empty("<NetworkLink/>");
-  CPPUNIT_ASSERT_EQUAL(expect_empty, SerializeRaw(*networklink_));
+  CPPUNIT_ASSERT_EQUAL(expect_empty, SerializeRaw(networklink_));
   KmlFactory* factory = KmlFactory::GetFactory();
   networklink_->set_link(factory->CreateLink());
   const std::string expect_link("<NetworkLink><Link/></NetworkLink>");
-  CPPUNIT_ASSERT_EQUAL(expect_link, SerializeRaw(*networklink_));
+  CPPUNIT_ASSERT_EQUAL(expect_link, SerializeRaw(networklink_));
   networklink_->set_refreshvisibility(false);
   networklink_->set_flytoview(false);
   const std::string expect_all_false(
@@ -159,7 +157,7 @@ void NetworkLinkTest::TestSerialize() {
     "<flyToView>0</flyToView>"
     "<Link/>"
     "</NetworkLink>");
-  CPPUNIT_ASSERT_EQUAL(expect_all_false, SerializeRaw(*networklink_));
+  CPPUNIT_ASSERT_EQUAL(expect_all_false, SerializeRaw(networklink_));
   networklink_->set_refreshvisibility(true);
   networklink_->set_flytoview(true);
   const std::string expect_all_true(
@@ -168,7 +166,7 @@ void NetworkLinkTest::TestSerialize() {
     "<flyToView>1</flyToView>"
     "<Link/>"
     "</NetworkLink>");
-  CPPUNIT_ASSERT_EQUAL(expect_all_true, SerializeRaw(*networklink_));
+  CPPUNIT_ASSERT_EQUAL(expect_all_true, SerializeRaw(networklink_));
   networklink_->set_name("networklink");
   const std::string expect_feature(
     "<NetworkLink>"
@@ -177,7 +175,6 @@ void NetworkLinkTest::TestSerialize() {
     "<flyToView>1</flyToView>"
     "<Link/>"
     "</NetworkLink>");
-  // Delete of networklink_ deletes link_
 }
 
 }  // end namespace kmldom

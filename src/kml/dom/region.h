@@ -31,6 +31,7 @@
 
 #include "kml/dom/abstractlatlonbox.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/util/util.h"
 
@@ -97,7 +98,7 @@ class LatLonAltBox : public AbstractLatLonBox {
   friend class KmlFactory;
   LatLonAltBox();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double minaltitude_;
@@ -186,7 +187,7 @@ class Lod : public Object {
   friend class KmlFactory;
   Lod();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double minlodpixels_;
@@ -210,46 +211,34 @@ class Region : public Object {
   }
 
   // <LatLonAltBox>
-  const LatLonAltBox* latlonaltbox() const { return latlonaltbox_; }
+  const LatLonAltBoxPtr& latlonaltbox() const { return latlonaltbox_; }
   bool has_latlonaltbox() const { return latlonaltbox_ != NULL; }
-  void set_latlonaltbox(LatLonAltBox* latlonaltbox) {
-    if (latlonaltbox == NULL) {
-      clear_latlonaltbox();
-    } else if (latlonaltbox->set_parent(this)) {
-      delete latlonaltbox_;
-      latlonaltbox_ = latlonaltbox;
-    }
+  void set_latlonaltbox(const LatLonAltBoxPtr& latlonaltbox) {
+    SetComplexChild(latlonaltbox, &latlonaltbox_);
   }
   void clear_latlonaltbox() {
-    delete latlonaltbox_;
-    latlonaltbox_ = NULL;
+    set_latlonaltbox(NULL);
   }
 
   // <Lod>
-  const Lod* lod() const { return lod_; }
+  const LodPtr& lod() const { return lod_; }
   bool has_lod() const { return lod_ != NULL; }
-  void set_lod(Lod* lod) {
-    if (lod == NULL) {
-      clear_lod();
-    } else if (lod->set_parent(this)) {
-      delete lod_;
-      lod_ = lod;
-    }
+  void set_lod(const LodPtr& lod) {
+    SetComplexChild(lod, &lod_);
   }
   void clear_lod() {
-    delete lod_;
-    lod_ = NULL;
+    set_lod(NULL);
   }
 
  private:
   friend class KmlFactory;
   Region();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  LatLonAltBox* latlonaltbox_;
-  Lod* lod_;
+  LatLonAltBoxPtr latlonaltbox_;
+  LodPtr lod_;
   DISALLOW_EVIL_CONSTRUCTORS(Region);
 };
 

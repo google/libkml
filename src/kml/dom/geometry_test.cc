@@ -29,6 +29,7 @@
 
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -90,7 +91,6 @@ class CoordinatesTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete coordinates_;
   }
 
  protected:
@@ -102,7 +102,7 @@ class CoordinatesTest : public CPPUNIT_NS::TestFixture {
   void TestParseBadSeparator();
 
  private:
-  Coordinates* coordinates_;
+  CoordinatesPtr coordinates_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(CoordinatesTest);
@@ -250,7 +250,6 @@ class PointTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete point_;
   }
 
  protected:
@@ -260,7 +259,7 @@ class PointTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Point* point_;
+  PointPtr point_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PointTest);
@@ -300,7 +299,7 @@ void PointTest::TestSetGetHasClear() {
   // Non-default values:
   bool extrude = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
-  Coordinates* coordinates = KmlFactory::GetFactory()->CreateCoordinates();
+  CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
   const char* id = "point-id";
   const char* targetid = "point-targetid";
 
@@ -351,7 +350,6 @@ class LineStringTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete linestring_;
   }
 
  protected:
@@ -361,7 +359,7 @@ class LineStringTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  LineString* linestring_;
+  LineStringPtr linestring_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LineStringTest);
@@ -405,7 +403,7 @@ void LineStringTest::TestSetGetHasClear() {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
-  Coordinates* coordinates = KmlFactory::GetFactory()->CreateCoordinates();
+  CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
 
   // Set all fields:
   linestring_->set_extrude(extrude);
@@ -450,7 +448,6 @@ class LinearRingTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete linearring_;
   }
 
 
@@ -461,7 +458,7 @@ class LinearRingTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  LinearRing* linearring_;
+  LinearRingPtr linearring_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LinearRingTest);
@@ -505,7 +502,7 @@ void LinearRingTest::TestSetGetHasClear() {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
-  Coordinates* coordinates = KmlFactory::GetFactory()->CreateCoordinates();
+  CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
 
   // Set all fields:
   linearring_->set_extrude(extrude);
@@ -549,7 +546,6 @@ class OuterBoundaryIsTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete outerboundaryis_;
   }
 
  protected:
@@ -558,7 +554,7 @@ class OuterBoundaryIsTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  OuterBoundaryIs* outerboundaryis_;
+  OuterBoundaryIsPtr outerboundaryis_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(OuterBoundaryIsTest);
@@ -600,7 +596,6 @@ class InnerBoundaryIsTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete innerboundaryis_;
   }
 
  protected:
@@ -609,7 +604,7 @@ class InnerBoundaryIsTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  InnerBoundaryIs* innerboundaryis_;
+  InnerBoundaryIsPtr innerboundaryis_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(InnerBoundaryIsTest);
@@ -652,7 +647,6 @@ class PolygonTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete polygon_;
   }
 
  protected:
@@ -662,7 +656,7 @@ class PolygonTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Polygon* polygon_;
+  PolygonPtr polygon_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(PolygonTest);
@@ -708,7 +702,7 @@ void PolygonTest::TestSetGetHasClear() {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
-  OuterBoundaryIs* outerboundaryis =
+  OuterBoundaryIsPtr outerboundaryis =
     KmlFactory::GetFactory()->CreateOuterBoundaryIs();
 
   // Set all fields:
@@ -753,7 +747,6 @@ class MultiGeometryTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete multigeometry_;
   }
 
  protected:
@@ -762,7 +755,7 @@ class MultiGeometryTest : public CPPUNIT_NS::TestFixture {
   void TestAddGetGeometries();
 
  private:
-  MultiGeometry* multigeometry_;
+  MultiGeometryPtr multigeometry_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(MultiGeometryTest);

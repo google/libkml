@@ -40,7 +40,7 @@ ColorStyle::ColorStyle() :
 
 ColorStyle::~ColorStyle() {}
 
-void ColorStyle::AddElement(Element* element) {
+void ColorStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_color:
       has_color_ = element->SetString(&color_);

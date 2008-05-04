@@ -30,9 +30,8 @@
 #include <stdlib.h>
 #include "kml/dom/abstractlatlonbox.h"
 #include "kml/dom/attributes.h"
-#include "kml/dom/feature.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
-#include "kml/dom/xsd.h"
 
 namespace kmldom {
 
@@ -44,7 +43,7 @@ LatLonAltBox::LatLonAltBox()
 
 LatLonAltBox::~LatLonAltBox() {}
 
-void LatLonAltBox::AddElement(Element* element) {
+void LatLonAltBox::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_minAltitude:
       has_minaltitude_ = element->SetDouble(&minaltitude_);
@@ -88,7 +87,7 @@ Lod::Lod()
 
 Lod::~Lod() {}
 
-void Lod::AddElement(Element* element) {
+void Lod::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_minLodPixels:
       has_minlodpixels_ = element->SetDouble(&minlodpixels_);
@@ -129,21 +128,19 @@ void Lod::Serialize(Serializer& serializer) const {
   serializer.End();
 }
 
-Region::Region() : latlonaltbox_(NULL), lod_(NULL) {
+Region::Region() {
 }
 
 Region::~Region() {
-  delete latlonaltbox_;
-  delete lod_;
 }
 
-void Region::AddElement(Element* element) {
+void Region::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_LatLonAltBox:
-      set_latlonaltbox(static_cast<LatLonAltBox*>(element));
+      set_latlonaltbox(AsLatLonAltBox(element));
       break;
     case Type_Lod:
-      set_lod(static_cast<Lod*>(element));
+      set_lod(AsLod(element));
       break;
     default:
       Object::AddElement(element);

@@ -38,11 +38,8 @@ class KmlFactory {
   static KmlFactory* GetFactory();
 
   // Factory functions used by the parser to create any KML element.
-  Element* CreateElementById(KmlDomType id) const;
+  ElementPtr CreateElementById(KmlDomType id) const;
   Field* CreateFieldById(KmlDomType type_id) const;
-
-  // This deletes the Element and all child Elements it might have.
-  void DeleteElement(Element* element);
 
   // Factory functions to create all KML complex elements.
   Alias* CreateAlias() const;

@@ -29,6 +29,7 @@
 #include "kml/dom/colorstyle.h"
 #include "kml/dom/hotspot.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/link.h"
 #include "kml/util/util.h"
 
@@ -76,51 +77,38 @@ class IconStyle : public ColorStyle {
   }
 
   // <Icon> (different than Overlay Icon)
-  const IconStyleIcon* icon() const { return icon_; }
+  const IconStyleIconPtr& icon() const { return icon_; }
   bool has_icon() const { return icon_ != NULL; }
-  void set_icon(IconStyleIcon* icon) {
-    if (icon == NULL) {
-      clear_icon();
-    } else if (icon->set_parent(this)) {
-      delete icon_;  // note: "last one wins".
-      icon_ = icon;
-    }
+  void set_icon(const IconStyleIconPtr& icon) {
+    SetComplexChild(icon, &icon_);
   }
   void clear_icon() {
-    delete icon_;
-    icon_ = NULL;
+    set_icon(NULL);
   }
 
   // <hotSpot>
-  const HotSpot* hotspot() const { return hotspot_; }
+  const HotSpotPtr& hotspot() const { return hotspot_; }
   bool has_hotspot() const { return hotspot_ != NULL; }
-  void set_hotspot(HotSpot* hotspot) {
-    if (hotspot == NULL) {
-      clear_hotspot();
-      return;
-    } else if (hotspot->set_parent(this)) {
-      delete hotspot_;  // note: "last one wins".
-      hotspot_ = hotspot;
-    }
+  void set_hotspot(const HotSpotPtr& hotspot) {
+    SetComplexChild(hotspot, &hotspot_);
   }
   void clear_hotspot() {
-    delete hotspot_;
-    hotspot_ = NULL;
+    set_hotspot(NULL);
   }
 
  private:
   friend class KmlFactory;
   IconStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   double scale_;
   bool has_scale_;
   double heading_;
   bool has_heading_;
-  IconStyleIcon* icon_;
-  HotSpot* hotspot_;
+  IconStyleIconPtr icon_;
+  HotSpotPtr hotspot_;
   DISALLOW_EVIL_CONSTRUCTORS(IconStyle);
 };
 

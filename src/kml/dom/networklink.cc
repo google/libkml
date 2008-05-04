@@ -27,23 +27,19 @@
 
 #include "kml/dom/networklink.h"
 #include "kml/dom/attributes.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-NetworkLink::NetworkLink() :
-  refreshvisibility_(false),
-  has_refreshvisibility_(false),
-  flytoview_(false),
-  has_flytoview_(false),
-  link_(NULL) {
+NetworkLink::NetworkLink()
+  : refreshvisibility_(false), has_refreshvisibility_(false),
+    flytoview_(false), has_flytoview_(false) {
 }
 
-NetworkLink::~NetworkLink() {
-  delete link_;
-}
+NetworkLink::~NetworkLink() {}
 
-void NetworkLink::AddElement(Element* element) {
+void NetworkLink::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_refreshVisibility:
       has_refreshvisibility_ = element->SetBool(&refreshvisibility_);
@@ -53,9 +49,11 @@ void NetworkLink::AddElement(Element* element) {
       break;
     case Type_Url:
       // <Url> is deprecated.  This permits it in the parser.
-      // Fall through and set as Link.
+      // Force the cast to accept Url as a LinkPtr.
+      set_link(boost::static_pointer_cast<Link>(element));
+      break;
     case Type_Link:
-      set_link(static_cast<Link*>(element));
+      set_link(AsLink(element));
       break;
     default:
       Feature::AddElement(element);

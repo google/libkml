@@ -60,7 +60,7 @@ class LabelStyle : public ColorStyle {
   friend class KmlFactory;
   LabelStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   double scale_;

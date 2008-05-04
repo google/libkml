@@ -31,6 +31,7 @@
 #include "kml/dom/feature.h"
 #include "kml/dom/link.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/util.h"
 
 namespace kmldom {
@@ -70,33 +71,27 @@ class NetworkLink : public Feature {
 
   // <Link>
   // <Url> is deprecated, no API access
-  const Link* link() const { return link_; }
+  const LinkPtr& link() const { return link_; }
   bool has_link() const { return link_ != NULL; }
-  void set_link(Link* link) {
-    if (link == NULL) {
-      clear_link();
-    } else if (link->set_parent(this)) {
-      delete link_;
-      link_ = link;
-    }
+  void set_link(const LinkPtr& link) {
+    SetComplexChild(link, &link_);
   }
   void clear_link() {
-    delete link_;
-    link_ = NULL;
+    set_link(NULL);
   }
 
  private:
   friend class KmlFactory;
   NetworkLink();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   bool refreshvisibility_;
   bool has_refreshvisibility_;
   bool flytoview_;
   bool has_flytoview_;
-  Link* link_;
+  LinkPtr link_;
   DISALLOW_EVIL_CONSTRUCTORS(NetworkLink);
 };
 

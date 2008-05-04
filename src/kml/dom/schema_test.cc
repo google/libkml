@@ -45,7 +45,6 @@ class SimpleFieldTest : public CPPUNIT_NS::TestFixture {
     simplefield_ = KmlFactory::GetFactory()->CreateSimpleField();
   }
   void tearDown() {
-    delete simplefield_;
   }
 
  protected:
@@ -55,7 +54,7 @@ class SimpleFieldTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  SimpleField* simplefield_;
+  SimpleFieldPtr simplefield_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SimpleFieldTest);
@@ -121,7 +120,6 @@ class SchemaTest : public CPPUNIT_NS::TestFixture {
     schema_ = KmlFactory::GetFactory()->CreateSchema();
   }
   void tearDown() {
-    delete schema_;
   }
 
  protected:
@@ -132,7 +130,7 @@ class SchemaTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  Schema* schema_;
+  SchemaPtr schema_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SchemaTest);

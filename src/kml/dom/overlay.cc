@@ -31,6 +31,7 @@
 #include "kml/dom/attributes.h"
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -39,15 +40,12 @@ Overlay::Overlay()
   : color_("ffffffff"),
     has_color_(false),
     draworder_(0),
-    has_draworder_(false) ,
-    icon_(NULL) {
+    has_draworder_(false) {
 }
 
-Overlay::~Overlay() {
-  delete icon_;
-}
+Overlay::~Overlay() {}
 
-void Overlay::AddElement(Element* element) {
+void Overlay::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_color:
       has_color_ = element->SetString(&color_);
@@ -56,7 +54,7 @@ void Overlay::AddElement(Element* element) {
       has_draworder_ = element->SetInt(&draworder_);
       break;
     case Type_Icon:
-      set_icon(static_cast<Icon*>(element));
+      set_icon(AsIcon(element));
       break;
     default:
       Feature::AddElement(element);
@@ -85,7 +83,7 @@ LatLonBox::LatLonBox()
 LatLonBox::~LatLonBox() {
 }
 
-void LatLonBox::AddElement(Element* element) {
+void LatLonBox::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_rotation:
       has_rotation_ = element->SetDouble(&rotation_);
@@ -112,21 +110,19 @@ GroundOverlay::GroundOverlay()
   : altitude_(0.0),
     has_altitude_(false),
     altitudemode_(ALTITUDEMODE_CLAMPTOGROUND),
-    has_altitudemode_(false),
-    latlonbox_(NULL) {
+    has_altitudemode_(false) {
 }
 
 GroundOverlay::~GroundOverlay() {
-  delete latlonbox_;
 }
 
-void GroundOverlay::AddElement(Element* element) {
+void GroundOverlay::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_altitude:
       has_altitude_ = element->SetDouble(&altitude_);
       break;
     case Type_LatLonBox:
-      set_latlonbox(static_cast<LatLonBox*>(element));
+      set_latlonbox(AsLatLonBox(element));
       break;
     default:
       Overlay::AddElement(element);
@@ -164,7 +160,7 @@ ViewVolume::ViewVolume()
 
 ViewVolume::~ViewVolume() {}
 
-void ViewVolume::AddElement(Element* element) {
+void ViewVolume::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_leftFov:
       has_leftfov_ = element->SetDouble(&leftfov_);
@@ -224,7 +220,7 @@ ImagePyramid::ImagePyramid()
 
 ImagePyramid::~ImagePyramid() {}
 
-void ImagePyramid::AddElement(Element* element) {
+void ImagePyramid::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_tileSize:
       has_tilesize_ = element->SetInt(&tilesize_);
@@ -268,32 +264,26 @@ void ImagePyramid::Serialize(Serializer& serializer) const {
 PhotoOverlay::PhotoOverlay()
   : rotation_(0.0),
     has_rotation_(false),
-    viewvolume_(NULL),
-    imagepyramid_(NULL),
-    point_(NULL),
     shape_(SHAPE_RECTANGLE),
     has_shape_(false) {
 }
 
 PhotoOverlay::~PhotoOverlay() {
-  delete viewvolume_;
-  delete imagepyramid_;
-  delete point_;
 }
 
-void PhotoOverlay::AddElement(Element* element) {
+void PhotoOverlay::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_rotation:
       has_rotation_ = element->SetDouble(&rotation_);
       break;
     case Type_ViewVolume:
-      set_viewvolume(static_cast<ViewVolume*>(element));
+      set_viewvolume(AsViewVolume(element));
       break;
     case Type_ImagePyramid:
-      set_imagepyramid(static_cast<ImagePyramid*>(element));
+      set_imagepyramid(AsImagePyramid(element));
       break;
     case Type_Point:
-      set_point(static_cast<Point*>(element));
+      set_point(AsPoint(element));
       break;
     case Type_shape:
       has_shape_ = element->SetEnum(&shape_);
@@ -345,33 +335,26 @@ Size::Size() {}
 Size::~Size() {}
 
 ScreenOverlay::ScreenOverlay()
-  : overlayxy_(NULL),
-    screenxy_(NULL),
-    rotationxy_(NULL),
-    size_(NULL),
-    rotation_(0.0), has_rotation_(false) {
+  : rotation_(0.0),
+    has_rotation_(false) {
 }
 
 ScreenOverlay::~ScreenOverlay() {
-  delete overlayxy_;
-  delete screenxy_;
-  delete rotationxy_;
-  delete size_;
 }
 
-void ScreenOverlay::AddElement(Element* element) {
+void ScreenOverlay::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_overlayXY:
-      set_overlayxy(static_cast<OverlayXY*>(element));
+      set_overlayxy(AsOverlayXY(element));
       break;
     case Type_screenXY:
-      set_screenxy(static_cast<ScreenXY*>(element));
+      set_screenxy(AsScreenXY(element));
       break;
     case Type_rotationXY:
-      set_rotationxy(static_cast<RotationXY*>(element));
+      set_rotationxy(AsRotationXY(element));
       break;
     case Type_size:
-      set_size(static_cast<Size*>(element));
+      set_size(AsSize(element));
       break;
     case Type_rotation:
       has_rotation_ = element->SetDouble(&rotation_);

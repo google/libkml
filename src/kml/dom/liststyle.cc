@@ -26,21 +26,19 @@
 #include "kml/dom/liststyle.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/element.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
 // <ItemIcon>
-ItemIcon::ItemIcon() :
-  state_(ITEMICONSTATE_OPEN),
-  has_state_(false),
-  has_href_(false) {
+ItemIcon::ItemIcon()
+  : state_(ITEMICONSTATE_OPEN), has_state_(false), has_href_(false) {
 }
 
-ItemIcon::~ItemIcon() {
-}
+ItemIcon::~ItemIcon() {}
 
-void ItemIcon::AddElement(Element* element) {
+void ItemIcon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -74,20 +72,14 @@ void ItemIcon::Serialize(Serializer& serializer) const {
 }
 
 // <ListStyle>
-ListStyle::ListStyle() :
-  listitemtype_(LISTITEMTYPE_CHECK),
-  has_listitemtype_(false),
-  bgcolor_("ffffffff"),
-  has_bgcolor_(false) {
+ListStyle::ListStyle()
+  : listitemtype_(LISTITEMTYPE_CHECK), has_listitemtype_(false),
+    bgcolor_("ffffffff"), has_bgcolor_(false) {
 }
 
-ListStyle::~ListStyle() {
-  for (size_t i = 0; i < itemicon_array_.size(); ++i) {
-    delete itemicon_array_[i];
-  }
-}
+ListStyle::~ListStyle() {}
 
-void ListStyle::AddElement(Element* element) {
+void ListStyle::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -99,7 +91,7 @@ void ListStyle::AddElement(Element* element) {
       has_bgcolor_ = element->SetString(&bgcolor_);
       break;
     case Type_ItemIcon:
-      add_itemicon(static_cast<ItemIcon*>(element));
+      add_itemicon(AsItemIcon(element));
       break;
     default:
       SubStyle::AddElement(element);

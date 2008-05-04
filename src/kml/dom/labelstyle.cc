@@ -38,7 +38,7 @@ LabelStyle::LabelStyle() :
 LabelStyle::~LabelStyle() {
 }
 
-void LabelStyle::AddElement(Element* element) {
+void LabelStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_scale:
       has_scale_ = element->SetDouble(&scale_);

@@ -77,7 +77,7 @@ class PolyStyle : public ColorStyle {
   friend class KmlFactory;
   PolyStyle();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
   bool fill_;

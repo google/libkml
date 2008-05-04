@@ -47,7 +47,6 @@ class SimpleDataTest : public CPPUNIT_NS::TestFixture {
     simpledata_ = KmlFactory::GetFactory()->CreateSimpleData();
   }
   void tearDown() {
-    delete simpledata_;
   }
 
  protected:
@@ -57,7 +56,7 @@ class SimpleDataTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  SimpleData* simpledata_;
+  SimpleDataPtr simpledata_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SimpleDataTest);
@@ -111,7 +110,7 @@ class SchemaDataTest : public CPPUNIT_NS::TestFixture {
     schemadata_ = KmlFactory::GetFactory()->CreateSchemaData();
   }
   void tearDown() {
-    delete schemadata_;
+    // schemadata_'s destructor releases underlying SchemaData storage.
   }
 
  protected:
@@ -120,7 +119,7 @@ class SchemaDataTest : public CPPUNIT_NS::TestFixture {
   void TestLists();
 
  private:
-  SchemaData* schemadata_;
+  SchemaDataPtr schemadata_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SchemaDataTest);
@@ -171,7 +170,7 @@ class DataTest : public CPPUNIT_NS::TestFixture {
     data_ = KmlFactory::GetFactory()->CreateData();
   }
   void tearDown() {
-    delete data_;
+    // data_'s destructor releases underlying Data storage.
   }
 
  protected:
@@ -181,7 +180,7 @@ class DataTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Data* data_;
+  DataPtr data_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(DataTest);
@@ -244,7 +243,7 @@ class ExtendedDataTest : public CPPUNIT_NS::TestFixture {
     extendeddata_ = KmlFactory::GetFactory()->CreateExtendedData();
   }
   void tearDown() {
-    delete extendeddata_;
+    // extendeddata_'s destructor releases underlying ExtendedData storage.
   }
 
  protected:
@@ -253,7 +252,7 @@ class ExtendedDataTest : public CPPUNIT_NS::TestFixture {
   void TestParse();
 
  private:
-  ExtendedData* extendeddata_;
+  ExtendedDataPtr extendeddata_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ExtendedDataTest);
@@ -314,13 +313,13 @@ void ExtendedDataTest::TestParse() {
     "</SchemaData>"
     "</ExtendedData>";
   std::string errors;
-  Element* root = Parse(kml, &errors);
+  ElementPtr root = Parse(kml, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const ExtendedData* extendeddata = AsExtendedData(root);
+  const ExtendedDataPtr extendeddata = AsExtendedData(root);
   CPPUNIT_ASSERT(extendeddata);
   CPPUNIT_ASSERT(2 == extendeddata->extendeddatamember_array_size());
-  const Data* data = AsData(extendeddata->extendeddatamember_array_at(0));
+  const DataPtr data = AsData(extendeddata->extendeddatamember_array_at(0));
   CPPUNIT_ASSERT(data);
   CPPUNIT_ASSERT(data->has_name());
   CPPUNIT_ASSERT_EQUAL(d_name, data->name());
@@ -328,13 +327,13 @@ void ExtendedDataTest::TestParse() {
   CPPUNIT_ASSERT_EQUAL(displayname, data->displayname());
   CPPUNIT_ASSERT(data->has_value());
   CPPUNIT_ASSERT_EQUAL(value, data->value());
-  const SchemaData* schemadata = AsSchemaData(
+  const SchemaDataPtr schemadata = AsSchemaData(
       extendeddata->extendeddatamember_array_at(1));
   CPPUNIT_ASSERT(schemadata);
   CPPUNIT_ASSERT(schemadata->has_schemaurl());
   CPPUNIT_ASSERT_EQUAL(schemaurl, schemadata->schemaurl());
   CPPUNIT_ASSERT(1 == schemadata->simpledata_array_size());
-  const SimpleData* simpledata = AsSimpleData(
+  const SimpleDataPtr simpledata = AsSimpleData(
       schemadata->simpledata_array_at(0));
   CPPUNIT_ASSERT(simpledata);
   CPPUNIT_ASSERT(simpledata->has_name());

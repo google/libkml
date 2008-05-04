@@ -26,50 +26,37 @@
 #include "kml/dom/style.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-Style::Style() :
-  iconstyle_(NULL),
-  labelstyle_(NULL),
-  linestyle_(NULL),
-  polystyle_(NULL),
-  balloonstyle_(NULL),
-  liststyle_(NULL) {
-}
+Style::Style() {}
 
-Style::~Style() {
-  delete iconstyle_;
-  delete labelstyle_;
-  delete linestyle_;
-  delete polystyle_;
-  delete balloonstyle_;
-  delete liststyle_;
-}
+Style::~Style() {}
 
-void Style::AddElement(Element* element) {
+void Style::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   switch (element->Type()) {
     case Type_IconStyle:
-      set_iconstyle(static_cast<IconStyle*>(element));
+      set_iconstyle(AsIconStyle(element));
       break;
     case Type_LabelStyle:
-      set_labelstyle(static_cast<LabelStyle*>(element));
+      set_labelstyle(AsLabelStyle(element));
       break;
     case Type_LineStyle:
-      set_linestyle(static_cast<LineStyle*>(element));
+      set_linestyle(AsLineStyle(element));
       break;
     case Type_PolyStyle:
-      set_polystyle(static_cast<PolyStyle*>(element));
+      set_polystyle(AsPolyStyle(element));
       break;
     case Type_BalloonStyle:
-      set_balloonstyle(static_cast<BalloonStyle*>(element));
+      set_balloonstyle(AsBalloonStyle(element));
       break;
     case Type_ListStyle:
-      set_liststyle(static_cast<ListStyle*>(element));
+      set_liststyle(AsListStyle(element));
       break;
     default:
       StyleSelector::AddElement(element);

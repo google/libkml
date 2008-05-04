@@ -26,6 +26,7 @@
 // This file contains the implementation of the abstract Feature element.
 
 #include "kml/dom/feature.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -38,40 +39,27 @@ Feature::Feature() :
   has_open_(false),
   has_address_(false),
   has_phonenumber_(false),
-  snippet_(NULL),
   has_description_(false),
-  abstractview_(NULL),
-  timeprimitive_(NULL),
-  has_styleurl_(false),
-  styleselector_(NULL),
-  region_(NULL),
-  extendeddata_(NULL) {
+  has_styleurl_(false) {
 }
 
-Feature::~Feature() {
-  delete snippet_;
-  delete abstractview_;
-  delete timeprimitive_;
-  delete styleselector_;
-  delete region_;
-  delete extendeddata_;
-}
+Feature::~Feature() {}
 
-void Feature::AddElement(Element* element) {
+void Feature::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   // Substitution groups.
   if (element->IsA(Type_AbstractView)) {
-    set_abstractview(static_cast<AbstractView*>(element));
+    set_abstractview(AsAbstractView(element));
     return;
   }
   if (element->IsA(Type_TimePrimitive)) {
-    set_timeprimitive(static_cast<TimePrimitive*>(element));
+    set_timeprimitive(AsTimePrimitive(element));
     return;
   }
   if (element->IsA(Type_StyleSelector)) {
-    set_styleselector(static_cast<StyleSelector*>(element));
+    set_styleselector(AsStyleSelector(element));
     return;
   }
 
@@ -93,7 +81,7 @@ void Feature::AddElement(Element* element) {
       has_phonenumber_ = element->SetString(&phonenumber_);
       break;
     case Type_Snippet:
-      set_snippet(static_cast<Snippet*>(element));
+      set_snippet(AsSnippet(element));
       break;
     case Type_description:
       has_description_ = element->SetString(&description_);
@@ -102,10 +90,10 @@ void Feature::AddElement(Element* element) {
       has_styleurl_ = element->SetString(&styleurl_);
       break;
     case Type_Region:
-      set_region(static_cast<Region*>(element));
+      set_region(AsRegion(element));
       break;
     case Type_ExtendedData:
-      set_extendeddata(static_cast<ExtendedData*>(element));
+      set_extendeddata(AsExtendedData(element));
       break;
     default:
       Object::AddElement(element);

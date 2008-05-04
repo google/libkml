@@ -35,7 +35,7 @@ AbstractLatLonBox::AbstractLatLonBox()
 
 AbstractLatLonBox::~AbstractLatLonBox() {}
 
-void AbstractLatLonBox::AddElement(Element* element) {
+void AbstractLatLonBox::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_north:
       has_north_ = element->SetDouble(&north_);

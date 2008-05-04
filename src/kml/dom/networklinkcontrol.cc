@@ -29,6 +29,7 @@
 #include "kml/dom/networklinkcontrol.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/abstractview.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -41,18 +42,14 @@ UpdateOperation::~UpdateOperation() {}
 // <Create>
 Create::Create() {}
 
-Create::~Create() {
-  for (size_t i = 0; i < container_array_.size(); ++i) {
-    delete container_array_[i];
-  }
-}
+Create::~Create() {}
 
-void Create::AddElement(Element* element) {
+void Create::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_Container)) {
-    add_container(static_cast<Container*>(element));
+    add_container(AsContainer(element));
   } else {
     Element::AddElement(element);
   }
@@ -71,18 +68,14 @@ void Create::Serialize(Serializer& serializer) const {
 // <Delete>
 Delete::Delete() {}
 
-Delete::~Delete() {
-  for (size_t i = 0; i < feature_array_.size(); ++i) {
-    delete feature_array_[i];
-  }
-}
+Delete::~Delete() {}
 
-void Delete::AddElement(Element* element) {
+void Delete::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_Feature)) {
-    add_feature(static_cast<Feature*>(element));
+    add_feature(AsFeature(element));
   } else {
     Element::AddElement(element);
   }
@@ -101,18 +94,14 @@ void Delete::Serialize(Serializer& serializer) const {
 // <Change>
 Change::Change() {}
 
-Change::~Change() {
-  for (size_t i = 0; i < object_array_.size(); ++i) {
-    delete object_array_[i];
-  }
-}
+Change::~Change() {}
 
-void Change::AddElement(Element* element) {
+void Change::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_Object)) {
-    add_object(static_cast<Object*>(element));
+    add_object(AsObject(element));
   } else {
     Element::AddElement(element);
   }
@@ -133,13 +122,9 @@ Update::Update()
   : has_targethref_(false) {
 }
 
-Update::~Update() {
-  for (size_t i = 0; i < updateoperation_array_.size(); ++i) {
-    delete updateoperation_array_[i];
-  }
-}
+Update::~Update() {}
 
-void Update::AddElement(Element* element) {
+void Update::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
@@ -148,13 +133,13 @@ void Update::AddElement(Element* element) {
       has_targethref_ = element->SetString(&targethref_);
       break;
     case Type_Create:
-      add_updateoperation(static_cast<Create*>(element));
+      add_updateoperation(AsCreate(element));
       break;
     case Type_Delete:
-      add_updateoperation(static_cast<Delete*>(element));
+      add_updateoperation(AsDelete(element));
       break;
     case Type_Change:
-      add_updateoperation(static_cast<Change*>(element));
+      add_updateoperation(AsChange(element));
       break;
     default:
       Element::AddElement(element);
@@ -191,18 +176,14 @@ NetworkLinkControl::NetworkLinkControl()
     abstractview_(NULL) {
 }
 
-NetworkLinkControl::~NetworkLinkControl() {
-  delete linksnippet_;
-  delete update_;
-  delete abstractview_;
-}
+NetworkLinkControl::~NetworkLinkControl() {}
 
-void NetworkLinkControl::AddElement(Element* element) {
+void NetworkLinkControl::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
   if (element->IsA(Type_AbstractView)) {
-    set_abstractview(static_cast<AbstractView*>(element));
+    set_abstractview(AsAbstractView(element));
     return;
   }
   switch (element->Type()) {
@@ -225,13 +206,13 @@ void NetworkLinkControl::AddElement(Element* element) {
       has_linkdescription_ = element->SetString(&linkdescription_);
       break;
     case Type_linkSnippet:
-      set_linksnippet(static_cast<LinkSnippet*>(element));
+      set_linksnippet(AsLinkSnippet(element));
       break;
     case Type_expires:
       has_expires_ = element->SetString(&expires_);
       break;
     case Type_Update:
-      set_update(static_cast<Update*>(element));
+      set_update(AsUpdate(element));
       break;
     default:
       Element::AddElement(element);

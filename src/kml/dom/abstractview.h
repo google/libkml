@@ -171,7 +171,7 @@ class LookAt : public AbstractView {
   friend class KmlFactory;
   LookAt();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double longitude_;
@@ -316,7 +316,7 @@ class Camera : public AbstractView {
   friend class KmlFactory;
   Camera();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   double longitude_;

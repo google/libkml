@@ -25,9 +25,11 @@
 
 // This file contains the unit test for the abstract Feature element.
 
+#include "boost/intrusive_ptr.hpp"
 #include "kml/dom/feature.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -45,7 +47,6 @@ class FeatureTest : public CPPUNIT_NS::TestFixture {
     feature_ = new TestFeature();
   }
   void tearDown() {
-    delete feature_;
   }
 
  protected:
@@ -58,7 +59,7 @@ class FeatureTest : public CPPUNIT_NS::TestFixture {
   // Feature is abstract, hence its constructor is protected.
   class TestFeature : public Feature {
   };
-  TestFeature* feature_;
+  boost::intrusive_ptr<TestFeature> feature_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FeatureTest);
@@ -133,13 +134,13 @@ void FeatureTest::TestSetGetHasClear() {
   bool open = true;
   std::string address("b");
   std::string phonenumber("c");
-  Snippet* snippet = KmlFactory::GetFactory()->CreateSnippet();
+  SnippetPtr snippet = KmlFactory::GetFactory()->CreateSnippet();
   std::string description("d");
-  LookAt* lookat = KmlFactory::GetFactory()->CreateLookAt();
-  TimeSpan* timespan = KmlFactory::GetFactory()->CreateTimeSpan();
+  LookAtPtr lookat = KmlFactory::GetFactory()->CreateLookAt();
+  TimeSpanPtr timespan = KmlFactory::GetFactory()->CreateTimeSpan();
   std::string styleurl("e");
-  Style* style = KmlFactory::GetFactory()->CreateStyle();
-  Region* region = KmlFactory::GetFactory()->CreateRegion();
+  StylePtr style = KmlFactory::GetFactory()->CreateStyle();
+  RegionPtr region = KmlFactory::GetFactory()->CreateRegion();
 
   // Set all fields:
   feature_->set_name(name);

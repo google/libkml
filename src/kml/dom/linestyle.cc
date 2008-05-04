@@ -30,15 +30,14 @@
 
 namespace kmldom {
 
-LineStyle::LineStyle() :
-  width_(1.0),
-  has_width_(false) {
+LineStyle::LineStyle()
+  : width_(1.0), has_width_(false) {
 }
 
 LineStyle::~LineStyle() {
 }
 
-void LineStyle::AddElement(Element* element) {
+void LineStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_width:
       has_width_ = element->SetDouble(&width_);

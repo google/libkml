@@ -56,7 +56,7 @@ void SnippetCommon::GetAttributes(Attributes* attributes) const {
 }
 
 // Snippet needs to parse its own character data.
-void SnippetCommon::AddElement(Element* element) {
+void SnippetCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }

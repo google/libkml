@@ -28,6 +28,7 @@
 #include "kml/dom/iconstyle.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/element.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
@@ -39,17 +40,12 @@ IconStyle::IconStyle() :
   scale_(1.0),
   has_scale_(false),
   heading_(0.0),
-  has_heading_(false),
-  icon_(NULL),
-  hotspot_(NULL) {
+  has_heading_(false) {
 }
 
-IconStyle::~IconStyle() {
-  delete icon_;
-  delete hotspot_;
-}
+IconStyle::~IconStyle() {}
 
-void IconStyle::AddElement(Element* element) {
+void IconStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_scale:
       has_scale_ = element->SetDouble(&scale_);
@@ -58,10 +54,10 @@ void IconStyle::AddElement(Element* element) {
       has_heading_ = element->SetDouble(&heading_);
       break;
     case Type_IconStyleIcon:
-      set_icon(static_cast<IconStyleIcon*>(element));
+      set_icon(AsIconStyleIcon(element));
       break;
     case Type_hotSpot:
-      set_hotspot(static_cast<HotSpot*>(element));
+      set_hotspot(AsHotSpot(element));
       break;
     default:
       ColorStyle::AddElement(element);

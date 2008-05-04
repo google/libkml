@@ -28,9 +28,10 @@
 
 #include <vector>
 #include "kml/dom/container.h"
+#include "kml/dom/kml22.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/schema.h"
 #include "kml/dom/styleselector.h"
-#include "kml/dom/kml22.h"
 
 namespace kmldom {
 
@@ -43,32 +44,28 @@ class Document : public Container {
   }
 
   // <Schema>
-  void add_schema(Schema* schema) {
-    if (schema && schema->set_parent(this)) {
-      schema_array_.push_back(schema);
-    }
+  void add_schema(const SchemaPtr& schema) {
+    AddComplexChild(schema, &schema_array_);
   }
 
   const size_t schema_array_size() const {
     return schema_array_.size();
   }
 
-  const Schema* schema_array_at(unsigned int index) const {
+  const SchemaPtr& schema_array_at(unsigned int index) const {
     return schema_array_[index];
   }
 
   // <Style> and <StyleMap>
-  void add_styleselector(StyleSelector* styleselector) {
-    if (styleselector && styleselector->set_parent(this)) {
-      styleselector_array_.push_back(styleselector);
-    }
+  void add_styleselector(const StyleSelectorPtr& styleselector) {
+    AddComplexChild(styleselector, &styleselector_array_);
   }
 
   const size_t styleselector_array_size() const {
     return styleselector_array_.size();
   }
 
-  const StyleSelector* styleselector_array_at(unsigned int index) const {
+  const StyleSelectorPtr& styleselector_array_at(unsigned int index) const {
     return styleselector_array_[index];
   }
 
@@ -80,11 +77,11 @@ class Document : public Container {
   friend class KmlFactory;
   Document();
   friend class KmlHandler;
-  virtual void AddElement(Element* element);
+  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<Schema*> schema_array_;
-  std::vector<StyleSelector*> styleselector_array_;
+  std::vector<SchemaPtr> schema_array_;
+  std::vector<StyleSelectorPtr> styleselector_array_;
   DISALLOW_EVIL_CONSTRUCTORS(Document);
 };
 

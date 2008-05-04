@@ -26,9 +26,11 @@
 // This file contains the unit tests for the IconStyle element.
 
 #include "kml/dom/iconstyle.h"
+#include "kml/dom/element.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/util/unit_test.h"
 
@@ -51,7 +53,6 @@ class IconStyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete iconstyle_;
   }
 
  protected:
@@ -62,7 +63,7 @@ class IconStyleTest : public CPPUNIT_NS::TestFixture {
   void TestParse();
 
  private:
-  IconStyle* iconstyle_;
+  IconStylePtr iconstyle_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(IconStyleTest);
@@ -106,8 +107,8 @@ void IconStyleTest::TestSetGetHasClear() {
   // Non-default values:
   double scale = 1.0;
   double heading = 2.0;
-  IconStyleIcon* icon = KmlFactory::GetFactory()->CreateIconStyleIcon();
-  HotSpot* hotspot = KmlFactory::GetFactory()->CreateHotSpot();
+  IconStyleIconPtr icon = KmlFactory::GetFactory()->CreateIconStyleIcon();
+  HotSpotPtr hotspot = KmlFactory::GetFactory()->CreateHotSpot();
 
   // Set all fields:
   iconstyle_->set_scale(scale);
@@ -143,13 +144,14 @@ void IconStyleTest::TestParse() {
     "<Icon><href>image.jpg</href></Icon>"
     "</IconStyle>";
   std::string errors;
-  Element* root = Parse(kIconStyleIcon, &errors);
-  const IconStyle* iconstyle = AsIconStyle(root);
+  ElementPtr root = Parse(kIconStyleIcon, &errors);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(errors.empty());
+  const IconStylePtr iconstyle = AsIconStyle(root);
   CPPUNIT_ASSERT(iconstyle->has_icon());
   // Verify that this is IconStyle's brand of Icon (not Type_Icon).
   CPPUNIT_ASSERT_EQUAL(Type_IconStyleIcon, iconstyle->icon()->Type());
   CPPUNIT_ASSERT_EQUAL(std::string("image.jpg"), iconstyle->icon()->href());
-  delete root;
 }
 
 }  // end namespace kmldom

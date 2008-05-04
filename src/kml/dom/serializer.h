@@ -94,7 +94,7 @@ class Serializer {
  private:
   void BeginByName(const std::string& tag_name, const Attributes& attributes);
   void SaveStringFieldByName(std::string tag_name, std::string value);
-  Xsd* xsd_;
+  const Xsd& xsd_;
   const char* newline_;
   const char* indent_;
   std::vector<std::string> xml_;

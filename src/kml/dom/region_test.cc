@@ -52,7 +52,6 @@ class LatLonAltBoxTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete latlonaltbox_;
   }
 
  protected:
@@ -63,7 +62,7 @@ class LatLonAltBoxTest : public CPPUNIT_NS::TestFixture {
   void TestParseAltitudeMode();
 
  private:
-  LatLonAltBox* latlonaltbox_;
+  LatLonAltBoxPtr latlonaltbox_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LatLonAltBoxTest);
@@ -141,10 +140,10 @@ void LatLonAltBoxTest::TestParseAltitudeMode() {
     "<altitudeMode>absolute</altitudeMode>"
     "</LatLonAltBox>";
   std::string errors;
-  Element* root = Parse(kLatLonAltBoxAbsolute, &errors);
+  ElementPtr root = Parse(kLatLonAltBoxAbsolute, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const LatLonAltBox* llab_absolute = AsLatLonAltBox(root);
+  const LatLonAltBoxPtr llab_absolute = AsLatLonAltBox(root);
   CPPUNIT_ASSERT(llab_absolute);
 
   // Verify the proper values in the object model:
@@ -164,8 +163,6 @@ void LatLonAltBoxTest::TestParseAltitudeMode() {
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(ALTITUDEMODE_ABSOLUTE),
                        llab_absolute->altitudemode());
 
-  delete root;
-
   std::string kLatLonAltBoxClampToGround =
     "<LatLonAltBox>"
     "<altitudeMode>clampToGround</altitudeMode>"
@@ -173,7 +170,7 @@ void LatLonAltBoxTest::TestParseAltitudeMode() {
   root = Parse(kLatLonAltBoxClampToGround, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const LatLonAltBox* llab_clamptoground = AsLatLonAltBox(root);
+  const LatLonAltBoxPtr llab_clamptoground = AsLatLonAltBox(root);
   CPPUNIT_ASSERT(llab_clamptoground);
   CPPUNIT_ASSERT(false == llab_clamptoground->has_north());
   CPPUNIT_ASSERT(false == llab_clamptoground->has_south());
@@ -185,8 +182,6 @@ void LatLonAltBoxTest::TestParseAltitudeMode() {
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(ALTITUDEMODE_CLAMPTOGROUND),
                        llab_clamptoground->altitudemode());
 
-  delete root;
-
   std::string kLatLonAltBoxRelativeToGround =
     "<LatLonAltBox>"
     "<altitudeMode>relativeToGround</altitudeMode>"
@@ -194,14 +189,12 @@ void LatLonAltBoxTest::TestParseAltitudeMode() {
   root = Parse(kLatLonAltBoxRelativeToGround, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const LatLonAltBox* llab_relativetoground = AsLatLonAltBox(root);
+  const LatLonAltBoxPtr llab_relativetoground = AsLatLonAltBox(root);
   CPPUNIT_ASSERT(llab_relativetoground);
   CPPUNIT_ASSERT(llab_relativetoground->has_altitudemode());
   CPPUNIT_ASSERT(llab_relativetoground->has_altitudemode());
   CPPUNIT_ASSERT_EQUAL(static_cast<int>(ALTITUDEMODE_RELATIVETOGROUND),
                        llab_relativetoground->altitudemode());
-
-  delete root;
 }
 
 class LodTest : public CPPUNIT_NS::TestFixture {
@@ -220,7 +213,6 @@ class LodTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete lod_;
   }
 
  protected:
@@ -230,7 +222,7 @@ class LodTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  Lod* lod_;
+  LodPtr lod_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(LodTest);
@@ -327,11 +319,10 @@ class RegionTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    delete region_;
   }
 
  private:
-  Region* region_;
+  RegionPtr region_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(RegionTest);
@@ -361,10 +352,10 @@ void RegionTest::TestParse() {
     "</Lod>"
     "</Region>";
   std::string errors;
-  Element* root = Parse(kRegion, &errors);
+  ElementPtr root = Parse(kRegion, &errors);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
-  const Region* region = AsRegion(root);
+  const RegionPtr region = AsRegion(root);
   CPPUNIT_ASSERT(region);
   CPPUNIT_ASSERT_EQUAL(std::string("region123"), region->id());
   CPPUNIT_ASSERT(region->has_latlonaltbox());
@@ -380,11 +371,11 @@ void RegionTest::TestParse() {
 // (This tests the internal set_parent() method.)
 void RegionTest::TestSetParent() {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Lod* lod = factory->CreateLod();
-  LatLonAltBox* latlonaltbox = factory->CreateLatLonAltBox();
+  LodPtr lod = factory->CreateLod();
+  LatLonAltBoxPtr latlonaltbox = factory->CreateLatLonAltBox();
   region_->set_lod(lod);
   region_->set_latlonaltbox(latlonaltbox);
-  Region* region2 = factory->CreateRegion();
+  RegionPtr region2 = factory->CreateRegion();
   region2->set_lod(lod);
   region2->set_latlonaltbox(latlonaltbox);
   CPPUNIT_ASSERT(region_->has_lod());
@@ -392,13 +383,12 @@ void RegionTest::TestSetParent() {
   // The 2nd Region should not have taken the children.
   CPPUNIT_ASSERT(false == region2->has_lod());
   CPPUNIT_ASSERT(false == region2->has_latlonaltbox());
-  delete region2;
   // Delete of region_ deletes the Lod and LatLonAltBox created here.
 }
 
 void RegionTest::TestSerialize() {
   std::string expecting_default ="<Region/>";
-  CPPUNIT_ASSERT_EQUAL(expecting_default, SerializeRaw(*region_));
+  CPPUNIT_ASSERT_EQUAL(expecting_default, SerializeRaw(region_));
   region_->set_lod(KmlFactory::GetFactory()->CreateLod());
   region_->set_latlonaltbox(KmlFactory::GetFactory()->CreateLatLonAltBox());
   region_->set_id("abc");
@@ -407,14 +397,14 @@ void RegionTest::TestSerialize() {
     "<LatLonAltBox/>"
     "<Lod/>"
     "</Region>";
-  CPPUNIT_ASSERT_EQUAL(expecting_both_children, SerializeRaw(*region_));
+  CPPUNIT_ASSERT_EQUAL(expecting_both_children, SerializeRaw(region_));
   region_->clear_id();  // Clears id attribute.
   region_->clear_lod();  // Deletes Lod.
   std::string expecting_llab =
     "<Region>"
     "<LatLonAltBox/>"
     "</Region>";
-  CPPUNIT_ASSERT_EQUAL(expecting_llab, SerializeRaw(*region_));
+  CPPUNIT_ASSERT_EQUAL(expecting_llab, SerializeRaw(region_));
   // Delete of region_ deletes LatLonAltBox.
 }
 

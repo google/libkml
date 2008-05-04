@@ -25,7 +25,7 @@
 
 #include "kml/dom/balloonstyle.h"
 #include "kml/dom/kml_factory.h"
-#include "kml/dom/kmldom.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/util/unit_test.h"
 
 namespace kmldom {
@@ -46,7 +46,6 @@ class BalloonStyleTest : public CPPUNIT_NS::TestFixture {
 
   // Called after all tests.
   void tearDown() {
-    delete balloonstyle_;
   }
 
  protected:
@@ -56,7 +55,7 @@ class BalloonStyleTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
 
  private:
-  BalloonStyle* balloonstyle_;
+  BalloonStylePtr balloonstyle_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(BalloonStyleTest);
@@ -129,4 +128,3 @@ void BalloonStyleTest::TestSetGetHasClear() {
 }  // end namespace kmldom
 
 TEST_MAIN
-
