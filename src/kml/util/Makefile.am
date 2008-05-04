@@ -1,4 +1,5 @@
-INCLUDES = -I$(top_srcdir)/src -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
+AM_CPPFLAGS = -I$(top_srcdir)/src \
+	      -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 lib_LTLIBRARIES = libkmlutil.la
 libkmlutil_la_SOURCES = fileio.cc kmz.cc

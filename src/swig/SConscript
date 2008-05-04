@@ -29,12 +29,14 @@ import subprocess
 Import('env')
 env = env.Clone()
 
+
 # TODO: This duplicates some settings in src/SConscript, but we are choosing
 # to not inflict any strange issues such as failure to compile with
 # -pendantic upon the main code base.
 
 env.Append(CPPPATH=['#/src',
-                    '#/third_party/expat-2.0.1/lib'])
+                    '#/third_party/expat-2.0.1/lib',
+                    '#/third_party/boost_1_34_1'])
 env.Append(LIBPATH=['#/build',
                     '#/build/kml/dom'])
 

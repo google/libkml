@@ -32,6 +32,7 @@
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml22.h"
 

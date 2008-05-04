@@ -33,6 +33,319 @@ import unittest
 import kmldom
 
 
+class VerySimpleParseTestCase(unittest.TestCase):
+  """ This simply verifies the existence of the binding to ParseKml() """
+
+  def runTest(self):
+    assert kmldom.ParseKml('<kml/>')
+
+
+class VerySimpleSerializeTestCase(unittest.TestCase):
+  """ This verifies the existence of the binding to SerializeRaw() """
+
+  def runTest(self):
+    kml = '<kml/>'
+    assert kml == kmldom.SerializeRaw(kmldom.ParseKml(kml))
+
+
+class SimpleFactoryTestCase(unittest.TestCase):
+  """
+  This verifies the existence of the binding to KmlFactory::GetFactory
+  and the exitence of bindings for all factory methods.
+  """
+
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    assert factory.CreateAlias()
+    assert factory.CreateBalloonStyle()
+    assert factory.CreateCamera()
+    assert factory.CreateChange()
+    assert factory.CreateCreate()
+    assert factory.CreateData()
+    assert factory.CreateDelete()
+    assert factory.CreateDocument()
+    assert factory.CreateExtendedData()
+    assert factory.CreateFolder()
+    assert factory.CreateGroundOverlay()
+    assert factory.CreateIcon()
+    assert factory.CreateIconStyle()
+    assert factory.CreateImagePyramid()
+    assert factory.CreateItemIcon()
+    assert factory.CreateLabelStyle()
+    assert factory.CreateLatLonAltBox()
+    assert factory.CreateLatLonBox()
+    assert factory.CreateLineString()
+    assert factory.CreateLineStyle()
+    assert factory.CreateLinearRing()
+    assert factory.CreateLink()
+    assert factory.CreateListStyle()
+    assert factory.CreateLocation()
+    assert factory.CreateLod()
+    assert factory.CreateLookAt()
+    assert factory.CreateModel()
+    assert factory.CreateMultiGeometry()
+    assert factory.CreateNetworkLink()
+    assert factory.CreateNetworkLinkControl()
+    assert factory.CreateOrientation()
+    assert factory.CreatePair()
+    assert factory.CreatePhotoOverlay()
+    assert factory.CreatePlacemark()
+    assert factory.CreatePoint()
+    assert factory.CreatePolyStyle()
+    assert factory.CreatePolygon()
+    assert factory.CreateRegion()
+    assert factory.CreateResourceMap()
+    assert factory.CreateScale()
+    assert factory.CreateSchema()
+    assert factory.CreateSchemaData()
+    assert factory.CreateScreenOverlay()
+    assert factory.CreateSimpleData()
+    assert factory.CreateSimpleField()
+    assert factory.CreateSnippet()
+    assert factory.CreateStyle()
+    assert factory.CreateStyleMap()
+    assert factory.CreateTimeSpan()
+    assert factory.CreateTimeStamp()
+    assert factory.CreateUpdate()
+    assert factory.CreateViewVolume()
+    assert factory.CreateHotSpot()
+    assert factory.CreateInnerBoundaryIs()
+    assert factory.CreateKml()
+    assert factory.CreateLinkSnippet()
+    assert factory.CreateOuterBoundaryIs()
+    assert factory.CreateOverlayXY()
+    assert factory.CreateRotationXY()
+    assert factory.CreateScreenXY()
+    assert factory.CreateSize()
+
+
+class VerySimpleCastTestCase(unittest.TestCase):
+  """ This verifies the existence of the bindings to a few of the casts """
+
+  def runTest(self):
+    """ kmldom.ParseKml() returns an ElementPtr """
+    assert kmldom.AsCoordinates(kmldom.ParseKml('<coordinates/>'))
+    assert not kmldom.AsCoordinates(kmldom.ParseKml('<Document/>'))
+    assert kmldom.AsFolder(kmldom.ParseKml('<Folder/>'))
+    assert not kmldom.AsFolder(kmldom.ParseKml('<Document/>'))
+    assert kmldom.AsKml(kmldom.ParseKml('<kml/>'))
+    assert not kmldom.AsKml(kmldom.ParseKml('<Placemark/>'))
+    assert kmldom.AsPlacemark(kmldom.ParseKml('<Placemark/>'))
+    assert not kmldom.AsPlacemark(kmldom.ParseKml('<NetworkLink/>'))
+    assert kmldom.AsPoint(kmldom.ParseKml('<Point/>'))
+    assert not kmldom.AsPoint(kmldom.ParseKml('<LineString/>'))
+
+
+class VerySimpleSimpleChildTestCase(unittest.TestCase):
+  """
+  This tests that an element derived from Feature can properly set/get/clear
+  the simple value <name> element.
+  """
+
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    folder = factory.CreateFolder()
+    assert not folder.has_name()
+    name = 'my name'
+    folder.set_name(name)
+    assert folder.has_name()
+    assert name == folder.name()
+    folder.clear_name()
+    assert not folder.has_name()
+
+
+class VerySimpleComplexChildTestCase(unittest.TestCase):
+  """
+  This tests that a complex child of a specific type can be set and
+  cleared as a child of another element.
+  """
+
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    region = factory.CreateRegion()
+    assert not region.has_lod()
+    assert not region.has_latlonaltbox()
+    region.set_lod(factory.CreateLod())
+    region.set_latlonaltbox(factory.CreateLatLonAltBox())
+    assert region.has_lod()
+    assert region.has_latlonaltbox()
+    region.clear_lod()
+    region.clear_latlonaltbox()
+    assert not region.has_lod()
+    assert not region.has_latlonaltbox()
+
+
+class SimpleCoordinatesTestCase(unittest.TestCase):
+  """ This tests the methods on Coordinates and Vec3 """
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    coordinates = factory.CreateCoordinates()
+    # Test the Element methods
+    assert kmldom.Type_coordinates == coordinates.Type()
+    assert coordinates.IsA(kmldom.Type_coordinates)
+    # Test the Coordinates methods
+    lon = -123.456
+    lat = 38.765
+    alt = 1001.909
+    assert 0 == coordinates.coordinates_array_size()
+    coordinates.add_point2(lon, lat)
+    assert 1 == coordinates.coordinates_array_size()
+    coordinates.add_point3(lon, lat, alt)
+    assert 2 == coordinates.coordinates_array_size()
+    vec0 = coordinates.coordinates_array_at(0)
+    vec1 = coordinates.coordinates_array_at(1)
+    # Test the Vec3 methods
+    assert lon == vec0.longitude()
+    assert lat == vec0.latitude()
+    assert 0 == vec0.altitude()
+    assert lon == vec1.longitude()
+    assert lat == vec1.latitude()
+    assert alt == vec1.altitude()
+
+
+class SimpleVec2TestCase(unittest.TestCase):
+  """ This tests the methods on Vec2 (using HotSpot) """
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    hotspot = factory.CreateHotSpot()
+    # Test the Element methods
+    assert kmldom.Type_hotSpot == hotspot.Type()
+    assert hotspot.IsA(kmldom.Type_hotSpot)
+    # Test the Vec2 methods
+    assert not hotspot.has_x()
+    assert not hotspot.has_xunits()
+    assert not hotspot.has_y()
+    assert not hotspot.has_yunits()
+    x = 128
+    xunits = kmldom.UNITS_PIXELS
+    y = .7
+    yunits = kmldom.UNITS_FRACTION
+    # Test the setters
+    hotspot.set_x(x)
+    hotspot.set_xunits(xunits)
+    hotspot.set_y(y)
+    hotspot.set_yunits(yunits)
+    # Test the has'ers
+    assert hotspot.has_x()
+    assert hotspot.has_xunits()
+    assert hotspot.has_y()
+    assert hotspot.has_yunits()
+    # Test the getters
+    assert x == hotspot.x()
+    assert xunits == hotspot.xunits()
+    assert y == hotspot.y()
+    assert yunits == hotspot.yunits()
+    # Test the clear'ers
+    hotspot.clear_x()
+    hotspot.clear_xunits()
+    hotspot.clear_y()
+    hotspot.clear_yunits()
+    assert not hotspot.has_x()
+    assert not hotspot.has_xunits()
+    assert not hotspot.has_y()
+    assert not hotspot.has_yunits()
+
+
+class SimpleObjectTestCase(unittest.TestCase):
+  """ This tests the Object methods (using Placemark) """
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    placemark = factory.CreatePlacemark()
+    # Element methods
+    assert kmldom.Type_Placemark == placemark.Type()
+    assert placemark.IsA(kmldom.Type_Object)
+    assert placemark.IsA(kmldom.Type_Placemark)
+    # Object methods
+    # has_xxx()...
+    assert not placemark.has_id()
+    assert not placemark.has_targetid()
+    id = 'placemark123'
+    targetid ='placemark456'
+    # set_xxx()...
+    placemark.set_id(id)
+    placemark.set_targetid(targetid)
+    assert placemark.has_id()
+    assert placemark.has_targetid()
+    # xxx()...
+    assert id == placemark.id()
+    assert targetid == placemark.targetid()
+    # clear_xxx()...
+    placemark.clear_id()
+    placemark.clear_targetid()
+    assert not placemark.has_id()
+    assert not placemark.has_targetid()
+
+
+class SimpleFeatureTestCase(unittest.TestCase):
+  """ This tests the Feature methods (using Folder) """
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    folder = factory.CreateFolder()
+
+    # Element methods
+    assert kmldom.Type_Folder == folder.Type()
+    assert folder.IsA(kmldom.Type_Object)
+    assert folder.IsA(kmldom.Type_Feature)
+    assert folder.IsA(kmldom.Type_Folder)
+
+    # TODO: Object methods
+
+    # Feature methods
+    # TODO everything else
+    assert not folder.has_snippet()
+    folder.set_snippet(factory.CreateSnippet())
+    assert folder.has_snippet()
+    snippet = folder.snippet()
+    # Test that the snippet() returns a SnippetPtr
+    assert not snippet.has_maxlines()
+    folder.clear_snippet()
+    assert not folder.has_snippet()
+
+
+class SimpleRegionTestCase(unittest.TestCase):
+  """ This tests the methods on Region """
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    region = factory.CreateRegion()
+
+    # Element methods
+    assert kmldom.Type_Region == region.Type()
+    assert region.IsA(kmldom.Type_Object)
+    assert region.IsA(kmldom.Type_Region)
+
+    # Object methods
+    # has_xxx()...
+    assert not region.has_id()
+    assert not region.has_targetid()
+    id = 'region123'
+    targetid ='region456'
+    # set_xxx()...
+    region.set_id(id)
+    region.set_targetid(targetid)
+    assert region.has_id()
+    assert region.has_targetid()
+    # xxx()...
+    assert id == region.id()
+    assert targetid == region.targetid()
+    # clear_xxx()...
+    region.clear_id()
+    region.clear_targetid()
+    assert not region.has_id()
+    assert not region.has_targetid()
+
+    # Region methods
+    assert not region.has_lod()
+    assert not region.has_latlonaltbox()
+    region.set_lod(factory.CreateLod())
+    region.set_latlonaltbox(factory.CreateLatLonAltBox())
+    assert region.has_lod()
+    assert region.has_latlonaltbox()
+    region.clear_lod()
+    region.clear_latlonaltbox()
+    assert not region.has_lod()
+    assert not region.has_latlonaltbox()
+
+
 class SimpleParseTestCase(unittest.TestCase):
   """ This tests the Parse() function."""
 
@@ -45,7 +358,7 @@ class SimpleParseTestCase(unittest.TestCase):
                                 '</kml>')
 
   def tearDown(self):
-    self.factory.DeleteElement(self.root)
+    """ KML DOM memory is managed with smart pointers no tear down is needed """
 
   def testBasic(self):
     assert self.root
@@ -77,9 +390,6 @@ class SimpleSerializePrettyTestCase(unittest.TestCase):
     self.kml.set_feature(self.folder)
     self.xml = kmldom.SerializePretty(self.kml)
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.kml)
-
   def testBasic(self):
     assert self.xml
     assert '<kml>\n'\
@@ -106,9 +416,6 @@ class SimpleSerializeRawTestCase(unittest.TestCase):
     self.kml.set_feature(self.folder)
     self.xml = kmldom.SerializeRaw(self.kml)
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.kml)
-
   def testBasic(self):
     assert self.xml
     assert '<kml>'\
@@ -128,9 +435,6 @@ class SimpleExtendedDataTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.extendeddata = self.factory.CreateExtendedData()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.extendeddata)
-
   def testDefault(self):
     assert kmldom.AsExtendedData(self.extendeddata)
     assert 0 == self.extendeddata.extendeddatamember_array_size()
@@ -142,9 +446,6 @@ class SimpleListStyleTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.liststyle = self.factory.CreateListStyle()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.liststyle)
 
   def testDefault(self):
     assert kmldom.AsObject(self.liststyle)
@@ -160,9 +461,6 @@ class SimplePhotoOverlayTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.photooverlay = self.factory.CreatePhotoOverlay()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.photooverlay)
 
   def testDefault(self):
     assert kmldom.AsObject(self.photooverlay)
@@ -185,9 +483,6 @@ class SimplePlacemarkTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.placemark = self.factory.CreatePlacemark()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.placemark)
 
   def testDefault(self):
     assert kmldom.AsObject(self.placemark)
@@ -212,9 +507,6 @@ class SimpleLatLonBoxTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.latlonbox = self.factory.CreateLatLonBox()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.latlonbox)
 
   def testDefault(self):
     assert kmldom.AsObject(self.latlonbox)
@@ -261,9 +553,6 @@ class SimpleLinkTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.link = self.factory.CreateLink()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.link)
-
   def testDefault(self):
     assert kmldom.AsObject(self.link)
     assert kmldom.AsLink(self.link)
@@ -286,9 +575,6 @@ class SimpleChangeTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.change = self.factory.CreateChange()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.change)
 
   def testDefault(self):
     assert kmldom.AsChange(self.change)
@@ -332,9 +618,6 @@ class SimpleCreateTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.create = self.factory.CreateCreate()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.create)
 
   def testDefault(self):
     assert kmldom.AsCreate(self.create)
@@ -384,9 +667,6 @@ class SimpleDeleteTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.delete = self.factory.CreateDelete()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.delete)
 
   def testDefault(self):
     assert kmldom.AsDelete(self.delete)
@@ -455,9 +735,6 @@ class SimpleDocumentTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.document = self.factory.CreateDocument()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.document)
-
   def testDefault(self):
     assert kmldom.AsObject(self.document)
     assert kmldom.AsFeature(self.document)
@@ -476,9 +753,6 @@ class SimpleMultiGeometryTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.multigeometry = self.factory.CreateMultiGeometry()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.multigeometry)
 
   def testDefault(self):
     assert kmldom.AsObject(self.multigeometry)
@@ -507,9 +781,6 @@ class SimpleResourceMapTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.resourcemap = self.factory.CreateResourceMap()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.resourcemap)
-
   def testDefault(self):
     assert kmldom.AsObject(self.resourcemap)
     assert kmldom.AsResourceMap(self.resourcemap)
@@ -523,9 +794,6 @@ class SimpleSchemaTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.schema = self.factory.CreateSchema()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.schema)
 
   def testDefault(self):
     assert kmldom.AsSchema(self.schema)
@@ -541,9 +809,6 @@ class SimpleSchemaDataTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.schemadata = self.factory.CreateSchemaData()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.schemadata)
-
   def testDefault(self):
     assert kmldom.AsObject(self.schemadata)
     assert kmldom.AsSchemaData(self.schemadata)
@@ -557,9 +822,6 @@ class SimpleSimpleFieldTestCase(unittest.TestCase):
   def setUp(self):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.simplefield = self.factory.CreateSimpleField()
-
-  def tearDown(self):
-    self.factory.DeleteElement(self.simplefield)
 
   def testDefault(self):
     assert kmldom.AsSimpleField(self.simplefield)
@@ -579,9 +841,6 @@ class SimpleUpdateTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.update = self.factory.CreateUpdate()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.update)
-
   def testDefault(self):
     assert kmldom.AsUpdate(self.update)
     assert 0 == self.update.updateoperation_array_size()
@@ -597,9 +856,6 @@ class SimpleIconStyleIconTestCase(unittest.TestCase):
     self.factory = kmldom.KmlFactory_GetFactory()
     self.iconstyleicon= self.factory.CreateIconStyleIcon()
 
-  def tearDown(self):
-    self.factory.DeleteElement(self.iconstyleicon)
-
   def testBasic(self):
     assert not self.iconstyleicon.has_href() # default state
     assert '' == self.iconstyleicon.href()
@@ -614,6 +870,17 @@ class SimpleIconStyleIconTestCase(unittest.TestCase):
 
 def suite():
   suite = unittest.TestSuite()
+  suite.addTest(VerySimpleParseTestCase())
+  suite.addTest(VerySimpleSerializeTestCase())
+  suite.addTest(SimpleFactoryTestCase())
+  suite.addTest(VerySimpleCastTestCase())
+  suite.addTest(VerySimpleSimpleChildTestCase())
+  suite.addTest(VerySimpleComplexChildTestCase())
+  suite.addTest(SimpleCoordinatesTestCase())
+  suite.addTest(SimpleVec2TestCase())
+  suite.addTest(SimpleObjectTestCase())
+  suite.addTest(SimpleFeatureTestCase())
+  suite.addTest(SimpleRegionTestCase())
   suite.addTest(SimpleParseTestCase('testBasic'))
   suite.addTest(SimpleSerializePrettyTestCase('testBasic'))
   suite.addTest(SimpleSerializeRawTestCase('testBasic'))

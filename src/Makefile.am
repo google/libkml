@@ -1,2 +1,2 @@
-SUBDIRS = kml
+SUBDIRS = kml swig
 
