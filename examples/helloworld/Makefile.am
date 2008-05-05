@@ -81,4 +81,8 @@ sortplacemarks_LDADD = \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 EXTRA_DIST = \
-	print.h
+	print.h \
+	createkml.vcproj \
+	parsekml.vcproj \
+	prettykml.vcproj \
+	sortplacemarks.vcproj

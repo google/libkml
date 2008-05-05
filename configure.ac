@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Make sure we're interpreted by some minimal autoconf.
 AC_PREREQ(2.57)
 
-AC_INIT(libkml, 0.2, opensource@google.com)
+AC_INIT(libkml, 0.2.0, opensource@google.com)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
@@ -24,11 +24,20 @@ AM_CONDITIONAL(GCC, test "$GCC" = yes)
 
 dnl Which platform are we building on?
 PLATFORM=
+SHLIBSUFFIX=
 case "`uname -s`" in
-	Linux) PLATFORM=linux;;
-	Darwin) PLATFORM=darwin;;
-	*) PLATFORM=unknown;;
+	Linux)	PLATFORM=linux
+		SHLIBSUFFIX="so"
+	;;
+	Darwin)	PLATFORM=darwin
+		SHLIBSUFFIX="dylib"
+	;;
+	*) 	PLATFORM=unknown
+		SHLIBSUFFIX="so"
+	;;
 esac
+AC_SUBST(PLATFORM)
+AC_SUBST(SHLIBSUFFIX)
 
 dnl Where can we find the Java headers and libs?
 AC_ARG_WITH(java-include-dir,
@@ -145,6 +154,8 @@ AC_CONFIG_FILES([
 	Makefile
 	examples/Makefile
 	examples/helloworld/Makefile
+	examples/java/Makefile
+	examples/python/Makefile
 	src/Makefile
 	src/kml/Makefile
 	src/kml/dom/Makefile

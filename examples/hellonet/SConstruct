@@ -27,6 +27,8 @@ Library('curlfetch', ['curlfetch.cc'],
   CPPPATH=['/usr/local/include'])
 
 Program('kmlwalk.cc',
-  CPPPATH=['../../src/','/usr/local/include'],
-  LIBPATH=['.','../../build/kml/dom','/usr/local/lib'],
+  CPPPATH=['../../src/',
+           '../../third_party/boost_1_34_1',
+           '/usr/local/include'],
+  LIBPATH=['.','../../build/src/kml/dom/.libs','/usr/local/lib'],
   LIBS=['curlfetch','kmldom','expat','curl'])

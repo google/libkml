@@ -31,7 +31,7 @@ kmldom_python.cc: kmldom.i
 
 pythonext_DATA = _kmldom.so kmldom.py
 _kmldom.so:
-	cp $(top_builddir)/src/swig/.libs/libkmldom_swig_python.dylib _kmldom.so
+	cp $(top_builddir)/src/swig/.libs/libkmldom_swig_python.$(SHLIBSUFFIX) _kmldom.so
 kmldom.py:
 	cp $(top_srcdir)/src/swig/kmldom.py kmldom.py
 pythonextdir = $(PYTHON_SITE_PACKAGES_DIR)
@@ -44,3 +44,8 @@ EXTRA_DIST = \
 	kmlelements.i \
 	kmldom_test.py
 
+# The Python library on both Linux and OS X has to be called _kmldom.so. As
+# above, we accomplish this with a _DATA directive that copies the file. Since
+# there is an inherit dependency, we have to disable parallel builds in this
+# file, otherwise 'make -j3' or similar is likely to hit the race condition.
+.NOTPARALLEL: 
