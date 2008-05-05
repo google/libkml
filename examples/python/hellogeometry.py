@@ -146,10 +146,5 @@ def main():
   print 'Serialize to xml...'
   print kmldom.SerializePretty(kml)
 
-  # Release the storage for <kml> and all descendent elements.
-  # NOTE: at present this is _required_ to release the storage
-  # within the KML DOM.
-  factory.DeleteElement(kml)
-
 if __name__ == '__main__':
   main()
