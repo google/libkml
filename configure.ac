@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Make sure we're interpreted by some minimal autoconf.
 AC_PREREQ(2.57)
 
-AC_INIT(libkml, 0.2.1, opensource@google.com)
+AC_INIT(libkml, 0.2.2, opensource@google.com)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
@@ -18,6 +18,17 @@ AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+
+AC_CHECK_HEADERS([expat.h])
+AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h])
+AC_CHECK_FUNCS([floor memset strstr])
+
+AC_C_CONST
+AC_C_INLINE
+AC_FUNC_MALLOC
+AC_FUNC_STRTOD
+AC_HEADER_STDBOOL
+AC_TYPE_SIZE_T
 
 dnl Let Makefile know if we are GCC.
 AM_CONDITIONAL(GCC, test "$GCC" = yes)
@@ -153,6 +164,7 @@ AM_CONFIG_HEADER([config.h])
 AC_CONFIG_FILES([
 	Makefile
 	examples/Makefile
+	examples/domviewer/Makefile
 	examples/helloworld/Makefile
 	examples/java/Makefile
 	examples/python/Makefile
