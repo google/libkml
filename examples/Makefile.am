@@ -1,4 +1,4 @@
-SUBDIRS = helloworld java python
+SUBDIRS = domviewer helloworld java python
 
 EXTRA_DIST = \
 	examples.sln
