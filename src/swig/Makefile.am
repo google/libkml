@@ -29,6 +29,8 @@ kmldom_python.cc: kmldom.i
 	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmldom_python.cc \
 	$(top_srcdir)/src/swig/kmldom.i
 
+if WITH_SWIG
+if WITH_PYTHON
 pythonext_DATA = _kmldom.so kmldom.py
 _kmldom.so:
 	cp $(top_builddir)/src/swig/.libs/libkmldom_swig_python.$(SHLIBSUFFIX) _kmldom.so
@@ -38,6 +40,8 @@ pythonextdir = $(PYTHON_SITE_PACKAGES_DIR)
 
 clean-local:
 	-rm -f _kmldom.so
+endif
+endif
 
 EXTRA_DIST = \
 	kmldom.i \
