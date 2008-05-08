@@ -27,20 +27,24 @@
 // The overall process is as follows:
 // 1) map instance file element name to id
 // 2) create Element for each element and push onto stack at StartElement
+// 2a) call NewElement() for each ParserObserver.
 // 3) gather character data for simple elements
 // 4) in EndElement pop off the child to add to the parent on the stack
+// 4a) call AddChild() for each ParserObserver.
 
 #include "kml/dom/kml_handler.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/parser_observer.h"
 #include "kml/dom/xsd.h"
 
 namespace kmldom {
 
-KmlHandler::KmlHandler()
+KmlHandler::KmlHandler(parser_observer_vector_t& observers)
   : kml_factory_(*KmlFactory::GetFactory()),
-    skip_depth_(0) {
+    skip_depth_(0),
+    observers_(observers) {
 }
 
 KmlHandler::~KmlHandler() {
@@ -112,6 +116,22 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
   }
   // This is a known element.  Push onto parse stack and gather content.
   stack_.push(element);
+  // Call the NewElement() method of each ParserObserver.  The whole parse
+  // terminates if and when any observer's NewElement() returns false.
+  if (!CallNewElementObservers(observers_, element)) {
+    XML_StopParser(get_parser(), XML_TRUE);
+  }
+}
+
+// private
+bool KmlHandler::CallNewElementObservers(
+    const parser_observer_vector_t& observers, const ElementPtr& element) {
+  for (size_t i = 0; i < observers_.size(); ++i) {
+    if (!observers_[i]->NewElement(element)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 void KmlHandler::EndElement(const char *name) {
@@ -161,7 +181,22 @@ void KmlHandler::EndElement(const char *name) {
     // to the unknown element list in Element.
     stack_.pop();
     stack_.top()->AddElement(child);
+    if (!CallAddChildObservers(observers_, stack_.top(), child)) {
+      XML_StopParser(get_parser(), XML_TRUE);
+    }
   }
+}
+
+// private
+bool KmlHandler::CallAddChildObservers(
+    const parser_observer_vector_t& observers, const ElementPtr& parent,
+    const ElementPtr& child) {
+  for (size_t i = 0; i < observers_.size(); ++i) {
+    if (!observers_[i]->AddChild(parent, child)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Note the handling of char data w.r.t. unknown elements. If we are within

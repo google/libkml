@@ -35,6 +35,8 @@
 #include "kml/dom/element.h"
 #include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_handler.h"
+#include "kml/dom/parser.h"
+#include "kml/dom/parser_observer.h"
 
 namespace kmldom {
 
@@ -96,10 +98,16 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
   return status == XML_STATUS_OK;
 }
 
-// This is the implementation of the public API to parse KML from a memory
-// buffer.
-ElementPtr Parse(const std::string& kml, std::string* errors) {
-  KmlHandler kml_handler;
+// This is an internal API to add Element-level SAX-style handlers to
+// a given parser instance.  TODO: determine how/if to make public and SWIG.
+void Parser::AddObserver(ParserObserver* parser_observer) {
+  observers_.push_back(parser_observer);
+}
+
+// This is the internal API to the parser.  TODO: determine how/if to make
+// public and SWIG.
+ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
+  KmlHandler kml_handler(observers_);
   bool status = ExpatParser(kml, &kml_handler, errors);
   if (status) {
     return kml_handler.PopRoot();
@@ -107,11 +115,17 @@ ElementPtr Parse(const std::string& kml, std::string* errors) {
   return NULL;
 }
 
+// This is the implementation of the public API to parse KML from a memory
+// buffer.
+ElementPtr Parse(const std::string& kml, std::string* errors) {
+  Parser parser;
+  return parser.Parse(kml, errors);
+}
+
 // Parse the KML in the given string.  NULL is returned on any parse errors,
 // but the error string is unavailable with this function.
 ElementPtr ParseKml(const std::string& kml) {
-  std::string ignored;
-  return Parse(kml, &ignored);
+  return Parse(kml, NULL);
 }
 
 } // end namespace kmldom

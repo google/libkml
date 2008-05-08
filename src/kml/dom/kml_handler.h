@@ -24,7 +24,9 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file declares the KmlHandler specialization of ExpatHandler.
-// This is used internally to the Parse() function.
+// This is used internally to the Parse() function.  KmlHandler is constructed
+// with a list of ParserObservers which essentially layer on an Element-level
+// SAX parse as the DOM is built.
 
 // Note: although the parser itself is SAX-driven, we make a best effort
 // to preserve all unknown (non-KML) elements found during the parse, and
@@ -39,6 +41,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_ptr.h"
+#include "kml/dom/parser_observer.h"
 
 namespace kmldom {
 
@@ -48,7 +51,7 @@ class KmlFactory;
 // handed to expat in the ExpatParser() function.
 class KmlHandler : public ExpatHandler {
 public:
-  KmlHandler();
+  KmlHandler(parser_observer_vector_t& observers);
   ~KmlHandler();
 
   // ExpatHandler methods
@@ -71,6 +74,20 @@ private:
   void InsertUnknownStartElement(const char *name, const char **atts);
   void InsertUnknownEndElement(const char *name);
   unsigned int skip_depth_;
+
+  // This calls the NewElement() method of each ParserObserver.  If any
+  // ParserObserver::NewElement() returns false this immediately returns false.
+  // If all ParserObserver::NewElement()'s return true this returns true.
+  bool CallNewElementObservers(const parser_observer_vector_t& observers,
+                               const ElementPtr& element);
+  // This calls the AddChild() method of each ParserObserver.  If any
+  // ParserObserver::AddChild() returns false this immediately returns false.
+  // If all ParserObserver::AddChild()'s return true this returns true.
+  bool CallAddChildObservers(const parser_observer_vector_t& observers,
+                             const ElementPtr& parent,
+                             const ElementPtr& child);
+  const parser_observer_vector_t& observers_;
+  DISALLOW_EVIL_CONSTRUCTORS(KmlHandler);
 };
 
 } // end namespace kmldom
