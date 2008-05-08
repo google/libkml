@@ -85,8 +85,13 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
         element = kml_factory_.CreateElementById(Type_IconStyleIcon);
       }
     }
-    Attributes attributes(attrs);
-    element->ParseAttributes(attributes);
+
+    // We parse attributes only if StartElement received any.
+    if (attrs && *attrs) {
+      Attributes attributes(attrs);
+      element->ParseAttributes(attributes);
+    }
+
   } else if (xsd_type == XSD_SIMPLE_TYPE) {
     element = kml_factory_.CreateFieldById(type_id);
   }
