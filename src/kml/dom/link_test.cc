@@ -78,21 +78,21 @@ void LinkTest::TestType() {
 
 // Verify proper defaults:
 void LinkTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == link_->href());
+  CPPUNIT_ASSERT("" == link_->get_href());
   CPPUNIT_ASSERT(false == link_->has_href());
-  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == link_->refreshmode());
+  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == link_->get_refreshmode());
   CPPUNIT_ASSERT(false == link_->has_refreshmode());
-  CPPUNIT_ASSERT(4.0 == link_->refreshinterval());
+  CPPUNIT_ASSERT(4.0 == link_->get_refreshinterval());
   CPPUNIT_ASSERT(false == link_->has_refreshinterval());
-  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == link_->viewrefreshmode());
+  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == link_->get_viewrefreshmode());
   CPPUNIT_ASSERT(false == link_->has_viewrefreshmode());
-  CPPUNIT_ASSERT(4.0 == link_->viewrefreshtime());
+  CPPUNIT_ASSERT(4.0 == link_->get_viewrefreshtime());
   CPPUNIT_ASSERT(false == link_->has_viewrefreshtime());
-  CPPUNIT_ASSERT(1.0 == link_->viewboundscale());
+  CPPUNIT_ASSERT(1.0 == link_->get_viewboundscale());
   CPPUNIT_ASSERT(false == link_->has_viewboundscale());
-  CPPUNIT_ASSERT("" == link_->viewformat());
+  CPPUNIT_ASSERT("" == link_->get_viewformat());
   CPPUNIT_ASSERT(false == link_->has_viewformat());
-  CPPUNIT_ASSERT("" == link_->httpquery());
+  CPPUNIT_ASSERT("" == link_->get_httpquery());
   CPPUNIT_ASSERT(false == link_->has_httpquery());
 }
 
@@ -100,21 +100,21 @@ void LinkTest::TestDefaults() {
 void LinkTest::TestSetToDefaultValues() {
   // Verify default state:
   TestDefaults();
-  link_->set_href(link_->href());
+  link_->set_href(link_->get_href());
   CPPUNIT_ASSERT(true == link_->has_href());
-  link_->set_refreshmode(link_->refreshmode());
+  link_->set_refreshmode(link_->get_refreshmode());
   CPPUNIT_ASSERT(true == link_->has_refreshmode());
-  link_->set_refreshinterval(link_->refreshinterval());
+  link_->set_refreshinterval(link_->get_refreshinterval());
   CPPUNIT_ASSERT(true == link_->has_refreshinterval());
-  link_->set_viewrefreshmode(link_->viewrefreshmode());
+  link_->set_viewrefreshmode(link_->get_viewrefreshmode());
   CPPUNIT_ASSERT(true == link_->has_viewrefreshmode());
-  link_->set_viewrefreshtime(link_->viewrefreshtime());
+  link_->set_viewrefreshtime(link_->get_viewrefreshtime());
   CPPUNIT_ASSERT(true == link_->has_viewrefreshtime());
-  link_->set_viewboundscale(link_->viewboundscale());
+  link_->set_viewboundscale(link_->get_viewboundscale());
   CPPUNIT_ASSERT(true == link_->has_viewboundscale());
-  link_->set_viewformat(link_->viewformat());
+  link_->set_viewformat(link_->get_viewformat());
   CPPUNIT_ASSERT(true == link_->has_viewformat());
-  link_->set_httpquery(link_->httpquery());
+  link_->set_httpquery(link_->get_httpquery());
   CPPUNIT_ASSERT(true == link_->has_httpquery());
 }
 
@@ -150,14 +150,14 @@ void LinkTest::TestSetGetHasClear() {
   CPPUNIT_ASSERT(true == link_->has_viewformat());
   CPPUNIT_ASSERT(true == link_->has_httpquery());
 
-  CPPUNIT_ASSERT(href == link_->href());
-  CPPUNIT_ASSERT(refreshmode == link_->refreshmode());
-  CPPUNIT_ASSERT(refreshinterval == link_->refreshinterval());
-  CPPUNIT_ASSERT(viewrefreshmode == link_->viewrefreshmode());
-  CPPUNIT_ASSERT(viewrefreshtime == link_->viewrefreshtime());
-  CPPUNIT_ASSERT(viewboundscale == link_->viewboundscale());
-  CPPUNIT_ASSERT(viewformat == link_->viewformat());
-  CPPUNIT_ASSERT(httpquery == link_->httpquery());
+  CPPUNIT_ASSERT(href == link_->get_href());
+  CPPUNIT_ASSERT(refreshmode == link_->get_refreshmode());
+  CPPUNIT_ASSERT(refreshinterval == link_->get_refreshinterval());
+  CPPUNIT_ASSERT(viewrefreshmode == link_->get_viewrefreshmode());
+  CPPUNIT_ASSERT(viewrefreshtime == link_->get_viewrefreshtime());
+  CPPUNIT_ASSERT(viewboundscale == link_->get_viewboundscale());
+  CPPUNIT_ASSERT(viewformat == link_->get_viewformat());
+  CPPUNIT_ASSERT(httpquery == link_->get_httpquery());
 
   // Clear all fields:
   link_->clear_href();
@@ -185,7 +185,7 @@ void LinkTest::TestParse() {
   const LinkPtr link = AsLink(root);
   CPPUNIT_ASSERT(link);
   CPPUNIT_ASSERT(link->has_href());
-  CPPUNIT_ASSERT(kContent == link->href());
+  CPPUNIT_ASSERT(kContent == link->get_href());
 }
 
 void LinkTest::TestAcceptCdataInHref() {
@@ -200,7 +200,7 @@ void LinkTest::TestAcceptCdataInHref() {
   const LinkPtr link = AsLink(root);
   CPPUNIT_ASSERT(link);
   CPPUNIT_ASSERT(link->has_href());
-  CPPUNIT_ASSERT(kContent == link->href());
+  CPPUNIT_ASSERT(kContent == link->get_href());
 }
 
 class UrlTest : public CPPUNIT_NS::TestFixture {
@@ -240,21 +240,21 @@ void UrlTest::TestType() {
 
 // Verify proper defaults:
 void UrlTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == url_->href());
+  CPPUNIT_ASSERT("" == url_->get_href());
   CPPUNIT_ASSERT(false == url_->has_href());
-  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == url_->refreshmode());
+  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == url_->get_refreshmode());
   CPPUNIT_ASSERT(false == url_->has_refreshmode());
-  CPPUNIT_ASSERT(4.0 == url_->refreshinterval());
+  CPPUNIT_ASSERT(4.0 == url_->get_refreshinterval());
   CPPUNIT_ASSERT(false == url_->has_refreshinterval());
-  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == url_->viewrefreshmode());
+  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == url_->get_viewrefreshmode());
   CPPUNIT_ASSERT(false == url_->has_viewrefreshmode());
-  CPPUNIT_ASSERT(4.0 == url_->viewrefreshtime());
+  CPPUNIT_ASSERT(4.0 == url_->get_viewrefreshtime());
   CPPUNIT_ASSERT(false == url_->has_viewrefreshtime());
-  CPPUNIT_ASSERT(1.0 == url_->viewboundscale());
+  CPPUNIT_ASSERT(1.0 == url_->get_viewboundscale());
   CPPUNIT_ASSERT(false == url_->has_viewboundscale());
-  CPPUNIT_ASSERT("" == url_->viewformat());
+  CPPUNIT_ASSERT("" == url_->get_viewformat());
   CPPUNIT_ASSERT(false == url_->has_viewformat());
-  CPPUNIT_ASSERT("" == url_->httpquery());
+  CPPUNIT_ASSERT("" == url_->get_httpquery());
   CPPUNIT_ASSERT(false == url_->has_httpquery());
 }
 
@@ -262,21 +262,21 @@ void UrlTest::TestDefaults() {
 void UrlTest::TestSetToDefaultValues() {
   // Verify default state:
   TestDefaults();
-  url_->set_href(url_->href());
+  url_->set_href(url_->get_href());
   CPPUNIT_ASSERT(true == url_->has_href());
-  url_->set_refreshmode(url_->refreshmode());
+  url_->set_refreshmode(url_->get_refreshmode());
   CPPUNIT_ASSERT(true == url_->has_refreshmode());
-  url_->set_refreshinterval(url_->refreshinterval());
+  url_->set_refreshinterval(url_->get_refreshinterval());
   CPPUNIT_ASSERT(true == url_->has_refreshinterval());
-  url_->set_viewrefreshmode(url_->viewrefreshmode());
+  url_->set_viewrefreshmode(url_->get_viewrefreshmode());
   CPPUNIT_ASSERT(true == url_->has_viewrefreshmode());
-  url_->set_viewrefreshtime(url_->viewrefreshtime());
+  url_->set_viewrefreshtime(url_->get_viewrefreshtime());
   CPPUNIT_ASSERT(true == url_->has_viewrefreshtime());
-  url_->set_viewboundscale(url_->viewboundscale());
+  url_->set_viewboundscale(url_->get_viewboundscale());
   CPPUNIT_ASSERT(true == url_->has_viewboundscale());
-  url_->set_viewformat(url_->viewformat());
+  url_->set_viewformat(url_->get_viewformat());
   CPPUNIT_ASSERT(true == url_->has_viewformat());
-  url_->set_httpquery(url_->httpquery());
+  url_->set_httpquery(url_->get_httpquery());
   CPPUNIT_ASSERT(true == url_->has_httpquery());
 }
 
@@ -312,14 +312,14 @@ void UrlTest::TestSetGetHasClear() {
   CPPUNIT_ASSERT(true == url_->has_viewformat());
   CPPUNIT_ASSERT(true == url_->has_httpquery());
 
-  CPPUNIT_ASSERT(href == url_->href());
-  CPPUNIT_ASSERT(refreshmode == url_->refreshmode());
-  CPPUNIT_ASSERT(refreshinterval == url_->refreshinterval());
-  CPPUNIT_ASSERT(viewrefreshmode == url_->viewrefreshmode());
-  CPPUNIT_ASSERT(viewrefreshtime == url_->viewrefreshtime());
-  CPPUNIT_ASSERT(viewboundscale == url_->viewboundscale());
-  CPPUNIT_ASSERT(viewformat == url_->viewformat());
-  CPPUNIT_ASSERT(httpquery == url_->httpquery());
+  CPPUNIT_ASSERT(href == url_->get_href());
+  CPPUNIT_ASSERT(refreshmode == url_->get_refreshmode());
+  CPPUNIT_ASSERT(refreshinterval == url_->get_refreshinterval());
+  CPPUNIT_ASSERT(viewrefreshmode == url_->get_viewrefreshmode());
+  CPPUNIT_ASSERT(viewrefreshtime == url_->get_viewrefreshtime());
+  CPPUNIT_ASSERT(viewboundscale == url_->get_viewboundscale());
+  CPPUNIT_ASSERT(viewformat == url_->get_viewformat());
+  CPPUNIT_ASSERT(httpquery == url_->get_httpquery());
 
   // Clear all fields:
   url_->clear_href();
@@ -372,21 +372,21 @@ void IconTest::TestType() {
 
 // Verify proper defaults:
 void IconTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == icon_->href());
+  CPPUNIT_ASSERT("" == icon_->get_href());
   CPPUNIT_ASSERT(false == icon_->has_href());
-  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == icon_->refreshmode());
+  CPPUNIT_ASSERT(REFRESHMODE_ONCHANGE == icon_->get_refreshmode());
   CPPUNIT_ASSERT(false == icon_->has_refreshmode());
-  CPPUNIT_ASSERT(4.0 == icon_->refreshinterval());
+  CPPUNIT_ASSERT(4.0 == icon_->get_refreshinterval());
   CPPUNIT_ASSERT(false == icon_->has_refreshinterval());
-  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == icon_->viewrefreshmode());
+  CPPUNIT_ASSERT(VIEWREFRESHMODE_NEVER == icon_->get_viewrefreshmode());
   CPPUNIT_ASSERT(false == icon_->has_viewrefreshmode());
-  CPPUNIT_ASSERT(4.0 == icon_->viewrefreshtime());
+  CPPUNIT_ASSERT(4.0 == icon_->get_viewrefreshtime());
   CPPUNIT_ASSERT(false == icon_->has_viewrefreshtime());
-  CPPUNIT_ASSERT(1.0 == icon_->viewboundscale());
+  CPPUNIT_ASSERT(1.0 == icon_->get_viewboundscale());
   CPPUNIT_ASSERT(false == icon_->has_viewboundscale());
-  CPPUNIT_ASSERT("" == icon_->viewformat());
+  CPPUNIT_ASSERT("" == icon_->get_viewformat());
   CPPUNIT_ASSERT(false == icon_->has_viewformat());
-  CPPUNIT_ASSERT("" == icon_->httpquery());
+  CPPUNIT_ASSERT("" == icon_->get_httpquery());
   CPPUNIT_ASSERT(false == icon_->has_httpquery());
 }
 
@@ -394,21 +394,21 @@ void IconTest::TestDefaults() {
 void IconTest::TestSetToDefaultValues() {
   // Verify default state:
   TestDefaults();
-  icon_->set_href(icon_->href());
+  icon_->set_href(icon_->get_href());
   CPPUNIT_ASSERT(true == icon_->has_href());
-  icon_->set_refreshmode(icon_->refreshmode());
+  icon_->set_refreshmode(icon_->get_refreshmode());
   CPPUNIT_ASSERT(true == icon_->has_refreshmode());
-  icon_->set_refreshinterval(icon_->refreshinterval());
+  icon_->set_refreshinterval(icon_->get_refreshinterval());
   CPPUNIT_ASSERT(true == icon_->has_refreshinterval());
-  icon_->set_viewrefreshmode(icon_->viewrefreshmode());
+  icon_->set_viewrefreshmode(icon_->get_viewrefreshmode());
   CPPUNIT_ASSERT(true == icon_->has_viewrefreshmode());
-  icon_->set_viewrefreshtime(icon_->viewrefreshtime());
+  icon_->set_viewrefreshtime(icon_->get_viewrefreshtime());
   CPPUNIT_ASSERT(true == icon_->has_viewrefreshtime());
-  icon_->set_viewboundscale(icon_->viewboundscale());
+  icon_->set_viewboundscale(icon_->get_viewboundscale());
   CPPUNIT_ASSERT(true == icon_->has_viewboundscale());
-  icon_->set_viewformat(icon_->viewformat());
+  icon_->set_viewformat(icon_->get_viewformat());
   CPPUNIT_ASSERT(true == icon_->has_viewformat());
-  icon_->set_httpquery(icon_->httpquery());
+  icon_->set_httpquery(icon_->get_httpquery());
   CPPUNIT_ASSERT(true == icon_->has_httpquery());
 }
 
@@ -444,14 +444,14 @@ void IconTest::TestSetGetHasClear() {
   CPPUNIT_ASSERT(true == icon_->has_viewformat());
   CPPUNIT_ASSERT(true == icon_->has_httpquery());
 
-  CPPUNIT_ASSERT(href == icon_->href());
-  CPPUNIT_ASSERT(refreshmode == icon_->refreshmode());
-  CPPUNIT_ASSERT(refreshinterval == icon_->refreshinterval());
-  CPPUNIT_ASSERT(viewrefreshmode == icon_->viewrefreshmode());
-  CPPUNIT_ASSERT(viewrefreshtime == icon_->viewrefreshtime());
-  CPPUNIT_ASSERT(viewboundscale == icon_->viewboundscale());
-  CPPUNIT_ASSERT(viewformat == icon_->viewformat());
-  CPPUNIT_ASSERT(httpquery == icon_->httpquery());
+  CPPUNIT_ASSERT(href == icon_->get_href());
+  CPPUNIT_ASSERT(refreshmode == icon_->get_refreshmode());
+  CPPUNIT_ASSERT(refreshinterval == icon_->get_refreshinterval());
+  CPPUNIT_ASSERT(viewrefreshmode == icon_->get_viewrefreshmode());
+  CPPUNIT_ASSERT(viewrefreshtime == icon_->get_viewrefreshtime());
+  CPPUNIT_ASSERT(viewboundscale == icon_->get_viewboundscale());
+  CPPUNIT_ASSERT(viewformat == icon_->get_viewformat());
+  CPPUNIT_ASSERT(httpquery == icon_->get_httpquery());
 
   // Clear all fields:
   icon_->clear_href();
@@ -506,7 +506,7 @@ void IconStyleIconTest::TestType() {
 
 // Verify proper defaults:
 void IconStyleIconTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == iconstyleicon_->href());
+  CPPUNIT_ASSERT("" == iconstyleicon_->get_href());
   CPPUNIT_ASSERT(false == iconstyleicon_->has_href());
 }
 
@@ -514,7 +514,7 @@ void IconStyleIconTest::TestDefaults() {
 void IconStyleIconTest::TestSetToDefaultValues() {
   // Verify default state:
   TestDefaults();
-  iconstyleicon_->set_href(iconstyleicon_->href());
+  iconstyleicon_->set_href(iconstyleicon_->get_href());
   CPPUNIT_ASSERT(true == iconstyleicon_->has_href());
 }
 
@@ -529,7 +529,7 @@ void IconStyleIconTest::TestSetGetHasClear() {
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == iconstyleicon_->has_href());
 
-  CPPUNIT_ASSERT(href == iconstyleicon_->href());
+  CPPUNIT_ASSERT(href == iconstyleicon_->get_href());
 
   // Clear all fields:
   iconstyleicon_->clear_href();

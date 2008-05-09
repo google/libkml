@@ -62,10 +62,10 @@ void ItemIcon::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_state()) {
-    serializer.SaveEnum(Type_state, state());
+    serializer.SaveEnum(Type_state, get_state());
   }
   if (has_href()) {
-    serializer.SaveFieldById(Type_href, href());
+    serializer.SaveFieldById(Type_href, get_href());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -104,13 +104,13 @@ void ListStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   SubStyle::Serialize(serializer);
   if (has_listitemtype()) {
-    serializer.SaveEnum(Type_listItemType, listitemtype());
+    serializer.SaveEnum(Type_listItemType, get_listitemtype());
   }
   if (has_bgcolor()) {
-    serializer.SaveFieldById(Type_bgColor, bgcolor());
+    serializer.SaveFieldById(Type_bgColor, get_bgcolor());
   }
-  for (size_t i = 0; i < itemicon_array_size(); ++i) {
-    serializer.SaveElement(*itemicon_array_at(i));
+  for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
+    serializer.SaveElement(*get_itemicon_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

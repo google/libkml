@@ -56,7 +56,7 @@ class LookAt : public AbstractView {
   }
 
   // <longitude>
-  double longitude() const {
+  double get_longitude() const {
     return longitude_;
   }
   bool has_longitude() const {
@@ -72,7 +72,7 @@ class LookAt : public AbstractView {
   }
 
   // <latitude>
-  double latitude() const {
+  double get_latitude() const {
     return latitude_;
   }
   bool has_latitude() const {
@@ -88,7 +88,7 @@ class LookAt : public AbstractView {
   }
 
   // <altitude>
-  double altitude() const {
+  double get_altitude() const {
     return altitude_;
   }
   bool has_altitude() const {
@@ -104,7 +104,7 @@ class LookAt : public AbstractView {
   }
 
   // <heading>
-  double heading() const {
+  double get_heading() const {
     return heading_;
   }
   bool has_heading() const {
@@ -120,7 +120,7 @@ class LookAt : public AbstractView {
   }
 
   // <tilt>
-  double tilt() const {
+  double get_tilt() const {
     return tilt_;
   }
   bool has_tilt() const {
@@ -136,7 +136,7 @@ class LookAt : public AbstractView {
   }
 
   // <range>
-  double range() const {
+  double get_range() const {
     return range_;
   }
   bool has_range() const {
@@ -152,7 +152,7 @@ class LookAt : public AbstractView {
   }
 
   // <altitudeMode>
-  int altitudemode() const {
+  int get_altitudemode() const {
     return altitudemode_;
   }
   bool has_altitudemode() const {
@@ -201,7 +201,7 @@ class Camera : public AbstractView {
   }
 
   // <longitude>
-  double longitude() const {
+  double get_longitude() const {
     return longitude_;
   }
   bool has_longitude() const {
@@ -217,7 +217,7 @@ class Camera : public AbstractView {
   }
 
   // <latitude>
-  double latitude() const {
+  double get_latitude() const {
     return latitude_;
   }
   bool has_latitude() const {
@@ -233,7 +233,7 @@ class Camera : public AbstractView {
   }
 
   // <altitude>
-  double altitude() const {
+  double get_altitude() const {
     return altitude_;
   }
   bool has_altitude() const {
@@ -249,7 +249,7 @@ class Camera : public AbstractView {
   }
 
   // <heading>
-  double heading() const {
+  double get_heading() const {
     return heading_;
   }
   bool has_heading() const {
@@ -265,7 +265,7 @@ class Camera : public AbstractView {
   }
 
   // <tilt>
-  double tilt() const {
+  double get_tilt() const {
     return tilt_;
   }
   bool has_tilt() const {
@@ -281,7 +281,7 @@ class Camera : public AbstractView {
   }
 
   // <roll>
-  double roll() const {
+  double get_roll() const {
     return roll_;
   }
   bool has_roll() const {
@@ -297,7 +297,7 @@ class Camera : public AbstractView {
   }
 
   // <altitudeMode>
-  int altitudemode() const {
+  int get_altitudemode() const {
     return altitudemode_;
   }
   bool has_altitudemode() const {

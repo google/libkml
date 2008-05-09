@@ -45,7 +45,7 @@ class BasicLink : public Object {
   }
 
   // <href>
-  const std::string& href() const {
+  const std::string& get_href() const {
     return href_;
   }
   bool has_href() const {
@@ -79,7 +79,7 @@ class AbstractLink : public BasicLink {
   virtual ~AbstractLink();
 
   // <refreshMode>
-  const int refreshmode() const {
+  const int get_refreshmode() const {
     return refreshmode_;
   }
   bool has_refreshmode() const {
@@ -95,7 +95,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <refreshInterval>
-  const double refreshinterval() const {
+  const double get_refreshinterval() const {
     return refreshinterval_;
   }
   bool has_refreshinterval() const {
@@ -111,7 +111,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewRefreshMode>
-  const int viewrefreshmode() const {
+  const int get_viewrefreshmode() const {
     return viewrefreshmode_;
   }
   bool has_viewrefreshmode() const {
@@ -127,7 +127,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewRefreshTime>
-  const double viewrefreshtime() const {
+  const double get_viewrefreshtime() const {
     return viewrefreshtime_;
   }
   bool has_viewrefreshtime() const {
@@ -143,7 +143,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewBoundScale>
-  const double viewboundscale() const {
+  const double get_viewboundscale() const {
     return viewboundscale_;
   }
   bool has_viewboundscale() const {
@@ -159,7 +159,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewformat>
-  const std::string& viewformat() const {
+  const std::string& get_viewformat() const {
     return viewformat_;
   }
   bool has_viewformat() const {
@@ -175,7 +175,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <httpquery>
-  const std::string& httpquery() const {
+  const std::string& get_httpquery() const {
     return httpquery_;
   }
   bool has_httpquery() const {

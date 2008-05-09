@@ -35,13 +35,13 @@
 class Object : public Element {
 public:
   // id=
-  const std::string& id();
+  const std::string& get_id();
   void set_id(const std::string& id);
   bool has_id();
   void clear_id();
 
   // targetId=
-  const std::string& targetid();
+  const std::string& get_targetid();
   void set_targetid(const std::string& targetid);
   bool has_targetid();
   void clear_targetid();
@@ -59,13 +59,13 @@ class ColorStyle : public SubStyle {
 class SnippetCommon : public Element {
 public:
   // Content.
-  const std::string& text();
+  const std::string& get_text();
   void set_text(const std::string& text);
   bool has_text();
   void clear_text();
 
   // maxLines=
-  int maxlines();
+  int get_maxlines();
   void set_maxlines(int maxlines);
   bool has_maxlines();
   void clear_maxlines();
@@ -95,25 +95,25 @@ class StyleSelector : public Object {
 class AbstractLatLonBox : public Object {
 public:
   // <north>
-  double north();
+  double get_north();
   bool has_north();
   void set_north(double north);
   void clear_north();
 
   // <south>
-  double south();
+  double get_south();
   bool has_south();
   void set_south(double south);
   void clear_south();
 
   // <east>
-  double east();
+  double get_east();
   bool has_east();
   void set_east(double east);
   void clear_east();
 
   // <west>
-  double west();
+  double get_west();
   bool has_west();
   void set_west(double west);
   void clear_west();
@@ -123,19 +123,19 @@ public:
 class LatLonAltBox : public AbstractLatLonBox {
 public:
   // <minAltitude>
-  double minaltitude();
+  double get_minaltitude();
   void set_minaltitude(double minaltitude);
   bool has_minaltitude();
   void clear_minaltitude();
 
   // <maxAltitude>
-  double maxaltitude();
+  double get_maxaltitude();
   void set_maxaltitude(double maxaltitude);
   bool has_maxaltitude();
   void clear_maxaltitude();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
@@ -145,25 +145,25 @@ public:
 class Lod : public Object {
 public:
   // <minLodPixels>
-  double minlodpixels();
+  double get_minlodpixels();
   void set_minlodpixels(double minlodpixels);
   bool has_minlodpixels();
   void clear_minlodpixels();
 
   // <maxLodPixels>
-  double maxlodpixels();
+  double get_maxlodpixels();
   void set_maxlodpixels(double maxlodpixels);
   bool has_maxlodpixels();
   void clear_maxlodpixels();
 
   // <minFadeExtent>
-  double minfadeextent();
+  double get_minfadeextent();
   void set_minfadeextent(double minfadeextent);
   bool has_minfadeextent();
   void clear_minfadeextent();
 
   // <maxFadeExtent>
-  double maxfadeextent();
+  double get_maxfadeextent();
   void set_maxfadeextent(double maxfadeextent);
   bool has_maxfadeextent();
   void clear_maxfadeextent();
@@ -173,13 +173,13 @@ public:
 class Region : public Object {
 public:
   // <LatLonAltBox>
-  const LatLonAltBoxPtr latlonaltbox();
+  const LatLonAltBoxPtr get_latlonaltbox();
   void set_latlonaltbox(LatLonAltBoxPtr latlonaltbox);
   bool has_latlonaltbox();
   void clear_latlonaltbox();
 
   // <Lod>
-  const LodPtr lod();
+  const LodPtr get_lod();
   void set_lod(LodPtr lod);
   bool has_lod();
   void clear_lod();
@@ -194,87 +194,88 @@ class ExtendedData : public Element {
 public:
   // <Data>, <SchemaData>...
   void add_extendeddatamember(ExtendedDataMemberPtr extendeddatamember);
-  const size_t extendeddatamember_array_size();
-  const ExtendedDataMemberPtr extendeddatamember_array_at(unsigned int index);
+  const size_t get_extendeddatamember_array_size();
+  const ExtendedDataMemberPtr get_extendeddatamember_array_at(
+                                unsigned int index);
 };
 
 %nodefaultctor Feature;
 class Feature : public Object {
 public:
   // <name>
-  const std::string& name();
+  const std::string& get_name();
   void set_name(const std::string& name);
   bool has_name();
   void clear_name();
 
   // <visibility>
-  bool visibility();
+  bool get_visibility();
   void set_visibility(bool visibility);
   bool has_visibility();
   void clear_visibility();
 
   // <open>
-  bool open();
+  bool get_open();
   void set_open(bool open);
   bool has_open();
   void clear_open();
 
   // <address>
-  const std::string& address();
+  const std::string& get_address();
   void set_address(const std::string& address);
   bool has_address();
   void clear_address();
 
   // <phoneNumber>
-  const std::string& phonenumber();
+  const std::string& get_phonenumber();
   void set_phonenumber(const std::string& phonenumber);
   bool has_phonenumber();
   void clear_phonenumber();
 
   // <Snippet>
-  const SnippetPtr snippet();
+  const SnippetPtr get_snippet();
   void set_snippet(SnippetPtr snippet);
   bool has_snippet();
   void clear_snippet();
 
   // <description>
-  const std::string& description();
+  const std::string& get_description();
   void set_description(const std::string& description);
   bool has_description();
   void clear_description();
 
   // AbstractView
-  const AbstractViewPtr abstractview();
+  const AbstractViewPtr get_abstractview();
   void set_abstractview(AbstractViewPtr abstractview);
   bool has_abstractview();
   void clear_abstractview();
 
   // TimePrimitive
-  const TimePrimitivePtr timeprimitive();
+  const TimePrimitivePtr get_timeprimitive();
   void set_timeprimitive(TimePrimitivePtr timeprimitive);
   bool has_timeprimitive();
   void clear_timeprimitive();
 
   // <styleUrl>
-  const std::string& styleurl();
+  const std::string& get_styleurl();
   void set_styleurl(const std::string& styleurl);
   bool has_styleurl();
   void clear_styleurl();
 
   // StyleSelector
-  const StyleSelectorPtr styleselector();
+  const StyleSelectorPtr get_styleselector();
   void set_styleselector(StyleSelectorPtr styleselector);
   bool has_styleselector();
   void clear_styleselector();
 
   // <Region>
-  const RegionPtr region();
+  const RegionPtr get_region();
   void set_region(RegionPtr region);
   bool has_region();
   void clear_region();
 
   // <ExtendedData>
-  const ExtendedDataPtr extendeddata();
+  const ExtendedDataPtr get_extendeddata();
   void set_extendeddata(ExtendedDataPtr extendeddata);
   bool has_extendeddata();
   void clear_extendeddata();
@@ -285,8 +286,8 @@ class Container : public Feature {
 public:
   // Feature...
   void add_feature(FeaturePtr feature);
-  const size_t feature_array_size();
-  const FeaturePtr feature_array_at(unsigned int index);
+  const size_t get_feature_array_size();
+  const FeaturePtr get_feature_array_at(unsigned int index);
 };
 
 %nodefaultctor Geometry;
@@ -297,7 +298,7 @@ class Geometry : public Object {
 class BasicLink : public Object {
 public:
   // <href>
-  const std::string& href();
+  const std::string& get_href();
   bool has_href();
   void set_href(const std::string& href);
   void clear_href();
@@ -307,43 +308,43 @@ public:
 class Icon : public BasicLink {
 public:
   // <refreshMode>
-  int refreshmode();
+  int get_refreshmode();
   void set_refreshmode(int refreshmode);
   bool has_refreshmode();
   void clear_refreshmode();
 
   // <refreshInterval>
-  double refreshinterval();
+  double get_refreshinterval();
   void set_refreshinterval(double refreshinterval);
   bool has_refreshinterval();
   void clear_refreshinterval();
 
   // <viewRefreshMode>
-  int viewrefreshmode();
+  int get_viewrefreshmode();
   void set_viewrefreshmode(int viewrefreshmode);
   bool has_viewrefreshmode();
   void clear_viewrefreshmode();
 
   // <viewRefreshTime>
-  double viewrefreshtime();
+  double get_viewrefreshtime();
   void set_viewrefreshtime(double viewrefreshtime);
   bool has_viewrefreshtime();
   void clear_viewrefreshtime();
 
   // <viewBoundScale>
-  double viewboundscale();
+  double get_viewboundscale();
   void set_viewboundscale(double viewboundscale);
   bool has_viewboundscale();
   void clear_viewboundscale();
 
   // <viewFormat>
-  const std::string& viewformat();
+  const std::string& get_viewformat();
   void set_viewformat(const std::string& viewformat);
   bool has_viewformat();
   void clear_viewformat();
 
   // <httpQuery>
-  const std::string& httpquery();
+  const std::string& get_httpquery();
   void set_httpquery(const std::string& httpquery);
   bool has_httpquery();
   void clear_httpquery();
@@ -353,7 +354,7 @@ public:
 class IconStyleIcon : public BasicLink {
 public:
   // <href>
-  const std::string& href();
+  const std::string& get_href();
   bool has_href();
   void set_href(const std::string& href);
   void clear_href();
@@ -363,19 +364,19 @@ public:
 class Overlay : public Feature {
 public:
   // <color>
-  const std::string& color();
+  const std::string& get_color();
   void set_color(const std::string& color);
   bool has_color();
   void clear_color();
 
   // <drawOrder>
-  int draworder();
+  int get_draworder();
   void set_draworder(int draworder);
   bool has_draworder();
   void clear_draworder();
 
   // <Icon>
-  const IconPtr icon();
+  const IconPtr get_icon();
   void set_icon(IconPtr icon);
   bool has_icon();
   void clear_icon();
@@ -385,25 +386,25 @@ public:
 class BalloonStyle : public SubStyle {
 public:
   // <bgColor>
-  const std::string& bgcolor();
+  const std::string& get_bgcolor();
   void set_bgcolor(const std::string& bgcolor);
   bool has_bgcolor();
   void clear_bgcolor();
 
   // <textColor>
-  const std::string& textcolor();
+  const std::string& get_textcolor();
   void set_textcolor(const std::string& textcolor);
   bool has_textcolor();
   void clear_textcolor();
 
   // <text>
-  const std::string& text();
+  const std::string& get_text();
   void set_text(const std::string& text);
   bool has_text();
   void clear_text();
 
   // <displayMode>
-  int displaymode();
+  int get_displaymode();
   void set_displaymode(int displaymode);
   bool has_displaymode();
   void clear_displaymode();
@@ -413,43 +414,43 @@ public:
 class Camera : public AbstractView {
 public:
   // <longitude>
-  double longitude();
+  double get_longitude();
   void set_longitude(double longitude);
   bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude();
+  double get_latitude();
   void set_latitude(double latitude);
   bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude();
+  double get_altitude();
   void set_altitude(double altitude);
   bool has_altitude();
   void clear_altitude();
 
   // <heading>
-  double heading();
+  double get_heading();
   void set_heading(double heading);
   bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt();
+  double get_tilt();
   void set_tilt(double tilt);
   bool has_tilt();
   void clear_tilt();
 
   // <roll>
-  double roll();
+  double get_roll();
   void set_roll(double roll);
   bool has_roll();
   void clear_roll();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
@@ -464,8 +465,8 @@ class Change : public UpdateOperation {
 public:
   // Object...
   void add_object(ObjectPtr object);
-  const size_t object_array_size();
-  const ObjectPtr object_array_at(unsigned int index);
+  const size_t get_object_array_size();
+  const ObjectPtr get_object_array_at(unsigned int index);
 };
 
 %nodefaultctor Create;
@@ -473,15 +474,15 @@ class Create : public UpdateOperation {
 public:
   // Container...
   void add_container(ContainerPtr container);
-  const size_t container_array_size();
-  const ContainerPtr container_array_at(unsigned int index);
+  const size_t get_container_array_size();
+  const ContainerPtr get_container_array_at(unsigned int index);
 };
 
 %nodefaultctor Data;
 class Data : public ExtendedDataMember {
 public:
   // <displayName>
-  const std::string& displayname();
+  const std::string& get_displayname();
   void set_displayname(const std::string& displayname);
   bool has_displayname();
   void clear_displayname();
@@ -492,27 +493,27 @@ class Delete : public UpdateOperation {
 public:
   // Feature...
   void add_feature(FeaturePtr feature);
-  const size_t feature_array_size();
-  const FeaturePtr feature_array_at(unsigned int index);
+  const size_t get_feature_array_size();
+  const FeaturePtr get_feature_array_at(unsigned int index);
 };
 
 %nodefaultctor SimpleField;
 class SimpleField : public Element {
 public:
   // type=
-  const std::string& type();
+  const std::string& get_type();
   bool has_type();
   void set_type(const std::string& value);
   void clear_type();
 
   // name=
-  const std::string& name();
+  const std::string& get_name();
   bool has_name();
   void set_name(const std::string& value);
   void clear_name();
 
   // <displayName>
-  const std::string& displayname();
+  const std::string& get_displayname();
   void set_displayname(const std::string& displayname);
   bool has_displayname();
   void clear_displayname();
@@ -522,21 +523,21 @@ public:
 class Schema : public Element {
 public:
   // name=
-  const std::string& name();
+  const std::string& get_name();
   bool has_name();
   void set_name(const std::string& value);
   void clear_name();
 
   // id=
-  const std::string& id();
+  const std::string& get_id();
   bool has_id();
   void set_id(const std::string& value);
   void clear_id();
 
   // <SimpleField>...
   void add_simplefield(SimpleFieldPtr simplefield);
-  const size_t simplefield_array_size();
-  const SimpleFieldPtr simplefield_array_at(unsigned int index);
+  const size_t get_simplefield_array_size();
+  const SimpleFieldPtr get_simplefield_array_at(unsigned int index);
 };
 
 %nodefaultctor Document;
@@ -544,13 +545,13 @@ class Document : public Container {
 public:
   // <Schema>...
   void add_schema(SchemaPtr schema);
-  const size_t schema_array_size();
-  const SchemaPtr schema_array_at(unsigned int index);
+  const size_t get_schema_array_size();
+  const SchemaPtr get_schema_array_at(unsigned int index);
 
   // <Style>,<StyleMap>...
   void add_styleselector(StyleSelectorPtr styleselector);
-  const size_t styleselector_array_size();
-  const StyleSelectorPtr styleselector_array_at(unsigned int index);
+  const size_t get_styleselector_array_size();
+  const StyleSelectorPtr get_styleselector_array_at(unsigned int index);
 };
 
 %nodefaultctor Folder;
@@ -561,7 +562,7 @@ class Folder : public Container {
 class LatLonBox : public AbstractLatLonBox {
 public:
   // <rotation>
-  double rotation();
+  double get_rotation();
   void set_rotation(double rotation);
   bool has_rotation();
   void clear_rotation();
@@ -571,19 +572,19 @@ public:
 class GroundOverlay : public Overlay {
 public:
   // <altitude>
-  double altitude();
+  double get_altitude();
   void set_altitude(double altitude);
   bool has_altitude();
   void clear_altitude();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <LatLonBox>
-  const LatLonBoxPtr latlonbox();
+  const LatLonBoxPtr get_latlonbox();
   void set_latlonbox(LatLonBoxPtr latlonbox);
   bool has_latlonbox();
   void clear_latlonbox();
@@ -597,25 +598,25 @@ class HotSpot : public Vec2 {
 class IconStyle : public ColorStyle {
 public:
   // <scale>
-  double scale();
+  double get_scale();
   void set_scale(double scale);
   bool has_scale();
   void clear_scale();
 
   // <Icon> (different from Overlay Icon)
-  const IconStyleIconPtr icon();
+  const IconStyleIconPtr get_icon();
   void set_icon(IconStyleIconPtr icon);
   bool has_icon();
   void clear_icon();
 
   // <heading>
-  double heading();
+  double get_heading();
   void set_heading(double heading);
   bool has_heading();
   void clear_heading();
 
   // <hotSpot>
-  const HotSpotPtr hotspot();
+  const HotSpotPtr get_hotspot();
   void set_hotspot(HotSpotPtr hotspot);
   bool has_hotspot();
   void clear_hotspot();
@@ -625,25 +626,25 @@ public:
 class ImagePyramid : public Object {
 public:
   // <tileSize>
-  int tilesize();
+  int get_tilesize();
   void set_tilesize(int tilesize);
   bool has_tilesize();
   void clear_tilesize();
 
   // <maxWidth>
-  int maxwidth();
+  int get_maxwidth();
   void set_maxwidth(int maxwidth);
   bool has_maxwidth();
   void clear_maxwidth();
 
   // <maxHeight>
-  int maxheight();
+  int get_maxheight();
   void set_maxheight(int maxheight);
   bool has_maxheight();
   void clear_maxheight();
 
   // <gridOrigin>
-  int gridorigin();
+  int get_gridorigin();
   void set_gridorigin(int gridorigin);
   bool has_gridorigin();
   void clear_gridorigin();
@@ -653,13 +654,13 @@ public:
 class ItemIcon : public Object {
 public:
   // TODO: <state>
-  //itemIconStatePtr state();
+  //itemIconStatePtr get_state();
   //void set_state(itemIconStatePtr state);
   //bool has_state();
   //void clear_state();
 
   // <href>
-  const std::string& href();
+  const std::string& get_href();
   void set_href(const std::string& href);
   bool has_href();
   void clear_href();
@@ -670,7 +671,7 @@ public:
 class LabelStyle : public ColorStyle {
 public:
   // <scale>
-  double scale();
+  double get_scale();
   void set_scale(double scale);
   bool has_scale();
   void clear_scale();
@@ -680,25 +681,25 @@ public:
 class LineString : public Geometry {
 public:
   // <extrude>
-  bool extrude();
+  bool get_extrude();
   void set_extrude(bool extrude);
   bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate();
+  bool get_tessellate();
   void set_tessellate(bool tessellate);
   bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const CoordinatesPtr coordinates();
+  const CoordinatesPtr get_coordinates();
   void set_coordinates(CoordinatesPtr coordinates);
   bool has_coordinates();
   void clear_coordinates();
@@ -708,7 +709,7 @@ public:
 class LineStyle : public ColorStyle {
 public:
   // <width>
-  double width();
+  double get_width();
   void set_width(double width);
   bool has_width();
   void clear_width();
@@ -718,25 +719,25 @@ public:
 class LinearRing : public Geometry {
 public:
   // <extrude>
-  bool extrude();
+  bool get_extrude();
   void set_extrude(bool extrude);
   bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate();
+  bool get_tessellate();
   void set_tessellate(bool tessellate);
   bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const CoordinatesPtr coordinates();
+  const CoordinatesPtr get_coordinates();
   void set_coordinates(CoordinatesPtr coordinates);
   bool has_coordinates();
   void clear_coordinates();
@@ -746,43 +747,43 @@ public:
 class Link : public BasicLink {
 public:
   // <refreshMode>
-  int refreshmode();
+  int get_refreshmode();
   void set_refreshmode(int refreshmode);
   bool has_refreshmode();
   void clear_refreshmode();
 
   // <refreshInterval>
-  double refreshinterval();
+  double get_refreshinterval();
   void set_refreshinterval(double refreshinterval);
   bool has_refreshinterval();
   void clear_refreshinterval();
 
   // <viewRefreshMode>
-  int viewrefreshmode();
+  int get_viewrefreshmode();
   void set_viewrefreshmode(int viewrefreshmode);
   bool has_viewrefreshmode();
   void clear_viewrefreshmode();
 
   // <viewRefreshTime>
-  double viewrefreshtime();
+  double get_viewrefreshtime();
   void set_viewrefreshtime(double viewrefreshtime);
   bool has_viewrefreshtime();
   void clear_viewrefreshtime();
 
   // <viewBoundScale>
-  double viewboundscale();
+  double get_viewboundscale();
   void set_viewboundscale(double viewboundscale);
   bool has_viewboundscale();
   void clear_viewboundscale();
 
   // <viewFormat>
-  const std::string& viewformat();
+  const std::string& get_viewformat();
   void set_viewformat(const std::string& viewformat);
   bool has_viewformat();
   void clear_viewformat();
 
   // <httpQuery>
-  const std::string& httpquery();
+  const std::string& get_httpquery();
   void set_httpquery(const std::string& httpquery);
   bool has_httpquery();
   void clear_httpquery();
@@ -792,40 +793,40 @@ public:
 class ListStyle : public SubStyle {
 public:
   // <listItemType>
-  int listitemtype();
+  int get_listitemtype();
   void set_listitemtype(int listitemtype);
   bool has_listitemtype();
   void clear_listitemtype();
 
   // <bgColor>
-  const std::string& bgcolor();
+  const std::string& get_bgcolor();
   void set_bgcolor(const std::string& bgcolor);
   bool has_bgcolor();
   void clear_bgcolor();
 
   // <ItemIcon>...
   void add_itemicon(ItemIconPtr itemicon);
-  const size_t itemicon_array_size();
-  const ItemIconPtr itemicon_array_at(unsigned int index);
+  const size_t get_itemicon_array_size();
+  const ItemIconPtr get_itemicon_array_at(unsigned int index);
 };
 
 %nodefaultctor Location;
 class Location : public Object {
 public:
   // <longitude>
-  double longitude();
+  double get_longitude();
   void set_longitude(double longitude);
   bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude();
+  double get_latitude();
   void set_latitude(double latitude);
   bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude();
+  double get_altitude();
   void set_altitude(double altitude);
   bool has_altitude();
   void clear_altitude();
@@ -835,43 +836,43 @@ public:
 class LookAt : public AbstractView {
 public:
   // <longitude>
-  double longitude();
+  double get_longitude();
   void set_longitude(double longitude);
   bool has_longitude();
   void clear_longitude();
 
   // <latitude>
-  double latitude();
+  double get_latitude();
   void set_latitude(double latitude);
   bool has_latitude();
   void clear_latitude();
 
   // <altitude>
-  double altitude();
+  double get_altitude();
   void set_altitude(double altitude);
   bool has_altitude();
   void clear_altitude();
 
   // <heading>
-  double heading();
+  double get_heading();
   void set_heading(double heading);
   bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt();
+  double get_tilt();
   void set_tilt(double tilt);
   bool has_tilt();
   void clear_tilt();
 
   // <range>
-  double range();
+  double get_range();
   void set_range(double range);
   bool has_range();
   void clear_range();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
@@ -881,19 +882,19 @@ public:
 class Orientation : public Object {
 public:
   // <heading>
-  double heading();
+  double get_heading();
   void set_heading(double heading);
   bool has_heading();
   void clear_heading();
 
   // <tilt>
-  double tilt();
+  double get_tilt();
   void set_tilt(double tilt);
   bool has_tilt();
   void clear_tilt();
 
   // <roll>
-  double roll();
+  double get_roll();
   void set_roll(double roll);
   bool has_roll();
   void clear_roll();
@@ -903,19 +904,19 @@ public:
 class Scale : public Object {
 public:
   // <x>
-  double x();
+  double get_x();
   void set_x(double x);
   bool has_x();
   void clear_x();
 
   // <y>
-  double y();
+  double get_y();
   void set_y(double y);
   bool has_y();
   void clear_y();
 
   // <z>
-  double z();
+  double get_z();
   void set_z(double z);
   bool has_z();
   void clear_z();
@@ -925,13 +926,13 @@ public:
 class Alias : public Object {
 public:
   // <targetHref>
-  const std::string& targethref();
+  const std::string& get_targethref();
   void set_targethref(const std::string& targethref);
   bool has_targethref();
   void clear_targethref();
 
   // <sourceHref>
-  const std::string& sourcehref();
+  const std::string& get_sourcehref();
   void set_sourcehref(const std::string& sourcehref);
   bool has_sourcehref();
   void clear_sourcehref();
@@ -942,45 +943,45 @@ class ResourceMap : public Object {
 public:
   // <Alias>...
   void add_alias(AliasPtr alias);
-  const size_t alias_array_size();
-  const AliasPtr alias_array_at(unsigned int index);
+  const size_t get_alias_array_size();
+  const AliasPtr get_alias_array_at(unsigned int index);
 };
 
 %nodefaultctor Model;
 class Model : public Geometry {
 public:
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <Location>
-  const LocationPtr location();
+  const LocationPtr get_location();
   void set_location(LocationPtr location);
   bool has_location();
   void clear_location();
 
   // <Orientation>
-  const OrientationPtr orientation();
+  const OrientationPtr get_orientation();
   void set_orientation(OrientationPtr orientation);
   bool has_orientation();
   void clear_orientation();
 
   // <Scale>
-  const ScalePtr scale();
+  const ScalePtr get_scale();
   void set_scale(ScalePtr scale);
   bool has_scale();
   void clear_scale();
 
   // <Link>
-  const LinkPtr link();
+  const LinkPtr get_link();
   void set_link(LinkPtr link);
   bool has_link();
   void clear_link();
 
   // <ResourceMap>
-  const ResourceMapPtr resourcemap();
+  const ResourceMapPtr get_resourcemap();
   void set_resourcemap(ResourceMapPtr resourcemap);
   bool has_resourcemap();
   void clear_resourcemap();
@@ -991,27 +992,27 @@ class MultiGeometry : public Geometry {
 public:
   // Geometry...
   void add_geometry(GeometryPtr geometry);
-  const size_t geometry_array_size();
-  const GeometryPtr geometry_array_at(unsigned int index);
+  const size_t get_geometry_array_size();
+  const GeometryPtr get_geometry_array_at(unsigned int index);
 };
 
 %nodefaultctor NetworkLink;
 class NetworkLink : public Feature {
 public:
   // <refreshVisibility>
-  bool refreshvisibility();
+  bool get_refreshvisibility();
   void set_refreshvisibility(bool refreshvisibility);
   bool has_refreshvisibility();
   void clear_refreshvisibility();
 
   // <flyToView>
-  bool flytoview();
+  bool get_flytoview();
   void set_flytoview(bool flytoview);
   bool has_flytoview();
   void clear_flytoview();
 
   // <Link>
-  const LinkPtr link();
+  const LinkPtr get_link();
   void set_link(LinkPtr link);
   bool has_link();
   void clear_link();
@@ -1022,69 +1023,69 @@ class Update : public Element {
 public:
   // <Change>,<Create>,<Delete>...
   void add_updateoperation(UpdateOperationPtr updateoperation);
-  const size_t updateoperation_array_size();
-  const UpdateOperationPtr updateoperation_array_at(unsigned int index);
+  const size_t get_updateoperation_array_size();
+  const UpdateOperationPtr get_updateoperation_array_at(unsigned int index);
 };
 
 %nodefaultctor NetworkLinkControl;
 class NetworkLinkControl : public Element {
 public:
   // <minRefreshPeriod>
-  double minrefreshperiod();
+  double get_minrefreshperiod();
   void set_minrefreshperiod(double minrefreshperiod);
   bool has_minrefreshperiod();
   void clear_minrefreshperiod();
 
   // <maxSessionLength>
-  double maxsessionlength();
+  double get_maxsessionlength();
   void set_maxsessionlength(double maxsessionlength);
   bool has_maxsessionlength();
   void clear_maxsessionlength();
 
   // <cookie>
-  const std::string& cookie();
+  const std::string& get_cookie();
   void set_cookie(const std::string& cookie);
   bool has_cookie();
   void clear_cookie();
 
   // <message>
-  const std::string& message();
+  const std::string& get_message();
   void set_message(const std::string& message);
   bool has_message();
   void clear_message();
 
   // <linkName>
-  const std::string& linkname();
+  const std::string& get_linkname();
   void set_linkname(const std::string& linkname);
   bool has_linkname();
   void clear_linkname();
 
   // <linkDescription>
-  const std::string& linkdescription();
+  const std::string& get_linkdescription();
   void set_linkdescription(const std::string& linkdescription);
   bool has_linkdescription();
   void clear_linkdescription();
 
   // <linkSnippet>
-  const LinkSnippetPtr linksnippet();
+  const LinkSnippetPtr get_linksnippet();
   void set_linksnippet(LinkSnippetPtr linksnippet);
   bool has_linksnippet();
   void clear_linksnippet();
 
   // <expires>
-  const std::string& expires();
+  const std::string& get_expires();
   void set_expires(const std::string& expires);
   bool has_expires();
   void clear_expires();
 
   // <Update>
-  const UpdatePtr update();
+  const UpdatePtr get_update();
   void set_update(UpdatePtr update);
   bool has_update();
   void clear_update();
 
   // AbstractView
-  const AbstractViewPtr abstractview();
+  const AbstractViewPtr get_abstractview();
   void set_abstractview(AbstractViewPtr abstractview);
   bool has_abstractview();
   void clear_abstractview();
@@ -1094,19 +1095,19 @@ public:
 class Pair : public Object {
 public:
   // <key>
-  int key();
+  int get_key();
   void set_key(int key);
   bool has_key();
   void clear_key();
 
   // <styleUrl>
-  const std::string& styleurl();
+  const std::string& get_styleurl();
   void set_styleurl(const std::string& styleurl);
   bool has_styleurl();
   void clear_styleurl();
 
   // <StyleSelector>
-  const StyleSelectorPtr styleselector();
+  const StyleSelectorPtr get_styleselector();
   void set_styleselector(StyleSelectorPtr styleselector);
   bool has_styleselector();
   void clear_styleselector();
@@ -1116,32 +1117,32 @@ public:
 class ViewVolume : public Object {
 public:
   // <leftFov>
-  double leftfov();
+  double get_leftfov();
   void set_leftfov(double leftfov);
   bool has_leftfov();
   void clear_leftfov();
 
   // <rightFov>
-  double rightfov();
+  double get_rightfov();
   void set_rightfov(double rightfov);
   bool has_rightfov();
   void clear_rightfov();
 
   // <bottomFov>
-  double bottomfov();
+  double get_bottomfov();
   void set_bottomfov(double bottomfov);
   bool has_bottomfov();
   void clear_bottomfov();
 
   // <topFov>
-  double topfov();
+  double get_topfov();
   void set_topfov(double topfov);
   bool has_topfov();
   void clear_topfov();
 
   // <near>
-  double near();
-  void set_near(double near);
+  double get_near();
+  void set_near(double val);
   bool has_near();
   void clear_near();
 };
@@ -1150,19 +1151,19 @@ public:
 class Point : public Geometry {
 public:
   // <extrude>
-  bool extrude();
+  bool get_extrude();
   void set_extrude(bool extrude);
   bool has_extrude();
   void clear_extrude();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <coordinates>
-  const CoordinatesPtr coordinates();
+  const CoordinatesPtr get_coordinates();
   void set_coordinates(CoordinatesPtr coordinates);
   bool has_coordinates();
   void clear_coordinates();
@@ -1172,31 +1173,31 @@ public:
 class PhotoOverlay : public Overlay {
 public:
   // <rotation>
-  double rotation();
+  double get_rotation();
   void set_rotation(double rotation);
   bool has_rotation();
   void clear_rotation();
 
   // <ViewVolume>
-  const ViewVolumePtr viewvolume();
+  const ViewVolumePtr get_viewvolume();
   void set_viewvolume(ViewVolumePtr viewvolume);
   bool has_viewvolume();
   void clear_viewvolume();
 
   // <ImagePyramid>
-  const ImagePyramidPtr imagepyramid();
+  const ImagePyramidPtr get_imagepyramid();
   void set_imagepyramid(ImagePyramidPtr imagepyramid);
   bool has_imagepyramid();
   void clear_imagepyramid();
 
   // <Point>
-  const PointPtr point();
+  const PointPtr get_point();
   void set_point(PointPtr point);
   bool has_point();
   void clear_point();
 
   // <shape>
-  int shape();
+  int get_shape();
   bool has_shape();
   void set_shape(int shape);
   void clear_shape();
@@ -1206,7 +1207,7 @@ public:
 class Placemark : public Feature {
 public:
   // Geometry
-  const GeometryPtr geometry();
+  const GeometryPtr get_geometry();
   void set_geometry(GeometryPtr geometry);
   bool has_geometry();
   void clear_geometry();
@@ -1216,13 +1217,13 @@ public:
 class PolyStyle : public ColorStyle {
 public:
   // <fill>
-  bool fill();
+  bool get_fill();
   void set_fill(bool fill);
   bool has_fill();
   void clear_fill();
 
   // <outline>
-  bool outline();
+  bool get_outline();
   void set_outline(bool outline);
   bool has_outline();
   void clear_outline();
@@ -1232,7 +1233,7 @@ public:
 class OuterBoundaryIs : public Element {
 public:
   // <LinearRing>
-  const LinearRingPtr linearring();
+  const LinearRingPtr get_linearring();
   void set_linearring(LinearRingPtr linearring);
   bool has_linearring();
   void clear_linearring();
@@ -1242,7 +1243,7 @@ public:
 class InnerBoundaryIs : public Element {
 public:
   // <LinearRing>
-  const LinearRingPtr linearring();
+  const LinearRingPtr get_linearring();
   void set_linearring(LinearRingPtr linearring);
   bool has_linearring();
   void clear_linearring();
@@ -1252,33 +1253,33 @@ public:
 class Polygon : public Geometry {
 public:
   // <extrude>
-  bool extrude();
+  bool get_extrude();
   void set_extrude(bool extrude);
   bool has_extrude();
   void clear_extrude();
 
   // <tessellate>
-  bool tessellate();
+  bool get_tessellate();
   void set_tessellate(bool tessellate);
   bool has_tessellate();
   void clear_tessellate();
 
   // <altitudeMode>
-  int altitudemode();
+  int get_altitudemode();
   void set_altitudemode(int altitudemode);
   bool has_altitudemode();
   void clear_altitudemode();
 
   // <outerBoundaryIs>
-  const OuterBoundaryIsPtr outerboundaryis();
+  const OuterBoundaryIsPtr get_outerboundaryis();
   void set_outerboundaryis(OuterBoundaryIsPtr outerboundaryis);
   bool has_outerboundaryis();
   void clear_outerboundaryis();
 
   // <innerBoundaryIs>...
   void add_innerboundaryis(InnerBoundaryIsPtr innerboundaryis);
-  const size_t innerboundaryis_array_size();
-  const InnerBoundaryIsPtr innerboundaryis_array_at(unsigned int index);
+  const size_t get_innerboundaryis_array_size();
+  const InnerBoundaryIsPtr get_innerboundaryis_array_at(unsigned int index);
 };
 
 %nodefaultctor SimpleData;
@@ -1290,8 +1291,8 @@ class SchemaData : public ExtendedDataMember {
 public:
   // <SimpleData>...
   void add_simpledata(SimpleDataPtr simpledata);
-  const size_t simpledata_array_size();
-  const SimpleDataPtr simpledata_array_at(unsigned int index);
+  const size_t get_simpledata_array_size();
+  const SimpleDataPtr get_simpledata_array_at(unsigned int index);
 };
 
 %nodefaultctor OverlayXY;
@@ -1314,31 +1315,31 @@ class Size : public Vec2 {
 class ScreenOverlay : public Overlay {
 public:
   // <OverlayXY>
-  const OverlayXYPtr overlayxy();
+  const OverlayXYPtr get_overlayxy();
   void set_overlayxy(OverlayXYPtr overlayxy);
   bool has_overlayxy();
   void clear_overlayxy();
 
   // <ScreenXY>
-  const ScreenXYPtr screenxy();
+  const ScreenXYPtr get_screenxy();
   void set_screenxy(ScreenXYPtr screenxy);
   bool has_screenxy();
   void clear_screenxy();
 
   // <RotationXY>
-  const RotationXYPtr rotationxy();
+  const RotationXYPtr get_rotationxy();
   void set_rotationxy(RotationXYPtr rotationxy);
   bool has_rotationxy();
   void clear_rotationxy();
 
   // <size>
-  const SizePtr size();
+  const SizePtr get_size();
   void set_size(SizePtr size);
   bool has_size();
   void clear_size();
 
   // <rotation>
-  double rotation();
+  double get_rotation();
   void set_rotation(double rotation);
   bool has_rotation();
   void clear_rotation();
@@ -1348,37 +1349,37 @@ public:
 class Style : public StyleSelector {
 public:
   // <IconStyle>
-  const IconStylePtr iconstyle();
+  const IconStylePtr get_iconstyle();
   void set_iconstyle(IconStylePtr iconstyle);
   bool has_iconstyle();
   void clear_iconstyle();
 
   // <LabelStyle>
-  const LabelStylePtr labelstyle();
+  const LabelStylePtr get_labelstyle();
   void set_labelstyle(LabelStylePtr labelstyle);
   bool has_labelstyle();
   void clear_labelstyle();
 
   // <LineStyle>
-  const LineStylePtr linestyle();
+  const LineStylePtr get_linestyle();
   void set_linestyle(LineStylePtr linestyle);
   bool has_linestyle();
   void clear_linestyle();
 
   // <PolyStyle>
-  const PolyStylePtr polystyle();
+  const PolyStylePtr get_polystyle();
   void set_polystyle(PolyStylePtr polystyle);
   bool has_polystyle();
   void clear_polystyle();
 
   // <BalloonStyle>
-  const BalloonStylePtr balloonstyle();
+  const BalloonStylePtr get_balloonstyle();
   void set_balloonstyle(BalloonStylePtr balloonstyle);
   bool has_balloonstyle();
   void clear_balloonstyle();
 
   // <ListStyle>
-  const ListStylePtr liststyle();
+  const ListStylePtr get_liststyle();
   void set_liststyle(ListStylePtr liststyle);
   bool has_liststyle();
   void clear_liststyle();
@@ -1389,21 +1390,21 @@ class StyleMap : public StyleSelector {
 public:
   // <Pair>...
   void add_pair(PairPtr pair);
-  const size_t pair_array_size();
-  const PairPtr pair_array_at(unsigned int index);
+  const size_t get_pair_array_size();
+  const PairPtr get_pair_array_at(unsigned int index);
 };
 
 %nodefaultctor TimeSpan;
 class TimeSpan : public TimePrimitive {
 public:
   // <begin>
-  const std::string& begin();
+  const std::string& get_begin();
   void set_begin(const std::string& begin);
   bool has_begin();
   void clear_begin();
 
   // <end>
-  const std::string& end();
+  const std::string& get_end();
   void set_end(const std::string& end);
   bool has_end();
   void clear_end();
@@ -1413,7 +1414,7 @@ public:
 class TimeStamp : public TimePrimitive {
 public:
   // <when>
-  const std::string& when();
+  const std::string& get_when();
   void set_when(const std::string& when);
   bool has_when();
   void clear_when();
@@ -1423,19 +1424,19 @@ public:
 class Kml : public Element {
 public:
   // hint=
-  const std::string& hint();
+  const std::string& get_hint();
   void set_hint(const std::string& hint);
   bool has_hint();
   void clear_hint();
 
   // <NetworkLinkControl>
-  const NetworkLinkControlPtr networklinkcontrol();
+  const NetworkLinkControlPtr get_networklinkcontrol();
   void set_networklinkcontrol(NetworkLinkControlPtr networklinkcontrol);
   bool has_networklinkcontrol();
   void clear_networklinkcontrol();
 
   // Feature
-  const FeaturePtr feature();
+  const FeaturePtr get_feature();
   void set_feature(FeaturePtr feature);
   bool has_feature();
   void clear_feature();

@@ -115,9 +115,9 @@ void TimeSpanTest::TestDefaults() {
 // Verify setting default makes has_xxx() true:
 void TimeSpanTest::TestSetToDefaultValues() {
   TestDefaults();
-  timespan_->set_begin(timespan_->begin());
+  timespan_->set_begin(timespan_->get_begin());
   CPPUNIT_ASSERT(true == timespan_->has_begin());
-  timespan_->set_end(timespan_->end());
+  timespan_->set_end(timespan_->get_end());
   CPPUNIT_ASSERT(true == timespan_->has_end());
 }
 
@@ -132,9 +132,9 @@ void TimeSpanTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == timespan_->has_begin());
-  CPPUNIT_ASSERT(begin == timespan_->begin());
+  CPPUNIT_ASSERT(begin == timespan_->get_begin());
   CPPUNIT_ASSERT(true == timespan_->has_end());
-  CPPUNIT_ASSERT(end == timespan_->end());
+  CPPUNIT_ASSERT(end == timespan_->get_end());
 
   // Clear all fields:
   timespan_->clear_begin();
@@ -190,7 +190,7 @@ void TimeStampTest::TestDefaults() {
 // Verify setting default makes has_xxx() true:
 void TimeStampTest::TestSetToDefaultValues() {
   TestDefaults();
-  timestamp_->set_when(timestamp_->when());
+  timestamp_->set_when(timestamp_->get_when());
   CPPUNIT_ASSERT(true == timestamp_->has_when());
 }
 
@@ -203,7 +203,7 @@ void TimeStampTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == timestamp_->has_when());
-  CPPUNIT_ASSERT(when == timestamp_->when());
+  CPPUNIT_ASSERT(when == timestamp_->get_when());
 
   // Clear all fields:
   timestamp_->clear_when();

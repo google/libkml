@@ -60,7 +60,7 @@ void SnippetCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  set_text(char_data());
+  set_text(get_char_data());
 }
 
 void SnippetCommon::Serialize(Serializer& serializer) const {

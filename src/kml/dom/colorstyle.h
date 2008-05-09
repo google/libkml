@@ -43,9 +43,9 @@ class ColorStyle : public SubStyle {
   }
 
   // <color>
-  // Color color(uchar a, uchar b, uchar g, uchar r)
+  // TODO: Color color(uchar a, uchar b, uchar g, uchar r)
   // all initialized to 255
-  std::string color() const {
+  std::string get_color() const {
     return color_;
   }
   bool has_color() const {
@@ -61,7 +61,7 @@ class ColorStyle : public SubStyle {
   }
 
   // <colorMode>
-  int colormode() const {
+  int get_colormode() const {
     return colormode_;
   }
   bool has_colormode() const {

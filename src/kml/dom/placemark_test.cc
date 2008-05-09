@@ -79,7 +79,7 @@ void PlacemarkTest::TestType() {
 // Verify proper defaults:
 void PlacemarkTest::TestDefaults() {
   CPPUNIT_ASSERT(false == placemark_->has_geometry());
-  CPPUNIT_ASSERT(NULL == placemark_->geometry());
+  CPPUNIT_ASSERT(NULL == placemark_->get_geometry());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -99,7 +99,7 @@ void PlacemarkTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(placemark_->has_geometry());
-  CPPUNIT_ASSERT_EQUAL(Type_Point, placemark_->geometry()->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Point, placemark_->get_geometry()->Type());
 
   // Set geometry to model.  This frees point.
   ModelPtr model= KmlFactory::GetFactory()->CreateModel();
@@ -107,7 +107,7 @@ void PlacemarkTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(placemark_->has_geometry());
-  CPPUNIT_ASSERT_EQUAL(Type_Model, placemark_->geometry()->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Model, placemark_->get_geometry()->Type());
 
   // Clear all fields:
   placemark_->clear_geometry();
@@ -134,13 +134,13 @@ void PlacemarkTest::TestParse() {
   CPPUNIT_ASSERT(false == placemark->has_id());
   CPPUNIT_ASSERT(false == placemark->has_targetid());
   CPPUNIT_ASSERT(placemark->has_name());
-  CPPUNIT_ASSERT_EQUAL(kName, placemark->name());
+  CPPUNIT_ASSERT_EQUAL(kName, placemark->get_name());
   CPPUNIT_ASSERT(false == placemark->has_visibility());
   CPPUNIT_ASSERT(false == placemark->has_open());
   CPPUNIT_ASSERT(false == placemark->has_address());
   CPPUNIT_ASSERT(placemark->has_snippet());
-  CPPUNIT_ASSERT(placemark->snippet()->has_text());
-  CPPUNIT_ASSERT_EQUAL(kSnippet, placemark->snippet()->text());
+  CPPUNIT_ASSERT(placemark->get_snippet()->has_text());
+  CPPUNIT_ASSERT_EQUAL(kSnippet, placemark->get_snippet()->get_text());
   CPPUNIT_ASSERT(false == placemark->has_description());
   CPPUNIT_ASSERT(false == placemark->has_abstractview());
   CPPUNIT_ASSERT(false == placemark->has_timeprimitive());
@@ -148,11 +148,11 @@ void PlacemarkTest::TestParse() {
   CPPUNIT_ASSERT(false == placemark->has_styleselector());
   CPPUNIT_ASSERT(false == placemark->has_region());
   CPPUNIT_ASSERT(false == placemark->has_extendeddata());
-  const PointPtr point = AsPoint(placemark->geometry());
-  Vec3 vec3 = point->coordinates()->coordinates_array_at(0);
-  CPPUNIT_ASSERT_EQUAL(1.1, vec3.longitude());
-  CPPUNIT_ASSERT_EQUAL(2.2, vec3.latitude());
-  CPPUNIT_ASSERT_EQUAL(3.3, vec3.altitude());
+  const PointPtr point = AsPoint(placemark->get_geometry());
+  Vec3 vec3 = point->get_coordinates()->get_coordinates_array_at(0);
+  CPPUNIT_ASSERT_EQUAL(1.1, vec3.get_longitude());
+  CPPUNIT_ASSERT_EQUAL(2.2, vec3.get_latitude());
+  CPPUNIT_ASSERT_EQUAL(3.3, vec3.get_altitude());
 }
 
 void PlacemarkTest::TestSerialize() {

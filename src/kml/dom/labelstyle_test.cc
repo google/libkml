@@ -70,13 +70,13 @@ void LabelStyleTest::TestType() {
 // Verify proper defaults:
 void LabelStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == labelstyle_->has_scale());
-  CPPUNIT_ASSERT(1.0 == labelstyle_->scale());
+  CPPUNIT_ASSERT(1.0 == labelstyle_->get_scale());
 }
 
 // Verify setting default makes has_xxx() true:
 void LabelStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  labelstyle_->set_scale(labelstyle_->scale());
+  labelstyle_->set_scale(labelstyle_->get_scale());
   CPPUNIT_ASSERT(true == labelstyle_->has_scale());
 }
 
@@ -90,7 +90,7 @@ void LabelStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == labelstyle_->has_scale());
-  CPPUNIT_ASSERT(scale == labelstyle_->scale());
+  CPPUNIT_ASSERT(scale == labelstyle_->get_scale());
 
   // Clear all fields:
   labelstyle_->clear_scale();

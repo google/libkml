@@ -40,8 +40,8 @@ def main():
   lookat = factory.CreateLookAt()
   lookat.set_altitudemode(kmldom.ALTITUDEMODE_RELATIVETOGROUND)
   print 'lookat.has_altitudemode()',lookat.has_altitudemode()
-  print 'lookat.altitudemode()',lookat.altitudemode()
-  if lookat.altitudemode() == kmldom.ALTITUDEMODE_RELATIVETOGROUND:
+  print 'lookat.altitudemode()',lookat.get_altitudemode()
+  if lookat.get_altitudemode() == kmldom.ALTITUDEMODE_RELATIVETOGROUND:
     print 'Yes, it is relativeToGround'
   print 'Serialize it to pretty xml...'
   lookat_kml = kmldom.SerializePretty(lookat)

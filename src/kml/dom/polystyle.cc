@@ -58,10 +58,10 @@ void PolyStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_fill()) {
-    serializer.SaveFieldById(Type_fill, fill());
+    serializer.SaveFieldById(Type_fill, get_fill());
   }
   if (has_outline()) {
-    serializer.SaveFieldById(Type_outline, outline());
+    serializer.SaveFieldById(Type_outline, get_outline());
   }
   SerializeUnknown(serializer);
   serializer.End();

@@ -46,7 +46,7 @@ class SnippetCommon : public Element {
   }
 
   // This is the character data content of <Snippet>
-  const std::string& text() const { return text_; }
+  const std::string& get_text() const { return text_; }
   bool has_text() const { return has_text_; }
   void set_text(const std::string& value) {
     text_ = value;
@@ -58,7 +58,7 @@ class SnippetCommon : public Element {
   }
 
   // maxlines=
-  unsigned int maxlines() const { return maxlines_; }
+  unsigned int get_maxlines() const { return maxlines_; }
   bool has_maxlines() const { return has_maxlines_; }
   void set_maxlines(unsigned int value) {
     maxlines_ = value;

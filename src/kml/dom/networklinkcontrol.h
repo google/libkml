@@ -69,11 +69,11 @@ class Create : public UpdateOperation {
     AddComplexChild(container, &container_array_);
   }
 
-  const size_t container_array_size() const {
+  const size_t get_container_array_size() const {
     return container_array_.size();
   }
 
-  const ContainerPtr& container_array_at(unsigned int index) const {
+  const ContainerPtr& get_container_array_at(unsigned int index) const {
     return container_array_[index];
   }
 
@@ -102,11 +102,11 @@ class Delete : public UpdateOperation {
     AddComplexChild(feature, &feature_array_);
   }
 
-  const size_t feature_array_size() const {
+  const size_t get_feature_array_size() const {
     return feature_array_.size();
   }
 
-  const FeaturePtr& feature_array_at(unsigned int index) const {
+  const FeaturePtr& get_feature_array_at(unsigned int index) const {
     return feature_array_[index];
   }
 
@@ -135,11 +135,11 @@ class Change : public UpdateOperation {
     AddComplexChild(object, &object_array_);
   }
 
-  const size_t object_array_size() const {
+  const size_t get_object_array_size() const {
     return object_array_.size();
   }
 
-  const ObjectPtr& object_array_at(unsigned int index) const {
+  const ObjectPtr& get_object_array_at(unsigned int index) const {
     return object_array_[index];
   }
 
@@ -164,7 +164,7 @@ class Update : public Element {
   }
 
   // <targetHref>
-  const std::string& targethref() const { return targethref_; }
+  const std::string& get_targethref() const { return targethref_; }
   bool has_targethref() const { return has_targethref_; }
   void set_targethref(const std::string& targethref) {
     targethref_ = targethref;
@@ -180,11 +180,12 @@ class Update : public Element {
     AddComplexChild(updateoperation, &updateoperation_array_);
   }
 
-  const size_t updateoperation_array_size() const {
+  const size_t get_updateoperation_array_size() const {
     return updateoperation_array_.size();
   }
 
-  const UpdateOperationPtr& updateoperation_array_at(unsigned int index) const {
+  const UpdateOperationPtr& get_updateoperation_array_at(
+      unsigned int index) const {
     return updateoperation_array_[index];
   }
 
@@ -211,7 +212,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <minRefreshPeriod>
-  double minrefreshperiod() const { return minrefreshperiod_; }
+  double get_minrefreshperiod() const { return minrefreshperiod_; }
   bool has_minrefreshperiod() const { return has_minrefreshperiod_; }
   void set_minrefreshperiod(double value) {
     minrefreshperiod_ = value;
@@ -223,7 +224,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <maxSessionLength>
-  double maxsessionlength() const { return maxsessionlength_; }
+  double get_maxsessionlength() const { return maxsessionlength_; }
   bool has_maxsessionlength() const { return has_maxsessionlength_; }
   void set_maxsessionlength(double value) {
     maxsessionlength_ = value;
@@ -235,7 +236,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <cookie>
-  const std::string& cookie() const { return cookie_; }
+  const std::string& get_cookie() const { return cookie_; }
   bool has_cookie() const { return has_cookie_; }
   void set_cookie(const std::string& cookie) {
     cookie_ = cookie;
@@ -247,7 +248,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <message>
-  const std::string& message() const { return message_; }
+  const std::string& get_message() const { return message_; }
   bool has_message() const { return has_message_; }
   void set_message(const std::string& message) {
     message_ = message;
@@ -259,7 +260,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <linkName>
-  const std::string& linkname() const { return linkname_; }
+  const std::string& get_linkname() const { return linkname_; }
   bool has_linkname() const { return has_linkname_; }
   void set_linkname(const std::string& linkname) {
     linkname_ = linkname;
@@ -271,7 +272,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <linkDescription>
-  const std::string& linkdescription() const { return linkdescription_; }
+  const std::string& get_linkdescription() const { return linkdescription_; }
   bool has_linkdescription() const { return has_linkdescription_; }
   void set_linkdescription(const std::string& linkdescription) {
     linkdescription_ = linkdescription;
@@ -283,7 +284,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <linkSnippet>
-  const LinkSnippetPtr& linksnippet() const { return linksnippet_; }
+  const LinkSnippetPtr& get_linksnippet() const { return linksnippet_; }
   bool has_linksnippet() const { return linksnippet_ != NULL; }
   void set_linksnippet(LinkSnippetPtr linksnippet) {
     SetComplexChild(linksnippet, &linksnippet_);
@@ -293,7 +294,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <expires>
-  const std::string& expires() const { return expires_; }
+  const std::string& get_expires() const { return expires_; }
   bool has_expires() const { return has_expires_; }
   void set_expires(const std::string& expires) {
     expires_ = expires;
@@ -305,7 +306,7 @@ class NetworkLinkControl : public Element {
   }
 
   // <Update>
-  const UpdatePtr& update() const { return update_; }
+  const UpdatePtr& get_update() const { return update_; }
   bool has_update() const { return update_ != NULL; }
   void set_update(const UpdatePtr& update) {
     SetComplexChild(update, &update_);
@@ -315,7 +316,7 @@ class NetworkLinkControl : public Element {
   }
 
   // AbstractView
-  const AbstractViewPtr& abstractview() const { return abstractview_; }
+  const AbstractViewPtr& get_abstractview() const { return abstractview_; }
   bool has_abstractview() const { return abstractview_ != NULL; }
   void set_abstractview(const AbstractViewPtr& abstractview) {
     SetComplexChild(abstractview, &abstractview_);

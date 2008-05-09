@@ -64,9 +64,9 @@ void KmlTest::TestType() {
 
 // Verify proper defaults:
 void KmlTest::TestDefaults() {
-  CPPUNIT_ASSERT(NULL == kml_->networklinkcontrol());
+  CPPUNIT_ASSERT(NULL == kml_->get_networklinkcontrol());
   CPPUNIT_ASSERT(false == kml_->has_networklinkcontrol());
-  CPPUNIT_ASSERT(NULL == kml_->feature());
+  CPPUNIT_ASSERT(NULL == kml_->get_feature());
   CPPUNIT_ASSERT(false == kml_->has_feature());
 }
 
@@ -75,14 +75,14 @@ void KmlTest::TestSetGetHasClear() {
   NetworkLinkControl* nlc =
       KmlFactory::GetFactory()->CreateNetworkLinkControl();
   kml_->set_networklinkcontrol(nlc);
-  CPPUNIT_ASSERT(nlc == kml_->networklinkcontrol());
+  CPPUNIT_ASSERT(nlc == kml_->get_networklinkcontrol());
   CPPUNIT_ASSERT(true == kml_->has_networklinkcontrol());
   kml_->clear_networklinkcontrol();
   TestDefaults();
 
   Placemark* placemark = KmlFactory::GetFactory()->CreatePlacemark();
   kml_->set_feature(placemark);
-  CPPUNIT_ASSERT(placemark == kml_->feature());
+  CPPUNIT_ASSERT(placemark == kml_->get_feature());
   CPPUNIT_ASSERT(true == kml_->has_feature());
   kml_->clear_feature();
   TestDefaults();
@@ -91,14 +91,14 @@ void KmlTest::TestSetGetHasClear() {
 // Verify hint= attr:
 void KmlTest::TestHint() {
   CPPUNIT_ASSERT(false == kml_->has_hint());
-  CPPUNIT_ASSERT("" == kml_->hint());
+  CPPUNIT_ASSERT("" == kml_->get_hint());
   std::string hint("target=sky");
   kml_->set_hint(hint);
   CPPUNIT_ASSERT(true == kml_->has_hint());
-  CPPUNIT_ASSERT(hint == kml_->hint());
+  CPPUNIT_ASSERT(hint == kml_->get_hint());
   kml_->clear_hint();
   CPPUNIT_ASSERT(false == kml_->has_hint());
-  CPPUNIT_ASSERT("" == kml_->hint());
+  CPPUNIT_ASSERT("" == kml_->get_hint());
 }
 
 }  // end namespace kmldom

@@ -59,15 +59,15 @@ def PrFeatureType(type):
 def VisitFeature(feature, depth):
   Indent(depth)
   PrFeatureType(feature.Type())
-  print 'id=',feature.id()
+  print 'id=',feature.get_id()
   container = kmldom.AsContainer(feature)
   if container:
     WalkContainer(container, depth+1)
 
 # This visits each feature in the given container (<Document> or <Folder>).
 def WalkContainer(container, depth):
-  for i in range(container.feature_array_size()):
-    VisitFeature(container.feature_array_at(i), depth)
+  for i in range(container.get_feature_array_size()):
+    VisitFeature(container.get_feature_array_at(i), depth)
 
 # The root feature of a KML file is the child feature of the <kml>
 # element or the root xml element if that is a Feature.
@@ -76,7 +76,7 @@ def GetRootFeature(element):
   kml = kmldom.AsKml(element)
   if kml:
     if kml.has_feature():
-      return kml.feature()
+      return kml.get_feature()
     else:
       return None
   feature = kmldom.AsFeature(element)

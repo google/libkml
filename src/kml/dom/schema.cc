@@ -76,7 +76,7 @@ void SimpleField::Serialize(Serializer& serializer) const {
   GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   if (has_displayname()) {
-    serializer.SaveFieldById(Type_displayName, displayname());
+    serializer.SaveFieldById(Type_displayName, get_displayname());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -123,7 +123,7 @@ void Schema::Serialize(Serializer& serializer) const {
   GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < simplefield_array_.size(); ++i) {
-    serializer.SaveElement(*simplefield_array_at(i));
+    serializer.SaveElement(*get_simplefield_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

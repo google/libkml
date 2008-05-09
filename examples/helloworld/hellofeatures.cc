@@ -40,7 +40,7 @@ using kmldom::KmlPtr;
 static const FeaturePtr GetRootFeature(const ElementPtr& root) {
   const KmlPtr kml = kmldom::AsKml(root);
   if (kml && kml->has_feature()) {
-    return kml->feature();
+    return kml->get_feature();
   }
   return kmldom::AsFeature(root);
 }

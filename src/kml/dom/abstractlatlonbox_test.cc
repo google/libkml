@@ -59,13 +59,13 @@ void AbstractLatLonBoxTest::TestType() {
 // Verify proper defaults:
 void AbstractLatLonBoxTest::TestDefaults() {
   CPPUNIT_ASSERT(false == latlonbox.has_north());
-  CPPUNIT_ASSERT(0.0 == latlonbox.north());
+  CPPUNIT_ASSERT(0.0 == latlonbox.get_north());
   CPPUNIT_ASSERT(false == latlonbox.has_south());
-  CPPUNIT_ASSERT(0.0 == latlonbox.south());
+  CPPUNIT_ASSERT(0.0 == latlonbox.get_south());
   CPPUNIT_ASSERT(false == latlonbox.has_east());
-  CPPUNIT_ASSERT(0.0 == latlonbox.east());
+  CPPUNIT_ASSERT(0.0 == latlonbox.get_east());
   CPPUNIT_ASSERT(false == latlonbox.has_west());
-  CPPUNIT_ASSERT(0.0 == latlonbox.west());
+  CPPUNIT_ASSERT(0.0 == latlonbox.get_west());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -75,10 +75,10 @@ void AbstractLatLonBoxTest::TestSetToDefaultValues() {
   CPPUNIT_ASSERT(false == latlonbox.has_south());
   CPPUNIT_ASSERT(false == latlonbox.has_east());
   CPPUNIT_ASSERT(false == latlonbox.has_west());
-  latlonbox.set_north(latlonbox.north());
-  latlonbox.set_south(latlonbox.south());
-  latlonbox.set_east(latlonbox.east());
-  latlonbox.set_west(latlonbox.west());
+  latlonbox.set_north(latlonbox.get_north());
+  latlonbox.set_south(latlonbox.get_south());
+  latlonbox.set_east(latlonbox.get_east());
+  latlonbox.set_west(latlonbox.get_west());
   CPPUNIT_ASSERT(true == latlonbox.has_north());
   CPPUNIT_ASSERT(true == latlonbox.has_south());
   CPPUNIT_ASSERT(true == latlonbox.has_east());
@@ -100,13 +100,13 @@ void AbstractLatLonBoxTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == latlonbox.has_north());
-  CPPUNIT_ASSERT(north == latlonbox.north());
+  CPPUNIT_ASSERT(north == latlonbox.get_north());
   CPPUNIT_ASSERT(true == latlonbox.has_south());
-  CPPUNIT_ASSERT(south == latlonbox.south());
+  CPPUNIT_ASSERT(south == latlonbox.get_south());
   CPPUNIT_ASSERT(true == latlonbox.has_east());
-  CPPUNIT_ASSERT(east == latlonbox.east());
+  CPPUNIT_ASSERT(east == latlonbox.get_east());
   CPPUNIT_ASSERT(true == latlonbox.has_west());
-  CPPUNIT_ASSERT(west == latlonbox.west());
+  CPPUNIT_ASSERT(west == latlonbox.get_west());
 
   // Clear all fields:
   latlonbox.clear_north();

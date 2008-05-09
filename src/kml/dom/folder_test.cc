@@ -97,24 +97,30 @@ void FolderTest::TestParse() {
   const FolderPtr folder = AsFolder(root);
   CPPUNIT_ASSERT(folder);
   // Verify the Object-ness of Folder.
-  CPPUNIT_ASSERT_EQUAL(std::string("folder123"), folder->id());
+  CPPUNIT_ASSERT_EQUAL(std::string("folder123"), folder->get_id());
   CPPUNIT_ASSERT(false == folder->has_targetid());
   // Verify the Feature-ness of Folder.
-  CPPUNIT_ASSERT_EQUAL(std::string("My Favorite Folder"), folder->name());
+  CPPUNIT_ASSERT_EQUAL(std::string("My Favorite Folder"), folder->get_name());
   CPPUNIT_ASSERT(false == folder->has_description());
   CPPUNIT_ASSERT(folder->has_styleselector());
-  CPPUNIT_ASSERT_EQUAL(Type_Style, folder->styleselector()->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Style, folder->get_styleselector()->Type());
   CPPUNIT_ASSERT(folder->has_region());
   CPPUNIT_ASSERT(false == folder->has_extendeddata());
   // Verify the Conatiner-ness of Folder.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), folder->feature_array_size());
-  CPPUNIT_ASSERT_EQUAL(Type_Document, folder->feature_array_at(0)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_Folder, folder->feature_array_at(1)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_GroundOverlay, folder->feature_array_at(2)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_NetworkLink, folder->feature_array_at(3)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_PhotoOverlay, folder->feature_array_at(4)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_Placemark, folder->feature_array_at(5)->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_ScreenOverlay, folder->feature_array_at(6)->Type());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7),
+                       folder->get_feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(Type_Document, folder->get_feature_array_at(0)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Folder, folder->get_feature_array_at(1)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_GroundOverlay,
+                       folder->get_feature_array_at(2)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_NetworkLink,
+                       folder->get_feature_array_at(3)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_PhotoOverlay,
+                       folder->get_feature_array_at(4)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Placemark,
+                       folder->get_feature_array_at(5)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_ScreenOverlay,
+                       folder->get_feature_array_at(6)->Type());
   // ElementPtr root goes out of scope and releases Folder which in turn
   // releases all child elements.
 }
@@ -169,11 +175,14 @@ void FolderTest::TestSerializePretty() {
 // (This tests the internal set_parent() method.)
 void FolderTest::TestAddFeatureTwiceToSameFolder() {
   PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), folder_->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+                       folder_->get_feature_array_size());
   folder_->add_feature(placemark);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       folder_->get_feature_array_size());
   folder_->add_feature(placemark);  // Ignored
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       folder_->get_feature_array_size());
   // placemark is deleted when folder_ is deleted.
 }
 
@@ -182,15 +191,19 @@ void FolderTest::TestAddFeatureTwiceToSameFolder() {
 void FolderTest::TestAddFeatureToTwoContainers() {
   DocumentPtr document = KmlFactory::GetFactory()->CreateDocument();
   // Both containers initially empty.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), folder_->feature_array_size());
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), document->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+                       folder_->get_feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+                       document->get_feature_array_size());
   // The folder takes ownership of the placemark.
   PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
   folder_->add_feature(placemark);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder_->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       folder_->get_feature_array_size());
   // The document ignores this placemark.
   document->add_feature(placemark);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), document->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+                       document->get_feature_array_size());
   // placemark is deleted when placemark is deleted.
 }
 

@@ -61,7 +61,7 @@ void SimpleData::AddElement(const ElementPtr& element) {
     return;
   }
   if (element->Type() == Type_SimpleData) {
-    set_text(char_data());
+    set_text(get_char_data());
   } else {
     // We have a known KML element inside <SimpleData> and need to store it.
     Element::AddElement(element);
@@ -119,8 +119,8 @@ void SchemaData::Serialize(Serializer& serializer) const {
   Object::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
-  for (size_t i = 0; i < simpledata_array_size(); ++i) {
-    serializer.SaveElement(*simpledata_array_at(i));
+  for (size_t i = 0; i < get_simpledata_array_size(); ++i) {
+    serializer.SaveElement(*get_simpledata_array_at(i));
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
@@ -168,10 +168,10 @@ void Data::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_displayname()) {
-    serializer.SaveFieldById(Type_displayName, displayname());
+    serializer.SaveFieldById(Type_displayName, get_displayname());
   }
   if (has_value()) {
-    serializer.SaveFieldById(Type_value, value());
+    serializer.SaveFieldById(Type_value, get_value());
   }
   Element::SerializeUnknown(serializer);
   serializer.End();

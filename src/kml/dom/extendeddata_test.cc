@@ -67,17 +67,17 @@ void SimpleDataTest::TestType() {
 }
 
 void SimpleDataTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == simpledata_->name());
+  CPPUNIT_ASSERT("" == simpledata_->get_name());
   CPPUNIT_ASSERT(false == simpledata_->has_name());
-  CPPUNIT_ASSERT("" == simpledata_->text());
+  CPPUNIT_ASSERT("" == simpledata_->get_text());
   CPPUNIT_ASSERT(false == simpledata_->has_text());
 }
 
 void SimpleDataTest::TestSetToDefaultValues() {
   TestDefaults();
-  simpledata_->set_name(simpledata_->name());
+  simpledata_->set_name(simpledata_->get_name());
   CPPUNIT_ASSERT(true == simpledata_->has_name());
-  simpledata_->set_text(simpledata_->text());
+  simpledata_->set_text(simpledata_->get_text());
   CPPUNIT_ASSERT(true == simpledata_->has_text());
 }
 
@@ -85,13 +85,13 @@ void SimpleDataTest::TestSetGetHasClear() {
   std::string name("tom");
   simpledata_->set_name(name);
   CPPUNIT_ASSERT(true == simpledata_->has_name());
-  CPPUNIT_ASSERT(name == simpledata_->name());
+  CPPUNIT_ASSERT(name == simpledata_->get_name());
   simpledata_->clear_name();
 
   std::string text("dick");
   simpledata_->set_text(text);
   CPPUNIT_ASSERT(true == simpledata_->has_text());
-  CPPUNIT_ASSERT(text == simpledata_->text());
+  CPPUNIT_ASSERT(text == simpledata_->get_text());
   simpledata_->clear_text();
 
   TestDefaults();
@@ -131,28 +131,28 @@ void SchemaDataTest::TestType() {
 
 void SchemaDataTest::TestSchemaUrl() {
   CPPUNIT_ASSERT(false == schemadata_->has_schemaurl());
-  CPPUNIT_ASSERT("" == schemadata_->schemaurl());
+  CPPUNIT_ASSERT("" == schemadata_->get_schemaurl());
   std::string schemaurl("#icanhasurl");
   schemadata_->set_schemaurl(schemaurl);
   CPPUNIT_ASSERT(true == schemadata_->has_schemaurl());
-  CPPUNIT_ASSERT(schemaurl == schemadata_->schemaurl());
+  CPPUNIT_ASSERT(schemaurl == schemadata_->get_schemaurl());
   schemadata_->clear_schemaurl();
   CPPUNIT_ASSERT(false == schemadata_->has_schemaurl());
-  CPPUNIT_ASSERT("" == schemadata_->schemaurl());
+  CPPUNIT_ASSERT("" == schemadata_->get_schemaurl());
 }
 
 void SchemaDataTest::TestLists() {
   // Vector is empty.
-  CPPUNIT_ASSERT(0 == schemadata_->simpledata_array_size());
+  CPPUNIT_ASSERT(0 == schemadata_->get_simpledata_array_size());
   // Add three <SimpleData> elements:
   schemadata_->add_simpledata(KmlFactory::GetFactory()->CreateSimpleData());
   schemadata_->add_simpledata(KmlFactory::GetFactory()->CreateSimpleData());
   schemadata_->add_simpledata(KmlFactory::GetFactory()->CreateSimpleData());
   // We have three items in the array:
-  CPPUNIT_ASSERT(3 == schemadata_->simpledata_array_size());
-  for (size_t i = 0; i < schemadata_->simpledata_array_size(); ++i) {
+  CPPUNIT_ASSERT(3 == schemadata_->get_simpledata_array_size());
+  for (size_t i = 0; i < schemadata_->get_simpledata_array_size(); ++i) {
     CPPUNIT_ASSERT(
-        Type_SimpleData == schemadata_->simpledata_array_at(i)->Type());
+        Type_SimpleData == schemadata_->get_simpledata_array_at(i)->Type());
   }
 }
 
@@ -192,19 +192,19 @@ void DataTest::TestType() {
 
 void DataTest::TestDefaults() {
   CPPUNIT_ASSERT(false == data_->has_name());
-  CPPUNIT_ASSERT("" == data_->name());
+  CPPUNIT_ASSERT("" == data_->get_name());
   CPPUNIT_ASSERT(false == data_->has_displayname());
-  CPPUNIT_ASSERT("" == data_->displayname());
+  CPPUNIT_ASSERT("" == data_->get_displayname());
   CPPUNIT_ASSERT(false == data_->has_value());
-  CPPUNIT_ASSERT("" == data_->value());
+  CPPUNIT_ASSERT("" == data_->get_value());
 }
 
 void DataTest::TestSetToDefaultValues() {
-  data_->set_name(data_->name());
+  data_->set_name(data_->get_name());
   CPPUNIT_ASSERT(true == data_->has_name());
-  data_->set_displayname(data_->displayname());
+  data_->set_displayname(data_->get_displayname());
   CPPUNIT_ASSERT(true == data_->has_displayname());
-  data_->set_value(data_->value());
+  data_->set_value(data_->get_value());
   CPPUNIT_ASSERT(true == data_->has_value());
 }
 
@@ -212,19 +212,19 @@ void DataTest::TestSetGetHasClear() {
   std::string name("tom");
   data_->set_name(name);
   CPPUNIT_ASSERT(true == data_->has_name());
-  CPPUNIT_ASSERT(name == data_->name());
+  CPPUNIT_ASSERT(name == data_->get_name());
   data_->clear_name();
 
   std::string displayname("dick");
   data_->set_displayname(displayname);
   CPPUNIT_ASSERT(true == data_->has_displayname());
-  CPPUNIT_ASSERT(displayname == data_->displayname());
+  CPPUNIT_ASSERT(displayname == data_->get_displayname());
   data_->clear_displayname();
 
   std::string value("harry");
   data_->set_value(value);
   CPPUNIT_ASSERT(true == data_->has_value());
-  CPPUNIT_ASSERT(value == data_->value());
+  CPPUNIT_ASSERT(value == data_->get_value());
   data_->clear_value();
 
   TestDefaults();
@@ -264,7 +264,7 @@ void ExtendedDataTest::TestType() {
 
 void ExtendedDataTest::TestLists() {
   // Vector is empty.
-  CPPUNIT_ASSERT(0 == extendeddata_->extendeddatamember_array_size());
+  CPPUNIT_ASSERT(0 == extendeddata_->get_extendeddatamember_array_size());
   // Add three <Data> and three <SchemaData> elements:
   extendeddata_->add_extendeddatamember(
       KmlFactory::GetFactory()->CreateData());
@@ -279,20 +279,20 @@ void ExtendedDataTest::TestLists() {
   extendeddata_->add_extendeddatamember(
       KmlFactory::GetFactory()->CreateSchemaData());
   // We have six items in the array:
-  CPPUNIT_ASSERT(6 == extendeddata_->extendeddatamember_array_size());
+  CPPUNIT_ASSERT(6 == extendeddata_->get_extendeddatamember_array_size());
   // Assert ordering is preserved:
   CPPUNIT_ASSERT(
-      Type_Data == extendeddata_->extendeddatamember_array_at(0)->Type());
+      Type_Data == extendeddata_->get_extendeddatamember_array_at(0)->Type());
   CPPUNIT_ASSERT(
-      Type_Data == extendeddata_->extendeddatamember_array_at(1)->Type());
-  CPPUNIT_ASSERT(
-      Type_SchemaData == extendeddata_->extendeddatamember_array_at(2)->Type());
-  CPPUNIT_ASSERT(
-      Type_SchemaData == extendeddata_->extendeddatamember_array_at(3)->Type());
-  CPPUNIT_ASSERT(
-      Type_Data == extendeddata_->extendeddatamember_array_at(4)->Type());
-  CPPUNIT_ASSERT(
-      Type_SchemaData == extendeddata_->extendeddatamember_array_at(5)->Type());
+      Type_Data == extendeddata_->get_extendeddatamember_array_at(1)->Type());
+  CPPUNIT_ASSERT(Type_SchemaData ==
+                 extendeddata_->get_extendeddatamember_array_at(2)->Type());
+  CPPUNIT_ASSERT(Type_SchemaData ==
+                 extendeddata_->get_extendeddatamember_array_at(3)->Type());
+  CPPUNIT_ASSERT(Type_Data ==
+                 extendeddata_->get_extendeddatamember_array_at(4)->Type());
+  CPPUNIT_ASSERT(Type_SchemaData ==
+                 extendeddata_->get_extendeddatamember_array_at(5)->Type());
 }
 
 void ExtendedDataTest::TestParse() {
@@ -318,28 +318,28 @@ void ExtendedDataTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const ExtendedDataPtr extendeddata = AsExtendedData(root);
   CPPUNIT_ASSERT(extendeddata);
-  CPPUNIT_ASSERT(2 == extendeddata->extendeddatamember_array_size());
-  const DataPtr data = AsData(extendeddata->extendeddatamember_array_at(0));
+  CPPUNIT_ASSERT(2 == extendeddata->get_extendeddatamember_array_size());
+  const DataPtr data = AsData(extendeddata->get_extendeddatamember_array_at(0));
   CPPUNIT_ASSERT(data);
   CPPUNIT_ASSERT(data->has_name());
-  CPPUNIT_ASSERT_EQUAL(d_name, data->name());
+  CPPUNIT_ASSERT_EQUAL(d_name, data->get_name());
   CPPUNIT_ASSERT(data->has_displayname());
-  CPPUNIT_ASSERT_EQUAL(displayname, data->displayname());
+  CPPUNIT_ASSERT_EQUAL(displayname, data->get_displayname());
   CPPUNIT_ASSERT(data->has_value());
-  CPPUNIT_ASSERT_EQUAL(value, data->value());
+  CPPUNIT_ASSERT_EQUAL(value, data->get_value());
   const SchemaDataPtr schemadata = AsSchemaData(
-      extendeddata->extendeddatamember_array_at(1));
+      extendeddata->get_extendeddatamember_array_at(1));
   CPPUNIT_ASSERT(schemadata);
   CPPUNIT_ASSERT(schemadata->has_schemaurl());
-  CPPUNIT_ASSERT_EQUAL(schemaurl, schemadata->schemaurl());
-  CPPUNIT_ASSERT(1 == schemadata->simpledata_array_size());
+  CPPUNIT_ASSERT_EQUAL(schemaurl, schemadata->get_schemaurl());
+  CPPUNIT_ASSERT(1 == schemadata->get_simpledata_array_size());
   const SimpleDataPtr simpledata = AsSimpleData(
-      schemadata->simpledata_array_at(0));
+      schemadata->get_simpledata_array_at(0));
   CPPUNIT_ASSERT(simpledata);
   CPPUNIT_ASSERT(simpledata->has_name());
   CPPUNIT_ASSERT(simpledata->has_text());
-  CPPUNIT_ASSERT_EQUAL(sd_name, simpledata->name());
-  CPPUNIT_ASSERT_EQUAL(chardata, simpledata->text());
+  CPPUNIT_ASSERT_EQUAL(sd_name, simpledata->get_name());
+  CPPUNIT_ASSERT_EQUAL(chardata, simpledata->get_text());
 }
 
 }  // end namespace kmldom

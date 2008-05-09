@@ -70,8 +70,8 @@ void Element::SerializeUnknown(Serializer& serializer) const {
       unknown_legal_elements_array_[i]->Serialize(serializer);
     } else {
       // Is field, serialize directly.
-      serializer.SaveFieldById(type_id,
-                               unknown_legal_elements_array_[i]->char_data());
+      serializer.SaveFieldById(
+          type_id, unknown_legal_elements_array_[i]->get_char_data());
     }
   }
   // Now serialize unknown elements:
@@ -103,7 +103,7 @@ Field::Field(KmlDomType type_id)
 bool Field::SetBool(bool* val) {
   bool ret = false;
   if (val) {
-    *val = char_data() == "1" || char_data() == "true";
+    *val = get_char_data() == "1" || get_char_data() == "true";
     ret = true;
   }
   return ret;
@@ -112,7 +112,7 @@ bool Field::SetBool(bool* val) {
 bool Field::SetDouble(double* val) {
   bool ret = false;
   if (val) {
-    *val = strtod(char_data().c_str(), NULL);
+    *val = strtod(get_char_data().c_str(), NULL);
     ret = true;
   }
   return ret;
@@ -121,7 +121,7 @@ bool Field::SetDouble(double* val) {
 bool Field::SetInt(int* val) {
   bool ret = false;
   if (val) {
-    *val = atoi(char_data().c_str());
+    *val = atoi(get_char_data().c_str());
     ret = true;
   }
   return ret;
@@ -130,7 +130,7 @@ bool Field::SetInt(int* val) {
 bool Field::SetEnum(int* enum_val) {
   bool ret = false;
   if (enum_val) {
-    int val = xsd_.EnumId(Type(), char_data());
+    int val = xsd_.EnumId(Type(), get_char_data());
     if (val != -1) {
       *enum_val = val;
       ret = true;
@@ -142,7 +142,7 @@ bool Field::SetEnum(int* enum_val) {
 bool Field::SetString(std::string* val) {
   bool ret = false;
   if (val) {
-    *val = char_data();
+    *val = get_char_data();
     ret = true;
   }
   return ret;

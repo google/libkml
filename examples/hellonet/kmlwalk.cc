@@ -91,7 +91,7 @@ static void PrintFileCount() {
 static const FeaturePtr GetRootFeature(const ElementPtr& root) {
   const KmlPtr kml = kmldom::AsKml(root);
   if (kml && kml->has_feature()) {
-    return kml->feature();
+    return kml->get_feature();
   }
   return kmldom::AsFeature(root);
 }
@@ -125,9 +125,9 @@ static void WalkUrl(const std::string& parent_url,
 static bool GetNetworkLinkHref(const NetworkLinkPtr& networklink,
                                std::string* href) {
   if (networklink->has_link()) {
-    const LinkPtr link = networklink->link();
+    const LinkPtr link = networklink->get_link();
     if (link->has_href()) {
-      *href = link->href();
+      *href = link->get_href();
       return true;
     }
   }
@@ -145,8 +145,8 @@ static void WalkNetworkLink(const std::string& parent_url,
 
 static void WalkContainer(const std::string& parent_url,
                           const ContainerPtr& container) {
-  for (size_t i = 0; i < container->feature_array_size(); ++i) {
-    WalkFeature(parent_url, container->feature_array_at(i));
+  for (size_t i = 0; i < container->get_feature_array_size(); ++i) {
+    WalkFeature(parent_url, container->get_feature_array_at(i));
   }
 }
 

@@ -54,7 +54,7 @@ void LabelStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_scale()) {
-    serializer.SaveFieldById(Type_scale, scale());
+    serializer.SaveFieldById(Type_scale, get_scale());
   }
   SerializeUnknown(serializer);
   serializer.End();

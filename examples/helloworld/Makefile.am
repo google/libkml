@@ -7,13 +7,18 @@ noinst_LTLIBRARIES = libhelloutil.la
 libhelloutil_la_SOURCES = print.cc
 libhelloutil_la_LIBADD = $(top_builddir)/third_party/libminizip.la
 
-noinst_PROGRAMS = createkml helloattrs helloenum hellofeatures hellofolder \
-		  hellogeometry hellohref hellokmz helloregion \
+noinst_PROGRAMS = countkml createkml helloattrs helloenum hellofeatures \
+                  hellofolder hellogeometry hellohref hellokmz helloregion \
 		  helloworld parsekml prettykml printgeometry sortplacemarks
 
 createkml_SOURCES = createkml.cc
 createkml_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la
+
+countkml_SOURCES = countkml.cc
+countkml_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
 
 helloattrs_SOURCES = helloattrs.cc
 helloattrs_LDADD = \

@@ -47,7 +47,7 @@ class LatLonAltBox : public AbstractLatLonBox {
   }
 
   // <minAltitude>
-  double minaltitude() const {
+  double get_minaltitude() const {
     return minaltitude_;
   }
   bool has_minaltitude() const {
@@ -63,7 +63,7 @@ class LatLonAltBox : public AbstractLatLonBox {
   }
 
   // <maxAltitude>
-  double maxaltitude() const {
+  double get_maxaltitude() const {
     return maxaltitude_;
   }
   bool has_maxaltitude() const {
@@ -79,7 +79,7 @@ class LatLonAltBox : public AbstractLatLonBox {
   }
 
   // <altitudeMode>
-  int altitudemode() const {
+  int get_altitudemode() const {
     return altitudemode_;
   }
   bool has_altitudemode() const {
@@ -120,7 +120,7 @@ class Lod : public Object {
   }
 
   // <minLodPixels>
-  double minlodpixels() const {
+  double get_minlodpixels() const {
     return minlodpixels_;
   }
   bool has_minlodpixels() const {
@@ -136,7 +136,7 @@ class Lod : public Object {
   }
 
   // <maxLodPixels>
-  double maxlodpixels() const {
+  double get_maxlodpixels() const {
     return maxlodpixels_;
   }
   bool has_maxlodpixels() const {
@@ -152,7 +152,7 @@ class Lod : public Object {
   }
 
   // <minFadeExtent>
-  double minfadeextent() const {
+  double get_minfadeextent() const {
     return minfadeextent_;
   }
   bool has_minfadeextent() const {
@@ -168,7 +168,7 @@ class Lod : public Object {
   }
 
   // <maxFadeExtent>
-  double maxfadeextent() const {
+  double get_maxfadeextent() const {
     return maxfadeextent_;
   }
   bool has_maxfadeextent() const {
@@ -211,7 +211,7 @@ class Region : public Object {
   }
 
   // <LatLonAltBox>
-  const LatLonAltBoxPtr& latlonaltbox() const { return latlonaltbox_; }
+  const LatLonAltBoxPtr& get_latlonaltbox() const { return latlonaltbox_; }
   bool has_latlonaltbox() const { return latlonaltbox_ != NULL; }
   void set_latlonaltbox(const LatLonAltBoxPtr& latlonaltbox) {
     SetComplexChild(latlonaltbox, &latlonaltbox_);
@@ -221,7 +221,7 @@ class Region : public Object {
   }
 
   // <Lod>
-  const LodPtr& lod() const { return lod_; }
+  const LodPtr& get_lod() const { return lod_; }
   bool has_lod() const { return lod_ != NULL; }
   void set_lod(const LodPtr& lod) {
     SetComplexChild(lod, &lod_);

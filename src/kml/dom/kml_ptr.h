@@ -32,6 +32,7 @@ namespace kmldom {
 
 class Element;
 
+class AbstractLatLonBox;
 class AbstractView;
 class BasicLink;
 class ColorStyle;
@@ -114,6 +115,7 @@ class Size;
 
 typedef boost::intrusive_ptr<Element> ElementPtr;
 
+typedef boost::intrusive_ptr<AbstractLatLonBox> AbstractLatLonBoxPtr;
 typedef boost::intrusive_ptr<AbstractView> AbstractViewPtr;
 typedef boost::intrusive_ptr<BasicLink> BasicLinkPtr;
 typedef boost::intrusive_ptr<ColorStyle> ColorStylePtr;

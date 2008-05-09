@@ -64,31 +64,34 @@ void DocumentTest::TestType() {
 }
 
 void DocumentTest::TestSchema() {
-  CPPUNIT_ASSERT(0 == document_->schema_array_size());
+  CPPUNIT_ASSERT(0 == document_->get_schema_array_size());
   SchemaPtr s0(KmlFactory::GetFactory()->CreateSchema());
   SchemaPtr s1(KmlFactory::GetFactory()->CreateSchema());
   SchemaPtr s3(KmlFactory::GetFactory()->CreateSchema());
   document_->add_schema(s0);
   document_->add_schema(s1);
   document_->add_schema(s3);
-  CPPUNIT_ASSERT(3 == document_->schema_array_size());
-  CPPUNIT_ASSERT(Type_Schema == document_->schema_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Schema == document_->schema_array_at(1)->Type());
-  CPPUNIT_ASSERT(Type_Schema == document_->schema_array_at(2)->Type());
+  CPPUNIT_ASSERT(3 == document_->get_schema_array_size());
+  CPPUNIT_ASSERT(Type_Schema == document_->get_schema_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Schema == document_->get_schema_array_at(1)->Type());
+  CPPUNIT_ASSERT(Type_Schema == document_->get_schema_array_at(2)->Type());
 }
 
 void DocumentTest::TestStyleSelectors() {
-  CPPUNIT_ASSERT(0 == document_->styleselector_array_size());
+  CPPUNIT_ASSERT(0 == document_->get_styleselector_array_size());
   StylePtr s0(KmlFactory::GetFactory()->CreateStyle());
   StylePtr s1(KmlFactory::GetFactory()->CreateStyle());
   StyleMapPtr sm(KmlFactory::GetFactory()->CreateStyleMap());
   document_->add_styleselector(s0);
   document_->add_styleselector(s1);
   document_->add_styleselector(sm);
-  CPPUNIT_ASSERT(3 == document_->styleselector_array_size());
-  CPPUNIT_ASSERT(Type_Style == document_->styleselector_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Style == document_->styleselector_array_at(1)->Type());
-  CPPUNIT_ASSERT(Type_StyleMap == document_->styleselector_array_at(2)->Type());
+  CPPUNIT_ASSERT(3 == document_->get_styleselector_array_size());
+  CPPUNIT_ASSERT(Type_Style ==
+                 document_->get_styleselector_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Style ==
+                 document_->get_styleselector_array_at(1)->Type());
+  CPPUNIT_ASSERT(Type_StyleMap ==
+                 document_->get_styleselector_array_at(2)->Type());
 }
 
 }  // end namespace kmldom

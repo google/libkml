@@ -50,7 +50,7 @@ class Feature : public Object {
   }
 
   // <name>
-  const std::string& name() const { return name_; }
+  const std::string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
   void set_name(const std::string& value) {
     name_ = value;
@@ -62,7 +62,7 @@ class Feature : public Object {
   }
 
   // <visibility>
-  bool visibility() const { return visibility_; }
+  bool get_visibility() const { return visibility_; }
   bool has_visibility() const { return has_visibility_; }
   void set_visibility(bool value) {
     visibility_ = value;
@@ -74,7 +74,7 @@ class Feature : public Object {
   }
 
   // <open>
-  bool open() const { return open_; }
+  bool get_open() const { return open_; }
   bool has_open() const { return has_open_; }
   void set_open(bool value) {
     open_ = value;
@@ -86,7 +86,7 @@ class Feature : public Object {
   }
 
   // <address>
-  const std::string& address() const { return address_; }
+  const std::string& get_address() const { return address_; }
   bool has_address() const { return has_address_; }
   void set_address(const std::string& value) {
     address_ = value;
@@ -98,7 +98,7 @@ class Feature : public Object {
   }
 
   // <phoneNumber>
-  const std::string& phonenumber() const { return phonenumber_; }
+  const std::string& get_phonenumber() const { return phonenumber_; }
   bool has_phonenumber() const { return has_phonenumber_; }
   void set_phonenumber(const std::string& value) {
     phonenumber_ = value;
@@ -110,7 +110,7 @@ class Feature : public Object {
   }
 
   // <Snippet>
-  const SnippetPtr snippet() const { return snippet_; }
+  const SnippetPtr get_snippet() const { return snippet_; }
   bool has_snippet() const { return snippet_ != NULL; }
   void set_snippet(const SnippetPtr& snippet) {
     SetComplexChild(snippet, &snippet_);
@@ -120,7 +120,7 @@ class Feature : public Object {
   }
 
   // <description>
-  const std::string& description() const { return description_; }
+  const std::string& get_description() const { return description_; }
   bool has_description() const { return has_description_; }
   void set_description(const std::string& value) {
     description_ = value;
@@ -132,7 +132,7 @@ class Feature : public Object {
   }
 
   // AbstractView
-  const AbstractViewPtr abstractview() const { return abstractview_; }
+  const AbstractViewPtr get_abstractview() const { return abstractview_; }
   bool has_abstractview() const { return abstractview_ != NULL; }
   void set_abstractview(const AbstractViewPtr& abstractview) {
     SetComplexChild(abstractview, &abstractview_);
@@ -142,7 +142,7 @@ class Feature : public Object {
   }
 
   // TimePrimitive
-  const TimePrimitivePtr timeprimitive() const { return timeprimitive_; }
+  const TimePrimitivePtr get_timeprimitive() const { return timeprimitive_; }
   bool has_timeprimitive() const { return timeprimitive_ != NULL; }
   void set_timeprimitive(const TimePrimitivePtr& timeprimitive) {
     SetComplexChild(timeprimitive, &timeprimitive_);
@@ -152,7 +152,7 @@ class Feature : public Object {
   }
 
   // <styleUrl>
-  const std::string& styleurl() const { return styleurl_; }
+  const std::string& get_styleurl() const { return styleurl_; }
   std::string& styleurl() { return styleurl_; }
   bool has_styleurl() const { return has_styleurl_; }
   void set_styleurl(const std::string& value) {
@@ -165,7 +165,7 @@ class Feature : public Object {
   }
 
   // StyleSelector
-  const StyleSelectorPtr styleselector() const { return styleselector_; }
+  const StyleSelectorPtr get_styleselector() const { return styleselector_; }
   bool has_styleselector() const { return styleselector_ != NULL; }
   void set_styleselector(const StyleSelectorPtr& styleselector) {
     SetComplexChild(styleselector, &styleselector_);
@@ -175,7 +175,7 @@ class Feature : public Object {
   }
 
   // <Region>
-  const RegionPtr region() const { return region_; }
+  const RegionPtr get_region() const { return region_; }
   bool has_region() const { return region_ != NULL; }
   void set_region(const RegionPtr& region) {
     SetComplexChild(region, &region_);
@@ -185,7 +185,7 @@ class Feature : public Object {
   }
 
   // <ExtendedData>
-  const ExtendedDataPtr extendeddata() const { return extendeddata_; }
+  const ExtendedDataPtr get_extendeddata() const { return extendeddata_; }
   bool has_extendeddata() const { return extendeddata_ != NULL; }
   void set_extendeddata(const ExtendedDataPtr& extendeddata) {
     SetComplexChild(extendeddata, &extendeddata_);

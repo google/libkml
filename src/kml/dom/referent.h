@@ -55,7 +55,7 @@ class Referent {
   }
 
   // This is for debugging purposes only.
-  int ref_count() const {
+  int get_ref_count() const {
     return ref_count_;
   }
 

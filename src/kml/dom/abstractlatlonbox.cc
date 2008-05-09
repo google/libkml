@@ -58,16 +58,16 @@ void AbstractLatLonBox::AddElement(const ElementPtr& element) {
 void AbstractLatLonBox::Serialize(Serializer& serializer) const {
   Object::Serialize(serializer);
   if (has_north()) {
-    serializer.SaveFieldById(Type_north, north());
+    serializer.SaveFieldById(Type_north, get_north());
   }
   if (has_south()) {
-    serializer.SaveFieldById(Type_south, south());
+    serializer.SaveFieldById(Type_south, get_south());
   }
   if (has_east()) {
-    serializer.SaveFieldById(Type_east, east());
+    serializer.SaveFieldById(Type_east, get_east());
   }
   if (has_west()) {
-    serializer.SaveFieldById(Type_west, west());
+    serializer.SaveFieldById(Type_west, get_west());
   }
 }
 

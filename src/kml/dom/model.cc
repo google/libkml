@@ -70,13 +70,13 @@ void Location::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_longitude()) {
-    serializer.SaveFieldById(Type_longitude, longitude());
+    serializer.SaveFieldById(Type_longitude, get_longitude());
   }
   if (has_latitude()) {
-    serializer.SaveFieldById(Type_latitude, latitude());
+    serializer.SaveFieldById(Type_latitude, get_latitude());
   }
   if (has_altitude()) {
-    serializer.SaveFieldById(Type_altitude, altitude());
+    serializer.SaveFieldById(Type_altitude, get_altitude());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -116,13 +116,13 @@ void Orientation::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, heading());
+    serializer.SaveFieldById(Type_heading, get_heading());
   }
   if (has_tilt()) {
-    serializer.SaveFieldById(Type_tilt, tilt());
+    serializer.SaveFieldById(Type_tilt, get_tilt());
   }
   if (has_roll()) {
-    serializer.SaveFieldById(Type_roll, roll());
+    serializer.SaveFieldById(Type_roll, get_roll());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -163,13 +163,13 @@ void Scale::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_x()) {
-    serializer.SaveFieldById(Type_x, x());
+    serializer.SaveFieldById(Type_x, get_x());
   }
   if (has_y()) {
-    serializer.SaveFieldById(Type_y, y());
+    serializer.SaveFieldById(Type_y, get_y());
   }
   if (has_z()) {
-    serializer.SaveFieldById(Type_z, z());
+    serializer.SaveFieldById(Type_z, get_z());
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
@@ -203,10 +203,10 @@ void Alias::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_targethref()) {
-    serializer.SaveFieldById(Type_targetHref, targethref());
+    serializer.SaveFieldById(Type_targetHref, get_targethref());
   }
   if (has_sourcehref()) {
-    serializer.SaveFieldById(Type_sourceHref, sourcehref());
+    serializer.SaveFieldById(Type_sourceHref, get_sourcehref());
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
@@ -237,7 +237,7 @@ void ResourceMap::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   for (size_t i = 0; i < alias_array_.size(); ++i) {
-    serializer.SaveElement(*alias_array_at(i));
+    serializer.SaveElement(*get_alias_array_at(i));
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
@@ -278,22 +278,22 @@ void Model::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_location()) {
-    serializer.SaveElement(*location());
+    serializer.SaveElement(*get_location());
   }
   if (has_orientation()) {
-    serializer.SaveElement(*orientation());
+    serializer.SaveElement(*get_orientation());
   }
   if (has_scale()) {
-    serializer.SaveElement(*scale());
+    serializer.SaveElement(*get_scale());
   }
   if (has_link()) {
-    serializer.SaveElement(*link());
+    serializer.SaveElement(*get_link());
   }
   if (has_resourcemap()) {
-    serializer.SaveElement(*resourcemap());
+    serializer.SaveElement(*get_resourcemap());
   }
   SerializeUnknown(serializer);
   serializer.End();

@@ -89,7 +89,7 @@ class Vec3 {
   Vec3() {
     vec_[0] = vec_[1] = vec_[2] = 0.0;
   }
-  Vec3(double longitude, double latitude, double altitude) {
+  Vec3(double latitude, double longitude, double altitude) {
     vec_[0] = longitude;
     vec_[1] = latitude;
     vec_[2] = altitude;
@@ -97,13 +97,13 @@ class Vec3 {
   void set(int i, double val) {
     vec_[i] = val;
   }
-  double longitude() const {
+  double get_longitude() const {
     return vec_[0];
   }
-  double latitude() const {
+  double get_latitude() const {
     return vec_[1];
   }
-  double altitude() const {
+  double get_altitude() const {
     return vec_[2];
   }
 
@@ -123,19 +123,19 @@ class Coordinates : public Element {
   }
 
   // The main KML-specific API
-  void add_point3(double longitude, double latitude, double altitude) {
-    coordinates_array_.push_back(Vec3(longitude, latitude, altitude));
+  void add_latlngalt(double latitude, double longitude, double altitude) {
+    coordinates_array_.push_back(Vec3(latitude, longitude, altitude));
   }
 
-  void add_point2(double longitude, double latitude) {
-    coordinates_array_.push_back(Vec3(longitude, latitude, 0.0));
+  void add_latlng(double latitude, double longitude) {
+    coordinates_array_.push_back(Vec3(latitude, longitude, 0.0));
   }
 
-  const size_t coordinates_array_size() const {
+  const size_t get_coordinates_array_size() const {
     return coordinates_array_.size();
   }
 
-  const Vec3 coordinates_array_at(unsigned int index) const {
+  const Vec3 get_coordinates_array_at(unsigned int index) const {
     return coordinates_array_[index];
   }
 
@@ -184,7 +184,7 @@ class AltitudeGeometryCommon : public Geometry {
 
  public:
   // <altitudeMode>
-  int altitudemode() const { return altitudemode_; }
+  int get_altitudemode() const { return altitudemode_; }
   bool has_altitudemode() const { return has_altitudemode_; }
   void set_altitudemode(int value) {
     altitudemode_ = value;
@@ -210,7 +210,7 @@ class ExtrudeGeometryCommon : public AltitudeGeometryCommon {
   virtual ~ExtrudeGeometryCommon();
 
   // <extrude>
-  bool extrude() const { return extrude_; }
+  bool get_extrude() const { return extrude_; }
   bool has_extrude() const { return has_extrude_; }
   void set_extrude(bool value) {
     extrude_ = value;
@@ -240,7 +240,7 @@ class CoordinatesGeometryCommon : public ExtrudeGeometryCommon {
 
  public:
   // <coordinates>
-  const CoordinatesPtr coordinates() const { return coordinates_; }
+  const CoordinatesPtr get_coordinates() const { return coordinates_; }
   bool has_coordinates() const { return coordinates_ != NULL; }
   void set_coordinates(const CoordinatesPtr& coordinates) {
     SetComplexChild(coordinates, &coordinates_);
@@ -284,7 +284,7 @@ class LineCommon : public CoordinatesGeometryCommon {
 
  public:
   // <tessellate>
-  bool tessellate() const { return tessellate_; }
+  bool get_tessellate() const { return tessellate_; }
   bool has_tessellate() const { return has_tessellate_; }
   void set_tessellate(bool value) {
     tessellate_ = value;
@@ -345,7 +345,7 @@ class BoundaryCommon : public Element {
   virtual ~BoundaryCommon();
 
  public:
-  const LinearRingPtr linearring() const { return linearring_; }
+  const LinearRingPtr get_linearring() const { return linearring_; }
   bool has_linearring() const { return linearring_ != NULL; }
   void set_linearring(const LinearRingPtr& linearring) {
     SetComplexChild(linearring, &linearring_);
@@ -406,7 +406,7 @@ class Polygon : public ExtrudeGeometryCommon {
   }
 
   // <tessellate>
-  bool tessellate() const { return tessellate_; }
+  bool get_tessellate() const { return tessellate_; }
   bool has_tessellate() const { return has_tessellate_; }
   void set_tessellate(bool value) {
     tessellate_ = value;
@@ -418,7 +418,9 @@ class Polygon : public ExtrudeGeometryCommon {
   }
 
   // <outerBoundaryIs>
-  const OuterBoundaryIsPtr outerboundaryis() const { return outerboundaryis_; }
+  const OuterBoundaryIsPtr get_outerboundaryis() const {
+    return outerboundaryis_;
+  }
   bool has_outerboundaryis() const { return outerboundaryis_ != NULL; }
   void set_outerboundaryis(const OuterBoundaryIsPtr& outerboundaryis) {
     SetComplexChild(outerboundaryis, &outerboundaryis_);
@@ -432,11 +434,11 @@ class Polygon : public ExtrudeGeometryCommon {
     AddComplexChild(innerboundaryis, &innerboundaryis_array_);
   }
 
-  const size_t innerboundaryis_array_size() const {
+  const size_t get_innerboundaryis_array_size() const {
     return innerboundaryis_array_.size();
   }
 
-  const InnerBoundaryIsPtr& innerboundaryis_array_at(unsigned int index) {
+  const InnerBoundaryIsPtr& get_innerboundaryis_array_at(unsigned int index) {
     return innerboundaryis_array_[index];
   }
 
@@ -469,11 +471,11 @@ class MultiGeometry : public Geometry {
   // The main KML-specific API
   void add_geometry(const GeometryPtr& geometry);
 
-  const size_t geometry_array_size() const {
+  const size_t get_geometry_array_size() const {
     return geometry_array_.size();
   }
 
-  const GeometryPtr& geometry_array_at(unsigned int index) const {
+  const GeometryPtr& get_geometry_array_at(unsigned int index) const {
     return geometry_array_[index];
   }
 

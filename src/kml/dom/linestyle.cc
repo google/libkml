@@ -53,7 +53,7 @@ void LineStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_width()) {
-    serializer.SaveFieldById(Type_width, width());
+    serializer.SaveFieldById(Type_width, get_width());
   }
   SerializeUnknown(serializer);
   serializer.End();

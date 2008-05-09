@@ -68,22 +68,22 @@ void Vec2Test::TestType() {
 
 // Verify proper defaults:
 void Vec2Test::TestDefaults() {
-  CPPUNIT_ASSERT(1.0 == vec2_->x());
-  CPPUNIT_ASSERT(1.0 == vec2_->y());
-  CPPUNIT_ASSERT(UNITS_FRACTION == vec2_->xunits());
-  CPPUNIT_ASSERT(UNITS_FRACTION == vec2_->yunits());
+  CPPUNIT_ASSERT(1.0 == vec2_->get_x());
+  CPPUNIT_ASSERT(1.0 == vec2_->get_y());
+  CPPUNIT_ASSERT(UNITS_FRACTION == vec2_->get_xunits());
+  CPPUNIT_ASSERT(UNITS_FRACTION == vec2_->get_yunits());
 }
 
 // Verify setting default makes has_xxx() true:
 void Vec2Test::TestSetToDefaultValues() {
   TestDefaults();
-  vec2_->set_x(vec2_->x());
+  vec2_->set_x(vec2_->get_x());
   CPPUNIT_ASSERT(true == vec2_->has_x());
-  vec2_->set_y(vec2_->y());
+  vec2_->set_y(vec2_->get_y());
   CPPUNIT_ASSERT(true == vec2_->has_y());
-  vec2_->set_xunits(vec2_->xunits());
+  vec2_->set_xunits(vec2_->get_xunits());
   CPPUNIT_ASSERT(true == vec2_->has_xunits());
-  vec2_->set_yunits(vec2_->yunits());
+  vec2_->set_yunits(vec2_->get_yunits());
   CPPUNIT_ASSERT(true == vec2_->has_yunits());
 }
 
@@ -103,13 +103,13 @@ void Vec2Test::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == vec2_->has_x());
-  CPPUNIT_ASSERT(x = vec2_->x());
+  CPPUNIT_ASSERT(x = vec2_->get_x());
   CPPUNIT_ASSERT(true == vec2_->has_y());
-  CPPUNIT_ASSERT(y = vec2_->y());
+  CPPUNIT_ASSERT(y = vec2_->get_y());
   CPPUNIT_ASSERT(true == vec2_->has_xunits());
-  CPPUNIT_ASSERT(xunits == vec2_->xunits());
+  CPPUNIT_ASSERT(xunits == vec2_->get_xunits());
   CPPUNIT_ASSERT(true == vec2_->has_yunits());
-  CPPUNIT_ASSERT(yunits == vec2_->yunits());
+  CPPUNIT_ASSERT(yunits == vec2_->get_yunits());
 
   // Clear all fields:
   vec2_->clear_x();

@@ -45,7 +45,7 @@ class Kml : public Element {
     return type == Type_kml;
   }
 
-  const std::string& hint() { return hint_; }
+  const std::string& get_hint() { return hint_; }
   bool has_hint() const { return has_hint_; }
   void set_hint(const std::string& hint) {
     hint_ = hint;
@@ -56,7 +56,7 @@ class Kml : public Element {
     has_hint_ = false;
   }
 
-  const NetworkLinkControlPtr& networklinkcontrol() const {
+  const NetworkLinkControlPtr& get_networklinkcontrol() const {
     return networklinkcontrol_;
   }
   bool has_networklinkcontrol() const { return networklinkcontrol_ != NULL; }
@@ -67,7 +67,7 @@ class Kml : public Element {
     set_networklinkcontrol(NULL);
   }
 
-  const FeaturePtr& feature() const { return feature_; }
+  const FeaturePtr& get_feature() const { return feature_; }
   bool has_feature() const { return feature_ != NULL; }
   void set_feature(const FeaturePtr& feature) {
     SetComplexChild(feature, &feature_);

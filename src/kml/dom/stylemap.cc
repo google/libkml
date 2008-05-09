@@ -65,13 +65,13 @@ void Pair::Serialize(Serializer& serializer) const {
   Object::Serialize(serializer);
   serializer.BeginById(Type(), attributes);
   if (has_key()) {
-    serializer.SaveEnum(Type_key, key());
+    serializer.SaveEnum(Type_key, get_key());
   }
   if (has_styleurl()) {
-    serializer.SaveFieldById(Type_styleUrl, styleurl());
+    serializer.SaveFieldById(Type_styleUrl, get_styleurl());
   }
   if (has_styleselector()) {
-    serializer.SaveElement(*styleselector());
+    serializer.SaveElement(*get_styleselector());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -98,8 +98,8 @@ void StyleMap::Serialize(Serializer& serializer) const {
   StyleSelector::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   StyleSelector::Serialize(serializer);
-  for (size_t i = 0; i < pair_array_size(); ++i) {
-    serializer.SaveElement(*pair_array_at(i));
+  for (size_t i = 0; i < get_pair_array_size(); ++i) {
+    serializer.SaveElement(*get_pair_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

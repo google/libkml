@@ -88,7 +88,7 @@ class ElementTest : public CPPUNIT_NS::TestFixture {
     }
     // This method exemplifies how a complex child is accessed.
     // Note the use of const reference.
-    const ComplexChildPtr& child() {
+    const ComplexChildPtr& get_child() {
       return child_;
     }
     // This method exemplifies how a complex array child is added.
@@ -97,7 +97,7 @@ class ElementTest : public CPPUNIT_NS::TestFixture {
       AddComplexChild(child, &child_array_);
     }
     // This method exemplifies how a complex array child is accessed.
-    const ComplexChildPtr& child_array_at(int i) const {
+    const ComplexChildPtr& get_child_array_at(int i) const {
       return child_array_[i];
     }
    private:
@@ -124,7 +124,7 @@ void ElementTest::TestUnknowns() {
   element_->AddUnknownElement(unknown1);
   element_->AddUnknownElement(unknown2);
   const std::vector<std::string>& unknown_elements_array =
-      element_->unknown_elements_array();
+      element_->get_unknown_elements_array();
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), unknown_elements_array.size());
   CPPUNIT_ASSERT_EQUAL(unknown1, unknown_elements_array[0]);
   CPPUNIT_ASSERT_EQUAL(unknown2, unknown_elements_array[1]);
@@ -135,7 +135,7 @@ void ElementTest::TestUnknowns() {
   element_->AddElement(legal_name);
   element_->AddElement(legal_open);
   const std::vector<ElementPtr>& unknown_legal_elements_array =
-      element_->unknown_legal_elements_array();
+      element_->get_unknown_legal_elements_array();
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2),
                        unknown_legal_elements_array.size());
   CPPUNIT_ASSERT_EQUAL(Type_name, unknown_legal_elements_array[0]->Type());
@@ -147,19 +147,19 @@ void ElementTest::TestSetComplexChild() {
   // set_child() calls SetComplexChild.
   element_->set_child(child1_);
   // Verify the child is child 1.
-  CPPUNIT_ASSERT_EQUAL(1, element_->child()->id());
-  CPPUNIT_ASSERT_EQUAL(2, child1_->ref_count());
+  CPPUNIT_ASSERT_EQUAL(1, element_->get_child()->id());
+  CPPUNIT_ASSERT_EQUAL(2, child1_->get_ref_count());
 
   // Set again releases reference of previous.
   element_->set_child(child2_);
-  CPPUNIT_ASSERT_EQUAL(2, element_->child()->id());
-  CPPUNIT_ASSERT_EQUAL(1, child1_->ref_count());
-  CPPUNIT_ASSERT_EQUAL(2, child2_->ref_count());
+  CPPUNIT_ASSERT_EQUAL(2, element_->get_child()->id());
+  CPPUNIT_ASSERT_EQUAL(1, child1_->get_ref_count());
+  CPPUNIT_ASSERT_EQUAL(2, child2_->get_ref_count());
 
   // Set to NULL also release reference of previously set child.
   element_->clear_child();
-  CPPUNIT_ASSERT_EQUAL(ComplexChildPtr(NULL), element_->child());
-  CPPUNIT_ASSERT_EQUAL(1, child2_->ref_count());
+  CPPUNIT_ASSERT_EQUAL(ComplexChildPtr(NULL), element_->get_child());
+  CPPUNIT_ASSERT_EQUAL(1, child2_->get_ref_count());
 }
 
 // This tests the AddComplexChild() method.
@@ -168,12 +168,12 @@ void ElementTest::TestAddComplexChild() {
   element_->add_child(child2_);
   element_->add_child(child3_);
   element_->add_child(NULL);  // NOP, but should not crash.
-  CPPUNIT_ASSERT_EQUAL(1, element_->child_array_at(0)->id());
-  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(0)->ref_count());
-  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(1)->id());
-  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(1)->ref_count());
-  CPPUNIT_ASSERT_EQUAL(3, element_->child_array_at(2)->id());
-  CPPUNIT_ASSERT_EQUAL(2, element_->child_array_at(2)->ref_count());
+  CPPUNIT_ASSERT_EQUAL(1, element_->get_child_array_at(0)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->get_child_array_at(0)->get_ref_count());
+  CPPUNIT_ASSERT_EQUAL(2, element_->get_child_array_at(1)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->get_child_array_at(1)->get_ref_count());
+  CPPUNIT_ASSERT_EQUAL(3, element_->get_child_array_at(2)->id());
+  CPPUNIT_ASSERT_EQUAL(2, element_->get_child_array_at(2)->get_ref_count());
 }
 
 

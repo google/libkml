@@ -49,7 +49,7 @@ class Pair : public Object {
   }
 
   // <key>
-  int key() const {
+  int get_key() const {
     return key_;
   }
   bool has_key() const {
@@ -65,7 +65,7 @@ class Pair : public Object {
   }
 
   // <styleUrl>
-  std::string styleurl() const {
+  std::string get_styleurl() const {
     return styleurl_;
   }
   bool has_styleurl() const {
@@ -81,7 +81,7 @@ class Pair : public Object {
   }
 
   // StyleSelector
-  const StyleSelectorPtr& styleselector() const { return styleselector_; }
+  const StyleSelectorPtr& get_styleselector() const { return styleselector_; }
   bool has_styleselector() const { return styleselector_ != NULL; }
   void set_styleselector(const StyleSelectorPtr& styleselector) {
     SetComplexChild(styleselector, &styleselector_);
@@ -118,11 +118,11 @@ class StyleMap : public StyleSelector {
     AddComplexChild(pair, &pair_array_);
   }
 
-  const size_t pair_array_size() const {
+  const size_t get_pair_array_size() const {
     return pair_array_.size();
   }
 
-  const PairPtr& pair_array_at(unsigned int index) const {
+  const PairPtr& get_pair_array_at(unsigned int index) const {
     return pair_array_[index];
   }
 

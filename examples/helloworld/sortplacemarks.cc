@@ -60,8 +60,8 @@ static void SavePlacemarks(const FeaturePtr& feature,
   if (PlacemarkPtr placemark = kmldom::AsPlacemark(feature)) {
     placemarks->push_back(placemark);
   } else if (const ContainerPtr container = kmldom::AsContainer(feature)) {
-    for (size_t i = 0; i < container->feature_array_size(); ++i) {
-      SavePlacemarks(container->feature_array_at(i), placemarks);
+    for (size_t i = 0; i < container->get_feature_array_size(); ++i) {
+      SavePlacemarks(container->get_feature_array_at(i), placemarks);
     }
   }
 }
@@ -72,7 +72,7 @@ static void SavePlacemarks(const FeaturePtr& feature,
 static const FeaturePtr GetRootFeature(const ElementPtr& root) {
   const KmlPtr kml = kmldom::AsKml(root);
   if (kml && kml->has_feature()) {
-    return kml->feature();
+    return kml->get_feature();
   }
   return kmldom::AsFeature(root);
 }
@@ -116,7 +116,7 @@ struct ComparePlacemarks
   : public
       std::binary_function<const PlacemarkPtr&, const PlacemarkPtr&, bool> {
   bool operator()(const PlacemarkPtr& a, const PlacemarkPtr& b) {
-    return a->name() < b->name();
+    return a->get_name() < b->get_name();
   }
 };
 
@@ -137,8 +137,8 @@ int main(int argc, char** argv) {
   SavePlacemarks(GetKmlFileRootFeature(argv[1]), &placemark_vector);
   sort(placemark_vector.begin(), placemark_vector.end(), ComparePlacemarks());
   for (size_t i = 0; i < placemark_vector.size(); ++i) {
-    cout << i << " " << placemark_vector[i]->id() << " " <<
-      placemark_vector[i]->name() << endl;
+    cout << i << " " << placemark_vector[i]->get_id() << " " <<
+      placemark_vector[i]->get_name() << endl;
   }
   cout << argv[1] << " has " << placemark_vector.size() << " Placemarks." <<
     endl;
@@ -148,4 +148,6 @@ int main(int argc, char** argv) {
   // of each PlacemarkPtr.  This in turn releases the final reference to
   // each Placemark.  Thus, the last reference to any KML DOM element is
   // released as main goes out of scope.
+
+  return 0;
 }

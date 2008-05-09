@@ -2,10 +2,10 @@
 
 # Copyright 2008, Google Inc. All rights reserved.
 #
-# Redistribution and use in source and binary forms, with or without 
+# Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
 #
-#  1. Redistributions of source code must retain the above copyright notice, 
+#  1. Redistributions of source code must retain the above copyright notice,
 #     this list of conditions and the following disclaimer.
 #  2. Redistributions in binary form must reproduce the above copyright notice,
 #     this list of conditions and the following disclaimer in the documentation
@@ -15,40 +15,40 @@
 #     specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+# EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 # SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 # PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 # OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# This program demonstrates use of the KML DOM Python SWIG bindings 
-# for generating 
+# This program demonstrates use of the KML DOM Python SWIG bindings for
+# generating geometry.
 
 import sys
 import kmldom
 
-def CreatePointPlacemark(name, lon, lat):
+def CreatePointPlacemark(name, lat, lng):
   factory = kmldom.KmlFactory_GetFactory()
   placemark = factory.CreatePlacemark()
   placemark.set_name(name)
   coordinates = factory.CreateCoordinates()
-  coordinates.add_point2(lon, lat)
+  coordinates.add_latlng(lat, lng)
   point = factory.CreatePoint()
   point.set_coordinates(coordinates)
   placemark.set_geometry(point)
   return placemark
 
-def CreateSimple2dLineStringPlacemark(name, lonlat):
+def CreateSimple2dLineStringPlacemark(name, latlng):
   factory = kmldom.KmlFactory_GetFactory()
   placemark = factory.CreatePlacemark()
   placemark.set_name(name)
   coordinates = factory.CreateCoordinates()
-  for (lon, lat) in lonlat:
-    coordinates.add_point2(lon, lat)
+  for (lat, lng) in latlng:
+    coordinates.add_latlng(lat, lng)
   linestring = factory.CreateLineString()
   linestring.set_tessellate(True)
   linestring.set_coordinates(coordinates)
@@ -85,7 +85,11 @@ def Create2HolePolygonPlacemark(name):
   outerboundaryis = factory.CreateOuterBoundaryIs()
   linearring = factory.CreateLinearRing()
   coordinates = factory.CreateCoordinates()
-  coordinates.add_point3(1,2,3)  # XXX
+  coordinates.add_latlngalt(37.823360,-122.374208,0)
+  coordinates.add_latlngalt(37.823360,-122.369120,0)
+  coordinates.add_latlngalt(37.827271,-122.369073,0)
+  coordinates.add_latlngalt(37.827259,-122.374655,0)
+  coordinates.add_latlngalt(37.823360,-122.374208,0)
   linearring.set_coordinates(coordinates)
   outerboundaryis.set_linearring(linearring)
   polygon.set_outerboundaryis(outerboundaryis)
@@ -94,7 +98,10 @@ def Create2HolePolygonPlacemark(name):
   innerboundaryis = factory.CreateInnerBoundaryIs()
   linearring = factory.CreateLinearRing()
   coordinates = factory.CreateCoordinates()
-  coordinates.add_point3(4,5,6)  # XXX
+  coordinates.add_latlngalt(37.825728,-122.373670,0)
+  coordinates.add_latlngalt(37.825715,-122.372255,0)
+  coordinates.add_latlngalt(37.826578,-122.372886,0)
+  coordinates.add_latlngalt(37.825728,-122.373670,0)
   linearring.set_coordinates(coordinates)
   innerboundaryis.set_linearring(linearring)
   polygon.add_innerboundaryis(innerboundaryis)
@@ -103,7 +110,10 @@ def Create2HolePolygonPlacemark(name):
   innerboundaryis = factory.CreateInnerBoundaryIs()
   linearring = factory.CreateLinearRing()
   coordinates = factory.CreateCoordinates()
-  coordinates.add_point3(7,8,9)  # XXX
+  coordinates.add_latlngalt(37.824914,-122.371487,0)
+  coordinates.add_latlngalt(37.824089,-122.372024,0)
+  coordinates.add_latlngalt(37.824065,-122.370626,0)
+  coordinates.add_latlngalt(37.824914,-122.371487,0)
   linearring.set_coordinates(coordinates)
   innerboundaryis.set_linearring(linearring)
   polygon.add_innerboundaryis(innerboundaryis)
@@ -126,8 +136,8 @@ def main():
   # Each Create*Placemark() creates and returns a Placemark.
   document.add_feature(CreatePointPlacemark('pt0',1,2))
   document.add_feature(CreatePointPlacemark('pt1',3,4))
-  lonlat = [(1,2),(3,4),(5,6),(7,8)]
-  document.add_feature(CreateSimple2dLineStringPlacemark('line',lonlat))
+  lnglat = [(1,2),(3,4),(5,6),(7,8)]
+  document.add_feature(CreateSimple2dLineStringPlacemark('line',lnglat))
   document.add_feature(CreateSimple2dPolygonPlacemark('box'))
   document.add_feature(Create2HolePolygonPlacemark('2 holes'))
 

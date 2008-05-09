@@ -42,7 +42,7 @@ class BalloonStyle : public SubStyle {
   }
 
   // <bgColor>
-  std::string bgcolor() const {
+  std::string get_bgcolor() const {
     return bgcolor_;
   }
   bool has_bgcolor() const {
@@ -58,7 +58,7 @@ class BalloonStyle : public SubStyle {
   }
 
   // <textColor>
-  std::string textcolor() const {
+  std::string get_textcolor() const {
     return textcolor_;
   }
   bool has_textcolor() const {
@@ -74,7 +74,7 @@ class BalloonStyle : public SubStyle {
   }
 
   // <text>
-  std::string text() const {
+  std::string get_text() const {
     return text_;
   }
   bool has_text() const {
@@ -90,7 +90,7 @@ class BalloonStyle : public SubStyle {
   }
 
   // <displayMode>
-  int displaymode() const {
+  int get_displaymode() const {
     return displaymode_;
   }
   bool has_displaymode() const {

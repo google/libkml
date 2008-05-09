@@ -70,17 +70,17 @@ void PolyStyleTest::TestType() {
 // Verify proper defaults:
 void PolyStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == polystyle_->has_fill());
-  CPPUNIT_ASSERT(true == polystyle_->fill());
+  CPPUNIT_ASSERT(true == polystyle_->get_fill());
   CPPUNIT_ASSERT(false == polystyle_->has_outline());
-  CPPUNIT_ASSERT(true == polystyle_->outline());
+  CPPUNIT_ASSERT(true == polystyle_->get_outline());
 }
 
 // Verify setting default makes has_xxx() true:
 void PolyStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  polystyle_->set_fill(polystyle_->fill());
+  polystyle_->set_fill(polystyle_->get_fill());
   CPPUNIT_ASSERT(true == polystyle_->has_fill());
-  polystyle_->set_outline(polystyle_->outline());
+  polystyle_->set_outline(polystyle_->get_outline());
   CPPUNIT_ASSERT(true == polystyle_->has_outline());
 }
 
@@ -96,9 +96,9 @@ void PolyStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == polystyle_->has_fill());
-  CPPUNIT_ASSERT(fill == polystyle_->fill());
+  CPPUNIT_ASSERT(fill == polystyle_->get_fill());
   CPPUNIT_ASSERT(true == polystyle_->has_outline());
-  CPPUNIT_ASSERT(outline == polystyle_->outline());
+  CPPUNIT_ASSERT(outline == polystyle_->get_outline());
 
   // Clear all fields:
   polystyle_->clear_fill();

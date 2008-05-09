@@ -71,7 +71,7 @@ void PrintFeature(const FeaturePtr& feature, int depth) {
   }
 
   if (feature->has_name()) {
-    cout << " " << feature->name();
+    cout << " " << feature->get_name();
   }
   cout << endl;
 
@@ -81,7 +81,7 @@ void PrintFeature(const FeaturePtr& feature, int depth) {
 }
 
 void PrintContainer(const ContainerPtr& container, int depth) {
-  for (int i = 0; i < container->feature_array_size(); ++i) {
-    PrintFeature(container->feature_array_at(i), depth);
+  for (int i = 0; i < container->get_feature_array_size(); ++i) {
+    PrintFeature(container->get_feature_array_at(i), depth);
   }
 }

@@ -70,13 +70,13 @@ void LineStyleTest::TestType() {
 // Verify proper defaults:
 void LineStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == linestyle_->has_width());
-  CPPUNIT_ASSERT(1.0 == linestyle_->width());
+  CPPUNIT_ASSERT(1.0 == linestyle_->get_width());
 }
 
 // Verify setting default makes has_xxx() true:
 void LineStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  linestyle_->set_width(linestyle_->width());
+  linestyle_->set_width(linestyle_->get_width());
   CPPUNIT_ASSERT(true == linestyle_->has_width());
 }
 
@@ -90,7 +90,7 @@ void LineStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == linestyle_->has_width());
-  CPPUNIT_ASSERT(width == linestyle_->width());
+  CPPUNIT_ASSERT(width == linestyle_->get_width());
 
   // Clear all fields:
   linestyle_->clear_width();

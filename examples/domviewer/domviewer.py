@@ -48,7 +48,7 @@ class DomTreeItem(TreeItem):
   def __init__(self, element):
     self.__element = element
     if element.has_name():
-      self.__name = element.name()
+      self.__name = element.get_name()
     elif element.IsA(kmldom.Type_Document):
       self.__name = 'Unnamed Document'
     elif element.IsA(kmldom.Type_Folder):
@@ -72,18 +72,18 @@ class DomTreeItem(TreeItem):
   def GetSubList(self):
     container = kmldom.AsContainer(self.__element)
     if container:
-      size = container.feature_array_size()
+      size = container.get_feature_array_size()
       if size == 0: return
       child_list = []
-      for i in range(container.feature_array_size()):
-        child_list.append(container.feature_array_at(i))
+      for i in range(container.get_feature_array_size()):
+        child_list.append(container.get_feature_array_at(i))
       children = [DomTreeItem(child) for child in child_list]
       return children
 
   def IsExpandable(self):
     container = kmldom.AsContainer(self.__element)
     if container:
-      return container.feature_array_size() > 0
+      return container.get_feature_array_size() > 0
     return False
 
 
@@ -117,7 +117,7 @@ class DomViewer:
     kml = kmldom.AsKml(element)
     if kml:
       if kml.has_feature():
-        return kml.feature()
+        return kml.get_feature()
       else:
         return None
     feature = kmldom.AsFeature(element)

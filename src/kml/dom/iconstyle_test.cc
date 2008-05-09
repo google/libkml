@@ -77,24 +77,24 @@ void IconStyleTest::TestType() {
 // Verify proper defaults:
 void IconStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == iconstyle_->has_scale());
-  CPPUNIT_ASSERT(1.0 == iconstyle_->scale());
+  CPPUNIT_ASSERT(1.0 == iconstyle_->get_scale());
   CPPUNIT_ASSERT(false == iconstyle_->has_heading());
-  CPPUNIT_ASSERT(0.0 == iconstyle_->heading());
+  CPPUNIT_ASSERT(0.0 == iconstyle_->get_heading());
   CPPUNIT_ASSERT(false == iconstyle_->has_icon());
-  CPPUNIT_ASSERT(NULL == iconstyle_->icon());
+  CPPUNIT_ASSERT(NULL == iconstyle_->get_icon());
   CPPUNIT_ASSERT(false == iconstyle_->has_hotspot());
-  CPPUNIT_ASSERT(NULL == iconstyle_->hotspot());
+  CPPUNIT_ASSERT(NULL == iconstyle_->get_hotspot());
 }
 
 // Verify setting default makes has_xxx() true:
 void IconStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  iconstyle_->set_scale(iconstyle_->scale());
+  iconstyle_->set_scale(iconstyle_->get_scale());
   CPPUNIT_ASSERT(true == iconstyle_->has_scale());
-  iconstyle_->set_heading(iconstyle_->heading());
+  iconstyle_->set_heading(iconstyle_->get_heading());
   CPPUNIT_ASSERT(true == iconstyle_->has_heading());
   iconstyle_->set_icon(NULL);
-  CPPUNIT_ASSERT(false == iconstyle_->icon());
+  CPPUNIT_ASSERT(false == iconstyle_->get_icon());
   iconstyle_->set_hotspot(NULL);
   // Note: setting to default sets pointer to NULL, so has_hotspot is false.
   // This is different to field behaviour where has_xxx is to equivalent to
@@ -118,13 +118,13 @@ void IconStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == iconstyle_->has_scale());
-  CPPUNIT_ASSERT(scale == iconstyle_->scale());
+  CPPUNIT_ASSERT(scale == iconstyle_->get_scale());
   CPPUNIT_ASSERT(true == iconstyle_->has_heading());
-  CPPUNIT_ASSERT(heading == iconstyle_->heading());
+  CPPUNIT_ASSERT(heading == iconstyle_->get_heading());
   CPPUNIT_ASSERT(true == iconstyle_->has_icon());
-  CPPUNIT_ASSERT(icon == iconstyle_->icon());
+  CPPUNIT_ASSERT(icon == iconstyle_->get_icon());
   CPPUNIT_ASSERT(true == iconstyle_->has_hotspot());
-  CPPUNIT_ASSERT(hotspot == iconstyle_->hotspot());
+  CPPUNIT_ASSERT(hotspot == iconstyle_->get_hotspot());
 
   // Clear all fields:
   iconstyle_->clear_scale();
@@ -150,8 +150,9 @@ void IconStyleTest::TestParse() {
   const IconStylePtr iconstyle = AsIconStyle(root);
   CPPUNIT_ASSERT(iconstyle->has_icon());
   // Verify that this is IconStyle's brand of Icon (not Type_Icon).
-  CPPUNIT_ASSERT_EQUAL(Type_IconStyleIcon, iconstyle->icon()->Type());
-  CPPUNIT_ASSERT_EQUAL(std::string("image.jpg"), iconstyle->icon()->href());
+  CPPUNIT_ASSERT_EQUAL(Type_IconStyleIcon, iconstyle->get_icon()->Type());
+  CPPUNIT_ASSERT_EQUAL(std::string("image.jpg"),
+                       iconstyle->get_icon()->get_href());
 }
 
 }  // end namespace kmldom

@@ -41,7 +41,7 @@ class LabelStyle : public ColorStyle {
   }
 
   // <scale>
-  double scale() const {
+  double get_scale() const {
     return scale_;
   }
   bool has_scale() const {

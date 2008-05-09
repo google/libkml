@@ -77,17 +77,17 @@ void SnippetTest::TestType() {
 // Verify proper defaults:
 void SnippetTest::TestDefaults() {
   CPPUNIT_ASSERT(false == snippet_->has_text());
-  CPPUNIT_ASSERT(snippet_->text().empty());
+  CPPUNIT_ASSERT(snippet_->get_text().empty());
   CPPUNIT_ASSERT(false == snippet_->has_maxlines());
-  CPPUNIT_ASSERT(2 == snippet_->maxlines());
+  CPPUNIT_ASSERT(2 == snippet_->get_maxlines());
 }
 
 // Verify setting default makes has_xxx() true:
 void SnippetTest::TestSetToDefaultValues() {
   TestDefaults();
-  snippet_->set_text(snippet_->text());
+  snippet_->set_text(snippet_->get_text());
   CPPUNIT_ASSERT(snippet_->has_text());
-  snippet_->set_maxlines(snippet_->maxlines());
+  snippet_->set_maxlines(snippet_->get_maxlines());
   CPPUNIT_ASSERT(snippet_->has_maxlines());
 }
 
@@ -103,9 +103,9 @@ void SnippetTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(snippet_->has_text());
-  CPPUNIT_ASSERT(kText == snippet_->text());
+  CPPUNIT_ASSERT(kText == snippet_->get_text());
   CPPUNIT_ASSERT(snippet_->has_maxlines());
-  CPPUNIT_ASSERT(kMaxlines == snippet_->maxlines());
+  CPPUNIT_ASSERT(kMaxlines == snippet_->get_maxlines());
 
   // Clear all fields:
   snippet_->clear_text();
@@ -126,11 +126,11 @@ void SnippetTest::TestBasicParse() {
   const PlacemarkPtr placemark = AsPlacemark(root);
   CPPUNIT_ASSERT(placemark);
   CPPUNIT_ASSERT(placemark->has_snippet());
-  CPPUNIT_ASSERT(false == placemark->snippet()->has_maxlines());
+  CPPUNIT_ASSERT(false == placemark->get_snippet()->has_maxlines());
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(2),  // The default.
-                       placemark->snippet()->maxlines());
-  CPPUNIT_ASSERT(placemark->snippet()->has_text());
-  CPPUNIT_ASSERT_EQUAL(kText, placemark->snippet()->text());
+                       placemark->get_snippet()->get_maxlines());
+  CPPUNIT_ASSERT(placemark->get_snippet()->has_text());
+  CPPUNIT_ASSERT_EQUAL(kText, placemark->get_snippet()->get_text());
 }
 
 // This tests parsing of Snippet with a maxLines attribute.
@@ -150,10 +150,10 @@ void SnippetTest::TestParseMaxLines() {
   CPPUNIT_ASSERT(errors.empty());
   const FolderPtr folder = AsFolder(root);
   CPPUNIT_ASSERT(folder->has_snippet());
-  const SnippetPtr snippet = folder->snippet();
+  const SnippetPtr snippet = folder->get_snippet();
   CPPUNIT_ASSERT(snippet);
   CPPUNIT_ASSERT(snippet->has_maxlines());
-  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(5), snippet->maxlines());
+  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(5), snippet->get_maxlines());
 }
 
 // This tests <linkSnippet>.
@@ -199,17 +199,17 @@ void LinkSnippetTest::TestType() {
 // Verify proper defaults:
 void LinkSnippetTest::TestDefaults() {
   CPPUNIT_ASSERT(false == linksnippet_->has_text());
-  CPPUNIT_ASSERT(linksnippet_->text().empty());
+  CPPUNIT_ASSERT(linksnippet_->get_text().empty());
   CPPUNIT_ASSERT(false == linksnippet_->has_maxlines());
-  CPPUNIT_ASSERT(2 == linksnippet_->maxlines());
+  CPPUNIT_ASSERT(2 == linksnippet_->get_maxlines());
 }
 
 // Verify setting default makes has_xxx() true:
 void LinkSnippetTest::TestSetToDefaultValues() {
   TestDefaults();
-  linksnippet_->set_text(linksnippet_->text());
+  linksnippet_->set_text(linksnippet_->get_text());
   CPPUNIT_ASSERT(linksnippet_->has_text());
-  linksnippet_->set_maxlines(linksnippet_->maxlines());
+  linksnippet_->set_maxlines(linksnippet_->get_maxlines());
   CPPUNIT_ASSERT(linksnippet_->has_maxlines());
 }
 
@@ -225,9 +225,9 @@ void LinkSnippetTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(linksnippet_->has_text());
-  CPPUNIT_ASSERT(kText == linksnippet_->text());
+  CPPUNIT_ASSERT(kText == linksnippet_->get_text());
   CPPUNIT_ASSERT(linksnippet_->has_maxlines());
-  CPPUNIT_ASSERT(kMaxlines == linksnippet_->maxlines());
+  CPPUNIT_ASSERT(kMaxlines == linksnippet_->get_maxlines());
 
   // Clear all fields:
   linksnippet_->clear_text();
@@ -248,11 +248,12 @@ void LinkSnippetTest::TestBasicParse() {
   CPPUNIT_ASSERT(root);
   const NetworkLinkControlPtr networklinkcontrol = AsNetworkLinkControl(root);
   CPPUNIT_ASSERT(networklinkcontrol->has_linksnippet());
-  const LinkSnippetPtr linksnippet = networklinkcontrol->linksnippet();
+  const LinkSnippetPtr linksnippet = networklinkcontrol->get_linksnippet();
   CPPUNIT_ASSERT(false == linksnippet->has_maxlines());
-  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(2), linksnippet->maxlines());
+  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(2),
+                       linksnippet->get_maxlines());
   CPPUNIT_ASSERT(linksnippet->has_text());
-  CPPUNIT_ASSERT_EQUAL(kText, linksnippet->text());
+  CPPUNIT_ASSERT_EQUAL(kText, linksnippet->get_text());
 }
 
 // This tests parsing of linkSnippet with a maxLines attribute.
@@ -271,10 +272,11 @@ void LinkSnippetTest::TestParseMaxLines() {
   CPPUNIT_ASSERT(errors.empty());
   const NetworkLinkControlPtr networklinkcontrol = AsNetworkLinkControl(root);
   CPPUNIT_ASSERT(networklinkcontrol->has_linksnippet());
-  const LinkSnippetPtr linksnippet = networklinkcontrol->linksnippet();
+  const LinkSnippetPtr linksnippet = networklinkcontrol->get_linksnippet();
   CPPUNIT_ASSERT(linksnippet);
   CPPUNIT_ASSERT(linksnippet->has_maxlines());
-  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(7), linksnippet->maxlines());
+  CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(7),
+                       linksnippet->get_maxlines());
 }
 
 }  // end namespace kmldom

@@ -32,6 +32,7 @@
 namespace kmldom {
 
 // Abstract element groups.
+const AbstractLatLonBoxPtr AsAbstractLatLonBox(const ElementPtr element);
 const AbstractViewPtr AsAbstractView(const ElementPtr element);
 const ColorStylePtr AsColorStyle(const ElementPtr element);
 const ContainerPtr AsContainer(const ElementPtr element);

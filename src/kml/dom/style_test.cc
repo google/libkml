@@ -77,17 +77,17 @@ void StyleTest::TestType() {
 // Verify proper defaults:
 void StyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == style_->has_iconstyle());
-  CPPUNIT_ASSERT(NULL == style_->iconstyle());
+  CPPUNIT_ASSERT(NULL == style_->get_iconstyle());
   CPPUNIT_ASSERT(false == style_->has_labelstyle());
-  CPPUNIT_ASSERT(NULL == style_->labelstyle());
+  CPPUNIT_ASSERT(NULL == style_->get_labelstyle());
   CPPUNIT_ASSERT(false == style_->has_linestyle());
-  CPPUNIT_ASSERT(NULL == style_->linestyle());
+  CPPUNIT_ASSERT(NULL == style_->get_linestyle());
   CPPUNIT_ASSERT(false == style_->has_polystyle());
-  CPPUNIT_ASSERT(NULL == style_->polystyle());
+  CPPUNIT_ASSERT(NULL == style_->get_polystyle());
   CPPUNIT_ASSERT(false == style_->has_balloonstyle());
-  CPPUNIT_ASSERT(NULL == style_->balloonstyle());
+  CPPUNIT_ASSERT(NULL == style_->get_balloonstyle());
   CPPUNIT_ASSERT(false == style_->has_liststyle());
-  CPPUNIT_ASSERT(NULL == style_->liststyle());
+  CPPUNIT_ASSERT(NULL == style_->get_liststyle());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -127,17 +127,17 @@ void StyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == style_->has_iconstyle());
-  CPPUNIT_ASSERT(iconstyle == style_->iconstyle());
+  CPPUNIT_ASSERT(iconstyle == style_->get_iconstyle());
   CPPUNIT_ASSERT(true == style_->has_labelstyle());
-  CPPUNIT_ASSERT(labelstyle == style_->labelstyle());
+  CPPUNIT_ASSERT(labelstyle == style_->get_labelstyle());
   CPPUNIT_ASSERT(true == style_->has_linestyle());
-  CPPUNIT_ASSERT(linestyle == style_->linestyle());
+  CPPUNIT_ASSERT(linestyle == style_->get_linestyle());
   CPPUNIT_ASSERT(true == style_->has_polystyle());
-  CPPUNIT_ASSERT(polystyle == style_->polystyle());
+  CPPUNIT_ASSERT(polystyle == style_->get_polystyle());
   CPPUNIT_ASSERT(true == style_->has_balloonstyle());
-  CPPUNIT_ASSERT(balloonstyle == style_->balloonstyle());
+  CPPUNIT_ASSERT(balloonstyle == style_->get_balloonstyle());
   CPPUNIT_ASSERT(true == style_->has_liststyle());
-  CPPUNIT_ASSERT(liststyle == style_->liststyle());
+  CPPUNIT_ASSERT(liststyle == style_->get_liststyle());
 
   // Clear all fields:
   style_->clear_iconstyle();

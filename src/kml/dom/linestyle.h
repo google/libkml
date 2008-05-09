@@ -42,7 +42,7 @@ class LineStyle : public ColorStyle {
   }
 
   // <width>
-  double width() const {
+  double get_width() const {
     return width_;
   }
   bool has_width() const {

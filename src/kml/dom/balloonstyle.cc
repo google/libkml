@@ -70,16 +70,16 @@ void BalloonStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   SubStyle::Serialize(serializer);
   if (has_bgcolor()) {
-    serializer.SaveFieldById(Type_bgColor, bgcolor());
+    serializer.SaveFieldById(Type_bgColor, get_bgcolor());
   }
   if (has_textcolor()) {
-    serializer.SaveFieldById(Type_textColor, textcolor());
+    serializer.SaveFieldById(Type_textColor, get_textcolor());
   }
   if (has_text()) {
-    serializer.SaveFieldById(Type_text, text());
+    serializer.SaveFieldById(Type_text, get_text());
   }
   if (has_displaymode()) {
-    serializer.SaveEnum(Type_displayMode, displaymode());
+    serializer.SaveEnum(Type_displayMode, get_displaymode());
   }
   SerializeUnknown(serializer);
   serializer.End();

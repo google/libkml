@@ -42,7 +42,7 @@ class SimpleField : public Element {
     return type == Type_SimpleField;
   }
 
-  const std::string& type() const { return type_; }
+  const std::string& get_type() const { return type_; }
   bool has_type() const { return has_type_; }
   void set_type(const std::string& value) {
     type_ = value;
@@ -53,7 +53,7 @@ class SimpleField : public Element {
     has_type_ = false;
   }
 
-  const std::string& name() const { return name_; }
+  const std::string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
   void set_name(const std::string& value) {
     name_ = value;
@@ -64,7 +64,7 @@ class SimpleField : public Element {
     has_name_ = false;
   }
 
-  const std::string& displayname() const { return displayname_; }
+  const std::string& get_displayname() const { return displayname_; }
   bool has_displayname() const { return has_displayname_; }
   void set_displayname(const std::string& value) {
     displayname_ = value;
@@ -103,7 +103,7 @@ class Schema : public Element {
     return type == Type_Schema;
   }
 
-  const std::string& name() const { return name_; }
+  const std::string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
   void set_name(const std::string& value) {
     name_ = value;
@@ -114,7 +114,7 @@ class Schema : public Element {
     has_name_ = false;
   }
 
-  const std::string& id() const { return id_; }
+  const std::string& get_id() const { return id_; }
   bool has_id() const { return has_id_; }
   void set_id(const std::string& value) {
     id_ = value;
@@ -129,11 +129,11 @@ class Schema : public Element {
     AddComplexChild(simplefield, &simplefield_array_);
   }
 
-  const size_t simplefield_array_size() const {
+  const size_t get_simplefield_array_size() const {
     return simplefield_array_.size();
   }
 
-  const SimpleFieldPtr simplefield_array_at(unsigned int index) const {
+  const SimpleFieldPtr get_simplefield_array_at(unsigned int index) const {
     return simplefield_array_[index];
   }
 
