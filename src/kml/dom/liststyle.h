@@ -47,7 +47,7 @@ class ItemIcon : public Object {
   }
 
   // <state>
-  int state() const {
+  int get_state() const {
     return state_;
   }
   bool has_state() const {
@@ -63,7 +63,7 @@ class ItemIcon : public Object {
   }
 
   // <href>
-  std::string href() const {
+  std::string get_href() const {
     return href_;
   }
   bool has_href() const {
@@ -102,7 +102,7 @@ class ListStyle : public SubStyle {
   }
 
   // <listItemType>
-  int listitemtype() const {
+  int get_listitemtype() const {
     return listitemtype_;
   }
   bool has_listitemtype() const {
@@ -118,7 +118,7 @@ class ListStyle : public SubStyle {
   }
 
   // <bgColor>
-  std::string bgcolor() const {
+  std::string get_bgcolor() const {
     return bgcolor_;
   }
   bool has_bgcolor() const {
@@ -138,11 +138,11 @@ class ListStyle : public SubStyle {
     AddComplexChild(itemicon, &itemicon_array_);
   }
 
-  const size_t itemicon_array_size() const {
+  const size_t get_itemicon_array_size() const {
     return itemicon_array_.size();
   }
 
-  const ItemIconPtr& itemicon_array_at(unsigned int index) const {
+  const ItemIconPtr& get_itemicon_array_at(unsigned int index) const {
     return itemicon_array_[index];
   }
 

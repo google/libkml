@@ -78,8 +78,8 @@ static void WalkGeometry(const GeometryPtr& geometry) {
   // Recurse into <MultiGeometry>.
   if (const MultiGeometryPtr multigeometry =
       kmldom::AsMultiGeometry(geometry)) {
-    for (size_t i = 0; i < multigeometry->geometry_array_size(); ++i) {
-      WalkGeometry(multigeometry->geometry_array_at(i));
+    for (size_t i = 0; i < multigeometry->get_geometry_array_size(); ++i) {
+      WalkGeometry(multigeometry->get_geometry_array_at(i));
     }
   }
 }
@@ -89,21 +89,21 @@ static void WalkFeature(const FeaturePtr& feature) {
     if (const ContainerPtr container = kmldom::AsContainer(feature)) {
       WalkContainer(container);
     } else if (const PlacemarkPtr placemark = kmldom::AsPlacemark(feature)) {
-      WalkGeometry(placemark->geometry());
+      WalkGeometry(placemark->get_geometry());
     }
   }
 }
 
 static void WalkContainer(const ContainerPtr& container) {
-  for (size_t i = 0; i < container->feature_array_size(); ++i) {
-    WalkFeature(container->feature_array_at(i));
+  for (size_t i = 0; i < container->get_feature_array_size(); ++i) {
+    WalkFeature(container->get_feature_array_at(i));
   }
 }
 
 static const FeaturePtr GetRootFeature(const ElementPtr& root) {
   const KmlPtr kml = kmldom::AsKml(root);
   if (kml && kml->has_feature()) {
-    return kml->feature();
+    return kml->get_feature();
   }
   return kmldom::AsFeature(root);
 }

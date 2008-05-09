@@ -149,7 +149,7 @@ class VerySimpleSimpleChildTestCase(unittest.TestCase):
     name = 'my name'
     folder.set_name(name)
     assert folder.has_name()
-    assert name == folder.name()
+    assert name == folder.get_name()
     folder.clear_name()
     assert not folder.has_name()
 
@@ -187,20 +187,20 @@ class SimpleCoordinatesTestCase(unittest.TestCase):
     lon = -123.456
     lat = 38.765
     alt = 1001.909
-    assert 0 == coordinates.coordinates_array_size()
-    coordinates.add_point2(lon, lat)
-    assert 1 == coordinates.coordinates_array_size()
-    coordinates.add_point3(lon, lat, alt)
-    assert 2 == coordinates.coordinates_array_size()
-    vec0 = coordinates.coordinates_array_at(0)
-    vec1 = coordinates.coordinates_array_at(1)
+    assert 0 == coordinates.get_coordinates_array_size()
+    coordinates.add_latlng(lon, lat)
+    assert 1 == coordinates.get_coordinates_array_size()
+    coordinates.add_latlngalt(lon, lat, alt)
+    assert 2 == coordinates.get_coordinates_array_size()
+    vec0 = coordinates.get_coordinates_array_at(0)
+    vec1 = coordinates.get_coordinates_array_at(1)
     # Test the Vec3 methods
-    assert lon == vec0.longitude()
-    assert lat == vec0.latitude()
-    assert 0 == vec0.altitude()
-    assert lon == vec1.longitude()
-    assert lat == vec1.latitude()
-    assert alt == vec1.altitude()
+    assert lon == vec0.get_longitude()
+    assert lat == vec0.get_latitude()
+    assert 0 == vec0.get_altitude()
+    assert lon == vec1.get_longitude()
+    assert lat == vec1.get_latitude()
+    assert alt == vec1.get_altitude()
 
 
 class SimpleVec2TestCase(unittest.TestCase):
@@ -231,10 +231,10 @@ class SimpleVec2TestCase(unittest.TestCase):
     assert hotspot.has_y()
     assert hotspot.has_yunits()
     # Test the getters
-    assert x == hotspot.x()
-    assert xunits == hotspot.xunits()
-    assert y == hotspot.y()
-    assert yunits == hotspot.yunits()
+    assert x == hotspot.get_x()
+    assert xunits == hotspot.get_xunits()
+    assert y == hotspot.get_y()
+    assert yunits == hotspot.get_yunits()
     # Test the clear'ers
     hotspot.clear_x()
     hotspot.clear_xunits()
@@ -267,8 +267,8 @@ class SimpleObjectTestCase(unittest.TestCase):
     assert placemark.has_id()
     assert placemark.has_targetid()
     # xxx()...
-    assert id == placemark.id()
-    assert targetid == placemark.targetid()
+    assert id == placemark.get_id()
+    assert targetid == placemark.get_targetid()
     # clear_xxx()...
     placemark.clear_id()
     placemark.clear_targetid()
@@ -295,7 +295,7 @@ class SimpleFeatureTestCase(unittest.TestCase):
     assert not folder.has_snippet()
     folder.set_snippet(factory.CreateSnippet())
     assert folder.has_snippet()
-    snippet = folder.snippet()
+    snippet = folder.get_snippet()
     # Test that the snippet() returns a SnippetPtr
     assert not snippet.has_maxlines()
     folder.clear_snippet()
@@ -325,8 +325,8 @@ class SimpleRegionTestCase(unittest.TestCase):
     assert region.has_id()
     assert region.has_targetid()
     # xxx()...
-    assert id == region.id()
-    assert targetid == region.targetid()
+    assert id == region.get_id()
+    assert targetid == region.get_targetid()
     # clear_xxx()...
     region.clear_id()
     region.clear_targetid()
@@ -367,12 +367,12 @@ class SimpleParseTestCase(unittest.TestCase):
     assert not kml.has_hint()
     assert not kml.has_networklinkcontrol()
     assert kml.has_feature()
-    placemark = kmldom.AsPlacemark(kml.feature())
+    placemark = kmldom.AsPlacemark(kml.get_feature())
     assert placemark
     assert placemark.has_id()
-    assert 'pm123' == placemark.id()
+    assert 'pm123' == placemark.get_id()
     assert placemark.has_name()
-    assert 'hi' == placemark.name()
+    assert 'hi' == placemark.get_name()
     assert not placemark.has_geometry()
 
 
@@ -437,7 +437,7 @@ class SimpleExtendedDataTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsExtendedData(self.extendeddata)
-    assert 0 == self.extendeddata.extendeddatamember_array_size()
+    assert 0 == self.extendeddata.get_extendeddatamember_array_size()
 
 
 class SimpleListStyleTestCase(unittest.TestCase):
@@ -452,7 +452,7 @@ class SimpleListStyleTestCase(unittest.TestCase):
     assert kmldom.AsSubStyle(self.liststyle)
     assert kmldom.AsListStyle(self.liststyle)
     assert not self.liststyle.has_id()
-    assert 0 == self.liststyle.itemicon_array_size()
+    assert 0 == self.liststyle.get_itemicon_array_size()
 
 
 class SimplePhotoOverlayTestCase(unittest.TestCase):
@@ -496,7 +496,7 @@ class SimplePlacemarkTestCase(unittest.TestCase):
     name = 'This is my name'
     self.placemark.set_name(name)
     assert self.placemark.has_name()
-    assert name == self.placemark.name()
+    assert name == self.placemark.get_name()
     self.placemark.clear_name()
     assert not self.placemark.has_name()
 
@@ -513,13 +513,13 @@ class SimpleLatLonBoxTestCase(unittest.TestCase):
     assert kmldom.AsLatLonBox(self.latlonbox)
     assert not self.latlonbox.has_id()  # Object-ness
     assert not self.latlonbox.has_north()
-    assert 0.0 == self.latlonbox.north()
+    assert 0.0 == self.latlonbox.get_north()
     assert not self.latlonbox.has_south()
-    assert 0.0 == self.latlonbox.south()
+    assert 0.0 == self.latlonbox.get_south()
     assert not self.latlonbox.has_east()
-    assert 0.0 == self.latlonbox.east()
+    assert 0.0 == self.latlonbox.get_east()
     assert not self.latlonbox.has_west()
-    assert 0.0 == self.latlonbox.west()
+    assert 0.0 == self.latlonbox.get_west()
 
   def testSetClear(self):
     north = 42.42
@@ -531,13 +531,13 @@ class SimpleLatLonBoxTestCase(unittest.TestCase):
     self.latlonbox.set_east(east)
     self.latlonbox.set_west(west)
     assert self.latlonbox.has_north()
-    assert north == self.latlonbox.north()
+    assert north == self.latlonbox.get_north()
     assert self.latlonbox.has_south()
-    assert south == self.latlonbox.south()
+    assert south == self.latlonbox.get_south()
     assert self.latlonbox.has_east()
-    assert east == self.latlonbox.east()
+    assert east == self.latlonbox.get_east()
     assert self.latlonbox.has_west()
-    assert west == self.latlonbox.west()
+    assert west == self.latlonbox.get_west()
     self.latlonbox.clear_north()
     self.latlonbox.clear_south()
     self.latlonbox.clear_east()
@@ -563,7 +563,7 @@ class SimpleLinkTestCase(unittest.TestCase):
     href = 'http://example.com/cool.kml'
     self.link.set_href(href)
     assert self.link.has_href()
-    assert href == self.link.href()
+    assert href == self.link.get_href()
     self.link.clear_href()
     # Clearing everything returns to default state
     self.testDefault()
@@ -578,16 +578,16 @@ class SimpleChangeTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsChange(self.change)
-    assert 0 == self.change.object_array_size()
+    assert 0 == self.change.get_object_array_size()
 
   def testAddOneObject(self):
     placemark = self.factory.CreatePlacemark()
     name = 'hi'
     placemark.set_name(name)
     self.change.add_object(placemark)
-    assert 1 == self.change.object_array_size()
-    placemark = kmldom.AsPlacemark(self.change.object_array_at(0))
-    assert name == placemark.name()
+    assert 1 == self.change.get_object_array_size()
+    placemark = kmldom.AsPlacemark(self.change.get_object_array_at(0))
+    assert name == placemark.get_name()
 
   def testAddNObjects(self):
     placemark = self.factory.CreatePlacemark()
@@ -606,10 +606,10 @@ class SimpleChangeTestCase(unittest.TestCase):
     self.change.add_object(location)
 
     """ Verify there are 3 items in the array in the proper order."""
-    assert 3 == self.change.object_array_size()
-    assert placemark_id == self.change.object_array_at(0).id()
-    assert latlonbox_id == self.change.object_array_at(1).id()
-    assert location_id == self.change.object_array_at(2).id()
+    assert 3 == self.change.get_object_array_size()
+    assert placemark_id == self.change.get_object_array_at(0).get_id()
+    assert latlonbox_id == self.change.get_object_array_at(1).get_id()
+    assert location_id == self.change.get_object_array_at(2).get_id()
 
 
 class SimpleCreateTestCase(unittest.TestCase):
@@ -621,16 +621,16 @@ class SimpleCreateTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsCreate(self.create)
-    assert 0 == self.create.container_array_size()
+    assert 0 == self.create.get_container_array_size()
 
   def testAddOneContainer(self):
     folder = self.factory.CreateFolder()
     target_folder_id = 'target-folder'
     folder.set_targetid(target_folder_id)
     self.create.add_container(folder)
-    assert 1 == self.create.container_array_size()
-    folder = kmldom.AsFolder(self.create.container_array_at(0))
-    assert target_folder_id == folder.targetid()
+    assert 1 == self.create.get_container_array_size()
+    folder = kmldom.AsFolder(self.create.get_container_array_at(0))
+    assert target_folder_id == folder.get_targetid()
 
   def testAddNContainers(self):
     folder = self.factory.CreateFolder()
@@ -654,11 +654,11 @@ class SimpleCreateTestCase(unittest.TestCase):
     self.create.add_container(folder)
 
     # Verify there are 4 items in the array in the proper order.
-    assert 4 == self.create.container_array_size()
-    assert folder_a_id == self.create.container_array_at(0).id()
-    assert document_a_id == self.create.container_array_at(1).id()
-    assert document_b_id == self.create.container_array_at(2).id()
-    assert folder_b_id == self.create.container_array_at(3).id()
+    assert 4 == self.create.get_container_array_size()
+    assert folder_a_id == self.create.get_container_array_at(0).get_id()
+    assert document_a_id == self.create.get_container_array_at(1).get_id()
+    assert document_b_id == self.create.get_container_array_at(2).get_id()
+    assert folder_b_id == self.create.get_container_array_at(3).get_id()
 
 
 class SimpleDeleteTestCase(unittest.TestCase):
@@ -670,16 +670,16 @@ class SimpleDeleteTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsDelete(self.delete)
-    assert 0 == self.delete.feature_array_size()
+    assert 0 == self.delete.get_feature_array_size()
 
   def testAddOneFeature(self):
     groundoverlay = self.factory.CreateGroundOverlay()
     target_groundoverlay_id = 'target-groundoverlay'
     groundoverlay.set_targetid(target_groundoverlay_id)
     self.delete.add_feature(groundoverlay)
-    assert 1 == self.delete.feature_array_size()
-    groundoverlay = kmldom.AsGroundOverlay(self.delete.feature_array_at(0))
-    assert target_groundoverlay_id == groundoverlay.targetid()
+    assert 1 == self.delete.get_feature_array_size()
+    groundoverlay = kmldom.AsGroundOverlay(self.delete.get_feature_array_at(0))
+    assert target_groundoverlay_id == groundoverlay.get_targetid()
 
   def testAddNFeatures(self):
     document = self.factory.CreateDocument()
@@ -718,14 +718,14 @@ class SimpleDeleteTestCase(unittest.TestCase):
     self.delete.add_feature(screenoverlay)
 
     # Verify there are 7 items in the array in the proper order.
-    assert 7 == self.delete.feature_array_size()
-    assert document_id == self.delete.feature_array_at(0).id()
-    assert folder_id == self.delete.feature_array_at(1).id()
-    assert groundoverlay_id == self.delete.feature_array_at(2).id()
-    assert networklink_id == self.delete.feature_array_at(3).id()
-    assert placemark_id == self.delete.feature_array_at(4).id()
-    assert photooverlay_id == self.delete.feature_array_at(5).id()
-    assert screenoverlay_id == self.delete.feature_array_at(6).id()
+    assert 7 == self.delete.get_feature_array_size()
+    assert document_id == self.delete.get_feature_array_at(0).get_id()
+    assert folder_id == self.delete.get_feature_array_at(1).get_id()
+    assert groundoverlay_id == self.delete.get_feature_array_at(2).get_id()
+    assert networklink_id == self.delete.get_feature_array_at(3).get_id()
+    assert placemark_id == self.delete.get_feature_array_at(4).get_id()
+    assert photooverlay_id == self.delete.get_feature_array_at(5).get_id()
+    assert screenoverlay_id == self.delete.get_feature_array_at(6).get_id()
 
 
 class SimpleDocumentTestCase(unittest.TestCase):
@@ -742,9 +742,9 @@ class SimpleDocumentTestCase(unittest.TestCase):
     assert kmldom.AsDocument(self.document)
     assert not self.document.has_id()  # Object-ness
     assert not self.document.has_name()  # Feature-ness
-    assert 0 == self.document.feature_array_size()  # Container-ness
-    assert 0 == self.document.schema_array_size()  # Document-ness
-    assert 0 == self.document.styleselector_array_size()  # Document-ness
+    assert 0 == self.document.get_feature_array_size()  # Container-ness
+    assert 0 == self.document.get_schema_array_size()  # Document-ness
+    assert 0 == self.document.get_styleselector_array_size()  # Document-ness
 
 
 class SimpleMultiGeometryTestCase(unittest.TestCase):
@@ -759,7 +759,8 @@ class SimpleMultiGeometryTestCase(unittest.TestCase):
     assert kmldom.AsGeometry(self.multigeometry)
     assert kmldom.AsMultiGeometry(self.multigeometry)
     assert not self.multigeometry.has_id()  # Object-ness
-    assert 0 == self.multigeometry.geometry_array_size()  # MultiGeometry-ness
+    # MultiGeometry-ness
+    assert 0 == self.multigeometry.get_geometry_array_size()
 
 
 class SimpleOuterBoundaryIsTestCase(unittest.TestCase):
@@ -785,7 +786,7 @@ class SimpleResourceMapTestCase(unittest.TestCase):
     assert kmldom.AsObject(self.resourcemap)
     assert kmldom.AsResourceMap(self.resourcemap)
     assert not self.resourcemap.has_id()
-    assert 0 == self.resourcemap.alias_array_size()
+    assert 0 == self.resourcemap.get_alias_array_size()
 
 
 class SimpleSchemaTestCase(unittest.TestCase):
@@ -799,7 +800,7 @@ class SimpleSchemaTestCase(unittest.TestCase):
     assert kmldom.AsSchema(self.schema)
     assert not self.schema.has_name()
     assert not self.schema.has_id()
-    assert 0 == self.schema.simplefield_array_size()
+    assert 0 == self.schema.get_simplefield_array_size()
 
 
 class SimpleSchemaDataTestCase(unittest.TestCase):
@@ -813,7 +814,7 @@ class SimpleSchemaDataTestCase(unittest.TestCase):
     assert kmldom.AsObject(self.schemadata)
     assert kmldom.AsSchemaData(self.schemadata)
     assert not self.schemadata.has_id()
-    assert 0 == self.schemadata.simpledata_array_size()
+    assert 0 == self.schemadata.get_simpledata_array_size()
 
 
 class SimpleSimpleFieldTestCase(unittest.TestCase):
@@ -843,7 +844,7 @@ class SimpleUpdateTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsUpdate(self.update)
-    assert 0 == self.update.updateoperation_array_size()
+    assert 0 == self.update.get_updateoperation_array_size()
 
 
 class SimpleStyleMapTestCase(unittest.TestCase):
@@ -858,14 +859,14 @@ class SimpleIconStyleIconTestCase(unittest.TestCase):
 
   def testBasic(self):
     assert not self.iconstyleicon.has_href() # default state
-    assert '' == self.iconstyleicon.href()
+    assert '' == self.iconstyleicon.get_href()
     href = 'http://blah.blah'
     self.iconstyleicon.set_href(href)
     assert self.iconstyleicon.has_href()
-    assert href == self.iconstyleicon.href()
+    assert href == self.iconstyleicon.get_href()
     self.iconstyleicon.clear_href()
     assert not self.iconstyleicon.has_href() # back in default state
-    assert '' == self.iconstyleicon.href()
+    assert '' == self.iconstyleicon.get_href()
 
 
 def suite():

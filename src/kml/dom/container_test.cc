@@ -75,21 +75,21 @@ void ContainerTest::TestAddGetFeatures() {
   container_->add_feature(factory->CreatePlacemark());
   container_->add_feature(factory->CreateScreenOverlay());
   // Verify order is preserved.
-  CPPUNIT_ASSERT_EQUAL((size_t)7, container_->feature_array_size());
+  CPPUNIT_ASSERT_EQUAL((size_t)7, container_->get_feature_array_size());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_Document,
-                       container_->feature_array_at(0)->Type());
+                       container_->get_feature_array_at(0)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_Folder,
-                       container_->feature_array_at(1)->Type());
+                       container_->get_feature_array_at(1)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_GroundOverlay,
-                       container_->feature_array_at(2)->Type());
+                       container_->get_feature_array_at(2)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_NetworkLink,
-                       container_->feature_array_at(3)->Type());
+                       container_->get_feature_array_at(3)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_PhotoOverlay,
-                       container_->feature_array_at(4)->Type());
+                       container_->get_feature_array_at(4)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_Placemark,
-                       container_->feature_array_at(5)->Type());
+                       container_->get_feature_array_at(5)->Type());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_ScreenOverlay,
-                       container_->feature_array_at(6)->Type());
+                       container_->get_feature_array_at(6)->Type());
   // Deleting the container deletes all Features in the array.
 }
 

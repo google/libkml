@@ -42,6 +42,8 @@ int main() {
   const kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(element);
 
   // Access the value of the  element.
-  std::cout << "The Placemark name is: " << placemark->name()
+  std::cout << "The Placemark name is: " << placemark->get_name()
     << std::endl;
+
+  return 0;
 }

@@ -58,18 +58,18 @@ void ColorStyleTest::TestType() {
 
 // Verify proper defaults:
 void ColorStyleTest::TestDefaults() {
-  CPPUNIT_ASSERT("ffffffff" == colorstyle_.color());
+  CPPUNIT_ASSERT("ffffffff" == colorstyle_.get_color());
   CPPUNIT_ASSERT(false == colorstyle_.has_color());
-  CPPUNIT_ASSERT(COLORMODE_NORMAL == colorstyle_.colormode());
+  CPPUNIT_ASSERT(COLORMODE_NORMAL == colorstyle_.get_colormode());
   CPPUNIT_ASSERT(false == colorstyle_.has_colormode());
 }
 
 // Verify setting default makes has_xxx() true:
 void ColorStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  colorstyle_.set_color(colorstyle_.color());
+  colorstyle_.set_color(colorstyle_.get_color());
   CPPUNIT_ASSERT(true == colorstyle_.has_color());
-  colorstyle_.set_colormode(colorstyle_.colormode());
+  colorstyle_.set_colormode(colorstyle_.get_colormode());
   CPPUNIT_ASSERT(true == colorstyle_.has_colormode());
 }
 
@@ -85,9 +85,9 @@ void ColorStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == colorstyle_.has_color());
-  CPPUNIT_ASSERT(color == colorstyle_.color());
+  CPPUNIT_ASSERT(color == colorstyle_.get_color());
   CPPUNIT_ASSERT(true == colorstyle_.has_colormode());
-  CPPUNIT_ASSERT(colormode == colorstyle_.colormode());
+  CPPUNIT_ASSERT(colormode == colorstyle_.get_colormode());
 
   // Clear all fields:
   colorstyle_.clear_color();

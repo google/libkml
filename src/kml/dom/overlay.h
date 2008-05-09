@@ -53,7 +53,7 @@ class Overlay : public Feature {
   }
 
   // <color>
-  const std::string& color() const {
+  const std::string& get_color() const {
     return color_;
   }
   bool has_color() const {
@@ -69,7 +69,7 @@ class Overlay : public Feature {
   }
 
   // <drawOrder>
-  int draworder() const {
+  int get_draworder() const {
     return draworder_;
   }
   bool has_draworder() const {
@@ -85,7 +85,7 @@ class Overlay : public Feature {
   }
 
   // <Icon>
-  const IconPtr& icon() const { return icon_; }
+  const IconPtr& get_icon() const { return icon_; }
   bool has_icon() const { return icon_ != NULL; }
   void set_icon(const IconPtr& icon) {
     SetComplexChild(icon, &icon_);
@@ -119,7 +119,7 @@ class LatLonBox : public AbstractLatLonBox {
   }
 
   // <rotation>
-  double rotation() const {
+  double get_rotation() const {
     return rotation_;
   }
   bool has_rotation() const {
@@ -159,7 +159,7 @@ class GroundOverlay : public Overlay {
   }
 
   // <altitude>
-  double altitude() const {
+  double get_altitude() const {
     return altitude_;
   }
   bool has_altitude() const {
@@ -175,7 +175,7 @@ class GroundOverlay : public Overlay {
   }
 
   // <altitudeMode>
-  int altitudemode() const {
+  int get_altitudemode() const {
     return altitudemode_;
   }
   bool has_altitudemode() const {
@@ -191,7 +191,7 @@ class GroundOverlay : public Overlay {
   }
 
   // <LatLonBox>
-  const LatLonBoxPtr& latlonbox() const { return latlonbox_; }
+  const LatLonBoxPtr& get_latlonbox() const { return latlonbox_; }
   bool has_latlonbox() const { return latlonbox_ != NULL; }
   void set_latlonbox(const LatLonBoxPtr& latlonbox) {
     SetComplexChild(latlonbox, &latlonbox_);
@@ -287,7 +287,7 @@ class ScreenOverlay : public Overlay {
   }
 
   // <overlayXY>
-  const OverlayXYPtr& overlayxy() const { return overlayxy_; }
+  const OverlayXYPtr& get_overlayxy() const { return overlayxy_; }
   bool has_overlayxy() const { return overlayxy_ != NULL; }
   void set_overlayxy(const OverlayXYPtr& overlayxy) {
     SetComplexChild(overlayxy, &overlayxy_);
@@ -297,7 +297,7 @@ class ScreenOverlay : public Overlay {
   }
 
   // <screenXY>
-  const ScreenXYPtr& screenxy() const { return screenxy_; }
+  const ScreenXYPtr& get_screenxy() const { return screenxy_; }
   bool has_screenxy() const { return screenxy_ != NULL; }
   void set_screenxy(const ScreenXYPtr& screenxy) {
     SetComplexChild(screenxy, &screenxy_);
@@ -307,7 +307,7 @@ class ScreenOverlay : public Overlay {
   }
 
   // <rotationXY>
-  const RotationXYPtr& rotationxy() const { return rotationxy_; }
+  const RotationXYPtr& get_rotationxy() const { return rotationxy_; }
   bool has_rotationxy() const { return rotationxy_ != NULL; }
   void set_rotationxy(const RotationXYPtr& rotationxy) {
     SetComplexChild(rotationxy, &rotationxy_);
@@ -317,7 +317,7 @@ class ScreenOverlay : public Overlay {
   }
 
   // <size>
-  const SizePtr& size() const { return size_; }
+  const SizePtr& get_size() const { return size_; }
   bool has_size() const { return size_ != NULL; }
   void set_size(const SizePtr& size) {
     SetComplexChild(size, &size_);
@@ -327,7 +327,7 @@ class ScreenOverlay : public Overlay {
   }
 
   // <rotation>
-  double rotation() const {
+  double get_rotation() const {
     return rotation_;
   }
   bool has_rotation() const {
@@ -368,7 +368,7 @@ class ViewVolume : public Object {
   }
 
   // <leftFov>
-  double leftfov() const {
+  double get_leftfov() const {
     return leftfov_;
   }
   bool has_leftfov() const {
@@ -384,7 +384,7 @@ class ViewVolume : public Object {
   }
 
   // <rightFov>
-  double rightfov() const {
+  double get_rightfov() const {
     return rightfov_;
   }
   bool has_rightfov() const {
@@ -400,7 +400,7 @@ class ViewVolume : public Object {
   }
 
   // <bottomFov>
-  double bottomfov() const {
+  double get_bottomfov() const {
     return bottomfov_;
   }
   bool has_bottomfov() const {
@@ -416,7 +416,7 @@ class ViewVolume : public Object {
   }
 
   // <topFov>
-  double topfov() const {
+  double get_topfov() const {
     return topfov_;
   }
   bool has_topfov() const {
@@ -432,14 +432,17 @@ class ViewVolume : public Object {
   }
 
   // <near>
-  double near() const {
+  // Note: "near" is a reserved keyword on MSVC++. Neither the function name
+  // nor the variable name can be called such.
+  // TODO: API consistency for getters. 
+  double get_near() const {
     return near_;
   }
   bool has_near() const {
     return has_near_;
   }
-  void set_near(double near) {
-    near_ = near;
+  void set_near(double val) {
+    near_ = val;
     has_near_ = true;
   }
   void clear_near() {
@@ -477,7 +480,7 @@ class ImagePyramid : public Object {
   }
 
   // <tileSize>
-  int tilesize() const {
+  int get_tilesize() const {
     return tilesize_;
   }
   bool has_tilesize() const {
@@ -493,7 +496,7 @@ class ImagePyramid : public Object {
   }
 
   // <maxWidth>
-  int maxwidth() const {
+  int get_maxwidth() const {
     return maxwidth_;
   }
   bool has_maxwidth() const {
@@ -509,7 +512,7 @@ class ImagePyramid : public Object {
   }
 
   // <maxHeight>
-  int maxheight() const {
+  int get_maxheight() const {
     return maxheight_;
   }
   bool has_maxheight() const {
@@ -525,7 +528,7 @@ class ImagePyramid : public Object {
   }
 
   // <gridOrigin>
-  int gridorigin() const {
+  int get_gridorigin() const {
     return gridorigin_;
   }
   bool has_gridorigin() const {
@@ -568,7 +571,7 @@ class PhotoOverlay : public Overlay {
   }
 
   // <rotation>
-  double rotation() const {
+  double get_rotation() const {
     return rotation_;
   }
   bool has_rotation() const {
@@ -584,7 +587,7 @@ class PhotoOverlay : public Overlay {
   }
 
   // <ViewVolume>
-  const ViewVolumePtr& viewvolume() const { return viewvolume_; }
+  const ViewVolumePtr& get_viewvolume() const { return viewvolume_; }
   bool has_viewvolume() const { return viewvolume_ != NULL; }
   void set_viewvolume(const ViewVolumePtr& viewvolume) {
     SetComplexChild(viewvolume, &viewvolume_);
@@ -594,7 +597,7 @@ class PhotoOverlay : public Overlay {
   }
 
   // <ImagePyramid>
-  const ImagePyramidPtr& imagepyramid() const { return imagepyramid_; }
+  const ImagePyramidPtr& get_imagepyramid() const { return imagepyramid_; }
   bool has_imagepyramid() const { return imagepyramid_ != NULL; }
   void set_imagepyramid(const ImagePyramidPtr& imagepyramid) {
     SetComplexChild(imagepyramid, &imagepyramid_);
@@ -604,7 +607,7 @@ class PhotoOverlay : public Overlay {
   }
 
   // <Point>
-  const PointPtr& point() const { return point_; }
+  const PointPtr& get_point() const { return point_; }
   bool has_point() const { return point_ != NULL; }
   void set_point(const PointPtr& point) {
     SetComplexChild(point, &point_);
@@ -614,7 +617,7 @@ class PhotoOverlay : public Overlay {
   }
 
   // <shape>
-  int shape() const {
+  int get_shape() const {
     return shape_;
   }
   bool has_shape() const {

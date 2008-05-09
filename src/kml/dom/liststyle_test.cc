@@ -69,17 +69,17 @@ void ItemIconTest::TestType() {
 // Verify proper defaults:
 void ItemIconTest::TestDefaults() {
   CPPUNIT_ASSERT(false == itemicon_->has_state());
-  CPPUNIT_ASSERT(ITEMICONSTATE_OPEN == itemicon_->state());
+  CPPUNIT_ASSERT(ITEMICONSTATE_OPEN == itemicon_->get_state());
   CPPUNIT_ASSERT(false == itemicon_->has_href());
-  CPPUNIT_ASSERT("" == itemicon_->href());
+  CPPUNIT_ASSERT("" == itemicon_->get_href());
 }
 
 // Verify setting default makes has_xxx() true:
 void ItemIconTest::TestSetToDefaultValues() {
   TestDefaults();
-  itemicon_->set_state(itemicon_->state());
+  itemicon_->set_state(itemicon_->get_state());
   CPPUNIT_ASSERT(true == itemicon_->has_state());
-  itemicon_->set_href(itemicon_->href());
+  itemicon_->set_href(itemicon_->get_href());
   CPPUNIT_ASSERT(true == itemicon_->has_href());
 }
 
@@ -95,9 +95,9 @@ void ItemIconTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == itemicon_->has_state());
-  CPPUNIT_ASSERT(state == itemicon_->state());
+  CPPUNIT_ASSERT(state == itemicon_->get_state());
   CPPUNIT_ASSERT(true == itemicon_->has_href());
-  CPPUNIT_ASSERT(href == itemicon_->href());
+  CPPUNIT_ASSERT(href == itemicon_->get_href());
 
   // Clear all fields:
   itemicon_->clear_state();
@@ -147,28 +147,28 @@ void ListStyleTest::TestType() {
 }
 
 void ListStyleTest::TestLists() {
-  CPPUNIT_ASSERT(0 == liststyle_->itemicon_array_size());
+  CPPUNIT_ASSERT(0 == liststyle_->get_itemicon_array_size());
   liststyle_->add_itemicon(KmlFactory::GetFactory()->CreateItemIcon());
   liststyle_->add_itemicon(KmlFactory::GetFactory()->CreateItemIcon());
-  CPPUNIT_ASSERT(2 == liststyle_->itemicon_array_size());
-  CPPUNIT_ASSERT(Type_ItemIcon == liststyle_->itemicon_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_ItemIcon == liststyle_->itemicon_array_at(1)->Type());
+  CPPUNIT_ASSERT(2 == liststyle_->get_itemicon_array_size());
+  CPPUNIT_ASSERT(Type_ItemIcon == liststyle_->get_itemicon_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_ItemIcon == liststyle_->get_itemicon_array_at(1)->Type());
 }
 
 // Verify proper defaults:
 void ListStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == liststyle_->has_listitemtype());
-  CPPUNIT_ASSERT(LISTITEMTYPE_CHECK == liststyle_->listitemtype());
+  CPPUNIT_ASSERT(LISTITEMTYPE_CHECK == liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(false == liststyle_->has_bgcolor());
-  CPPUNIT_ASSERT("ffffffff" == liststyle_->bgcolor());
+  CPPUNIT_ASSERT("ffffffff" == liststyle_->get_bgcolor());
 }
 
 // Verify setting default makes has_xxx() true:
 void ListStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  liststyle_->set_listitemtype(liststyle_->listitemtype());
+  liststyle_->set_listitemtype(liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(true == liststyle_->has_listitemtype());
-  liststyle_->set_bgcolor(liststyle_->bgcolor());
+  liststyle_->set_bgcolor(liststyle_->get_bgcolor());
   CPPUNIT_ASSERT(true == liststyle_->has_bgcolor());
 }
 
@@ -184,9 +184,9 @@ void ListStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == liststyle_->has_listitemtype());
-  CPPUNIT_ASSERT(listitemtype == liststyle_->listitemtype());
+  CPPUNIT_ASSERT(listitemtype == liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(true == liststyle_->has_bgcolor());
-  CPPUNIT_ASSERT(bgcolor == liststyle_->bgcolor());
+  CPPUNIT_ASSERT(bgcolor == liststyle_->get_bgcolor());
 
   // Clear all fields:
   liststyle_->clear_listitemtype();

@@ -63,9 +63,9 @@ def main():
   print 'Placemark.has_id()',placemark.has_id()
   
   print 'Get some fields...'
-  print 'Placemark.id()',placemark.id()
-  print 'Placemark.name()',placemark.name()
-  print 'Placemark.visibility()',placemark.visibility()
+  print 'Placemark.id()',placemark.get_id()
+  print 'Placemark.name()',placemark.get_name()
+  print 'Placemark.visibility()',placemark.get_visibility()
   
   print 'Clear fields...'
   placemark.clear_name()
@@ -76,7 +76,7 @@ def main():
   print 'placemark.has_visibility()',placemark.has_visibility()
   
   print 'visibility is true by default...'
-  print 'placemark.visibility()',placemark.visibility()
+  print 'placemark.visibility()',placemark.get_visibility()
 
   # Python deletes the placemark.
   

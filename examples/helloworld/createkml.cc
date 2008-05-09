@@ -45,7 +45,7 @@ int main() {
   // Create <coordinates>.
   CoordinatesPtr coordinates = factory->CreateCoordinates();
   // Create <coordinates>-122.0816695,37.42052549<coordinates>
-  coordinates->add_point2(-122.0816695,37.42052549);
+  coordinates->add_latlng(37.42052549,-122.0816695);
 
   // Create <Point> and give it <coordinates>.
   PointPtr point = factory->CreatePoint();

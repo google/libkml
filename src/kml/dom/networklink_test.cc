@@ -78,19 +78,19 @@ void NetworkLinkTest::TestType() {
 // Verify proper defaults:
 void NetworkLinkTest::TestDefaults() {
   CPPUNIT_ASSERT(false == networklink_->has_refreshvisibility());
-  CPPUNIT_ASSERT(false == networklink_->refreshvisibility());
+  CPPUNIT_ASSERT(false == networklink_->get_refreshvisibility());
   CPPUNIT_ASSERT(false == networklink_->has_flytoview());
-  CPPUNIT_ASSERT(false == networklink_->flytoview());
+  CPPUNIT_ASSERT(false == networklink_->get_flytoview());
   CPPUNIT_ASSERT(false == networklink_->has_link());
-  CPPUNIT_ASSERT(NULL == networklink_->link());
+  CPPUNIT_ASSERT(NULL == networklink_->get_link());
 }
 
 // Verify setting default makes has_xxx() true:
 void NetworkLinkTest::TestSetToDefaultValues() {
   TestDefaults();
-  networklink_->set_refreshvisibility(networklink_->refreshvisibility());
+  networklink_->set_refreshvisibility(networklink_->get_refreshvisibility());
   CPPUNIT_ASSERT(networklink_->has_refreshvisibility());
-  networklink_->set_flytoview(networklink_->flytoview());
+  networklink_->set_flytoview(networklink_->get_flytoview());
   CPPUNIT_ASSERT(networklink_->has_flytoview());
   networklink_->set_link(NULL);
   CPPUNIT_ASSERT(false == networklink_->has_link());  // ptr still null
@@ -110,11 +110,12 @@ void NetworkLinkTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(networklink_->has_refreshvisibility());
-  CPPUNIT_ASSERT_EQUAL(refreshvisibility, networklink_->refreshvisibility());
+  CPPUNIT_ASSERT_EQUAL(refreshvisibility,
+                       networklink_->get_refreshvisibility());
   CPPUNIT_ASSERT(networklink_->has_flytoview());
-  CPPUNIT_ASSERT_EQUAL(flytoview, networklink_->flytoview());
+  CPPUNIT_ASSERT_EQUAL(flytoview, networklink_->get_flytoview());
   CPPUNIT_ASSERT(networklink_->has_link());
-  CPPUNIT_ASSERT(link == networklink_->link());
+  CPPUNIT_ASSERT(link == networklink_->get_link());
 
   // Clear all fields:
   networklink_->clear_refreshvisibility();
@@ -137,9 +138,9 @@ void NetworkLinkTest::TestParseUrl() {
   CPPUNIT_ASSERT(networklink);
   // Verify that the Url was set as the Link.
   CPPUNIT_ASSERT(networklink->has_link());
-  CPPUNIT_ASSERT_EQUAL(Type_Url, networklink->link()->Type());
-  CPPUNIT_ASSERT(networklink->link()->has_href());
-  CPPUNIT_ASSERT_EQUAL(kHref, networklink->link()->href());
+  CPPUNIT_ASSERT_EQUAL(Type_Url, networklink->get_link()->Type());
+  CPPUNIT_ASSERT(networklink->get_link()->has_href());
+  CPPUNIT_ASSERT_EQUAL(kHref, networklink->get_link()->get_href());
 }
 
 void NetworkLinkTest::TestSerialize() {

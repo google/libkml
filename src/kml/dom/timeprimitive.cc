@@ -101,7 +101,7 @@ void TimeStamp::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   TimePrimitive::Serialize(serializer);
   if (has_when()) {
-    serializer.SaveFieldById(Type_when, when());
+    serializer.SaveFieldById(Type_when, when_);
   }
   SerializeUnknown(serializer);
   serializer.End();

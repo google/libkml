@@ -108,7 +108,7 @@ void UnknownTest::TestMisplaced() {
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(errors.empty());
   const PlacemarkPtr placemark = AsPlacemark(root);
-  CPPUNIT_ASSERT_EQUAL(std::string("placemark"), placemark->name());
+  CPPUNIT_ASSERT_EQUAL(std::string("placemark"), placemark->get_name());
   // TODO: add test to find Folder via the unknown element api
 
   // Serialized output puts unknown/misplaced elements after known elements.
@@ -134,7 +134,7 @@ void UnknownTest::TestUnknownAttribute() {
   // The root is a GroundOverlay.
   const GroundOverlayPtr groundoverlay = AsGroundOverlay(root);
   // Unknown attributes don't interefere with known children.
-  CPPUNIT_ASSERT_EQUAL(std::string("groundoverlay"), groundoverlay->name());
+  CPPUNIT_ASSERT_EQUAL(std::string("groundoverlay"), groundoverlay->get_name());
   // Serializer perserves unknown attributes, but not their order.
   std::string expected =
     "<GroundOverlay abc=\"zzz\" unknown=\"who knows\">"

@@ -70,17 +70,17 @@ void ObjectTest::TestType() {
 // Verify proper defaults:
 void ObjectTest::TestDefaults() {
   CPPUNIT_ASSERT(false == object_->has_id());
-  CPPUNIT_ASSERT("" == object_->id());
+  CPPUNIT_ASSERT("" == object_->get_id());
   CPPUNIT_ASSERT(false == object_->has_targetid());
-  CPPUNIT_ASSERT("" == object_->targetid());
+  CPPUNIT_ASSERT("" == object_->get_targetid());
 }
 
 // Verify setting default makes has_xxx() true:
 void ObjectTest::TestSetToDefaultValues() {
   TestDefaults();
-  object_->set_id(object_->id());
+  object_->set_id(object_->get_id());
   CPPUNIT_ASSERT(true == object_->has_id());
-  object_->set_targetid(object_->targetid());
+  object_->set_targetid(object_->get_targetid());
   CPPUNIT_ASSERT(true == object_->has_targetid());
 }
 
@@ -95,8 +95,8 @@ void ObjectTest::TestSetGetHasClear() {
   object_->set_targetid(targetid);
 
   // Verify getter and has_xxx():
-  CPPUNIT_ASSERT(id == object_->id());
-  CPPUNIT_ASSERT(targetid == object_->targetid());
+  CPPUNIT_ASSERT(id == object_->get_id());
+  CPPUNIT_ASSERT(targetid == object_->get_targetid());
 
   // Clear all fields:
   object_->clear_id();

@@ -42,7 +42,7 @@ class Placemark : public Feature {
     return type == Type_Placemark || Feature::IsA(type);
   }
 
-  const GeometryPtr& geometry() const { return geometry_; }
+  const GeometryPtr& get_geometry() const { return geometry_; }
   bool has_geometry() const { return geometry_ != NULL; }
   void set_geometry(const GeometryPtr& geometry) {
     SetComplexChild(geometry, &geometry_);

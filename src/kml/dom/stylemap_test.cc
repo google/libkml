@@ -69,19 +69,19 @@ void PairTest::TestType() {
 // Verify proper defaults:
 void PairTest::TestDefaults() {
   CPPUNIT_ASSERT(false == pair_->has_key());
-  CPPUNIT_ASSERT(STYLESTATE_NORMAL == pair_->key());
+  CPPUNIT_ASSERT(STYLESTATE_NORMAL == pair_->get_key());
   CPPUNIT_ASSERT(false == pair_->has_styleurl());
-  CPPUNIT_ASSERT("" == pair_->styleurl());
+  CPPUNIT_ASSERT("" == pair_->get_styleurl());
   CPPUNIT_ASSERT(false == pair_->has_styleselector());
-  CPPUNIT_ASSERT(NULL == pair_->styleselector());
+  CPPUNIT_ASSERT(NULL == pair_->get_styleselector());
 }
 
 // Verify setting default makes has_xxx() true:
 void PairTest::TestSetToDefaultValues() {
   TestDefaults();
-  pair_->set_key(pair_->key());
+  pair_->set_key(pair_->get_key());
   CPPUNIT_ASSERT(true == pair_->has_key());
-  pair_->set_styleurl(pair_->styleurl());
+  pair_->set_styleurl(pair_->get_styleurl());
   CPPUNIT_ASSERT(true == pair_->has_styleurl());
   pair_->set_styleselector(NULL);
   CPPUNIT_ASSERT(false == pair_->has_styleselector()); // ptr is null
@@ -101,11 +101,11 @@ void PairTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == pair_->has_key());
-  CPPUNIT_ASSERT(key == pair_->key());
+  CPPUNIT_ASSERT(key == pair_->get_key());
   CPPUNIT_ASSERT(true == pair_->has_styleurl());
-  CPPUNIT_ASSERT(styleurl == pair_->styleurl());
+  CPPUNIT_ASSERT(styleurl == pair_->get_styleurl());
   CPPUNIT_ASSERT(true == pair_->has_styleselector());
-  CPPUNIT_ASSERT(styleselector== pair_->styleselector());
+  CPPUNIT_ASSERT(styleselector== pair_->get_styleselector());
 
   // Clear all fields:
   pair_->clear_key();
@@ -150,12 +150,12 @@ void StyleMapTest::TestType() {
 }
 
 void StyleMapTest::TestLists() {
-  CPPUNIT_ASSERT(0 == stylemap_->pair_array_size());
+  CPPUNIT_ASSERT(0 == stylemap_->get_pair_array_size());
   stylemap_->add_pair(KmlFactory::GetFactory()->CreatePair());
   stylemap_->add_pair(KmlFactory::GetFactory()->CreatePair());
-  CPPUNIT_ASSERT(2 == stylemap_->pair_array_size());
-  CPPUNIT_ASSERT(Type_Pair == stylemap_->pair_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Pair == stylemap_->pair_array_at(1)->Type());
+  CPPUNIT_ASSERT(2 == stylemap_->get_pair_array_size());
+  CPPUNIT_ASSERT(Type_Pair == stylemap_->get_pair_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Pair == stylemap_->get_pair_array_at(1)->Type());
 }
 
 }  // end namespace kmldom

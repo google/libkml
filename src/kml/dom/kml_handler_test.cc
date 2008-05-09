@@ -147,7 +147,7 @@ void KmlHandlerTest::TestBasicCharData() {
   ElementPtr root = kml_handler_->PopRoot();
   CPPUNIT_ASSERT(root->Type() == Type_name);
   CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
-  CPPUNIT_ASSERT(kContent == root->char_data());
+  CPPUNIT_ASSERT(kContent == root->get_char_data());
 }
 
 // This is a test of the StartElement() method for a known complex element.
@@ -180,7 +180,7 @@ void KmlHandlerTest::TestStartComplexElementWithAtts() {
   CPPUNIT_ASSERT(root->Type() == Type_Placemark);
   CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
   PlacemarkPtr placemark = AsPlacemark(root);
-  CPPUNIT_ASSERT(kAttrVal == placemark->id());
+  CPPUNIT_ASSERT(kAttrVal == placemark->get_id());
 }
 
 // This ParserObserver simply appends each Element passed to its NewElement
@@ -279,16 +279,17 @@ void KmlHandlerTest::VerifyElementTypes(
 void KmlHandlerTest::VerifyFolderParse(const ElementPtr& root) const {
   KmlPtr kml = AsKml(root);
   CPPUNIT_ASSERT(kml);
-  FolderPtr folder = AsFolder(kml->feature());
+  FolderPtr folder = AsFolder(kml->get_feature());
   CPPUNIT_ASSERT(folder);
   CPPUNIT_ASSERT(folder->has_name());
   CPPUNIT_ASSERT(!folder->has_visibility());
   CPPUNIT_ASSERT(!folder->has_open());
   CPPUNIT_ASSERT(folder->has_description());
   CPPUNIT_ASSERT(folder->has_region());
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), folder->feature_array_size());
-  PlacemarkPtr placemark = AsPlacemark(folder->feature_array_at(0));
-  PointPtr point = AsPoint(placemark->geometry());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       folder->get_feature_array_size());
+  PlacemarkPtr placemark = AsPlacemark(folder->get_feature_array_at(0));
+  PointPtr point = AsPoint(placemark->get_geometry());
   CPPUNIT_ASSERT(!point->has_coordinates());
 }
 

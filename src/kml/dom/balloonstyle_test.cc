@@ -69,25 +69,25 @@ void BalloonStyleTest::TestType() {
 // Verify proper defaults:
 void BalloonStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == balloonstyle_->has_bgcolor());
-  CPPUNIT_ASSERT("ffffffff" == balloonstyle_->bgcolor());
+  CPPUNIT_ASSERT("ffffffff" == balloonstyle_->get_bgcolor());
   CPPUNIT_ASSERT(false == balloonstyle_->has_textcolor());
-  CPPUNIT_ASSERT("ff000000" == balloonstyle_->textcolor());
+  CPPUNIT_ASSERT("ff000000" == balloonstyle_->get_textcolor());
   CPPUNIT_ASSERT(false == balloonstyle_->has_text());
-  CPPUNIT_ASSERT("" == balloonstyle_->text());
+  CPPUNIT_ASSERT("" == balloonstyle_->get_text());
   CPPUNIT_ASSERT(false == balloonstyle_->has_displaymode());
-  CPPUNIT_ASSERT(DISPLAYMODE_DEFAULT == balloonstyle_->displaymode());
+  CPPUNIT_ASSERT(DISPLAYMODE_DEFAULT == balloonstyle_->get_displaymode());
 }
 
 // Verify setting default makes has_xxx() true:
 void BalloonStyleTest::TestSetToDefaultValues() {
   TestDefaults();
-  balloonstyle_->set_bgcolor(balloonstyle_->bgcolor());
+  balloonstyle_->set_bgcolor(balloonstyle_->get_bgcolor());
   CPPUNIT_ASSERT(true == balloonstyle_->has_bgcolor());
-  balloonstyle_->set_textcolor(balloonstyle_->textcolor());
+  balloonstyle_->set_textcolor(balloonstyle_->get_textcolor());
   CPPUNIT_ASSERT(true == balloonstyle_->has_textcolor());
-  balloonstyle_->set_text(balloonstyle_->text());
+  balloonstyle_->set_text(balloonstyle_->get_text());
   CPPUNIT_ASSERT(true == balloonstyle_->has_text());
-  balloonstyle_->set_displaymode(balloonstyle_->displaymode());
+  balloonstyle_->set_displaymode(balloonstyle_->get_displaymode());
   CPPUNIT_ASSERT(true == balloonstyle_->has_displaymode());
 }
 
@@ -107,13 +107,13 @@ void BalloonStyleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == balloonstyle_->has_bgcolor());
-  CPPUNIT_ASSERT(bgcolor == balloonstyle_->bgcolor());
+  CPPUNIT_ASSERT(bgcolor == balloonstyle_->get_bgcolor());
   CPPUNIT_ASSERT(true == balloonstyle_->has_textcolor());
-  CPPUNIT_ASSERT(textcolor == balloonstyle_->textcolor());
+  CPPUNIT_ASSERT(textcolor == balloonstyle_->get_textcolor());
   CPPUNIT_ASSERT(true == balloonstyle_->has_text());
-  CPPUNIT_ASSERT(text == balloonstyle_->text());
+  CPPUNIT_ASSERT(text == balloonstyle_->get_text());
   CPPUNIT_ASSERT(true == balloonstyle_->has_displaymode());
-  CPPUNIT_ASSERT(displaymode == balloonstyle_->displaymode());
+  CPPUNIT_ASSERT(displaymode == balloonstyle_->get_displaymode());
 
   // Clear all fields:
   balloonstyle_->clear_bgcolor();

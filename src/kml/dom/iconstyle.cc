@@ -71,16 +71,16 @@ void IconStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_scale()) {
-    serializer.SaveFieldById(Type_scale, scale());
+    serializer.SaveFieldById(Type_scale, get_scale());
   }
   if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, heading());
+    serializer.SaveFieldById(Type_heading, get_heading());
   }
   if (has_icon()) {
-    serializer.SaveElement(*icon());
+    serializer.SaveElement(*get_icon());
   }
   if (has_hotspot()) {
-    serializer.SaveElement(*hotspot());
+    serializer.SaveElement(*get_hotspot());
   }
   SerializeUnknown(serializer);
   serializer.End();

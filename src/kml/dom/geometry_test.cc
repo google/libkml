@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains the unit tests for Vec3, Coordinates, Geometry,
@@ -50,23 +50,23 @@ CPPUNIT_TEST_SUITE_REGISTRATION(Vec3Test);
 
 void Vec3Test::TestConstructor() {
   // Construct a Vec3 with initial arguments:
-  const double longitude = -122.345;
   const double latitude =  37.123;
+  const double longitude = -122.345;
   const double altitude =  101.202;
-  Vec3 vec3(longitude, latitude, altitude);
+  Vec3 vec3(latitude, longitude, altitude);
 
   // Verify constructor set the right fields:
-  CPPUNIT_ASSERT(longitude == vec3.longitude());
-  CPPUNIT_ASSERT(latitude == vec3.latitude());
-  CPPUNIT_ASSERT(altitude == vec3.altitude());
+  CPPUNIT_ASSERT(latitude == vec3.get_latitude());
+  CPPUNIT_ASSERT(longitude == vec3.get_longitude());
+  CPPUNIT_ASSERT(altitude == vec3.get_altitude());
 
   // Construct a Vec3 with no initializers:
   Vec3 vec0;
 
   // Verify all fields are zero:
-  CPPUNIT_ASSERT(0 == vec0.longitude());
-  CPPUNIT_ASSERT(0 == vec0.latitude());
-  CPPUNIT_ASSERT(0 == vec0.altitude());
+  CPPUNIT_ASSERT(0 == vec0.get_latitude());
+  CPPUNIT_ASSERT(0 == vec0.get_longitude());
+  CPPUNIT_ASSERT(0 == vec0.get_altitude());
 }
 
 void Vec3Test::TestSerializer() {
@@ -114,7 +114,7 @@ void CoordinatesTest::TestType() {
 
 // Verify proper defaults:
 void CoordinatesTest::TestDefaults() {
-  CPPUNIT_ASSERT(0 == coordinates_->coordinates_array_size());
+  CPPUNIT_ASSERT(0 == coordinates_->get_coordinates_array_size());
 }
 
 void CoordinatesTest::TestParseVec3() {
@@ -122,52 +122,52 @@ void CoordinatesTest::TestParseVec3() {
   char *endp;
   Vec3 vec;
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(basic_3d_point, &endp, &vec));
-  CPPUNIT_ASSERT(1.123 == vec.longitude());
-  CPPUNIT_ASSERT(-2.789 == vec.latitude());
-  CPPUNIT_ASSERT(3000.5919 == vec.altitude());
+  CPPUNIT_ASSERT(-2.789 == vec.get_latitude());
+  CPPUNIT_ASSERT(1.123 == vec.get_longitude());
+  CPPUNIT_ASSERT(3000.5919 == vec.get_altitude());
   CPPUNIT_ASSERT(basic_3d_point + strlen(basic_3d_point) == endp);
 
   const char* basic_3d_line = "-122.123,38.789,1050.0987 "
                               "-122.123,39.789,1050.098";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(basic_3d_line, &endp, &vec));
-  CPPUNIT_ASSERT(-122.123 == vec.longitude());
-  CPPUNIT_ASSERT(38.789 == vec.latitude());
-  CPPUNIT_ASSERT(1050.0987 == vec.altitude());
+  CPPUNIT_ASSERT(38.789 == vec.get_latitude());
+  CPPUNIT_ASSERT(-122.123 == vec.get_longitude());
+  CPPUNIT_ASSERT(1050.0987 == vec.get_altitude());
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(endp, &endp, &vec));
-  CPPUNIT_ASSERT(-122.123 == vec.longitude());
-  CPPUNIT_ASSERT(39.789 == vec.latitude());
-  CPPUNIT_ASSERT(1050.098 == vec.altitude());
+  CPPUNIT_ASSERT(39.789 == vec.get_latitude());
+  CPPUNIT_ASSERT(-122.123 == vec.get_longitude());
+  CPPUNIT_ASSERT(1050.098 == vec.get_altitude());
 
   const char* basic_2d_point = "10.10,-20.20";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(basic_2d_point, &endp, &vec));
-  CPPUNIT_ASSERT(10.10 == vec.longitude());
-  CPPUNIT_ASSERT(-20.20 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(-20.20 == vec.get_latitude());
+  CPPUNIT_ASSERT(10.10 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   const char* point2d_with_1space = "15.10, -24.20";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(point2d_with_1space, &endp,
                                                 &vec));
-  CPPUNIT_ASSERT(15.10 == vec.longitude());
-  CPPUNIT_ASSERT(-24.20 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(-24.20 == vec.get_latitude());
+  CPPUNIT_ASSERT(15.10 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   const char* point2d_with_2spaces = "15.11 , -24.25";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(point2d_with_2spaces, &endp,
                                                 &vec));
-  CPPUNIT_ASSERT(15.11 == vec.longitude());
-  CPPUNIT_ASSERT(-24.25 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(-24.25 == vec.get_latitude());
+  CPPUNIT_ASSERT(15.11 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   const char* basic_2d_line = "122.123,-38.789 "
                               "122.123,-39.789";
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(basic_2d_line, &endp, &vec));
-  CPPUNIT_ASSERT(122.123 == vec.longitude());
-  CPPUNIT_ASSERT(-38.789 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(-38.789 == vec.get_latitude());
+  CPPUNIT_ASSERT(122.123 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(endp, &endp, &vec));
-  CPPUNIT_ASSERT(122.123 == vec.longitude());
-  CPPUNIT_ASSERT(-39.789 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(-39.789 == vec.get_latitude());
+  CPPUNIT_ASSERT(122.123 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   // How our own serializer emits <coordinates>
   const char* line_with_newlines = "\n"
@@ -181,9 +181,9 @@ void CoordinatesTest::TestParseVec3() {
   const char* exponential_2d_pt = "1E-02, 2E-02";  // 0.01, 0.02
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(exponential_2d_pt, &endp,
                                                 &vec));
-  CPPUNIT_ASSERT(0.01 == vec.longitude());
-  CPPUNIT_ASSERT(0.02 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(0.02 == vec.get_latitude());
+  CPPUNIT_ASSERT(0.01 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   // Ensure junk data is handled gracefully.
   const char* junk_coords1 = "this will not parse correctly";
@@ -191,15 +191,15 @@ void CoordinatesTest::TestParseVec3() {
 
   const char* junk_coords2 = "0,foo";  // Will parse successfully.
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(junk_coords2, &endp, &vec));
-  CPPUNIT_ASSERT(0.0 == vec.longitude());
-  CPPUNIT_ASSERT(0.0 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_latitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   const char* junk_coords3 = "bar,0";  // Will parse successfully.
   CPPUNIT_ASSERT(true == Coordinates::ParseVec3(junk_coords3, &endp, &vec));
-  CPPUNIT_ASSERT(0.0 == vec.longitude());
-  CPPUNIT_ASSERT(0.0 == vec.latitude());
-  CPPUNIT_ASSERT(0.0 == vec.altitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_latitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_longitude());
+  CPPUNIT_ASSERT(0.0 == vec.get_altitude());
 
   const char* junk_coords4 = "\n";  // Will fail parsing.
   CPPUNIT_ASSERT(false == Coordinates::ParseVec3(junk_coords4, &endp, &vec));
@@ -208,29 +208,35 @@ void CoordinatesTest::TestParseVec3() {
 void CoordinatesTest::TestParsePoint() {
   // Parser gathers character data and sets element
   coordinates_->Parse("1.1,-2.2,3.3");
-  CPPUNIT_ASSERT(1 == coordinates_->coordinates_array_size());
-  Vec3 vec = coordinates_->coordinates_array_at(0);
-  CPPUNIT_ASSERT(1.1 == vec.longitude());
-  CPPUNIT_ASSERT(-2.2 == vec.latitude());
-  CPPUNIT_ASSERT(3.3 == vec.altitude());
+  CPPUNIT_ASSERT(1 == coordinates_->get_coordinates_array_size());
+  Vec3 vec = coordinates_->get_coordinates_array_at(0);
+  CPPUNIT_ASSERT(-2.2 == vec.get_latitude());
+  CPPUNIT_ASSERT(1.1 == vec.get_longitude());
+  CPPUNIT_ASSERT(3.3 == vec.get_altitude());
 }
 
 void CoordinatesTest::TestParseLine() {
   // Parser gathers character data and sets element
   coordinates_->Parse("1.1,-2.2,3.3 -5.1,32.9872,10000.3");
-  CPPUNIT_ASSERT(2 == coordinates_->coordinates_array_size());
-  CPPUNIT_ASSERT(1.1 == coordinates_->coordinates_array_at(0).longitude());
-  CPPUNIT_ASSERT(-2.2 == coordinates_->coordinates_array_at(0).latitude());
-  CPPUNIT_ASSERT(3.3 == coordinates_->coordinates_array_at(0).altitude());
+  CPPUNIT_ASSERT(2 == coordinates_->get_coordinates_array_size());
+  CPPUNIT_ASSERT(-2.2 ==
+                 coordinates_->get_coordinates_array_at(0).get_latitude());
+  CPPUNIT_ASSERT(1.1 ==
+                 coordinates_->get_coordinates_array_at(0).get_longitude());
+  CPPUNIT_ASSERT(3.3 ==
+                 coordinates_->get_coordinates_array_at(0).get_altitude());
 }
 
 void CoordinatesTest::TestParseBadSeparator() {
   // Ensure graceful handling of bad data.
   coordinates_->Parse("130.999*66.56083,75");
-  CPPUNIT_ASSERT(1 == coordinates_->coordinates_array_size());
-  CPPUNIT_ASSERT(130.999 == coordinates_->coordinates_array_at(0).longitude());
-  CPPUNIT_ASSERT(75 == coordinates_->coordinates_array_at(0).latitude());
-  CPPUNIT_ASSERT(0 == coordinates_->coordinates_array_at(0).altitude());
+  CPPUNIT_ASSERT(1 == coordinates_->get_coordinates_array_size());
+  CPPUNIT_ASSERT(75 ==
+                 coordinates_->get_coordinates_array_at(0).get_latitude());
+  CPPUNIT_ASSERT(130.999 ==
+                 coordinates_->get_coordinates_array_at(0).get_longitude());
+  CPPUNIT_ASSERT(0 ==
+                 coordinates_->get_coordinates_array_at(0).get_altitude());
 }
 
 // Test Point.
@@ -276,18 +282,18 @@ void PointTest::TestDefaults() {
   CPPUNIT_ASSERT(false == point_->has_id());
   CPPUNIT_ASSERT(false == point_->has_targetid());
   CPPUNIT_ASSERT(false == point_->has_extrude());
-  CPPUNIT_ASSERT(false == point_->extrude());
+  CPPUNIT_ASSERT(false == point_->get_extrude());
   CPPUNIT_ASSERT(false == point_->has_altitudemode());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == point_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == point_->get_altitudemode());
   CPPUNIT_ASSERT(false == point_->has_coordinates());
-  CPPUNIT_ASSERT(NULL == point_->coordinates());
+  CPPUNIT_ASSERT(NULL == point_->get_coordinates());
 }
 
 // Verify setting default makes has_xxx() true:
 void PointTest::TestSetToDefaultValues() {
   TestDefaults();
-  point_->set_extrude(point_->extrude());
-  point_->set_altitudemode(point_->altitudemode());
+  point_->set_extrude(point_->get_extrude());
+  point_->set_altitudemode(point_->get_altitudemode());
   point_->set_coordinates(NULL);  // should not crash
   CPPUNIT_ASSERT(true == point_->has_extrude());
   CPPUNIT_ASSERT(true == point_->has_altitudemode());
@@ -312,15 +318,15 @@ void PointTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == point_->has_id());
-  CPPUNIT_ASSERT(id == point_->id());
+  CPPUNIT_ASSERT(id == point_->get_id());
   CPPUNIT_ASSERT(true == point_->has_targetid());
-  CPPUNIT_ASSERT(targetid == point_->targetid());
+  CPPUNIT_ASSERT(targetid == point_->get_targetid());
   CPPUNIT_ASSERT(true == point_->has_extrude());
-  CPPUNIT_ASSERT(extrude == point_->extrude());
+  CPPUNIT_ASSERT(extrude == point_->get_extrude());
   CPPUNIT_ASSERT(true == point_->has_altitudemode());
-  CPPUNIT_ASSERT(altitudemode == point_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == point_->get_altitudemode());
   CPPUNIT_ASSERT(true == point_->has_coordinates());
-  CPPUNIT_ASSERT(coordinates == point_->coordinates());
+  CPPUNIT_ASSERT(coordinates == point_->get_coordinates());
 
   // Clear all fields:
   point_->clear_id();
@@ -376,20 +382,20 @@ void LineStringTest::TestDefaults() {
   CPPUNIT_ASSERT(false == linestring_->has_id());
   CPPUNIT_ASSERT(false == linestring_->has_targetid());
   CPPUNIT_ASSERT(false == linestring_->has_extrude());
-  CPPUNIT_ASSERT(false == linestring_->extrude());
+  CPPUNIT_ASSERT(false == linestring_->get_extrude());
   CPPUNIT_ASSERT(false == linestring_->has_tessellate());
-  CPPUNIT_ASSERT(false == linestring_->tessellate());
+  CPPUNIT_ASSERT(false == linestring_->get_tessellate());
   CPPUNIT_ASSERT(false == linestring_->has_altitudemode());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == linestring_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == linestring_->get_altitudemode());
   CPPUNIT_ASSERT(false == linestring_->has_coordinates());
 }
 
 // Verify setting default makes has_xxx() true:
 void LineStringTest::TestSetToDefaultValues() {
   TestDefaults();
-  linestring_->set_extrude(linestring_->extrude());
-  linestring_->set_tessellate(linestring_->tessellate());
-  linestring_->set_altitudemode(linestring_->altitudemode());
+  linestring_->set_extrude(linestring_->get_extrude());
+  linestring_->set_tessellate(linestring_->get_tessellate());
+  linestring_->set_altitudemode(linestring_->get_altitudemode());
   linestring_->set_coordinates(NULL);  // should not crash
   CPPUNIT_ASSERT(true == linestring_->has_extrude());
   CPPUNIT_ASSERT(true == linestring_->has_tessellate());
@@ -413,13 +419,13 @@ void LineStringTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == linestring_->has_extrude());
-  CPPUNIT_ASSERT(extrude == linestring_->extrude());
+  CPPUNIT_ASSERT(extrude == linestring_->get_extrude());
   CPPUNIT_ASSERT(true == linestring_->has_tessellate());
-  CPPUNIT_ASSERT(tessellate == linestring_->tessellate());
+  CPPUNIT_ASSERT(tessellate == linestring_->get_tessellate());
   CPPUNIT_ASSERT(true == linestring_->has_altitudemode());
-  CPPUNIT_ASSERT(altitudemode == linestring_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == linestring_->get_altitudemode());
   CPPUNIT_ASSERT(true == linestring_->has_coordinates());
-  CPPUNIT_ASSERT(coordinates == linestring_->coordinates());
+  CPPUNIT_ASSERT(coordinates == linestring_->get_coordinates());
 
   // Clear all fields:
   linestring_->clear_extrude();
@@ -475,20 +481,20 @@ void LinearRingTest::TestDefaults() {
   CPPUNIT_ASSERT(false == linearring_->has_id());
   CPPUNIT_ASSERT(false == linearring_->has_targetid());
   CPPUNIT_ASSERT(false == linearring_->has_extrude());
-  CPPUNIT_ASSERT(false == linearring_->extrude());
+  CPPUNIT_ASSERT(false == linearring_->get_extrude());
   CPPUNIT_ASSERT(false == linearring_->has_tessellate());
-  CPPUNIT_ASSERT(false == linearring_->tessellate());
+  CPPUNIT_ASSERT(false == linearring_->get_tessellate());
   CPPUNIT_ASSERT(false == linearring_->has_altitudemode());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == linearring_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == linearring_->get_altitudemode());
   CPPUNIT_ASSERT(false == linearring_->has_coordinates());
 }
 
 // Verify setting default makes has_xxx() true:
 void LinearRingTest::TestSetToDefaultValues() {
   TestDefaults();
-  linearring_->set_extrude(linearring_->extrude());
-  linearring_->set_tessellate(linearring_->tessellate());
-  linearring_->set_altitudemode(linearring_->altitudemode());
+  linearring_->set_extrude(linearring_->get_extrude());
+  linearring_->set_tessellate(linearring_->get_tessellate());
+  linearring_->set_altitudemode(linearring_->get_altitudemode());
   linearring_->set_coordinates(NULL);  // should not crash
   CPPUNIT_ASSERT(true == linearring_->has_extrude());
   CPPUNIT_ASSERT(true == linearring_->has_tessellate());
@@ -512,13 +518,13 @@ void LinearRingTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == linearring_->has_extrude());
-  CPPUNIT_ASSERT(extrude == linearring_->extrude());
+  CPPUNIT_ASSERT(extrude == linearring_->get_extrude());
   CPPUNIT_ASSERT(true == linearring_->has_tessellate());
-  CPPUNIT_ASSERT(tessellate == linearring_->tessellate());
+  CPPUNIT_ASSERT(tessellate == linearring_->get_tessellate());
   CPPUNIT_ASSERT(true == linearring_->has_altitudemode());
-  CPPUNIT_ASSERT(altitudemode == linearring_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == linearring_->get_altitudemode());
   CPPUNIT_ASSERT(true == linearring_->has_coordinates());
-  CPPUNIT_ASSERT(coordinates == linearring_->coordinates());
+  CPPUNIT_ASSERT(coordinates == linearring_->get_coordinates());
 
   // Clear all fields:
   linearring_->clear_extrude();
@@ -574,7 +580,7 @@ void OuterBoundaryIsTest::TestSetGetHasClear() {
   outerboundaryis_->set_linearring(
       KmlFactory::GetFactory()->CreateLinearRing());
   CPPUNIT_ASSERT(outerboundaryis_->has_linearring());
-  CPPUNIT_ASSERT(outerboundaryis_->linearring());
+  CPPUNIT_ASSERT(outerboundaryis_->get_linearring());
   // Clear it and verify we're back to the default state.
   outerboundaryis_->clear_linearring();
   TestDefaults();
@@ -624,7 +630,7 @@ void InnerBoundaryIsTest::TestSetGetHasClear() {
   innerboundaryis_->set_linearring(
       KmlFactory::GetFactory()->CreateLinearRing());
   CPPUNIT_ASSERT(innerboundaryis_->has_linearring());
-  CPPUNIT_ASSERT(innerboundaryis_->linearring());
+  CPPUNIT_ASSERT(innerboundaryis_->get_linearring());
   // Clear it and verify we're back to the default state.
   innerboundaryis_->clear_linearring();
   TestDefaults();
@@ -674,21 +680,21 @@ void PolygonTest::TestDefaults() {
   CPPUNIT_ASSERT(false == polygon_->has_id());
   CPPUNIT_ASSERT(false == polygon_->has_targetid());
   CPPUNIT_ASSERT(false == polygon_->has_extrude());
-  CPPUNIT_ASSERT(false == polygon_->extrude());
+  CPPUNIT_ASSERT(false == polygon_->get_extrude());
   CPPUNIT_ASSERT(false == polygon_->has_tessellate());
-  CPPUNIT_ASSERT(false == polygon_->tessellate());
+  CPPUNIT_ASSERT(false == polygon_->get_tessellate());
   CPPUNIT_ASSERT(false == polygon_->has_altitudemode());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == polygon_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == polygon_->get_altitudemode());
   CPPUNIT_ASSERT(false == polygon_->has_outerboundaryis());
-  CPPUNIT_ASSERT(0 == polygon_->innerboundaryis_array_size());
+  CPPUNIT_ASSERT(0 == polygon_->get_innerboundaryis_array_size());
 }
 
 // Verify setting default makes has_xxx() true:
 void PolygonTest::TestSetToDefaultValues() {
   TestDefaults();
-  polygon_->set_extrude(polygon_->extrude());
-  polygon_->set_tessellate(polygon_->tessellate());
-  polygon_->set_altitudemode(polygon_->altitudemode());
+  polygon_->set_extrude(polygon_->get_extrude());
+  polygon_->set_tessellate(polygon_->get_tessellate());
+  polygon_->set_altitudemode(polygon_->get_altitudemode());
   polygon_->set_outerboundaryis(NULL);
   CPPUNIT_ASSERT(true == polygon_->has_extrude());
   CPPUNIT_ASSERT(true == polygon_->has_tessellate());
@@ -713,13 +719,13 @@ void PolygonTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == polygon_->has_extrude());
-  CPPUNIT_ASSERT(extrude == polygon_->extrude());
+  CPPUNIT_ASSERT(extrude == polygon_->get_extrude());
   CPPUNIT_ASSERT(true == polygon_->has_tessellate());
-  CPPUNIT_ASSERT(tessellate == polygon_->tessellate());
+  CPPUNIT_ASSERT(tessellate == polygon_->get_tessellate());
   CPPUNIT_ASSERT(true == polygon_->has_altitudemode());
-  CPPUNIT_ASSERT(altitudemode == polygon_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == polygon_->get_altitudemode());
   CPPUNIT_ASSERT(true == polygon_->has_outerboundaryis());
-  CPPUNIT_ASSERT(outerboundaryis == polygon_->outerboundaryis());
+  CPPUNIT_ASSERT(outerboundaryis == polygon_->get_outerboundaryis());
 
   // Clear all fields:
   polygon_->clear_extrude();
@@ -770,7 +776,7 @@ void MultiGeometryTest::TestType() {
 void MultiGeometryTest::TestDefaults() {
   CPPUNIT_ASSERT(false == multigeometry_->has_id());
   CPPUNIT_ASSERT(false == multigeometry_->has_targetid());
-  CPPUNIT_ASSERT(0 == multigeometry_->geometry_array_size());
+  CPPUNIT_ASSERT(0 == multigeometry_->get_geometry_array_size());
 }
 
 void MultiGeometryTest::TestAddGetGeometries() {
@@ -783,19 +789,19 @@ void MultiGeometryTest::TestAddGetGeometries() {
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateLinearRing());
 
   // Verify the proper size and order of the geometry array:
-  CPPUNIT_ASSERT(6 == multigeometry_->geometry_array_size());
+  CPPUNIT_ASSERT(6 == multigeometry_->get_geometry_array_size());
   CPPUNIT_ASSERT(
-      Type_Point == multigeometry_->geometry_array_at(0)->Type());
+      Type_Point == multigeometry_->get_geometry_array_at(0)->Type());
   CPPUNIT_ASSERT(
-      Type_MultiGeometry == multigeometry_->geometry_array_at(1)->Type());
+      Type_MultiGeometry == multigeometry_->get_geometry_array_at(1)->Type());
   CPPUNIT_ASSERT(
-      Type_Polygon == multigeometry_->geometry_array_at(2)->Type());
+      Type_Polygon == multigeometry_->get_geometry_array_at(2)->Type());
   CPPUNIT_ASSERT(
-      Type_Model == multigeometry_->geometry_array_at(3)->Type());
+      Type_Model == multigeometry_->get_geometry_array_at(3)->Type());
   CPPUNIT_ASSERT(
-      Type_LineString == multigeometry_->geometry_array_at(4)->Type());
+      Type_LineString == multigeometry_->get_geometry_array_at(4)->Type());
   CPPUNIT_ASSERT(
-      Type_LinearRing == multigeometry_->geometry_array_at(5)->Type());
+      Type_LinearRing == multigeometry_->get_geometry_array_at(5)->Type());
 }
 
 }  // end namespace kmldom

@@ -48,11 +48,11 @@ class Document : public Container {
     AddComplexChild(schema, &schema_array_);
   }
 
-  const size_t schema_array_size() const {
+  const size_t get_schema_array_size() const {
     return schema_array_.size();
   }
 
-  const SchemaPtr& schema_array_at(unsigned int index) const {
+  const SchemaPtr& get_schema_array_at(unsigned int index) const {
     return schema_array_[index];
   }
 
@@ -61,11 +61,11 @@ class Document : public Container {
     AddComplexChild(styleselector, &styleselector_array_);
   }
 
-  const size_t styleselector_array_size() const {
+  const size_t get_styleselector_array_size() const {
     return styleselector_array_.size();
   }
 
-  const StyleSelectorPtr& styleselector_array_at(unsigned int index) const {
+  const StyleSelectorPtr& get_styleselector_array_at(unsigned int index) const {
     return styleselector_array_[index];
   }
 

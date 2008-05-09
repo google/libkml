@@ -45,7 +45,7 @@ class Vec2 : public Element {
     return type == Type_Vec2;
   }
 
-  double x() const { return x_; }
+  double get_x() const { return x_; }
   bool has_x() const { return has_x_; }
   void set_x(double value) {
     x_ = value;
@@ -56,7 +56,7 @@ class Vec2 : public Element {
     has_x_ = false;
   }
 
-  double y() const { return y_; }
+  double get_y() const { return y_; }
   bool has_y() const { return has_y_; }
   void set_y(double value) {
     y_ = value;
@@ -67,7 +67,7 @@ class Vec2 : public Element {
     has_y_ = false;
   }
 
-  int xunits() const { return xunits_; }
+  int get_xunits() const { return xunits_; }
   bool has_xunits() const { return has_xunits_; }
   void set_xunits(int value) {
     xunits_ = value;
@@ -78,7 +78,7 @@ class Vec2 : public Element {
     has_xunits_ = false;
   }
 
-  int yunits() const { return yunits_; }
+  int get_yunits() const { return yunits_; }
   bool has_yunits() const { return has_yunits_; }
   void set_yunits(int value) {
     yunits_ = value;

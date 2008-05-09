@@ -29,6 +29,13 @@
 
 namespace kmldom {
 
+const AbstractLatLonBoxPtr AsAbstractLatLonBox(const ElementPtr element) {
+  if (element && element->IsA(Type_AbstractLatLonBox)) {
+    return boost::static_pointer_cast<AbstractLatLonBox>(element);
+  }
+  return NULL;
+}
+
 const AbstractViewPtr AsAbstractView(const ElementPtr element) {
   if (element && element->IsA(Type_AbstractView)) {
     return boost::static_pointer_cast<AbstractView>(element);

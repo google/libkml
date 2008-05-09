@@ -36,25 +36,25 @@ def main():
   print '== This is %s' % sys.argv[0]
 
   factory = kmldom.KmlFactory_GetFactory()
-  
+
   print 'Coordinates is a vector of Vec3...'
-  
+
   coordinates = factory.CreateCoordinates()
-  coordinates.add_point2(1,1)
-  coordinates.add_point2(2,2)
-  coordinates.add_point2(3,3)
-  
-  for i in range(coordinates.coordinates_array_size()):
-    print 'longitude',coordinates.coordinates_array_at(i).longitude()
-    print 'latitude',coordinates.coordinates_array_at(i).latitude()
-    print 'altitude',coordinates.coordinates_array_at(i).altitude()
-  
+  coordinates.add_latlng(1,1)
+  coordinates.add_latlng(2,2)
+  coordinates.add_latlng(3,3)
+
+  for i in range(coordinates.get_coordinates_array_size()):
+    print 'longitude',coordinates.get_coordinates_array_at(i).get_longitude()
+    print 'latitude',coordinates.get_coordinates_array_at(i).get_latitude()
+    print 'altitude',coordinates.get_coordinates_array_at(i).get_altitude()
+
   print kmldom.SerializePretty(coordinates)
 
   # Python deletes coordinates.
-  
+
   print 'Create a Folder with some Features...'
-  
+
   folder = factory.CreateFolder()
   p1 = factory.CreatePlacemark()
   f1 = factory.CreateFolder()
@@ -65,13 +65,13 @@ def main():
   # folder.add_feature(f.CreatePlacemark())
   # SWIG's python module does not seem to allow this type of higher order
   # function.
-  
-  for i in range(folder.feature_array_size()):
-    print 'feature Type',folder.feature_array_at(i).Type()
-  
+
+  for i in range(folder.get_feature_array_size()):
+    print 'feature Type',folder.get_feature_array_at(i).Type()
+
   print kmldom.SerializePretty(folder)
 
   # Python deletes folder and the child features.
-  
+
 if __name__ == '__main__':
   main()

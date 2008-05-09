@@ -52,7 +52,7 @@ public class WalkFeatures {
     }
     Kml kml = kmldom.AsKml(element);
     if (kml != null && kml.has_feature()) {
-      return kml.feature();
+      return kml.get_feature();
     }
     return null;
   }
@@ -61,12 +61,12 @@ public class WalkFeatures {
     Indent(depth);
     if (feature.has_id()) {
       System.out.print("id= ");
-      System.out.print(feature.id());
+      System.out.print(feature.get_id());
       System.out.print(" ");
     }
     if (feature.has_name()) {
       System.out.print("name= ");
-      System.out.print(feature.name());
+      System.out.print(feature.get_name());
       System.out.print(" ");
     }
     System.out.println(feature.Type());
@@ -76,8 +76,8 @@ public class WalkFeatures {
   }
 
   public static void WalkContainer(Container container, int depth) {
-    for (int i = 0; i < container.feature_array_size(); ++i) {
-      VisitFeature(container.feature_array_at(i), depth);
+    for (int i = 0; i < container.get_feature_array_size(); ++i) {
+      VisitFeature(container.get_feature_array_at(i), depth);
     }
   }
 

@@ -85,25 +85,25 @@ void LookAt::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   AbstractView::Serialize(serializer);
   if (has_longitude()) {
-    serializer.SaveFieldById(Type_longitude, longitude());
+    serializer.SaveFieldById(Type_longitude, get_longitude());
   }
   if (has_latitude()) {
-    serializer.SaveFieldById(Type_latitude, latitude());
+    serializer.SaveFieldById(Type_latitude, get_latitude());
   }
   if (has_altitude()) {
-    serializer.SaveFieldById(Type_altitude, altitude());
+    serializer.SaveFieldById(Type_altitude, get_altitude());
   }
   if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, heading());
+    serializer.SaveFieldById(Type_heading, get_heading());
   }
   if (has_tilt()) {
-    serializer.SaveFieldById(Type_tilt, tilt());
+    serializer.SaveFieldById(Type_tilt, get_tilt());
   }
   if (has_range()) {
-    serializer.SaveFieldById(Type_range, range());
+    serializer.SaveFieldById(Type_range, get_range());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -163,25 +163,25 @@ void Camera::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   AbstractView::Serialize(serializer);
   if (has_longitude()) {
-    serializer.SaveFieldById(Type_longitude, longitude());
+    serializer.SaveFieldById(Type_longitude, get_longitude());
   }
   if (has_latitude()) {
-    serializer.SaveFieldById(Type_latitude, latitude());
+    serializer.SaveFieldById(Type_latitude, get_latitude());
   }
   if (has_altitude()) {
-    serializer.SaveFieldById(Type_altitude, altitude());
+    serializer.SaveFieldById(Type_altitude, get_altitude());
   }
   if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, heading());
+    serializer.SaveFieldById(Type_heading, get_heading());
   }
   if (has_tilt()) {
-    serializer.SaveFieldById(Type_tilt, tilt());
+    serializer.SaveFieldById(Type_tilt, get_tilt());
   }
   if (has_roll()) {
-    serializer.SaveFieldById(Type_roll, roll());
+    serializer.SaveFieldById(Type_roll, get_roll());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   SerializeUnknown(serializer);
   serializer.End();

@@ -50,10 +50,10 @@ void Document::Serialize(Serializer& serializer) const {
   Container::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < schema_array_.size(); ++i) {
-    serializer.SaveElement(*schema_array_at(i));
+    serializer.SaveElement(*get_schema_array_at(i));
   }
   for (size_t i = 0; i < styleselector_array_.size(); ++i) {
-    serializer.SaveElement(*styleselector_array_at(i));
+    serializer.SaveElement(*get_styleselector_array_at(i));
   }
   Container::Serialize(serializer);
   SerializeUnknown(serializer);

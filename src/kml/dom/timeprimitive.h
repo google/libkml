@@ -66,7 +66,7 @@ class TimeSpan : public TimePrimitive {
   }
 
   // <begin>
-  const std::string& begin() const { return begin_; }
+  const std::string& get_begin() const { return begin_; }
   bool has_begin() const { return has_begin_; }
   void set_begin(const std::string& value) {
     begin_ = value;
@@ -78,7 +78,7 @@ class TimeSpan : public TimePrimitive {
   }
 
   // <end>
-  const std::string& end() const { return end_; }
+  const std::string& get_end() const { return end_; }
   bool has_end() const { return has_end_; }
   void set_end(const std::string& value) {
     end_ = value;
@@ -113,7 +113,7 @@ class TimeStamp : public TimePrimitive {
   }
 
   // <when>
-  const std::string& when() const { return when_; }
+  const std::string& get_when() const { return when_; }
   bool has_when() const { return has_when_; }
   void set_when(const std::string& value) {
     when_ = value;

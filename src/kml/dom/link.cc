@@ -37,7 +37,7 @@ BasicLink::BasicLink()
 BasicLink::~BasicLink() {
 }
 
-// TODO: fix CDATA parsing in general
+// TODO: fix CDATA parsing in general.
 static const char *kCdataOpen = "<![CDATA[";
 
 static bool SetStringInsideCdata(ElementPtr element,
@@ -60,8 +60,9 @@ void BasicLink::AddElement(const ElementPtr& element) {
   }
   if (element->Type() == Type_href) {
       // TODO: use a generalized approach
-      //has_href_ = element->SetString(&href_);
-      has_href_ = SetStringInsideCdata(element, element->char_data(), &href_);
+      // has_href_ = element->SetString(&href_);
+      has_href_ = SetStringInsideCdata(element, element->get_char_data(),
+                                       &href_);
   } else {
       Object::AddElement(element);
   }
@@ -70,7 +71,7 @@ void BasicLink::AddElement(const ElementPtr& element) {
 void BasicLink::Serialize(Serializer& serializer) const {
   Object::Serialize(serializer);
   if (has_href()) {
-    serializer.SaveFieldById(Type_href, href());
+    serializer.SaveFieldById(Type_href, get_href());
   }
 }
 
@@ -131,25 +132,25 @@ void AbstractLink::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   BasicLink::Serialize(serializer);
   if (has_refreshmode()) {
-    serializer.SaveEnum(Type_refreshMode, refreshmode());
+    serializer.SaveEnum(Type_refreshMode, get_refreshmode());
   }
   if (has_refreshinterval()) {
-    serializer.SaveFieldById(Type_refreshInterval, refreshinterval());
+    serializer.SaveFieldById(Type_refreshInterval, get_refreshinterval());
   }
   if (has_viewrefreshmode()) {
-    serializer.SaveEnum(Type_viewRefreshMode, viewrefreshmode());
+    serializer.SaveEnum(Type_viewRefreshMode, get_viewrefreshmode());
   }
   if (has_viewrefreshtime()) {
-    serializer.SaveFieldById(Type_viewRefreshTime, viewrefreshtime());
+    serializer.SaveFieldById(Type_viewRefreshTime, get_viewrefreshtime());
   }
   if (has_viewboundscale()) {
-    serializer.SaveFieldById(Type_viewBoundScale, viewboundscale());
+    serializer.SaveFieldById(Type_viewBoundScale, get_viewboundscale());
   }
   if (has_viewformat()) {
-    serializer.SaveFieldById(Type_viewFormat, viewformat());
+    serializer.SaveFieldById(Type_viewFormat, get_viewformat());
   }
   if (has_httpquery()) {
-    serializer.SaveFieldById(Type_httpQuery, httpquery());
+    serializer.SaveFieldById(Type_httpQuery, get_httpquery());
   }
   Element::SerializeUnknown(serializer);
   serializer.End();

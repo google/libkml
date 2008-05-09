@@ -71,38 +71,38 @@ void LookAtTest::TestType() {
 
 // Verify proper defaults:
 void LookAtTest::TestDefaults() {
-  CPPUNIT_ASSERT(0.0 == lookat_->longitude());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_longitude());
   CPPUNIT_ASSERT(false == lookat_->has_longitude());
-  CPPUNIT_ASSERT(0.0 == lookat_->latitude());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_latitude());
   CPPUNIT_ASSERT(false == lookat_->has_latitude());
-  CPPUNIT_ASSERT(0.0 == lookat_->altitude());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_altitude());
   CPPUNIT_ASSERT(false == lookat_->has_altitude());
-  CPPUNIT_ASSERT(0.0 == lookat_->heading());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_heading());
   CPPUNIT_ASSERT(false == lookat_->has_heading());
-  CPPUNIT_ASSERT(0.0 == lookat_->tilt());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_tilt());
   CPPUNIT_ASSERT(false == lookat_->has_tilt());
-  CPPUNIT_ASSERT(0.0 == lookat_->range());
+  CPPUNIT_ASSERT(0.0 == lookat_->get_range());
   CPPUNIT_ASSERT(false == lookat_->has_range());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == lookat_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == lookat_->get_altitudemode());
   CPPUNIT_ASSERT(false == lookat_->has_altitudemode());
 }
 
 // Verify setting default makes has_xxx() true:
 void LookAtTest::TestSetToDefaultValues() {
   TestDefaults();
-  lookat_->set_longitude(lookat_->longitude());
+  lookat_->set_longitude(lookat_->get_longitude());
   CPPUNIT_ASSERT(true == lookat_->has_longitude());
-  lookat_->set_latitude(lookat_->latitude());
+  lookat_->set_latitude(lookat_->get_latitude());
   CPPUNIT_ASSERT(true == lookat_->has_latitude());
-  lookat_->set_altitude(lookat_->altitude());
+  lookat_->set_altitude(lookat_->get_altitude());
   CPPUNIT_ASSERT(true == lookat_->has_altitude());
-  lookat_->set_heading(lookat_->heading());
+  lookat_->set_heading(lookat_->get_heading());
   CPPUNIT_ASSERT(true == lookat_->has_heading());
-  lookat_->set_tilt(lookat_->tilt());
+  lookat_->set_tilt(lookat_->get_tilt());
   CPPUNIT_ASSERT(true == lookat_->has_tilt());
-  lookat_->set_range(lookat_->range());
+  lookat_->set_range(lookat_->get_range());
   CPPUNIT_ASSERT(true == lookat_->has_range());
-  lookat_->set_altitudemode(lookat_->altitudemode());
+  lookat_->set_altitudemode(lookat_->get_altitudemode());
   CPPUNIT_ASSERT(true == lookat_->has_altitudemode());
 }
 
@@ -127,19 +127,19 @@ void LookAtTest::TestSetGetHasClear() {
   lookat_->set_altitudemode(altitudemode);
 
   // Verify getter and has_xxx():
-  CPPUNIT_ASSERT(longitude == lookat_->longitude());
+  CPPUNIT_ASSERT(longitude == lookat_->get_longitude());
   CPPUNIT_ASSERT(true == lookat_->has_longitude());
-  CPPUNIT_ASSERT(latitude == lookat_->latitude());
+  CPPUNIT_ASSERT(latitude == lookat_->get_latitude());
   CPPUNIT_ASSERT(true == lookat_->has_latitude());
-  CPPUNIT_ASSERT(altitude == lookat_->altitude());
+  CPPUNIT_ASSERT(altitude == lookat_->get_altitude());
   CPPUNIT_ASSERT(true == lookat_->has_altitude());
-  CPPUNIT_ASSERT(heading == lookat_->heading());
+  CPPUNIT_ASSERT(heading == lookat_->get_heading());
   CPPUNIT_ASSERT(true == lookat_->has_heading());
-  CPPUNIT_ASSERT(tilt == lookat_->tilt());
+  CPPUNIT_ASSERT(tilt == lookat_->get_tilt());
   CPPUNIT_ASSERT(true == lookat_->has_tilt());
-  CPPUNIT_ASSERT(range == lookat_->range());
+  CPPUNIT_ASSERT(range == lookat_->get_range());
   CPPUNIT_ASSERT(true == lookat_->has_range());
-  CPPUNIT_ASSERT(altitudemode == lookat_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == lookat_->get_altitudemode());
   CPPUNIT_ASSERT(true == lookat_->has_altitudemode());
 
   // Clear all fields:
@@ -194,38 +194,38 @@ void CameraTest::TestType() {
 
 // Verify proper defaults:
 void CameraTest::TestDefaults() {
-  CPPUNIT_ASSERT(0.0 == camera_->longitude());
+  CPPUNIT_ASSERT(0.0 == camera_->get_longitude());
   CPPUNIT_ASSERT(false == camera_->has_longitude());
-  CPPUNIT_ASSERT(0.0 == camera_->latitude());
+  CPPUNIT_ASSERT(0.0 == camera_->get_latitude());
   CPPUNIT_ASSERT(false == camera_->has_latitude());
-  CPPUNIT_ASSERT(0.0 == camera_->altitude());
+  CPPUNIT_ASSERT(0.0 == camera_->get_altitude());
   CPPUNIT_ASSERT(false == camera_->has_altitude());
-  CPPUNIT_ASSERT(0.0 == camera_->heading());
+  CPPUNIT_ASSERT(0.0 == camera_->get_heading());
   CPPUNIT_ASSERT(false == camera_->has_heading());
-  CPPUNIT_ASSERT(0.0 == camera_->tilt());
+  CPPUNIT_ASSERT(0.0 == camera_->get_tilt());
   CPPUNIT_ASSERT(false == camera_->has_tilt());
-  CPPUNIT_ASSERT(0.0 == camera_->roll());
+  CPPUNIT_ASSERT(0.0 == camera_->get_roll());
   CPPUNIT_ASSERT(false == camera_->has_roll());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == camera_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == camera_->get_altitudemode());
   CPPUNIT_ASSERT(false == camera_->has_altitudemode());
 }
 
 // Verify setting default makes has_xxx() true:
 void CameraTest::TestSetToDefaultValues() {
   TestDefaults();
-  camera_->set_longitude(camera_->longitude());
+  camera_->set_longitude(camera_->get_longitude());
   CPPUNIT_ASSERT(true == camera_->has_longitude());
-  camera_->set_latitude(camera_->latitude());
+  camera_->set_latitude(camera_->get_latitude());
   CPPUNIT_ASSERT(true == camera_->has_latitude());
-  camera_->set_altitude(camera_->altitude());
+  camera_->set_altitude(camera_->get_altitude());
   CPPUNIT_ASSERT(true == camera_->has_altitude());
-  camera_->set_heading(camera_->heading());
+  camera_->set_heading(camera_->get_heading());
   CPPUNIT_ASSERT(true == camera_->has_heading());
-  camera_->set_tilt(camera_->tilt());
+  camera_->set_tilt(camera_->get_tilt());
   CPPUNIT_ASSERT(true == camera_->has_tilt());
-  camera_->set_roll(camera_->roll());
+  camera_->set_roll(camera_->get_roll());
   CPPUNIT_ASSERT(true == camera_->has_roll());
-  camera_->set_altitudemode(camera_->altitudemode());
+  camera_->set_altitudemode(camera_->get_altitudemode());
   CPPUNIT_ASSERT(true == camera_->has_altitudemode());
 }
 
@@ -250,19 +250,19 @@ void CameraTest::TestSetGetHasClear() {
   camera_->set_altitudemode(altitudemode);
 
   // Verify getter and has_xxx():
-  CPPUNIT_ASSERT(longitude == camera_->longitude());
+  CPPUNIT_ASSERT(longitude == camera_->get_longitude());
   CPPUNIT_ASSERT(true == camera_->has_longitude());
-  CPPUNIT_ASSERT(latitude == camera_->latitude());
+  CPPUNIT_ASSERT(latitude == camera_->get_latitude());
   CPPUNIT_ASSERT(true == camera_->has_latitude());
-  CPPUNIT_ASSERT(altitude == camera_->altitude());
+  CPPUNIT_ASSERT(altitude == camera_->get_altitude());
   CPPUNIT_ASSERT(true == camera_->has_altitude());
-  CPPUNIT_ASSERT(heading == camera_->heading());
+  CPPUNIT_ASSERT(heading == camera_->get_heading());
   CPPUNIT_ASSERT(true == camera_->has_heading());
-  CPPUNIT_ASSERT(tilt == camera_->tilt());
+  CPPUNIT_ASSERT(tilt == camera_->get_tilt());
   CPPUNIT_ASSERT(true == camera_->has_tilt());
-  CPPUNIT_ASSERT(roll == camera_->roll());
+  CPPUNIT_ASSERT(roll == camera_->get_roll());
   CPPUNIT_ASSERT(true == camera_->has_roll());
-  CPPUNIT_ASSERT(altitudemode == camera_->altitudemode());
+  CPPUNIT_ASSERT(altitudemode == camera_->get_altitudemode());
   CPPUNIT_ASSERT(true == camera_->has_altitudemode());
 
   // Clear all fields:

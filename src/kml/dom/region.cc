@@ -66,13 +66,13 @@ void LatLonAltBox::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   AbstractLatLonBox::Serialize(serializer);
   if (has_minaltitude()) {
-    serializer.SaveFieldById(Type_minAltitude, minaltitude());
+    serializer.SaveFieldById(Type_minAltitude, get_minaltitude());
   }
   if (has_maxaltitude()) {
-    serializer.SaveFieldById(Type_maxAltitude, maxaltitude());
+    serializer.SaveFieldById(Type_maxAltitude, get_maxaltitude());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -113,16 +113,16 @@ void Lod::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_minlodpixels()) {
-    serializer.SaveFieldById(Type_minLodPixels, minlodpixels());
+    serializer.SaveFieldById(Type_minLodPixels, get_minlodpixels());
   }
   if (has_maxlodpixels()) {
-    serializer.SaveFieldById(Type_maxLodPixels, maxlodpixels());
+    serializer.SaveFieldById(Type_maxLodPixels, get_maxlodpixels());
   }
   if (has_minfadeextent()) {
-    serializer.SaveFieldById(Type_minFadeExtent, minfadeextent());
+    serializer.SaveFieldById(Type_minFadeExtent, get_minfadeextent());
   }
   if (has_maxfadeextent()) {
-    serializer.SaveFieldById(Type_maxFadeExtent, maxfadeextent());
+    serializer.SaveFieldById(Type_maxFadeExtent, get_maxfadeextent());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -153,10 +153,10 @@ void Region::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_latlonaltbox()) {
-    serializer.SaveElement(*latlonaltbox());
+    serializer.SaveElement(*get_latlonaltbox());
   }
   if (has_lod()) {
-    serializer.SaveElement(*lod());
+    serializer.SaveElement(*get_lod());
   }
   SerializeUnknown(serializer);
   serializer.End();

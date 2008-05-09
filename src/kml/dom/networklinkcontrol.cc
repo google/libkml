@@ -59,7 +59,7 @@ void Create::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < container_array_.size(); ++i) {
-    serializer.SaveElement(*container_array_at(i));
+    serializer.SaveElement(*get_container_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -85,7 +85,7 @@ void Delete::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < feature_array_.size(); ++i) {
-    serializer.SaveElement(*feature_array_at(i));
+    serializer.SaveElement(*get_feature_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -111,7 +111,7 @@ void Change::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < object_array_.size(); ++i) {
-    serializer.SaveElement(*object_array_at(i));
+    serializer.SaveElement(*get_object_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -151,10 +151,10 @@ void Update::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   if (has_targethref()) {
-    serializer.SaveFieldById(Type_targetHref, targethref());
+    serializer.SaveFieldById(Type_targetHref, get_targethref());
   }
   for (size_t i = 0; i < updateoperation_array_.size(); ++i) {
-    serializer.SaveElement(*updateoperation_array_at(i));
+    serializer.SaveElement(*get_updateoperation_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -243,16 +243,16 @@ void NetworkLinkControl::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_linkDescription, linkdescription_);
   }
   if (linksnippet_) {
-    serializer.SaveElement(*linksnippet());
+    serializer.SaveElement(*get_linksnippet());
   }
   if (has_expires_) {
     serializer.SaveFieldById(Type_expires, expires_);
   }
   if (update_) {
-    serializer.SaveElement(*update());
+    serializer.SaveElement(*get_update());
   }
   if (abstractview_) {
-    serializer.SaveElement(*abstractview());
+    serializer.SaveElement(*get_abstractview());
   }
   SerializeUnknown(serializer);
   serializer.End();

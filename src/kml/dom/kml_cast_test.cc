@@ -46,6 +46,10 @@ void KmlCastTest::TestCasts() {
 
   // The temporary ElementPtr holds a reference to the created Element
   // which is released when the As*() goes out of scope.
+  CPPUNIT_ASSERT(AsAbstractLatLonBox(
+      factory->CreateElementById(Type_LatLonBox)));
+  CPPUNIT_ASSERT(AsAbstractLatLonBox(
+      factory->CreateElementById(Type_LatLonAltBox)));
   CPPUNIT_ASSERT(AsAbstractView(factory->CreateElementById(Type_LookAt)));
   CPPUNIT_ASSERT(AsColorStyle(factory->CreateElementById(Type_IconStyle)));
   CPPUNIT_ASSERT(AsContainer(factory->CreateElementById(Type_Folder)));

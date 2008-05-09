@@ -54,8 +54,8 @@ void Container::AddElement(const ElementPtr& element) {
 
 void Container::Serialize(Serializer& serializer) const {
   Feature::Serialize(serializer);
-  for (size_t i = 0; i < feature_array_size(); ++i) {
-    serializer.SaveElement(*feature_array_at(i));
+  for (size_t i = 0; i < get_feature_array_size(); ++i) {
+    serializer.SaveElement(*get_feature_array_at(i));
   }
 }
 

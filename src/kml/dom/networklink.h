@@ -46,7 +46,7 @@ class NetworkLink : public Feature {
   }
 
   // <refreshVisibility>
-  bool refreshvisibility() const { return refreshvisibility_; }
+  bool get_refreshvisibility() const { return refreshvisibility_; }
   bool has_refreshvisibility() const { return has_refreshvisibility_; }
   void set_refreshvisibility(bool value) {
     refreshvisibility_ = value;
@@ -58,7 +58,7 @@ class NetworkLink : public Feature {
   }
 
   // <flyToView>
-  bool flytoview() const { return flytoview_; }
+  bool get_flytoview() const { return flytoview_; }
   bool has_flytoview() const { return has_flytoview_; }
   void set_flytoview(bool value) {
     flytoview_ = value;
@@ -71,7 +71,7 @@ class NetworkLink : public Feature {
 
   // <Link>
   // <Url> is deprecated, no API access
-  const LinkPtr& link() const { return link_; }
+  const LinkPtr& get_link() const { return link_; }
   bool has_link() const { return link_ != NULL; }
   void set_link(const LinkPtr& link) {
     SetComplexChild(link, &link_);

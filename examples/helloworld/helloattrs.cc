@@ -23,7 +23,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Sample of parse and dom access of attributes.
+// Sample of parse and DOM access of attributes.
 
 #include <assert.h>
 #include <iostream>
@@ -34,6 +34,8 @@ using kmldom::ElementPtr;
 using kmldom::HotSpotPtr;
 using kmldom::IconStylePtr;
 using kmldom::PlacemarkPtr;
+using std::cout;
+using std::endl;
 
 void CheckHotSpot() {
   const std::string kml(
@@ -48,19 +50,19 @@ void CheckHotSpot() {
   const IconStylePtr iconstyle = kmldom::AsIconStyle(root);
   assert(true == iconstyle->has_hotspot());
 
-  const HotSpotPtr hotspot = iconstyle->hotspot();
+  const HotSpotPtr hotspot = iconstyle->get_hotspot();
   assert(true == hotspot->has_x());
-  assert(0.5 == hotspot->x());
+  assert(0.5 == hotspot->get_x());
   assert(true == hotspot->has_y());
-  assert(123 == hotspot->y());
+  assert(123 == hotspot->get_y());
   assert(true == hotspot->has_xunits());
-  assert(kmldom::UNITS_FRACTION == hotspot->xunits());
+  assert(kmldom::UNITS_FRACTION == hotspot->get_xunits());
   assert(true == hotspot->has_yunits());
-  assert(kmldom::UNITS_PIXELS == hotspot->yunits());
+  assert(kmldom::UNITS_PIXELS == hotspot->get_yunits());
 
   // Serialize the sample.
   std::string parsed_kml = kmldom::SerializePretty(hotspot);
-  std::cout << parsed_kml << std::endl;
+  cout << parsed_kml << endl;
 }
 
 void CheckId() {
@@ -74,11 +76,11 @@ void CheckId() {
 
   const PlacemarkPtr placemark = kmldom::AsPlacemark(root);
 
-  assert("placemark123" == placemark->id());
+  assert("placemark123" == placemark->get_id());
 
   // Serialize the sample.
   std::string parsed_kml = kmldom::SerializePretty(placemark);
-  std::cout << parsed_kml << std::endl;
+  cout << parsed_kml << endl;
 }
 
 int main(int argc, char** argv) {

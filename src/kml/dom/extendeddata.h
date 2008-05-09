@@ -49,7 +49,7 @@ class SimpleData : public Element {
   }
 
   // name=
-  const std::string& name() const { return name_; }
+  const std::string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
   void set_name(const std::string& value) {
     name_ = value;
@@ -61,7 +61,7 @@ class SimpleData : public Element {
   }
 
   // char data
-  const std::string& text() const { return text_; }
+  const std::string& get_text() const { return text_; }
   bool has_text() const { return has_text_; }
   void set_text(const std::string& value) {
     text_ = value;
@@ -113,7 +113,7 @@ class SchemaData : public ExtendedDataMember {
   }
 
   // schemaUrl=
-  const std::string& schemaurl() const { return schemaurl_; }
+  const std::string& get_schemaurl() const { return schemaurl_; }
   bool has_schemaurl() const { return has_schemaurl_; }
   void set_schemaurl(const std::string& value) {
     schemaurl_ = value;
@@ -128,11 +128,11 @@ class SchemaData : public ExtendedDataMember {
     AddComplexChild(simpledata, &simpledata_array_);
   }
 
-  const size_t simpledata_array_size() const {
+  const size_t get_simpledata_array_size() const {
     return simpledata_array_.size();
   }
 
-  const SimpleDataPtr& simpledata_array_at(unsigned int index) const {
+  const SimpleDataPtr& get_simpledata_array_at(unsigned int index) const {
     return simpledata_array_[index];
   }
 
@@ -161,7 +161,7 @@ class Data : public ExtendedDataMember {
   }
 
   // name=
-  const std::string& name() const { return name_; }
+  const std::string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
   void set_name(const std::string& value) {
     name_ = value;
@@ -173,7 +173,7 @@ class Data : public ExtendedDataMember {
   }
 
   // <displayname>
-  const std::string& displayname() const { return displayname_; }
+  const std::string& get_displayname() const { return displayname_; }
   bool has_displayname() const { return has_displayname_; }
   void set_displayname(const std::string& value) {
     displayname_ = value;
@@ -185,7 +185,7 @@ class Data : public ExtendedDataMember {
   }
 
   // <value>
-  const std::string& value() const { return value_; }
+  const std::string& get_value() const { return value_; }
   bool has_value() const { return has_value_; }
   void set_value(const std::string& value) {
     value_ = value;
@@ -227,12 +227,12 @@ class ExtendedData : public Element {
     AddComplexChild(extendeddatamember, &extendeddatamember_array_);
   }
 
-  const size_t extendeddatamember_array_size() const {
+  const size_t get_extendeddatamember_array_size() const {
     return extendeddatamember_array_.size();
   }
 
-  const ExtendedDataMemberPtr& extendeddatamember_array_at(unsigned int index)
-    const {
+  const ExtendedDataMemberPtr& get_extendeddatamember_array_at(
+      unsigned int index) const {
     return extendeddatamember_array_[index];
   }
 

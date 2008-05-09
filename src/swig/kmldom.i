@@ -178,19 +178,19 @@ public:
 
 class Vec3 {
 public:
-  double longitude();
-  double latitude();
-  double altitude();
+  double get_longitude();
+  double get_latitude();
+  double get_altitude();
 };
 
 // This is <coordinates> in the KML 2.2 XSD.
 %nodefaultctor Coordinates;
 class Coordinates : public Element {
 public:
-  void add_point2(double longitude, double latitude);
-  void add_point3(double longitude, double latitude, double altitude);
-  size_t coordinates_array_size();
-  const Vec3 coordinates_array_at(unsigned int index);
+  void add_latlng(double longitude, double latitude);
+  void add_latlngalt(double longitude, double latitude, double altitude);
+  size_t get_coordinates_array_size();
+  const Vec3 get_coordinates_array_at(unsigned int index);
 };
 
 // This is vec2Type in the KML 2.2 XSD.
@@ -198,25 +198,25 @@ public:
 class Vec2 : public Element {
 public:
   // x=
-  double x();
+  double get_x();
   void set_x(double value);
   bool has_x();
   void clear_x();
 
   // y=
-  double y();
+  double get_y();
   void set_y(double value);
   bool has_y();
   void clear_y();
 
   // xunits=
-  int xunits();
+  int get_xunits();
   void set_xunits(int value);
   bool has_xunits();
   void clear_xunits();
 
   // yunits=
-  int yunits();
+  int get_yunits();
   void set_yunits(int value);
   bool has_yunits();
   void clear_yunits();

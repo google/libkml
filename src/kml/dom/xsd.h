@@ -80,7 +80,7 @@ typedef std::map<std::string,int> tag_id_map_t;
 // At present it is just the list of elements.  Each element has a name,
 // libkml-specific id, and type info (simple vs complex).
 class Xsd {
-public:
+ public:
   static Xsd* GetSchema();
 
   // Essentially the API to the global <element>'s
@@ -93,7 +93,7 @@ public:
   // Return the enum string for the given enum id for the given enum element.
   std::string EnumValue(int type_id, int enum_id) const;
 
-private:
+ private:
   Xsd();
   static Xsd* schema_;
 

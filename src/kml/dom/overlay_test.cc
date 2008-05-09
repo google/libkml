@@ -82,24 +82,24 @@ void OverlayTest::TestType() {
 // This tests the default values of all fields.
 void OverlayTest::TestDefaults() {
   CPPUNIT_ASSERT(false == overlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == overlay_->color());
+  CPPUNIT_ASSERT("ffffffff" == overlay_->get_color());
   CPPUNIT_ASSERT(false == overlay_->has_draworder());
-  CPPUNIT_ASSERT(0 == overlay_->draworder());
+  CPPUNIT_ASSERT(0 == overlay_->get_draworder());
   CPPUNIT_ASSERT(false == overlay_->has_icon());
-  CPPUNIT_ASSERT(NULL == overlay_->icon());
+  CPPUNIT_ASSERT(NULL == overlay_->get_icon());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void OverlayTest::TestSetToDefaultValues() {
-  overlay_->set_color(overlay_->color());
+  overlay_->set_color(overlay_->get_color());
   CPPUNIT_ASSERT(true == overlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == overlay_->color());
-  overlay_->set_draworder(overlay_->draworder());
+  CPPUNIT_ASSERT("ffffffff" == overlay_->get_color());
+  overlay_->set_draworder(overlay_->get_draworder());
   CPPUNIT_ASSERT(true == overlay_->has_draworder());
-  CPPUNIT_ASSERT(0 == overlay_->draworder());
+  CPPUNIT_ASSERT(0 == overlay_->get_draworder());
   overlay_->set_icon(NULL);
   CPPUNIT_ASSERT(false == overlay_->has_icon());
-  CPPUNIT_ASSERT(NULL == overlay_->icon());
+  CPPUNIT_ASSERT(NULL == overlay_->get_icon());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -116,11 +116,11 @@ void OverlayTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(overlay_->has_color());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, overlay_->color());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, overlay_->get_color());
   CPPUNIT_ASSERT(overlay_->has_draworder());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, overlay_->draworder());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, overlay_->get_draworder());
   CPPUNIT_ASSERT(overlay_->has_icon());
-  CPPUNIT_ASSERT(icon == overlay_->icon());
+  CPPUNIT_ASSERT(icon == overlay_->get_icon());
 
   // Clear all fields.
   overlay_->clear_color();
@@ -172,14 +172,14 @@ void LatLonBoxTest::TestType() {
 // This tests the default values of all fields.
 void LatLonBoxTest::TestDefaults() {
   CPPUNIT_ASSERT(false == latlonbox_->has_rotation());
-  CPPUNIT_ASSERT(0.0 == latlonbox_->rotation());
+  CPPUNIT_ASSERT(0.0 == latlonbox_->get_rotation());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void LatLonBoxTest::TestSetToDefaultValues() {
-  latlonbox_->set_rotation(latlonbox_->rotation());
+  latlonbox_->set_rotation(latlonbox_->get_rotation());
   CPPUNIT_ASSERT(true == latlonbox_->has_rotation());
-  CPPUNIT_ASSERT(0.0 == latlonbox_->rotation());
+  CPPUNIT_ASSERT(0.0 == latlonbox_->get_rotation());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -192,7 +192,7 @@ void LatLonBoxTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(latlonbox_->has_rotation());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultRotation, latlonbox_->rotation());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultRotation, latlonbox_->get_rotation());
 
   // Clear all fields.
   latlonbox_->clear_rotation();
@@ -245,19 +245,19 @@ void GroundOverlayTest::TestType() {
 void GroundOverlayTest::TestDefaults() {
   // Defaults inheried from Overlay.
   CPPUNIT_ASSERT(false == groundoverlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == groundoverlay_->color());
+  CPPUNIT_ASSERT("ffffffff" == groundoverlay_->get_color());
   CPPUNIT_ASSERT(false == groundoverlay_->has_draworder());
-  CPPUNIT_ASSERT(0 == groundoverlay_->draworder());
+  CPPUNIT_ASSERT(0 == groundoverlay_->get_draworder());
 
   CPPUNIT_ASSERT(false == groundoverlay_->has_latlonbox());
-  CPPUNIT_ASSERT(NULL == groundoverlay_->latlonbox());
+  CPPUNIT_ASSERT(NULL == groundoverlay_->get_latlonbox());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void GroundOverlayTest::TestSetToDefaultValues() {
   groundoverlay_->set_latlonbox(NULL);
   CPPUNIT_ASSERT(false == groundoverlay_->has_latlonbox());
-  CPPUNIT_ASSERT(NULL == groundoverlay_->latlonbox());
+  CPPUNIT_ASSERT(NULL == groundoverlay_->get_latlonbox());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -274,11 +274,11 @@ void GroundOverlayTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(groundoverlay_->has_color());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, groundoverlay_->color());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, groundoverlay_->get_color());
   CPPUNIT_ASSERT(groundoverlay_->has_draworder());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, groundoverlay_->draworder());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, groundoverlay_->get_draworder());
   CPPUNIT_ASSERT(groundoverlay_->has_latlonbox());
-  CPPUNIT_ASSERT(latlonbox == groundoverlay_->latlonbox());
+  CPPUNIT_ASSERT(latlonbox == groundoverlay_->get_latlonbox());
 
   // Clear all fields.
   groundoverlay_->clear_color();
@@ -333,10 +333,12 @@ void OverlayXYTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const OverlayXYPtr overlayxy = AsOverlayXY(root);
   CPPUNIT_ASSERT(overlayxy);
-  CPPUNIT_ASSERT_EQUAL(0.5, overlayxy->x());
-  CPPUNIT_ASSERT_EQUAL(123., overlayxy->y());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), overlayxy->xunits());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), overlayxy->yunits());
+  CPPUNIT_ASSERT_EQUAL(0.5, overlayxy->get_x());
+  CPPUNIT_ASSERT_EQUAL(123., overlayxy->get_y());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION),
+                       overlayxy->get_xunits());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS),
+                       overlayxy->get_yunits());
 }
 
 void OverlayXYTest::TestSerialize() {
@@ -394,10 +396,12 @@ void ScreenXYTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const ScreenXYPtr screenxy = AsScreenXY(root);
   CPPUNIT_ASSERT(screenxy);
-  CPPUNIT_ASSERT_EQUAL(0.5, screenxy->x());
-  CPPUNIT_ASSERT_EQUAL(123., screenxy->y());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), screenxy->xunits());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_INSETPIXELS), screenxy->yunits());
+  CPPUNIT_ASSERT_EQUAL(0.5, screenxy->get_x());
+  CPPUNIT_ASSERT_EQUAL(123., screenxy->get_y());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION),
+                       screenxy->get_xunits());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_INSETPIXELS),
+                       screenxy->get_yunits());
 }
 
 void ScreenXYTest::TestSerialize() {
@@ -455,10 +459,12 @@ void RotationXYTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const RotationXYPtr rotationxy = AsRotationXY(root);
   CPPUNIT_ASSERT(rotationxy);
-  CPPUNIT_ASSERT_EQUAL(512., rotationxy->x());
-  CPPUNIT_ASSERT_EQUAL(0.7, rotationxy->y());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), rotationxy->xunits());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), rotationxy->yunits());
+  CPPUNIT_ASSERT_EQUAL(512., rotationxy->get_x());
+  CPPUNIT_ASSERT_EQUAL(0.7, rotationxy->get_y());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS),
+                       rotationxy->get_xunits());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION),
+                       rotationxy->get_yunits());
 }
 
 void RotationXYTest::TestSerialize() {
@@ -516,10 +522,10 @@ void SizeTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const SizePtr size = AsSize(root);
   CPPUNIT_ASSERT(size);
-  CPPUNIT_ASSERT_EQUAL(512., size->x());
-  CPPUNIT_ASSERT_EQUAL(0.7, size->y());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), size->xunits());
-  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), size->yunits());
+  CPPUNIT_ASSERT_EQUAL(512., size->get_x());
+  CPPUNIT_ASSERT_EQUAL(0.7, size->get_y());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_PIXELS), size->get_xunits());
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(UNITS_FRACTION), size->get_yunits());
 }
 
 void SizeTest::TestSerialize() {
@@ -575,31 +581,31 @@ void ScreenOverlayTest::TestType() {
 // This tests the default values of all fields.
 void ScreenOverlayTest::TestDefaults() {
   CPPUNIT_ASSERT(false == screenoverlay_->has_overlayxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->overlayxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_overlayxy());
   CPPUNIT_ASSERT(false == screenoverlay_->has_screenxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->screenxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_screenxy());
   CPPUNIT_ASSERT(false == screenoverlay_->has_rotationxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->rotationxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_rotationxy());
   CPPUNIT_ASSERT(false == screenoverlay_->has_size());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->size());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_size());
   CPPUNIT_ASSERT(false == screenoverlay_->has_rotation());
-  CPPUNIT_ASSERT(0.0 == screenoverlay_->rotation());
+  CPPUNIT_ASSERT(0.0 == screenoverlay_->get_rotation());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void ScreenOverlayTest::TestSetToDefaultValues() {
   screenoverlay_->set_overlayxy(NULL);
   CPPUNIT_ASSERT(false == screenoverlay_->has_overlayxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->overlayxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_overlayxy());
   screenoverlay_->set_screenxy(NULL);
   CPPUNIT_ASSERT(false == screenoverlay_->has_screenxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->screenxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_screenxy());
   screenoverlay_->set_rotationxy(NULL);
   CPPUNIT_ASSERT(false == screenoverlay_->has_rotationxy());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->rotationxy());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_rotationxy());
   screenoverlay_->set_size(NULL);
   CPPUNIT_ASSERT(false == screenoverlay_->has_size());
-  CPPUNIT_ASSERT(NULL == screenoverlay_->size());
+  CPPUNIT_ASSERT(NULL == screenoverlay_->get_size());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -668,34 +674,34 @@ void ViewVolumeTest::TestType() {
 // This tests the default values of all fields.
 void ViewVolumeTest::TestDefaults() {
   CPPUNIT_ASSERT(false == viewvolume_->has_leftfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->leftfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_leftfov());
   CPPUNIT_ASSERT(false == viewvolume_->has_rightfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->rightfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_rightfov());
   CPPUNIT_ASSERT(false == viewvolume_->has_bottomfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->bottomfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_bottomfov());
   CPPUNIT_ASSERT(false == viewvolume_->has_topfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->topfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_topfov());
   CPPUNIT_ASSERT(false == viewvolume_->has_near());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->near());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_near());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void ViewVolumeTest::TestSetToDefaultValues() {
-  viewvolume_->set_leftfov(viewvolume_->leftfov());
+  viewvolume_->set_leftfov(viewvolume_->get_leftfov());
   CPPUNIT_ASSERT(viewvolume_->has_leftfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->leftfov());
-  viewvolume_->set_rightfov(viewvolume_->rightfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_leftfov());
+  viewvolume_->set_rightfov(viewvolume_->get_rightfov());
   CPPUNIT_ASSERT(viewvolume_->has_rightfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->rightfov());
-  viewvolume_->set_bottomfov(viewvolume_->bottomfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_rightfov());
+  viewvolume_->set_bottomfov(viewvolume_->get_bottomfov());
   CPPUNIT_ASSERT(viewvolume_->has_bottomfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->bottomfov());
-  viewvolume_->set_topfov(viewvolume_->topfov());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_bottomfov());
+  viewvolume_->set_topfov(viewvolume_->get_topfov());
   CPPUNIT_ASSERT(viewvolume_->has_topfov());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->topfov());
-  viewvolume_->set_near(viewvolume_->near());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_topfov());
+  viewvolume_->set_near(viewvolume_->get_near());
   CPPUNIT_ASSERT(viewvolume_->has_near());
-  CPPUNIT_ASSERT(0.0 == viewvolume_->near());
+  CPPUNIT_ASSERT(0.0 == viewvolume_->get_near());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -716,15 +722,15 @@ void ViewVolumeTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(viewvolume_->has_leftfov());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultLeftFov, viewvolume_->leftfov());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultLeftFov, viewvolume_->get_leftfov());
   CPPUNIT_ASSERT(viewvolume_->has_rightfov());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultRightFov, viewvolume_->rightfov());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultRightFov, viewvolume_->get_rightfov());
   CPPUNIT_ASSERT(viewvolume_->has_bottomfov());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultBottomFov, viewvolume_->bottomfov());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultBottomFov, viewvolume_->get_bottomfov());
   CPPUNIT_ASSERT(viewvolume_->has_topfov());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultTopFov, viewvolume_->topfov());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultTopFov, viewvolume_->get_topfov());
   CPPUNIT_ASSERT(viewvolume_->has_near());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultNear, viewvolume_->near());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultNear, viewvolume_->get_near());
 
   // Clear all fields.
   viewvolume_->clear_leftfov();
@@ -778,29 +784,29 @@ void ImagePyramidTest::TestType() {
 // This tests the default values of all fields.
 void ImagePyramidTest::TestDefaults() {
   CPPUNIT_ASSERT(false == imagepyramid_->has_tilesize());
-  CPPUNIT_ASSERT(256 == imagepyramid_->tilesize());
+  CPPUNIT_ASSERT(256 == imagepyramid_->get_tilesize());
   CPPUNIT_ASSERT(false == imagepyramid_->has_maxwidth());
-  CPPUNIT_ASSERT(0 == imagepyramid_->maxwidth());
+  CPPUNIT_ASSERT(0 == imagepyramid_->get_maxwidth());
   CPPUNIT_ASSERT(false == imagepyramid_->has_maxheight());
-  CPPUNIT_ASSERT(0 == imagepyramid_->maxheight());
+  CPPUNIT_ASSERT(0 == imagepyramid_->get_maxheight());
   CPPUNIT_ASSERT(false == imagepyramid_->has_gridorigin());
-  CPPUNIT_ASSERT(GRIDORIGIN_LOWERLEFT == imagepyramid_->gridorigin());
+  CPPUNIT_ASSERT(GRIDORIGIN_LOWERLEFT == imagepyramid_->get_gridorigin());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void ImagePyramidTest::TestSetToDefaultValues() {
-  imagepyramid_->set_tilesize(imagepyramid_->tilesize());
+  imagepyramid_->set_tilesize(imagepyramid_->get_tilesize());
   CPPUNIT_ASSERT(imagepyramid_->has_tilesize());
-  CPPUNIT_ASSERT_EQUAL(256, imagepyramid_->tilesize());
-  imagepyramid_->set_maxheight(imagepyramid_->maxheight());
+  CPPUNIT_ASSERT_EQUAL(256, imagepyramid_->get_tilesize());
+  imagepyramid_->set_maxheight(imagepyramid_->get_maxheight());
   CPPUNIT_ASSERT(imagepyramid_->has_maxheight());
-  CPPUNIT_ASSERT_EQUAL(0, imagepyramid_->maxheight());
-  imagepyramid_->set_maxwidth(imagepyramid_->maxwidth());
+  CPPUNIT_ASSERT_EQUAL(0, imagepyramid_->get_maxheight());
+  imagepyramid_->set_maxwidth(imagepyramid_->get_maxwidth());
   CPPUNIT_ASSERT(imagepyramid_->has_maxwidth());
-  CPPUNIT_ASSERT_EQUAL(0, imagepyramid_->maxwidth());
-  imagepyramid_->set_gridorigin(imagepyramid_->gridorigin());
+  CPPUNIT_ASSERT_EQUAL(0, imagepyramid_->get_maxwidth());
+  imagepyramid_->set_gridorigin(imagepyramid_->get_gridorigin());
   CPPUNIT_ASSERT(imagepyramid_->has_gridorigin());
-  CPPUNIT_ASSERT(GRIDORIGIN_LOWERLEFT == imagepyramid_->gridorigin());
+  CPPUNIT_ASSERT(GRIDORIGIN_LOWERLEFT == imagepyramid_->get_gridorigin());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -818,13 +824,13 @@ void ImagePyramidTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(imagepyramid_->has_tilesize());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultTilesize, imagepyramid_->tilesize());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultTilesize, imagepyramid_->get_tilesize());
   CPPUNIT_ASSERT(imagepyramid_->has_maxheight());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultMaxheight, imagepyramid_->maxheight());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultMaxheight, imagepyramid_->get_maxheight());
   CPPUNIT_ASSERT(imagepyramid_->has_maxwidth());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultMaxwidth, imagepyramid_->maxwidth());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultMaxwidth, imagepyramid_->get_maxwidth());
   CPPUNIT_ASSERT(imagepyramid_->has_gridorigin());
-  CPPUNIT_ASSERT(gridorigin == imagepyramid_->gridorigin());
+  CPPUNIT_ASSERT(gridorigin == imagepyramid_->get_gridorigin());
 
   // Clear all fields.
   imagepyramid_->clear_tilesize();
@@ -880,34 +886,34 @@ void PhotoOverlayTest::TestType() {
 void PhotoOverlayTest::TestDefaults() {
   // rotation, ViewVolume, ImagePyramid, Point, shape
   CPPUNIT_ASSERT(false == photooverlay_->has_rotation());
-  CPPUNIT_ASSERT(0.0 == photooverlay_->rotation());
+  CPPUNIT_ASSERT(0.0 == photooverlay_->get_rotation());
   CPPUNIT_ASSERT(false == photooverlay_->has_viewvolume());
-  CPPUNIT_ASSERT(NULL == photooverlay_->viewvolume());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_viewvolume());
   CPPUNIT_ASSERT(false == photooverlay_->has_imagepyramid());
-  CPPUNIT_ASSERT(NULL == photooverlay_->imagepyramid());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_imagepyramid());
   CPPUNIT_ASSERT(false == photooverlay_->has_point());
-  CPPUNIT_ASSERT(NULL == photooverlay_->point());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_point());
   CPPUNIT_ASSERT(false == photooverlay_->has_shape());
-  CPPUNIT_ASSERT(SHAPE_RECTANGLE == photooverlay_->shape());
+  CPPUNIT_ASSERT(SHAPE_RECTANGLE == photooverlay_->get_shape());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 void PhotoOverlayTest::TestSetToDefaultValues() {
-  photooverlay_->set_rotation(photooverlay_->rotation());
+  photooverlay_->set_rotation(photooverlay_->get_rotation());
   CPPUNIT_ASSERT(photooverlay_->has_rotation());
-  CPPUNIT_ASSERT(0.0 == photooverlay_->rotation());
+  CPPUNIT_ASSERT(0.0 == photooverlay_->get_rotation());
   photooverlay_->set_viewvolume(NULL);
   CPPUNIT_ASSERT(false == photooverlay_->has_viewvolume());
-  CPPUNIT_ASSERT(NULL == photooverlay_->viewvolume());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_viewvolume());
   photooverlay_->set_imagepyramid(NULL);
   CPPUNIT_ASSERT(false == photooverlay_->has_imagepyramid());
-  CPPUNIT_ASSERT(NULL == photooverlay_->imagepyramid());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_imagepyramid());
   photooverlay_->set_point(NULL);
   CPPUNIT_ASSERT(false == photooverlay_->has_point());
-  CPPUNIT_ASSERT(NULL == photooverlay_->point());
-  photooverlay_->set_shape(photooverlay_->shape());
+  CPPUNIT_ASSERT(NULL == photooverlay_->get_point());
+  photooverlay_->set_shape(photooverlay_->get_shape());
   CPPUNIT_ASSERT(photooverlay_->has_shape());
-  CPPUNIT_ASSERT(SHAPE_RECTANGLE == photooverlay_->shape());
+  CPPUNIT_ASSERT(SHAPE_RECTANGLE == photooverlay_->get_shape());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -928,15 +934,15 @@ void PhotoOverlayTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(photooverlay_->has_rotation());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultRotation, photooverlay_->rotation());
+  CPPUNIT_ASSERT_EQUAL(kNonDefaultRotation, photooverlay_->get_rotation());
   CPPUNIT_ASSERT(photooverlay_->has_viewvolume());
-  CPPUNIT_ASSERT(viewvolume == photooverlay_->viewvolume());
+  CPPUNIT_ASSERT(viewvolume == photooverlay_->get_viewvolume());
   CPPUNIT_ASSERT(photooverlay_->has_imagepyramid());
-  CPPUNIT_ASSERT(imagepyramid == photooverlay_->imagepyramid());
+  CPPUNIT_ASSERT(imagepyramid == photooverlay_->get_imagepyramid());
   CPPUNIT_ASSERT(photooverlay_->has_point());
-  CPPUNIT_ASSERT(point == photooverlay_->point());
+  CPPUNIT_ASSERT(point == photooverlay_->get_point());
   CPPUNIT_ASSERT(photooverlay_->has_shape());
-  CPPUNIT_ASSERT(shape == photooverlay_->shape());
+  CPPUNIT_ASSERT(shape == photooverlay_->get_shape());
 
   // Clear all fields.
   photooverlay_->clear_rotation();

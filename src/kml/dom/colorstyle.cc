@@ -57,10 +57,10 @@ void ColorStyle::AddElement(const ElementPtr& element) {
 void ColorStyle::Serialize(Serializer& serializer) const {
   SubStyle::Serialize(serializer);
   if (has_color()) {
-    serializer.SaveFieldById(Type_color, color());
+    serializer.SaveFieldById(Type_color, get_color());
   }
   if (has_colormode()) {
-    serializer.SaveEnum(Type_colorMode, colormode());
+    serializer.SaveEnum(Type_colorMode, get_colormode());
   }
 }
 

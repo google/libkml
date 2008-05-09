@@ -52,7 +52,7 @@ void CheckParseLookAt() {
 
   // Verify the altitudeMode exists and is correct.
   assert(lookat->has_altitudemode());
-  assert(kmldom::ALTITUDEMODE_ABSOLUTE == lookat->altitudemode());
+  assert(kmldom::ALTITUDEMODE_ABSOLUTE == lookat->get_altitudemode());
 }
 
 void CheckParseLink() {
@@ -68,9 +68,9 @@ void CheckParseLink() {
   // Verify some things.
   const LinkPtr link = kmldom::AsLink(root);
   assert(true == link->has_refreshmode());
-  assert(kmldom::REFRESHMODE_ONINTERVAL == link->refreshmode());
+  assert(kmldom::REFRESHMODE_ONINTERVAL == link->get_refreshmode());
   assert(true == link->has_viewrefreshmode());
-  assert(kmldom::VIEWREFRESHMODE_ONSTOP == link->viewrefreshmode());
+  assert(kmldom::VIEWREFRESHMODE_ONSTOP == link->get_viewrefreshmode());
 }
 
 // Create KML with the DOM API, serialize and verify the output.
@@ -82,7 +82,7 @@ void CheckSerializeLookAt() {
 
   // Read back altitudeMode with the DOM API.
   assert(lookat->has_altitudemode());
-  assert(kmldom::ALTITUDEMODE_RELATIVETOGROUND == lookat->altitudemode());
+  assert(kmldom::ALTITUDEMODE_RELATIVETOGROUND == lookat->get_altitudemode());
 
   // Serialize it out to a string
   std::string kml = kmldom::SerializePretty(lookat);
@@ -106,9 +106,9 @@ void CheckLinkFactory() {
 
   // Verify defaults.
   assert(false == link->has_refreshmode());
-  assert(kmldom::REFRESHMODE_ONCHANGE == link->refreshmode());
+  assert(kmldom::REFRESHMODE_ONCHANGE == link->get_refreshmode());
   assert(false == link->has_viewrefreshmode());
-  assert(kmldom::VIEWREFRESHMODE_NEVER == link->viewrefreshmode());
+  assert(kmldom::VIEWREFRESHMODE_NEVER == link->get_viewrefreshmode());
 
   // Change a few things.
   const char kGooKml[] = "goo.kml";

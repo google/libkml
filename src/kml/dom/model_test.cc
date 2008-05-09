@@ -77,11 +77,11 @@ void LocationTest::TestDefaults() {
   CPPUNIT_ASSERT(false == location_->has_id());
   CPPUNIT_ASSERT(false == location_->has_targetid());
   CPPUNIT_ASSERT(false == location_->has_longitude());
-  CPPUNIT_ASSERT(0.0 == location_->longitude());
+  CPPUNIT_ASSERT(0.0 == location_->get_longitude());
   CPPUNIT_ASSERT(false == location_->has_latitude());
-  CPPUNIT_ASSERT(0.0 == location_->latitude());
+  CPPUNIT_ASSERT(0.0 == location_->get_latitude());
   CPPUNIT_ASSERT(false == location_->has_altitude());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == location_->altitude());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == location_->get_altitude());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -90,9 +90,9 @@ void LocationTest::TestSetToDefaultValues() {
   CPPUNIT_ASSERT(false == location_->has_longitude());
   CPPUNIT_ASSERT(false == location_->has_latitude());
   CPPUNIT_ASSERT(false == location_->has_altitude());
-  location_->set_longitude(location_->longitude());
-  location_->set_latitude(location_->latitude());
-  location_->set_altitude(location_->altitude());
+  location_->set_longitude(location_->get_longitude());
+  location_->set_latitude(location_->get_latitude());
+  location_->set_altitude(location_->get_altitude());
   CPPUNIT_ASSERT(true == location_->has_longitude());
   CPPUNIT_ASSERT(true == location_->has_latitude());
   CPPUNIT_ASSERT(true == location_->has_altitude());
@@ -112,11 +112,11 @@ void LocationTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == location_->has_longitude());
-  CPPUNIT_ASSERT(longitude == location_->longitude());
+  CPPUNIT_ASSERT(longitude == location_->get_longitude());
   CPPUNIT_ASSERT(true == location_->has_latitude());
-  CPPUNIT_ASSERT(latitude == location_->latitude());
+  CPPUNIT_ASSERT(latitude == location_->get_latitude());
   CPPUNIT_ASSERT(true == location_->has_altitude());
-  CPPUNIT_ASSERT(altitude == location_->altitude());
+  CPPUNIT_ASSERT(altitude == location_->get_altitude());
 
   // Clear all fields:
   location_->clear_longitude();
@@ -169,11 +169,11 @@ void OrientationTest::TestDefaults() {
   CPPUNIT_ASSERT(false == orientation_->has_id());
   CPPUNIT_ASSERT(false == orientation_->has_targetid());
   CPPUNIT_ASSERT(false == orientation_->has_heading());
-  CPPUNIT_ASSERT(0.0 == orientation_->heading());
+  CPPUNIT_ASSERT(0.0 == orientation_->get_heading());
   CPPUNIT_ASSERT(false == orientation_->has_tilt());
-  CPPUNIT_ASSERT(0.0 == orientation_->tilt());
+  CPPUNIT_ASSERT(0.0 == orientation_->get_tilt());
   CPPUNIT_ASSERT(false == orientation_->has_roll());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == orientation_->roll());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == orientation_->get_roll());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -182,9 +182,9 @@ void OrientationTest::TestSetToDefaultValues() {
   CPPUNIT_ASSERT(false == orientation_->has_heading());
   CPPUNIT_ASSERT(false == orientation_->has_tilt());
   CPPUNIT_ASSERT(false == orientation_->has_roll());
-  orientation_->set_heading(orientation_->heading());
-  orientation_->set_tilt(orientation_->tilt());
-  orientation_->set_roll(orientation_->roll());
+  orientation_->set_heading(orientation_->get_heading());
+  orientation_->set_tilt(orientation_->get_tilt());
+  orientation_->set_roll(orientation_->get_roll());
   CPPUNIT_ASSERT(true == orientation_->has_heading());
   CPPUNIT_ASSERT(true == orientation_->has_tilt());
   CPPUNIT_ASSERT(true == orientation_->has_roll());
@@ -204,11 +204,11 @@ void OrientationTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == orientation_->has_heading());
-  CPPUNIT_ASSERT(heading == orientation_->heading());
+  CPPUNIT_ASSERT(heading == orientation_->get_heading());
   CPPUNIT_ASSERT(true == orientation_->has_tilt());
-  CPPUNIT_ASSERT(tilt == orientation_->tilt());
+  CPPUNIT_ASSERT(tilt == orientation_->get_tilt());
   CPPUNIT_ASSERT(true == orientation_->has_roll());
-  CPPUNIT_ASSERT(roll == orientation_->roll());
+  CPPUNIT_ASSERT(roll == orientation_->get_roll());
 
   // Clear all fields:
   orientation_->clear_heading();
@@ -261,11 +261,11 @@ void ScaleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == scale_->has_id());
   CPPUNIT_ASSERT(false == scale_->has_targetid());
   CPPUNIT_ASSERT(false == scale_->has_x());
-  CPPUNIT_ASSERT(1.0 == scale_->x());
+  CPPUNIT_ASSERT(1.0 == scale_->get_x());
   CPPUNIT_ASSERT(false == scale_->has_y());
-  CPPUNIT_ASSERT(1.0 == scale_->y());
+  CPPUNIT_ASSERT(1.0 == scale_->get_y());
   CPPUNIT_ASSERT(false == scale_->has_z());
-  CPPUNIT_ASSERT(1.0 == scale_->z());
+  CPPUNIT_ASSERT(1.0 == scale_->get_z());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -274,9 +274,9 @@ void ScaleTest::TestSetToDefaultValues() {
   CPPUNIT_ASSERT(false == scale_->has_x());
   CPPUNIT_ASSERT(false == scale_->has_y());
   CPPUNIT_ASSERT(false == scale_->has_z());
-  scale_->set_x(scale_->x());
-  scale_->set_y(scale_->y());
-  scale_->set_z(scale_->z());
+  scale_->set_x(scale_->get_x());
+  scale_->set_y(scale_->get_y());
+  scale_->set_z(scale_->get_z());
   CPPUNIT_ASSERT(true == scale_->has_x());
   CPPUNIT_ASSERT(true == scale_->has_y());
   CPPUNIT_ASSERT(true == scale_->has_z());
@@ -296,11 +296,11 @@ void ScaleTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == scale_->has_x());
-  CPPUNIT_ASSERT(x == scale_->x());
+  CPPUNIT_ASSERT(x == scale_->get_x());
   CPPUNIT_ASSERT(true == scale_->has_y());
-  CPPUNIT_ASSERT(y == scale_->y());
+  CPPUNIT_ASSERT(y == scale_->get_y());
   CPPUNIT_ASSERT(true == scale_->has_z());
-  CPPUNIT_ASSERT(z == scale_->z());
+  CPPUNIT_ASSERT(z == scale_->get_z());
 
   // Clear all fields:
   scale_->clear_x();
@@ -353,9 +353,9 @@ void AliasTest::TestDefaults() {
   CPPUNIT_ASSERT(false == alias_->has_id());
   CPPUNIT_ASSERT(false == alias_->has_targetid());
   CPPUNIT_ASSERT(false == alias_->has_targethref());
-  CPPUNIT_ASSERT("" == alias_->targethref());
+  CPPUNIT_ASSERT("" == alias_->get_targethref());
   CPPUNIT_ASSERT(false == alias_->has_sourcehref());
-  CPPUNIT_ASSERT("" == alias_->sourcehref());
+  CPPUNIT_ASSERT("" == alias_->get_sourcehref());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -363,8 +363,8 @@ void AliasTest::TestSetToDefaultValues() {
   // Verify that alias_ is in default state:
   CPPUNIT_ASSERT(false == alias_->has_targethref());
   CPPUNIT_ASSERT(false == alias_->has_sourcehref());
-  alias_->set_targethref(alias_->targethref());
-  alias_->set_sourcehref(alias_->sourcehref());
+  alias_->set_targethref(alias_->get_targethref());
+  alias_->set_sourcehref(alias_->get_sourcehref());
   CPPUNIT_ASSERT(true == alias_->has_targethref());
   CPPUNIT_ASSERT(true == alias_->has_sourcehref());
 }
@@ -383,9 +383,9 @@ void AliasTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == alias_->has_targethref());
-  CPPUNIT_ASSERT(targethref == alias_->targethref());
+  CPPUNIT_ASSERT(targethref == alias_->get_targethref());
   CPPUNIT_ASSERT(true == alias_->has_sourcehref());
-  CPPUNIT_ASSERT(sourcehref == alias_->sourcehref());
+  CPPUNIT_ASSERT(sourcehref == alias_->get_sourcehref());
 
   // Clear all fields:
   alias_->clear_targethref();
@@ -433,12 +433,12 @@ void ResourceMapTest::TestType() {
 void ResourceMapTest::TestDefaults() {
   CPPUNIT_ASSERT(false == resourcemap_->has_id());
   CPPUNIT_ASSERT(false == resourcemap_->has_targetid());
-  CPPUNIT_ASSERT(0 == resourcemap_->alias_array_size());
+  CPPUNIT_ASSERT(0 == resourcemap_->get_alias_array_size());
 }
 
 void ResourceMapTest::TestAddAliases() {
   // Verify proper initial conditions for this test:
-  CPPUNIT_ASSERT(0 == resourcemap_->alias_array_size());
+  CPPUNIT_ASSERT(0 == resourcemap_->get_alias_array_size());
 
   // Create an Alias:
   AliasPtr alias = KmlFactory::GetFactory()->CreateAlias();
@@ -451,11 +451,13 @@ void ResourceMapTest::TestAddAliases() {
   resourcemap_->add_alias(alias);
 
   // Verify this is the one and only item on the array:
-  CPPUNIT_ASSERT(1 == resourcemap_->alias_array_size());
+  CPPUNIT_ASSERT(1 == resourcemap_->get_alias_array_size());
 
   // Verify the alias is the one we set:
-  CPPUNIT_ASSERT(targethref0 == resourcemap_->alias_array_at(0)->targethref());
-  CPPUNIT_ASSERT(sourcehref0 == resourcemap_->alias_array_at(0)->sourcehref());
+  CPPUNIT_ASSERT(targethref0 ==
+                 resourcemap_->get_alias_array_at(0)->get_targethref());
+  CPPUNIT_ASSERT(sourcehref0 ==
+                 resourcemap_->get_alias_array_at(0)->get_sourcehref());
 
   // Create another Alias and add to ResourceMap
   alias = KmlFactory::GetFactory()->CreateAlias();
@@ -466,11 +468,15 @@ void ResourceMapTest::TestAddAliases() {
   resourcemap_->add_alias(alias);
 
   // Verify the overall state of the alais array:
-  CPPUNIT_ASSERT(2 == resourcemap_->alias_array_size());
-  CPPUNIT_ASSERT(targethref0 == resourcemap_->alias_array_at(0)->targethref());
-  CPPUNIT_ASSERT(sourcehref0 == resourcemap_->alias_array_at(0)->sourcehref());
-  CPPUNIT_ASSERT(targethref1 == resourcemap_->alias_array_at(1)->targethref());
-  CPPUNIT_ASSERT(sourcehref1 == resourcemap_->alias_array_at(1)->sourcehref());
+  CPPUNIT_ASSERT(2 == resourcemap_->get_alias_array_size());
+  CPPUNIT_ASSERT(targethref0 ==
+                 resourcemap_->get_alias_array_at(0)->get_targethref());
+  CPPUNIT_ASSERT(sourcehref0 ==
+                 resourcemap_->get_alias_array_at(0)->get_sourcehref());
+  CPPUNIT_ASSERT(targethref1 ==
+                 resourcemap_->get_alias_array_at(1)->get_targethref());
+  CPPUNIT_ASSERT(sourcehref1 ==
+                 resourcemap_->get_alias_array_at(1)->get_sourcehref());
 
   // aliases will be deleted when resourcemap_ is deleted
 }
@@ -518,7 +524,7 @@ void ModelTest::TestType() {
 void ModelTest::TestDefaults() {
   CPPUNIT_ASSERT(false == model_->has_id());
   CPPUNIT_ASSERT(false == model_->has_targetid());
-  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == model_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_CLAMPTOGROUND == model_->get_altitudemode());
   CPPUNIT_ASSERT(false == model_->has_location());
   CPPUNIT_ASSERT(false == model_->has_orientation());
   CPPUNIT_ASSERT(false == model_->has_scale());
@@ -531,7 +537,7 @@ void ModelTest::TestSetGetHasClear() {
   // Set the only simple child to a non-default value:
   model_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   CPPUNIT_ASSERT(true == model_->has_altitudemode());
-  CPPUNIT_ASSERT(ALTITUDEMODE_ABSOLUTE == model_->altitudemode());
+  CPPUNIT_ASSERT(ALTITUDEMODE_ABSOLUTE == model_->get_altitudemode());
 
   // Create all possible complex children and give to the Model:
   model_->set_location(KmlFactory::GetFactory()->CreateLocation());

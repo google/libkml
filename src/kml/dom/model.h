@@ -49,7 +49,7 @@ class Location : public Object {
   }
 
   // <longitude>
-  double longitude() const {
+  double get_longitude() const {
     return longitude_;
   }
   bool has_longitude() const {
@@ -65,7 +65,7 @@ class Location : public Object {
   }
 
   // <latitude>
-  double latitude() const {
+  double get_latitude() const {
     return latitude_;
   }
   bool has_latitude() const {
@@ -81,7 +81,7 @@ class Location : public Object {
   }
 
   // <altitude>
-  double altitude() const {
+  double get_altitude() const {
     return altitude_;
   }
   bool has_altitude() const {
@@ -122,7 +122,7 @@ class Orientation : public Object {
   }
 
   // <heading>
-  double heading() const {
+  double get_heading() const {
     return heading_;
   }
   bool has_heading() const {
@@ -138,7 +138,7 @@ class Orientation : public Object {
   }
 
   // <tilt>
-  double tilt() const {
+  double get_tilt() const {
     return tilt_;
   }
   bool has_tilt() const {
@@ -154,7 +154,7 @@ class Orientation : public Object {
   }
 
   // <roll>
-  double roll() const {
+  double get_roll() const {
     return roll_;
   }
   bool has_roll() const {
@@ -195,7 +195,7 @@ class Scale : public Object {
   }
 
   // <x>
-  double x() const {
+  double get_x() const {
     return x_;
   }
   bool has_x() const {
@@ -211,7 +211,7 @@ class Scale : public Object {
   }
 
   // <y>
-  double y() const {
+  double get_y() const {
     return y_;
   }
   bool has_y() const {
@@ -227,7 +227,7 @@ class Scale : public Object {
   }
 
   // <z>
-  double z() const {
+  double get_z() const {
     return z_;
   }
   bool has_z() const {
@@ -268,7 +268,7 @@ class Alias : public Object {
   }
 
   // <targetHref>
-  const std::string& targethref() const {
+  const std::string& get_targethref() const {
     return targethref_;
   }
   bool has_targethref() const {
@@ -284,7 +284,7 @@ class Alias : public Object {
   }
 
   // <sourceHref>
-  const std::string& sourcehref() const {
+  const std::string& get_sourcehref() const {
     return sourcehref_;
   }
   bool has_sourcehref() const {
@@ -324,11 +324,11 @@ class ResourceMap : public Object {
 
   void add_alias(const AliasPtr& alias);
 
-  const size_t alias_array_size() const {
+  const size_t get_alias_array_size() const {
     return alias_array_.size();
   }
 
-  const AliasPtr& alias_array_at(unsigned int index) const {
+  const AliasPtr& get_alias_array_at(unsigned int index) const {
     return alias_array_[index];
   }
 
@@ -353,7 +353,7 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <Location>
-  const LocationPtr& location() const { return location_; }
+  const LocationPtr& get_location() const { return location_; }
   bool has_location() const { return location_ != NULL; }
   void set_location(const LocationPtr& location) {
     SetComplexChild(location, &location_);
@@ -363,7 +363,7 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <Orientation>
-  const OrientationPtr& orientation() const { return orientation_; }
+  const OrientationPtr& get_orientation() const { return orientation_; }
   bool has_orientation() const { return orientation_ != NULL; }
   void set_orientation(const OrientationPtr& orientation) {
     SetComplexChild(orientation, &orientation_);
@@ -373,7 +373,7 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <Scale>
-  const ScalePtr& scale() const { return scale_; }
+  const ScalePtr& get_scale() const { return scale_; }
   bool has_scale() const { return scale_ != NULL; }
   void set_scale(const ScalePtr& scale) {
     SetComplexChild(scale, &scale_);
@@ -383,7 +383,7 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <Link>
-  const LinkPtr& link() const { return link_; }
+  const LinkPtr& get_link() const { return link_; }
   bool has_link() const { return link_ != NULL; }
   void set_link(const LinkPtr& link) {
     SetComplexChild(link, &link_);
@@ -393,7 +393,7 @@ class Model : public AltitudeGeometryCommon {
   }
 
   // <ResourceMap>
-  const ResourceMapPtr& resourcemap() const { return resourcemap_; }
+  const ResourceMapPtr& get_resourcemap() const { return resourcemap_; }
   bool has_resourcemap() const { return resourcemap_ != NULL; }
   void set_resourcemap(const ResourceMapPtr& resourcemap) {
     SetComplexChild(resourcemap, &resourcemap_);

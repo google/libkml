@@ -65,21 +65,21 @@ void SimpleFieldTest::TestType() {
 }
 
 void SimpleFieldTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == simplefield_->type());
+  CPPUNIT_ASSERT("" == simplefield_->get_type());
   CPPUNIT_ASSERT(false == simplefield_->has_type());
-  CPPUNIT_ASSERT("" == simplefield_->name());
+  CPPUNIT_ASSERT("" == simplefield_->get_name());
   CPPUNIT_ASSERT(false == simplefield_->has_name());
-  CPPUNIT_ASSERT("" == simplefield_->displayname());
+  CPPUNIT_ASSERT("" == simplefield_->get_displayname());
   CPPUNIT_ASSERT(false == simplefield_->has_displayname());
 }
 
 void SimpleFieldTest::TestSetToDefaultValues() {
   TestDefaults();
-  simplefield_->set_type(simplefield_->type());
+  simplefield_->set_type(simplefield_->get_type());
   CPPUNIT_ASSERT(true == simplefield_->has_type());
-  simplefield_->set_name(simplefield_->name());
+  simplefield_->set_name(simplefield_->get_name());
   CPPUNIT_ASSERT(true == simplefield_->has_name());
-  simplefield_->set_displayname(simplefield_->displayname());
+  simplefield_->set_displayname(simplefield_->get_displayname());
   CPPUNIT_ASSERT(true == simplefield_->has_displayname());
 }
 
@@ -87,19 +87,19 @@ void SimpleFieldTest::TestSetGetHasClear() {
   std::string type("tom");
   simplefield_->set_type(type);
   CPPUNIT_ASSERT(true == simplefield_->has_type());
-  CPPUNIT_ASSERT(type == simplefield_->type());
+  CPPUNIT_ASSERT(type == simplefield_->get_type());
   simplefield_->clear_type();
 
   std::string name("tom");
   simplefield_->set_name(name);
   CPPUNIT_ASSERT(true == simplefield_->has_name());
-  CPPUNIT_ASSERT(name == simplefield_->name());
+  CPPUNIT_ASSERT(name == simplefield_->get_name());
   simplefield_->clear_name();
 
   std::string displayname("dick");
   simplefield_->set_displayname(displayname);
   CPPUNIT_ASSERT(true == simplefield_->has_displayname());
-  CPPUNIT_ASSERT(displayname == simplefield_->displayname());
+  CPPUNIT_ASSERT(displayname == simplefield_->get_displayname());
   simplefield_->clear_displayname();
 
   TestDefaults();
@@ -141,17 +141,17 @@ void SchemaTest::TestType() {
 }
 
 void SchemaTest::TestDefaults() {
-  CPPUNIT_ASSERT("" == schema_->name());
+  CPPUNIT_ASSERT("" == schema_->get_name());
   CPPUNIT_ASSERT(false == schema_->has_name());
-  CPPUNIT_ASSERT("" == schema_->id());
+  CPPUNIT_ASSERT("" == schema_->get_id());
   CPPUNIT_ASSERT(false == schema_->has_id());
 }
 
 void SchemaTest::TestSetToDefaultValues() {
   TestDefaults();
-  schema_->set_name(schema_->name());
+  schema_->set_name(schema_->get_name());
   CPPUNIT_ASSERT(true == schema_->has_name());
-  schema_->set_id(schema_->id());
+  schema_->set_id(schema_->get_id());
   CPPUNIT_ASSERT(true == schema_->has_id());
 }
 
@@ -159,13 +159,13 @@ void SchemaTest::TestSetGetHasClear() {
   std::string name("tom");
   schema_->set_name(name);
   CPPUNIT_ASSERT(true == schema_->has_name());
-  CPPUNIT_ASSERT(name == schema_->name());
+  CPPUNIT_ASSERT(name == schema_->get_name());
   schema_->clear_name();
 
   std::string id("dick");
   schema_->set_id(id);
   CPPUNIT_ASSERT(true == schema_->has_id());
-  CPPUNIT_ASSERT(id == schema_->id());
+  CPPUNIT_ASSERT(id == schema_->get_id());
   schema_->clear_id();
 
   TestDefaults();
@@ -173,16 +173,16 @@ void SchemaTest::TestSetGetHasClear() {
 
 void SchemaTest::TestLists() {
   // Vector is empty.
-  CPPUNIT_ASSERT(0 == schema_->simplefield_array_size());
+  CPPUNIT_ASSERT(0 == schema_->get_simplefield_array_size());
   // Add three <SimpleField> elements:
   schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
   schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
   schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
   // We have three items in the array:
-  CPPUNIT_ASSERT(3 == schema_->simplefield_array_size());
-  for (size_t i = 0; i < schema_->simplefield_array_size(); ++i) {
+  CPPUNIT_ASSERT(3 == schema_->get_simplefield_array_size());
+  for (size_t i = 0; i < schema_->get_simplefield_array_size(); ++i) {
     CPPUNIT_ASSERT(
-        Type_SimpleField == schema_->simplefield_array_at(i)->Type());
+        Type_SimpleField == schema_->get_simplefield_array_at(i)->Type());
   }
 }
 

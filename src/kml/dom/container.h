@@ -45,11 +45,11 @@ class Container : public Feature {
 
   void add_feature(const FeaturePtr& feature);
 
-  const size_t feature_array_size() const {
+  const size_t get_feature_array_size() const {
     return feature_array_.size();
   }
 
-  const FeaturePtr& feature_array_at(unsigned int index) const {
+  const FeaturePtr& get_feature_array_at(unsigned int index) const {
     return feature_array_[index];
   }
 

@@ -40,12 +40,12 @@ using kmldom::PointPtr;
 
 PlacemarkPtr CreatePlacemark(kmldom::KmlFactory* factory,
                              const string& name,
-                             double lat, double lon) {
+                             double lat, double lng) {
   PlacemarkPtr placemark(factory->CreatePlacemark());
   placemark->set_name(name);
 
   CoordinatesPtr coordinates(factory->CreateCoordinates());
-  coordinates->add_point2(lon, lat);
+  coordinates->add_latlng(lat, lng);
 
   PointPtr point(factory->CreatePoint());
   point->set_coordinates(coordinates);
@@ -69,10 +69,10 @@ int main(int argc, char** argv) {
 
   // Read back all the Placemarks in the Folder.
   cout << "Iterating " << kHowManyPoints << " Placemarks:" << endl;
-  assert(kHowManyPoints == folder->feature_array_size());
-  for (int i = 0; i < folder->feature_array_size(); ++i) {
-    assert("hi" == folder->feature_array_at(i)->name());
-    assert(kmldom::Type_Placemark == folder->feature_array_at(i)->Type());
+  assert(kHowManyPoints == folder->get_feature_array_size());
+  for (int i = 0; i < folder->get_feature_array_size(); ++i) {
+    assert("hi" == folder->get_feature_array_at(i)->get_name());
+    assert(kmldom::Type_Placemark == folder->get_feature_array_at(i)->Type());
   }
 
   return 0;

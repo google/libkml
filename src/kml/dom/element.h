@@ -68,7 +68,7 @@ class Element : public Referent {
   }
 
   // This is the concatenation of all character data found parsing this element.
-  const std::string& char_data() const {
+  const std::string& get_char_data() const {
     return char_data_;
   }
   void set_char_data(const std::string& char_data) {
@@ -111,13 +111,13 @@ class Element : public Referent {
   void SerializeUnknown(Serializer& serializer) const;
 
   // Returns the unknown elements.
-  const std::vector<std::string>& unknown_elements_array() const {
+  const std::vector<std::string>& get_unknown_elements_array() const {
     return unknown_elements_array_;
   }
 
   // Returns the unknown legal (misplaced) elements.
   // TODO: a real API
-  const std::vector<ElementPtr>& unknown_legal_elements_array() const {
+  const std::vector<ElementPtr>& get_unknown_legal_elements_array() const {
     return unknown_legal_elements_array_;
   }
 

@@ -43,7 +43,7 @@ class Object : public Element {
     return type == Type_Object || Element::IsA(type);
   }
 
-  const std::string& id() const { return id_; }
+  const std::string& get_id() const { return id_; }
   bool has_id() const { return has_id_; }
   void set_id(const std::string& value) {
     id_ = value;
@@ -54,7 +54,7 @@ class Object : public Element {
     has_id_ = false;
   }
 
-  const std::string& targetid() const { return targetid_; }
+  const std::string& get_targetid() const { return targetid_; }
   bool has_targetid() const { return has_targetid_; }
   void set_targetid(const std::string& targetid) {
     targetid_ = targetid;

@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains some sample code for Geometry elements:
@@ -58,7 +58,7 @@ static PlacemarkPtr CreatePointPlacemark() {
   KmlFactory* factory = KmlFactory::GetFactory();
 
   CoordinatesPtr coordinates = factory->CreateCoordinates();
-  coordinates->add_point2(-123.32, 36.36);
+  coordinates->add_latlng(36.36, -123.32);
 
   PointPtr point = factory->CreatePoint();
   point->set_coordinates(coordinates);
@@ -74,10 +74,10 @@ static PlacemarkPtr CreateLineStringPlacemark() {
   KmlFactory* factory = KmlFactory::GetFactory();
 
   CoordinatesPtr coordinates = factory->CreateCoordinates();
-  coordinates->add_point3(-121.12, 38.38, 123.456);
-  coordinates->add_point3(-122.22, 37.37, 122.345);
-  coordinates->add_point3(-123.32, 36.36, 121.234);
-  coordinates->add_point2(-123.32, 36.36);
+  coordinates->add_latlngalt(38.38, -121.12, 123.456);
+  coordinates->add_latlngalt(37.37, -122.22, 122.345);
+  coordinates->add_latlngalt(36.36, -123.32, 121.234);
+  coordinates->add_latlng(36.36, -123.32);
 
   LineStringPtr linestring = factory->CreateLineString();
   linestring->set_extrude(true);
@@ -96,10 +96,10 @@ static PlacemarkPtr CreateSimplePolygon() {
   KmlFactory* factory = KmlFactory::GetFactory();
 
   CoordinatesPtr coordinates = factory->CreateCoordinates();
-  coordinates->add_point3(-121.12, 38.38, 123.456);
-  coordinates->add_point3(-122.22, 37.37, 122.345);
-  coordinates->add_point3(-123.32, 36.36, 121.234);
-  coordinates->add_point3(-121.12, 38.38, 123.456);
+  coordinates->add_latlngalt(38.38, -121.12, 123.456);
+  coordinates->add_latlngalt(37.37, -122.22, 122.345);
+  coordinates->add_latlngalt(36.36, -123.32, 121.234);
+  coordinates->add_latlngalt(38.38, -121.12, 123.456);
 
   LinearRingPtr linearring = factory->CreateLinearRing();
   linearring->set_coordinates(coordinates);
@@ -125,10 +125,10 @@ static LinearRingPtr CreateBoundary(const double (&corners)[N]) {
   KmlFactory* factory = KmlFactory::GetFactory();
   CoordinatesPtr coordinates = factory->CreateCoordinates();
   for (int i = 0; i < N; i+=2) {
-    coordinates->add_point2(corners[i], corners[i+1]);
+    coordinates->add_latlng(corners[i], corners[i+1]);
   }
   // Last must be the same as first in a LinearRing.
-  coordinates->add_point2(corners[0], corners[1]);
+  coordinates->add_latlng(corners[0], corners[1]);
 
   LinearRingPtr linearring = factory->CreateLinearRing();
   linearring->set_coordinates(coordinates);
@@ -143,24 +143,24 @@ static PlacemarkPtr CreateTwoHolePolygon() {
   PolygonPtr polygon = factory->CreatePolygon();
 
   const double outer_corners[] = {
-    -122.4319382787491,37.80198570954779,
-    -122.4318730681021,37.80166118304026,
-    -122.4314979385389,37.8017138829201,
-    -122.4315644851293,37.80202995372478
+    37.80198570954779,-122.4319382787491,
+    37.80166118304026,-122.4318730681021,
+    37.8017138829201,-122.4314979385389,
+    37.80202995372478,-122.4315644851293
   };
 
   const double inner_west_corners[] = {
-    -122.4318860160652,37.80193182195953,
-    -122.4318421173957,37.80172085332186,
-    -122.4317194993788,37.80173660441158,
-    -122.4317632243884,37.8019475540673
+    37.80193182195953,-122.4318860160652,
+    37.80172085332186,-122.4318421173957,
+    37.80173660441158,-122.4317194993788,
+    37.8019475540673,-122.4317632243884
   };
 
   const double inner_east_corners[] = {
-    -122.4317133795781,37.80195363606838,
-    -122.4316718851426,37.80174288373532,
-    -122.4315492963515,37.8017586463012,
-    -122.4315926416269,37.80196848593953
+    37.80195363606838,-122.4317133795781,
+    37.80174288373532,-122.4316718851426,
+    37.8017586463012,-122.4315492963515,
+    37.80196848593953,-122.4315926416269
   };
   OuterBoundaryIsPtr outerboundaryis = factory->CreateOuterBoundaryIs();
   outerboundaryis->set_linearring(CreateBoundary(outer_corners));
@@ -183,7 +183,7 @@ static PointPtr Create2dPoint(int id, double longitude, double latitude) {
   KmlFactory* factory = KmlFactory::GetFactory();
 
   CoordinatesPtr coordinates = factory->CreateCoordinates();
-  coordinates->add_point2(longitude, latitude);
+  coordinates->add_latlng(longitude, latitude);
 
   PointPtr point = factory->CreatePoint();
   stringstream ss;
@@ -204,7 +204,7 @@ static PlacemarkPtr CreateMultiGeometryPlacemark() {
 
   const int num_points = 3;
   for (int i = 0; i < num_points; ++i) {
-    multigeometry->add_geometry(Create2dPoint(i, -120 + i, 37 + i));
+    multigeometry->add_geometry(Create2dPoint(-120 + i, i, 37 + i));
   }
 
   return placemark;

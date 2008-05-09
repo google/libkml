@@ -81,6 +81,8 @@ libkmldominclude_HEADERS = \
 	networklinkcontrol.h \
 	object.h \
 	overlay.h \
+	parser.h \
+	parser_observer.h \
 	placemark.h \
 	polystyle.h \
 	referent.h \

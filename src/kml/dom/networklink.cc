@@ -66,14 +66,14 @@ void NetworkLink::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Feature::Serialize(serializer);
   if (has_refreshvisibility()) {
-    serializer.SaveFieldById(Type_refreshVisibility, refreshvisibility());
+    serializer.SaveFieldById(Type_refreshVisibility, get_refreshvisibility());
   }
   if (has_flytoview()) {
-    serializer.SaveFieldById(Type_flyToView, flytoview());
+    serializer.SaveFieldById(Type_flyToView, get_flytoview());
   }
   if (has_link()) {
     // If this is <Url> it will serialize as such.
-    serializer.SaveElement(*link());
+    serializer.SaveElement(*get_link());
   }
   SerializeUnknown(serializer);
   serializer.End();

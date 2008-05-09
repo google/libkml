@@ -61,12 +61,12 @@ void CreateTest::TestType() {
 }
 
 void CreateTest::TestLists() {
-  CPPUNIT_ASSERT(0 == create_->container_array_size());
+  CPPUNIT_ASSERT(0 == create_->get_container_array_size());
   create_->add_container(KmlFactory::GetFactory()->CreateDocument());
   create_->add_container(KmlFactory::GetFactory()->CreateFolder());
-  CPPUNIT_ASSERT(2 == create_->container_array_size());
-  CPPUNIT_ASSERT(Type_Document == create_->container_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Folder == create_->container_array_at(1)->Type());
+  CPPUNIT_ASSERT(2 == create_->get_container_array_size());
+  CPPUNIT_ASSERT(Type_Document == create_->get_container_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Folder == create_->get_container_array_at(1)->Type());
 }
 
 // <Delete> tests.
@@ -99,12 +99,12 @@ void DeleteTest::TestType() {
 }
 
 void DeleteTest::TestLists() {
-  CPPUNIT_ASSERT(0 == delete_->feature_array_size());
+  CPPUNIT_ASSERT(0 == delete_->get_feature_array_size());
   delete_->add_feature(KmlFactory::GetFactory()->CreatePlacemark());
   delete_->add_feature(KmlFactory::GetFactory()->CreateNetworkLink());
-  CPPUNIT_ASSERT(2 == delete_->feature_array_size());
-  CPPUNIT_ASSERT(Type_Placemark == delete_->feature_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_NetworkLink == delete_->feature_array_at(1)->Type());
+  CPPUNIT_ASSERT(2 == delete_->get_feature_array_size());
+  CPPUNIT_ASSERT(Type_Placemark == delete_->get_feature_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_NetworkLink == delete_->get_feature_array_at(1)->Type());
 }
 
 // <Change> tests.
@@ -137,12 +137,12 @@ void ChangeTest::TestType() {
 }
 
 void ChangeTest::TestLists() {
-  CPPUNIT_ASSERT(0 == change_->object_array_size());
+  CPPUNIT_ASSERT(0 == change_->get_object_array_size());
   change_->add_object(KmlFactory::GetFactory()->CreateIconStyle());
   change_->add_object(KmlFactory::GetFactory()->CreateLocation());
-  CPPUNIT_ASSERT(2 == change_->object_array_size());
-  CPPUNIT_ASSERT(Type_IconStyle == change_->object_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Location == change_->object_array_at(1)->Type());
+  CPPUNIT_ASSERT(2 == change_->get_object_array_size());
+  CPPUNIT_ASSERT(Type_IconStyle == change_->get_object_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Location == change_->get_object_array_at(1)->Type());
 }
 
 // <Update> tests.
@@ -178,44 +178,50 @@ void UpdateTest::TestType() {
 
 void UpdateTest::TestTargetHref() {
   CPPUNIT_ASSERT(false == update_->has_targethref());
-  CPPUNIT_ASSERT("" == update_->targethref());
+  CPPUNIT_ASSERT("" == update_->get_targethref());
   std::string targethref("#checkoutthiscrosssection");
   update_->set_targethref(targethref);
   CPPUNIT_ASSERT(true == update_->has_targethref());
-  CPPUNIT_ASSERT(targethref == update_->targethref());
+  CPPUNIT_ASSERT(targethref == update_->get_targethref());
   update_->clear_targethref();
   CPPUNIT_ASSERT(false == update_->has_targethref());
-  CPPUNIT_ASSERT("" == update_->targethref());
+  CPPUNIT_ASSERT("" == update_->get_targethref());
 }
 
 void UpdateTest::TestLists() {
   // Vector is empty.
-  CPPUNIT_ASSERT(0 == update_->updateoperation_array_size());
+  CPPUNIT_ASSERT(0 == update_->get_updateoperation_array_size());
   // Add create:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateCreate());
   // And delete:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateDelete());
   // We have two items in the array:
-  CPPUNIT_ASSERT(2 == update_->updateoperation_array_size());
+  CPPUNIT_ASSERT(2 == update_->get_updateoperation_array_size());
   // Add another create:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateCreate());
   // And change:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateChange());
   // We have four items in the array:
-  CPPUNIT_ASSERT(4 == update_->updateoperation_array_size());
+  CPPUNIT_ASSERT(4 == update_->get_updateoperation_array_size());
   // And another delete:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateDelete());
   // And another change:
   update_->add_updateoperation(KmlFactory::GetFactory()->CreateChange());
   // We have six items in the array:
-  CPPUNIT_ASSERT(6 == update_->updateoperation_array_size());
+  CPPUNIT_ASSERT(6 == update_->get_updateoperation_array_size());
   // Assert ordering is preserved in array.
-  CPPUNIT_ASSERT(Type_Create == update_->updateoperation_array_at(0)->Type());
-  CPPUNIT_ASSERT(Type_Delete == update_->updateoperation_array_at(1)->Type());
-  CPPUNIT_ASSERT(Type_Create == update_->updateoperation_array_at(2)->Type());
-  CPPUNIT_ASSERT(Type_Change == update_->updateoperation_array_at(3)->Type());
-  CPPUNIT_ASSERT(Type_Delete == update_->updateoperation_array_at(4)->Type());
-  CPPUNIT_ASSERT(Type_Change == update_->updateoperation_array_at(5)->Type());
+  CPPUNIT_ASSERT(Type_Create ==
+                 update_->get_updateoperation_array_at(0)->Type());
+  CPPUNIT_ASSERT(Type_Delete ==
+                 update_->get_updateoperation_array_at(1)->Type());
+  CPPUNIT_ASSERT(Type_Create ==
+                 update_->get_updateoperation_array_at(2)->Type());
+  CPPUNIT_ASSERT(Type_Change ==
+                 update_->get_updateoperation_array_at(3)->Type());
+  CPPUNIT_ASSERT(Type_Delete ==
+                 update_->get_updateoperation_array_at(4)->Type());
+  CPPUNIT_ASSERT(Type_Change ==
+                 update_->get_updateoperation_array_at(5)->Type());
 }
 
 // <NetworkLinkControl> tests.
@@ -253,45 +259,45 @@ void NetworkLinkControlTest::TestType() {
 // Verify proper defaults:
 void NetworkLinkControlTest::TestDefaults() {
   CPPUNIT_ASSERT(false == nlc_->has_minrefreshperiod());
-  CPPUNIT_ASSERT(0.0 == nlc_->minrefreshperiod());
+  CPPUNIT_ASSERT(0.0 == nlc_->get_minrefreshperiod());
   CPPUNIT_ASSERT(false == nlc_->has_maxsessionlength());
-  CPPUNIT_ASSERT(0.0 == nlc_->maxsessionlength());
+  CPPUNIT_ASSERT(0.0 == nlc_->get_maxsessionlength());
   CPPUNIT_ASSERT(false == nlc_->has_cookie());
-  CPPUNIT_ASSERT("" == nlc_->cookie());
+  CPPUNIT_ASSERT("" == nlc_->get_cookie());
   CPPUNIT_ASSERT(false == nlc_->has_message());
-  CPPUNIT_ASSERT("" == nlc_->message());
+  CPPUNIT_ASSERT("" == nlc_->get_message());
   CPPUNIT_ASSERT(false == nlc_->has_linkname());
-  CPPUNIT_ASSERT("" == nlc_->linkname());
+  CPPUNIT_ASSERT("" == nlc_->get_linkname());
   CPPUNIT_ASSERT(false == nlc_->has_linkdescription());
-  CPPUNIT_ASSERT("" == nlc_->linkdescription());
+  CPPUNIT_ASSERT("" == nlc_->get_linkdescription());
   CPPUNIT_ASSERT(false == nlc_->has_linksnippet());
-  CPPUNIT_ASSERT(NULL == nlc_->linksnippet());
+  CPPUNIT_ASSERT(NULL == nlc_->get_linksnippet());
   CPPUNIT_ASSERT(false == nlc_->has_expires());
-  CPPUNIT_ASSERT("" == nlc_->expires());
+  CPPUNIT_ASSERT("" == nlc_->get_expires());
   CPPUNIT_ASSERT(false == nlc_->has_update());
-  CPPUNIT_ASSERT(NULL == nlc_->update());
+  CPPUNIT_ASSERT(NULL == nlc_->get_update());
   CPPUNIT_ASSERT(false == nlc_->has_abstractview());
-  CPPUNIT_ASSERT(NULL == nlc_->abstractview());
+  CPPUNIT_ASSERT(NULL == nlc_->get_abstractview());
 }
 
 // Verify setting default makes has_xxx() true:
 void NetworkLinkControlTest::TestSetToDefaultValues() {
   TestDefaults();
-  nlc_->set_minrefreshperiod(nlc_->minrefreshperiod());
+  nlc_->set_minrefreshperiod(nlc_->get_minrefreshperiod());
   CPPUNIT_ASSERT(true == nlc_->has_minrefreshperiod());
-  nlc_->set_maxsessionlength(nlc_->maxsessionlength());
+  nlc_->set_maxsessionlength(nlc_->get_maxsessionlength());
   CPPUNIT_ASSERT(true == nlc_->has_maxsessionlength());
-  nlc_->set_cookie(nlc_->cookie());
+  nlc_->set_cookie(nlc_->get_cookie());
   CPPUNIT_ASSERT(true == nlc_->has_cookie());
-  nlc_->set_message(nlc_->message());
+  nlc_->set_message(nlc_->get_message());
   CPPUNIT_ASSERT(true == nlc_->has_message());
-  nlc_->set_linkname(nlc_->linkname());
+  nlc_->set_linkname(nlc_->get_linkname());
   CPPUNIT_ASSERT(true == nlc_->has_linkname());
-  nlc_->set_linkdescription(nlc_->linkdescription());
+  nlc_->set_linkdescription(nlc_->get_linkdescription());
   CPPUNIT_ASSERT(true == nlc_->has_linkdescription());
   nlc_->set_linksnippet(NULL);
   CPPUNIT_ASSERT(false == nlc_->has_linksnippet());  // ptr is still null
-  nlc_->set_expires(nlc_->expires());
+  nlc_->set_expires(nlc_->get_expires());
   CPPUNIT_ASSERT(true == nlc_->has_expires());
   nlc_->set_update(NULL);
   CPPUNIT_ASSERT(false == nlc_->has_update());  // ptr is still null
@@ -327,25 +333,25 @@ void NetworkLinkControlTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == nlc_->has_minrefreshperiod());
-  CPPUNIT_ASSERT(minrefreshperiod == nlc_->minrefreshperiod());
+  CPPUNIT_ASSERT(minrefreshperiod == nlc_->get_minrefreshperiod());
   CPPUNIT_ASSERT(true == nlc_->has_maxsessionlength());
-  CPPUNIT_ASSERT(maxsessionlength == nlc_->maxsessionlength());
+  CPPUNIT_ASSERT(maxsessionlength == nlc_->get_maxsessionlength());
   CPPUNIT_ASSERT(true == nlc_->has_cookie());
-  CPPUNIT_ASSERT(cookie == nlc_->cookie());
+  CPPUNIT_ASSERT(cookie == nlc_->get_cookie());
   CPPUNIT_ASSERT(true == nlc_->has_message());
-  CPPUNIT_ASSERT(message == nlc_->message());
+  CPPUNIT_ASSERT(message == nlc_->get_message());
   CPPUNIT_ASSERT(true == nlc_->has_linkname());
-  CPPUNIT_ASSERT(linkname == nlc_->linkname());
+  CPPUNIT_ASSERT(linkname == nlc_->get_linkname());
   CPPUNIT_ASSERT(true == nlc_->has_linkdescription());
-  CPPUNIT_ASSERT(linkdescription == nlc_->linkdescription());
+  CPPUNIT_ASSERT(linkdescription == nlc_->get_linkdescription());
   CPPUNIT_ASSERT(true == nlc_->has_linksnippet());
-  CPPUNIT_ASSERT(linksnippet == nlc_->linksnippet());
+  CPPUNIT_ASSERT(linksnippet == nlc_->get_linksnippet());
   CPPUNIT_ASSERT(true == nlc_->has_expires());
-  CPPUNIT_ASSERT(expires == nlc_->expires());
+  CPPUNIT_ASSERT(expires == nlc_->get_expires());
   CPPUNIT_ASSERT(true == nlc_->has_update());
-  CPPUNIT_ASSERT(update == nlc_->update());
+  CPPUNIT_ASSERT(update == nlc_->get_update());
   CPPUNIT_ASSERT(true == nlc_->has_abstractview());
-  CPPUNIT_ASSERT(camera == nlc_->abstractview());
+  CPPUNIT_ASSERT(camera == nlc_->get_abstractview());
 
   // Clear all fields:
   nlc_->clear_minrefreshperiod();

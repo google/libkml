@@ -49,7 +49,7 @@ class Style : public StyleSelector {
   }
 
   // <IconStyle>
-  const IconStylePtr& iconstyle() const { return iconstyle_; }
+  const IconStylePtr& get_iconstyle() const { return iconstyle_; }
   bool has_iconstyle() const { return iconstyle_ != NULL; }
   void set_iconstyle(const IconStylePtr& iconstyle) {
     SetComplexChild(iconstyle, &iconstyle_);
@@ -59,7 +59,7 @@ class Style : public StyleSelector {
   }
 
   // <LabelStyle>
-  const LabelStylePtr& labelstyle() const { return labelstyle_; }
+  const LabelStylePtr& get_labelstyle() const { return labelstyle_; }
   bool has_labelstyle() const { return labelstyle_ != NULL; }
   void set_labelstyle(const LabelStylePtr& labelstyle) {
     SetComplexChild(labelstyle, &labelstyle_);
@@ -69,7 +69,7 @@ class Style : public StyleSelector {
   }
 
   // <LineStyle>
-  const LineStylePtr& linestyle() const { return linestyle_; }
+  const LineStylePtr& get_linestyle() const { return linestyle_; }
   bool has_linestyle() const { return linestyle_ != NULL; }
   void set_linestyle(const LineStylePtr& linestyle) {
     SetComplexChild(linestyle, &linestyle_);
@@ -79,7 +79,7 @@ class Style : public StyleSelector {
   }
 
   // <PolyStyle>
-  const PolyStylePtr& polystyle() const { return polystyle_; }
+  const PolyStylePtr& get_polystyle() const { return polystyle_; }
   bool has_polystyle() const { return polystyle_ != NULL; }
   void set_polystyle(const PolyStylePtr& polystyle) {
     SetComplexChild(polystyle, &polystyle_);
@@ -89,7 +89,7 @@ class Style : public StyleSelector {
   }
 
   // <BalloonStyle>
-  const BalloonStylePtr& balloonstyle() const { return balloonstyle_; }
+  const BalloonStylePtr& get_balloonstyle() const { return balloonstyle_; }
   bool has_balloonstyle() const { return balloonstyle_ != NULL; }
   void set_balloonstyle(const BalloonStylePtr& balloonstyle) {
     SetComplexChild(balloonstyle, &balloonstyle_);
@@ -99,7 +99,7 @@ class Style : public StyleSelector {
   }
 
   // <ListStyle>
-  const ListStylePtr& liststyle() const { return liststyle_; }
+  const ListStylePtr& get_liststyle() const { return liststyle_; }
   bool has_liststyle() const { return liststyle_ != NULL; }
   void set_liststyle(const ListStylePtr& liststyle) {
     SetComplexChild(liststyle, &liststyle_);

@@ -42,9 +42,9 @@ namespace kmldom {
 
 void Vec3::Serialize(Serializer& serializer) const {
     serializer.Indent();
-    serializer.SaveContent(ToString(longitude()) + "," +
-                           ToString(latitude()) + "," +
-                           ToString(altitude()) + "\n");
+    serializer.SaveContent(ToString(get_longitude()) + "," +
+                           ToString(get_latitude()) + "," +
+                           ToString(get_altitude()) + "\n");
 }
 
 Coordinates::Coordinates() {}
@@ -141,7 +141,7 @@ void Coordinates::Parse(const std::string& char_data) {
 
 // Coordinates essentially parses itself.
 void Coordinates::AddElement(const ElementPtr& element) {
-  Parse(char_data());
+  Parse(get_char_data());
 }
 
 void Coordinates::Serialize(Serializer& serializer) const {
@@ -217,13 +217,13 @@ void Point::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
-    serializer.SaveFieldById(Type_extrude, extrude());
+    serializer.SaveFieldById(Type_extrude, get_extrude());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_coordinates()) {
-    serializer.SaveElement(*coordinates());
+    serializer.SaveElement(*get_coordinates());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -253,16 +253,16 @@ void LineCommon::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
-    serializer.SaveFieldById(Type_extrude, extrude());
+    serializer.SaveFieldById(Type_extrude, get_extrude());
   }
   if (has_tessellate()) {
-    serializer.SaveFieldById(Type_tessellate, tessellate());
+    serializer.SaveFieldById(Type_tessellate, get_tessellate());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
-  if (coordinates()) {
-    serializer.SaveElement(*coordinates());
+  if (has_coordinates()) {
+    serializer.SaveElement(*get_coordinates());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -338,16 +338,16 @@ void Polygon::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
-    serializer.SaveFieldById(Type_extrude, extrude());
+    serializer.SaveFieldById(Type_extrude, get_extrude());
   }
   if (has_tessellate()) {
-    serializer.SaveFieldById(Type_tessellate, tessellate());
+    serializer.SaveFieldById(Type_tessellate, get_tessellate());
   }
   if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, altitudemode());
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
-  if (outerboundaryis()) {
-    serializer.SaveElement(*outerboundaryis());
+  if (has_outerboundaryis()) {
+    serializer.SaveElement(*get_outerboundaryis());
   }
   for (size_t i = 0; i < innerboundaryis_array_.size(); ++i) {
     serializer.SaveElement(*innerboundaryis_array_[i]);

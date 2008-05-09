@@ -42,7 +42,7 @@ class PolyStyle : public ColorStyle {
   }
 
   // <fill>
-  bool fill() const {
+  bool get_fill() const {
     return fill_;
   }
   bool has_fill() const {
@@ -58,7 +58,7 @@ class PolyStyle : public ColorStyle {
   }
 
   // <outline>
-  bool outline() const {
+  bool get_outline() const {
     return outline_;
   }
   bool has_outline() const {

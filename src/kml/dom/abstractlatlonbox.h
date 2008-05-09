@@ -43,7 +43,7 @@ class AbstractLatLonBox : public Object {
   }
 
   // <north>
-  double north() const {
+  double get_north() const {
     return north_;
   }
   bool has_north() const {
@@ -59,7 +59,7 @@ class AbstractLatLonBox : public Object {
   }
 
   // <south>
-  double south() const {
+  double get_south() const {
     return south_;
   }
   bool has_south() const {
@@ -75,7 +75,7 @@ class AbstractLatLonBox : public Object {
   }
 
   // <east>
-  double east() const {
+  double get_east() const {
     return east_;
   }
   bool has_east() const {
@@ -91,7 +91,7 @@ class AbstractLatLonBox : public Object {
   }
 
   // <west>
-  double west() const {
+  double get_west() const {
     return west_;
   }
   bool has_west() const {

@@ -81,7 +81,7 @@ static void VisitStyleSelector(const StyleSelectorPtr& styleselector);
 static const FeaturePtr GetRootFeature(const ElementPtr& root) {
   const KmlPtr kml = kmldom::AsKml(root);
   if (kml && kml->has_feature()) {
-    return kml->feature();
+    return kml->get_feature();
   }
   return kmldom::AsFeature(root);
 }
@@ -89,31 +89,31 @@ static const FeaturePtr GetRootFeature(const ElementPtr& root) {
 // Link, Icon, Url are all BasicLink
 static void PrintBasicLinkHref(const string what, const BasicLinkPtr& link) {
   if (link) {
-    cout << what << " " << link->href() << endl;
+    cout << what << " " << link->get_href() << endl;
   }
 }
 
 static void PrintNetworkLinkHref(const NetworkLinkPtr& networklink) {
-  PrintBasicLinkHref("NetworkLink", networklink->link());
+  PrintBasicLinkHref("NetworkLink", networklink->get_link());
 }
 
 static void PrintOverlayIconHref(const OverlayPtr& overlay) {
-  PrintBasicLinkHref("Overlay", overlay->icon());
+  PrintBasicLinkHref("Overlay", overlay->get_icon());
 }
 
 static void PrintIconStyleIconHref(const IconStylePtr& iconstyle) {
-  PrintBasicLinkHref("IconStyle", iconstyle->icon());
+  PrintBasicLinkHref("IconStyle", iconstyle->get_icon());
 }
 
 static void PrintModelLinkHref(const ModelPtr& model) {
-  PrintBasicLinkHref("Model", model->link());
+  PrintBasicLinkHref("Model", model->get_link());
 }
 
 static void VisitGeometry(const GeometryPtr& geometry) {
   const MultiGeometryPtr multigeometry = kmldom::AsMultiGeometry(geometry);
   if (multigeometry) {
-    for (size_t i = 0; i < multigeometry->geometry_array_size(); ++i) {
-      VisitGeometry(multigeometry->geometry_array_at(i));
+    for (size_t i = 0; i < multigeometry->get_geometry_array_size(); ++i) {
+      VisitGeometry(multigeometry->get_geometry_array_at(i));
     }
   } else if (const ModelPtr model = kmldom::AsModel(geometry)) {
     PrintModelLinkHref(model);
@@ -122,25 +122,26 @@ static void VisitGeometry(const GeometryPtr& geometry) {
 
 static void VisitPlacemark(const PlacemarkPtr& placemark) {
   if (placemark->has_geometry()) {
-    VisitGeometry(placemark->geometry());
+    VisitGeometry(placemark->get_geometry());
   }
 }
 
 static void VisitListStyle(const ListStylePtr& liststyle) {
-  for (size_t i = 0; i < liststyle->itemicon_array_size(); ++i) {
+  for (size_t i = 0; i < liststyle->get_itemicon_array_size(); ++i) {
     // ItemIcon is not a BasicLink.
-    if (liststyle->itemicon_array_at(i)->has_href()) {
-      cout << "ItemIcon " << liststyle->itemicon_array_at(i)->href() << endl;
+    if (liststyle->get_itemicon_array_at(i)->has_href()) {
+      cout << "ItemIcon " << liststyle->get_itemicon_array_at(i)->get_href()
+           << endl;
     }
   }
 }
 
 static void VisitStyle(const StylePtr& style) {
   if (style->has_iconstyle()) {
-    PrintIconStyleIconHref(style->iconstyle());
+    PrintIconStyleIconHref(style->get_iconstyle());
   }
   if (style->has_liststyle()) {
-    VisitListStyle(style->liststyle());
+    VisitListStyle(style->get_liststyle());
   }
 }
 
@@ -153,28 +154,28 @@ static void VisitStyleSelector(const StyleSelectorPtr& styleselector) {
 }
 
 static void VisitStyleMap(const StyleMapPtr& stylemap) {
-  for (int i = 0; i < stylemap->pair_array_size(); ++i) {
-    if (stylemap->pair_array_at(i)->has_styleselector()) {
-      VisitStyleSelector(stylemap->pair_array_at(i)->styleselector());
+  for (int i = 0; i < stylemap->get_pair_array_size(); ++i) {
+    if (stylemap->get_pair_array_at(i)->has_styleselector()) {
+      VisitStyleSelector(stylemap->get_pair_array_at(i)->get_styleselector());
     }
   }
 }
 
 static void VisitFeatureStyle(const FeaturePtr& feature) {
   if (feature->has_styleselector()) {
-    VisitStyleSelector(feature->styleselector());
+    VisitStyleSelector(feature->get_styleselector());
   }
   // visit list if Document
   if (const DocumentPtr document = kmldom::AsDocument(feature)) {
-    for (size_t i = 0; i < document->styleselector_array_size(); ++i) {
-      VisitStyleSelector(document->styleselector_array_at(i));
+    for (size_t i = 0; i < document->get_styleselector_array_size(); ++i) {
+      VisitStyleSelector(document->get_styleselector_array_at(i));
     }
   }
 }
 
 static void VisitContainer(const ContainerPtr& container) {
-  for (int i = 0; i < container->feature_array_size(); ++i) {
-    VisitFeature(container->feature_array_at(i));
+  for (int i = 0; i < container->get_feature_array_size(); ++i) {
+    VisitFeature(container->get_feature_array_at(i));
   }
 }
 
