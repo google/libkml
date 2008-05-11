@@ -50,22 +50,22 @@ CPPUNIT_TEST_SUITE_REGISTRATION(Vec3Test);
 
 void Vec3Test::TestConstructor() {
   // Construct a Vec3 with initial arguments:
-  const double latitude =  37.123;
   const double longitude = -122.345;
+  const double latitude =  37.123;
   const double altitude =  101.202;
-  Vec3 vec3(latitude, longitude, altitude);
+  Vec3 vec3(longitude, latitude, altitude);
 
   // Verify constructor set the right fields:
-  CPPUNIT_ASSERT(latitude == vec3.get_latitude());
   CPPUNIT_ASSERT(longitude == vec3.get_longitude());
+  CPPUNIT_ASSERT(latitude == vec3.get_latitude());
   CPPUNIT_ASSERT(altitude == vec3.get_altitude());
 
   // Construct a Vec3 with no initializers:
   Vec3 vec0;
 
   // Verify all fields are zero:
-  CPPUNIT_ASSERT(0 == vec0.get_latitude());
   CPPUNIT_ASSERT(0 == vec0.get_longitude());
+  CPPUNIT_ASSERT(0 == vec0.get_latitude());
   CPPUNIT_ASSERT(0 == vec0.get_altitude());
 }
 
