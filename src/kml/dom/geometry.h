@@ -89,7 +89,7 @@ class Vec3 {
   Vec3() {
     vec_[0] = vec_[1] = vec_[2] = 0.0;
   }
-  Vec3(double latitude, double longitude, double altitude) {
+  Vec3(double longitude, double latitude, double altitude) {
     vec_[0] = longitude;
     vec_[1] = latitude;
     vec_[2] = altitude;
