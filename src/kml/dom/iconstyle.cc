@@ -77,10 +77,10 @@ void IconStyle::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_heading, get_heading());
   }
   if (has_icon()) {
-    serializer.SaveElement(*get_icon());
+    serializer.SaveElement(get_icon());
   }
   if (has_hotspot()) {
-    serializer.SaveElement(*get_hotspot());
+    serializer.SaveElement(get_hotspot());
   }
   SerializeUnknown(serializer);
   serializer.End();

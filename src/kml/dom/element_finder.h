@@ -23,60 +23,53 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the definition of the NetworkLink element.
+// This file contains the declaration of the GetElementsByType() and the
+// internal ElementFinder class.
 
-#include "kml/dom/networklink.h"
-#include "kml/dom/attributes.h"
-#include "kml/dom/kml_cast.h"
+#ifndef KML_DOM_ELEMENT_FINDER_H__
+#define KML_DOM_ELEMENT_FINDER_H__
+
+#include <stack>
+#include <string>
+#include "kml/dom.h"
 #include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-NetworkLink::NetworkLink()
-  : refreshvisibility_(false), has_refreshvisibility_(false),
-    flytoview_(false), has_flytoview_(false) {
-}
+class Attributes;
 
-NetworkLink::~NetworkLink() {}
+typedef std::vector<ElementPtr> element_vector_t;
 
-void NetworkLink::AddElement(const ElementPtr& element) {
-  switch (element->Type()) {
-    case Type_refreshVisibility:
-      has_refreshvisibility_ = element->SetBool(&refreshvisibility_);
-      break;
-    case Type_flyToView:
-      has_flytoview_ = element->SetBool(&flytoview_);
-      break;
-    case Type_Url:
-      // <Url> is deprecated.  This permits it in the parser.
-      // Force the cast to accept Url as a LinkPtr.
-      set_link(boost::static_pointer_cast<Link>(element));
-      break;
-    case Type_Link:
-      set_link(AsLink(element));
-      break;
-    default:
-      Feature::AddElement(element);
-      break;
-  }
-}
+// Starting at the hierarchy rooted at element this finds all complex
+// elements of the given type and appends them to the given array.
+void GetElementsById(const ElementPtr& element, KmlDomType type_id,
+                     element_vector_t* element_vector);
 
-void NetworkLink::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
-  Feature::Serialize(serializer);
-  if (has_refreshvisibility()) {
-    serializer.SaveFieldById(Type_refreshVisibility, get_refreshvisibility());
-  }
-  if (has_flytoview()) {
-    serializer.SaveFieldById(Type_flyToView, get_flytoview());
-  }
-  if (has_link()) {
-    // If this is <Url> it will serialize as such.
-    serializer.SaveElement(get_link());
-  }
-  SerializeUnknown(serializer);
-  serializer.End();
-}
+// The ElementFinder adds every complex element of the given type to the
+// given vector.
+class ElementFinder : public Serializer {
+ public:
+  ElementFinder(KmlDomType type_id, element_vector_t& element_vector);
+
+  // See serializer.h for details about these methods.  These are all
+  // nop's in ElementFinder.
+  virtual void BeginById(int type_id, const Attributes& attributes) {}
+  virtual void End() {}
+  virtual void SaveStringFieldById(int type_id, std::string value) {}
+  virtual void SaveComplexStringFieldByName(std::string tag_name,
+                                            const Attributes& attributes,
+                                            std::string value) {}
+  virtual void SaveContent(std::string content) {}
+
+  // This is the only Serializer virtual method implemented
+  // in ElementFinder.  As such only complex elements are found.
+  virtual void SaveElement(const ElementPtr& element);
+
+ private:
+  KmlDomType type_id_;
+  element_vector_t& element_vector_;
+};
 
 }  // end namespace kmldom
+
+#endif  // KML_DOM_ELEMENT_FINDER_H__

@@ -23,79 +23,65 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the internal Serializer class.
+// This file contains the declaration of the internal XmlSerializer class.
 
-#ifndef KML_DOM_SERIALIZER_H__
-#define KML_DOM_SERIALIZER_H__
+#ifndef KML_DOM_XML_SERIALIZER_H__
+#define KML_DOM_XML_SERIALIZER_H__
 
-#include <sstream>
+#include <stack>
 #include <string>
-#include "kml/dom/kml_ptr.h"
+#include <vector>
+#include "kml/dom/serializer.h"
+#include "kml/dom.h"
 
 namespace kmldom {
 
 class Attributes;
-class Xsd;
 
-template<typename T>
-inline std::string ToString(T value) {
-  std::stringstream ss;
-  ss.precision(15);
-  ss << value;
-  return ss.str();
-}
-
-// The Serializer class is internal to the KML DOM and is used by each
+// The XmlSerializer class is internal to the KML DOM and is used by each
 // Element to save its tag name, fields (attributes and simple elements),
 // character data content and/or complex child elements.
-class Serializer {
+class XmlSerializer : public Serializer {
  public:
+  // Construct a serializer with the given strings for line breaks and
+  // indentation.  The indent string is used once for each level of
+  // indentation.  For no line break and/or indent whitespace use "".
+  XmlSerializer(const char* newline, const char* indent);
 
-  Serializer();
-
-  virtual ~Serializer() {}
+  virtual ~XmlSerializer() {}
 
   // Emit the start tag of the given element: <Placemark id="pm123">.
-  virtual void BeginById(int type_id, const Attributes& attributes) = 0;
+  virtual void BeginById(int type_id, const Attributes& attributes);
 
   // Emit the end tag of the given element: </Placemark>.
-  virtual void End() = 0;
-
-  // Save the given complex element.
-  virtual void SaveElement(const ElementPtr& element);
+  virtual void End();
 
   // Handles the case of a complex element with character data. Used by
   // <Snippet> and <SimpleData>.
   virtual void SaveComplexStringFieldByName(std::string tag_name,
                                             const Attributes& attributes,
-                                            std::string value) = 0;
+                                            std::string value);
 
-  // Emit a simple element.
-  virtual void SaveStringFieldById(int type_id, std::string value) = 0;
+  // Emit the XML for the field of the given type with the given content
+  // as its character data.
+  virtual void SaveStringFieldById(int type_id, std::string value);
 
   // Save out raw text.
-  virtual void SaveContent(std::string content) = 0;
+  virtual void SaveContent(std::string content);
 
-  // Emit indent.
-  virtual void Indent() {}
+  // Emit one level of indentation.
+  virtual void Indent();
 
-  // If value contains any non-XML valid characters a CDATA-escaped
-  // string is returned, else the original string is returned.
-  const std::string MaybeQuoteString(const std::string& value);
+  // Write the state of this serializer to the given string.
+  void WriteString(std::string* output);
 
-  // Save the given value out as the enum element identified by type_id.
-  void SaveEnum(int type_id, int enum_value);
-
-  // Save the given value out as the simple element identified by type_id.
-  template<typename T>
-  void SaveFieldById(int type_id, T value) {
-    SaveStringFieldById(type_id, ToString(value));
-  }
-
- protected:
-   const Xsd& xsd_;
+ private:
+  const char* newline_;
+  const char* indent_;
+  std::vector<std::string> xml_;
+  std::stack<std::string> tag_stack_;
 };
 
 }  // end namespace kmldom
 
-#endif  // KML_DOM_SERIALIZER_H__
+#endif  // KML_DOM_XML_SERIALIZER_H__

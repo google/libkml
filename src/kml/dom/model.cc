@@ -237,7 +237,7 @@ void ResourceMap::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   for (size_t i = 0; i < alias_array_.size(); ++i) {
-    serializer.SaveElement(*get_alias_array_at(i));
+    serializer.SaveElement(get_alias_array_at(i));
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
@@ -281,19 +281,19 @@ void Model::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_location()) {
-    serializer.SaveElement(*get_location());
+    serializer.SaveElement(get_location());
   }
   if (has_orientation()) {
-    serializer.SaveElement(*get_orientation());
+    serializer.SaveElement(get_orientation());
   }
   if (has_scale()) {
-    serializer.SaveElement(*get_scale());
+    serializer.SaveElement(get_scale());
   }
   if (has_link()) {
-    serializer.SaveElement(*get_link());
+    serializer.SaveElement(get_link());
   }
   if (has_resourcemap()) {
-    serializer.SaveElement(*get_resourcemap());
+    serializer.SaveElement(get_resourcemap());
   }
   SerializeUnknown(serializer);
   serializer.End();

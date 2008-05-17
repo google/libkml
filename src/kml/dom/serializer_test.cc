@@ -23,8 +23,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the unit tests for the Serializer class and
-// the SerializePretty and SerializeRaw public API functions.
+// This file contains the unit tests for the abstract Serializer base class.
 
 #include "kml/dom/serializer.h"
 #include <string>
@@ -39,218 +38,144 @@ namespace kmldom {
 
 class SerializerTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(SerializerTest);
-  CPPUNIT_TEST(TestToString);
-  CPPUNIT_TEST(TestWriteString);
-  CPPUNIT_TEST(TestSaveStringFieldById);
-  CPPUNIT_TEST(TestCdataHandling);
-  CPPUNIT_TEST(TestCdataEscaping);
-  CPPUNIT_TEST(TestSaveBoolFieldByIdAsBool);
-  CPPUNIT_TEST(TestSaveBoolFieldByIdAsInt);
-  CPPUNIT_TEST(TestSaveContent);
-  CPPUNIT_TEST(TestPrecision);
-  CPPUNIT_TEST(TestSerializePretty);
-  CPPUNIT_TEST(TestSerializePrettyNil);
-  CPPUNIT_TEST(TestSerializePrettyNilWithAttrs);
-  CPPUNIT_TEST(TestSerializeRaw);
-  CPPUNIT_TEST(TestSerializeRawNil);
-  CPPUNIT_TEST(TestSerializeRawNilWithAttrs);
+  CPPUNIT_TEST(TestNullSerializer);
+  CPPUNIT_TEST(TestStatsSerializerOnEmptyElement);
+  CPPUNIT_TEST(TestStatsSerializerOnFields);
+  CPPUNIT_TEST(TestStatsSerializerOnChildren);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
-  void TestToString();
-  void TestWriteString();
-  void TestSaveStringFieldById();
-  void TestCdataHandling();
-  void TestCdataEscaping();
-  void TestSaveBoolFieldByIdAsBool();
-  void TestSaveBoolFieldByIdAsInt();
-  void TestSaveContent();
-  void TestPrecision();
-  void TestSerializePretty();
-  void TestSerializePrettyNil();
-  void TestSerializePrettyNilWithAttrs();
-  void TestSerializeRaw();
-  void TestSerializeRawNil();
-  void TestSerializeRawNilWithAttrs();
+  void TestNullSerializer();
+  void TestStatsSerializerOnEmptyElement();
+  void TestStatsSerializerOnFields();
+  void TestStatsSerializerOnChildren();
 
  public:
   // Called before each test.
   void setUp() {
-    raw_serializer_ = new Serializer("","");
+    folder_ = KmlFactory::GetFactory()->CreateFolder();
     placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
+    point_ = KmlFactory::GetFactory()->CreatePoint();
   }
 
   // Called after each test.
   void tearDown() {
-    delete raw_serializer_;
-    // PlacemarkPtr's destructor releases the underlying Placemark storage.
+    // Nothing to tear down due to use of smart pointers.
   }
 
  private:
-  Serializer* raw_serializer_;
+  FolderPtr folder_;
   PlacemarkPtr placemark_;
+  PointPtr point_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SerializerTest);
 
-void SerializerTest::TestToString() {
-  double pi = 3.14159;
-  unsigned int dna = 42;
-  CPPUNIT_ASSERT("3.14159" == ToString(pi));
-  CPPUNIT_ASSERT("42" == ToString(dna));
-}
+// This simplest possible Serializer implementation provides empty
+// implementations for all of Serializer's pure virtual methods.
+class NullSerializer : public Serializer {
+ public:
+  virtual void BeginById(int type_id, const Attributes& attributes) {}
+  virtual void End() {}
+  virtual void SaveComplexStringFieldByName(std::string tag_name,
+                                            const Attributes& attributes,
+                                            std::string value) {}
+  virtual void SaveStringFieldById(int type_id, std::string value) {}
+  virtual void SaveContent(std::string content) {}
+};
 
-void SerializerTest::TestWriteString() {
-  // Write string clears ptr before writing, does not append.
-  std::string output("foo");
-  raw_serializer_->WriteString(&output);
-  const std::string expected_result("");
-  CPPUNIT_ASSERT_EQUAL(expected_result, output);
-}
-
-void SerializerTest::TestSaveStringFieldById() {
-  // Assert that the <name> field serializes as expected.
-  const int type_id = Type_name;
-  const std::string txt("some feature name");
-  const std::string expected_result("<name>some feature name</name>");
-  raw_serializer_->SaveFieldById(type_id, txt);
-  std::string output;
-  raw_serializer_->WriteString(&output);
-  CPPUNIT_ASSERT_EQUAL(expected_result, output);
-}
-
-void SerializerTest::TestCdataHandling() {
-  // If the parser sees <![CDATA ... ]]> around the character data of an
-  // element, it will preserve it. MaybeQuoteString() contains logic to
-  // determine if we should wrap XML-invalid field characters.
-  struct TestStruct {
-    const std::string chardata;
-    const std::string expected;
-  } testdata[] = {
-    {"simple text", "<name>simple text</name>\n"},
-    {"<![CDATA[...]]>", "<name><![CDATA[...]]></name>\n"},
-    {"invalid & char", "<name><![CDATA[invalid & char]]></name>\n"},
-    {"invalid ' char", "<name><![CDATA[invalid ' char]]></name>\n"},
-    {"invalid < char", "<name><![CDATA[invalid < char]]></name>\n"},
-    {"invalid > char", "<name><![CDATA[invalid > char]]></name>\n"},
-    {"invalid \" char", "<name><![CDATA[invalid \" char]]></name>\n"}
-  };
-
-  const size_t size = sizeof(testdata) / sizeof(testdata[0]);
-
-  for (size_t i = 0; i < size; ++i) {
-    Serializer s_("\n","");
-    std::string output;
-    s_.SaveFieldById(Type_name, testdata[i].chardata);
-    s_.WriteString(&output);
-    CPPUNIT_ASSERT_EQUAL(testdata[i].expected, output);
+// This Serializer implementation counts begin and end tags of complex elements
+// and a count of all simple elements (fields).
+class StatsSerializer : public Serializer {
+ public:
+  StatsSerializer() : begin_count_(0), end_count_(0), field_count_(0) {}
+  virtual void BeginById(int type_id, const Attributes& attributes) {
+    ++begin_count_;
   }
+  virtual void End() {
+    ++end_count_;
+  }
+  virtual void SaveComplexStringFieldByName(std::string tag_name,
+                                            const Attributes& attributes,
+                                            std::string value) {}
+  virtual void SaveStringFieldById(int type_id, std::string value) {
+    ++field_count_;
+  }
+  virtual void SaveContent(std::string content) {}
+
+  int get_begin_count() const {
+    return begin_count_;
+  }
+  int get_end_count() const {
+    return end_count_;
+  }
+  int get_field_count() const {
+    return field_count_;
+  }
+
+ private:
+  int begin_count_;
+  int end_count_;
+  int field_count_;
+};
+
+// This exists because Serialize is public only on Element.
+static void CallSerializer(const ElementPtr& element, Serializer* serializer) {
+  CPPUNIT_ASSERT(element);  // This is basically an internal check.
+  CPPUNIT_ASSERT(serializer);  // This is basically an internal check.
+  element->Serialize(*serializer);
 }
 
-void SerializerTest::TestCdataEscaping() {
-  // Assert that data that should be escaped in a CDATA is so quoted.
-  placemark_->set_name("<i>One</i> two");
-  std::string xml = SerializePretty(placemark_);
-  std::string expected("<Placemark>\n  "
-                       "<name><![CDATA[<i>One</i> two]]></name>\n"
-                       "</Placemark>\n");
-  CPPUNIT_ASSERT_EQUAL(expected, xml);
+// Verify that a concrete class can be derived from from Serializer.
+void SerializerTest::TestNullSerializer() {
+  NullSerializer null_serializer;
+  CallSerializer(placemark_, &null_serializer);
 }
 
-void SerializerTest::TestSaveBoolFieldByIdAsBool() {
-  // Assert that <open> is serialized correctly.
-  const bool bool_state = true;
-  std::string expected_result("<open>1</open>");
-  std::string output;
-  // A parsed bool is serialized as an int:
-  raw_serializer_->SaveFieldById(Type_open, bool_state);
-  raw_serializer_->WriteString(&output);
-  CPPUNIT_ASSERT_EQUAL(expected_result, output);
+// Verify that the framework calls out to the Serializer-based class the
+// expected number of times for the very simple case of a complex element
+// with no fields or child elements.
+void SerializerTest::TestStatsSerializerOnEmptyElement() {
+  StatsSerializer stats_serializer;
+  CallSerializer(placemark_, &stats_serializer);
+  // Once for <Placemark>
+  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_begin_count());
+  // Once for </Placemark>
+  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
+  // No child elements.
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
 }
 
-void SerializerTest::TestSaveBoolFieldByIdAsInt() {
-  // Assert that <open> is serialized correctly.
-  const unsigned int int_state = 1;
-  std::string expected_result("<open>1</open>");
-  std::string output;
-  // A parsed int is serialized as an int:
-  raw_serializer_->SaveFieldById(Type_open, int_state);
-  raw_serializer_->WriteString(&output);
-  CPPUNIT_ASSERT_EQUAL(expected_result, output);
+// Verify that the framework calls out to the Serializer-based class as
+// expected for a complex element with some fields.
+void SerializerTest::TestStatsSerializerOnFields() {
+  StatsSerializer stats_serializer;
+  placemark_->set_id("id");  // This is known to be an attribute.
+  placemark_->set_name("hi");  // This is known to be a field (<name>).
+  // This is known to be a field (<visibility>).
+  placemark_->set_visibility(true);
+  CallSerializer(placemark_, &stats_serializer);
+  // 1: <Placemark>
+  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_begin_count());
+  // 1: </Placemark>
+  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
+  // 2: <name>, <visibility>
+  CPPUNIT_ASSERT_EQUAL(2, stats_serializer.get_field_count());
 }
 
-void SerializerTest::TestSaveContent() {
-  // Ensure a simple string is serialized exactly.
-  const std::string s("tom, dick");
-  raw_serializer_->SaveContent(s);
-  std::string output;
-  raw_serializer_->WriteString(&output);
-  CPPUNIT_ASSERT_EQUAL(s, output);
-  // SaveContent will append continued calls.
-  std::string t(" and harry");
-  raw_serializer_->SaveContent(t);
-  std::string expected_result(s + t);
-  raw_serializer_->WriteString(&output);
-  CPPUNIT_ASSERT_EQUAL(expected_result, output);
-}
-
-void SerializerTest::TestPrecision() {
-  double a = 1.0;
-  // Will round down to int:
-  std::string expected = "1";
-  CPPUNIT_ASSERT_EQUAL(expected, ToString(a));
-  double b = 1.1;
-  // Will preserve at current level of precision:
-  expected = "1.1";
-  CPPUNIT_ASSERT_EQUAL(expected, ToString(b));
-  double c = 1.2345678901234567890;
-  // Will round down to 15 decimals of precision:
-  expected = "1.23456789012346";
-  CPPUNIT_ASSERT_EQUAL(expected, ToString(c));
-}
-
-// Tests the internal Indent() method.
-void SerializerTest::TestSerializePretty() {
-  placemark_->set_name("hello");
-  std::string xml = SerializePretty(placemark_);
-  std::string expected("<Placemark>\n  <name>hello</name>\n</Placemark>\n");
-  CPPUNIT_ASSERT_EQUAL(expected, xml);
-}
-
-// This tests the pretty serialization of an element with no content.
-void SerializerTest::TestSerializePrettyNil() {
-  CPPUNIT_ASSERT_EQUAL(std::string("<Placemark/>\n"),
-                       SerializePretty(placemark_));
-}
-
-// This tests the pretty serialization of an element with attributes but
-// no content.
-void SerializerTest::TestSerializePrettyNilWithAttrs() {
-  placemark_->set_id("hi");  // Adds the id= attribute.
-  CPPUNIT_ASSERT_EQUAL(std::string("<Placemark id=\"hi\"/>\n"),
-                       SerializePretty(placemark_));
-}
-
-// This tests the raw serialization of an element a child element.
-void SerializerTest::TestSerializeRaw() {
-  placemark_->set_name("hello");
-  std::string xml = SerializeRaw(placemark_);
-  std::string expected("<Placemark><name>hello</name></Placemark>");
-  CPPUNIT_ASSERT_EQUAL(expected, xml);
-}
-
-// This tests the raw serialization of an element with no content.
-void SerializerTest::TestSerializeRawNil() {
-  CPPUNIT_ASSERT_EQUAL(std::string("<Placemark/>"),
-                       SerializeRaw(placemark_));
-}
-
-// This tests the raw serialization of an element with attributes but
-// no content.
-void SerializerTest::TestSerializeRawNilWithAttrs() {
-  placemark_->set_id("hi");  // Adds the id= attribute.
-  CPPUNIT_ASSERT_EQUAL(std::string("<Placemark id=\"hi\"/>"),
-                       SerializeRaw(placemark_));
+// Verify that the framework calls out to the Serializer-based class as
+// expected for a hierarchy of complex elements.
+void SerializerTest::TestStatsSerializerOnChildren() {
+  StatsSerializer stats_serializer;
+  placemark_->set_geometry(point_);
+  folder_->add_feature(placemark_);
+  CallSerializer(folder_, &stats_serializer);
+  // 3: <Folder> <Placemark> <Point>
+  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_begin_count());
+  // 3: </Point> </Placemark> </Folder>
+  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_end_count());
+  // 0: none of the complex elements have attributes or fields
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
 }
 
 }  // end namespace kmldom

@@ -23,79 +23,64 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the internal Serializer class.
+// This file contains the declaration of the internal ElementReplicator class.
 
-#ifndef KML_DOM_SERIALIZER_H__
-#define KML_DOM_SERIALIZER_H__
+#ifndef KML_DOM_ELEMENT_REPLICATOR_H__
+#define KML_DOM_ELEMENT_REPLICATOR_H__
 
-#include <sstream>
+#include <stack>
 #include <string>
-#include "kml/dom/kml_ptr.h"
+#include "kml/dom.h"
+#include "kml/dom/serializer.h"
 
 namespace kmldom {
 
 class Attributes;
+class Element;
 class Xsd;
 
-template<typename T>
-inline std::string ToString(T value) {
-  std::stringstream ss;
-  ss.precision(15);
-  ss << value;
-  return ss.str();
-}
+// This returns a "deep" clone of the given element.  All child elements and
+// fields are copied.
+ElementPtr Clone(const ElementPtr& element);
 
-// The Serializer class is internal to the KML DOM and is used by each
-// Element to save its tag name, fields (attributes and simple elements),
-// character data content and/or complex child elements.
-class Serializer {
+// The ElementReplicator is used by the Clone() function to walk the entire
+// "XML" hierarchy of the target element.
+class ElementReplicator : public Serializer {
  public:
+  virtual ~ElementReplicator() {}
 
-  Serializer();
+  // Serializer::BeginById() is called at the start of a complex element.
+  virtual void BeginById(int type_id, const Attributes& attributes);
 
-  virtual ~Serializer() {}
+  // Serializer::End() is called at the end of a complex element.
+  virtual void End();
 
-  // Emit the start tag of the given element: <Placemark id="pm123">.
-  virtual void BeginById(int type_id, const Attributes& attributes) = 0;
-
-  // Emit the end tag of the given element: </Placemark>.
-  virtual void End() = 0;
-
-  // Save the given complex element.
-  virtual void SaveElement(const ElementPtr& element);
+  // Serializer::SaveStringFieldById() is called for each field.
+  virtual void SaveStringFieldById(int type_id, std::string value);
 
   // Handles the case of a complex element with character data. Used by
   // <Snippet> and <SimpleData>.
   virtual void SaveComplexStringFieldByName(std::string tag_name,
                                             const Attributes& attributes,
-                                            std::string value) = 0;
+                                            std::string value);
 
-  // Emit a simple element.
-  virtual void SaveStringFieldById(int type_id, std::string value) = 0;
+  // Serializer::SaveContent() is called for arbitrary character data.
+  virtual void SaveContent(std::string content);
 
-  // Save out raw text.
-  virtual void SaveContent(std::string content) = 0;
 
-  // Emit indent.
-  virtual void Indent() {}
-
-  // If value contains any non-XML valid characters a CDATA-escaped
-  // string is returned, else the original string is returned.
-  const std::string MaybeQuoteString(const std::string& value);
-
-  // Save the given value out as the enum element identified by type_id.
-  void SaveEnum(int type_id, int enum_value);
-
-  // Save the given value out as the simple element identified by type_id.
-  template<typename T>
-  void SaveFieldById(int type_id, T value) {
-    SaveStringFieldById(type_id, ToString(value));
+  // Return the top of the stack which holds the root element.
+  ElementPtr root() {
+    if (clone_stack_.empty()) {
+      return NULL;
+    }
+    return clone_stack_.top();
   }
 
- protected:
-   const Xsd& xsd_;
+ private:
+  // This stack operates akin to the stack in the parser.
+  std::stack<ElementPtr> clone_stack_;
 };
 
 }  // end namespace kmldom
 
-#endif  // KML_DOM_SERIALIZER_H__
+#endif  // KML_DOM_ELEMENT_REPLICATOR_H__

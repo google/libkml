@@ -71,7 +71,7 @@ void Overlay::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_drawOrder, get_draworder());
   }
   if (has_icon()) {
-    serializer.SaveElement(*get_icon());
+    serializer.SaveElement(get_icon());
   }
 }
 
@@ -139,7 +139,7 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_altitude, get_altitude());
   }
   if (has_latlonbox()) {
-    serializer.SaveElement(*get_latlonbox());
+    serializer.SaveElement(get_latlonbox());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -303,13 +303,13 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_rotation, get_rotation());
   }
   if (has_point()) {
-    serializer.SaveElement(*get_point());
+    serializer.SaveElement(get_point());
   }
   if (has_viewvolume()) {
-    serializer.SaveElement(*get_viewvolume());
+    serializer.SaveElement(get_viewvolume());
   }
   if (has_imagepyramid()) {
-    serializer.SaveElement(*get_imagepyramid());
+    serializer.SaveElement(get_imagepyramid());
   }
   if (has_shape()) {
     serializer.SaveEnum(Type_shape, get_shape());
@@ -371,16 +371,16 @@ void ScreenOverlay::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Overlay::Serialize(serializer);
   if (has_overlayxy()) {
-    serializer.SaveElement(*get_overlayxy());
+    serializer.SaveElement(get_overlayxy());
   }
   if (has_screenxy()) {
-    serializer.SaveElement(*get_screenxy());
+    serializer.SaveElement(get_screenxy());
   }
   if (has_rotationxy()) {
-    serializer.SaveElement(*get_rotationxy());
+    serializer.SaveElement(get_rotationxy());
   }
   if (has_size()) {
-    serializer.SaveElement(*get_size());
+    serializer.SaveElement(get_size());
   }
   if (has_rotation()) {
     serializer.SaveFieldById(Type_rotation, get_rotation());

@@ -123,7 +123,7 @@ void Schema::Serialize(Serializer& serializer) const {
   GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < simplefield_array_.size(); ++i) {
-    serializer.SaveElement(*get_simplefield_array_at(i));
+    serializer.SaveElement(get_simplefield_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

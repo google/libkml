@@ -31,6 +31,7 @@
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
+#include "kml/dom/xsd.h"
 
 namespace kmldom {
 
@@ -120,7 +121,7 @@ void SchemaData::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   for (size_t i = 0; i < get_simpledata_array_size(); ++i) {
-    serializer.SaveElement(*get_simpledata_array_at(i));
+    serializer.SaveElement(get_simpledata_array_at(i));
   }
   Element::SerializeUnknown(serializer);
   serializer.End();

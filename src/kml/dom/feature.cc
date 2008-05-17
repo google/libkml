@@ -111,28 +111,28 @@ void Feature::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_open, open_);
   }
   if (has_snippet()) {
-    serializer.SaveElement(*get_snippet());
+    serializer.SaveElement(get_snippet());
   }
   if (has_description()) {
     serializer.SaveFieldById(Type_description, description_);
   }
   if (abstractview_) {
-    serializer.SaveElement(*get_abstractview());
+    serializer.SaveElement(get_abstractview());
   }
   if (timeprimitive_) {
-    serializer.SaveElement(*get_timeprimitive());
+    serializer.SaveElement(get_timeprimitive());
   }
   if (has_styleurl()) {
     serializer.SaveFieldById(Type_styleUrl, styleurl_);
   }
   if (styleselector_) {
-    serializer.SaveElement(*get_styleselector());
+    serializer.SaveElement(get_styleselector());
   }
   if (region_) {
-    serializer.SaveElement(*get_region());
+    serializer.SaveElement(get_region());
   }
   if (extendeddata_) {
-    serializer.SaveElement(*get_extendeddata());
+    serializer.SaveElement(get_extendeddata());
   }
 }
 

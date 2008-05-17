@@ -153,10 +153,10 @@ void Region::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Object::Serialize(serializer);
   if (has_latlonaltbox()) {
-    serializer.SaveElement(*get_latlonaltbox());
+    serializer.SaveElement(get_latlonaltbox());
   }
   if (has_lod()) {
-    serializer.SaveElement(*get_lod());
+    serializer.SaveElement(get_lod());
   }
   SerializeUnknown(serializer);
   serializer.End();
