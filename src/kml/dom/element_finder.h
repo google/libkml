@@ -40,8 +40,13 @@ class Attributes;
 
 typedef std::vector<ElementPtr> element_vector_t;
 
-// Starting at the hierarchy rooted at element this finds all complex
-// elements of the given type and appends them to the given array.
+// Starting at the hierarchy rooted at element this finds all complex elements
+// of the given type and appends an ElementPtr to each in the given array.
+// The element is not cloned.  The array is simple a list into the DOM.
+// Since ElementPtr is reference counted it is safe to release any references
+// to any parent of any element in the array.
+// TODO: decide const vs non-const semantics: modifications to an Element
+// in one place might wreak havoc on usage elsewhere.
 void GetElementsById(const ElementPtr& element, KmlDomType type_id,
                      element_vector_t* element_vector);
 
