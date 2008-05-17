@@ -89,8 +89,8 @@ void ElementFinderTest::TestNullGetElementsById() {
 // Verify a normal usage of GetElementsById().
 void ElementFinderTest::TestBasicGetElementsById() {
   // Put a variety of elements in a hierarchy.
-  const std::string kId0("0");
-  const std::string kId1("1");
+  const std::string kId0("id0");
+  const std::string kId1("id1");
   point0_->set_coordinates(coordinates_);
   placemark0_->set_geometry(point0_);
   placemark0_->set_id(kId0);
