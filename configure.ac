@@ -171,6 +171,8 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/kml/Makefile
 	src/kml/dom/Makefile
+	src/kml/engine/Makefile
+	src/kml/regionator/Makefile
 	src/kml/util/Makefile
 	src/swig/Makefile
 	testdata/Makefile
