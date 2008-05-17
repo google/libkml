@@ -63,10 +63,10 @@ void Kml::Serialize(Serializer& serializer) const {
   GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   if (has_networklinkcontrol()) {
-    serializer.SaveElement(*get_networklinkcontrol());
+    serializer.SaveElement(get_networklinkcontrol());
   }
   if (has_feature()) {
-    serializer.SaveElement(*get_feature());
+    serializer.SaveElement(get_feature());
   }
   SerializeUnknown(serializer);
   serializer.End();

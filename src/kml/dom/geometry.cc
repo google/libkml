@@ -223,7 +223,7 @@ void Point::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_coordinates()) {
-    serializer.SaveElement(*get_coordinates());
+    serializer.SaveElement(get_coordinates());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -262,7 +262,7 @@ void LineCommon::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_coordinates()) {
-    serializer.SaveElement(*get_coordinates());
+    serializer.SaveElement(get_coordinates());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -291,8 +291,8 @@ void BoundaryCommon::AddElement(const ElementPtr& element) {
 void BoundaryCommon::Serialize(Serializer& serializer) const {
   Attributes attributes;  // None.
   serializer.BeginById(Type(), attributes);
-  if (linearring_) {
-    serializer.SaveElement(*linearring_);
+  if (has_linearring()) {
+    serializer.SaveElement(get_linearring());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -347,10 +347,10 @@ void Polygon::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_outerboundaryis()) {
-    serializer.SaveElement(*get_outerboundaryis());
+    serializer.SaveElement(get_outerboundaryis());
   }
   for (size_t i = 0; i < innerboundaryis_array_.size(); ++i) {
-    serializer.SaveElement(*innerboundaryis_array_[i]);
+    serializer.SaveElement(innerboundaryis_array_[i]);
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -381,7 +381,7 @@ void MultiGeometry::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   for (size_t i = 0; i < geometry_array_.size(); ++i) {
-    serializer.SaveElement(*geometry_array_[i]);
+    serializer.SaveElement(geometry_array_[i]);
   }
   SerializeUnknown(serializer);
   serializer.End();

@@ -71,7 +71,7 @@ void Pair::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_styleUrl, get_styleurl());
   }
   if (has_styleselector()) {
-    serializer.SaveElement(*get_styleselector());
+    serializer.SaveElement(get_styleselector());
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -99,7 +99,7 @@ void StyleMap::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   StyleSelector::Serialize(serializer);
   for (size_t i = 0; i < get_pair_array_size(); ++i) {
-    serializer.SaveElement(*get_pair_array_at(i));
+    serializer.SaveElement(get_pair_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

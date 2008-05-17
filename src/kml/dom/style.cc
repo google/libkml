@@ -70,22 +70,22 @@ void Style::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   StyleSelector::Serialize(serializer);
   if (has_iconstyle()) {
-    serializer.SaveElement(*get_iconstyle());
+    serializer.SaveElement(get_iconstyle());
   }
   if (has_labelstyle()) {
-    serializer.SaveElement(*get_labelstyle());
+    serializer.SaveElement(get_labelstyle());
   }
   if (has_linestyle()) {
-    serializer.SaveElement(*get_linestyle());
+    serializer.SaveElement(get_linestyle());
   }
   if (has_polystyle()) {
-    serializer.SaveElement(*get_polystyle());
+    serializer.SaveElement(get_polystyle());
   }
   if (has_balloonstyle()) {
-    serializer.SaveElement(*get_balloonstyle());
+    serializer.SaveElement(get_balloonstyle());
   }
   if (has_liststyle()) {
-    serializer.SaveElement(*get_liststyle());
+    serializer.SaveElement(get_liststyle());
   }
   SerializeUnknown(serializer);
   serializer.End();

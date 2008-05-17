@@ -43,11 +43,15 @@ libkmldom_la_SOURCES = \
 	substyle.cc \
 	timeprimitive.cc \
 	vec2.cc \
-	xsd.cc \
+	element_finder.cc \
+	element_replicator.cc \
 	kml_handler.cc \
 	parser.cc \
 	referent.cc \
-	serializer.cc
+	serializer.cc \
+	xml_serializer.cc \
+	xsd.cc
+
 libkmldom_la_LDFLAGS = -lexpat
 
 libkmldomincludedir = $(includedir)/kml/dom
@@ -146,8 +150,12 @@ TESTS = abstractlatlonbox_test \
 	kml_handler_test \
 	parser_test \
 	referent_test \
+	element_finder_test \
+	element_replicator_test \
 	serializer_test \
+	xml_serializer_test \
 	xsd_test
+
 
 check_PROGRAMS = $(TESTS)
 
@@ -343,6 +351,16 @@ attributes_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 attributes_test_LDFLAGS = $(CPPUNIT_LIBS)
 attributes_test_LDADD= libkmldom.la
 
+element_finder_test_SOURCES = element_finder_test.cc
+element_finder_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+element_finder_test_LDFLAGS = $(CPPUNIT_LIBS)
+element_finder_test_LDADD= libkmldom.la
+
+element_replicator_test_SOURCES = element_replicator_test.cc
+element_replicator_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+element_replicator_test_LDFLAGS = $(CPPUNIT_LIBS)
+element_replicator_test_LDADD= libkmldom.la
+
 kml_handler_test_SOURCES = kml_handler_test.cc
 kml_handler_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kml_handler_test_LDFLAGS = $(CPPUNIT_LIBS)
@@ -362,6 +380,11 @@ serializer_test_SOURCES = serializer_test.cc
 serializer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 serializer_test_LDFLAGS = $(CPPUNIT_LIBS)
 serializer_test_LDADD= libkmldom.la
+
+xml_serializer_test_SOURCES = xml_serializer_test.cc
+xml_serializer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+xml_serializer_test_LDFLAGS = $(CPPUNIT_LIBS)
+xml_serializer_test_LDADD= libkmldom.la
 
 xsd_test_SOURCES = xsd_test.cc
 xsd_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)

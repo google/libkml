@@ -110,7 +110,7 @@ void ListStyle::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_bgColor, get_bgcolor());
   }
   for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
-    serializer.SaveElement(*get_itemicon_array_at(i));
+    serializer.SaveElement(get_itemicon_array_at(i));
   }
   SerializeUnknown(serializer);
   serializer.End();

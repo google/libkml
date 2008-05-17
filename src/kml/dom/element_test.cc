@@ -35,6 +35,7 @@ namespace kmldom {
 // This tests the Element class.
 class ElementTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(ElementTest);
+  CPPUNIT_TEST(TestXmlns);
   CPPUNIT_TEST(TestUnknowns);
   CPPUNIT_TEST(TestSetComplexChild);
   CPPUNIT_TEST(TestAddComplexChild);
@@ -55,6 +56,7 @@ class ElementTest : public CPPUNIT_NS::TestFixture {
   }
 
  protected:
+  void TestXmlns();
   void TestUnknowns();
   void TestSetComplexChild();
   void TestAddComplexChild();
@@ -116,6 +118,14 @@ class ElementTest : public CPPUNIT_NS::TestFixture {
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ElementTest);
+
+void ElementTest::TestXmlns() {
+  CPPUNIT_ASSERT(element_->get_default_xmlns().empty());
+
+  const std::string kOgcKml22Ns("http://www.opengis.net/kml/2.2");
+  element_->set_default_xmlns(kOgcKml22Ns);
+  CPPUNIT_ASSERT_EQUAL(kOgcKml22Ns, element_->get_default_xmlns());
+}
 
 void ElementTest::TestUnknowns() {
   // Unrecognised elements:

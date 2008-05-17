@@ -23,38 +23,40 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "kml/dom/placemark.h"
-#include "kml/dom/attributes.h"
-#include "kml/dom/kml_cast.h"
-#include "kml/dom/serializer.h"
+// This file contains the implementation of the GetElementsById() function and
+// the ElementFinder class.
+
+#include "kml/dom/element_finder.h"
 
 namespace kmldom {
 
-Placemark::Placemark() {}
-
-Placemark::~Placemark() {}
-
-void Placemark::AddElement(const ElementPtr& element) {
-  if (!element) {
+// Append all elements of the given type id in the hierarchy
+// root at element.
+void GetElementsById(const ElementPtr& element, KmlDomType type_id,
+                     element_vector_t* element_vector) {
+  if (!element || !element_vector) {
     return;
   }
-  if (element->IsA(Type_Geometry)) {
-    set_geometry(AsGeometry(element));
-    return;
-  }
-  Feature::AddElement(element);
+  // The ElementFinder derivation of Serializer does all the work.
+  ElementFinder element_finder(type_id, *element_vector);
+  element->Serialize(element_finder);
 }
 
-void Placemark::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Feature::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  Feature::Serialize(serializer);
-  if (has_geometry()) {
-    serializer.SaveElement(get_geometry());
-  }
-  SerializeUnknown(serializer);
-  serializer.End();
+// The constructor for ElementFinder takes a reference to
+// the vector to which to apppend the elements of the give it.
+ElementFinder::ElementFinder(KmlDomType type_id,
+                             element_vector_t& element_vector)
+    : type_id_(type_id), element_vector_(element_vector) {
 }
 
-}  // namespace kmldom
+// This is called for every complex element.
+void ElementFinder::SaveElement(const ElementPtr& element) {
+  // If this element is of the desired type save a pointer.
+  if (type_id_ == element->Type()) {
+    element_vector_.push_back(element);
+  }
+  // Call Serializer to recurse.
+  Serializer::SaveElement(element);
+}
+
+}  // end namespace kmldom

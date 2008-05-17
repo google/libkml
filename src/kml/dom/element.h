@@ -56,6 +56,14 @@ class Element : public Referent {
     return type == Type_Unknown;
   }
 
+  void set_default_xmlns(const std::string& xmlns) {
+    default_xmlns_ = xmlns;
+  }
+  const std::string& get_default_xmlns() const {
+    return default_xmlns_;
+  }
+  // TODO: list of prefixes and namespaces
+
   // This sets this element's parent element.  Returns false if the element
   // already has a parent.  Returns true if the parent is set successfully.
   // To directly mirror XML each element has exactly one parent.
@@ -159,6 +167,10 @@ class Element : public Referent {
   }
 
  private:
+  // Any XML element may have a default xmlns= and or a list of namespace
+  // prefix mappings: xmlns:PREFIX="NAMESPACE".
+  // TODO: save the prefix-namespace mappings as well.
+  std::string default_xmlns_;
   Element* parent_;  // TODO: not ElementPtr to avoid cycles.  TBD parent check
   KmlDomType type_id_;
   std::string char_data_;
