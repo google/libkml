@@ -50,6 +50,7 @@ void SnippetCommon::ParseAttributes(const Attributes& attributes) {
 }
 
 void SnippetCommon::GetAttributes(Attributes* attributes) const {
+  Element::GetAttributes(attributes);
   if (has_maxlines_) {
     attributes->SetDouble(kMaxLines, static_cast<double>(maxlines_));
   }
@@ -65,12 +66,11 @@ void SnippetCommon::AddElement(const ElementPtr& element) {
 
 void SnippetCommon::Serialize(Serializer& serializer) const {
   Attributes attributes;
-  Element::GetAttributes(&attributes);
   GetAttributes(&attributes);
+  serializer.BeginById(Type(), attributes);
   Element::SerializeUnknown(serializer);
-  serializer.SaveComplexStringFieldByName(
-      Xsd::GetSchema()->ElementName(Type()),
-      attributes, text_);
+  serializer.SaveContent(text_, true);
+  serializer.End();
 }
 
 Snippet::Snippet() {}

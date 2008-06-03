@@ -77,7 +77,8 @@ void Element::SerializeUnknown(Serializer& serializer) const {
   // Now serialize unknown elements:
   for (size_t i = 0; i < unknown_elements_array_.size(); ++i) {
     serializer.Indent();
-    serializer.SaveContent(unknown_elements_array_[i]);
+    // This is raw XML do not try to CDATA escape it.
+    serializer.SaveContent(unknown_elements_array_[i], false);
   }
 }
 

@@ -432,9 +432,6 @@ class ViewVolume : public Object {
   }
 
   // <near>
-  // Note: "near" is a reserved keyword on MSVC++. Neither the function name
-  // nor the variable name can be called such.
-  // TODO: API consistency for getters. 
   double get_near() const {
     return near_;
   }

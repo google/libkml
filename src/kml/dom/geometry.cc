@@ -41,10 +41,11 @@
 namespace kmldom {
 
 void Vec3::Serialize(Serializer& serializer) const {
-    serializer.Indent();
-    serializer.SaveContent(ToString(get_longitude()) + "," +
-                           ToString(get_latitude()) + "," +
-                           ToString(get_altitude()) + "\n");
+  serializer.Indent();
+  serializer.SaveContent(ToString(get_longitude()) + "," +
+                         ToString(get_latitude()) + "," +
+                         ToString(get_altitude()) + "\n",
+                         false);  // No coordinates list needs CDATA.
 }
 
 Coordinates::Coordinates() {}

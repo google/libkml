@@ -110,21 +110,14 @@ void XmlSerializer::SaveStringFieldById(int type_id, std::string value) {
                  "</" + tagName + ">" + newline_);
 }
 
-// This is a special case for Snippet/linkSnippet which has both
-// character data and attributes.
-void XmlSerializer::SaveComplexStringFieldByName(std::string tagName,
-                                              const Attributes& attributes,
-                                              std::string value) {
-  Indent();
-  std::string attrs;
-  attributes.Serialize(&attrs);
-  xml_.push_back("<" + tagName + attrs + ">" + MaybeQuoteString(value) +
-                 "</" + tagName + ">" + newline_);
-}
-
-// This is used to emit raw character data content.
-void XmlSerializer::SaveContent(std::string content) {
-  xml_.push_back(content);
+// This is used to emit raw character data content.  Honor request to emit
+// content unescaped if maybe_quote requests.
+void XmlSerializer::SaveContent(const std::string& content, bool maybe_quote) {
+  if (maybe_quote) {
+    xml_.push_back(MaybeQuoteString(content));
+  } else {
+    xml_.push_back(content);
+  }
 }
 
 // This emits the white space specified by indent_.

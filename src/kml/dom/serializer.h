@@ -56,25 +56,21 @@ class Serializer {
   virtual ~Serializer() {}
 
   // Emit the start tag of the given element: <Placemark id="pm123">.
-  virtual void BeginById(int type_id, const Attributes& attributes) = 0;
+  virtual void BeginById(int type_id, const Attributes& attributes) {};
 
   // Emit the end tag of the given element: </Placemark>.
-  virtual void End() = 0;
+  virtual void End() {};
 
-  // Save the given complex element.
+  // Emit a complex element.
   virtual void SaveElement(const ElementPtr& element);
 
-  // Handles the case of a complex element with character data. Used by
-  // <Snippet> and <SimpleData>.
-  virtual void SaveComplexStringFieldByName(std::string tag_name,
-                                            const Attributes& attributes,
-                                            std::string value) = 0;
-
   // Emit a simple element.
-  virtual void SaveStringFieldById(int type_id, std::string value) = 0;
+  virtual void SaveStringFieldById(int type_id, std::string value) {}
 
-  // Save out raw text.
-  virtual void SaveContent(std::string content) = 0;
+  // Save out raw text.  If maybe_quote is true the content is examined
+  // for non-XML-valid characters and if so the content is CDATA escaped.
+  // If maybe_quote is false the content is emitted directly.
+  virtual void SaveContent(const std::string& content, bool maybe_quote) {};
 
   // Emit indent.
   virtual void Indent() {}
