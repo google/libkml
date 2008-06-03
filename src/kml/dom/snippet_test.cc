@@ -43,6 +43,7 @@ class SnippetTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestSetGetHasClear);
   CPPUNIT_TEST(TestBasicParse);
   CPPUNIT_TEST(TestParseMaxLines);
+  CPPUNIT_TEST(TestSerializeCdata);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -62,6 +63,7 @@ class SnippetTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
   void TestBasicParse();
   void TestParseMaxLines();
+  void TestSerializeCdata();
 
  private:
   SnippetPtr snippet_;
@@ -156,6 +158,16 @@ void SnippetTest::TestParseMaxLines() {
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(5), snippet->get_maxlines());
 }
 
+void SnippetTest::TestSerializeCdata() {
+  snippet_->set_text("&");
+  CPPUNIT_ASSERT_EQUAL(std::string("<Snippet><![CDATA[&]]></Snippet>"),
+                       SerializeRaw(snippet_));
+
+  snippet_->set_text("a");
+  CPPUNIT_ASSERT_EQUAL(std::string("<Snippet>a</Snippet>"),
+                       SerializeRaw(snippet_));
+}
+
 // This tests <linkSnippet>.
 class LinkSnippetTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(LinkSnippetTest);
@@ -165,6 +177,7 @@ class LinkSnippetTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestSetGetHasClear);
   CPPUNIT_TEST(TestBasicParse);
   CPPUNIT_TEST(TestParseMaxLines);
+  CPPUNIT_TEST(TestSerializeCdata);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -184,6 +197,7 @@ class LinkSnippetTest : public CPPUNIT_NS::TestFixture {
   void TestSetGetHasClear();
   void TestBasicParse();
   void TestParseMaxLines();
+  void TestSerializeCdata();
 
  private:
   LinkSnippetPtr linksnippet_;
@@ -277,6 +291,16 @@ void LinkSnippetTest::TestParseMaxLines() {
   CPPUNIT_ASSERT(linksnippet->has_maxlines());
   CPPUNIT_ASSERT_EQUAL(static_cast<unsigned int>(7),
                        linksnippet->get_maxlines());
+}
+
+void LinkSnippetTest::TestSerializeCdata() {
+  linksnippet_->set_text("&");
+  CPPUNIT_ASSERT_EQUAL(std::string("<linkSnippet><![CDATA[&]]></linkSnippet>"),
+                       SerializeRaw(linksnippet_));
+
+  linksnippet_->set_text("a");
+  CPPUNIT_ASSERT_EQUAL(std::string("<linkSnippet>a</linkSnippet>"),
+                       SerializeRaw(linksnippet_));
 }
 
 }  // end namespace kmldom

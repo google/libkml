@@ -77,6 +77,9 @@ class CoordinatesTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(CoordinatesTest);
   CPPUNIT_TEST(TestType);
   CPPUNIT_TEST(TestDefaults);
+  CPPUNIT_TEST(TestAddLatLng);
+  CPPUNIT_TEST(TestAddLatLngAlt);
+  CPPUNIT_TEST(TestAddLatLngAltMany);
   CPPUNIT_TEST(TestParseVec3);
   CPPUNIT_TEST(TestParsePoint);
   CPPUNIT_TEST(TestParseLine);
@@ -96,6 +99,9 @@ class CoordinatesTest : public CPPUNIT_NS::TestFixture {
  protected:
   void TestType();
   void TestDefaults();
+  void TestAddLatLng();
+  void TestAddLatLngAlt();
+  void TestAddLatLngAltMany();
   void TestParseVec3();
   void TestParsePoint();
   void TestParseLine();
@@ -115,6 +121,52 @@ void CoordinatesTest::TestType() {
 // Verify proper defaults:
 void CoordinatesTest::TestDefaults() {
   CPPUNIT_ASSERT(0 == coordinates_->get_coordinates_array_size());
+}
+
+// Verify the add_latlng() setter.
+void CoordinatesTest::TestAddLatLng() {
+  const double kLat(-22.22);
+  const double kLon(44.44);
+  coordinates_->add_latlng(kLat, kLon);
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       coordinates_->get_coordinates_array_size());
+  Vec3 vec3 = coordinates_->get_coordinates_array_at(0);
+  CPPUNIT_ASSERT_EQUAL(kLat, vec3.get_latitude());
+  CPPUNIT_ASSERT_EQUAL(kLon, vec3.get_longitude());
+  CPPUNIT_ASSERT_EQUAL(0.0, vec3.get_altitude());
+}
+
+// Verify the add_latlngalt() setter.
+void CoordinatesTest::TestAddLatLngAlt() {
+  const double kLat(-22.22);
+  const double kLon(44.44);
+  const double kAlt(10001.2002);
+  coordinates_->add_latlngalt(kLat, kLon, kAlt);
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       coordinates_->get_coordinates_array_size());
+  Vec3 vec3 = coordinates_->get_coordinates_array_at(0);
+  CPPUNIT_ASSERT_EQUAL(kLat, vec3.get_latitude());
+  CPPUNIT_ASSERT_EQUAL(kLon, vec3.get_longitude());
+  CPPUNIT_ASSERT_EQUAL(kAlt, vec3.get_altitude());
+}
+
+// Verify a bunch of points in a <coordinates> element.
+void CoordinatesTest::TestAddLatLngAltMany() {
+  const size_t kNumPoints(1001);
+  size_t i;
+  for (i = 0; i < kNumPoints; ++i) {
+    coordinates_->add_latlngalt(static_cast<double>(i % 90),
+                                static_cast<double>(i % 180),
+                                static_cast<double>(i));
+  }
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(kNumPoints),
+                       coordinates_->get_coordinates_array_size());
+  for (i = 0; i < kNumPoints; ++i) {
+    Vec3 vec3 = coordinates_->get_coordinates_array_at(i);
+    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i % 90), vec3.get_latitude());
+    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i % 180), vec3.get_longitude());
+    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i), vec3.get_altitude());
+  }
 }
 
 void CoordinatesTest::TestParseVec3() {

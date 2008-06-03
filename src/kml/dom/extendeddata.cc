@@ -51,6 +51,7 @@ void SimpleData::ParseAttributes(const Attributes& attributes) {
 }
 
 void SimpleData::GetAttributes(Attributes* attributes) const {
+  Element::GetAttributes(attributes);
   if (has_name_) {
     attributes->SetString(kSimpleDataName, name_);
   }
@@ -71,11 +72,13 @@ void SimpleData::AddElement(const ElementPtr& element) {
 
 void SimpleData::Serialize(Serializer& serializer) const {
   Attributes attributes;
-  Element::GetAttributes(&attributes);
   GetAttributes(&attributes);
-  serializer.SaveComplexStringFieldByName(
-      Xsd::GetSchema()->ElementName(Type_SimpleData), attributes, text_);
+  serializer.BeginById(Type(), attributes);
+  if (has_text()) {
+    serializer.SaveContent(text_, true);
+  }
   Element::SerializeUnknown(serializer);
+  serializer.End();
 }
 
 // ExtendedDataMember

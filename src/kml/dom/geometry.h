@@ -124,11 +124,11 @@ class Coordinates : public Element {
 
   // The main KML-specific API
   void add_latlngalt(double latitude, double longitude, double altitude) {
-    coordinates_array_.push_back(Vec3(latitude, longitude, altitude));
+    coordinates_array_.push_back(Vec3(longitude, latitude, altitude));
   }
 
   void add_latlng(double latitude, double longitude) {
-    coordinates_array_.push_back(Vec3(latitude, longitude, 0.0));
+    coordinates_array_.push_back(Vec3(longitude, latitude, 0.0));
   }
 
   const size_t get_coordinates_array_size() const {

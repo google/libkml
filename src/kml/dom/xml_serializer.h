@@ -56,18 +56,12 @@ class XmlSerializer : public Serializer {
   // Emit the end tag of the given element: </Placemark>.
   virtual void End();
 
-  // Handles the case of a complex element with character data. Used by
-  // <Snippet> and <SimpleData>.
-  virtual void SaveComplexStringFieldByName(std::string tag_name,
-                                            const Attributes& attributes,
-                                            std::string value);
-
   // Emit the XML for the field of the given type with the given content
   // as its character data.
   virtual void SaveStringFieldById(int type_id, std::string value);
 
-  // Save out raw text.
-  virtual void SaveContent(std::string content);
+  // Save out character data.
+  virtual void SaveContent(const std::string& content, bool maybe_quote);
 
   // Emit one level of indentation.
   virtual void Indent();

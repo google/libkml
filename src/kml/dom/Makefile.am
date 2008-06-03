@@ -43,8 +43,6 @@ libkmldom_la_SOURCES = \
 	substyle.cc \
 	timeprimitive.cc \
 	vec2.cc \
-	element_finder.cc \
-	element_replicator.cc \
 	kml_handler.cc \
 	parser.cc \
 	referent.cc \
@@ -150,8 +148,6 @@ TESTS = abstractlatlonbox_test \
 	kml_handler_test \
 	parser_test \
 	referent_test \
-	element_finder_test \
-	element_replicator_test \
 	serializer_test \
 	xml_serializer_test \
 	xsd_test
@@ -350,16 +346,6 @@ attributes_test_SOURCES = attributes_test.cc
 attributes_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 attributes_test_LDFLAGS = $(CPPUNIT_LIBS)
 attributes_test_LDADD= libkmldom.la
-
-element_finder_test_SOURCES = element_finder_test.cc
-element_finder_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-element_finder_test_LDFLAGS = $(CPPUNIT_LIBS)
-element_finder_test_LDADD= libkmldom.la
-
-element_replicator_test_SOURCES = element_replicator_test.cc
-element_replicator_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-element_replicator_test_LDFLAGS = $(CPPUNIT_LIBS)
-element_replicator_test_LDADD= libkmldom.la
 
 kml_handler_test_SOURCES = kml_handler_test.cc
 kml_handler_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)

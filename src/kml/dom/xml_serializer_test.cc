@@ -182,13 +182,13 @@ void XmlSerializerTest::TestSaveBoolFieldByIdAsInt() {
 void XmlSerializerTest::TestSaveContent() {
   // Ensure a simple string is serialized exactly.
   const std::string s("tom, dick");
-  xml_serializer_->SaveContent(s);
+  xml_serializer_->SaveContent(s, false);
   std::string output;
   xml_serializer_->WriteString(&output);
   CPPUNIT_ASSERT_EQUAL(s, output);
   // SaveContent will append continued calls.
   std::string t(" and harry");
-  xml_serializer_->SaveContent(t);
+  xml_serializer_->SaveContent(t, false);
   std::string expected_result(s + t);
   xml_serializer_->WriteString(&output);
   CPPUNIT_ASSERT_EQUAL(expected_result, output);

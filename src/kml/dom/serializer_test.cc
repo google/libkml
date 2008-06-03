@@ -71,19 +71,6 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SerializerTest);
 
-// This simplest possible Serializer implementation provides empty
-// implementations for all of Serializer's pure virtual methods.
-class NullSerializer : public Serializer {
- public:
-  virtual void BeginById(int type_id, const Attributes& attributes) {}
-  virtual void End() {}
-  virtual void SaveComplexStringFieldByName(std::string tag_name,
-                                            const Attributes& attributes,
-                                            std::string value) {}
-  virtual void SaveStringFieldById(int type_id, std::string value) {}
-  virtual void SaveContent(std::string content) {}
-};
-
 // This Serializer implementation counts begin and end tags of complex elements
 // and a count of all simple elements (fields).
 class StatsSerializer : public Serializer {
@@ -95,14 +82,16 @@ class StatsSerializer : public Serializer {
   virtual void End() {
     ++end_count_;
   }
-  virtual void SaveComplexStringFieldByName(std::string tag_name,
-                                            const Attributes& attributes,
-                                            std::string value) {}
   virtual void SaveStringFieldById(int type_id, std::string value) {
     ++field_count_;
   }
-  virtual void SaveContent(std::string content) {}
-
+  virtual void SaveContent(const std::string& content, bool maybe_quote) {
+    ++content_count_;
+  }
+  virtual void SaveElement(const ElementPtr& element) {
+    ++element_count_;
+    Serializer::SaveElement(element);
+  }
   int get_begin_count() const {
     return begin_count_;
   }
@@ -117,6 +106,8 @@ class StatsSerializer : public Serializer {
   int begin_count_;
   int end_count_;
   int field_count_;
+  int element_count_;
+  int content_count_;
 };
 
 // This exists because Serialize is public only on Element.
@@ -126,9 +117,9 @@ static void CallSerializer(const ElementPtr& element, Serializer* serializer) {
   element->Serialize(*serializer);
 }
 
-// Verify that a concrete class can be derived from from Serializer.
+// Verify that the default Serializer properly does nothing.
 void SerializerTest::TestNullSerializer() {
-  NullSerializer null_serializer;
+  Serializer null_serializer;
   CallSerializer(placemark_, &null_serializer);
 }
 

@@ -40,6 +40,7 @@ class SimpleDataTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestDefaults);
   CPPUNIT_TEST(TestSetToDefaultValues);
   CPPUNIT_TEST(TestSetGetHasClear);
+  CPPUNIT_TEST(TestSerializeCdata);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -54,6 +55,7 @@ class SimpleDataTest : public CPPUNIT_NS::TestFixture {
   void TestDefaults();
   void TestSetToDefaultValues();
   void TestSetGetHasClear();
+  void TestSerializeCdata();
 
  private:
   SimpleDataPtr simpledata_;
@@ -96,6 +98,17 @@ void SimpleDataTest::TestSetGetHasClear() {
 
   TestDefaults();
 }
+
+void SimpleDataTest::TestSerializeCdata() {
+  simpledata_->set_text("&");
+  CPPUNIT_ASSERT_EQUAL(std::string("<SimpleData><![CDATA[&]]></SimpleData>"),
+                       SerializeRaw(simpledata_));
+
+  simpledata_->set_text("a");
+  CPPUNIT_ASSERT_EQUAL(std::string("<SimpleData>a</SimpleData>"),
+                       SerializeRaw(simpledata_));
+}
+
 
 // <SchemaData>
 class SchemaDataTest : public CPPUNIT_NS::TestFixture {
