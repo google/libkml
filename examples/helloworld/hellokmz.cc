@@ -30,36 +30,29 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
-#include "kml/util/kmz.h"
+#include "kml/engine/kmz_file.h"
+#include "kml/util/file.h"
 
 using std::cout;
 using std::endl;
+using kmlengine::KmzFile;
 
 int main(int argc, char** argv) {
   if (argc != 2) {
     cout << "usage: " << argv[0] << " kmzfile" << endl;
     return 1;
   }
-  const char* infile = argv[1];
 
-  std::string data;
-  ReadFileToString(infile, &data);
-  if (data.empty()) {
-    cout << "error: no data read from " << infile << endl;
-    return 1;
-  }
-
-  bool is_kmz = DataIsKmz(data);
-  if (!is_kmz) {
-    cout << "error: " << infile << " is not a KMZ file" << endl;
+  KmzFile* kmz_file = KmzFile::OpenFromFile(argv[1]);
+  if (!kmz_file) {
+    cout << "error: " << argv[1] << " is not a valid kmz file" << endl;
     return 1;
   }
 
   std::string kml;
-  ReadKmlFromKmz(infile, &kml);
-  if (kml.empty()) {
-    cout << "No data read from " << kml << endl;
+  if (!kmz_file->ReadKml(&kml)) {
+    cout << "error: no data read from " << argv[1] << endl;
+    delete kmz_file;
     return 1;
   }
 

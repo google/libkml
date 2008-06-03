@@ -34,14 +34,15 @@
 #include <string>
 #include <vector>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
-#include "kml/util/kmz.h"
+#include "kml/engine/kmz_file.h"
+#include "kml/util/file.h"
 
 using kmldom::ContainerPtr;
 using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
 using kmldom::KmlPtr;
 using kmldom::PlacemarkPtr;
+using kmlengine::KmzFile;
 using std::cout;
 using std::endl;
 
@@ -80,19 +81,25 @@ static const FeaturePtr GetRootFeature(const ElementPtr& root) {
 // Return a FeaturePtr to the root Feature in the kmlfile.  If the kmlfile
 // does not parse or has no root Feature then an empty FeaturePtr is returned.
 static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
-  // Read it.
+  // Read the file.
   std::string file_data;
-  if (!ReadFileToString(kmlfile, &file_data)) {
+  if (!kmlutil::File::ReadFileToString(kmlfile, &file_data)) {
     cout << kmlfile << " read failed" << endl;
-    return FeaturePtr();  // This is equivalent to NULL for raw pointers.
+    return NULL;
   }
 
   // If the file was KMZ, extract the KML file.
   std::string kml;
-  if (DataIsKmz(file_data)) {
-    if (!ReadKmlFromKmz(kmlfile, &kml)) {
-      cout << "Failed reading KMZ file" << endl;
-      return FeaturePtr();
+  if (KmzFile::IsKmz(file_data)) {
+    KmzFile* kmz_file = KmzFile::OpenFromString(kmlfile);
+    if (!kmz_file) {
+      cout << "Failed opening KMZ file" << endl;
+      return NULL;
+    }
+    if (!kmz_file->ReadKml(&kml)) {
+      cout << "Failed to read KML from KMZ" << endl;
+      delete kmz_file;  // TODO scoped_ptr.
+      return NULL;
     }
   } else {
     kml = file_data;

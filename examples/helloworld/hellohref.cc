@@ -36,7 +36,7 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
+#include "kml/util/file.h"
 
 using std::string;
 using std::cout;
@@ -196,7 +196,7 @@ static void VisitFeature(const FeaturePtr& feature) {
 static void HandleFile(const char* kmlfile) {
   cout << kmlfile << endl;
   string kml;
-  bool status = ReadFileToString(kmlfile, &kml);
+  bool status = kmlutil::File::ReadFileToString(kmlfile, &kml);
   if (!status) {
     return;
   }

@@ -31,12 +31,13 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
-#include "kml/util/kmz.h"
+#include "kml/engine/kmz_file.h"
+#include "kml/util/file.h"
 
 using std::cout;
 using std::endl;
 using kmldom::ElementPtr;
+using kmlengine::KmzFile;
 
 int main(int argc, char** argv) {
   if (argc != 2) {
@@ -46,16 +47,22 @@ int main(int argc, char** argv) {
 
   // Read the file.
   std::string file_data;
-  if (!ReadFileToString(argv[1], &file_data)) {
+  if (!kmlutil::File::ReadFileToString(argv[1], &file_data)) {
     cout << argv[1] << " read failed" << endl;
     return 1;
   }
 
   // If the file was KMZ, extract the KML file.
   std::string kml;
-  if (DataIsKmz(file_data)) {
-    if (!ReadKmlFromKmz(argv[1], &kml)) {
-      cout << "Failed reading KMZ file" << endl;
+  if (KmzFile::IsKmz(file_data)) {
+    KmzFile* kmz_file = KmzFile::OpenFromString(file_data);
+    if (!kmz_file) {
+      cout << "Failed opening KMZ file" << endl;
+      return 1;
+    }
+    if (!kmz_file->ReadKml(&kml)) {
+      cout << "Failed to read KML from KMZ" << endl;
+      delete kmz_file;  // TODO scoped_ptr.
       return 1;
     }
   } else {

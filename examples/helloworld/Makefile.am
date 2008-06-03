@@ -1,23 +1,32 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/examples/helloworld \
-	      -I$(top_srcdir)/third_party/boost_1_34_1
+	      -I$(top_srcdir)/third_party/boost_1_34_1 \
+	      -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 noinst_LTLIBRARIES = libhelloutil.la
 
 libhelloutil_la_SOURCES = print.cc
 libhelloutil_la_LIBADD = $(top_builddir)/third_party/libminizip.la
 
-noinst_PROGRAMS = countkml createkml helloattrs helloenum hellofeatures \
-                  hellofolder hellogeometry hellohref hellokmz helloregion \
-		  helloworld parsekml prettykml printgeometry sortplacemarks
+noinst_PROGRAMS = countkml createkml checklinks helloattrs helloenum \
+                  hellofeatures hellofolder hellogeometry hellohref hellokmz \
+                  helloregion helloworld parsekml prettykml printgeometry \
+                  sortplacemarks
 
 createkml_SOURCES = createkml.cc
 createkml_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la
 
+checklinks_SOURCES = checklinks.cc
+checklinks_LDADD = \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
 countkml_SOURCES = countkml.cc
 countkml_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 helloattrs_SOURCES = helloattrs.cc
@@ -50,8 +59,8 @@ hellohref_LDADD = \
 
 hellokmz_SOURCES = hellokmz.cc
 hellokmz_LDADD = \
-	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 helloregion_SOURCES = helloregion.cc
@@ -70,19 +79,20 @@ parsekml_LDADD = \
 
 prettykml_SOURCES = prettykml.cc
 prettykml_LDADD = \
-	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 printgeometry_SOURCES = printgeometry.cc
 printgeometry_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 sortplacemarks_SOURCES = sortplacemarks.cc
 sortplacemarks_LDADD = \
-	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/util/libkmlutil.la
 
 EXTRA_DIST = \

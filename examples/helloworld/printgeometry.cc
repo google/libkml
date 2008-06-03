@@ -29,7 +29,7 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
+#include "kml/util/file.h"
 
 using kmldom::ContainerPtr;
 using kmldom::ElementPtr;
@@ -110,7 +110,7 @@ static const FeaturePtr GetRootFeature(const ElementPtr& root) {
 
 int main(int argc, char** argv) {
   std::string kml;
-  ReadFileToString(argv[1], &kml);
+  kmlutil::File::ReadFileToString(argv[1], &kml);
   std::string errors;
   WalkFeature(GetRootFeature(kmldom::Parse(kml, &errors)));
   if (!errors.empty()) {
