@@ -24,6 +24,7 @@ regionator_test_SOURCES = regionator_test.cc
 regionator_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 regionator_test_LDFLAGS = $(CPPUNIT_LIBS)
 regionator_test_LDADD= libkmlregionator.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la
 
 regionator_qid_test_SOURCES = regionator_qid_test.cc
@@ -34,6 +35,7 @@ regionator_util_test_SOURCES = regionator_util_test.cc
 regionator_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 regionator_util_test_LDFLAGS = $(CPPUNIT_LIBS)
 regionator_util_test_LDADD= libkmlregionator.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la
 
 CLEANFILES = check_PROGRAMS
