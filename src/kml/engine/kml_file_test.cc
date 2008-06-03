@@ -42,6 +42,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestObjectIdMapReplaced);
   CPPUNIT_TEST(TestNullGetSharedStyleById);
   CPPUNIT_TEST(TestBasicGetSharedStyleById);
+  CPPUNIT_TEST(TestReparse);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -54,6 +55,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestObjectIdMapReplaced();
   void TestNullGetSharedStyleById();
   void TestBasicGetSharedStyleById();
+  void TestReparse();
 
  private:
   KmlFile kml_file_;
@@ -185,6 +187,19 @@ void KmlFileTest::TestBasicGetSharedStyleById() {
   CPPUNIT_ASSERT_EQUAL(kFolderStyleId, object->get_id());
   // ...but is not found as a shared style.
   CPPUNIT_ASSERT(!kml_file_.GetSharedStyleById(kFolderStyleId));
+}
+
+// Verify that a 2nd parse of the same KML with a shared style succeeds.  This
+// verifies that both the object_id and shared_style_map are properly reset.
+void KmlFileTest::TestReparse() {
+  const std::string kStyleWithId("<Style id=\"id\"/>");
+  kmldom::ElementPtr root = kml_file_.ParseFromString(kStyleWithId, NULL);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(AsStyle(root));
+  // Parse the same thing again.
+  root = kml_file_.ParseFromString(kStyleWithId, NULL);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(AsStyle(root));
 }
 
 }  // end namespace kmlengine

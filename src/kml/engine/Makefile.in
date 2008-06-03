@@ -14,6 +14,7 @@
 
 @SET_MAKE@
 
+
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 VPATH = @srcdir@
@@ -48,15 +49,100 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
-@HAVE_CPPUNIT_TRUE@am__EXEEXT_1 =  \
-@HAVE_CPPUNIT_TRUE@	object_id_parser_observer_test$(EXEEXT)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+am__installdirs = "$(DESTDIR)$(libdir)" \
+	"$(DESTDIR)$(libkmlengineincludedir)"
+libLTLIBRARIES_INSTALL = $(INSTALL)
+LTLIBRARIES = $(lib_LTLIBRARIES)
+libkmlengine_la_DEPENDENCIES =  \
+	$(top_builddir)/third_party/libminizip.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+am_libkmlengine_la_OBJECTS = clone.lo feature_visitor.lo find.lo \
+	kml_file.lo kmz_file.lo merge.lo style_merger.lo \
+	style_resolver.lo
+libkmlengine_la_OBJECTS = $(am_libkmlengine_la_OBJECTS)
+@HAVE_CPPUNIT_TRUE@am__EXEEXT_1 = kml_file_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	clone_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	feature_visitor_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	find_test$(EXEEXT) href_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	kmz_file_test$(EXEEXT) merge_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	object_id_parser_observer_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	shared_style_parser_observer_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	style_merger_test$(EXEEXT) \
+@HAVE_CPPUNIT_TRUE@	style_resolver_test$(EXEEXT)
+am__clone_test_SOURCES_DIST = clone_test.cc
+@HAVE_CPPUNIT_TRUE@am_clone_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	clone_test-clone_test.$(OBJEXT)
+clone_test_OBJECTS = $(am_clone_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@clone_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__feature_visitor_test_SOURCES_DIST = feature_visitor_test.cc
+@HAVE_CPPUNIT_TRUE@am_feature_visitor_test_OBJECTS = feature_visitor_test-feature_visitor_test.$(OBJEXT)
+feature_visitor_test_OBJECTS = $(am_feature_visitor_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@feature_visitor_test_DEPENDENCIES =  \
+@HAVE_CPPUNIT_TRUE@	libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__find_test_SOURCES_DIST = find_test.cc
+@HAVE_CPPUNIT_TRUE@am_find_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	find_test-find_test.$(OBJEXT)
+find_test_OBJECTS = $(am_find_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@find_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__href_test_SOURCES_DIST = href_test.cc
+@HAVE_CPPUNIT_TRUE@am_href_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	href_test-href_test.$(OBJEXT)
+href_test_OBJECTS = $(am_href_test_OBJECTS)
+href_test_LDADD = $(LDADD)
+am__kml_file_test_SOURCES_DIST = kml_file_test.cc
+@HAVE_CPPUNIT_TRUE@am_kml_file_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	kml_file_test-kml_file_test.$(OBJEXT)
+kml_file_test_OBJECTS = $(am_kml_file_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@kml_file_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__kmz_file_test_SOURCES_DIST = kmz_file_test.cc
+@HAVE_CPPUNIT_TRUE@am_kmz_file_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	kmz_file_test-kmz_file_test.$(OBJEXT)
+kmz_file_test_OBJECTS = $(am_kmz_file_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@kmz_file_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/util/libkmlutil.la
+am__merge_test_SOURCES_DIST = merge_test.cc
+@HAVE_CPPUNIT_TRUE@am_merge_test_OBJECTS =  \
+@HAVE_CPPUNIT_TRUE@	merge_test-merge_test.$(OBJEXT)
+merge_test_OBJECTS = $(am_merge_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@merge_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
 am__object_id_parser_observer_test_SOURCES_DIST =  \
 	object_id_parser_observer_test.cc
 @HAVE_CPPUNIT_TRUE@am_object_id_parser_observer_test_OBJECTS = object_id_parser_observer_test-object_id_parser_observer_test.$(OBJEXT)
 object_id_parser_observer_test_OBJECTS =  \
 	$(am_object_id_parser_observer_test_OBJECTS)
 @HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_DEPENDENCIES =  \
+@HAVE_CPPUNIT_TRUE@	libkmlengine.la \
 @HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__shared_style_parser_observer_test_SOURCES_DIST =  \
+	shared_style_parser_observer_test.cc
+@HAVE_CPPUNIT_TRUE@am_shared_style_parser_observer_test_OBJECTS = shared_style_parser_observer_test-shared_style_parser_observer_test.$(OBJEXT)
+shared_style_parser_observer_test_OBJECTS =  \
+	$(am_shared_style_parser_observer_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@shared_style_parser_observer_test_DEPENDENCIES =  \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__style_merger_test_SOURCES_DIST = style_merger_test.cc
+@HAVE_CPPUNIT_TRUE@am_style_merger_test_OBJECTS = style_merger_test-style_merger_test.$(OBJEXT)
+style_merger_test_OBJECTS = $(am_style_merger_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@style_merger_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+am__style_resolver_test_SOURCES_DIST = style_resolver_test.cc
+@HAVE_CPPUNIT_TRUE@am_style_resolver_test_OBJECTS = style_resolver_test-style_resolver_test.$(OBJEXT)
+style_resolver_test_OBJECTS = $(am_style_resolver_test_OBJECTS)
+@HAVE_CPPUNIT_TRUE@style_resolver_test_DEPENDENCIES = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/util/libkmlutil.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -68,15 +154,24 @@ LTCXXCOMPILE = $(LIBTOOL) --tag=CXX --mode=compile $(CXX) $(DEFS) \
 CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX --mode=link $(CXXLD) $(AM_CXXFLAGS) \
 	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(object_id_parser_observer_test_SOURCES)
-DIST_SOURCES = $(am__object_id_parser_observer_test_SOURCES_DIST)
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libkmlengineincludedir)"
+SOURCES = $(libkmlengine_la_SOURCES) $(clone_test_SOURCES) \
+	$(feature_visitor_test_SOURCES) $(find_test_SOURCES) \
+	$(href_test_SOURCES) $(kml_file_test_SOURCES) \
+	$(kmz_file_test_SOURCES) $(merge_test_SOURCES) \
+	$(object_id_parser_observer_test_SOURCES) \
+	$(shared_style_parser_observer_test_SOURCES) \
+	$(style_merger_test_SOURCES) $(style_resolver_test_SOURCES)
+DIST_SOURCES = $(libkmlengine_la_SOURCES) \
+	$(am__clone_test_SOURCES_DIST) \
+	$(am__feature_visitor_test_SOURCES_DIST) \
+	$(am__find_test_SOURCES_DIST) $(am__href_test_SOURCES_DIST) \
+	$(am__kml_file_test_SOURCES_DIST) \
+	$(am__kmz_file_test_SOURCES_DIST) \
+	$(am__merge_test_SOURCES_DIST) \
+	$(am__object_id_parser_observer_test_SOURCES_DIST) \
+	$(am__shared_style_parser_observer_test_SOURCES_DIST) \
+	$(am__style_merger_test_SOURCES_DIST) \
+	$(am__style_resolver_test_SOURCES_DIST)
 libkmlengineincludeHEADERS_INSTALL = $(INSTALL_HEADER)
 HEADERS = $(libkmlengineinclude_HEADERS)
 ETAGS = etags
@@ -203,18 +298,119 @@ sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
-	     -I$(top_srcdir)/third_party/boost_1_34_1
+	     -I$(top_srcdir)/third_party/boost_1_34_1 \
+	     -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 @GCC_TRUE@AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
+lib_LTLIBRARIES = libkmlengine.la
+libkmlengine_la_SOURCES = \
+	clone.cc \
+	feature_visitor.cc \
+	find.cc \
+	kml_file.cc \
+	kmz_file.cc \
+	merge.cc \
+	style_merger.cc \
+	style_resolver.cc
+
+libkmlengine_la_LIBADD = \
+	$(top_builddir)/third_party/libminizip.la \
+	$(top_builddir)/src/kml/util/libkmlutil.la
+
 libkmlengineincludedir = $(includedir)/kml/engine
 libkmlengineinclude_HEADERS = \
-	object_id_parser_observer.h
+	clone.h \
+	feature_visitor.h \
+	find.h \
+	href.h \
+	kml_file.h \
+	kmz_file.h \
+	merge.h \
+	object_id_parser_observer.h \
+	shared_style_parser_observer.h \
+	style_merger.h \
+	style_resolver.h
 
-@HAVE_CPPUNIT_TRUE@TESTS = object_id_parser_observer_test
+@HAVE_CPPUNIT_TRUE@DATA_DIR = $(top_srcdir)/testdata
+@HAVE_CPPUNIT_TRUE@TESTS = kml_file_test \
+@HAVE_CPPUNIT_TRUE@	clone_test \
+@HAVE_CPPUNIT_TRUE@	feature_visitor_test \
+@HAVE_CPPUNIT_TRUE@	find_test \
+@HAVE_CPPUNIT_TRUE@	href_test \
+@HAVE_CPPUNIT_TRUE@	kmz_file_test \
+@HAVE_CPPUNIT_TRUE@	merge_test \
+@HAVE_CPPUNIT_TRUE@	object_id_parser_observer_test \
+@HAVE_CPPUNIT_TRUE@	shared_style_parser_observer_test \
+@HAVE_CPPUNIT_TRUE@	style_merger_test \
+@HAVE_CPPUNIT_TRUE@	style_resolver_test
+
+
+# Unit tests for KML Engine
+@HAVE_CPPUNIT_TRUE@clone_test_SOURCES = clone_test.cc
+@HAVE_CPPUNIT_TRUE@clone_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@clone_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@clone_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@find_test_SOURCES = find_test.cc
+@HAVE_CPPUNIT_TRUE@find_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@find_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@find_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@feature_visitor_test_SOURCES = feature_visitor_test.cc
+@HAVE_CPPUNIT_TRUE@feature_visitor_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@feature_visitor_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@feature_visitor_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@href_test_SOURCES = href_test.cc
+@HAVE_CPPUNIT_TRUE@href_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@href_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@kml_file_test_SOURCES = kml_file_test.cc
+@HAVE_CPPUNIT_TRUE@kml_file_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@kml_file_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@kml_file_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@kmz_file_test_SOURCES = kmz_file_test.cc
+@HAVE_CPPUNIT_TRUE@kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@kmz_file_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@kmz_file_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/util/libkmlutil.la
+
+@HAVE_CPPUNIT_TRUE@merge_test_SOURCES = merge_test.cc
+@HAVE_CPPUNIT_TRUE@merge_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@merge_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@merge_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
 @HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_SOURCES = object_id_parser_observer_test.cc
 @HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 @HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_LDFLAGS = $(CPPUNIT_LIBS)
-@HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_LDADD = $(top_builddir)/src/kml/dom/libkmldom.la
+@HAVE_CPPUNIT_TRUE@object_id_parser_observer_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@shared_style_parser_observer_test_SOURCES = shared_style_parser_observer_test.cc
+@HAVE_CPPUNIT_TRUE@shared_style_parser_observer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@shared_style_parser_observer_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@shared_style_parser_observer_test_LDADD = \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@style_merger_test_SOURCES = style_merger_test.cc
+@HAVE_CPPUNIT_TRUE@style_merger_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@style_merger_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@style_merger_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
+
+@HAVE_CPPUNIT_TRUE@style_resolver_test_SOURCES = style_resolver_test.cc
+@HAVE_CPPUNIT_TRUE@style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+@HAVE_CPPUNIT_TRUE@style_resolver_test_LDFLAGS = $(CPPUNIT_LIBS)
+@HAVE_CPPUNIT_TRUE@style_resolver_test_LDADD = libkmlengine.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/util/libkmlutil.la
+
 @HAVE_CPPUNIT_TRUE@CLEANFILES = check_PROGRAMS
 all: all-am
 
@@ -249,6 +445,35 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	test -z "$(libdir)" || $(mkdir_p) "$(DESTDIR)$(libdir)"
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    f=$(am__strip_dir) \
+	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(libdir)/$$f'"; \
+	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	@set -x; list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  p=$(am__strip_dir) \
+	  echo " $(LIBTOOL) --mode=uninstall rm -f '$(DESTDIR)$(libdir)/$$p'"; \
+	  $(LIBTOOL) --mode=uninstall rm -f "$(DESTDIR)$(libdir)/$$p"; \
+	done
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  dir="`echo $$p | sed -e 's|/[^/]*$$||'`"; \
+	  test "$$dir" != "$$p" || dir=.; \
+	  echo "rm -f \"$${dir}/so_locations\""; \
+	  rm -f "$${dir}/so_locations"; \
+	done
+libkmlengine.la: $(libkmlengine_la_OBJECTS) $(libkmlengine_la_DEPENDENCIES) 
+	$(CXXLINK) -rpath $(libdir) $(libkmlengine_la_LDFLAGS) $(libkmlengine_la_OBJECTS) $(libkmlengine_la_LIBADD) $(LIBS)
 
 clean-checkPROGRAMS:
 	@list='$(check_PROGRAMS)'; for p in $$list; do \
@@ -256,9 +481,39 @@ clean-checkPROGRAMS:
 	  echo " rm -f $$p $$f"; \
 	  rm -f $$p $$f ; \
 	done
+clone_test$(EXEEXT): $(clone_test_OBJECTS) $(clone_test_DEPENDENCIES) 
+	@rm -f clone_test$(EXEEXT)
+	$(CXXLINK) $(clone_test_LDFLAGS) $(clone_test_OBJECTS) $(clone_test_LDADD) $(LIBS)
+feature_visitor_test$(EXEEXT): $(feature_visitor_test_OBJECTS) $(feature_visitor_test_DEPENDENCIES) 
+	@rm -f feature_visitor_test$(EXEEXT)
+	$(CXXLINK) $(feature_visitor_test_LDFLAGS) $(feature_visitor_test_OBJECTS) $(feature_visitor_test_LDADD) $(LIBS)
+find_test$(EXEEXT): $(find_test_OBJECTS) $(find_test_DEPENDENCIES) 
+	@rm -f find_test$(EXEEXT)
+	$(CXXLINK) $(find_test_LDFLAGS) $(find_test_OBJECTS) $(find_test_LDADD) $(LIBS)
+href_test$(EXEEXT): $(href_test_OBJECTS) $(href_test_DEPENDENCIES) 
+	@rm -f href_test$(EXEEXT)
+	$(CXXLINK) $(href_test_LDFLAGS) $(href_test_OBJECTS) $(href_test_LDADD) $(LIBS)
+kml_file_test$(EXEEXT): $(kml_file_test_OBJECTS) $(kml_file_test_DEPENDENCIES) 
+	@rm -f kml_file_test$(EXEEXT)
+	$(CXXLINK) $(kml_file_test_LDFLAGS) $(kml_file_test_OBJECTS) $(kml_file_test_LDADD) $(LIBS)
+kmz_file_test$(EXEEXT): $(kmz_file_test_OBJECTS) $(kmz_file_test_DEPENDENCIES) 
+	@rm -f kmz_file_test$(EXEEXT)
+	$(CXXLINK) $(kmz_file_test_LDFLAGS) $(kmz_file_test_OBJECTS) $(kmz_file_test_LDADD) $(LIBS)
+merge_test$(EXEEXT): $(merge_test_OBJECTS) $(merge_test_DEPENDENCIES) 
+	@rm -f merge_test$(EXEEXT)
+	$(CXXLINK) $(merge_test_LDFLAGS) $(merge_test_OBJECTS) $(merge_test_LDADD) $(LIBS)
 object_id_parser_observer_test$(EXEEXT): $(object_id_parser_observer_test_OBJECTS) $(object_id_parser_observer_test_DEPENDENCIES) 
 	@rm -f object_id_parser_observer_test$(EXEEXT)
 	$(CXXLINK) $(object_id_parser_observer_test_LDFLAGS) $(object_id_parser_observer_test_OBJECTS) $(object_id_parser_observer_test_LDADD) $(LIBS)
+shared_style_parser_observer_test$(EXEEXT): $(shared_style_parser_observer_test_OBJECTS) $(shared_style_parser_observer_test_DEPENDENCIES) 
+	@rm -f shared_style_parser_observer_test$(EXEEXT)
+	$(CXXLINK) $(shared_style_parser_observer_test_LDFLAGS) $(shared_style_parser_observer_test_OBJECTS) $(shared_style_parser_observer_test_LDADD) $(LIBS)
+style_merger_test$(EXEEXT): $(style_merger_test_OBJECTS) $(style_merger_test_DEPENDENCIES) 
+	@rm -f style_merger_test$(EXEEXT)
+	$(CXXLINK) $(style_merger_test_LDFLAGS) $(style_merger_test_OBJECTS) $(style_merger_test_LDADD) $(LIBS)
+style_resolver_test$(EXEEXT): $(style_resolver_test_OBJECTS) $(style_resolver_test_DEPENDENCIES) 
+	@rm -f style_resolver_test$(EXEEXT)
+	$(CXXLINK) $(style_resolver_test_LDFLAGS) $(style_resolver_test_OBJECTS) $(style_resolver_test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -266,7 +521,25 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clone.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clone_test-clone_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/feature_visitor.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/feature_visitor_test-feature_visitor_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_test-find_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/href_test-href_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kml_file.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kml_file_test-kml_file_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kmz_file.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/kmz_file_test-kmz_file_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/merge.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/merge_test-merge_test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/object_id_parser_observer_test-object_id_parser_observer_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/style_merger.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/style_merger_test-style_merger_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/style_resolver.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/style_resolver_test-style_resolver_test.Po@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	if $(CXXCOMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \
@@ -289,6 +562,104 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LTCXXCOMPILE) -c -o $@ $<
 
+clone_test-clone_test.o: clone_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(clone_test_CXXFLAGS) $(CXXFLAGS) -MT clone_test-clone_test.o -MD -MP -MF "$(DEPDIR)/clone_test-clone_test.Tpo" -c -o clone_test-clone_test.o `test -f 'clone_test.cc' || echo '$(srcdir)/'`clone_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/clone_test-clone_test.Tpo" "$(DEPDIR)/clone_test-clone_test.Po"; else rm -f "$(DEPDIR)/clone_test-clone_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clone_test.cc' object='clone_test-clone_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(clone_test_CXXFLAGS) $(CXXFLAGS) -c -o clone_test-clone_test.o `test -f 'clone_test.cc' || echo '$(srcdir)/'`clone_test.cc
+
+clone_test-clone_test.obj: clone_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(clone_test_CXXFLAGS) $(CXXFLAGS) -MT clone_test-clone_test.obj -MD -MP -MF "$(DEPDIR)/clone_test-clone_test.Tpo" -c -o clone_test-clone_test.obj `if test -f 'clone_test.cc'; then $(CYGPATH_W) 'clone_test.cc'; else $(CYGPATH_W) '$(srcdir)/clone_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/clone_test-clone_test.Tpo" "$(DEPDIR)/clone_test-clone_test.Po"; else rm -f "$(DEPDIR)/clone_test-clone_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clone_test.cc' object='clone_test-clone_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(clone_test_CXXFLAGS) $(CXXFLAGS) -c -o clone_test-clone_test.obj `if test -f 'clone_test.cc'; then $(CYGPATH_W) 'clone_test.cc'; else $(CYGPATH_W) '$(srcdir)/clone_test.cc'; fi`
+
+feature_visitor_test-feature_visitor_test.o: feature_visitor_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(feature_visitor_test_CXXFLAGS) $(CXXFLAGS) -MT feature_visitor_test-feature_visitor_test.o -MD -MP -MF "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo" -c -o feature_visitor_test-feature_visitor_test.o `test -f 'feature_visitor_test.cc' || echo '$(srcdir)/'`feature_visitor_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo" "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Po"; else rm -f "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='feature_visitor_test.cc' object='feature_visitor_test-feature_visitor_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(feature_visitor_test_CXXFLAGS) $(CXXFLAGS) -c -o feature_visitor_test-feature_visitor_test.o `test -f 'feature_visitor_test.cc' || echo '$(srcdir)/'`feature_visitor_test.cc
+
+feature_visitor_test-feature_visitor_test.obj: feature_visitor_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(feature_visitor_test_CXXFLAGS) $(CXXFLAGS) -MT feature_visitor_test-feature_visitor_test.obj -MD -MP -MF "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo" -c -o feature_visitor_test-feature_visitor_test.obj `if test -f 'feature_visitor_test.cc'; then $(CYGPATH_W) 'feature_visitor_test.cc'; else $(CYGPATH_W) '$(srcdir)/feature_visitor_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo" "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Po"; else rm -f "$(DEPDIR)/feature_visitor_test-feature_visitor_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='feature_visitor_test.cc' object='feature_visitor_test-feature_visitor_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(feature_visitor_test_CXXFLAGS) $(CXXFLAGS) -c -o feature_visitor_test-feature_visitor_test.obj `if test -f 'feature_visitor_test.cc'; then $(CYGPATH_W) 'feature_visitor_test.cc'; else $(CYGPATH_W) '$(srcdir)/feature_visitor_test.cc'; fi`
+
+find_test-find_test.o: find_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(find_test_CXXFLAGS) $(CXXFLAGS) -MT find_test-find_test.o -MD -MP -MF "$(DEPDIR)/find_test-find_test.Tpo" -c -o find_test-find_test.o `test -f 'find_test.cc' || echo '$(srcdir)/'`find_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/find_test-find_test.Tpo" "$(DEPDIR)/find_test-find_test.Po"; else rm -f "$(DEPDIR)/find_test-find_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='find_test.cc' object='find_test-find_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(find_test_CXXFLAGS) $(CXXFLAGS) -c -o find_test-find_test.o `test -f 'find_test.cc' || echo '$(srcdir)/'`find_test.cc
+
+find_test-find_test.obj: find_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(find_test_CXXFLAGS) $(CXXFLAGS) -MT find_test-find_test.obj -MD -MP -MF "$(DEPDIR)/find_test-find_test.Tpo" -c -o find_test-find_test.obj `if test -f 'find_test.cc'; then $(CYGPATH_W) 'find_test.cc'; else $(CYGPATH_W) '$(srcdir)/find_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/find_test-find_test.Tpo" "$(DEPDIR)/find_test-find_test.Po"; else rm -f "$(DEPDIR)/find_test-find_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='find_test.cc' object='find_test-find_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(find_test_CXXFLAGS) $(CXXFLAGS) -c -o find_test-find_test.obj `if test -f 'find_test.cc'; then $(CYGPATH_W) 'find_test.cc'; else $(CYGPATH_W) '$(srcdir)/find_test.cc'; fi`
+
+href_test-href_test.o: href_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(href_test_CXXFLAGS) $(CXXFLAGS) -MT href_test-href_test.o -MD -MP -MF "$(DEPDIR)/href_test-href_test.Tpo" -c -o href_test-href_test.o `test -f 'href_test.cc' || echo '$(srcdir)/'`href_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/href_test-href_test.Tpo" "$(DEPDIR)/href_test-href_test.Po"; else rm -f "$(DEPDIR)/href_test-href_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='href_test.cc' object='href_test-href_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(href_test_CXXFLAGS) $(CXXFLAGS) -c -o href_test-href_test.o `test -f 'href_test.cc' || echo '$(srcdir)/'`href_test.cc
+
+href_test-href_test.obj: href_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(href_test_CXXFLAGS) $(CXXFLAGS) -MT href_test-href_test.obj -MD -MP -MF "$(DEPDIR)/href_test-href_test.Tpo" -c -o href_test-href_test.obj `if test -f 'href_test.cc'; then $(CYGPATH_W) 'href_test.cc'; else $(CYGPATH_W) '$(srcdir)/href_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/href_test-href_test.Tpo" "$(DEPDIR)/href_test-href_test.Po"; else rm -f "$(DEPDIR)/href_test-href_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='href_test.cc' object='href_test-href_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(href_test_CXXFLAGS) $(CXXFLAGS) -c -o href_test-href_test.obj `if test -f 'href_test.cc'; then $(CYGPATH_W) 'href_test.cc'; else $(CYGPATH_W) '$(srcdir)/href_test.cc'; fi`
+
+kml_file_test-kml_file_test.o: kml_file_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kml_file_test_CXXFLAGS) $(CXXFLAGS) -MT kml_file_test-kml_file_test.o -MD -MP -MF "$(DEPDIR)/kml_file_test-kml_file_test.Tpo" -c -o kml_file_test-kml_file_test.o `test -f 'kml_file_test.cc' || echo '$(srcdir)/'`kml_file_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/kml_file_test-kml_file_test.Tpo" "$(DEPDIR)/kml_file_test-kml_file_test.Po"; else rm -f "$(DEPDIR)/kml_file_test-kml_file_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='kml_file_test.cc' object='kml_file_test-kml_file_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kml_file_test_CXXFLAGS) $(CXXFLAGS) -c -o kml_file_test-kml_file_test.o `test -f 'kml_file_test.cc' || echo '$(srcdir)/'`kml_file_test.cc
+
+kml_file_test-kml_file_test.obj: kml_file_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kml_file_test_CXXFLAGS) $(CXXFLAGS) -MT kml_file_test-kml_file_test.obj -MD -MP -MF "$(DEPDIR)/kml_file_test-kml_file_test.Tpo" -c -o kml_file_test-kml_file_test.obj `if test -f 'kml_file_test.cc'; then $(CYGPATH_W) 'kml_file_test.cc'; else $(CYGPATH_W) '$(srcdir)/kml_file_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/kml_file_test-kml_file_test.Tpo" "$(DEPDIR)/kml_file_test-kml_file_test.Po"; else rm -f "$(DEPDIR)/kml_file_test-kml_file_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='kml_file_test.cc' object='kml_file_test-kml_file_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kml_file_test_CXXFLAGS) $(CXXFLAGS) -c -o kml_file_test-kml_file_test.obj `if test -f 'kml_file_test.cc'; then $(CYGPATH_W) 'kml_file_test.cc'; else $(CYGPATH_W) '$(srcdir)/kml_file_test.cc'; fi`
+
+kmz_file_test-kmz_file_test.o: kmz_file_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kmz_file_test_CXXFLAGS) $(CXXFLAGS) -MT kmz_file_test-kmz_file_test.o -MD -MP -MF "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo" -c -o kmz_file_test-kmz_file_test.o `test -f 'kmz_file_test.cc' || echo '$(srcdir)/'`kmz_file_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo" "$(DEPDIR)/kmz_file_test-kmz_file_test.Po"; else rm -f "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='kmz_file_test.cc' object='kmz_file_test-kmz_file_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kmz_file_test_CXXFLAGS) $(CXXFLAGS) -c -o kmz_file_test-kmz_file_test.o `test -f 'kmz_file_test.cc' || echo '$(srcdir)/'`kmz_file_test.cc
+
+kmz_file_test-kmz_file_test.obj: kmz_file_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kmz_file_test_CXXFLAGS) $(CXXFLAGS) -MT kmz_file_test-kmz_file_test.obj -MD -MP -MF "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo" -c -o kmz_file_test-kmz_file_test.obj `if test -f 'kmz_file_test.cc'; then $(CYGPATH_W) 'kmz_file_test.cc'; else $(CYGPATH_W) '$(srcdir)/kmz_file_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo" "$(DEPDIR)/kmz_file_test-kmz_file_test.Po"; else rm -f "$(DEPDIR)/kmz_file_test-kmz_file_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='kmz_file_test.cc' object='kmz_file_test-kmz_file_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(kmz_file_test_CXXFLAGS) $(CXXFLAGS) -c -o kmz_file_test-kmz_file_test.obj `if test -f 'kmz_file_test.cc'; then $(CYGPATH_W) 'kmz_file_test.cc'; else $(CYGPATH_W) '$(srcdir)/kmz_file_test.cc'; fi`
+
+merge_test-merge_test.o: merge_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(merge_test_CXXFLAGS) $(CXXFLAGS) -MT merge_test-merge_test.o -MD -MP -MF "$(DEPDIR)/merge_test-merge_test.Tpo" -c -o merge_test-merge_test.o `test -f 'merge_test.cc' || echo '$(srcdir)/'`merge_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/merge_test-merge_test.Tpo" "$(DEPDIR)/merge_test-merge_test.Po"; else rm -f "$(DEPDIR)/merge_test-merge_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='merge_test.cc' object='merge_test-merge_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(merge_test_CXXFLAGS) $(CXXFLAGS) -c -o merge_test-merge_test.o `test -f 'merge_test.cc' || echo '$(srcdir)/'`merge_test.cc
+
+merge_test-merge_test.obj: merge_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(merge_test_CXXFLAGS) $(CXXFLAGS) -MT merge_test-merge_test.obj -MD -MP -MF "$(DEPDIR)/merge_test-merge_test.Tpo" -c -o merge_test-merge_test.obj `if test -f 'merge_test.cc'; then $(CYGPATH_W) 'merge_test.cc'; else $(CYGPATH_W) '$(srcdir)/merge_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/merge_test-merge_test.Tpo" "$(DEPDIR)/merge_test-merge_test.Po"; else rm -f "$(DEPDIR)/merge_test-merge_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='merge_test.cc' object='merge_test-merge_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(merge_test_CXXFLAGS) $(CXXFLAGS) -c -o merge_test-merge_test.obj `if test -f 'merge_test.cc'; then $(CYGPATH_W) 'merge_test.cc'; else $(CYGPATH_W) '$(srcdir)/merge_test.cc'; fi`
+
 object_id_parser_observer_test-object_id_parser_observer_test.o: object_id_parser_observer_test.cc
 @am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(object_id_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -MT object_id_parser_observer_test-object_id_parser_observer_test.o -MD -MP -MF "$(DEPDIR)/object_id_parser_observer_test-object_id_parser_observer_test.Tpo" -c -o object_id_parser_observer_test-object_id_parser_observer_test.o `test -f 'object_id_parser_observer_test.cc' || echo '$(srcdir)/'`object_id_parser_observer_test.cc; \
 @am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/object_id_parser_observer_test-object_id_parser_observer_test.Tpo" "$(DEPDIR)/object_id_parser_observer_test-object_id_parser_observer_test.Po"; else rm -f "$(DEPDIR)/object_id_parser_observer_test-object_id_parser_observer_test.Tpo"; exit 1; fi
@@ -302,6 +673,48 @@ object_id_parser_observer_test-object_id_parser_observer_test.obj: object_id_par
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='object_id_parser_observer_test.cc' object='object_id_parser_observer_test-object_id_parser_observer_test.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(object_id_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -c -o object_id_parser_observer_test-object_id_parser_observer_test.obj `if test -f 'object_id_parser_observer_test.cc'; then $(CYGPATH_W) 'object_id_parser_observer_test.cc'; else $(CYGPATH_W) '$(srcdir)/object_id_parser_observer_test.cc'; fi`
+
+shared_style_parser_observer_test-shared_style_parser_observer_test.o: shared_style_parser_observer_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shared_style_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -MT shared_style_parser_observer_test-shared_style_parser_observer_test.o -MD -MP -MF "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo" -c -o shared_style_parser_observer_test-shared_style_parser_observer_test.o `test -f 'shared_style_parser_observer_test.cc' || echo '$(srcdir)/'`shared_style_parser_observer_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo" "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Po"; else rm -f "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shared_style_parser_observer_test.cc' object='shared_style_parser_observer_test-shared_style_parser_observer_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shared_style_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -c -o shared_style_parser_observer_test-shared_style_parser_observer_test.o `test -f 'shared_style_parser_observer_test.cc' || echo '$(srcdir)/'`shared_style_parser_observer_test.cc
+
+shared_style_parser_observer_test-shared_style_parser_observer_test.obj: shared_style_parser_observer_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shared_style_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -MT shared_style_parser_observer_test-shared_style_parser_observer_test.obj -MD -MP -MF "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo" -c -o shared_style_parser_observer_test-shared_style_parser_observer_test.obj `if test -f 'shared_style_parser_observer_test.cc'; then $(CYGPATH_W) 'shared_style_parser_observer_test.cc'; else $(CYGPATH_W) '$(srcdir)/shared_style_parser_observer_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo" "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Po"; else rm -f "$(DEPDIR)/shared_style_parser_observer_test-shared_style_parser_observer_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='shared_style_parser_observer_test.cc' object='shared_style_parser_observer_test-shared_style_parser_observer_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(shared_style_parser_observer_test_CXXFLAGS) $(CXXFLAGS) -c -o shared_style_parser_observer_test-shared_style_parser_observer_test.obj `if test -f 'shared_style_parser_observer_test.cc'; then $(CYGPATH_W) 'shared_style_parser_observer_test.cc'; else $(CYGPATH_W) '$(srcdir)/shared_style_parser_observer_test.cc'; fi`
+
+style_merger_test-style_merger_test.o: style_merger_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_merger_test_CXXFLAGS) $(CXXFLAGS) -MT style_merger_test-style_merger_test.o -MD -MP -MF "$(DEPDIR)/style_merger_test-style_merger_test.Tpo" -c -o style_merger_test-style_merger_test.o `test -f 'style_merger_test.cc' || echo '$(srcdir)/'`style_merger_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/style_merger_test-style_merger_test.Tpo" "$(DEPDIR)/style_merger_test-style_merger_test.Po"; else rm -f "$(DEPDIR)/style_merger_test-style_merger_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='style_merger_test.cc' object='style_merger_test-style_merger_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_merger_test_CXXFLAGS) $(CXXFLAGS) -c -o style_merger_test-style_merger_test.o `test -f 'style_merger_test.cc' || echo '$(srcdir)/'`style_merger_test.cc
+
+style_merger_test-style_merger_test.obj: style_merger_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_merger_test_CXXFLAGS) $(CXXFLAGS) -MT style_merger_test-style_merger_test.obj -MD -MP -MF "$(DEPDIR)/style_merger_test-style_merger_test.Tpo" -c -o style_merger_test-style_merger_test.obj `if test -f 'style_merger_test.cc'; then $(CYGPATH_W) 'style_merger_test.cc'; else $(CYGPATH_W) '$(srcdir)/style_merger_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/style_merger_test-style_merger_test.Tpo" "$(DEPDIR)/style_merger_test-style_merger_test.Po"; else rm -f "$(DEPDIR)/style_merger_test-style_merger_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='style_merger_test.cc' object='style_merger_test-style_merger_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_merger_test_CXXFLAGS) $(CXXFLAGS) -c -o style_merger_test-style_merger_test.obj `if test -f 'style_merger_test.cc'; then $(CYGPATH_W) 'style_merger_test.cc'; else $(CYGPATH_W) '$(srcdir)/style_merger_test.cc'; fi`
+
+style_resolver_test-style_resolver_test.o: style_resolver_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_resolver_test_CXXFLAGS) $(CXXFLAGS) -MT style_resolver_test-style_resolver_test.o -MD -MP -MF "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo" -c -o style_resolver_test-style_resolver_test.o `test -f 'style_resolver_test.cc' || echo '$(srcdir)/'`style_resolver_test.cc; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo" "$(DEPDIR)/style_resolver_test-style_resolver_test.Po"; else rm -f "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='style_resolver_test.cc' object='style_resolver_test-style_resolver_test.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_resolver_test_CXXFLAGS) $(CXXFLAGS) -c -o style_resolver_test-style_resolver_test.o `test -f 'style_resolver_test.cc' || echo '$(srcdir)/'`style_resolver_test.cc
+
+style_resolver_test-style_resolver_test.obj: style_resolver_test.cc
+@am__fastdepCXX_TRUE@	if $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_resolver_test_CXXFLAGS) $(CXXFLAGS) -MT style_resolver_test-style_resolver_test.obj -MD -MP -MF "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo" -c -o style_resolver_test-style_resolver_test.obj `if test -f 'style_resolver_test.cc'; then $(CYGPATH_W) 'style_resolver_test.cc'; else $(CYGPATH_W) '$(srcdir)/style_resolver_test.cc'; fi`; \
+@am__fastdepCXX_TRUE@	then mv -f "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo" "$(DEPDIR)/style_resolver_test-style_resolver_test.Po"; else rm -f "$(DEPDIR)/style_resolver_test-style_resolver_test.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='style_resolver_test.cc' object='style_resolver_test-style_resolver_test.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(style_resolver_test_CXXFLAGS) $(CXXFLAGS) -c -o style_resolver_test-style_resolver_test.obj `if test -f 'style_resolver_test.cc'; then $(CYGPATH_W) 'style_resolver_test.cc'; else $(CYGPATH_W) '$(srcdir)/style_resolver_test.cc'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -482,9 +895,9 @@ check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
-all-am: Makefile $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libkmlengineincludedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(libkmlengineincludedir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-am
@@ -514,8 +927,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-checkPROGRAMS clean-generic clean-libtool \
-	mostlyclean-am
+clean-am: clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -535,7 +948,7 @@ info-am:
 
 install-data-am: install-libkmlengineincludeHEADERS
 
-install-exec-am:
+install-exec-am: install-libLTLIBRARIES
 
 install-info: install-info-am
 
@@ -561,20 +974,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-info-am uninstall-libkmlengineincludeHEADERS
+uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
+	uninstall-libkmlengineincludeHEADERS
 
 .PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
-	clean-checkPROGRAMS clean-generic clean-libtool ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-exec install-exec-am install-info \
-	install-info-am install-libkmlengineincludeHEADERS install-man \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-info-am uninstall-libkmlengineincludeHEADERS
+	clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
+	clean-libtool ctags distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-exec install-exec-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-libkmlengineincludeHEADERS install-man install-strip \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-info-am \
+	uninstall-libLTLIBRARIES uninstall-libkmlengineincludeHEADERS
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

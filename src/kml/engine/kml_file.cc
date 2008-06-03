@@ -38,6 +38,7 @@ KmlFile::KmlFile() {
 // This clears the state of the KmlFile to all default settings.
 void KmlFile::Clear() {
   object_id_map_.clear();
+  shared_style_map_.clear();
   root_ = NULL;  // Releases any reference if there was one.
   encoding_ = kDefaultEncoding;
   default_xmlns_ = kDefaultXmlns;
