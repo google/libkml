@@ -177,6 +177,7 @@ AC_CONFIG_FILES([
 	src/swig/Makefile
 	testdata/Makefile
 	testdata/kmz/Makefile
+	testdata/style/Makefile
 	third_party/Makefile
 ])
 
