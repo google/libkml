@@ -28,7 +28,7 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/fileio.h"
+#include "kml/util/file.h"
 #include "print.h"
 
 using std::cout;
@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 
   // Read it.
   std::string kml;
-  if (!ReadFileToString(argv[1], &kml)) {
+  if (!kmlutil::File::ReadFileToString(argv[1], &kml)) {
     cout << argv[1] << " read failed" << endl;
     return 1;
   }

@@ -34,8 +34,12 @@
 #include "kml/dom/parser_observer.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/xsd.h"  // TODO: consider the Xsd class public?
-#include "kml/util/fileio.h"
-#include "kml/util/kmz.h"
+#include "kml/engine/kmz_file.h"
+#include "kml/util/file.h"
+
+using kmlengine::KmzFile;
+using std::cout;
+using std::endl;
 
 // This map is used to hold the occurrence count for each element.
 typedef std::map<kmldom::KmlDomType, int> element_count_map_t;
@@ -61,12 +65,12 @@ class ElementCounter : public kmldom::ParserObserver {
     for (map_iter = element_count_map_.begin();
          map_iter != element_count_map_.end();
          ++map_iter) {
-      std::cout << kmldom::Xsd::GetSchema()->ElementName((*map_iter).first)
-        << " " << (*map_iter).second << std::endl;
+      cout << kmldom::Xsd::GetSchema()->ElementName((*map_iter).first)
+        << " " << (*map_iter).second << endl;
       total_element_count += (*map_iter).second;
     }
-    std::cout << "Element types " << element_count_map_.size() << std::endl;
-    std::cout << "Total elements " << total_element_count << std::endl;
+    cout << "Element types " << element_count_map_.size() << endl;
+    cout << "Total elements " << total_element_count << endl;
   }
 
  private:
@@ -75,22 +79,28 @@ class ElementCounter : public kmldom::ParserObserver {
 
 int main(int argc, char** argv) {
   if (argc != 2) {
-    std::cout << "usage: " << argv[0] << " kmlfile" << std::endl;
+    cout << "usage: " << argv[0] << " kmlfile" << endl;
     return 1;
   }
 
   // Read the file.
   std::string file_data;
-  if (!ReadFileToString(argv[1], &file_data)) {
-    std::cout << argv[1] << " read failed" << std::endl;
+  if (!kmlutil::File::ReadFileToString(argv[1], &file_data)) {
+    cout << argv[1] << " read failed" << endl;
     return 1;
   }
 
   // If the file was KMZ, extract the KML file.
   std::string kml;
-  if (DataIsKmz(file_data)) {
-    if (!ReadKmlFromKmz(argv[1], &kml)) {
-      std::cout << "Failed reading KMZ file" << std::endl;
+  if (KmzFile::IsKmz(file_data)) {
+    KmzFile* kmz_file = KmzFile::OpenFromString(argv[1]);
+    if (!kmz_file) {
+      cout << "Failed opening KMZ file" << endl;
+      return 1;
+    }
+    if (!kmz_file->ReadKml(&kml)) {
+      cout << "Failed to read KML from KMZ" << endl;
+      delete kmz_file;  // TODO scoped_ptr.
       return 1;
     }
   } else {
@@ -104,7 +114,7 @@ int main(int argc, char** argv) {
   std::string errors;
   kmldom::ElementPtr root = parser.Parse(kml, &errors);
   if (!root) {
-    std::cout << errors << std::endl;
+    cout << errors << endl;
     return 1;
   }
 
