@@ -30,6 +30,7 @@
 #include "kml/regionator/regionator_util.h"
 #include <string>
 #include "kml/dom.h"
+#include "kml/engine/clone.h"
 
 namespace kmlregionator {
 
@@ -50,66 +51,18 @@ using kmldom::RegionPtr;
 
 // This creates a new LatLonAltBox setting all fields set in the original.
 LatLonAltBoxPtr CloneLatLonAltBox(const LatLonAltBoxPtr& orig) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  LatLonAltBoxPtr latlonaltbox = factory->CreateLatLonAltBox();
-  // Note: Object attributes (id, targetId) are not cloned.
-  if (orig->has_north()) {
-    latlonaltbox->set_north(orig->get_north());
-  }
-  if (orig->has_south()) {
-    latlonaltbox->set_south(orig->get_south());
-  }
-  if (orig->has_east()) {
-    latlonaltbox->set_east(orig->get_east());
-  }
-  if (orig->has_west()) {
-    latlonaltbox->set_west(orig->get_west());
-  }
-  if (orig->has_minaltitude()) {
-    latlonaltbox->set_minaltitude(orig->get_minaltitude());
-  }
-  if (orig->has_maxaltitude()) {
-    latlonaltbox->set_maxaltitude(orig->get_maxaltitude());
-  }
-  if (orig->has_altitudemode()) {
-    latlonaltbox->set_altitudemode(orig->get_altitudemode());
-  }
-  return latlonaltbox;
+  return AsLatLonAltBox(kmlengine::Clone(orig));
 }
 
 // This creates a new Lod setting all fields set in the original.
 LodPtr CloneLod(const LodPtr& orig) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  LodPtr lod = factory->CreateLod();
-  // Note: Object attributes (id, targetId) are not cloned.
-  if (orig->has_minlodpixels()) {
-    lod->set_minlodpixels(orig->get_minlodpixels());
-  }
-  if (orig->has_maxlodpixels()) {
-    lod->set_maxlodpixels(orig->get_maxlodpixels());
-  }
-  if (orig->has_minfadeextent()) {
-    lod->set_minfadeextent(orig->get_minfadeextent());
-  }
-  if (orig->has_maxfadeextent()) {
-    lod->set_maxfadeextent(orig->get_maxfadeextent());
-  }
-  return lod;
+  return AsLod(kmlengine::Clone(orig));
 }
 
 // This creates a new Region based on the LatLonAltBox and/or Lod found in the
 // original Region.
 RegionPtr CloneRegion(const RegionPtr& orig) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  RegionPtr region = factory->CreateRegion();
-  // Note: Object attributes (id, targetId) are not cloned.
-  if (orig->has_latlonaltbox()) {
-    region->set_latlonaltbox(CloneLatLonAltBox(orig->get_latlonaltbox()));
-  }
-  if (orig->has_lod()) {
-    region->set_lod(CloneLod(orig->get_lod()));
-  }
-  return region;
+  return AsRegion(kmlengine::Clone(orig));
 }
 
 // This creates a new child Region of the given quadrant of the parent.

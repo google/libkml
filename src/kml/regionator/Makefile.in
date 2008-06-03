@@ -74,12 +74,14 @@ am__regionator_test_SOURCES_DIST = regionator_test.cc
 @HAVE_CPPUNIT_TRUE@	regionator_test-regionator_test.$(OBJEXT)
 regionator_test_OBJECTS = $(am_regionator_test_OBJECTS)
 @HAVE_CPPUNIT_TRUE@regionator_test_DEPENDENCIES = libkmlregionator.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/engine/libkmlengine.la \
 @HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
 am__regionator_util_test_SOURCES_DIST = regionator_util_test.cc
 @HAVE_CPPUNIT_TRUE@am_regionator_util_test_OBJECTS = regionator_util_test-regionator_util_test.$(OBJEXT)
 regionator_util_test_OBJECTS = $(am_regionator_util_test_OBJECTS)
 @HAVE_CPPUNIT_TRUE@regionator_util_test_DEPENDENCIES =  \
 @HAVE_CPPUNIT_TRUE@	libkmlregionator.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/engine/libkmlengine.la \
 @HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
@@ -244,6 +246,7 @@ libkmlregionatorinclude_HEADERS = \
 @HAVE_CPPUNIT_TRUE@regionator_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 @HAVE_CPPUNIT_TRUE@regionator_test_LDFLAGS = $(CPPUNIT_LIBS)
 @HAVE_CPPUNIT_TRUE@regionator_test_LDADD = libkmlregionator.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/engine/libkmlengine.la \
 @HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
 
 @HAVE_CPPUNIT_TRUE@regionator_qid_test_SOURCES = regionator_qid_test.cc
@@ -253,6 +256,7 @@ libkmlregionatorinclude_HEADERS = \
 @HAVE_CPPUNIT_TRUE@regionator_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 @HAVE_CPPUNIT_TRUE@regionator_util_test_LDFLAGS = $(CPPUNIT_LIBS)
 @HAVE_CPPUNIT_TRUE@regionator_util_test_LDADD = libkmlregionator.la \
+@HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/engine/libkmlengine.la \
 @HAVE_CPPUNIT_TRUE@	$(top_builddir)/src/kml/dom/libkmldom.la
 
 @HAVE_CPPUNIT_TRUE@CLEANFILES = check_PROGRAMS
