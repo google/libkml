@@ -1,2 +1,2 @@
-SUBDIRS = kmz
+SUBDIRS = kmz style
 
