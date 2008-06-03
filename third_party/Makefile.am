@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I $(top_srcdir)/third_party/zlib-1.2.3/contrib
+AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 lib_LTLIBRARIES = libminizip.la
 libminizip_la_SOURCES = \
