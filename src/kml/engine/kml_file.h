@@ -84,13 +84,11 @@ class KmlFile {
 
   // This returns the Object Element with the given id.  A NULL Object is
   // returned if no Object with this id exists in the KML file.
-  // TODO: const
   kmldom::ObjectPtr GetObjectById(std::string id);
 
   // This returns the shared StyleSelector Element with the given id.  NULL is
   // returned if no StyleSelector with this id exists as a shared style
   // selector in the KML file.
-  // TODO: const
   kmldom::StyleSelectorPtr GetSharedStyleById(std::string id);
 
   // TODO: set/get the default xmlns and prefix-namespace mappings

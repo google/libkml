@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="libkmlutil"
-	ProjectGUID="{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
-	RootNamespace="libkmlutil"
+	Name="libkmlregionator"
+	ProjectGUID="{2A7D7DC5-8AB2-4B4F-848A-2A81226F2BC2}"
+	RootNamespace="libkmlregionator"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -152,15 +152,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\kml\util\file_win32.cc"
+				RelativePath="kml\regionator\regionator.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\fileio.cc"
-				>
-			</File>
-			<File
-				RelativePath="kml\util\kmz.cc"
+				RelativePath="kml\regionator\regionator_util.cc"
 				>
 			</File>
 			<File
@@ -182,27 +178,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\kml\util\file.h"
+				RelativePath="kml\regionator\region_handler.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\fileio.h"
+				RelativePath="kml\regionator\regionator.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\kmz.h"
+				RelativePath="kml\regionator\regionator_qid.h"
+				>
+			</File>
+			<File
+				RelativePath="kml\regionator\regionator_util.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\kml\util\tempfile.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\util\util.h"
 				>
 			</File>
 		</Filter>

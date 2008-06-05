@@ -324,6 +324,10 @@
 				>
 			</File>
 			<File
+				RelativePath="kml\dom\xml_serializer.cc"
+				>
+			</File>
+			<File
 				RelativePath="kml\dom\xsd.cc"
 				>
 			</File>
@@ -527,6 +531,10 @@
 			</File>
 			<File
 				RelativePath="kml\dom\vec2.h"
+				>
+			</File>
+			<File
+				RelativePath="kml\dom\xml_serializer.h"
 				>
 			</File>
 			<File

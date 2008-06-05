@@ -103,6 +103,7 @@ EXTRA_DIST = \
 	expat_handler.h \
 	kml_handler.h \
 	serializer.h \
+	xml_serializer.h \
 	xsd.h \
 	kml22.cc
 
