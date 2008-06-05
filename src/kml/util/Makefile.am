@@ -1,15 +1,14 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
-# TODO: move fileio into file.
-
 lib_LTLIBRARIES = libkmlutil.la
-libkmlutil_la_SOURCES = file.cc file_posix.cc fileio.cc # TODO: nuke fileio.
+libkmlutil_la_SOURCES = file.cc file_posix.cc
 
 # These header files will be installed in $(includedir)/kml/util
 libkmlutilincludedir = $(includedir)/kml/util
 libkmlutilinclude_HEADERS = \
 	file.h \
+	tempfile.h \
 	unit_test.h \
 	util.h
 

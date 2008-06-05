@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="libkmlutil"
-	ProjectGUID="{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
-	RootNamespace="libkmlutil"
+	Name="libkmlengine"
+	ProjectGUID="{C7D291C3-46EC-441C-B7F1-911FD32CE185}"
+	RootNamespace="libkmlengine"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -152,15 +152,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\kml\util\file_win32.cc"
+				RelativePath="kml\engine\clone.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\fileio.cc"
+				RelativePath="kml\engine\find.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\kmz.cc"
+				RelativePath="kml\engine\kml_file.cc"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\kmz_file.cc"
+				>
+			</File>
+			<File
+				RelativePath="kml\engine\merge.cc"
 				>
 			</File>
 			<File
@@ -182,27 +190,35 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\kml\util\file.h"
+				RelativePath="kml\engine\clone.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\fileio.h"
+				RelativePath="kml\engine\find.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\kmz.h"
+				RelativePath="kml\engine\kml_file.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\kmz_file.h"
+				>
+			</File>
+			<File
+				RelativePath="kml\engine\merge.h"
+				>
+			</File>
+			<File
+				RelativePath="kml\engine\object_id_parser_observer.h"
+				>
+			</File>
+			<File
+				RelativePath="kml\engine\shared_style_parser_observer.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\kml\util\tempfile.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\util\util.h"
 				>
 			</File>
 		</Filter>
