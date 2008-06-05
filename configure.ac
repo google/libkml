@@ -165,6 +165,7 @@ AC_CONFIG_FILES([
 	Makefile
 	examples/Makefile
 	examples/domviewer/Makefile
+	examples/engine/Makefile
 	examples/helloworld/Makefile
 	examples/java/Makefile
 	examples/python/Makefile
