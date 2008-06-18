@@ -23,7 +23,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the Kmz class.
+// This file contains the declaration of the KmzFile class.
 
 #ifndef KML_ENGINE_KMZ_FILE_H__
 #define KML_ENGINE_KMZ_FILE_H__
@@ -62,13 +62,13 @@ class KmzFile {
   // "doc.kml". We define first to be coincident with the order in which the
   // files were originally added to the archive. The output string is not
   // cleared before being written to.
-  bool ReadKml(std::string* output);
+  bool ReadKml(std::string* output) const;
 
   // Read a specific file from a KMZ archive. Returns false if subfile was not
   // found, or if subfile could not be read. Note: subfile must be a full path
   // from the archive root. Relative references of "../../foo" are not handled.
   // The output string is not cleared before being written to.
-  bool ReadFile(const char* subfile, std::string* output);
+  bool ReadFile(const char* subfile, std::string* output) const;
 
   // Fills a vector of strings of the files contained in the KMZ archive.
   // The vector is not cleared, only appended to. The string is the full path
@@ -88,9 +88,9 @@ class KmzFile {
   kmlutil::TempFile* tempfile_;
   // Internal helper function to read the file currently pointed to by the
   // zipfile cursor.
-  bool ReadCurrentFile(std::string* result);
+  bool ReadCurrentFile(std::string* result) const;
   // Internal helper function to read one named file from an archive.
-  bool ReadOne(const char* subfile, std::string* output);
+  bool ReadOne(const char* subfile, std::string* output) const;
   DISALLOW_EVIL_CONSTRUCTORS(KmzFile);
 };
 

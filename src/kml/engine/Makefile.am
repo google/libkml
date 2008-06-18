@@ -23,6 +23,7 @@ libkmlengine_la_LIBADD = \
 
 libkmlengineincludedir = $(includedir)/kml/engine
 libkmlengineinclude_HEADERS = \
+	bbox.h \
 	clone.h \
 	feature_visitor.h \
 	find.h \
@@ -38,6 +39,7 @@ libkmlengineinclude_HEADERS = \
 if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = kml_file_test \
+	bbox_test \
 	clone_test \
 	feature_visitor_test \
 	find_test \
@@ -52,6 +54,10 @@ TESTS = kml_file_test \
 check_PROGRAMS = $(TESTS)
 
 # Unit tests for KML Engine
+
+bbox_test_SOURCES = bbox_test.cc
+bbox_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+bbox_test_LDFLAGS = $(CPPUNIT_LIBS)
 
 clone_test_SOURCES = clone_test.cc
 clone_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)

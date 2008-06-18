@@ -94,7 +94,7 @@ bool KmzFile::IsKmz(const std::string& kmz_data) {
   return kmz_data.substr(0, 4) == "PK\003\004" ? true : false;
 }
 
-bool KmzFile::ReadKml(std::string* output) {
+bool KmzFile::ReadKml(std::string* output) const {
   if (!output) {
     return false;
   }
@@ -117,7 +117,7 @@ bool KmzFile::ReadKml(std::string* output) {
   return false;
 }
 
-bool KmzFile::ReadFile(const char* subfile, std::string* output) {
+bool KmzFile::ReadFile(const char* subfile, std::string* output) const {
   return ReadOne(subfile, output);  // ReadOne performs NULL checks.
 }
 
@@ -151,7 +151,7 @@ bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
 }
 
 // Private.
-bool KmzFile::ReadCurrentFile(std::string* output) {
+bool KmzFile::ReadCurrentFile(std::string* output) const {
   if (unzfile_ == NULL) {
     return false;
   }
@@ -177,7 +177,7 @@ bool KmzFile::ReadCurrentFile(std::string* output) {
 }
 
 // Private.
-bool KmzFile::ReadOne(const char* subfile, std::string* output) {
+bool KmzFile::ReadOne(const char* subfile, std::string* output) const {
   if (output == NULL || unzfile_ == NULL) {
     return false;
   }

@@ -23,6 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// This file contains the unit tests for the KmzFile class.
+
 #include "kml/engine/kmz_file.h"
 #include <string>
 #include <vector>
@@ -51,6 +53,7 @@ class KmzTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestIsKmz);
   CPPUNIT_TEST(TestList);
   CPPUNIT_TEST(TestWriteKmz);
+  CPPUNIT_TEST(TestConstKmzFile);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -62,6 +65,7 @@ class KmzTest : public CPPUNIT_NS::TestFixture {
   void TestIsKmz();
   void TestList();
   void TestWriteKmz();
+  void TestConstKmzFile();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmzTest);
@@ -267,6 +271,16 @@ void KmzTest::TestWriteKmz() {
   CPPUNIT_ASSERT_EQUAL(kKml, kml_data);
   // Clean up.
   delete tempfile;  // TODO: scoped_ptr.
+  delete kmz_file;
+}
+
+// This verifies that a const KmzFile compiles and runs with read methods.
+void KmzTest::TestConstKmzFile() {
+  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
+  const KmzFile* kmz_file = KmzFile::OpenFromFile(kDoc.c_str());
+  std::string kml_data;
+  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(!kml_data.empty());
   delete kmz_file;
 }
 
