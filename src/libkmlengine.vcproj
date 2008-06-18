@@ -156,6 +156,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\kml\engine\feature_visitor.cc"
+				>
+			</File>
+			<File
 				RelativePath="kml\engine\find.cc"
 				>
 			</File>
@@ -183,6 +187,14 @@
 					/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\kml\engine\style_merger.cc"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\style_resolver.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -190,11 +202,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\kml\engine\bbox.h"
+				>
+			</File>
+			<File
 				RelativePath="kml\engine\clone.h"
 				>
 			</File>
 			<File
+				RelativePath=".\kml\engine\feature_visitor.h"
+				>
+			</File>
+			<File
 				RelativePath="kml\engine\find.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\href.h"
 				>
 			</File>
 			<File
@@ -219,6 +243,14 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\style_merger.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\engine\style_resolver.h"
 				>
 			</File>
 		</Filter>

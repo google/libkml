@@ -43,7 +43,6 @@ static size_t FetchToString(void* ptr, size_t size, size_t nmemb, void* user) {
 
 // Separate worker function to simplify bool return logic.
 static bool DoCurlToString(CURL* curl, const char* url, string* data) {
-  CURLcode result;
 #define CURLOK(f) (f == CURLE_OK)
   if (CURLOK(curl_easy_setopt(curl, CURLOPT_URL, url)) &&
       CURLOK(curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, FetchToString)) &&

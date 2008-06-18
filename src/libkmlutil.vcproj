@@ -152,11 +152,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\kml\util\file_win32.cc"
+				RelativePath=".\kml\util\file.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\util\fileio.cc"
+				RelativePath=".\kml\util\file_win32.cc"
 				>
 			</File>
 			<File
@@ -183,10 +183,6 @@
 			>
 			<File
 				RelativePath=".\kml\util\file.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\util\fileio.h"
 				>
 			</File>
 			<File
