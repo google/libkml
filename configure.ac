@@ -169,6 +169,7 @@ AC_CONFIG_FILES([
 	examples/helloworld/Makefile
 	examples/java/Makefile
 	examples/python/Makefile
+	examples/regionator/Makefile
 	src/Makefile
 	src/kml/Makefile
 	src/kml/convenience/Makefile
@@ -178,6 +179,7 @@ AC_CONFIG_FILES([
 	src/kml/base/Makefile
 	src/swig/Makefile
 	testdata/Makefile
+	testdata/csv/Makefile
 	testdata/kmz/Makefile
 	testdata/links/Makefile
 	testdata/style/Makefile
