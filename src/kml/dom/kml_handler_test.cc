@@ -33,7 +33,7 @@
 #include "kml/dom/placemark.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

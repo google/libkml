@@ -29,7 +29,7 @@
 #include <vector>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -90,7 +90,7 @@ class SimpleField : public Element {
   bool has_name_;
   std::string displayname_;
   bool has_displayname_;
-  DISALLOW_EVIL_CONSTRUCTORS(SimpleField);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleField);
 };
 
 // <Schema>
@@ -151,7 +151,7 @@ class Schema : public Element {
   std::string id_;
   bool has_id_;
   std::vector<SimpleFieldPtr> simplefield_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Schema);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Schema);
 };
 
 }  // namespace kmldom

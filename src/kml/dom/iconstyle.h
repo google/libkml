@@ -31,7 +31,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/link.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -109,7 +109,7 @@ class IconStyle : public ColorStyle {
   bool has_heading_;
   IconStyleIconPtr icon_;
   HotSpotPtr hotspot_;
-  DISALLOW_EVIL_CONSTRUCTORS(IconStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(IconStyle);
 };
 
 }  // end namespace kmldom

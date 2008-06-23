@@ -29,9 +29,8 @@
 
 #include <iostream>
 #include "kml/dom.h"
-#include "kml/engine/kml_file.h"
-#include "kml/engine/style_resolver.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 // This prints out the normal <Style> for the feature of the given id in the
 // given KML file.
@@ -39,7 +38,7 @@ void HelloCreateResolvedStyle(const std::string& kml_filename,
                               const std::string& id) {
   // Read the KML file.
   std::string kml_content;
-  if (!kmlutil::File::ReadFileToString(kml_filename, &kml_content)) {
+  if (!kmlbase::File::ReadFileToString(kml_filename, &kml_content)) {
     std::cerr << "read error: " << kml_filename << std::endl;
     return;
   }

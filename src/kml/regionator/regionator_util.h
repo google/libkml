@@ -38,15 +38,12 @@
 namespace kmlregionator {
 
 // Creates a copy of the given LatLonAltBox.
-// TODO: a general Clone() in kmldom
 kmldom::LatLonAltBoxPtr CloneLatLonAltBox(const kmldom::LatLonAltBoxPtr& orig);
 
 // Creates a copy of the given Lod.
-// TODO: a general Clone() in kmldom
 kmldom::LodPtr CloneLod(const kmldom::LodPtr& orig);
 
 // Creates a deep copy of the given Region.
-// TODO: a general Clone() in kmldom
 kmldom::RegionPtr CloneRegion(const kmldom::RegionPtr& orig);
 
 // Creates a Region whose LatLonAltBox is the specified quadrant of
@@ -58,17 +55,6 @@ kmldom::RegionPtr CreateChildRegion(const kmldom::RegionPtr& parent,
 kmldom::PlacemarkPtr CreateLineStringBox(const std::string& name,
                                          const kmldom::RegionPtr& region);
 
-// Create a Placemark with a Point at the given coordinates.
-kmldom::PlacemarkPtr CreatePointPlacemark(const std::string& name,
-                                          double lat, double lon);
-
-// Create a Region with LatLonAltBox set to the given bounds and Lod
-// set to the given values.  This is a "2D" Region because no altitude
-// mode is set which defaults the LatLonAltBox to clampToGround.
-kmldom::RegionPtr CreateRegion2d(double north, double south,
-                                 double east, double west,
-                                 double minlodpixels, double maxlodpixels);
-
 // Create a NetworkLink to the given URL with a Region cloned from the
 // given Region.
 kmldom::NetworkLinkPtr CreateRegionNetworkLink(const kmldom::RegionPtr& region,
@@ -76,10 +62,6 @@ kmldom::NetworkLinkPtr CreateRegionNetworkLink(const kmldom::RegionPtr& region,
 
 // Create a Document with a Region cloned from the given Region.
 kmldom::DocumentPtr CreateRegionDocument(const kmldom::RegionPtr& region);
-
-// Return the center of the LatLonBox or LatLonAltBox
-void GetCenter(const kmldom::AbstractLatLonBoxPtr& latlonbox,
-               double* lat, double* lon);
 
 }  // end namespace kmlregionator
 

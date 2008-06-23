@@ -27,18 +27,19 @@
 
 #include "kml/engine/kmz_file.h"
 #include <cstring>
-#include "kml/util/file.h"
+#include "kml/base/file.h"
+
+using kmlbase::TempFilePtr;
 
 namespace kmlengine {
 
 const char kDefaultKmlFile[] = "doc.kml";
 
 // Private constructor. The unzfile is guaranteed to be sane.
-KmzFile::KmzFile(unzFile unzfile, kmlutil::TempFile* tempfile)
+KmzFile::KmzFile(unzFile unzfile, const TempFilePtr& tempfile)
     : unzfile_(unzfile), tempfile_(tempfile) {}
 
 KmzFile::~KmzFile() {
-  delete tempfile_;
   if (unzfile_) {
     unzClose(unzfile_);
   }
@@ -46,11 +47,11 @@ KmzFile::~KmzFile() {
 
 // Static.
 KmzFile* KmzFile::OpenFromFile(const char* kmz_filename) {
-  if (!kmlutil::File::Exists(kmz_filename)) {
+  if (!kmlbase::File::Exists(kmz_filename)) {
     return NULL;
   }
   std::string data;
-  if (!kmlutil::File::ReadFileToString(kmz_filename, &data)) {
+  if (!kmlbase::File::ReadFileToString(kmz_filename, &data)) {
     return NULL;
   }
   return OpenFromString(data);
@@ -62,31 +63,26 @@ KmzFile* KmzFile::OpenFromString(const std::string& kmz_data) {
     return NULL;
   }
   // Minizip is file-based. The TempFile util class manages the creation and
-  // deletion of the temporary files we use. This class owns the destruction
-  // of the TempFile object.
-  kmlutil::TempFile* tempfile = kmlutil::TempFile::CreateTempFile();
+  // deletion of the temporary files we use. 
+  TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
   if (!tempfile) {
     return NULL;
   }
-  if (!kmlutil::File::WriteStringToFile(kmz_data, tempfile->name())) {
-    delete tempfile;  // TODO: scoped_ptr.
+  if (!kmlbase::File::WriteStringToFile(kmz_data, tempfile->name())) {
     return NULL;
   }
   unzFile unzfile = unzOpen(tempfile->name().c_str());
   if (!unzfile) {
-    delete tempfile;  // TODO: scoped_ptr.
     return NULL;
   }
   // unzfile_ is now a minizip file handle to the tempfile we created. It is
   // passed to the constructor of the KmzFile class.
   if (unzGoToFirstFile(unzfile) != UNZ_OK) {
     unzClose(unzfile);
-    delete tempfile;  // TODO: scoped_ptr.
     return NULL;
   }
   // If we got this far, it's safe to construct the KmzFile object.
-  KmzFile* kmzfile = new KmzFile(unzfile, tempfile);
-  return kmzfile;
+  return new KmzFile(unzfile, tempfile);
 }
 
 // Static.
@@ -147,7 +143,7 @@ bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
   zipWriteInFileInZip(zipfile_, (void* const)kml.data(), kml.size());
   zipCloseFileInZip(zipfile_);
   zipClose(zipfile_, 0);
-  return kmlutil::File::Exists(kmz_filepath);
+  return kmlbase::File::Exists(kmz_filepath);
 }
 
 // Private.

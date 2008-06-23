@@ -32,7 +32,7 @@
 #include "kml/dom/link.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -92,7 +92,7 @@ class NetworkLink : public Feature {
   bool flytoview_;
   bool has_flytoview_;
   LinkPtr link_;
-  DISALLOW_EVIL_CONSTRUCTORS(NetworkLink);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(NetworkLink);
 };
 
 }  // namespace kmldom

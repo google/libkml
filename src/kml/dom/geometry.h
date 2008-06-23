@@ -77,7 +77,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -153,7 +153,7 @@ class Coordinates : public Element {
   virtual void Serialize(Serializer& serializer) const;
 
   std::vector<Vec3> coordinates_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Coordinates);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Coordinates);
 };
 
 // This is AbstractGeometryGroup in the KML standard.
@@ -170,7 +170,7 @@ class Geometry : public Object {
   Geometry();
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(Geometry);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Geometry);
 };
 
 // Internal convenience class for any Geometry with <altitudeMode>.
@@ -200,7 +200,7 @@ class AltitudeGeometryCommon : public Geometry {
  private:
   int altitudemode_;
   bool has_altitudemode_;
-  DISALLOW_EVIL_CONSTRUCTORS(AltitudeGeometryCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AltitudeGeometryCommon);
 };
 
 // Internal convenience class for any Geometry with <altitudeMode> + <extrude>
@@ -228,7 +228,7 @@ class ExtrudeGeometryCommon : public AltitudeGeometryCommon {
  private:
   bool extrude_;
   bool has_extrude_;
-  DISALLOW_EVIL_CONSTRUCTORS(ExtrudeGeometryCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtrudeGeometryCommon);
 };
 
 // Internal convenience class for any Geometry with
@@ -256,7 +256,7 @@ class CoordinatesGeometryCommon : public ExtrudeGeometryCommon {
 
  private:
   CoordinatesPtr coordinates_;
-  DISALLOW_EVIL_CONSTRUCTORS(CoordinatesGeometryCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(CoordinatesGeometryCommon);
 };
 
 // <Point>
@@ -273,7 +273,7 @@ class Point : public CoordinatesGeometryCommon {
   Point();
   friend class Serializer;
   void Serialize(Serializer& serializer) const;
-  DISALLOW_EVIL_CONSTRUCTORS(Point);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Point);
 };
 
 // Internal convenience class for code common to LineString and LinearRing.
@@ -305,7 +305,7 @@ class LineCommon : public CoordinatesGeometryCommon {
   void Serialize(Serializer& serializer) const;
   bool tessellate_;
   bool has_tessellate_;
-  DISALLOW_EVIL_CONSTRUCTORS(LineCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LineCommon);
 };
 
 // <LineString>
@@ -320,7 +320,7 @@ class LineString : public LineCommon {
  private:
   friend class KmlFactory;
   LineString();
-  DISALLOW_EVIL_CONSTRUCTORS(LineString);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LineString);
 };
 
 // <LinearRing>
@@ -335,7 +335,7 @@ class LinearRing : public LineCommon {
  private:
   friend class KmlFactory;
   LinearRing();
-  DISALLOW_EVIL_CONSTRUCTORS(LinearRing);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LinearRing);
 };
 
 // Internal class for code common to OuterBoundaryIs and InnerBoundaryIs.
@@ -363,7 +363,7 @@ class BoundaryCommon : public Element {
 
  private:
   LinearRingPtr linearring_;
-  DISALLOW_EVIL_CONSTRUCTORS(BoundaryCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(BoundaryCommon);
 };
 
 // <outerBoundaryIs>
@@ -378,7 +378,7 @@ class OuterBoundaryIs : public BoundaryCommon {
  private:
   friend class KmlFactory;
   OuterBoundaryIs();
-  DISALLOW_EVIL_CONSTRUCTORS(OuterBoundaryIs);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(OuterBoundaryIs);
 };
 
 // <innerBoundaryIs>
@@ -393,7 +393,7 @@ class InnerBoundaryIs : public BoundaryCommon {
  private:
   friend class KmlFactory;
   InnerBoundaryIs();
-  DISALLOW_EVIL_CONSTRUCTORS(InnerBoundaryIs);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(InnerBoundaryIs);
 };
 
 // <Polygon>
@@ -456,7 +456,7 @@ class Polygon : public ExtrudeGeometryCommon {
   bool has_tessellate_;
   OuterBoundaryIsPtr outerboundaryis_;
   std::vector<InnerBoundaryIsPtr> innerboundaryis_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Polygon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Polygon);
 };
 
 // <MultiGeometry>
@@ -487,7 +487,7 @@ class MultiGeometry : public Geometry {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<GeometryPtr> geometry_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(MultiGeometry);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(MultiGeometry);
 };
 
 }  // namespace kmldom

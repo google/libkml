@@ -121,7 +121,7 @@ class Style : public StyleSelector {
   PolyStylePtr polystyle_;
   BalloonStylePtr balloonstyle_;
   ListStylePtr liststyle_;
-  DISALLOW_EVIL_CONSTRUCTORS(Style);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Style);
 };
 
 }  // end namespace kmldom

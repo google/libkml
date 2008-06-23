@@ -23,8 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "kml/util/file.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/file.h"
+#include "kml/base/unit_test.h"
 
 #ifndef DATADIR
 #error DATADIR must be defined!
@@ -32,7 +32,7 @@
 static const std::string kDataDir = DATADIR;
 #endif
 
-namespace kmlutil {
+namespace kmlbase {
 
 class FileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(FileTest);
@@ -106,6 +106,6 @@ void FileTest::TestCreateNewTempFile() {
   CPPUNIT_ASSERT(File::Delete(temp_filename));
 }
 
-}  // end namespace kmlutil
+}  // end namespace kmlbase
 
 TEST_MAIN

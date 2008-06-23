@@ -29,7 +29,7 @@
 #include <vector>
 #include "kml/dom/object.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 

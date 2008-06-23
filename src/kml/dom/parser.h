@@ -32,7 +32,7 @@
 #include <vector>
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/parser_observer.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -57,7 +57,7 @@ class Parser {
   void AddObserver(ParserObserver* parser_observer);
  private:
   parser_observer_vector_t observers_;
-  DISALLOW_EVIL_CONSTRUCTORS(Parser);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Parser);
 };
 
 }  // end namespace kmldom

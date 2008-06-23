@@ -28,7 +28,7 @@
 
 #include "kml/dom/colorstyle.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -66,7 +66,7 @@ class LineStyle : public ColorStyle {
   virtual void Serialize(Serializer& serialize) const;
   double width_;
   bool has_width_;
-  DISALLOW_EVIL_CONSTRUCTORS(LineStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LineStyle);
 };
 
 }  // end namespace kmldom

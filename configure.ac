@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Make sure we're interpreted by some minimal autoconf.
 AC_PREREQ(2.57)
 
-AC_INIT(libkml, 0.3.0, opensource@google.com)
+AC_INIT(libkml, 0.3.0, http://code.google.com/p/libkml/issues)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
@@ -171,13 +171,15 @@ AC_CONFIG_FILES([
 	examples/python/Makefile
 	src/Makefile
 	src/kml/Makefile
+	src/kml/convenience/Makefile
 	src/kml/dom/Makefile
 	src/kml/engine/Makefile
 	src/kml/regionator/Makefile
-	src/kml/util/Makefile
+	src/kml/base/Makefile
 	src/swig/Makefile
 	testdata/Makefile
 	testdata/kmz/Makefile
+	testdata/links/Makefile
 	testdata/style/Makefile
 	third_party/Makefile
 ])

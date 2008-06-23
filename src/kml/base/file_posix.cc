@@ -26,11 +26,11 @@
 // The file contains the implementation of the File methods specific to
 // POSIX platforms.
 
-#include "kml/util/file.h"
+#include "kml/base/file.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 
-namespace kmlutil {
+namespace kmlbase {
 
 // Internal to the POSIX File class.
 static bool StatFile(const char* path, struct stat* stat_data) {
@@ -67,4 +67,4 @@ bool File::CreateNewTempFile(std::string* path) {
   return true;
 }
 
-}  // end namespace kmlutil
+}  // end namespace kmlbase

@@ -35,5 +35,7 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/parser_observer.h"
+#include "kml/dom/parser.h"
 
 #endif  // KML_DOM_H__

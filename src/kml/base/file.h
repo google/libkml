@@ -23,12 +23,12 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_UTIL_FILE_H__
-#define KML_UTIL_FILE_H__
+#ifndef KML_BASE_FILE_H__
+#define KML_BASE_FILE_H__
 
 #include <string>
 
-namespace kmlutil {
+namespace kmlbase {
 
 class File {
  public:
@@ -57,6 +57,6 @@ class File {
 
 };
 
-}  // end namespace kmlutil
+}  // end namespace kmlbase
 
-#endif  // KML_UTIL_FILE_H__
+#endif  // KML_BASE_FILE_H__

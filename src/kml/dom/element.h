@@ -39,8 +39,8 @@
 #include <vector>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/dom/referent.h"
-#include "kml/util/util.h"
+#include "kml/base/referent.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -48,7 +48,7 @@ class Attributes;
 class Serializer;
 class Xsd;
 
-class Element : public Referent {
+class Element : public kmlbase::Referent {
  public:
   virtual ~Element();
   virtual KmlDomType Type() const { return type_id_; }
@@ -184,7 +184,7 @@ class Element : public Referent {
   // stored. The object is dynamically allocated so every element is not
   // burdened with an unnecessary Attributes object.
   Attributes* unknown_attributes_;
-  DISALLOW_EVIL_CONSTRUCTORS(Element);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 
 class Field : public Element {
@@ -213,7 +213,7 @@ class Field : public Element {
 
  private:
   const Xsd& xsd_;
-  DISALLOW_EVIL_CONSTRUCTORS(Field);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Field);
 };
 
 }  // namespace kmldom

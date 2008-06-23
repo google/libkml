@@ -33,7 +33,7 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/dom/substyle.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -89,7 +89,7 @@ class ItemIcon : public Object {
   bool has_state_;
   std::string href_;
   bool has_href_;
-  DISALLOW_EVIL_CONSTRUCTORS(ItemIcon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ItemIcon);
 };
 
 // <ListStyle>
@@ -158,7 +158,7 @@ class ListStyle : public SubStyle {
   std::string bgcolor_;
   bool has_bgcolor_;
   std::vector<ItemIconPtr> itemicon_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(ListStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ListStyle);
 };
 
 }  // end namespace kmldom

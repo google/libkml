@@ -29,7 +29,7 @@
 #include <vector>
 #include "kml/dom/feature.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -61,7 +61,7 @@ class Container : public Feature {
 
  private:
   std::vector<FeaturePtr> feature_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Container);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Container);
 };
 
 }  // end namespace kmldom

@@ -31,7 +31,7 @@
 #include <string>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -77,7 +77,7 @@ class Object : public Element {
   bool has_id_;
   std::string targetid_;
   bool has_targetid_;
-  DISALLOW_EVIL_CONSTRUCTORS(Object);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Object);
 };
 
 }  // namespace kmldom

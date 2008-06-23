@@ -29,11 +29,13 @@
 #include "kml/regionator/regionator.h"
 #include <map>
 #include <string>
+#include "kml/convenience/convenience.h"
 #include "kml/dom.h"
+#include "kml/engine/location_util.h"
 #include "kml/regionator/region_handler.h"
 #include "kml/regionator/regionator_qid.h"
 #include "kml/regionator/regionator_util.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmlregionator {
 
@@ -74,9 +76,10 @@ public:
   // and a Point Placemark in the center with the name of the qid.
   FeaturePtr GetFeature(const RegionPtr& region) {
     double lat, lon;
-    GetCenter(region->get_latlonaltbox(), &lat, &lon);
+    kmlengine::GetCenter(region->get_latlonaltbox(), &lat, &lon);
     FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
-    folder->add_feature(CreatePointPlacemark(region->get_id(), lat, lon));
+    folder->add_feature(kmlconvenience::CreatePointPlacemark(region->get_id(),
+                                                             lat, lon));
     folder->add_feature(CreateLineStringBox(region->get_id(), region));
     return folder;
   }
@@ -119,7 +122,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(RegionatorTest);
 void RegionatorTest::TwoLevelPointRegionatorTest() {
   // This RegionHandler saves each KML file out to a map.
   PointRegionHandler depth2(2, &kml_file_map_);
-  Regionator rtor(depth2, CreateRegion2d(10,0,10,0,128,-1));
+  Regionator rtor(depth2, kmlconvenience::CreateRegion2d(10,0,10,0,128,-1));
   // Run the regionator algorithm from the given region on our RegionHandler.
   rtor.Regionate();
 
@@ -169,7 +172,7 @@ void RegionatorTest::TwoLevelPointRegionatorTest() {
 void RegionatorTest::FourLevelPointRegionatorTest() {
   // This RegionHandler saves each KML file out to a map.
   PointRegionHandler depth4(4, &kml_file_map_);
-  Regionator rtor(depth4, CreateRegion2d(10,0,10,0,128,-1));
+  Regionator rtor(depth4, kmlconvenience::CreateRegion2d(10,0,10,0,128,-1));
   // Run the regionator algorithm from the given region on our RegionHandler.
   rtor.Regionate();
 

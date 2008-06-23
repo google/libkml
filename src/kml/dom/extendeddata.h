@@ -35,7 +35,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -85,7 +85,7 @@ class SimpleData : public Element {
   bool has_name_;
   std::string text_;
   bool has_text_;
-  DISALLOW_EVIL_CONSTRUCTORS(SimpleData);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleData);
 };
 
 // ExtendedDataMember
@@ -100,7 +100,7 @@ class ExtendedDataMember : public Object {
   ExtendedDataMember();
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(ExtendedDataMember);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtendedDataMember);
 };
 
 // <SchemaData>
@@ -148,7 +148,7 @@ class SchemaData : public ExtendedDataMember {
   std::string schemaurl_;
   bool has_schemaurl_;
   std::vector<SimpleDataPtr> simpledata_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(SchemaData);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SchemaData);
 };
 
 // <Data>
@@ -211,7 +211,7 @@ class Data : public ExtendedDataMember {
   bool has_displayname_;
   std::string value_;
   bool has_value_;
-  DISALLOW_EVIL_CONSTRUCTORS(Data);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Data);
 };
 
 // <ExtendedData>
@@ -244,7 +244,7 @@ class ExtendedData : public Element {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<ExtendedDataMemberPtr> extendeddatamember_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(ExtendedData);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtendedData);
 };
 
 }  // end namespace kmldom

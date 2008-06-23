@@ -27,7 +27,7 @@
 
 #include "kml/dom/element.h"
 #include "boost/intrusive_ptr.hpp"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 #include "kml/dom/kml_factory.h"
 
 namespace kmldom {

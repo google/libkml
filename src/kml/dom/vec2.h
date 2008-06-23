@@ -30,7 +30,7 @@
 
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -105,7 +105,7 @@ class Vec2 : public Element {
   bool has_xunits_;
   int yunits_;
   bool has_yunits_;
-  DISALLOW_EVIL_CONSTRUCTORS(Vec2);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Vec2);
 };
 
 }  // end namespace kmldom

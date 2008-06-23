@@ -32,7 +32,7 @@
 #include "kml/dom.h"
 #include "kml/engine/object_id_parser_observer.h"
 #include "kml/engine/shared_style_parser_observer.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmlengine {
 
@@ -101,7 +101,7 @@ class KmlFile {
   kmldom::ElementPtr root_;
   object_id_map_t object_id_map_;
   shared_style_map_t shared_style_map_;
-  DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
 
 }  // end namespace kmlengine

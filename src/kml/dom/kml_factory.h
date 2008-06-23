@@ -28,7 +28,7 @@
 
 #include <string>
 #include "kml/dom/kmldom.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -110,7 +110,7 @@ class KmlFactory {
  private:
   KmlFactory() {};  // Singleton class, use GetFactory().
   static KmlFactory* factory_;
-  DISALLOW_EVIL_CONSTRUCTORS(KmlFactory);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFactory);
 };
 
 }  // namespace kmldom

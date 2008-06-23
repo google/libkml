@@ -30,12 +30,9 @@
 #include <map>
 #include <string>
 #include "kml/dom.h"
-// TODO: move these into kml/dom.h
-#include "kml/dom/parser_observer.h"
-#include "kml/dom/parser.h"
 #include "kml/dom/xsd.h"  // TODO: consider the Xsd class public?
-#include "kml/engine/kmz_file.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 using kmlengine::KmzFile;
 using std::cout;
@@ -85,7 +82,7 @@ int main(int argc, char** argv) {
 
   // Read the file.
   std::string file_data;
-  if (!kmlutil::File::ReadFileToString(argv[1], &file_data)) {
+  if (!kmlbase::File::ReadFileToString(argv[1], &file_data)) {
     cout << argv[1] << " read failed" << endl;
     return 1;
   }

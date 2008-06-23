@@ -31,11 +31,8 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/dom/parser_observer.h"
-#include "kml/dom/parser.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/merge.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 using std::cout;
 using std::endl;
@@ -60,12 +57,15 @@ class PrintLinks : public kmldom::ParserObserver {
         cout << "styleUrl=" << child->get_char_data() << endl;
         break;
       case kmldom::Type_SchemaData:
-        kmldom::SchemaDataPtr schemadata = kmldom::AsSchemaData(child);
-        if (schemadata->has_schemaurl()) {
-          cout << "schemaUrl=" << schemadata->get_schemaurl() << endl;
+        {  // Avoid 'jump to case label croses initialization' compiler warning.
+          kmldom::SchemaDataPtr schemadata = kmldom::AsSchemaData(child);
+          if (schemadata->has_schemaurl()) {
+            cout << "schemaUrl=" << schemadata->get_schemaurl() << endl;
+          }
         }
-      // TODO: HTML links in description and BalloonStyle/text
         break;
+      // TODO: HTML links in description and BalloonStyle/text
+      default: break;
     }
     return true;
   }
@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
 
   // Read the file.
   std::string file_data;
-  if (!kmlutil::File::ReadFileToString(kmlfile, &file_data)) {
+  if (!kmlbase::File::ReadFileToString(kmlfile, &file_data)) {
     cout << kmlfile << " read failed" << endl;
     return 1;
   }

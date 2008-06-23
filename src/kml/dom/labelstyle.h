@@ -28,7 +28,7 @@
 
 #include "kml/dom/colorstyle.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -65,7 +65,7 @@ class LabelStyle : public ColorStyle {
   virtual void Serialize(Serializer& serialize) const;
   double scale_;
   bool has_scale_;
-  DISALLOW_EVIL_CONSTRUCTORS(LabelStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LabelStyle);
 };
 
 }  // end namespace kmldom

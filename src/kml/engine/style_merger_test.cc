@@ -26,9 +26,10 @@
 // This file contains the unit tests for the StyleMerger class.
 
 #include "kml/engine/style_merger.h"
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 using kmldom::FeaturePtr;
 using kmldom::KmlFactory;
@@ -66,10 +67,10 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
  public:
   // Called before each test.
   void setUp() {
-    style_merger_normal_ = new StyleMerger(kml_file_,
-                                           kmldom::STYLESTATE_NORMAL);
-    style_merger_highlight_ = new StyleMerger(kml_file_,
-                                              kmldom::STYLESTATE_HIGHLIGHT);
+    style_merger_normal_.reset(
+        new StyleMerger(kml_file_, kmldom::STYLESTATE_NORMAL));
+    style_merger_highlight_.reset(
+        new StyleMerger(kml_file_, kmldom::STYLESTATE_HIGHLIGHT));
     factory_ = KmlFactory::GetFactory();
     style_ = factory_->CreateStyle();
     stylemap_ = factory_->CreateStyleMap();
@@ -77,9 +78,7 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
 
   // Called after each test.
   void tearDown() {
-    // Smart pointers free everything else.
-    delete style_merger_normal_;
-    delete style_merger_highlight_;
+    // Smart pointers free everything.
   }
 
  private:
@@ -94,8 +93,8 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
   void VerifyStyleMergersEmpty() const;
   KmlFile kml_file_;
   KmlFactory* factory_;
-  StyleMerger* style_merger_normal_;
-  StyleMerger* style_merger_highlight_;
+  boost::scoped_ptr<StyleMerger> style_merger_normal_;
+  boost::scoped_ptr<StyleMerger> style_merger_highlight_;
   StylePtr style_;
   StyleMapPtr stylemap_;
 };

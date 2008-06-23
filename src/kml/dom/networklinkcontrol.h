@@ -36,7 +36,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -52,7 +52,7 @@ class UpdateOperation : public Element {
   UpdateOperation();
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(UpdateOperation);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(UpdateOperation);
 };
 
 // <Create>
@@ -85,7 +85,7 @@ class Create : public UpdateOperation {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<ContainerPtr> container_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Create);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Create);
 };
 
 // <Delete>
@@ -118,7 +118,7 @@ class Delete : public UpdateOperation {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<FeaturePtr> feature_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Delete);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Delete);
 };
 
 // <Change>
@@ -151,7 +151,7 @@ class Change : public UpdateOperation {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<ObjectPtr> object_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Change);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Change);
 };
 
 // <Update>
@@ -199,7 +199,7 @@ class Update : public Element {
   std::string targethref_;
   bool has_targethref_;
   std::vector<UpdateOperationPtr> updateoperation_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(Update);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Update);
 };
 
 // <NetworkLinkControl>
@@ -349,7 +349,7 @@ class NetworkLinkControl : public Element {
   bool has_expires_;
   UpdatePtr update_;
   AbstractViewPtr abstractview_;
-  DISALLOW_EVIL_CONSTRUCTORS(NetworkLinkControl);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(NetworkLinkControl);
 };
 
 }  // namespace kmldom

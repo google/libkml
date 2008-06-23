@@ -26,7 +26,7 @@
 // This file contains the unit tests for the abstract Object element.
 
 #include "kml/dom/object.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

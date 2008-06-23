@@ -23,13 +23,13 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_UTIL_UTIL_H__
-#define KML_UTIL_UTIL_H__
+#ifndef KML_BASE_UTIL_H__
+#define KML_BASE_UTIL_H__
 
 // A macro to disallow the evil copy constructor and assignment operator.
 // Should be used in the private: declarations for a class.
-#define DISALLOW_EVIL_CONSTRUCTORS(TypeName) \
+#define LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TypeName) \
   TypeName(const TypeName&);\
   void operator=(const TypeName&)
 
-#endif  // KML_UTIL_UTIL_H__
+#endif  // KML_BASE_UTIL_H__

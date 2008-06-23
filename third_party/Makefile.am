@@ -12,8 +12,10 @@ boostinc = $(includedir)/kml/third_party/$(boost)
 libboostincludedir = $(boostinc)
 libboostinclude_HEADERS = \
 	${boost}/assert.hpp \
+	${boost}/checked_delete.hpp \
 	${boost}/config.hpp \
-	${boost}/intrusive_ptr.hpp
+	${boost}/intrusive_ptr.hpp \
+	${boost}/scoped_ptr.hpp
 
 libboostdetailincludedir = $(boostinc)/detail
 libboostdetailinclude_HEADERS = \

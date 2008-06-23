@@ -29,8 +29,8 @@
 #include "kml/engine/style_resolver.h"
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/file.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/file.h"
+#include "kml/base/unit_test.h"
 #include "kml/engine/kml_file.h"
 
 #ifndef DATADIR
@@ -114,7 +114,7 @@ static const struct {
 // This is a utility function to read a file relative to the testdata directory.
 bool StyleResolverTest::ReadDataDirFileToString(const std::string& filename,
                                                 std::string* content) const {
-  return kmlutil::File::ReadFileToString(std::string(kDataDir + filename),
+  return kmlbase::File::ReadFileToString(std::string(kDataDir + filename),
                                          content);
 }
 

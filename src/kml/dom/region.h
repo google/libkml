@@ -33,7 +33,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -107,7 +107,7 @@ class LatLonAltBox : public AbstractLatLonBox {
   bool has_maxaltitude_;
   int altitudemode_;
   bool has_altitudemode_;
-  DISALLOW_EVIL_CONSTRUCTORS(LatLonAltBox);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LatLonAltBox);
 };
 
 // <Lod>
@@ -198,7 +198,7 @@ class Lod : public Object {
   bool has_minfadeextent_;
   double maxfadeextent_;
   bool has_maxfadeextent_;
-  DISALLOW_EVIL_CONSTRUCTORS(Lod);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Lod);
 };
 
 // <Region>
@@ -239,7 +239,7 @@ class Region : public Object {
   virtual void Serialize(Serializer& serializer) const;
   LatLonAltBoxPtr latlonaltbox_;
   LodPtr lod_;
-  DISALLOW_EVIL_CONSTRUCTORS(Region);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Region);
 };
 
 }  // end namespace kmldom

@@ -31,7 +31,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/kml.h"
 #include "kml/dom/kml_cast.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

@@ -37,7 +37,7 @@
 #include "kml/dom/snippet.h"
 #include "kml/dom/styleselector.h"
 #include "kml/dom/timeprimitive.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -221,7 +221,7 @@ class Feature : public Object {
   StyleSelectorPtr styleselector_;
   RegionPtr region_;
   ExtendedDataPtr extendeddata_;
-  DISALLOW_EVIL_CONSTRUCTORS(Feature);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Feature);
 };
 
 }  // namespace kmldom

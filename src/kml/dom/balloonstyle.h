@@ -120,7 +120,7 @@ class BalloonStyle : public SubStyle {
   bool has_text_;
   int displaymode_;
   bool has_displaymode_;
-  DISALLOW_EVIL_CONSTRUCTORS(BalloonStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(BalloonStyle);
 };
 
 }  // end namespace kmldom
