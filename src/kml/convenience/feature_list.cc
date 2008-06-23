@@ -83,20 +83,21 @@ size_t FeatureList::BboxSplit(const Bbox& bbox, size_t max,
     max = feature_list_.size();
   }
   size_t count = 0;
-  feature_list_t::iterator iter;
-  for (iter = feature_list_.begin(); iter != feature_list_.end(); ++iter) {
+  feature_list_t::iterator iter = feature_list_.begin();
+  while (iter != feature_list_.end()) {
     double lat, lon;
-    if (kmlengine::GetFeatureLatLon(*iter, &lat, &lon)) {
-      if (bbox.Contains(lat,lon)) {
-        if (output) {
-          output->PushBack(*iter);
-        }
-        feature_list_.erase(iter);  // TODO: effect on iterator?
-        ++count;
-        if (--max == 0) {  // max guaranteed to be > 0.
-          break;
-        }
+    if (kmlengine::GetFeatureLatLon(*iter, &lat, &lon) &&
+        bbox.Contains(lat,lon)) {
+      if (output) {
+        output->PushBack(*iter);
       }
+      iter = feature_list_.erase(iter);
+      ++count;
+      if (--max == 0) {  // max guaranteed to be > 0.
+        break;
+      }
+    } else {
+      ++iter;
     }
   }
   return count;
