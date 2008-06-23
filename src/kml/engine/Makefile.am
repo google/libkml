@@ -70,19 +70,22 @@ clone_test_SOURCES = clone_test.cc
 clone_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 clone_test_LDFLAGS = $(CPPUNIT_LIBS)
 clone_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
 
 feature_visitor_test_SOURCES = feature_visitor_test.cc
 feature_visitor_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 feature_visitor_test_LDFLAGS = $(CPPUNIT_LIBS)
 feature_visitor_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
 
 find_test_SOURCES = find_test.cc
 find_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 find_test_LDFLAGS = $(CPPUNIT_LIBS)
 find_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
 
 get_links_test_SOURCES = get_links_test.cc
 get_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
