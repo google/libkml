@@ -165,15 +165,13 @@ void FeatureListTest::TestSave() {
         kmldom::AsPlacemark(folder->get_feature_array_at(i));
     CPPUNIT_ASSERT(placemark);
 
-#if 0
     // Verify that each is a proper Point Placemark with lat and lon.
     double lat, lon;
-    CPPUNIT_ASSERT(GetPlacemarkLatLon(placemark, &lat, &lon));
+    CPPUNIT_ASSERT(kmlengine::GetPlacemarkLatLon(placemark, &lat, &lon));
 
     // Verify that the order from the input_ FeatureList is preserved.
     CPPUNIT_ASSERT_EQUAL(lat, kPoints[i].lat);
     CPPUNIT_ASSERT_EQUAL(lon, kPoints[i].lon);
-#endif
   }
 }
 
@@ -193,10 +191,11 @@ void FeatureListTest::TestPushBack() {
   // Create a point and a bounding box that contains it.
   const double kLat = 12.34;
   const double kLon = -65.43;
-  PlacemarkPtr placemark = kmlconvenience::CreatePointPlacemark("hi", kLat, kLon);
+  PlacemarkPtr placemark = kmlconvenience::CreatePointPlacemark("hi", kLat,
+                                                                kLon);
   Bbox bbox;
   bbox.ExpandLatLon(kLat, kLon);
-  
+
   // Remove any points already in this bounding box.  This makes the test
   // more robust in the face of any changes to kPoints.
   input_.BboxSplit(bbox, 0, NULL);
@@ -211,6 +210,7 @@ void FeatureListTest::TestPushBack() {
 
   // Split on the point's bounding box and verify exactly it was split out.
   CPPUNIT_ASSERT_EQUAL(kSize1, input_.BboxSplit(bbox, 0, &output_));
+
   // Verify the input is back to its previous size.
   CPPUNIT_ASSERT_EQUAL(previous_size, input_.Size());
   // Verify that splitting on this bbox again results in no output
@@ -231,6 +231,8 @@ RegionPtr FeatureListTest::CreateRegionFromBbox(const Bbox& bbox,
 // This verifies that splitting on the bounding box for the FeatureList removes
 // all features from the FeatureList.
 void FeatureListTest::TestRegionSplitAll() {
+  CPPUNIT_ASSERT_EQUAL(static_cast<int>(initial_input_point_count_),
+                       CountPointsInBbox(initial_input_bbox_));
   RegionPtr region = CreateRegionFromBbox(initial_input_bbox_, 128, -1);
   input_.RegionSplit(region, 0, &output_);
   CPPUNIT_ASSERT_EQUAL(initial_input_point_count_, output_.Size());
