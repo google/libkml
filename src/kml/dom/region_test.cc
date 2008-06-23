@@ -25,7 +25,7 @@
 
 // This file contains the unit tests for LatLonAltBox, Lod, and Region.
 
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_cast.h"

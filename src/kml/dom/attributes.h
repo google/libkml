@@ -33,7 +33,7 @@
 #include <map>
 #include <sstream>
 #include <string>
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -142,7 +142,7 @@ class Attributes {
   // preserved to properly save unknown attributes.
   typedef std::map<std::string,std::string> attributes_map_t;
   attributes_map_t attributes_;
-  DISALLOW_EVIL_CONSTRUCTORS(Attributes);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Attributes);
 };
 
 }  // end namespace kmldom

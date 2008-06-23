@@ -26,9 +26,10 @@
 // This file contains the unit tests for the ObjectIdParserObserver class.
 
 #include "kml/engine/object_id_parser_observer.h"
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml_funcs.h"  // For kmldom::Parse()
 #include "kml/dom/kml_factory.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmlengine {
 
@@ -45,12 +46,12 @@ class ObjectIdParserObserverTest : public CPPUNIT_NS::TestFixture {
   // Called before each test.
   void setUp() {
     // TODO: boost::scoped_ptr would be handy here.
-    object_id_parser_observer_ = new ObjectIdParserObserver(&object_id_map_);
+    object_id_parser_observer_.reset(new ObjectIdParserObserver(&object_id_map_));
   }
 
   // Called after each test.
   void tearDown() {
-    delete object_id_parser_observer_;
+    // scoped_ptr dtor deletes object_id_parser_observer_'s underlying pointer
   }
 
  protected:
@@ -62,7 +63,7 @@ class ObjectIdParserObserverTest : public CPPUNIT_NS::TestFixture {
 
  private:
   object_id_map_t object_id_map_;
-  ObjectIdParserObserver* object_id_parser_observer_;
+  boost::scoped_ptr<ObjectIdParserObserver> object_id_parser_observer_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ObjectIdParserObserverTest);
@@ -142,8 +143,8 @@ void ObjectIdParserObserverTest::TestDestructor() {
   CPPUNIT_ASSERT_EQUAL(true,
                        object_id_parser_observer_->NewElement(point));
 
-  delete object_id_parser_observer_;
-  object_id_parser_observer_ = NULL;  // So tearDown() doesn't crash.
+  // Force delete of the underlying object_id_parser_observer
+  object_id_parser_observer_.reset();
 
   // Verify that the object map has exactly the 2 expected mappings.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), object_id_map_.size());

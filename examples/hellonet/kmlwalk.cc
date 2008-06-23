@@ -32,7 +32,7 @@
 #include <map>
 #include <string>
 #include "kml/dom.h"
-#include "kml/engine/feature_visitor.h"
+#include "kml/engine.h"
 #include "curlfetch.h"
 
 using kmldom::ElementPtr;

@@ -31,8 +31,8 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 using std::cout;
 using std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 
   // Read the file.
   std::string file_data;
-  if (!kmlutil::File::ReadFileToString(argv[1], &file_data)) {
+  if (!kmlbase::File::ReadFileToString(argv[1], &file_data)) {
     cout << argv[1] << " read failed" << endl;
     return 1;
   }

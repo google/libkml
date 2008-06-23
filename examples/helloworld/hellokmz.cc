@@ -30,8 +30,8 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 using std::cout;
 using std::endl;

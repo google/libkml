@@ -30,7 +30,7 @@
 #include "kml/regionator/regionator_util.h"
 #include <string>
 #include "kml/dom.h"
-#include "kml/engine/clone.h"
+#include "kml/engine.h"
 
 namespace kmlregionator {
 
@@ -74,7 +74,7 @@ RegionPtr CreateChildRegion(const RegionPtr& parent, quadrant_t quadrant) {
   RegionPtr child = factory->CreateRegion();
   if (parent->has_latlonaltbox()) {
     double mid_lat, mid_lon;
-    GetCenter(parent->get_latlonaltbox(), &mid_lat, &mid_lon);
+    kmlengine::GetCenter(parent->get_latlonaltbox(), &mid_lat, &mid_lon);
     LatLonAltBoxPtr latlonaltbox =
         CloneLatLonAltBox(parent->get_latlonaltbox());
     switch (quadrant) {
@@ -130,37 +130,6 @@ PlacemarkPtr CreateLineStringBox(const string& name, const RegionPtr& region) {
   return placemark;
 }
 
-// This is a convenience function to create a Point Placemark.
-PlacemarkPtr CreatePointPlacemark(const string& name, double lat, double lon) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  PlacemarkPtr placemark = factory->CreatePlacemark();
-  placemark->set_name(name);
-  CoordinatesPtr coordinates = factory->CreateCoordinates();
-  coordinates->add_latlng(lat, lon);
-  PointPtr point = factory->CreatePoint();
-  point->set_coordinates(coordinates);
-  placemark->set_geometry(point);
-  return placemark;
-}
-
-// This creates a Region at the given bounding box with the given Lod range.
-RegionPtr CreateRegion2d(double north, double south, double east, double west,
-                         double minlodpixels, double maxlodpixels) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  RegionPtr region = factory->CreateRegion();
-  LatLonAltBoxPtr latlonaltbox = factory->CreateLatLonAltBox();
-  latlonaltbox->set_north(north);
-  latlonaltbox->set_south(south);
-  latlonaltbox->set_east(east);
-  latlonaltbox->set_west(west);
-  LodPtr lod = factory->CreateLod();
-  lod->set_minlodpixels(minlodpixels);
-  lod->set_maxlodpixels(maxlodpixels);
-  region->set_latlonaltbox(latlonaltbox);
-  region->set_lod(lod);
-  return region;
-}
-
 // This is a convenience function to create a NetworkLink to the specified
 // url with onRegion refresh semantics.
 NetworkLinkPtr CreateRegionNetworkLink(const RegionPtr& region,
@@ -182,16 +151,6 @@ DocumentPtr CreateRegionDocument(const RegionPtr& region) {
   DocumentPtr document = factory->CreateDocument();
   document->set_region(CloneRegion(region));
   return document;
-}
-
-// This returns the mid point of the given LatLonBox or LatLonAltBox.
-void GetCenter(const AbstractLatLonBoxPtr& allb, double* lat, double* lon) {
-  if (lat) {
-    *lat = (allb->get_north() + allb->get_south())/2.0;
-  }
-  if (lon) {
-    *lon = (allb->get_east() + allb->get_west())/2.0;
-  }
 }
 
 }  // end namespace kmlregionator

@@ -28,9 +28,9 @@
 #include "kml/engine/kmz_file.h"
 #include <string>
 #include <vector>
-#include "kml/util/file.h"
-#include "kml/util/tempfile.h"
-#include "kml/util/unit_test.h"
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/file.h"
+#include "kml/base/unit_test.h"
 
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
@@ -38,8 +38,7 @@
 static const std::string kDataDir = DATADIR;
 #endif
 
-using kmlutil::File;
-using kmlutil::TempFile;
+using kmlbase::File;
 
 namespace kmlengine {
 
@@ -66,6 +65,9 @@ class KmzTest : public CPPUNIT_NS::TestFixture {
   void TestList();
   void TestWriteKmz();
   void TestConstKmzFile();
+
+ private:
+  boost::scoped_ptr<KmzFile> kmz_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmzTest);
@@ -73,37 +75,34 @@ CPPUNIT_TEST_SUITE_REGISTRATION(KmzTest);
 void KmzTest::TestOpenFromFile() {
   // doc.kmz contains a simple doc.kml and is a valid zip archive.
   const std::string kGoodKmz = kDataDir + "/kmz/doc.kmz";
-  KmzFile* kmz_file = KmzFile::OpenFromFile(kGoodKmz.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   std::string kml_data;
   // doc.kml can be read.
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
-  delete kmz_file;
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const std::string kBadKmz = kDataDir + "/kmz/nokml.kmz";
-  kmz_file = KmzFile::OpenFromFile(kBadKmz.c_str());
-  CPPUNIT_ASSERT(kmz_file);
-  CPPUNIT_ASSERT(kmz_file->OpenFromFile(kBadKmz.c_str()));
+  kmz_file_.reset(KmzFile::OpenFromFile(kBadKmz.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   kml_data.clear();
   // There is no KML file to read.
-  CPPUNIT_ASSERT(!kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(!kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(kml_data.empty());
-  delete kmz_file;
 }
 
 void KmzTest::TestOpenFromBadFile() {
   // Two kinds of bad file.
   // 1: a non-existant file:
   const std::string kNoSuchFile("nosuchfile.kmz");
-  KmzFile* kmz_file = KmzFile::OpenFromFile(kNoSuchFile.c_str());
+  kmz_file_.reset(KmzFile::OpenFromFile(kNoSuchFile.c_str()));
   // The file cannot be opened.
-  CPPUNIT_ASSERT(kmz_file == NULL);
+  CPPUNIT_ASSERT(kmz_file_ == NULL);
   // 2: a file that is not a valid KMZ archive.
   const std::string kBadKmz= kDataDir + "/kmz/bad.kmz";
-  kmz_file = KmzFile::OpenFromFile(kBadKmz.c_str());
+  kmz_file_.reset(KmzFile::OpenFromFile(kBadKmz.c_str()));
   // The file could not be read.
-  CPPUNIT_ASSERT(kmz_file == NULL);
+  CPPUNIT_ASSERT(kmz_file_ == NULL);
 }
 
 void KmzTest::TestOpenFromString() {
@@ -112,26 +111,23 @@ void KmzTest::TestOpenFromString() {
   std::string kmz_file_data;
   CPPUNIT_ASSERT(File::ReadFileToString(kGoodKmz.c_str(), &kmz_file_data));
   CPPUNIT_ASSERT(!kmz_file_data.empty());
-  KmzFile* kmz_file = KmzFile::OpenFromString(kmz_file_data);
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromString(kmz_file_data));
+  CPPUNIT_ASSERT(kmz_file_);
   std::string kml_data;
   // doc.kml can be read.
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
-  delete kmz_file;
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const std::string kBadKmz = kDataDir + "/kmz/nokml.kmz";
   kmz_file_data.clear();
   CPPUNIT_ASSERT(File::ReadFileToString(kBadKmz.c_str(), &kmz_file_data));
   CPPUNIT_ASSERT(!kmz_file_data.empty());
-  kmz_file = KmzFile::OpenFromString(kmz_file_data);
-  CPPUNIT_ASSERT(kmz_file);
-  CPPUNIT_ASSERT(kmz_file->OpenFromString(kmz_file_data));
+  kmz_file_.reset(KmzFile::OpenFromString(kmz_file_data));
+  CPPUNIT_ASSERT(kmz_file_);
   kml_data.clear();
   // There is no KML file to read.
-  CPPUNIT_ASSERT(!kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(!kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(kml_data.empty());
-  delete kmz_file;
 }
 
 void KmzTest::TestReadKml() {
@@ -139,21 +135,19 @@ void KmzTest::TestReadKml() {
   // added to the archive in that order. Assert that doc.kml is read instead
   // of a.kml.
   const std::string kDoc = kDataDir + "/kmz/doc.kmz";
-  KmzFile* kmz_file = KmzFile::OpenFromFile(kDoc.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kDoc.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   std::string kml_data;
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
   CPPUNIT_ASSERT(std::string::npos != kml_data.find("doc.kml"));
-  delete kmz_file;
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const std::string kNokml = kDataDir + "/kmz/nokml.kmz";
-  kmz_file = KmzFile::OpenFromFile(kNokml.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kNokml.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   kml_data.clear();
-  CPPUNIT_ASSERT(!kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(!kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(kml_data.empty());
-  delete kmz_file;
   // multikml-nodoc.kmz has three kml files added in the following order:
   // - z/c.kml
   // - b.kml
@@ -161,14 +155,12 @@ void KmzTest::TestReadKml() {
   // Each file has a placemark whose <name> is the archived filename.
   // Assert that z/c.kml is read first.
   const std::string kMulti1 = kDataDir + "/kmz/multikml-nodoc.kmz";
-  kmz_file = KmzFile::OpenFromFile(kMulti1.c_str());
-  CPPUNIT_ASSERT(kmz_file);
-  CPPUNIT_ASSERT(kmz_file->OpenFromFile(kMulti1.c_str()));
+  kmz_file_.reset(KmzFile::OpenFromFile(kMulti1.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   kml_data.clear();
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
   CPPUNIT_ASSERT(std::string::npos != kml_data.find("c.kml"));
-  delete kmz_file;
   // multikml-doc.kmz has four kml files added in the following order:
   // - z/c.kml
   // - b.kml
@@ -177,34 +169,32 @@ void KmzTest::TestReadKml() {
   // Assert that z/c.kml is read because the default file (doc.kml at root
   // level) cannot be found.
   const std::string kMulti2 = kDataDir + "/kmz/multikml-doc.kmz";
-  kmz_file = KmzFile::OpenFromFile(kMulti2.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   kml_data.clear();
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
   CPPUNIT_ASSERT(std::string::npos != kml_data.find("c.kml"));
   // Assert we handle a NULL output string.
-  CPPUNIT_ASSERT(!kmz_file->ReadKml(NULL));
-  delete kmz_file;
+  CPPUNIT_ASSERT(!kmz_file_->ReadKml(NULL));
 }
 
 void KmzTest::TestReadFile() {
   // nokml.kmz has a file called foo.txt in a folder called foo.
   const std::string kNokml = kDataDir + "/kmz/nokml.kmz";
-  KmzFile* kmz_file = KmzFile::OpenFromFile(kNokml.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kNokml.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   std::string file_data;
-  CPPUNIT_ASSERT(kmz_file->ReadFile("foo/foo.txt", &file_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadFile("foo/foo.txt", &file_data));
   CPPUNIT_ASSERT(!file_data.empty());
   std::string tmp = file_data;
   // But does not have a file called bar.txt in that folder
-  CPPUNIT_ASSERT(!kmz_file->ReadFile("foo/bar.txt", &file_data));
+  CPPUNIT_ASSERT(!kmz_file_->ReadFile("foo/bar.txt", &file_data));
   // The original data was untouched by this failure.
   CPPUNIT_ASSERT(!file_data.empty());
   CPPUNIT_ASSERT_EQUAL(tmp, file_data);
   // Assert we handle a NULL output string.
-  CPPUNIT_ASSERT(!kmz_file->ReadFile("bar", NULL));
-  delete kmz_file;
+  CPPUNIT_ASSERT(!kmz_file_->ReadFile("bar", NULL));
 }
 
 void KmzTest::TestIsKmz() {
@@ -229,28 +219,21 @@ void KmzTest::TestList() {
   // - b.kml
   // - a/a.kml
   const std::string kMulti1 = kDataDir + "/kmz/multikml-nodoc.kmz";
-  KmzFile* kmz_file = KmzFile::OpenFromFile(kMulti1.c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(kMulti1.c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   std::vector<std::string> list;
-  kmz_file->List(&list);
+  kmz_file_->List(&list);
   // 3 files were read into the vector.
   CPPUNIT_ASSERT(3 == list.size());
   // They appear in the same order in which they were added.
   CPPUNIT_ASSERT_EQUAL(std::string("z/c.kml"), list[0]);
   CPPUNIT_ASSERT_EQUAL(std::string("b.kml"), list[1]);
   CPPUNIT_ASSERT_EQUAL(std::string("a/a.kml"), list[2]);
-  delete kmz_file;
 }
 
 void KmzTest::TestWriteKmz() {
   // Create a temp file into which we'll write our KMZ data.
-  //
-  //std::string tempfile;
-  //File::CreateNewTempFile(&tempfile);
-  //CPPUNIT_ASSERT(!tempfile.empty());
-  //CPPUNIT_ASSERT(File::Exists(tempfile));
-  //
-  TempFile* tempfile = kmlutil::TempFile::CreateTempFile();
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
   CPPUNIT_ASSERT(tempfile != NULL);
   // Create a KMZ file containing a KML file that is a simple placemark called
   // 'tmp kml'.
@@ -263,15 +246,12 @@ void KmzTest::TestWriteKmz() {
   CPPUNIT_ASSERT(!foo.empty());
   // Open the file into our KmzFile instance and assert the KML was written
   // correctly.
-  KmzFile* kmz_file = KmzFile::OpenFromFile(tempfile->name().c_str());
-  CPPUNIT_ASSERT(kmz_file);
+  kmz_file_.reset(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  CPPUNIT_ASSERT(kmz_file_);
   std::string kml_data;
-  CPPUNIT_ASSERT(kmz_file->ReadKml(&kml_data));
+  CPPUNIT_ASSERT(kmz_file_->ReadKml(&kml_data));
   CPPUNIT_ASSERT(!kml_data.empty());
   CPPUNIT_ASSERT_EQUAL(kKml, kml_data);
-  // Clean up.
-  delete tempfile;  // TODO: scoped_ptr.
-  delete kmz_file;
 }
 
 // This verifies that a const KmzFile compiles and runs with read methods.

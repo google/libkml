@@ -47,15 +47,64 @@ class Href {
   Href() {}
   // Construct from the contents of <href>
   Href(const std::string& href) {
-    // TODO: only does fragment at this time
-    if (!href.empty() && href[0] == '#' && href.size() > 2) {
-      fragment_ = href.substr(1);
-    }
+    Parse(href);
   }
-  const std::string& get_fragment() {
+
+  bool IsRelative() const {
+    return !has_scheme() && !has_net_loc();
+  }
+
+  bool IsRelativePath() const {
+    return !has_scheme() && !has_net_loc() && has_path();
+  }
+
+  bool IsFragmentOnly() const {
+    return has_fragment() && !has_scheme() && !has_net_loc() && !has_path();
+  }
+
+  const std::string& get_scheme() const {
+    return scheme_;
+  }
+  bool has_scheme() const {
+    return !scheme_.empty();
+  }
+  void set_scheme(const std::string& scheme) {
+    scheme_ = scheme;
+  }
+  void clear_scheme() {
+    scheme_.clear();
+  }
+
+  const std::string& get_net_loc() const {
+    return net_loc_;
+  }
+  bool has_net_loc() const {
+    return !net_loc_.empty();
+  }
+  void set_net_loc(const std::string& net_loc) {
+    net_loc_ = net_loc;
+  }
+  void clear_net_loc() {
+    net_loc_.clear();
+  }
+
+  const std::string& get_path() const {
+    return path_;
+  }
+  bool has_path() const {
+    return !path_.empty();
+  }
+  void set_path(const std::string& path) {
+    path_ = path;
+  }
+  void clear_path() {
+    path_.clear();
+  }
+
+  const std::string& get_fragment() const {
     return fragment_;
   }
-  bool has_fragment() {
+  bool has_fragment() const {
     return !fragment_.empty();
   }
   void set_fragment(const std::string& fragment) {
@@ -66,6 +115,10 @@ class Href {
   }
 
  private:
+  void Parse(const std::string& href);
+  size_t ParseScheme(const std::string& href);
+  size_t ParseNetLoc(const std::string& href);
+
   // These names match RFC 1808:
   // <scheme>://<net_loc>/<path>;<params>?<query>#<fragment>
   // Note: params is unused in a KML URL.

@@ -87,7 +87,7 @@ private:
                              const ElementPtr& parent,
                              const ElementPtr& child);
   const parser_observer_vector_t& observers_;
-  DISALLOW_EVIL_CONSTRUCTORS(KmlHandler);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlHandler);
 };
 
 } // end namespace kmldom

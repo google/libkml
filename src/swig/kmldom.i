@@ -47,8 +47,8 @@
 #endif
 
 // Classes for abstract elements and internal convenience classes.
-SWIG_INTRUSIVE_PTR(Referent, kmldom::Referent)
-SWIG_INTRUSIVE_PTR_DERIVED(Element, kmldom::Referent, kmldom::Element)
+SWIG_INTRUSIVE_PTR(Referent, kmlbase::Referent)
+SWIG_INTRUSIVE_PTR_DERIVED(Element, kmlbase::Referent, kmldom::Element)
 SWIG_INTRUSIVE_PTR_DERIVED(AbstractLatLonBox, kmldom::Object,
                            kmldom::AbstractLatLonBox)
 SWIG_INTRUSIVE_PTR_DERIVED(AbstractView, kmldom::Object, kmldom::AbstractView)
@@ -158,11 +158,15 @@ SWIG_INTRUSIVE_PTR_DERIVED(Update, kmldom::Element, kmldom::Update)
 // Tell SWIG about the intrusive_ptr typedefs.
 %include "kml/dom/kml_ptr.h"
 
-namespace kmldom {
+namespace kmlbase {
 
 %nodefaultctor Referent;
 class Referent {
 };
+
+}  // end namespace kmlbase
+
+namespace kmldom {
 
 // All complex elements in KML are derived from Element.  Element-derived
 // classes are constructed using KmlFactory thus no constructor is available.
@@ -170,7 +174,7 @@ class Referent {
 // in the underlying class since only the factory creates an element instance.
 
 %nodefaultctor Element;
-class Element : public Referent{
+class Element : public kmlbase::Referent{
 public:
   virtual KmlDomType Type();
   virtual bool IsA(KmlDomType type_id);

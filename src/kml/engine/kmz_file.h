@@ -32,8 +32,8 @@
 #include <vector>
 #include "minizip/unzip.h"
 #include "minizip/zip.h"
-#include "kml/util/tempfile.h"
-#include "kml/util/util.h"
+#include "kml/base/tempfile.h"
+#include "kml/base/util.h"
 
 namespace kmlengine {
 
@@ -83,15 +83,15 @@ class KmzFile {
 
  private:
   // Class can only be created from static methods.
-  KmzFile(unzFile unzfile, kmlutil::TempFile* tempfile);
+  KmzFile(unzFile unzfile, const kmlbase::TempFilePtr& tempfile);
   unzFile unzfile_;
-  kmlutil::TempFile* tempfile_;
+  kmlbase::TempFilePtr tempfile_;
   // Internal helper function to read the file currently pointed to by the
   // zipfile cursor.
   bool ReadCurrentFile(std::string* result) const;
   // Internal helper function to read one named file from an archive.
   bool ReadOne(const char* subfile, std::string* output) const;
-  DISALLOW_EVIL_CONSTRUCTORS(KmzFile);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmzFile);
 };
 
 }  // end namespace kmlengine

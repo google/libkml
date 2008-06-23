@@ -23,8 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_UTIL_UNIT_TEST_H__
-#define KML_UTIL_UNIT_TEST_H__
+#ifndef KML_BASE_UNIT_TEST_H__
+#define KML_BASE_UNIT_TEST_H__
 
 /**
  * This file provides a simple main() function for running unit tests.
@@ -63,4 +63,4 @@
   return result.wasSuccessful() ? 0 : 1;\
 }
 
-#endif  // KML_UTIL_UNIT_TEST_H__
+#endif  // KML_BASE_UNIT_TEST_H__

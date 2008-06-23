@@ -28,7 +28,7 @@
 
 #include "kml/dom/vec2.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -46,7 +46,7 @@ class HotSpot : public Vec2 {
  private:
   friend class KmlFactory;
   HotSpot();
-  DISALLOW_EVIL_CONSTRUCTORS(HotSpot);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(HotSpot);
 };
 
 }  // end namespace kmldom

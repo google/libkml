@@ -47,7 +47,7 @@ class Folder : public Container {
   Folder();
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  DISALLOW_EVIL_CONSTRUCTORS(Folder);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Folder);
 };
 
 }  // end namespace kmldom

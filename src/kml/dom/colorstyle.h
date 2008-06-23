@@ -30,7 +30,7 @@
 
 #include "kml/dom/substyle.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -87,7 +87,7 @@ class ColorStyle : public SubStyle {
   bool has_color_;
   int colormode_;
   bool has_colormode_;
-  DISALLOW_EVIL_CONSTRUCTORS(ColorStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ColorStyle);
 };
 
 }  // end namespace kmldom

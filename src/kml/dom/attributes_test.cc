@@ -27,7 +27,7 @@
 
 #include "kml/dom/attributes.h"
 #include <string>
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

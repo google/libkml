@@ -30,7 +30,7 @@
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -59,7 +59,7 @@ class Placemark : public Feature {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   GeometryPtr geometry_;
-  DISALLOW_EVIL_CONSTRUCTORS(Placemark);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Placemark);
 };
 
 }  // namespace kmldom

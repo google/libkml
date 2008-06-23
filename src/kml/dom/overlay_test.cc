@@ -32,7 +32,7 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

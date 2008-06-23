@@ -26,7 +26,7 @@
 // This file contains the unit tests for the LookAt and Camera elements.
 
 #include "kml/dom/abstractview.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
 

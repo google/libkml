@@ -28,7 +28,7 @@
 
 #include "kml/dom/colorstyle.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -84,7 +84,7 @@ class PolyStyle : public ColorStyle {
   bool has_fill_;
   bool outline_;
   bool has_outline_;
-  DISALLOW_EVIL_CONSTRUCTORS(PolyStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(PolyStyle);
 };
 
 }  // end namespace kmldom

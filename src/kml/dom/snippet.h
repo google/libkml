@@ -29,7 +29,7 @@
 #include <string>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -81,7 +81,7 @@ class SnippetCommon : public Element {
   bool has_text_;
   unsigned int maxlines_;
   bool has_maxlines_;
-  DISALLOW_EVIL_CONSTRUCTORS(SnippetCommon);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SnippetCommon);
 };
 
 // <Snippet>
@@ -96,7 +96,7 @@ class Snippet : public SnippetCommon {
  private:
   friend class KmlFactory;
   Snippet();
-  DISALLOW_EVIL_CONSTRUCTORS(Snippet);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Snippet);
 };
 
 // <linkSnippet>
@@ -111,7 +111,7 @@ class LinkSnippet : public SnippetCommon {
  private:
   friend class KmlFactory;
   LinkSnippet();
-  DISALLOW_EVIL_CONSTRUCTORS(LinkSnippet);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LinkSnippet);
 };
 
 }  // end namespace kmldom

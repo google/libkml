@@ -24,7 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/colorstyle.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

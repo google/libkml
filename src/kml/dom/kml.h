@@ -89,7 +89,7 @@ class Kml : public Element {
   bool has_hint_;
   NetworkLinkControlPtr networklinkcontrol_;
   FeaturePtr feature_;
-  DISALLOW_EVIL_CONSTRUCTORS(Kml);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Kml);
 };
 
 }  // end namespace kmldom

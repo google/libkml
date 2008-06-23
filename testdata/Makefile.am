@@ -1,2 +1,2 @@
-SUBDIRS = kmz style
+SUBDIRS = kmz links style
 

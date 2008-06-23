@@ -30,7 +30,7 @@
 
 #include <iostream>
 #include "kml/dom.h"
-#include "kml/engine/clone.h"
+#include "kml/engine.h"
 
 // This function creates a Region with a LatLonAltBox of the specified bounds
 // and a Lod with the specified minLodPixels.

@@ -28,7 +28,7 @@
 
 #include "kml/dom/object.h"
 #include "kml/dom/kml22.h"
-#include "kml/util/util.h"
+#include "kml/base/util.h"
 
 namespace kmldom {
 
@@ -48,7 +48,7 @@ class SubStyle : public Object {
   SubStyle();
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(SubStyle);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SubStyle);
 };
 
 }  // end namespace kmldom

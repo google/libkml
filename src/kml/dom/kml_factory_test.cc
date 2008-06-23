@@ -25,7 +25,7 @@
 
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kmldom.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

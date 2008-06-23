@@ -81,7 +81,7 @@ void PrintFeature(const FeaturePtr& feature, int depth) {
 }
 
 void PrintContainer(const ContainerPtr& container, int depth) {
-  for (int i = 0; i < container->get_feature_array_size(); ++i) {
+  for (size_t i = 0; i < container->get_feature_array_size(); ++i) {
     PrintFeature(container->get_feature_array_at(i), depth);
   }
 }

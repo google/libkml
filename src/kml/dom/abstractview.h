@@ -43,7 +43,7 @@ class AbstractView : public Object {
   AbstractView() {}
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(AbstractView);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AbstractView);
 };
 
 // <LookAt>
@@ -188,7 +188,7 @@ class LookAt : public AbstractView {
   bool has_range_;
   int altitudemode_;
   bool has_altitudemode_;
-  DISALLOW_EVIL_CONSTRUCTORS(LookAt);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LookAt);
 };
 
 // <Camera>
@@ -333,7 +333,7 @@ class Camera : public AbstractView {
   bool has_roll_;
   int altitudemode_;
   bool has_altitudemode_;
-  DISALLOW_EVIL_CONSTRUCTORS(Camera);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Camera);
 };
 
 }  // end namespace kmldom

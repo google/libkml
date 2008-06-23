@@ -1,6 +1,6 @@
 # util must be built before engine.
-SUBDIRS = . dom util engine regionator
+SUBDIRS = . base convenience dom engine regionator
 
 domincludedir = $(includedir)/kml
-dominclude_HEADERS = dom.h
+dominclude_HEADERS = dom.h engine.h
 

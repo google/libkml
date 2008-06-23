@@ -53,7 +53,7 @@ class TimePrimitive : public Object {
   TimePrimitive();
 
  private:
-  DISALLOW_EVIL_CONSTRUCTORS(TimePrimitive);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimePrimitive);
 };
 
 // <TimeSpan>
@@ -100,7 +100,7 @@ class TimeSpan : public TimePrimitive {
   bool has_begin_;
   std::string end_;
   bool has_end_;
-  DISALLOW_EVIL_CONSTRUCTORS(TimeSpan);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimeSpan);
 };
 
 // <TimeStamp>
@@ -133,7 +133,7 @@ class TimeStamp : public TimePrimitive {
   virtual void Serialize(Serializer& serializer) const;
   std::string when_;
   bool has_when_;
-  DISALLOW_EVIL_CONSTRUCTORS(TimeStamp);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimeStamp);
 };
 
 }  // end namespace kmldom

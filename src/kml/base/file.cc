@@ -26,10 +26,10 @@
 // The file contains the implementation of the File methods common across
 // platforms.
 
-#include "kml/util/file.h"
+#include "kml/base/file.h"
 #include <fstream>
 
-namespace kmlutil {
+namespace kmlbase {
 
 bool File::ReadFileToString(const std::string& filename, std::string* output) {
   if (filename.empty() || !output) {
@@ -65,4 +65,4 @@ bool File::WriteStringToFile(const std::string& data,
   return true;
 }
 
-}  // end namespace kmlutil
+}  // end namespace kmlbase

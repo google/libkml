@@ -26,8 +26,9 @@
 // This file contains the unit tests for the SharedStyleParserObserver class.
 
 #include "kml/engine/shared_style_parser_observer.h"
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml_factory.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmlengine {
 
@@ -57,14 +58,13 @@ class SharedStyleParserObserverTest : public CPPUNIT_NS::TestFixture {
     stylemap0_ = factory->CreateStyleMap();
     stylemap0_->set_id(kStyleMap0Id_);
     style_no_id_ = factory->CreateStyle();
-    shared_style_parser_observer_ =
-        new SharedStyleParserObserver(&shared_style_map_);
+    shared_style_parser_observer_.reset(
+        new SharedStyleParserObserver(&shared_style_map_));
   }
 
   // Called after each test.
   void tearDown() {
-    // TODO: boost::scoped_ptr would be handy here:
-    delete shared_style_parser_observer_;
+    // All dynamic objects are managed by smart pointers.
   }
 
  protected:
@@ -85,7 +85,7 @@ class SharedStyleParserObserverTest : public CPPUNIT_NS::TestFixture {
   std::string kStyleMap0Id_;
   kmldom::StyleMapPtr stylemap0_;
   shared_style_map_t shared_style_map_;
-  SharedStyleParserObserver* shared_style_parser_observer_;
+  boost::scoped_ptr<SharedStyleParserObserver> shared_style_parser_observer_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SharedStyleParserObserverTest);
@@ -185,8 +185,7 @@ void SharedStyleParserObserverTest::TestDestructor() {
                                                                style1_));
 
   // Verify that deleting the observer does not affect the map.
-  delete shared_style_parser_observer_;
-  shared_style_parser_observer_ = NULL;  // So tearDown() doesn't crash.
+  shared_style_parser_observer_.reset();
 
   // Verify that the object map has exactly the 2 expected mappings.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), shared_style_map_.size());

@@ -28,7 +28,7 @@
 #include "kml/engine/clone.h"
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;

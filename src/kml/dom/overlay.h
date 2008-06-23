@@ -106,7 +106,7 @@ class Overlay : public Feature {
   int draworder_;
   bool has_draworder_;
   IconPtr icon_;
-  DISALLOW_EVIL_CONSTRUCTORS(Overlay);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Overlay);
 };
 
 // <LatLonBox>
@@ -146,7 +146,7 @@ class LatLonBox : public AbstractLatLonBox {
   double rotation_;
   bool has_rotation_;
 
-  DISALLOW_EVIL_CONSTRUCTORS(LatLonBox);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LatLonBox);
 };
 
 // <GroundOverlya>
@@ -214,7 +214,7 @@ class GroundOverlay : public Overlay {
   int altitudemode_;
   bool has_altitudemode_;
   LatLonBoxPtr latlonbox_;
-  DISALLOW_EVIL_CONSTRUCTORS(GroundOverlay);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GroundOverlay);
 };
 
 // <overlayXY>
@@ -229,7 +229,7 @@ class OverlayXY : public Vec2 {
  private:
   friend class KmlFactory;
   OverlayXY();
-  DISALLOW_EVIL_CONSTRUCTORS(OverlayXY);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(OverlayXY);
 };
 
 // <screenXY>
@@ -244,7 +244,7 @@ class ScreenXY : public Vec2 {
  private:
   friend class KmlFactory;
   ScreenXY();
-  DISALLOW_EVIL_CONSTRUCTORS(ScreenXY);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ScreenXY);
 };
 
 // <rotationXY>
@@ -259,7 +259,7 @@ class RotationXY : public Vec2 {
  private:
   friend class KmlFactory;
   RotationXY();
-  DISALLOW_EVIL_CONSTRUCTORS(RotationXY);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(RotationXY);
 };
 
 // <size>
@@ -274,7 +274,7 @@ class Size : public Vec2 {
  private:
   friend class KmlFactory;
   Size();
-  DISALLOW_EVIL_CONSTRUCTORS(Size);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Size);
 };
 
 // <ScreenOverlay>
@@ -355,7 +355,7 @@ class ScreenOverlay : public Overlay {
   SizePtr size_;
   double rotation_;
   bool has_rotation_;
-  DISALLOW_EVIL_CONSTRUCTORS(ScreenOverlay);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ScreenOverlay);
 };
 
 // <ViewVolume>
@@ -464,7 +464,7 @@ class ViewVolume : public Object {
   bool has_topfov_;
   double near_;
   bool has_near_;
-  DISALLOW_EVIL_CONSTRUCTORS(ViewVolume);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ViewVolume);
 };
 
 // <ImagePyramid>
@@ -555,7 +555,7 @@ class ImagePyramid : public Object {
   bool has_maxheight_;
   int gridorigin_;
   bool has_gridorigin_;
-  DISALLOW_EVIL_CONSTRUCTORS(ImagePyramid);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ImagePyramid);
 };
 
 // <PhotoOverlay>
@@ -643,7 +643,7 @@ class PhotoOverlay : public Overlay {
   PointPtr point_;
   int shape_;
   bool has_shape_;
-  DISALLOW_EVIL_CONSTRUCTORS(PhotoOverlay);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(PhotoOverlay);
 };
 
 }  // end namespace kmldom

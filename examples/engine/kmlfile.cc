@@ -29,7 +29,7 @@
 
 #include <iostream>
 #include "kml/dom.h"
-#include "kml/engine/kml_file.h"
+#include "kml/engine.h"
 
 void HelloKmlFile() {
   const std::string kKml =

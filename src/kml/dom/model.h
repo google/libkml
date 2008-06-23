@@ -109,7 +109,7 @@ class Location : public Object {
   bool has_latitude_;
   double altitude_;
   bool has_altitude_;
-  DISALLOW_EVIL_CONSTRUCTORS(Location);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Location);
 };
 
 // <Orientation>
@@ -182,7 +182,7 @@ class Orientation : public Object {
   bool has_tilt_;
   double roll_;
   bool has_roll_;
-  DISALLOW_EVIL_CONSTRUCTORS(Orientation);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Orientation);
 };
 
 // <Scale>
@@ -255,7 +255,7 @@ class Scale : public Object {
   bool has_y_;
   double z_;
   bool has_z_;
-  DISALLOW_EVIL_CONSTRUCTORS(Scale);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Scale);
 };
 
 // <Alias>
@@ -310,7 +310,7 @@ class Alias : public Object {
   bool has_targethref_;
   std::string sourcehref_;
   bool has_sourcehref_;
-  DISALLOW_EVIL_CONSTRUCTORS(Alias);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Alias);
 };
 
 // <ResourceMap>
@@ -340,7 +340,7 @@ class ResourceMap : public Object {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   std::vector<AliasPtr> alias_array_;
-  DISALLOW_EVIL_CONSTRUCTORS(ResourceMap);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ResourceMap);
 };
 
 // <Model>
@@ -414,7 +414,7 @@ class Model : public AltitudeGeometryCommon {
   ScalePtr scale_;
   LinkPtr link_;
   ResourceMapPtr resourcemap_;
-  DISALLOW_EVIL_CONSTRUCTORS(Model);
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Model);
 };
 
 }  // end namespace kmldom

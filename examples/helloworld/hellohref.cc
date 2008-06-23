@@ -36,7 +36,7 @@
 #include <iostream>
 #include <string>
 #include "kml/dom.h"
-#include "kml/util/file.h"
+#include "kml/base/file.h"
 
 using std::string;
 using std::cout;
@@ -154,7 +154,7 @@ static void VisitStyleSelector(const StyleSelectorPtr& styleselector) {
 }
 
 static void VisitStyleMap(const StyleMapPtr& stylemap) {
-  for (int i = 0; i < stylemap->get_pair_array_size(); ++i) {
+  for (size_t i = 0; i < stylemap->get_pair_array_size(); ++i) {
     if (stylemap->get_pair_array_at(i)->has_styleselector()) {
       VisitStyleSelector(stylemap->get_pair_array_at(i)->get_styleselector());
     }
@@ -174,7 +174,7 @@ static void VisitFeatureStyle(const FeaturePtr& feature) {
 }
 
 static void VisitContainer(const ContainerPtr& container) {
-  for (int i = 0; i < container->get_feature_array_size(); ++i) {
+  for (size_t i = 0; i < container->get_feature_array_size(); ++i) {
     VisitFeature(container->get_feature_array_at(i));
   }
 }
@@ -196,7 +196,7 @@ static void VisitFeature(const FeaturePtr& feature) {
 static void HandleFile(const char* kmlfile) {
   cout << kmlfile << endl;
   string kml;
-  bool status = kmlutil::File::ReadFileToString(kmlfile, &kml);
+  bool status = kmlbase::File::ReadFileToString(kmlfile, &kml);
   if (!status) {
     return;
   }

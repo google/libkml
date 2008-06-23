@@ -29,7 +29,7 @@
 #include <string>
 #include "kml/dom/extendeddata.h"
 #include "kml/dom.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

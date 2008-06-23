@@ -29,13 +29,13 @@
 // TODO: likely there are better ways to accomplish Delete and
 // CreateNewTempFile.
 
-#include "kml/util/file.h"
+#include "kml/base/file.h"
 #include <windows.h>
 #include <tchar.h>
 #include <xstring>
 #include <algorithm>
 
-namespace kmlutil {
+namespace kmlbase {
 
 // Internal to the win32 file class. We need a conversion from std::string to
 // LPCWSTR.
@@ -98,4 +98,4 @@ bool File::CreateNewTempFile(std::string* path) {
   return true;
 }
 
-}  // end namespace kmlutil
+}  // end namespace kmlbase

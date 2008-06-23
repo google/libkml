@@ -34,8 +34,8 @@
 #include <string>
 #include <vector>
 #include "kml/dom.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/util/file.h"
+#include "kml/engine.h"
+#include "kml/base/file.h"
 
 using kmldom::ContainerPtr;
 using kmldom::ElementPtr;
@@ -83,7 +83,7 @@ static const FeaturePtr GetRootFeature(const ElementPtr& root) {
 static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
   // Read the file.
   std::string file_data;
-  if (!kmlutil::File::ReadFileToString(kmlfile, &file_data)) {
+  if (!kmlbase::File::ReadFileToString(kmlfile, &file_data)) {
     cout << kmlfile << " read failed" << endl;
     return NULL;
   }

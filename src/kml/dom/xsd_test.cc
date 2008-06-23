@@ -28,7 +28,7 @@
 #include "kml/dom/xsd.h"
 #include <string>
 #include "kml/dom/kml22.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmldom {
 

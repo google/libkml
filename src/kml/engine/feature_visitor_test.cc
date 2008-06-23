@@ -29,7 +29,7 @@
 #include "kml/engine/feature_visitor.h"
 #include <vector>
 #include "kml/dom.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 using kmldom::DocumentPtr;
 using kmldom::FeaturePtr;

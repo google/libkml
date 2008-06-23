@@ -25,10 +25,10 @@
 
 // This file contains the unit tests for the functions in regionator_util.cc.
 
-#include <iostream>
-
 #include "kml/regionator/regionator_util.h"
-#include "kml/util/unit_test.h"
+#include "kml/engine.h"
+#include "kml/convenience/convenience.h"
+#include "kml/base/unit_test.h"
 
 namespace kmlregionator {
 
@@ -40,8 +40,6 @@ class RegionatorUtilTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestCloneRegion);
   CPPUNIT_TEST(TestCreateChildRegion);
   CPPUNIT_TEST(TestCreateLineStringBox);
-  CPPUNIT_TEST(TestCreatePointPlacemark);
-  CPPUNIT_TEST(TestCreateRegion2d);
   CPPUNIT_TEST(TestCreateRegionNetworkLink);
   CPPUNIT_TEST(TestCreateRegionDocument);
   CPPUNIT_TEST(TestGetCenter);
@@ -61,8 +59,6 @@ class RegionatorUtilTest : public CPPUNIT_NS::TestFixture {
   void TestCloneRegion();
   void TestCreateChildRegion();
   void TestCreateLineStringBox();
-  void TestCreatePointPlacemark();
-  void TestCreateRegion2d();
   void TestCreateRegionNetworkLink();
   void TestCreateRegionDocument();
   void TestGetCenter();
@@ -249,35 +245,6 @@ void RegionatorUtilTest::TestCreateLineStringBox() {
   kmldom::PlacemarkPtr placemark = CreateLineStringBox(name, region);
 }
 
-// This tests the CreatePointPlacemark() function.
-void RegionatorUtilTest::TestCreatePointPlacemark() {
-  const std::string name("my point placemark");
-  const double lat = 38.0987123;
-  const double lon = -123.123;
-  kmldom::PlacemarkPtr placemark = CreatePointPlacemark(name, lat, lon);
-  CPPUNIT_ASSERT_EQUAL(name, placemark->get_name());
-}
-
-// This tests the CreateRegion2d() function.
-void RegionatorUtilTest::TestCreateRegion2d() {
-  double north(67.87);
-  double south(-56.78);
-  double east(98.12);
-  double west(12.34);
-  double minlodpixels(128);
-  double maxlodpixels(512);
-  kmldom::RegionPtr region = CreateRegion2d(north, south, east, west,
-                                            minlodpixels, maxlodpixels);
-  CPPUNIT_ASSERT_EQUAL(north, region->get_latlonaltbox()->get_north());
-  CPPUNIT_ASSERT_EQUAL(south, region->get_latlonaltbox()->get_south());
-  CPPUNIT_ASSERT_EQUAL(east, region->get_latlonaltbox()->get_east());
-  CPPUNIT_ASSERT_EQUAL(west, region->get_latlonaltbox()->get_west());
-  CPPUNIT_ASSERT(!region->get_latlonaltbox()->has_minaltitude());
-  CPPUNIT_ASSERT(!region->get_latlonaltbox()->has_maxaltitude());
-  CPPUNIT_ASSERT(!region->get_latlonaltbox()->has_altitudemode());
-  // XXX Lod
-}
-
 // This tests the CreateRegionNetworkLink() utility function.
 void RegionatorUtilTest::TestCreateRegionNetworkLink() {
   double north(.12121212);
@@ -287,10 +254,10 @@ void RegionatorUtilTest::TestCreateRegionNetworkLink() {
   double minlodpixels(256);
   double maxlodpixels(-1);
   std::string href("child.kml");
-  kmldom::NetworkLinkPtr networklink =
-    CreateRegionNetworkLink(CreateRegion2d(north, south, east, west,
-                                           minlodpixels, maxlodpixels),
-                            href);
+  kmldom::NetworkLinkPtr networklink = CreateRegionNetworkLink(
+      kmlconvenience::CreateRegion2d(north, south, east, west, minlodpixels,
+                                     maxlodpixels),
+      href);
   CPPUNIT_ASSERT(networklink->has_region());
   const kmldom::RegionPtr& region= networklink->get_region();
   // XXX assert
@@ -311,7 +278,8 @@ void RegionatorUtilTest::TestCreateRegionDocument() {
   double minlodpixels(256);
   double maxlodpixels(-1);
   kmldom::DocumentPtr document = CreateRegionDocument(
-      CreateRegion2d(north, south, east, west, minlodpixels, maxlodpixels));
+      kmlconvenience::CreateRegion2d(north, south, east, west, minlodpixels,
+                                     maxlodpixels));
   // XXX assert region values
   CPPUNIT_ASSERT_EQUAL(north,
                        document->get_region()->get_latlonaltbox()->get_north());
@@ -321,21 +289,21 @@ void RegionatorUtilTest::TestCreateRegionDocument() {
 void RegionatorUtilTest::TestGetCenter() {
   // NULL output pointer(s) should not crash.
   kmldom::LatLonBoxPtr llb = factory_->CreateLatLonBox();
-  GetCenter(llb, NULL, NULL);
+  kmlengine::GetCenter(llb, NULL, NULL);
   double lat, lon;
-  GetCenter(llb, &lat, NULL);
+  kmlengine::GetCenter(llb, &lat, NULL);
   // Missing lon pointer still saves a result for lat.
   CPPUNIT_ASSERT_EQUAL(0.0, lat);
-  GetCenter(llb, NULL, &lon);
+  kmlengine::GetCenter(llb, NULL, &lon);
   // Missing lat pointer still saves a result for lon.
   CPPUNIT_ASSERT_EQUAL(0.0, lat);
   // A default LatLonBox is well defined thus so is its center.
-  GetCenter(llb, &lat, &lon);
+  kmlengine::GetCenter(llb, &lat, &lon);
   CPPUNIT_ASSERT_EQUAL(0.0, lat);
   CPPUNIT_ASSERT_EQUAL(0.0, lon);
   // A default LatLonAltBox is well defined thus so is its center.
   kmldom::LatLonAltBoxPtr llab = factory_->CreateLatLonAltBox();
-  GetCenter(llab, &lat, &lon);
+  kmlengine::GetCenter(llab, &lat, &lon);
   CPPUNIT_ASSERT_EQUAL(0.0, lat);
   CPPUNIT_ASSERT_EQUAL(0.0, lon);
 }

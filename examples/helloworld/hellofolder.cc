@@ -63,14 +63,14 @@ int main(int argc, char** argv) {
   // Create a Folder, fill it with Placemarks.
   cout << "Creating " << kHowManyPoints << " Placemarks:" << endl;
   FolderPtr folder = factory->CreateFolder();
-  for (int i = 0 ; i < kHowManyPoints ; ++i) {
+  for (size_t i = 0 ; i < kHowManyPoints ; ++i) {
     folder->add_feature(CreatePlacemark(factory, "hi", 1.1, 2.2));
   }
 
   // Read back all the Placemarks in the Folder.
   cout << "Iterating " << kHowManyPoints << " Placemarks:" << endl;
   assert(kHowManyPoints == folder->get_feature_array_size());
-  for (int i = 0; i < folder->get_feature_array_size(); ++i) {
+  for (size_t i = 0; i < folder->get_feature_array_size(); ++i) {
     assert("hi" == folder->get_feature_array_at(i)->get_name());
     assert(kmldom::Type_Placemark == folder->get_feature_array_at(i)->Type());
   }

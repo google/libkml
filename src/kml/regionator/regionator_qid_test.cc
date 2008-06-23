@@ -26,7 +26,7 @@
 // This file contains the unit tests for the internal Qid class.
 
 #include "kml/regionator/regionator_qid.h"
-#include "kml/util/unit_test.h"
+#include "kml/base/unit_test.h"
 
 namespace kmlregionator {
 
