@@ -188,9 +188,9 @@ class SimpleCoordinatesTestCase(unittest.TestCase):
     lat = 38.765
     alt = 1001.909
     assert 0 == coordinates.get_coordinates_array_size()
-    coordinates.add_latlng(lon, lat)
+    coordinates.add_latlng(lat, lon)
     assert 1 == coordinates.get_coordinates_array_size()
-    coordinates.add_latlngalt(lon, lat, alt)
+    coordinates.add_latlngalt(lat, lon, alt)
     assert 2 == coordinates.get_coordinates_array_size()
     vec0 = coordinates.get_coordinates_array_at(0)
     vec1 = coordinates.get_coordinates_array_at(1)

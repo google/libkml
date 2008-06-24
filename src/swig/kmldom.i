@@ -191,8 +191,8 @@ public:
 %nodefaultctor Coordinates;
 class Coordinates : public Element {
 public:
-  void add_latlng(double longitude, double latitude);
-  void add_latlngalt(double longitude, double latitude, double altitude);
+  void add_latlng(double latitude, double longitude);
+  void add_latlngalt(double latitude, double longitude, double altitude);
   size_t get_coordinates_array_size();
   const Vec3 get_coordinates_array_at(unsigned int index);
 };

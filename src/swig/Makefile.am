@@ -1,7 +1,8 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/boost_1_34_1
 
-COMMONLIBS = $(top_builddir)/src/kml/dom/libkmldom.la
+COMMONLIBS = $(top_builddir)/src/kml/dom/libkmldom.la \
+	     $(top_builddir)/src/kml/base/libkmlbase.la
 
 pkglib_LTLIBRARIES=
 
