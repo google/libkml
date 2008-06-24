@@ -2,9 +2,9 @@
 <VisualStudioProject
   ProjectType="Visual C++"
   Version="8.00"
-  Name="createkml"
-  ProjectGUID="{2D08AB30-4254-479F-9EF0-67E5C1EE2E64}"
-  RootNamespace="createkml"
+  Name="csvregionator"
+  ProjectGUID="{12044D18-00ED-4AA1-906E-48D5B12A877D}"
+  RootNamespace="csvregionator"
   Keyword="Win32Proj"
   >
   <Platforms>
@@ -40,7 +40,7 @@
       <Tool
         Name="VCCLCompilerTool"
         Optimization="0"
-        AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src"
+        AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src;..\..\third_party\zlib-1.2.3;..\..\third_party\zlib-1.2.3\contrib"
         PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
         MinimalRebuild="true"
         BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
       />
       <Tool
         Name="VCLinkerTool"
-        AdditionalDependencies="libkmlbase.lib libkmldom.lib libexpat.lib"
+        AdditionalDependencies="libkmlregionator.lib libkmlconvenience.lib libkmlengine.lib libkmldom.lib libkmlbase.lib libexpat.lib minizip.lib zlib.lib"
         LinkIncremental="2"
-        AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\debug"
+        AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\debug;..\..\third_party\zlib-1.2.3.win32\lib"
         GenerateDebugInformation="true"
         SubSystem="1"
         TargetMachine="1"
@@ -118,7 +118,7 @@
       />
       <Tool
         Name="VCCLCompilerTool"
-        AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src"
+        AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src;..\..\third_party\zlib-1.2.3;..\..\third_party\zlib-1.2.3\contrib"
         PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
         RuntimeLibrary="2"
         UsePrecompiledHeader="0"
@@ -137,14 +137,14 @@
       />
       <Tool
         Name="VCLinkerTool"
-        AdditionalDependencies="libkmlbase.lib libkmldom.lib libexpat.lib"
+        AdditionalDependencies="libkmlregionator.lib libkmlconvenience.lib libkmlengine.lib libkmldom.lib libkmlbase.lib libexpat.lib minizip.lib zlib.lib"
+        AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\release;..\..\third_party\zlib-1.2.3.win32\lib"
         LinkIncremental="1"
         GenerateDebugInformation="true"
         SubSystem="1"
         OptimizeReferences="2"
         EnableCOMDATFolding="2"
         TargetMachine="1"
-        AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\release"
       />
       <Tool
         Name="VCALinkTool"
@@ -181,8 +181,26 @@
       UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
       >
       <File
-        RelativePath="createkml.cc"
+        RelativePath="csvregionator.cc"
         >
+        <FileConfiguration
+          Name="Debug|Win32"
+          >
+          <Tool
+            Name="VCCLCompilerTool"
+            ObjectFile="$(IntDir)\$(InputName)1.obj"
+            XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+          />
+        </FileConfiguration>
+        <FileConfiguration
+          Name="Release|Win32"
+          >
+          <Tool
+            Name="VCCLCompilerTool"
+            ObjectFile="$(IntDir)\$(InputName)1.obj"
+            XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+          />
+        </FileConfiguration>
       </File>
     </Filter>
     <Filter

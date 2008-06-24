@@ -3,7 +3,7 @@
 http://kml-samples.googlecode.com/svn/trunk/kml/Style/inline-stylemap.kml
 -->
 <kml xmlns="http://earth.google.com/kml/2.2">
-  <Placemark>
+  <Placemark id="placemark">
     <name>inline StyleMap</name>
     <description>Example of inline StyleMap with inlined Styles</description>
     <StyleMap>
