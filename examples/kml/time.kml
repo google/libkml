@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.1">
  <Folder>
-  <Document>
+  <Document id="doc">
     <name>TimeStamp'ed Points</name>
     <Style id="paddle-a">
       <IconStyle>
@@ -33,7 +33,7 @@
       </ListStyle>
     </Style>
     <styleUrl>#check-hide-children</styleUrl>
-    <Placemark>
+    <Placemark id="time-a">
       <TimeStamp>
         <when>2007-01-14T21:05:02Z</when>
       </TimeStamp>
@@ -42,7 +42,7 @@
         <coordinates>-122.536226,37.86047,0</coordinates>
       </Point>
     </Placemark>
-    <Placemark>
+    <Placemark id="time-0">
       <TimeStamp>
         <when>2007-01-14T21:05:20Z</when>
       </TimeStamp>
@@ -51,7 +51,7 @@
         <coordinates>-122.536422,37.860303,0</coordinates>
       </Point>
     </Placemark>
-    <Placemark>
+    <Placemark id="time-1">
       <TimeStamp>
         <when>2007-01-14T21:05:43Z</when>
       </TimeStamp>
@@ -3273,7 +3273,7 @@
         <coordinates>-122.536283,37.860388,0</coordinates>
       </Point>
     </Placemark>
-    <Placemark>
+    <Placemark id="time-b">
       <TimeStamp>
         <when>2007-01-14T22:36:20Z</when>
       </TimeStamp>

@@ -127,7 +127,7 @@ http://code.google.com/apis/kml/documentation/KML_Samples.kml
           <coordinates>-122.0822035425683,37.42228990140251,0</coordinates>
         </Point>
       </Placemark>
-      <Placemark>
+      <Placemark id="floating-placemark">
         <name>Floating placemark</name>
         <visibility>0</visibility>
         <description>Floats a defined distance above the ground.</description>
@@ -145,7 +145,7 @@ http://code.google.com/apis/kml/documentation/KML_Samples.kml
           <coordinates>-122.084075,37.4220033612141,50</coordinates>
         </Point>
       </Placemark>
-      <Placemark>
+      <Placemark id="extruded-placemark">
         <name>Extruded placemark</name>
         <visibility>0</visibility>
         <description>Tethered to the ground by a customizable
@@ -166,7 +166,7 @@ http://code.google.com/apis/kml/documentation/KML_Samples.kml
         </Point>
       </Placemark>
     </Folder>
-    <Folder>
+    <Folder id="styles-and-markup">
       <name>Styles and Markup</name>
       <visibility>0</visibility>
       <description>With KML it is easy to create rich, descriptive markup to
@@ -180,7 +180,7 @@ http://code.google.com/apis/kml/documentation/KML_Samples.kml
         <heading>-148.4126777488172</heading>
       </LookAt>
       <styleUrl>#noDrivingDirections</styleUrl>
-      <Document>
+      <Document id="highlighted-icon">
         <name>Highlighted Icon</name>
         <visibility>0</visibility>
         <description>Place your mouse over the icon to see it display the new
@@ -217,7 +217,7 @@ http://code.google.com/apis/kml/documentation/KML_Samples.kml
             <styleUrl>#highlightPlacemark</styleUrl>
           </Pair>
         </StyleMap>
-        <Placemark>
+        <Placemark id="rollover-placemark">
           <name>Roll over this icon</name>
           <visibility>0</visibility>
           <styleUrl>#exampleStyleMap</styleUrl>
@@ -485,7 +485,7 @@ Simple Tables:<br>
             -112.085242575315,36.09049598612422,0 </coordinates>
         </LineString>
       </Placemark>
-      <Placemark>
+      <Placemark id="purple-line-placemark">
         <name>Absolute</name>
         <visibility>0</visibility>
         <description>Transparent purple line</description>
@@ -514,7 +514,7 @@ Simple Tables:<br>
             -112.2657374587321,36.08646312301303,2357 </coordinates>
         </LineString>
       </Placemark>
-      <Placemark>
+      <Placemark id="green-wall-placemark">
         <name>Absolute Extruded</name>
         <visibility>0</visibility>
         <description>Transparent green wall with yellow outlines</description>
@@ -544,7 +544,7 @@ Simple Tables:<br>
             -112.2656969554589,36.08649599090644,2357 </coordinates>
         </LineString>
       </Placemark>
-      <Placemark>
+      <Placemark id="black-line-placemark">
         <name>Relative</name>
         <visibility>0</visibility>
         <description>Black line (10 pixels wide), height tracks terrain</description>
@@ -573,7 +573,7 @@ Simple Tables:<br>
             -112.2626285262793,36.10157011437219,645 </coordinates>
         </LineString>
       </Placemark>
-      <Placemark>
+      <Placemark id="blue-walls-placemark">
         <name>Relative Extruded</name>
         <visibility>0</visibility>
         <description>Opaque blue walls with red outline, height tracks terrain</description>
@@ -621,7 +621,7 @@ Simple Tables:<br>
           <tilt>53.454348562403</tilt>
           <heading>-34.82469740081282</heading>
         </LookAt>
-        <Placemark>
+        <Placemark id="b40">
           <name>Building 40</name>
           <visibility>0</visibility>
           <styleUrl>#transRedPoly</styleUrl>
@@ -656,7 +656,7 @@ Simple Tables:<br>
             </outerBoundaryIs>
           </Polygon>
         </Placemark>
-        <Placemark>
+        <Placemark id="b41">
           <name>Building 41</name>
           <visibility>0</visibility>
           <styleUrl>#transBluePoly</styleUrl>
@@ -688,7 +688,7 @@ Simple Tables:<br>
             </outerBoundaryIs>
           </Polygon>
         </Placemark>
-        <Placemark>
+        <Placemark id="b42">
           <name>Building 42</name>
           <visibility>0</visibility>
           <styleUrl>#transGreenPoly</styleUrl>
@@ -725,7 +725,7 @@ Simple Tables:<br>
             </outerBoundaryIs>
           </Polygon>
         </Placemark>
-        <Placemark>
+        <Placemark id="b43">
           <name>Building 43</name>
           <visibility>0</visibility>
           <styleUrl>#transYellowPoly</styleUrl>
@@ -767,7 +767,7 @@ Simple Tables:<br>
       <Folder>
         <name>Extruded Polygon</name>
         <description>A simple way to model a building</description>
-        <Placemark>
+        <Placemark id="pentagon">
           <name>The Pentagon</name>
           <LookAt>
             <longitude>-77.05580139178142</longitude>

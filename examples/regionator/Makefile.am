@@ -10,6 +10,7 @@ noinst_PROGRAMS = csvregionator
 
 csvregionator_SOURCES = csvregionator.cc
 csvregionator_LDADD = \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/regionator/libkmlregionator.la \
