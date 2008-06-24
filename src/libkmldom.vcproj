@@ -268,10 +268,6 @@
 				>
 			</File>
 			<File
-				RelativePath="kml\dom\referent.cc"
-				>
-			</File>
-			<File
 				RelativePath="kml\dom\region.cc"
 				>
 			</File>
@@ -475,10 +471,6 @@
 			</File>
 			<File
 				RelativePath="kml\dom\polystyle.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\dom\referent.h"
 				>
 			</File>
 			<File

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="libkmlbase"
-	ProjectGUID="{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
-	RootNamespace="libkmlbase"
+	Name="libkmlconvenience"
+	ProjectGUID="{5E53C538-7B22-41FF-84AF-F08F0C019E7B}"
+	RootNamespace="libkmlregionator"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -152,15 +152,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\kml\base\file.cc"
+				RelativePath=".\kml\convenience\convenience.cc"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\file_win32.cc"
+				RelativePath=".\kml\convenience\csv_file.cc"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\referent.cc"
+				RelativePath=".\kml\convenience\feature_list.cc"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\convenience\kmz_check_links.cc"
 				>
 			</File>
 			<File
@@ -182,27 +186,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\kml\base\file.h"
+				RelativePath=".\kml\convenience\convenience.h"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\referent.h"
+				RelativePath=".\kml\convenience\csv_file.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\convenience\feature_list.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\convenience\kmz_check_links.h"
 				>
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\kml\base\tempfile.h"
-				>
-			</File>
-			<File
-				RelativePath=".\kml\base\unit_test.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\base\util.h"
 				>
 			</File>
 		</Filter>
