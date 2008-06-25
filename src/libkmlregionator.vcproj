@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
