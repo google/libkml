@@ -56,15 +56,8 @@ def main():
   print 'Create a Folder with some Features...'
 
   folder = factory.CreateFolder()
-  p1 = factory.CreatePlacemark()
-  f1 = factory.CreateFolder()
-  folder.add_feature(p1)
-  folder.add_feature(f1)
-
-  # Note that you CANNOT do this:
-  # folder.add_feature(f.CreatePlacemark())
-  # SWIG's python module does not seem to allow this type of higher order
-  # function.
+  folder.add_feature(factory.CreatePlacemark())
+  folder.add_feature(factory.CreateFolder())
 
   for i in range(folder.get_feature_array_size()):
     print 'feature Type',folder.get_feature_array_at(i).Type()

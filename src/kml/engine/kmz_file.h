@@ -30,12 +30,14 @@
 
 #include <string>
 #include <vector>
-#include "minizip/unzip.h"
-#include "minizip/zip.h"
 #include "kml/base/tempfile.h"
 #include "kml/base/util.h"
 
 namespace kmlengine {
+
+// ZlibImpl hides the implementation details of Zlib's Minizip from our
+// interface.
+class ZlibImpl;
 
 // The Kmz class represents an instance of a KMZ file. It contains methods
 // for reading and writing KMZ files.
@@ -83,8 +85,8 @@ class KmzFile {
 
  private:
   // Class can only be created from static methods.
-  KmzFile(unzFile unzfile, const kmlbase::TempFilePtr& tempfile);
-  unzFile unzfile_;
+  KmzFile(ZlibImpl* zlibimpl_, const kmlbase::TempFilePtr& tempfile);
+  ZlibImpl* zlibimpl_;
   kmlbase::TempFilePtr tempfile_;
   // Internal helper function to read the file currently pointed to by the
   // zipfile cursor.

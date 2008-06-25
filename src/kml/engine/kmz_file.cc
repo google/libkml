@@ -28,21 +28,37 @@
 #include "kml/engine/kmz_file.h"
 #include <cstring>
 #include "kml/base/file.h"
+#include "minizip/unzip.h"
+#include "minizip/zip.h"
 
 using kmlbase::TempFilePtr;
 
 namespace kmlengine {
 
+// We use this Pimpl-type idiom to keep the requirement for minizip headers
+// confined to this file.
+// TODO: push more zip-specific stuff from KmzFile into a broader ZipFile.
+class ZlibImpl {
+ public:
+  ZlibImpl(unzFile unzfile) : unzfile_(unzfile) {}
+  ~ZlibImpl() {
+    if (unzfile_) {
+      unzClose(unzfile_);
+    }
+  }
+  unzFile get_unzfile() { return unzfile_; }
+ private:
+  unzFile unzfile_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ZlibImpl);
+};
+
 const char kDefaultKmlFile[] = "doc.kml";
 
-// Private constructor. The unzfile is guaranteed to be sane.
-KmzFile::KmzFile(unzFile unzfile, const TempFilePtr& tempfile)
-    : unzfile_(unzfile), tempfile_(tempfile) {}
+KmzFile::KmzFile(ZlibImpl* zlibimpl, const TempFilePtr& tempfile)
+    : zlibimpl_(zlibimpl), tempfile_(tempfile) {}
 
 KmzFile::~KmzFile() {
-  if (unzfile_) {
-    unzClose(unzfile_);
-  }
+  delete zlibimpl_;
 }
 
 // Static.
@@ -82,7 +98,7 @@ KmzFile* KmzFile::OpenFromString(const std::string& kmz_data) {
     return NULL;
   }
   // If we got this far, it's safe to construct the KmzFile object.
-  return new KmzFile(unzfile, tempfile);
+  return new KmzFile(new ZlibImpl(unzfile), tempfile);
 }
 
 // Static.
@@ -102,14 +118,14 @@ bool KmzFile::ReadKml(std::string* output) const {
   unz_file_info file_info;
   do {
     static char buf[1024];
-    if (unzGetCurrentFileInfo(unzfile_, &file_info, buf, sizeof(buf),
+    if (unzGetCurrentFileInfo(zlibimpl_->get_unzfile(), &file_info, buf, sizeof(buf),
                               0, 0, 0, 0) == UNZ_OK) {
       if (strlen(buf) >= 4 && strcmp(buf + strlen(buf)-4, ".kml") == 0 &&
           ReadCurrentFile(output)) {
         return true;
       }
     }
-  } while (unzGoToNextFile(unzfile_) == UNZ_OK);
+  } while (unzGoToNextFile(zlibimpl_->get_unzfile()) == UNZ_OK);
   return false;
 }
 
@@ -118,17 +134,17 @@ bool KmzFile::ReadFile(const char* subfile, std::string* output) const {
 }
 
 bool KmzFile::List(std::vector<std::string>* subfiles) {
-  if (!subfiles || !unzfile_) {
+  if (!subfiles || !zlibimpl_->get_unzfile()) {
     return false;
   }
   unz_file_info finfo;
   do {
     static char buf[1024];
-    if (unzGetCurrentFileInfo(unzfile_, &finfo, buf, sizeof(buf),
+    if (unzGetCurrentFileInfo(zlibimpl_->get_unzfile(), &finfo, buf, sizeof(buf),
                               0, 0, 0, 0) == UNZ_OK) {
       subfiles->push_back(buf);
     }
-  } while (unzGoToNextFile(unzfile_) == UNZ_OK);
+  } while (unzGoToNextFile(zlibimpl_->get_unzfile()) == UNZ_OK);
   return true;
 }
 
@@ -148,38 +164,39 @@ bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
 
 // Private.
 bool KmzFile::ReadCurrentFile(std::string* output) const {
-  if (unzfile_ == NULL) {
+  if (zlibimpl_->get_unzfile() == NULL) {
     return false;
   }
-  if (unzOpenCurrentFile(unzfile_) != UNZ_OK) {
+  if (unzOpenCurrentFile(zlibimpl_->get_unzfile()) != UNZ_OK) {
     return false;
   }
   unz_file_info finfo;
-  if (unzGetCurrentFileInfo(unzfile_, &finfo, 0, 0, 0, 0, 0, 0) != UNZ_OK) {
-    unzCloseCurrentFile(unzfile_);
+  if (unzGetCurrentFileInfo(zlibimpl_->get_unzfile(),
+                            &finfo, 0, 0, 0, 0, 0, 0) != UNZ_OK) {
+    unzCloseCurrentFile(zlibimpl_->get_unzfile());
     return false;
   }
   int nbytes = finfo.uncompressed_size;
   char* filedata = new char[nbytes];
-  if (unzReadCurrentFile(unzfile_, filedata, nbytes) == nbytes) {
+  if (unzReadCurrentFile(zlibimpl_->get_unzfile(), filedata, nbytes) == nbytes) {
     output->assign(filedata, nbytes);
-    unzCloseCurrentFile(unzfile_);
+    unzCloseCurrentFile(zlibimpl_->get_unzfile());
     delete [] filedata;
     return true;
   }
-  unzCloseCurrentFile(unzfile_);
+  unzCloseCurrentFile(zlibimpl_->get_unzfile());
   delete [] filedata;
   return false;
 }
 
 // Private.
 bool KmzFile::ReadOne(const char* subfile, std::string* output) const {
-  if (output == NULL || unzfile_ == NULL) {
+  if (output == NULL || zlibimpl_->get_unzfile() == NULL) {
     return false;
   }
-  if (unzLocateFile(unzfile_, subfile, 0) == UNZ_OK
+  if (unzLocateFile(zlibimpl_->get_unzfile(), subfile, 0) == UNZ_OK
       && ReadCurrentFile(output)) {
-    unzCloseCurrentFile(unzfile_);
+    unzCloseCurrentFile(zlibimpl_->get_unzfile());
     return true;
   }
   return false;
