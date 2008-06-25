@@ -45,13 +45,12 @@ class ObjectIdParserObserverTest : public CPPUNIT_NS::TestFixture {
  public:
   // Called before each test.
   void setUp() {
-    // TODO: boost::scoped_ptr would be handy here.
     object_id_parser_observer_.reset(new ObjectIdParserObserver(&object_id_map_));
   }
 
   // Called after each test.
   void tearDown() {
-    // scoped_ptr dtor deletes object_id_parser_observer_'s underlying pointer
+    // scoped_ptr dtor deletes object_id_parser_observer_'s underlying pointer.
   }
 
  protected:
