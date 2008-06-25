@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include <string>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "kml/base/file.h"
@@ -43,7 +44,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  KmzFile* kmz_file = KmzFile::OpenFromFile(argv[1]);
+  boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromFile(argv[1]));
   if (!kmz_file) {
     cout << "error: " << argv[1] << " is not a valid kmz file" << endl;
     return 1;
@@ -52,7 +53,6 @@ int main(int argc, char** argv) {
   std::string kml;
   if (!kmz_file->ReadKml(&kml)) {
     cout << "error: no data read from " << argv[1] << endl;
-    delete kmz_file;
     return 1;
   }
 

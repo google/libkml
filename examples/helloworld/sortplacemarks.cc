@@ -33,6 +33,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "kml/base/file.h"
@@ -91,14 +92,13 @@ static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
   // If the file was KMZ, extract the KML file.
   std::string kml;
   if (KmzFile::IsKmz(file_data)) {
-    KmzFile* kmz_file = KmzFile::OpenFromString(kmlfile);
-    if (!kmz_file) {
+    boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromString(kmlfile));
+    if (!kmz_file.get()) {
       cout << "Failed opening KMZ file" << endl;
       return NULL;
     }
     if (!kmz_file->ReadKml(&kml)) {
       cout << "Failed to read KML from KMZ" << endl;
-      delete kmz_file;  // TODO scoped_ptr.
       return NULL;
     }
   } else {
