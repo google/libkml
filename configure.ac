@@ -110,7 +110,6 @@ if test "x$SWIG" != x; then
 			else
 				CPPFLAGS="-I$JAVA_INCLUDE_DIR -I$JAVA_INCLUDE_DIR/$PLATFORM"
 			fi
-			AC_MSG_RESULT(CPPFLAGS are now $CPPFLAGS)
 			AC_CHECK_HEADER(jni.h,,
 					[AC_MSG_WARN([could not find jni.h. The Java bindings will not be built.])
 			JAVA=
