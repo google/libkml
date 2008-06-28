@@ -168,6 +168,7 @@ AC_CONFIG_FILES([
 	examples/engine/Makefile
 	examples/helloworld/Makefile
 	examples/java/Makefile
+	examples/kml/Makefile
 	examples/python/Makefile
 	examples/regionator/Makefile
 	src/Makefile
