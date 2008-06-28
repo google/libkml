@@ -16,7 +16,7 @@ endif
 endif
 
 libkmldom_swig_java_la_SOURCES = kmldom_java.cc
-libkmldom_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR)
+libkmldom_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
 libkmldom_swig_java_la_LIBADD = $(COMMONLIBS)
 kmldom_java.cc: kmldom.i
 	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmldom_java.cc \
