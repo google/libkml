@@ -48,6 +48,54 @@ libboostconfigplatforminclude_HEADERS = \
 	$(boost)/config/platform/macos.hpp
 
 EXTRA_DIST = \
+	$(boost)/README \
+	$(boost)/config/abi_prefix.hpp \
+	$(boost)/config/abi_suffix.hpp \
+	$(boost)/config/auto_link.hpp \
+	$(boost)/config/abi/borland_prefix.hpp \
+	$(boost)/config/abi/borland_suffix.hpp \
+	$(boost)/config/abi/msvc_prefix.hpp \
+	$(boost)/config/abi/msvc_suffix.hpp \
+	$(boost)/config/compiler/borland.hpp \
+	$(boost)/config/compiler/comeau.hpp \
+	$(boost)/config/compiler/common_edg.hpp \
+	$(boost)/config/compiler/compaq_cxx.hpp \
+	$(boost)/config/compiler/digitalmars.hpp \
+	$(boost)/config/compiler/gcc_xml.hpp \
+	$(boost)/config/compiler/greenhills.hpp \
+	$(boost)/config/compiler/hp_acc.hpp \
+	$(boost)/config/compiler/intel.hpp \
+	$(boost)/config/compiler/kai.hpp \
+	$(boost)/config/compiler/metrowerks.hpp \
+	$(boost)/config/compiler/mpw.hpp \
+	$(boost)/config/compiler/sgi_mipspro.hpp \
+	$(boost)/config/compiler/sunpro_cc.hpp \
+	$(boost)/config/compiler/vacpp.hpp \
+	$(boost)/config/compiler/visualc.hpp \
+	$(boost)/config/no_tr1/complex.hpp \
+	$(boost)/config/no_tr1/functional.hpp \
+	$(boost)/config/no_tr1/memory.hpp \
+	$(boost)/config/platform/aix.hpp \
+	$(boost)/config/platform/amigaos.hpp \
+	$(boost)/config/platform/beos.hpp \
+	$(boost)/config/platform/bsd.hpp \
+	$(boost)/config/platform/cygwin.hpp \
+	$(boost)/config/platform/hpux.hpp \
+	$(boost)/config/platform/irix.hpp \
+	$(boost)/config/platform/qnxnto.hpp \
+	$(boost)/config/platform/solaris.hpp \
+	$(boost)/config/platform/win32.hpp \
+	$(boost)/config/requires_threads.hpp \
+	$(boost)/config/stdlib/dinkumware.hpp \
+	$(boost)/config/stdlib/libcomo.hpp \
+	$(boost)/config/stdlib/modena.hpp \
+	$(boost)/config/stdlib/msl.hpp \
+	$(boost)/config/stdlib/roguewave.hpp \
+	$(boost)/config/stdlib/sgi.hpp \
+	$(boost)/config/stdlib/stlport.hpp \
+	$(boost)/config/stdlib/vacpp.hpp \
+	zlib-1.2.3/zconf.h \
+	zlib-1.2.3/zlib.h \
 	zlib-1.2.3/contrib/minizip/crypt.h \
 	zlib-1.2.3/contrib/minizip/ioapi.h \
 	zlib-1.2.3/contrib/minizip/iowin32.c \
@@ -57,5 +105,10 @@ EXTRA_DIST = \
 	zlib-1.2.3/contrib/minizip/mztools.c \
 	zlib-1.2.3/contrib/minizip/mztools.h \
 	zlib-1.2.3/contrib/minizip/unzip.h \
-	zlib-1.2.3/contrib/minizip/zip.h
+	zlib-1.2.3/contrib/minizip/zip.h \
+	zlib-1.2.3.win32/bin/minizip.dll \
+	zlib-1.2.3.win32/bin/zlib1.dll \
+	zlib-1.2.3.win32/lib/minizip.lib \
+	zlib-1.2.3.win32/lib/zdll.lib \
+	zlib-1.2.3.win32/lib/zlib.lib
 
