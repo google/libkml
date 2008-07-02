@@ -35,10 +35,10 @@
 #include "kml/engine.h"
 #include "kml/base/file.h"
 
+using kmldom::ElementPtr;
+using kmlengine::KmlFile;
 using std::cout;
 using std::endl;
-using kmldom::ElementPtr;
-using kmlengine::KmzFile;
 
 int main(int argc, char** argv) {
   if (argc != 2) {
@@ -46,41 +46,26 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  // Read the file.
+  // Read the file content.
   std::string file_data;
   if (!kmlbase::File::ReadFileToString(argv[1], &file_data)) {
     cout << argv[1] << " read failed" << endl;
     return 1;
   }
 
-  // If the file was KMZ, extract the KML file.
-  std::string kml;
-  if (KmzFile::IsKmz(file_data)) {
-    boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromString(file_data));
-    if (!kmz_file.get()) {
-      cout << "Failed opening KMZ file" << endl;
-      return 1;
-    }
-    if (!kmz_file->ReadKml(&kml)) {
-      cout << "Failed to read KML from KMZ" << endl;
-      return 1;
-    }
-  } else {
-    kml = file_data;
-  }
-
   // Parse it.
   std::string errors;
-  ElementPtr root = kmldom::Parse(kml, &errors);
-  if (!root) {
-    cout << errors << endl;
+  boost::scoped_ptr<KmlFile> kml_file(
+      KmlFile::CreateFromParse(file_data, &errors));
+  if (!kml_file.get()) {
+    cout << errors;
     return 1;
   }
 
   // Serialize it and output to stdout.
-  cout << kmldom::SerializePretty(root);
+  std::string output;
+  kml_file->SerializeToString(&output);
+  cout << output;
 
-  // ElementPtr releases root and all children automatically when it goes
-  // out of scope.
   return 0;
 }

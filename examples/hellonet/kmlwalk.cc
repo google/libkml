@@ -31,6 +31,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "curlfetch.h"
@@ -39,6 +40,7 @@ using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
 using kmldom::LinkPtr;
 using kmldom::NetworkLinkPtr;
+using kmlengine::KmlFile;
 using std::cout;
 using std::endl;
 
@@ -68,14 +70,14 @@ static ElementPtr FetchAndParse(const std::string& url) {
 
   // Parse it.
   std::string errors;
-  ElementPtr root = kmldom::Parse(kml, &errors);
-  if (root == NULL) {
+  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(kml, &errors));
+  if (!kml_file.get()) {
     cout << "parse failed " << url << endl;
     cout << errors;
     return NULL;
   }
   ++file_count;
-  return root;
+  return kml_file->root();
 }
 
 static void PrintFileCount() {

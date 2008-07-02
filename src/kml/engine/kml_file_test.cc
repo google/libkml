@@ -27,7 +27,11 @@
 
 #include "kml/engine/kml_file.h"
 #include <string>
+#include "boost/scoped_ptr.hpp"
 #include "kml/base/unit_test.h"
+#include "kml/dom.h"
+
+using kmldom::ElementPtr;
 
 namespace kmlengine {
 
@@ -43,7 +47,21 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestNullGetSharedStyleById);
   CPPUNIT_TEST(TestBasicGetSharedStyleById);
   CPPUNIT_TEST(TestReparse);
+  CPPUNIT_TEST(TestCreateFromParseOfKml);
+  CPPUNIT_TEST(TestCreateFromParseOfJunk);
+  CPPUNIT_TEST(TestCreateFromParseOfKmz);
   CPPUNIT_TEST_SUITE_END();
+
+ public:
+  // Called before each test.
+  void setUp() {
+    kml_file_.reset(new KmlFile);
+  }
+
+  // Called after each test.
+  void tearDown() {
+    // scoped_ptr deletes kml_file_
+  }
 
  protected:
   void TestInitialState();
@@ -56,74 +74,79 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestNullGetSharedStyleById();
   void TestBasicGetSharedStyleById();
   void TestReparse();
+  void TestCreateFromParseOfKml();
+  void TestCreateFromParseOfJunk();
+  void TestCreateFromParseOfKmz();
 
  private:
-  KmlFile kml_file_;
+  void VerifyIsPlacemarkWithName(const ElementPtr& root,
+                                 const std::string& name);
+  void KmlToKmz(const std::string& kml_data, std::string* kmz_data);
+  boost::scoped_ptr<KmlFile> kml_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmlFileTest);
 
 // Verify the initial state of a freshly created empty KmlFile.
 void KmlFileTest::TestInitialState() {
-  CPPUNIT_ASSERT_EQUAL(kmldom::ElementPtr(), kml_file_.root());
+  CPPUNIT_ASSERT_EQUAL(kmldom::ElementPtr(), kml_file_->root());
   CPPUNIT_ASSERT_EQUAL(std::string(kDefaultEncoding),
-                       kml_file_.get_encoding());
+                       kml_file_->get_encoding());
 }
 
 // Verify the encoding appears properly in the xml header.
 void KmlFileTest::TestEncoding() {
   CPPUNIT_ASSERT_EQUAL(std::string(
                          "<?xml version=\"1.0\" encoding=\"utf-8\"?>"),
-                       kml_file_.CreateXmlHeader());
+                       kml_file_->CreateXmlHeader());
 
   const std::string kIso_8859_1("iso-8859-1");
-  kml_file_.set_encoding(kIso_8859_1);
-  CPPUNIT_ASSERT_EQUAL(kIso_8859_1, kml_file_.get_encoding());
+  kml_file_->set_encoding(kIso_8859_1);
+  CPPUNIT_ASSERT_EQUAL(kIso_8859_1, kml_file_->get_encoding());
 
   CPPUNIT_ASSERT_EQUAL(std::string(
                          "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>"),
-                       kml_file_.CreateXmlHeader());
+                       kml_file_->CreateXmlHeader());
 }
 
 // Verify basic usage of the ParseFromString() method.
 void KmlFileTest::TestBasicParseFromString() {
-  kmldom::ElementPtr root = kml_file_.ParseFromString("<kml/>", NULL);
+  kmldom::ElementPtr root = kml_file_->ParseFromString("<kml/>", NULL);
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_kml, root->Type());
 
   std::string errors;
-  root = kml_file_.ParseFromString("bad stuff", &errors);
+  root = kml_file_->ParseFromString("bad stuff", &errors);
   CPPUNIT_ASSERT(!root);
   CPPUNIT_ASSERT(!errors.empty());
 }
 
 void KmlFileTest::TestRoot() {
-  CPPUNIT_ASSERT_EQUAL(kmldom::ElementPtr(), kml_file_.root());
-  kmldom::ElementPtr root = kml_file_.ParseFromString("<kml/>", NULL);
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_kml, kml_file_.root()->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::ElementPtr(), kml_file_->root());
+  kmldom::ElementPtr root = kml_file_->ParseFromString("<kml/>", NULL);
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_kml, kml_file_->root()->Type());
 
   // Verify that a 2nd ParseFromString() on the same KmlFile resets root.
-  root = kml_file_.ParseFromString("<Placemark/>", NULL);
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Placemark, kml_file_.root()->Type());
+  root = kml_file_->ParseFromString("<Placemark/>", NULL);
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Placemark, kml_file_->root()->Type());
 }
 
 void KmlFileTest::TestBasicObjectIdParse() {
-  KmlFile kml_file;
-  kmldom::ElementPtr root = kml_file_.ParseFromString(
+  kmldom::ElementPtr root = kml_file_->ParseFromString(
     "<Folder id=\"folder\">"
     "<Placemark id=\"placemark\"/>"
     "</Folder>",
     NULL);
   CPPUNIT_ASSERT(root);
-  kmldom::ObjectPtr f = kml_file_.GetObjectById("folder");
+  kmldom::ObjectPtr f = kml_file_->GetObjectById("folder");
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_Folder, f->Type());
-  kmldom::ObjectPtr p = kml_file_.GetObjectById("placemark");
+  kmldom::ObjectPtr p = kml_file_->GetObjectById("placemark");
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_Placemark, p->Type());
 }
 
 void KmlFileTest::TestObjectIdDupe() {
   std::string errors;
   const std::string kDupeId("DUPE");
-  kmldom::ElementPtr root = kml_file_.ParseFromString(
+  kmldom::ElementPtr root = kml_file_->ParseFromString(
     "<Folder id=\"" + kDupeId + "\">"
     "<Placemark id=\"" + kDupeId + "\"/>"
     "</Folder>",
@@ -131,30 +154,30 @@ void KmlFileTest::TestObjectIdDupe() {
   // Verify failure of the parse.
   CPPUNIT_ASSERT(!root);
   // Verify no element of the duplicate id exists.
-  CPPUNIT_ASSERT(!kml_file_.GetObjectById(kDupeId));
+  CPPUNIT_ASSERT(!kml_file_->GetObjectById(kDupeId));
 }
 
 void KmlFileTest::TestObjectIdMapReplaced() {
   const std::string kTestId("the-id");
   
   // Verify that the given id is not found.
-  CPPUNIT_ASSERT(!kml_file_.GetObjectById(kTestId));
+  CPPUNIT_ASSERT(!kml_file_->GetObjectById(kTestId));
 
   // Parse a file with the id and verify that it now is found.
-  kmldom::ElementPtr root = kml_file_.ParseFromString(
+  kmldom::ElementPtr root = kml_file_->ParseFromString(
     "<Placemark id=\"the-id\"/>", NULL);
-  kmldom::ObjectPtr p = kml_file_.GetObjectById(kTestId);
+  kmldom::ObjectPtr p = kml_file_->GetObjectById(kTestId);
   CPPUNIT_ASSERT_EQUAL(kTestId, p->get_id());
 
   // Parse another file without the id and verify that the test id is no
   // longer found.
-  root = kml_file_.ParseFromString("<Placemark id=\"some-other-id\"/>", NULL);
-  CPPUNIT_ASSERT(!kml_file_.GetObjectById(kTestId));
+  root = kml_file_->ParseFromString("<Placemark id=\"some-other-id\"/>", NULL);
+  CPPUNIT_ASSERT(!kml_file_->GetObjectById(kTestId));
 }
 
 // Verify NULL is returned for a non-existent shared style.
 void KmlFileTest::TestNullGetSharedStyleById() {
-  CPPUNIT_ASSERT(!kml_file_.GetSharedStyleById("no-such-id"));
+  CPPUNIT_ASSERT(!kml_file_->GetSharedStyleById("no-such-id"));
 }
 
 // Verify a basic shared style is found and a local style is not found.
@@ -163,7 +186,7 @@ void KmlFileTest::TestBasicGetSharedStyleById() {
   const std::string kStyleId("share-me");
   const std::string kStyleMapId("me-too");
   const std::string kFolderStyleId("not-me");
-  kmldom::ElementPtr root = kml_file_.ParseFromString(
+  kmldom::ElementPtr root = kml_file_->ParseFromString(
     "<Document>"
       "<Style id=\"" + kStyleId + "\"/>"
       "<StyleMap id=\"" + kStyleMapId + "\"/>"
@@ -174,32 +197,82 @@ void KmlFileTest::TestBasicGetSharedStyleById() {
   CPPUNIT_ASSERT(root);  // Verify the parse succeeded.
   
   // Verify both shared style selectors were found.
-  kmldom::StyleSelectorPtr style = kml_file_.GetSharedStyleById(kStyleId);
+  kmldom::StyleSelectorPtr style = kml_file_->GetSharedStyleById(kStyleId);
   CPPUNIT_ASSERT(AsStyle(style));  // Verify it's a <Style>
   CPPUNIT_ASSERT_EQUAL(kStyleId, style->get_id());
-  kmldom::StyleSelectorPtr stylemap = kml_file_.GetSharedStyleById(kStyleMapId);
+  kmldom::StyleSelectorPtr stylemap =
+      kml_file_->GetSharedStyleById(kStyleMapId);
   CPPUNIT_ASSERT(AsStyleMap(stylemap));  // Verify it's a <StyleMap>
   CPPUNIT_ASSERT_EQUAL(kStyleMapId, stylemap->get_id());
 
   // Verify that the local style is found as an Object...
-  kmldom::ObjectPtr object = kml_file_.GetObjectById(kFolderStyleId);
+  kmldom::ObjectPtr object = kml_file_->GetObjectById(kFolderStyleId);
   CPPUNIT_ASSERT(AsStyle(object));  // Verify it's a <Style>
   CPPUNIT_ASSERT_EQUAL(kFolderStyleId, object->get_id());
   // ...but is not found as a shared style.
-  CPPUNIT_ASSERT(!kml_file_.GetSharedStyleById(kFolderStyleId));
+  CPPUNIT_ASSERT(!kml_file_->GetSharedStyleById(kFolderStyleId));
 }
 
 // Verify that a 2nd parse of the same KML with a shared style succeeds.  This
 // verifies that both the object_id and shared_style_map are properly reset.
 void KmlFileTest::TestReparse() {
   const std::string kStyleWithId("<Style id=\"id\"/>");
-  kmldom::ElementPtr root = kml_file_.ParseFromString(kStyleWithId, NULL);
+  kmldom::ElementPtr root = kml_file_->ParseFromString(kStyleWithId, NULL);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(AsStyle(root));
   // Parse the same thing again.
-  root = kml_file_.ParseFromString(kStyleWithId, NULL);
+  root = kml_file_->ParseFromString(kStyleWithId, NULL);
   CPPUNIT_ASSERT(root);
   CPPUNIT_ASSERT(AsStyle(root));
+}
+
+// This is an internal helper function to verify that the passed element
+// is a Placemark with the given name.
+void KmlFileTest::VerifyIsPlacemarkWithName(const ElementPtr& root,
+                                            const std::string& name) {
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(AsPlacemark(root));
+  CPPUNIT_ASSERT_EQUAL(name, AsPlacemark(root)->get_name());
+}
+
+// Verify the CreateFromParse() static method using KML data.
+void KmlFileTest::TestCreateFromParseOfKml() {
+  const std::string kName("my name");
+  const std::string kKml("<Placemark><name>" + kName + "</name></Placemark>");
+  std::string errors;
+  kml_file_.reset(KmlFile::CreateFromParse(kKml, &errors));
+  CPPUNIT_ASSERT(errors.empty());
+  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
+}
+
+// Verify the CreateFromParse() static method on junk input.
+void KmlFileTest::TestCreateFromParseOfJunk() {
+  const std::string kJunk("this is obviously neither KML nor KMZ");
+  std::string errors;
+  kml_file_.reset(KmlFile::CreateFromParse(kJunk, &errors));
+}
+
+// This is an internal helper function to create a KMZ memory buffer for the
+// input KML memory buffer.
+void KmlFileTest::KmlToKmz(const std::string& kml_data,
+                           std::string* kmz_data) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  const char* tempname = tempfile->name().c_str();
+  CPPUNIT_ASSERT(KmzFile::WriteKmz(tempname, kml_data));
+  boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromFile(tempname));
+  CPPUNIT_ASSERT(kmz_file->ReadKml(kmz_data));
+}
+
+// Verify the CreateFromParse() static method using KMZ data.
+void KmlFileTest::TestCreateFromParseOfKmz() {
+  const std::string kName("my name");
+  const std::string kKml("<Placemark><name>" + kName + "</name></Placemark>");
+  std::string kmz_data;
+  KmlToKmz(kKml, &kmz_data);
+  std::string errors;
+  kml_file_.reset(KmlFile::CreateFromParse(kmz_data, &errors));
+  CPPUNIT_ASSERT(errors.empty());
+  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
 }
 
 }  // end namespace kmlengine

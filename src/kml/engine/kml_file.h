@@ -29,7 +29,9 @@
 #define KML_ENGINE_KML_FILE_H__
 
 #include <string>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
+#include "kml/engine/kmz_file.h"
 #include "kml/engine/object_id_parser_observer.h"
 #include "kml/engine/shared_style_parser_observer.h"
 #include "kml/base/util.h"
@@ -42,6 +44,15 @@ const char kDefaultEncoding[] = "utf-8";
 // The KmlFile class represents the instance of a KML file from a given URL.
 class KmlFile {
  public:
+  // This creates a KmlFile from a memory buffer of either KML or KMZ data.
+  // In the case of Kmz the KmzFile module's ReadKml() is used to read the
+  // KML data from the KMZ archive.  On any parse errors NULL is returned
+  // and a human readable error message is saved in the supplied string.
+  // The caller is responsible for deleting the KmlFile this creates.
+  static KmlFile* CreateFromParse(const std::string& kml_or_kmz_data,
+                                  std::string *errors);
+
+  // This public constructor permits use creation of an empty KmlFile.
   KmlFile();
 
   // This parses the KML in the given input buffer.  The encoding from the XML
@@ -95,12 +106,17 @@ class KmlFile {
   // TODO: set/get URL of this KmlFile
 
  private:
+  // These are helper functions for CreateFromParse().
+  bool _CreateFromParse(const std::string& kml_or_kmz_data,
+                        std::string* errors);
+  bool OpenAndParseKmz(const std::string& kmz_data, std::string* errors);
   void Clear();
   std::string encoding_;
   std::string default_xmlns_;
   kmldom::ElementPtr root_;
   object_id_map_t object_id_map_;
   shared_style_map_t shared_style_map_;
+  boost::scoped_ptr<kmlengine::KmzFile> kmz_file_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
 
