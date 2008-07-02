@@ -1,7 +1,10 @@
 SUBDIRS = kml swig
 
 EXTRA_DIST = \
-	libkmldom.vcproj \
 	libkmlbase.vcproj \
+	libkmlconvenience.vcproj \
+	libkmldom.vcproj \
+	libkmlengine.vcproj \
+	libkmlregionator.vcproj \
 	stdafx.h \
 	stdafx.cpp

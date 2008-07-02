@@ -1,3 +1,5 @@
+SUBDIRS = java python
+
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/boost_1_34_1
 
@@ -45,9 +47,10 @@ endif
 endif
 
 EXTRA_DIST = \
+	intrusive_ptr.i \
 	kmldom.i \
-	kmlelements.i \
-	kmldom_test.py
+	kmldom_test.py \
+	kmlelements.i
 
 # The Python library on both Linux and OS X has to be called _kmldom.so. As
 # above, we accomplish this with a _DATA directive that copies the file. Since
