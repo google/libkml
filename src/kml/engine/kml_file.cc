@@ -27,9 +27,45 @@
 
 #include "kml/engine/kml_file.h"
 #include "kml/dom.h"
-#include "kml/dom/parser.h"
 
 namespace kmlengine {
+
+// static
+KmlFile* KmlFile::CreateFromParse(const std::string& kml_or_kmz_data,
+                                  std::string* errors) {
+  // Here our focus is on managing the KmlFile storage.  If _CreateFromParse()
+  // fails we release the storage else we return a pointer to it.
+  KmlFile* kml_file = new KmlFile;
+  if (kml_file->_CreateFromParse(kml_or_kmz_data, errors)) {
+    return kml_file;
+  }
+  delete kml_file;
+  return NULL;
+}
+
+// private
+// This is an internal helper function used in CreateFromParse().
+bool KmlFile::_CreateFromParse(const std::string& kml_or_kmz_data,
+                               std::string* errors) {
+  // Here our focus is on deciding KML vs KMZ.
+  if (kmlengine::KmzFile::IsKmz(kml_or_kmz_data)) {
+    return OpenAndParseKmz(kml_or_kmz_data, errors);
+  }
+  return ParseFromString(kml_or_kmz_data, errors);
+}
+
+// private
+// The caller is expected to have called KmzFile::IsKmz on this, thus the return
+// status represents file handling errors.
+bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
+                              std::string* errors) {
+  std::string kml_data;
+  kmz_file_.reset(kmlengine::KmzFile::OpenFromString(kmz_data));
+  if (!kmz_file_.get() || !kmz_file_->ReadKml(&kml_data)) {
+      return false;
+  }
+  return ParseFromString(kml_data, errors);
+}
 
 KmlFile::KmlFile() {
   Clear();
