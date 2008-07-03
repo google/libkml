@@ -12,6 +12,7 @@ libkmlengine_la_SOURCES = \
 	feature_visitor.cc \
 	find.cc \
 	get_links.cc \
+	get_link_parents.cc \
 	href.cc \
 	kml_file.cc \
 	kmz_file.cc \
@@ -31,9 +32,11 @@ libkmlengineinclude_HEADERS = \
 	feature_visitor.h \
 	find.h \
 	get_links.h \
+	get_link_parents.h \
 	href.h \
 	kml_file.h \
 	kmz_file.h \
+	link_util.h \
 	location_util.h \
 	merge.h \
 	object_id_parser_observer.h \
@@ -49,8 +52,10 @@ TESTS = kml_file_test \
 	feature_visitor_test \
 	find_test \
 	get_links_test \
+	get_link_parents_test \
 	href_test \
 	kmz_file_test \
+	link_util_test \
 	location_util_test \
 	merge_test \
 	object_id_parser_observer_test \
@@ -94,6 +99,13 @@ get_links_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
+get_link_parents_test_SOURCES = get_link_parents_test.cc
+get_link_parents_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+get_link_parents_test_LDFLAGS = $(CPPUNIT_LIBS)
+get_link_parents_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
 href_test_SOURCES = href_test.cc
 href_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 href_test_LDFLAGS = $(CPPUNIT_LIBS)
@@ -102,7 +114,7 @@ href_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 kml_file_test_SOURCES = kml_file_test.cc
-kml_file_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+kml_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kml_file_test_LDFLAGS = $(CPPUNIT_LIBS)
 kml_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
@@ -113,6 +125,12 @@ kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLA
 kmz_file_test_LDFLAGS = $(CPPUNIT_LIBS)
 kmz_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+link_util_test_SOURCES = link_util_test.cc
+link_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+link_util_test_LDFLAGS = $(CPPUNIT_LIBS)
+link_util_test_LDADD = $(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 location_util_test_SOURCES = location_util_test.cc
