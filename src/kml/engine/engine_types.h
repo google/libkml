@@ -23,26 +23,18 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This is the main include file for the KMLENGINE library. Clients of
-// kmlengine should include only this header file.
+// This file containts typedefs and declarations common within KML Engine.
 
-#ifndef KML_ENGINE_H__
-#define KML_ENGINE_H__
+#ifndef KML_ENGINE_ENGINE_TYPES_H__
+#define KML_ENGINE_ENGINE_TYPES_H__
 
-#include "kml/engine/bbox.h"
-#include "kml/engine/clone.h"
-#include "kml/engine/feature_visitor.h"
-#include "kml/engine/find.h"
-#include "kml/engine/get_links.h"
-#include "kml/engine/href.h"
-#include "kml/engine/kml_file.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/link_util.h"
-#include "kml/engine/location_util.h"
-#include "kml/engine/merge.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
-#include "kml/engine/style_merger.h"
-#include "kml/engine/style_resolver.h"
+#include <vector>
+#include "kml/dom.h"
 
-#endif  // KML_ENGINE_H__
+namespace kmlengine {
+
+typedef std::vector<kmldom::ElementPtr> element_vector_t;
+
+}  // end namespace kmlengine
+
+#endif  // KML_ENGINE_ENGINE_TYPES_H__
