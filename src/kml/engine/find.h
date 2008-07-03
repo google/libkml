@@ -32,10 +32,9 @@
 #include <stack>
 #include <string>
 #include "kml/dom.h"
+#include "kml/engine/engine_types.h"
 
 namespace kmlengine {
-
-typedef std::vector<kmldom::ElementPtr> element_vector_t;
 
 // Starting at the hierarchy rooted at element this finds all complex elements
 // of the given type and appends an ElementPtr to each in the given array.
