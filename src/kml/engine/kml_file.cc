@@ -98,6 +98,11 @@ const kmldom::ElementPtr& KmlFile::ParseFromString(const std::string& kml,
   SharedStyleParserObserver shared_style_parser_observer(&shared_style_map_);
   parser.AddObserver(&shared_style_parser_observer);
 
+  // Create a ParserObserver to save the parent of all <Link> and <Icon>
+  // elements found in the KML file.  See get_link_parents.h for more info.
+  GetLinkParentsParserObserver get_link_parents(&link_parent_vector_);
+  parser.AddObserver(&get_link_parents);
+
   // Actually perform the parse.
   kmldom::ElementPtr root = parser.Parse(kml, errors);
   if (root == NULL) {

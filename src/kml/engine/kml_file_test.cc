@@ -31,6 +31,10 @@
 #include "kml/base/unit_test.h"
 #include "kml/dom.h"
 
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
+
 using kmldom::ElementPtr;
 
 namespace kmlengine {
@@ -50,6 +54,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestCreateFromParseOfKml);
   CPPUNIT_TEST(TestCreateFromParseOfJunk);
   CPPUNIT_TEST(TestCreateFromParseOfKmz);
+  CPPUNIT_TEST(TestGetLinkParents);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -77,6 +82,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestCreateFromParseOfKml();
   void TestCreateFromParseOfJunk();
   void TestCreateFromParseOfKmz();
+  void TestGetLinkParents();
 
  private:
   void VerifyIsPlacemarkWithName(const ElementPtr& root,
@@ -273,6 +279,33 @@ void KmlFileTest::TestCreateFromParseOfKmz() {
   kml_file_.reset(KmlFile::CreateFromParse(kmz_data, &errors));
   CPPUNIT_ASSERT(errors.empty());
   VerifyIsPlacemarkWithName(kml_file_->root(), kName);
+}
+
+// Verify that GetParentLinkParserObservers finds all kinds of parents of
+// links in a KML file.
+void KmlFileTest::TestGetLinkParents() {
+  const std::string kAllLinks = std::string(DATADIR) + "/links/alllinks.kml";
+  std::string kml;
+  CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(kAllLinks, &kml));
+  std::string errors;
+  kml_file_.reset(KmlFile::CreateFromParse(kml, &errors));
+  CPPUNIT_ASSERT(errors.empty());
+  CPPUNIT_ASSERT(kml_file_.get());
+  const element_vector_t& link_parents = kml_file_->get_link_parent_vector();
+  // This is obviously exactly matched to the content of alllinks.kml.
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), link_parents.size());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_IconStyle, link_parents[0]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_ItemIcon, link_parents[1]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_NetworkLink, link_parents[2]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_GroundOverlay, link_parents[3]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_ScreenOverlay, link_parents[4]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_PhotoOverlay, link_parents[5]->Type());
+  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Model, link_parents[6]->Type());
+#if 0
+  // TODO: handle styleUrl(?) and SchemaData
+  CPPUNIT_ASSERT_EQUAL(std::string("style.kml#style"), href_vector[6]->Type());
+  CPPUNIT_ASSERT_EQUAL(std::string("#myschema"), href_vector[7]);
+#endif
 }
 
 }  // end namespace kmlengine
