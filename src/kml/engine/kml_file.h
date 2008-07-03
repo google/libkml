@@ -29,9 +29,12 @@
 #define KML_ENGINE_KML_FILE_H__
 
 #include <string>
+#include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
+#include "kml/engine/engine_types.h"
 #include "kml/engine/kmz_file.h"
+#include "kml/engine/get_link_parents.h"
 #include "kml/engine/object_id_parser_observer.h"
 #include "kml/engine/shared_style_parser_observer.h"
 #include "kml/base/util.h"
@@ -105,6 +108,10 @@ class KmlFile {
   // TODO: set/get the default xmlns and prefix-namespace mappings
   // TODO: set/get URL of this KmlFile
 
+  const element_vector_t& get_link_parent_vector() const {
+    return link_parent_vector_;
+  }
+
  private:
   // These are helper functions for CreateFromParse().
   bool _CreateFromParse(const std::string& kml_or_kmz_data,
@@ -116,6 +123,7 @@ class KmlFile {
   kmldom::ElementPtr root_;
   object_id_map_t object_id_map_;
   shared_style_map_t shared_style_map_;
+  element_vector_t link_parent_vector_;
   boost::scoped_ptr<kmlengine::KmzFile> kmz_file_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
