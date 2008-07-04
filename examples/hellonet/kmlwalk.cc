@@ -33,102 +33,27 @@
 #include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
+#include "kml/dom/xsd.h"  // TODO: expose Xsd::ElementName() properly
 #include "kml/engine.h"
 #include "curlfetch.h"
 
 using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
-using kmldom::LinkPtr;
 using kmldom::NetworkLinkPtr;
+using kmldom::OverlayPtr;
 using kmlengine::KmlFile;
 using std::cout;
 using std::endl;
 
-static void ComputeChild(const std::string& parent_url,
-                         const std::string& child_url,
-                         std::string* absolute_child);
 static void CountFeature(int type_id);
-static ElementPtr FetchAndParse(const std::string& url);
-static bool GetNetworkLinkHref(const NetworkLinkPtr& networklink,
-                               std::string* href);
 static void PrintFeatureCounts();
 static void PrintFileCount();
 static void WalkFile(const std::string& url);
-static void WalkNetworkLink(const std::string& parent_url,
-                            const NetworkLinkPtr& networklink);
-static void WalkUrl(const std::string& parent_url,
-                    const std::string& child_url);
 
 static int file_count;
 
-static ElementPtr FetchAndParse(const std::string& url) {
-  std::string kml;
-  if (!CurlToString(url.c_str(), &kml)) {
-    cout << "fetch failed " << url << endl;
-    return NULL;
-  }
-
-  // Parse it.
-  std::string errors;
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(kml, &errors));
-  if (!kml_file.get()) {
-    cout << "parse failed " << url << endl;
-    cout << errors;
-    return NULL;
-  }
-  ++file_count;
-  return kml_file->root();
-}
-
 static void PrintFileCount() {
   cout << "files " << file_count << endl;
-}
-
-static void ComputeChild(const std::string& parent_url,
-                         const std::string& child_url,
-                         std::string* absolute_child) {
-  // See if child is already absolute.
-  if (child_url.compare(0, 7, "http://", 7) == 0) {
-    *absolute_child = child_url;
-    return;
-  }
-  // NOTE: This does not detect local files (c:\foo\foo.kml, etc).
-  // NOTE: And, this assumes at least one / in the parent_url.
-  size_t last_component = parent_url.rfind("/");
-  if (last_component != std::string::npos) {
-    *absolute_child = parent_url.substr(0,last_component+1);  // keep '/'
-    absolute_child->append(child_url);
-  }
-}
-
-// Handles only href's that are network urls. No kmz, no local file, etc.
-// Parent URL is required to compute URL of relative child URL.
-static void WalkUrl(const std::string& parent_url,
-                    const std::string& child_url) {
-  std::string absolute_child;
-  ComputeChild(parent_url, child_url, &absolute_child);
-  WalkFile(absolute_child);
-}
-
-static bool GetNetworkLinkHref(const NetworkLinkPtr& networklink,
-                               std::string* href) {
-  if (networklink->has_link()) {
-    const LinkPtr link = networklink->get_link();
-    if (link->has_href()) {
-      *href = link->get_href();
-      return true;
-    }
-  }
-  return false;
-}
-
-static void WalkNetworkLink(const std::string& parent_url,
-                            const NetworkLinkPtr& networklink) {
-  std::string url;
-  GetNetworkLinkHref(networklink, &url);
-  if (!url.empty()) {
-    WalkUrl(parent_url, url);
-  }
 }
 
 typedef std::map<int,int> feature_counter_t;
@@ -147,62 +72,97 @@ static void PrintFeatureCounts() {
   for (feature_counter_t::const_iterator iter = feature_counter.begin();
        iter != feature_counter.end(); ++iter) {
     std::string element_name;
-    switch (iter->first) {
-      case kmldom::Type_Document:
-        element_name = "Document";
-        break;
-      case kmldom::Type_Folder:
-        element_name = "Folder";
-        break;
-      case kmldom::Type_GroundOverlay:
-        element_name = "GroundOverlay";
-        break;
-      case kmldom::Type_NetworkLink:
-        element_name = "NetworkLink";
-        break;
-      case kmldom::Type_Placemark:
-        element_name = "Placemark";
-        break;
-      case kmldom::Type_PhotoOverlay:
-        element_name = "PhotoOverlay";
-        break;
-      case kmldom::Type_ScreenOverlay:
-        element_name = "ScreenOverlay";
-        break;
-      default:
-        element_name = "unknown feature";
-        break;
-    }
-    cout << element_name << " " << iter->second << endl;
+    cout << kmldom::Xsd::GetSchema()->ElementName(iter->first) << " "
+      << iter->second << endl;
   }
 }
 
-class NetworkFeatureVisitor : public kmlengine::FeatureVisitor {
+const std::string ComputeRelativeUrl(const std::string& parent_url,
+                                     const std::string& child_url) {
+  kmlengine::Href child(child_url);    
+  // See if child is already absolute.
+  if (!child.IsRelative()) {
+    return child_url;
+  } 
+  
+  std::string new_child;
+  // NOTE: This does not detect local files (c:\foo\foo.kml, etc).
+  // NOTE: And, this assumes at least one / in the parent_url.
+  size_t last_component = parent_url.rfind("/");
+  if (last_component != std::string::npos) {
+    new_child = parent_url.substr(0,last_component+1);  // keep '/'
+    new_child.append(child_url);
+  } 
+  return new_child;
+}
+
+
+class FeatureCounter : public kmlengine::FeatureVisitor {
  public:
-  NetworkFeatureVisitor(const std::string& url) : url_(url) {}
+  FeatureCounter(const KmlFile& kml_file) : kml_file_(kml_file) {}
 
-  virtual ~NetworkFeatureVisitor() {}
-
-  // FeatureVisitor::VisitFeature()
   virtual void VisitFeature(const kmldom::FeaturePtr& feature) {
     CountFeature(feature->Type());
-    if (NetworkLinkPtr networklink = AsNetworkLink(feature)) {
-      WalkNetworkLink(url_, networklink);
+    if (OverlayPtr overlay = AsOverlay(feature)) {
+      std::string href;
+      if (kmlengine::GetIconParentHref(overlay, &href)) {
+        std::string url = ComputeRelativeUrl(kml_file_.get_url(), href);
+        std::string data;
+        if (!CurlToString(url.c_str(), &data)) {
+          cout << "fetch failed " << url << endl;
+          return;
+        }
+        cout << href << " bytes " << data.size() << endl;
+      }
     }
   }
 
  private:
-  std::string url_;
+  const KmlFile& kml_file_;
 };
+
+static void HandleFile(const KmlFile& kml_file) {
+  FeatureCounter feature_counter(kml_file);
+  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file.root()),
+                                   feature_counter);
+}
+
+static void WalkNetworkLinks(const KmlFile& kml_file) {
+  const kmlengine::element_vector_t& link_vector =
+      kml_file.get_link_parent_vector();
+  for (size_t i = 0; i < link_vector.size(); ++i) {
+    if (NetworkLinkPtr networklink = AsNetworkLink(link_vector[i])) {
+      std::string href;
+      if (kmlengine::GetLinkParentHref(networklink, &href)) {
+        WalkFile(ComputeRelativeUrl(kml_file.get_url(), href));
+      }
+    }
+  }
+}
 
 static void WalkFile(const std::string& url) {
   cout << url << endl;
-  ElementPtr root = FetchAndParse(url);
-  if (root) {
-    NetworkFeatureVisitor network_feature_visitor(url);
-    VisitFeatureHierarchy(kmlengine::GetRootFeature(root),
-                          network_feature_visitor);
+
+  std::string kml;
+  if (!CurlToString(url.c_str(), &kml)) {
+    cout << "fetch failed " << url << endl;
+    return;
   }
+
+  // Parse it.
+  std::string errors;
+  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(kml, &errors));
+  if (!kml_file.get()) {
+    cout << "parse failed " << url << endl;
+    cout << errors;
+    return;
+  }
+  kml_file->set_url(url);
+  ++file_count;
+
+  HandleFile(*kml_file.get());
+
+  WalkNetworkLinks(*kml_file.get());
 }
 
 int main(int argc, char** argv) {
