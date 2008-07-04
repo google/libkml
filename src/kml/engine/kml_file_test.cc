@@ -55,6 +55,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestCreateFromParseOfJunk);
   CPPUNIT_TEST(TestCreateFromParseOfKmz);
   CPPUNIT_TEST(TestGetLinkParents);
+  CPPUNIT_TEST(TestGetSetUrl);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -83,6 +84,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestCreateFromParseOfJunk();
   void TestCreateFromParseOfKmz();
   void TestGetLinkParents();
+  void TestGetSetUrl();
 
  private:
   void VerifyIsPlacemarkWithName(const ElementPtr& root,
@@ -306,6 +308,13 @@ void KmlFileTest::TestGetLinkParents() {
   CPPUNIT_ASSERT_EQUAL(std::string("style.kml#style"), href_vector[6]->Type());
   CPPUNIT_ASSERT_EQUAL(std::string("#myschema"), href_vector[7]);
 #endif
+}
+
+// Verify set_url() and get_url().
+void KmlFileTest::TestGetSetUrl() {
+  const std::string kUrl("http://example.com/foo/boo.kml");
+  kml_file_->set_url(kUrl);
+  CPPUNIT_ASSERT_EQUAL(kUrl, kml_file_->get_url());
 }
 
 }  // end namespace kmlengine

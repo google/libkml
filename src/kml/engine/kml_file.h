@@ -106,10 +106,19 @@ class KmlFile {
   kmldom::StyleSelectorPtr GetSharedStyleById(std::string id);
 
   // TODO: set/get the default xmlns and prefix-namespace mappings
-  // TODO: set/get URL of this KmlFile
 
+  // This returns the all Elements that may have link children.  See
+  // GetLinkParents() for more information.
   const element_vector_t& get_link_parent_vector() const {
     return link_parent_vector_;
+  }
+
+  // These get/set the URL associated with this KmlFile.
+  const std::string& get_url() const {
+    return url_;
+  }
+  void set_url(const std::string& url) {
+    url_ = url;
   }
 
  private:
@@ -120,6 +129,7 @@ class KmlFile {
   void Clear();
   std::string encoding_;
   std::string default_xmlns_;
+  std::string url_;
   kmldom::ElementPtr root_;
   object_id_map_t object_id_map_;
   shared_style_map_t shared_style_map_;
