@@ -63,6 +63,7 @@ bool File::CreateNewTempFile(std::string* path) {
   if (fd == -1) {
     return false;
   }
+  close(fd);
   path->assign(temp_path, strlen(temp_path));
   return true;
 }
