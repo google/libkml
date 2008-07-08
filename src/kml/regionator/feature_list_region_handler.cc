@@ -24,9 +24,9 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/regionator/feature_list_region_handler.h"
-#include <fstream>
 #include <map>
 #include <string>
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "kml/regionator/region_handler.h"
@@ -61,8 +61,7 @@ bool FeatureListRegionHandler::HasData(const RegionPtr& region) {
   return false;
 } 
 
-FeaturePtr FeatureListRegionHandler::GetFeature(
-    const RegionPtr& region) {
+FeaturePtr FeatureListRegionHandler::GetFeature(const RegionPtr& region) {
   // The Regionator calls GetFeature for a region iff we previously had
   // returned true on this region in HasData().  If we have data in a region
   // we saved the folder of that data in HasData() which we return now.
@@ -70,10 +69,9 @@ FeaturePtr FeatureListRegionHandler::GetFeature(
 }
   
 void FeatureListRegionHandler::SaveKml(const KmlPtr& kml,
-                                               const std::string& filename) {
-  std::ofstream kml_file;
-  kml_file.open(filename.c_str());
-  kml_file << kmldom::SerializePretty(kml);
+                                       const std::string& filename) {
+  std::string kml_data(kmldom::SerializePretty(kml));
+  kmlbase::File::WriteStringToFile(kml_data, filename);
 }
 
 }  // end namespace kmlregionator

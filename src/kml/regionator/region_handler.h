@@ -48,7 +48,7 @@ namespace kmlregionator {
 //   // eventually terminate the walk of the Region hierarchy.
 //   kmldom::RegionPtr root_region;
 //   Regionator regionator(&my_region_handler, root_region);
-//   regionator.Regionate();
+//   regionator.Regionate(NULL);  // Or supply a specific output directory.
 //   // All "regionated" KML is now available wherever MyRegionHandler
 //   // saved each file passed in to SaveKml().
 class RegionHandler {

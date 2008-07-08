@@ -26,8 +26,6 @@
 #ifndef KML_REGIONATOR_FEATURE_LIST_REGION_HANDLER_H__
 #define KML_REGIONATOR_FEATURE_LIST_REGION_HANDLER_H__
 
-#include <fstream>
-#include <iostream>
 #include <map>
 #include <string>
 #include "kml/dom.h"

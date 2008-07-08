@@ -50,7 +50,10 @@ public:
   ~Regionator();
   // This method starts the "regionation".  See region_handler.h for
   // details on how this class calls out to the RegionHandler.
-  void Regionate();
+  // The default output directory (output_directory == NULL) is the
+  // current working directory of the caller. Returns true when regionation
+  // has completed.
+  bool Regionate(const char* output_directory);
 
 private:
   kmldom::RegionPtr root_region_;
@@ -69,6 +72,7 @@ private:
   std::string RegionFilename(const kmldom::RegionPtr& region);
   int region_count_;
   std::map<std::string,int> qid_map_;
+  char* output_directory_;
 };
 
 }  // end namespace kmlregionator

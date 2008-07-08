@@ -49,11 +49,13 @@ using kmlregionator::RegionHandler;
 using kmlregionator::Regionator;
 
 int main(int argc, char** argv) {
-  if (argc != 2) {
-    std::cout << "usage: " << argv[0] << " input.csv" << std::endl;
+  if (argc != 3) {
+    std::cout << "usage: " << argv[0] << " input.csv output_directory" <<
+      std::endl;
     return 1;
   }
   const char* csv_filename = argv[1];
+  const char* output_dir = argv[2];
 
   // Parse the CSV file into a FeatureList of Point Placemarks sorted by score.
   FeatureList feature_list;
@@ -76,5 +78,5 @@ int main(int argc, char** argv) {
 
   // Create a Regionator instance and walk the hierarchy starting at root.
   Regionator regionator(feature_list_region_handler, root);
-  regionator.Regionate();
+  regionator.Regionate(output_dir);
 }

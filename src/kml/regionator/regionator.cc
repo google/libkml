@@ -29,6 +29,7 @@
 #include "kml/regionator/regionator.h"
 #include <sstream>
 #include <string>
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/regionator/regionator_util.h"
 #include "kml/regionator/regionator_qid.h"
@@ -115,15 +116,21 @@ bool Regionator::_Regionate(const RegionPtr& region) {
   // feature.  Hand the completed KML file to the RegionHandler for it to save.
   KmlPtr kml = kmldom::KmlFactory::GetFactory()->CreateKml();
   kml->set_feature(document);
-  rhandler_.SaveKml(kml, RegionFilename(region));
+  std::string filename(RegionFilename(region));
+  if (output_directory_) {
+    filename = kmlbase::File::JoinPaths(output_directory_, filename);
+  }
+  rhandler_.SaveKml(kml, filename);
   
   return true;  // This region has data.
 }
 
 // This is the public API to start the "regionation" at the Region supplied
 // in the constructor.
-void Regionator::Regionate() {
+bool Regionator::Regionate(const char* output_directory) {
+  output_directory_ = const_cast<char*>(output_directory);
   _Regionate(root_region_);
+  return true;
 }
 
 }  // end namespace kmlregionator
