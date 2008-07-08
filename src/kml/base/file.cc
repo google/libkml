@@ -31,6 +31,12 @@
 
 namespace kmlbase {
 
+#ifdef WIN32
+  const char kSeparator = '\\';
+#else
+  const char kSeparator = '/';
+#endif  
+
 bool File::ReadFileToString(const std::string& filename, std::string* output) {
   if (filename.empty() || !output) {
     return false;
@@ -63,6 +69,18 @@ bool File::WriteStringToFile(const std::string& data,
   output_file.write(data.c_str(), data.length());
   output_file.close();
   return true;
+}
+
+std::string File::JoinPaths(const std::string& p1, const std::string& p2) {
+  if (p1.empty()) return p2;
+  if (p2.empty()) return p1;
+  std::string temp_str(p1);
+  if (p1[p1.length()-1] != kSeparator) {
+    temp_str += kSeparator;
+    return (temp_str + p2);
+  } else {
+    return (p1 + p2);
+  }
 }
 
 }  // end namespace kmlbase

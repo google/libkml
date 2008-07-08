@@ -41,6 +41,7 @@ class FileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestExists);
   CPPUNIT_TEST(TestDelete);
   CPPUNIT_TEST(TestCreateNewTempFile);
+  CPPUNIT_TEST(TestJoinPaths);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
@@ -49,6 +50,7 @@ class FileTest : public CPPUNIT_NS::TestFixture {
   void TestExists();
   void TestDelete();
   void TestCreateNewTempFile();
+  void TestJoinPaths();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FileTest);
@@ -104,6 +106,22 @@ void FileTest::TestCreateNewTempFile() {
   CPPUNIT_ASSERT(File::CreateNewTempFile(&temp_filename));
   CPPUNIT_ASSERT(!temp_filename.empty());
   CPPUNIT_ASSERT(File::Delete(temp_filename));
+}
+
+void FileTest::TestJoinPaths() {
+  // TODO: win32 separators for cross-platform testing.
+  const std::string kPath1NoSep("/tom/dick");
+  const std::string kPath1Sep("/tom/dick/");
+  const std::string kPath2("harry");
+  const std::string kExpected("/tom/dick/harry");
+  // Passing cases.
+  CPPUNIT_ASSERT_EQUAL(kExpected, File::JoinPaths(kPath1NoSep, kPath2));
+  CPPUNIT_ASSERT_EQUAL(kExpected, File::JoinPaths(kPath1Sep, kPath2));
+  // Pathological cases.
+  // Joining with an empty string does not modify anything.
+  CPPUNIT_ASSERT_EQUAL(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
+  CPPUNIT_ASSERT_EQUAL(kPath2, File::JoinPaths("", kPath2));
+  CPPUNIT_ASSERT_EQUAL(std::string(""), File::JoinPaths("", ""));
 }
 
 }  // end namespace kmlbase

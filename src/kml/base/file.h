@@ -55,6 +55,11 @@ class File {
   // Returns true if the function succeeds. 'path' is unmodified on failure.
   static bool CreateNewTempFile(std::string* full_filepath);
 
+  // Join two file paths. If the first does not end in the platform-specific
+  // path separator, it is appended before the second string is joined. Returns
+  // the joined string. If either of the strings is empty, the other string is
+  // returned unmodified.
+  static std::string JoinPaths(const std::string& p1, const std::string& p2);
 };
 
 }  // end namespace kmlbase
