@@ -29,6 +29,7 @@ libkmlengineincludedir = $(includedir)/kml/engine
 libkmlengineinclude_HEADERS = \
 	bbox.h \
 	clone.h \
+	engine_types.h \
 	feature_visitor.h \
 	find.h \
 	get_links.h \
