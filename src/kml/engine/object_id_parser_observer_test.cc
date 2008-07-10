@@ -61,7 +61,7 @@ class ObjectIdParserObserverTest : public CPPUNIT_NS::TestFixture {
   void TestNonObjectWithId();
 
  private:
-  object_id_map_t object_id_map_;
+  ObjectIdMap object_id_map_;
   boost::scoped_ptr<ObjectIdParserObserver> object_id_parser_observer_;
 };
 

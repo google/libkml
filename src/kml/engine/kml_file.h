@@ -98,18 +98,18 @@ class KmlFile {
 
   // This returns the Object Element with the given id.  A NULL Object is
   // returned if no Object with this id exists in the KML file.
-  kmldom::ObjectPtr GetObjectById(std::string id);
+  kmldom::ObjectPtr GetObjectById(std::string id) const;
 
   // This returns the shared StyleSelector Element with the given id.  NULL is
   // returned if no StyleSelector with this id exists as a shared style
   // selector in the KML file.
-  kmldom::StyleSelectorPtr GetSharedStyleById(std::string id);
+  kmldom::StyleSelectorPtr GetSharedStyleById(std::string id) const;
 
   // TODO: set/get the default xmlns and prefix-namespace mappings
 
   // This returns the all Elements that may have link children.  See
   // GetLinkParents() for more information.
-  const element_vector_t& get_link_parent_vector() const {
+  const ElementVector& get_link_parent_vector() const {
     return link_parent_vector_;
   }
 
@@ -131,9 +131,9 @@ class KmlFile {
   std::string default_xmlns_;
   std::string url_;
   kmldom::ElementPtr root_;
-  object_id_map_t object_id_map_;
-  shared_style_map_t shared_style_map_;
-  element_vector_t link_parent_vector_;
+  ObjectIdMap object_id_map_;
+  SharedStyleMap shared_style_map_;
+  ElementVector link_parent_vector_;
   boost::scoped_ptr<kmlengine::KmzFile> kmz_file_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };

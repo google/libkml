@@ -45,7 +45,7 @@ bool IsIconParent(const kmldom::ElementPtr& element);
 // This ParserObserver looks for all elements that have a link child.
 class GetLinkParentsParserObserver : public kmldom::ParserObserver {
  public:
-  GetLinkParentsParserObserver(element_vector_t* link_parent_vector)
+  GetLinkParentsParserObserver(ElementVector* link_parent_vector)
       : link_parent_vector_(link_parent_vector) {}
 
   virtual ~GetLinkParentsParserObserver() {}
@@ -58,15 +58,14 @@ class GetLinkParentsParserObserver : public kmldom::ParserObserver {
   }
 
  private:
-  element_vector_t* link_parent_vector_;
+  ElementVector* link_parent_vector_;
 };
 
 // This function appends all Elements with link children to the supplied
 // vector.  This returns false if a NULL vector pointer is supplied or if the
 // parse of the kml fails.  See the IsLinkParent() and IsIconParent()
 // functions for the definition of "Element with link child".
-bool GetLinkParents(const std::string& kml,
-                    element_vector_t* link_parent_vector);
+bool GetLinkParents(const std::string& kml, ElementVector* link_parent_vector);
 
 }  // end namespace kmlengine
 

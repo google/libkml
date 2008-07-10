@@ -39,7 +39,7 @@ class KmlFile;
 // the given style state (<key>).  All SubStyle simple and complex children
 // set in inline/shared StyleSelectors are also set in the created Style.
 kmldom::StylePtr CreateResolvedStyle(const kmldom::FeaturePtr& feature,
-                                     KmlFile& kml_file,
+                                     const KmlFile& kml_file,
                                      kmldom::StyleStateEnum style_state);
 
 }  // end namespace kmlengine

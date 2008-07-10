@@ -32,6 +32,7 @@
 #include "kml/dom.h"
 #include "kml/dom/serializer.h"
 #include "kml/engine/clone.h"
+#include "kml/engine/engine_types.h"
 
 using kmldom::Attributes;
 using kmldom::ElementPtr;
@@ -73,14 +74,12 @@ class FieldMerger : public Serializer {
   ElementPtr target_;
 };
 
-typedef std::vector<ElementPtr> element_vector_t;
-
 // This class is a special "Serializer" which gathers a list of pointers to
 // the complex element children of a given parent element.  This is
 // non-destructive with respect to all elements in involved.
 class ComplexElementGetter : public Serializer {
  public:
-  ComplexElementGetter(element_vector_t& element_vector)
+  ComplexElementGetter(ElementVector* element_vector)
     : element_vector_(element_vector) {}
 
   virtual ~ComplexElementGetter() {}
@@ -88,11 +87,11 @@ class ComplexElementGetter : public Serializer {
   // This is the only method of interest for this use of Serialize.
   // The parent's Serialize calls SaveElement on each complex child.
   virtual void SaveElement(const ElementPtr& element) {
-    element_vector_.push_back(element);
+    element_vector_->push_back(element);
     // Do not call Serializer::SaveElement() to not recurse.
   }
  private:
-  element_vector_t& element_vector_;
+  ElementVector* element_vector_;
 };
 
 // This is the implementation of the public API function to merge the
@@ -111,7 +110,7 @@ void MergeFields(const ElementPtr& source, ElementPtr target) {
 // This is an internal helper function which uses the ComplexElementGetter
 // to gather the complex element children of element.
 static void GetComplexElements(const ElementPtr& element,
-                        element_vector_t& element_vector) {
+                               ElementVector* element_vector) {
   ComplexElementGetter complex_element_lister(element_vector);
   element->Serialize(complex_element_lister);
 }
@@ -126,10 +125,10 @@ void MergeElements(const ElementPtr& source, ElementPtr target) {
   }
   // Get the pointers to the immediate complex element children of the source
   // and target element.
-  element_vector_t source_children;
-  GetComplexElements(source, source_children);
-  element_vector_t target_children;
-  GetComplexElements(target, target_children);
+  ElementVector source_children;
+  GetComplexElements(source, &source_children);
+  ElementVector target_children;
+  GetComplexElements(target, &target_children);
 
   // Iterate through the source children looking for a match in the target.
   // TODO: walk through both lists taking advantage of both being in

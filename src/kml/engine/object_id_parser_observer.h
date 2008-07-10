@@ -32,13 +32,9 @@
 #include <string>
 #include "kml/dom.h"
 #include "kml/dom/parser_observer.h"
+#include "kml/engine/engine_types.h"
 
 namespace kmlengine {
-
-// The ObjectIdParserObserver class uses this data structure to map the XML
-// id to a kmldom::ObjectPtr.
-// TODO: use a hashmap
-typedef std::map<std::string, kmldom::ObjectPtr> object_id_map_t;
 
 // The ObjectIdParserObserver is a kmldom::ParserObserver which gathers all
 // all Objects with id's into the given map.  An Object whose id is already
@@ -46,7 +42,7 @@ typedef std::map<std::string, kmldom::ObjectPtr> object_id_map_t;
 // kmldom::Parse::AddObserver() this immediately terminates the parse.
 class ObjectIdParserObserver : public kmldom::ParserObserver {
  public:
-  ObjectIdParserObserver(object_id_map_t* object_id_map)
+  ObjectIdParserObserver(ObjectIdMap* object_id_map)
     : object_id_map_(object_id_map) {}  // TODO: NULL check, or use reference
 
   virtual ~ObjectIdParserObserver() {}
@@ -71,8 +67,8 @@ class ObjectIdParserObserver : public kmldom::ParserObserver {
  
  private:
   // An ObjectIdParserObserver only exists for a short time and operates
-  // on a persistent object_id_map_t.
-  object_id_map_t* object_id_map_;
+  // on a persistent ObjectIdMap.
+  ObjectIdMap* object_id_map_;
 };
 
 }  // end namespace kmlengine

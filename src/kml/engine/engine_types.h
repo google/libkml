@@ -28,12 +28,24 @@
 #ifndef KML_ENGINE_ENGINE_TYPES_H__
 #define KML_ENGINE_ENGINE_TYPES_H__
 
+#include <map>
 #include <vector>
 #include "kml/dom.h"
 
 namespace kmlengine {
 
-typedef std::vector<kmldom::ElementPtr> element_vector_t;
+// This is a vector Elements used in a variety of places in the KML engine.
+typedef std::vector<kmldom::ElementPtr> ElementVector;
+
+// The SharedStyleParserObserver class uses this data structure to map the XML
+// id to a kmldom::StyleSelectorPtr.
+// TODO: use a hashmap such as std::tr1::unordered_map
+typedef std::map<std::string, kmldom::StyleSelectorPtr> SharedStyleMap;
+
+// The ObjectIdParserObserver class uses this data structure to map the XML
+// id to a kmldom::ObjectPtr.
+// TODO: use a hashmap such as std::tr1::unordered_map
+typedef std::map<std::string, kmldom::ObjectPtr> ObjectIdMap;
 
 }  // end namespace kmlengine
 

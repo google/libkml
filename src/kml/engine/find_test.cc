@@ -110,7 +110,7 @@ void ElementFinderTest::TestBasicGetElementsById() {
   folder0_->add_feature(groundoverlay_);
 
   // Ask for all Placemarks.
-  element_vector_t placemarks;
+  ElementVector placemarks;
   GetElementsById(folder0_, kmldom::Type_Placemark, &placemarks);
 
   // Verify we got just what we asked for and in depth-first order.
@@ -120,7 +120,7 @@ void ElementFinderTest::TestBasicGetElementsById() {
   CPPUNIT_ASSERT_EQUAL(kId1, AsPlacemark(placemarks[2])->get_id());
 
   // Ask for all the Points.
-  element_vector_t points;
+  ElementVector points;
   GetElementsById(folder0_, kmldom::Type_Point, &points);
 
   // Verify we got the 2 Points in depth-first order.
@@ -131,7 +131,7 @@ void ElementFinderTest::TestBasicGetElementsById() {
 
   // Verify that no elements are found if there are none
   // of this type in the element hierarchy.
-  element_vector_t no_documents;
+  ElementVector no_documents;
   GetElementsById(folder0_, kmldom::Type_Document, &no_documents);
   CPPUNIT_ASSERT(no_documents.empty());
 }

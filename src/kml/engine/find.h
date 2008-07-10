@@ -45,7 +45,7 @@ namespace kmlengine {
 // in one place might wreak havoc on usage elsewhere.
 void GetElementsById(const kmldom::ElementPtr& element,
                      kmldom::KmlDomType type_id,
-                     element_vector_t* element_vector);
+                     ElementVector* element_vector);
 
 }  // end namespace kmlengine
 

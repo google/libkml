@@ -41,14 +41,15 @@ using kmldom::StyleSelectorPtr;
 
 namespace kmlengine {
 
-StyleMerger::StyleMerger(KmlFile& kml_file, kmldom::StyleStateEnum style_state)
+StyleMerger::StyleMerger(const KmlFile& kml_file,
+                         kmldom::StyleStateEnum style_state)
     : kml_file_(kml_file), style_state_(style_state) {
   resolved_style_ = KmlFactory::GetFactory()->CreateStyle();
 }
 
 // Both Feature and Pair have a styleUrl and/or StyleSelector.
 void StyleMerger::MergeStyle(const std::string& styleurl,
-                const StyleSelectorPtr& styleselector) {
+                             const StyleSelectorPtr& styleselector) {
   // If there's a styleUrl to a shared style merge that in first.
   if (!styleurl.empty()) {
     Href href(styleurl);

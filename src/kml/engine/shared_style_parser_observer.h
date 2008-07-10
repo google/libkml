@@ -32,13 +32,9 @@
 #include <string>
 #include "kml/dom.h"
 #include "kml/dom/parser_observer.h"
+#include "kml/engine/engine_types.h"
 
 namespace kmlengine {
-
-// The ObjectIdParserObserver class uses this data structure to map the XML
-// id to a kmldom::ObjectPtr.
-// TODO: use a hashmap
-typedef std::map<std::string, kmldom::StyleSelectorPtr> shared_style_map_t;
 
 // The SharedStyleParserObserver is a kmldom::ParserObserver which gathers all
 // all shared StyleSelectors into the supplied shared_style_map_t.  AddChild()
@@ -46,7 +42,7 @@ typedef std::map<std::string, kmldom::StyleSelectorPtr> shared_style_map_t;
 // this is used with kmldom::Parse::AddObserver().
 class SharedStyleParserObserver : public kmldom::ParserObserver {
  public:
-  SharedStyleParserObserver(shared_style_map_t* shared_style_map)
+  SharedStyleParserObserver(SharedStyleMap* shared_style_map)
     : shared_style_map_(shared_style_map) {}  // TODO: NULL check or use ref
 
   virtual ~SharedStyleParserObserver() {}
@@ -73,7 +69,7 @@ class SharedStyleParserObserver : public kmldom::ParserObserver {
   }
  
  private:
-  shared_style_map_t* shared_style_map_;
+  SharedStyleMap* shared_style_map_;
 };
 
 }  // end namespace kmlengine
