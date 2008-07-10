@@ -15,6 +15,7 @@ libkmlengine_la_SOURCES = \
 	get_link_parents.cc \
 	href.cc \
 	kml_file.cc \
+	kmz_cache.cc \
 	kmz_file.cc \
 	location_util.cc \
 	merge.cc \
@@ -36,6 +37,7 @@ libkmlengineinclude_HEADERS = \
 	get_link_parents.h \
 	href.h \
 	kml_file.h \
+	kmz_cache.h \
 	kmz_file.h \
 	link_util.h \
 	location_util.h \
@@ -47,14 +49,15 @@ libkmlengineinclude_HEADERS = \
 
 if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
-TESTS = kml_file_test \
-	bbox_test \
+TESTS = bbox_test \
 	clone_test \
 	feature_visitor_test \
 	find_test \
 	get_links_test \
 	get_link_parents_test \
 	href_test \
+	kmz_cache_test \
+        kml_file_test \
 	kmz_file_test \
 	link_util_test \
 	location_util_test \
@@ -121,6 +124,13 @@ kml_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
+kmz_cache_test_SOURCES = kmz_cache_test.cc
+kmz_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+kmz_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
+kmz_cache_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
 kmz_file_test_SOURCES = kmz_file_test.cc
 kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kmz_file_test_LDFLAGS = $(CPPUNIT_LIBS)
@@ -175,6 +185,7 @@ style_resolver_test_LDFLAGS = $(CPPUNIT_LIBS)
 style_resolver_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
+
 
 CLEANFILES = check_PROGRAMS
 endif
