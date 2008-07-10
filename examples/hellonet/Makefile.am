@@ -1,4 +1,6 @@
+if WITH_LIBCURL
 AM_CPPFLAGS = -I$(top_srcdir)/src \
+	      -I$(top_srcdir)/examples/hellonet \
 	      -I$(top_srcdir)/third_party/boost_1_34_1
 
 if GCC
@@ -10,7 +12,7 @@ noinst_PROGRAMS = kmlwalk kmzfetch
 noinst_LTLIBRARIES = libcurlfetch.la
 
 libcurlfetch_la_SOURCES = curlfetch.cc
-libcurlfetch_la_LIBADD = -lcurl -L/usr/local/lib
+libcurlfetch_la_LIBADD = -lcurl
 
 kmlwalk_SOURCES = kmlwalk.cc
 kmlwalk_LDADD = \
@@ -25,3 +27,4 @@ kmzfetch_LDADD = \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
+endif
