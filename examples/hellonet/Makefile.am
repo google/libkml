@@ -5,10 +5,23 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = kmlwalk
+noinst_PROGRAMS = kmlwalk kmzfetch
 
-kmlwalk_SOURCES = kmlwalk.cc curlfetch.cc
+noinst_LTLIBRARIES = libcurlfetch.la
+
+libcurlfetch_la_SOURCES = curlfetch.cc
+libcurlfetch_la_LIBADD = -lcurl -L/usr/local/lib
+
+kmlwalk_SOURCES = kmlwalk.cc
 kmlwalk_LDADD = \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
+        libcurlfetch.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
-	/usr/local/lib/libcurl.la
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+kmzfetch_SOURCES = kmzfetch.cc
+kmzfetch_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
