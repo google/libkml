@@ -38,7 +38,7 @@ namespace kmlengine {
 // given vector.
 class ElementFinder : public Serializer {
  public:
-  ElementFinder(KmlDomType type_id, element_vector_t& element_vector)
+  ElementFinder(KmlDomType type_id, ElementVector* element_vector)
     : type_id_(type_id), element_vector_(element_vector) {
   }
 
@@ -47,26 +47,26 @@ class ElementFinder : public Serializer {
   virtual void SaveElement(const ElementPtr& element) {
     // If this element is of the desired type save a pointer.
     if (type_id_ == element->Type()) {
-      element_vector_.push_back(element);
+      element_vector_->push_back(element);
     }
     // Call Serializer to recurse.
     Serializer::SaveElement(element);
   }
 
  private:
-  KmlDomType type_id_;
-  element_vector_t& element_vector_;
+  const KmlDomType type_id_;
+  ElementVector* element_vector_;
 };
 
 // Append all elements of the given type id in the hierarchy
 // root at element.
 void GetElementsById(const ElementPtr& element, KmlDomType type_id,
-                     element_vector_t* element_vector) {
+                     ElementVector* element_vector) {
   if (!element || !element_vector) {
     return;
   }
   // The ElementFinder derivation of Serializer does all the work.
-  ElementFinder element_finder(type_id, *element_vector);
+  ElementFinder element_finder(type_id, element_vector);
   element->Serialize(element_finder);
 }
 

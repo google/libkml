@@ -53,7 +53,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(GetLinkParentsTest);
 void GetLinkParentsTest::TestNull() {
   const std::string nothing;
   CPPUNIT_ASSERT(!GetLinkParents(nothing, NULL));
-  element_vector_t will_remain_empty;
+  ElementVector will_remain_empty;
   CPPUNIT_ASSERT(!GetLinkParents("parse will fail", &will_remain_empty));
   CPPUNIT_ASSERT(will_remain_empty.empty());
 }
@@ -63,7 +63,7 @@ void GetLinkParentsTest::TestAll() {
   const std::string kAllLinks = std::string(DATADIR) + "/links/alllinks.kml";
   std::string kml;
   CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(kAllLinks, &kml));
-  element_vector_t link_parents;
+  ElementVector link_parents;
   CPPUNIT_ASSERT(GetLinkParents(kml, &link_parents));
   // This is obviously exactly matched to the content of alllinks.kml.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), link_parents.size());

@@ -84,7 +84,7 @@ class SharedStyleParserObserverTest : public CPPUNIT_NS::TestFixture {
   kmldom::StylePtr style_no_id_;
   std::string kStyleMap0Id_;
   kmldom::StyleMapPtr stylemap0_;
-  shared_style_map_t shared_style_map_;
+  SharedStyleMap shared_style_map_;
   boost::scoped_ptr<SharedStyleParserObserver> shared_style_parser_observer_;
 };
 

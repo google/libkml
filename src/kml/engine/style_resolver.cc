@@ -40,9 +40,8 @@ namespace kmlengine {
 // This is the implementation of the public API function to compute the
 // resolved style for a given Feature within a KML file.  See the header
 // for the full description of usage.
-// TODO: const KmlFile&
 StylePtr CreateResolvedStyle(const FeaturePtr& feature,
-                             KmlFile& kml_file,
+                             const KmlFile& kml_file,
                              kmldom::StyleStateEnum style_state) {
   if (!feature) {
     return NULL;

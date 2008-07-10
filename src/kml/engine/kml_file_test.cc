@@ -56,6 +56,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestCreateFromParseOfKmz);
   CPPUNIT_TEST(TestGetLinkParents);
   CPPUNIT_TEST(TestGetSetUrl);
+  CPPUNIT_TEST(TestConstNull);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -85,6 +86,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestCreateFromParseOfKmz();
   void TestGetLinkParents();
   void TestGetSetUrl();
+  void TestConstNull();
 
  private:
   void VerifyIsPlacemarkWithName(const ElementPtr& root,
@@ -293,7 +295,7 @@ void KmlFileTest::TestGetLinkParents() {
   kml_file_.reset(KmlFile::CreateFromParse(kml, &errors));
   CPPUNIT_ASSERT(errors.empty());
   CPPUNIT_ASSERT(kml_file_.get());
-  const element_vector_t& link_parents = kml_file_->get_link_parent_vector();
+  const ElementVector& link_parents = kml_file_->get_link_parent_vector();
   // This is obviously exactly matched to the content of alllinks.kml.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), link_parents.size());
   CPPUNIT_ASSERT_EQUAL(kmldom::Type_IconStyle, link_parents[0]->Type());
@@ -315,6 +317,12 @@ void KmlFileTest::TestGetSetUrl() {
   const std::string kUrl("http://example.com/foo/boo.kml");
   kml_file_->set_url(kUrl);
   CPPUNIT_ASSERT_EQUAL(kUrl, kml_file_->get_url());
+}
+
+void KmlFileTest::TestConstNull() {
+  const KmlFile kml_file;
+  CPPUNIT_ASSERT(!kml_file.GetObjectById("blah"));
+  CPPUNIT_ASSERT(!kml_file.GetSharedStyleById("blah"));
 }
 
 }  // end namespace kmlengine
