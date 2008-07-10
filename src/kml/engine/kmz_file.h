@@ -30,6 +30,9 @@
 
 #include <string>
 #include <vector>
+
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/referent.h"
 #include "kml/base/tempfile.h"
 #include "kml/base/util.h"
 
@@ -41,7 +44,7 @@ class ZlibImpl;
 
 // The Kmz class represents an instance of a KMZ file. It contains methods
 // for reading and writing KMZ files.
-class KmzFile {
+class KmzFile : public kmlbase::Referent {
  public:
   ~KmzFile();
 
@@ -95,6 +98,8 @@ class KmzFile {
   bool ReadOne(const char* subfile, std::string* output) const;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmzFile);
 };
+
+typedef boost::intrusive_ptr<KmzFile> KmzFilePtr;
 
 }  // end namespace kmlengine
 
