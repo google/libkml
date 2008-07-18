@@ -1,0 +1,289 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		69E74AAE0E23F122000BFD27 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 69E74AAA0E23F122000BFD27 /* main.cc */; };
+		69E74AAF0E23F122000BFD27 /* wxregionator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 69E74AAC0E23F122000BFD27 /* wxregionator.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		695EA66E0E23E63B00A596C5 /* Regionator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Regionator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		695EA6710E23E63B00A596C5 /* Regionator-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Regionator-Info.plist"; sourceTree = "<group>"; };
+		69E74AAA0E23F122000BFD27 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
+		69E74AAB0E23F122000BFD27 /* main.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		69E74AAC0E23F122000BFD27 /* wxregionator.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = wxregionator.cc; sourceTree = "<group>"; };
+		69E74AAD0E23F122000BFD27 /* wxregionator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = wxregionator.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		695EA66C0E23E63B00A596C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		695EA6560E23E3BF00A596C5 = {
+			isa = PBXGroup;
+			children = (
+				69E74AB00E23F138000BFD27 /* Resources */,
+				69E74AA40E23F0E6000BFD27 /* Sources */,
+				695EA66F0E23E63B00A596C5 /* Products */,
+				695EA6710E23E63B00A596C5 /* Regionator-Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		695EA66F0E23E63B00A596C5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				695EA66E0E23E63B00A596C5 /* Regionator.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		69E74AA40E23F0E6000BFD27 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				69E74AAA0E23F122000BFD27 /* main.cc */,
+				69E74AAB0E23F122000BFD27 /* main.h */,
+				69E74AAC0E23F122000BFD27 /* wxregionator.cc */,
+				69E74AAD0E23F122000BFD27 /* wxregionator.h */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		69E74AB00E23F138000BFD27 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		695EA66D0E23E63B00A596C5 /* Regionator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 695EA6720E23E63C00A596C5 /* Build configuration list for PBXNativeTarget "Regionator" */;
+			buildPhases = (
+				695EA66A0E23E63B00A596C5 /* Resources */,
+				695EA66B0E23E63B00A596C5 /* Sources */,
+				695EA66C0E23E63B00A596C5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Regionator;
+			productName = Regionator;
+			productReference = 695EA66E0E23E63B00A596C5 /* Regionator.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		695EA6580E23E3BF00A596C5 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 695EA6590E23E3BF00A596C5 /* Build configuration list for PBXProject "wxregionator" */;
+			hasScannedForEncodings = 0;
+			mainGroup = 695EA6560E23E3BF00A596C5;
+			productRefGroup = 695EA66F0E23E63B00A596C5 /* Products */;
+			projectDirPath = "";
+			targets = (
+				695EA66D0E23E63B00A596C5 /* Regionator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		695EA66A0E23E63B00A596C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		695EA66B0E23E63B00A596C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69E74AAE0E23F122000BFD27 /* main.cc in Sources */,
+				69E74AAF0E23F122000BFD27 /* wxregionator.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		695EA65A0E23E3BF00A596C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		695EA65B0E23E3BF00A596C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		695EA6730E23E63C00A596C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/lib/wx/include/mac-ansi-release-static-2.8",
+					"/usr/local/include/wx-2.8",
+					"/usr/local/include\ncal/include",
+					/usr/local/include/kml/third_party/boost_1_34_1,
+				);
+				INFOPLIST_FILE = "Regionator-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"/usr/local/lib/libwx_mac-2.8.a",
+					/usr/local/lib/libkmlbase.a,
+					/usr/local/lib/libkmldom.a,
+					/usr/local/lib/libkmlengine.a,
+					/usr/local/lib/libkmlconvenience.a,
+					/usr/local/lib/libkmlregionator.a,
+					"-framework",
+					WebKit,
+					"-lwxtiff-2.8",
+					"-lwxjpeg-2.8",
+					"-lwxpng-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Regionator;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		695EA6740E23E63C00A596C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/lib/wx/include/mac-ansi-release-static-2.8",
+					"/usr/local/include/wx-2.8",
+					"/usr/local/include\ncal/include",
+					/usr/local/include/kml/third_party/boost_1_34_1,
+				);
+				INFOPLIST_FILE = "Regionator-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CFLAGS = (
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-framework",
+					OpenGL,
+					"-framework",
+					AGL,
+					"/usr/local/lib/libwx_mac-2.8.a",
+					/usr/local/lib/libkmlbase.a,
+					/usr/local/lib/libkmldom.a,
+					/usr/local/lib/libkmlengine.a,
+					/usr/local/lib/libkmlconvenience.a,
+					/usr/local/lib/libkmlregionator.a,
+					"-framework",
+					WebKit,
+					"-lwxtiff-2.8",
+					"-lwxjpeg-2.8",
+					"-lwxpng-2.8",
+					"-lz",
+					"-lpthread",
+					"-liconv",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Regionator;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		695EA6590E23E3BF00A596C5 /* Build configuration list for PBXProject "wxregionator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695EA65A0E23E3BF00A596C5 /* Debug */,
+				695EA65B0E23E3BF00A596C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		695EA6720E23E63C00A596C5 /* Build configuration list for PBXNativeTarget "Regionator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				695EA6730E23E63C00A596C5 /* Debug */,
+				695EA6740E23E63C00A596C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 695EA6580E23E3BF00A596C5 /* Project object */;
+}
