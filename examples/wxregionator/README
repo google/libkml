@@ -1,12 +1,13 @@
 This is a wxWidgets-based application that uses the "regionator" library in
 libkml. 
 
-This current version builds with Mac OS X only.
+This current version builds with Mac OS X and Windows only.
 
 It depends upon wxWidgets 2.8.8, available from
 http://www.wxwidgets.org/downloads/
 
-The build recipe for wxWidgets was:
+Mac OS X build recipe:
+----------------------
 
   cd wxMac-2.8.8
   mkdir build-static-release
@@ -25,3 +26,13 @@ This project will link them statically to the binary such that the resultant
 application may be run on systems that have neither libkml nor wxwidgets
 installed.
 
+Windows XP build recipe:
+------------------------
+
+  Download wxMSW-2.8.8
+  Install to default location. c:\wxWidgets-2.8.8
+  Open build\msw\wx.dsw
+  Select "Release" and build the solution
+
+The wxregionator project assumes a successfully build wxWidgets and also
+a release-mode build of the libkml libraries in "..\..\release".
