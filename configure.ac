@@ -205,6 +205,7 @@ AC_CONFIG_FILES([
 	testdata/links/Makefile
 	testdata/style/Makefile
 	third_party/Makefile
+	third_party/uriparser-0.7.1/Makefile
 ])
 
 AC_OUTPUT
