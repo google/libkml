@@ -32,20 +32,6 @@
 
 namespace kmlengine {
 
-// This is a KML standard method to separate the network fetchable URL from
-// the file reference within a KMZ at a given URL.  A normalized "KML URL" can
-// be one of:
-// 1) http://host.com/path/to/coolstuff.kmz/image/pretty.jpg
-// 2) http://host.com/path/to/coolstuff.kmz
-// 3) http://host.com/path/to/coolstuff.kmz/doc.kml
-// In each of the above cases the "kmz_url" is:
-//    http://host.com/path/to/coolstuff.kmz
-// The return is always true if "kml_url" contains ".kmz".  Either or both
-// of the kmz_url or kmz_path pointers may be null.  This permits use of
-// this method for a simple query.
-bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
-              std::string* kmz_path);
-
 // This is the signature of the function used by KmzCache to fetch the content
 // at the given URL.  It is the responsibility of the implementation to detect
 // 404s and other such errors.  A true return status indicates to KmzCache that

@@ -26,26 +26,10 @@
 // This file contains the implementation of the KmzCache class.
 
 #include "kml/engine/kmz_cache.h"
-#include <sys/time.h>
-// TODO: Windows, possibly as per:
-// http://forums.msdn.microsoft.com/en/vcgeneral/thread/430449b3-f6dd-4e18-84de-eebd26a8d668/
+#include "kml/engine/kml_uri.h"
+#include "kml/base/time_util.h"
 
 namespace kmlengine {
-
-bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
-              std::string* kmz_path) {
-  size_t kmz = kml_url.find(".kmz");
-  if (kmz == std::string::npos) {
-    return false;
-  }
-  if (kmz_url) {
-    *kmz_url = kml_url.substr(0, kmz + 4);
-  }
-  if (kmz_path && kml_url.size() > kmz + 4) {
-    *kmz_path = kml_url.substr(kmz + 4 + 1);  // one past / after ".kmz/"
-  }
-  return true;
-}
 
 bool KmzCache::FetchUrl(const std::string& kml_url, std::string* content) {
   std::string fetchable_url;
@@ -116,12 +100,8 @@ bool KmzCache::Save(const std::string& url,
   if (kmz_file_map_.size() == max_entries_) {
     RemoveOldest();
   }
-  // TODO: platform indepedent GetMicroTime()...
-  struct timeval now_tv;
-  gettimeofday(&now_tv, NULL);
-  // Make this one double with secs.microseconds.
-  double now = (double)now_tv.tv_sec + (double)now_tv.tv_usec/1000000;
-  KmzCacheEntry kmz_cache_entry = std::make_pair(kmz_file, now);
+  KmzCacheEntry kmz_cache_entry = std::make_pair(kmz_file,
+                                                 kmlbase::GetMicroTime());
   kmz_file_map_[url] = kmz_cache_entry;
   return true;
 }
