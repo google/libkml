@@ -31,6 +31,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
 #include "kml/base/unit_test.h"
+#include "kml/engine/kml_uri.h"
 
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
