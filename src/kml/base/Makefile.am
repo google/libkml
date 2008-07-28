@@ -6,7 +6,7 @@ AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
 lib_LTLIBRARIES = libkmlbase.la
-libkmlbase_la_SOURCES = file.cc file_posix.cc referent.cc
+libkmlbase_la_SOURCES = file.cc file_posix.cc referent.cc time_util.cc
 
 # These header files will be installed in $(includedir)/kml/base
 libkmlbaseincludedir = $(includedir)/kml/base
@@ -14,6 +14,7 @@ libkmlbaseinclude_HEADERS = \
 	file.h \
 	referent.h \
 	tempfile.h \
+	time_util.h \
 	unit_test.h \
 	util.h
 
@@ -22,7 +23,7 @@ EXTRA_DIST = \
 
 if HAVE_CPPUNIT 
 DATA_DIR = $(top_srcdir)/testdata
-TESTS = file_test referent_test tempfile_test
+TESTS = file_test referent_test tempfile_test time_util_test
 check_PROGRAMS = $(TESTS)
 
 file_test_SOURCES = file_test.cc
@@ -40,6 +41,11 @@ tempfile_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)
 tempfile_test_LDFLAGS = $(CPPUNIT_LIBS)
 tempfile_test_LDADD = libkmlbase.la \
         $(top_builddir)/src/kml/dom/libkmldom.la
+
+time_util_test_SOURCES = time_util_test.cc
+time_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+time_util_test_LDFLAGS = $(CPPUNIT_LIBS)
+time_util_test_LDADD= libkmlbase.la
 
 CLEANFILES = check_PROGRAMS
 endif
