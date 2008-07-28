@@ -1,5 +1,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
+SUBDIRS = uriparser-0.7.1
+
 lib_LTLIBRARIES = libminizip.la
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
