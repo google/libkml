@@ -10,8 +10,6 @@ endif
 lib_LTLIBRARIES = libkmlengine.la
 libkmlengine_la_SOURCES = \
 	clone.cc \
-	entity_mapper.cc \
-	feature_balloon.cc \
 	feature_visitor.cc \
 	find.cc \
 	get_links.cc \
@@ -36,8 +34,6 @@ libkmlengineinclude_HEADERS = \
 	bbox.h \
 	clone.h \
 	engine_types.h \
-	entity_mapper.h \
-	feature_balloon.h \
 	feature_visitor.h \
 	find.h \
 	get_links.h \
@@ -60,8 +56,6 @@ if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = bbox_test \
 	clone_test \
-	entity_mapper_test \
-	feature_balloon_test \
 	feature_visitor_test \
 	find_test \
 	get_links_test \
@@ -92,20 +86,6 @@ clone_test_SOURCES = clone_test.cc
 clone_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 clone_test_LDFLAGS = $(CPPUNIT_LIBS)
 clone_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
-
-entity_mapper_test_SOURCES = entity_mapper_test.cc
-entity_mapper_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-entity_mapper_test_LDFLAGS = $(CPPUNIT_LIBS)
-entity_mapper_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
-
-feature_balloon_test_SOURCES = feature_balloon_test.cc
-feature_balloon_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-feature_balloon_test_LDFLAGS = $(CPPUNIT_LIBS)
-feature_balloon_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 

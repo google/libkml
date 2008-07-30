@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<kml xmlns="http://www.opengis.net/kml/2.2">
+<kml xmlns="http://earth.google.com/kml/2.2">
 <Document>
   <Schema name="TrailHeadType" id="TrailHeadTypeId">
     <SimpleField type="string" name="TrailHeadName">
@@ -12,35 +12,30 @@
       <displayName><![CDATA[<i>change in altitude</i>]]></displayName>
     </SimpleField>
   </Schema>
-  <Placemark id="foo" targetId="bar">
-    <name>__NAME__</name>
-    <address>__ADDRESS__</address>
-    <Snippet>__SNIPPET__</Snippet>
-    <description>__DESCRIPTION__</description>
-    <Style>
-      <BalloonStyle>
-        <text><![CDATA[
-          <b>$[name]</b><br/><br/>
-          <i>$[description]<i><br/><br/>
-          The $[TrailHeadType/TrailHeadName/displayName] is
-          <i>$[TrailHeadType/TrailHeadName]</i><br/>
-          The trail is $[TrailHeadType/TrailLength] miles<br/>
-          The climb is $[TrailHeadType/ElevationGain] meters<br/><br/>
-          $[geDirections]
-        ]]></text>  <!-- TODO: decide on $[geDirections -->
-      </BalloonStyle>
-    </Style>
+  <Placemark>
     <ExtendedData>
-      <Data name="holeNumber">
-        <value>1</value>
+      <Data id="a" name="holeNumber">
+        <displayName><![CDATA[<b>This is hole </b>]]></displayName>
+        <value>5</value>
       </Data>
-      <Data name="holeYardage">
-        <value>234</value>
+      <Data id="b" name="holePar">
+        <displayName><![CDATA[<i>The par for this hole is </i>]]></displayName>
+        <value>5</value>
       </Data>
-      <SchemaData schemaUrl="#TrailHeadTypeId">
+      <Data id="c" name="holeYardage">
+        <displayName><![CDATA[<b><i>The yardage is </i></b>]]></displayName>
+        <value>523</value>
+      </Data>
+      <SchemaData id="d" schemaUrl="#TrailHeadTypeId">
         <SimpleData name="TrailHeadName">Mount Everest</SimpleData>
         <SimpleData name="TrailLength">347.45</SimpleData>
         <SimpleData name="ElevationGain">10000</SimpleData>
+      </SchemaData>
+      <Data id="e">
+        <value>blah</value>
+      </Data>
+      <SchemaData id="f">
+        <SimpleData>blah</SimpleData>
       </SchemaData>
     </ExtendedData>
   </Placemark>
