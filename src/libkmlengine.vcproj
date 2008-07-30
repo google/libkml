@@ -157,6 +157,7 @@
       <File RelativePath="kml\engine\get_links.cc"/>
       <File RelativePath="kml\engine\href.cc"/>
       <File RelativePath="kml\engine\kml_file.cc"/>
+      <File RelativePath="kml\engine\kmz_cache.cc"/>
       <File RelativePath="kml\engine\kmz_file.cc"/>
       <File RelativePath="kml\engine\location_util.cc"/>
       <File RelativePath="kml\engine\merge.cc"/>
@@ -185,6 +186,7 @@
       <File RelativePath="kml\engine\get_links.h"/>
       <File RelativePath="kml\engine\href.h"/>
       <File RelativePath="kml\engine\kml_file.h"/>
+      <File RelativePath="kml\engine\kmz_cache.h"/>
       <File RelativePath="kml\engine\kmz_file.h"/>
       <File RelativePath="kml\engine\location_util.h"/>
       <File RelativePath="kml\engine\merge.h"/>
