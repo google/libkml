@@ -23,10 +23,10 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include "kml/dom/schema.h"
 #include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
-#include "kml/dom/schema.h"
 #include "kml/base/unit_test.h"
 
 namespace kmldom {
@@ -138,6 +138,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(SchemaTest);
 void SchemaTest::TestType() {
   CPPUNIT_ASSERT(Type_Schema == schema_->Type());
   CPPUNIT_ASSERT(true == schema_->IsA(Type_Schema));
+  CPPUNIT_ASSERT(true == schema_->IsA(Type_Object));
 }
 
 void SchemaTest::TestDefaults() {
