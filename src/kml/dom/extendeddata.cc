@@ -81,11 +81,6 @@ void SimpleData::Serialize(Serializer& serializer) const {
   serializer.End();
 }
 
-// ExtendedDataMember
-ExtendedDataMember::ExtendedDataMember() {}
-
-ExtendedDataMember::~ExtendedDataMember() {}
-
 // <SchemaData>
 SchemaData::SchemaData()
   : has_schemaurl_(false) {
@@ -185,16 +180,16 @@ void Data::Serialize(Serializer& serializer) const {
 ExtendedData::ExtendedData() {}
 
 ExtendedData::~ExtendedData() {
-  // extendeddatamember_array_'s destructor calls the destructor of each
-  // ExtendedDataMemberPtr releasing the reference and potentially freeing the
-  // ExtendedDataMember storage.
+  // data_array_'s and schemadata_array_'s destructors call the destructor of
+  // each DataPtr and SchemaDataPtr, releasing the references and potentially
+  // freeing the SchemaData and Data storage.
 }
 
 void ExtendedData::AddElement(const ElementPtr& element) {
   if (DataPtr data = AsData(element)) {
-    add_extendeddatamember(data);
+    add_data(data);
   } else if (SchemaDataPtr schemadata = AsSchemaData(element)) {
-    add_extendeddatamember(schemadata);
+    add_schemadata(schemadata);
   } else {
     Element::AddElement(element);
   }
@@ -203,8 +198,11 @@ void ExtendedData::AddElement(const ElementPtr& element) {
 void ExtendedData::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
-  for (size_t i = 0; i < extendeddatamember_array_.size(); i++) {
-    extendeddatamember_array_[i]->Serialize(serializer);
+  for (size_t i = 0; i < data_array_.size(); i++) {
+    data_array_[i]->Serialize(serializer);
+  }
+  for (size_t i = 0; i < schemadata_array_.size(); i++) {
+    schemadata_array_[i]->Serialize(serializer);
   }
   Element::SerializeUnknown(serializer);
   serializer.End();
