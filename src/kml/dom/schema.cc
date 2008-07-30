@@ -91,19 +91,15 @@ Schema::Schema()
 Schema::~Schema() {}
 
 static const char kSchemaNameAttr[] = "name";
-static const char kSchemaIdAttr[] = "id";
 
 void Schema::ParseAttributes(const Attributes& attributes) {
   has_name_ = attributes.GetString(kSchemaNameAttr, &name_);
-  has_id_ = attributes.GetString(kSchemaIdAttr, &id_);
+  Object::ParseAttributes(attributes);
 }
 
 void Schema::GetAttributes(Attributes* attributes) const {
   if (has_name_) {
     attributes->SetString(kSchemaNameAttr, name_);
-  }
-  if (has_id_) {
-    attributes->SetString(kSchemaIdAttr, id_);
   }
 }
 
@@ -111,21 +107,22 @@ void Schema::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  if (element->Type() == Type_SimpleField) {
-    add_simplefield(AsSimpleField(element));
+  if (SimpleFieldPtr simplefield = AsSimpleField(element)) {
+    add_simplefield(simplefield);
   } else {
-    Element::AddElement(element);
+    Object::AddElement(element);
   }
 }
 
 void Schema::Serialize(Serializer& serializer) const {
   Attributes attributes;
   GetAttributes(&attributes);
+  Object::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < simplefield_array_.size(); ++i) {
     serializer.SaveElement(get_simplefield_array_at(i));
   }
-  SerializeUnknown(serializer);
+  Element::SerializeUnknown(serializer);
   serializer.End();
 }
 
