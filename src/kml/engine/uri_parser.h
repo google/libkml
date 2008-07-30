@@ -25,7 +25,7 @@
 
 // This file contains the internal UriParser class which front-ends the
 // third_party/uriparser in a C++ API.  This header is not considered part
-// of the public API to the kml engine, and does not appear in kml/engine.h.
+// of the public API to the KML Engine, and does not appear in kml/engine.h.
 // See kml_uri.h for the public API to URI handling.
 
 #ifndef KML_ENGINE_URI_PARSER_H__
