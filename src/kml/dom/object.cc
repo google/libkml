@@ -46,7 +46,7 @@ void Object::AddElement(const ElementPtr& element) {
 
 void Object::ParseAttributes(const Attributes& attributes) {
   has_id_ = attributes.GetString(kId, &id_);
-  has_targetid_ = attributes.GetString(kTargetId, &id_);
+  has_targetid_ = attributes.GetString(kTargetId, &targetid_);
   Element::ParseAttributes(attributes);
 }
 

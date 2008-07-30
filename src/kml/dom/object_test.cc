@@ -26,6 +26,9 @@
 // This file contains the unit tests for the abstract Object element.
 
 #include "kml/dom/object.h"
+#include "kml/dom/kml_funcs.h"
+#include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/base/unit_test.h"
 
 namespace kmldom {
@@ -36,6 +39,7 @@ class ObjectTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestDefaults);
   CPPUNIT_TEST(TestSetToDefaultValues);
   CPPUNIT_TEST(TestSetGetHasClear);
+  CPPUNIT_TEST(TestParse);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -54,6 +58,7 @@ class ObjectTest : public CPPUNIT_NS::TestFixture {
   void TestDefaults();
   void TestSetToDefaultValues();
   void TestSetGetHasClear();
+  void TestParse();
 
  private:
   // Object is abstract, hence its constructor is protected.
@@ -104,6 +109,23 @@ void ObjectTest::TestSetGetHasClear() {
 
   // Verify now in default state:
   TestDefaults();
+}
+
+void ObjectTest::TestParse() {
+  const std::string kId("foo");
+  const std::string kTargetId("bar");
+  const std::string kKml(
+      "<Placemark id=\"" + kId + "\" targetId=\"" + kTargetId + "\" />");
+  std::string errors;
+  ElementPtr root = Parse(kKml, &errors);
+  CPPUNIT_ASSERT(root);
+  CPPUNIT_ASSERT(errors.empty());
+  const PlacemarkPtr placemark = AsPlacemark(root);
+  CPPUNIT_ASSERT(placemark);
+  CPPUNIT_ASSERT(placemark->has_id());
+  CPPUNIT_ASSERT(placemark->has_targetid());
+  CPPUNIT_ASSERT_EQUAL(kId, placemark->get_id());
+  CPPUNIT_ASSERT_EQUAL(kTargetId, placemark->get_targetid());
 }
 
 }  // end namespace kmldom
