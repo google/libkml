@@ -78,25 +78,6 @@ static void PrintFeatureCounts() {
   }
 }
 
-const std::string ComputeRelativeUrl(const std::string& parent_url,
-                                     const std::string& child_url) {
-  kmlengine::Href child(child_url);    
-  // See if child is already absolute.
-  if (!child.IsRelative()) {
-    return child_url;
-  } 
-
-  std::string new_child;
-  // NOTE: This does not detect local files (c:\foo\foo.kml, etc).
-  // NOTE: And, this assumes at least one / in the parent_url.
-  size_t last_component = parent_url.rfind("/");
-  if (last_component != std::string::npos) {
-    new_child = parent_url.substr(0,last_component+1);  // keep '/'
-    new_child.append(child_url);
-  } 
-  return new_child;
-}
-
 class FeatureCounter : public kmlengine::FeatureVisitor {
  public:
   FeatureCounter(const KmlFile& kml_file, KmzCache* kmz_cache)
@@ -107,13 +88,15 @@ class FeatureCounter : public kmlengine::FeatureVisitor {
     if (OverlayPtr overlay = AsOverlay(feature)) {
       std::string href;
       if (kmlengine::GetIconParentHref(overlay, &href)) {
-        std::string url = ComputeRelativeUrl(kml_file_.get_url(), href);
-        std::string data;
-        if (!kmz_cache_->FetchUrl(url.c_str(), &data)) {
-          cout << "fetch failed " << url << endl;
-          return;
+        std::string url;
+        if (kmlengine::ResolveUri(kml_file_.get_url(), href, &url)) {
+          std::string data;
+          if (!kmz_cache_->FetchUrl(url.c_str(), &data)) {
+            cout << "fetch failed " << url << endl;
+            return;
+          }
+          cout << href << " bytes " << data.size() << endl;
         }
-        cout << href << " bytes " << data.size() << endl;
       }
     }
   }
@@ -136,7 +119,10 @@ static void WalkNetworkLinks(const KmlFile& kml_file, KmzCache* kmz_cache) {
     if (NetworkLinkPtr networklink = AsNetworkLink(link_vector[i])) {
       std::string href;
       if (kmlengine::GetLinkParentHref(networklink, &href)) {
-        WalkFile(ComputeRelativeUrl(kml_file.get_url(), href), kmz_cache);
+         std::string url;
+         if (kmlengine::ResolveUri(kml_file.get_url(), href, &url)) {
+           WalkFile(url, kmz_cache);
+         }
       }
     }
   }
