@@ -28,6 +28,7 @@
 
 #include <vector>
 #include "kml/dom/element.h"
+#include "kml/dom/object.h"
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
@@ -94,13 +95,14 @@ class SimpleField : public Element {
 };
 
 // <Schema>
-// Note: although Schema has an id attribute, it does not inherit from Object.
-class Schema : public Element {
+// Note: in the XSD Schema is not an Object. We inherit from Object here
+// so it appears in the parsed object map and is easily accessible.
+class Schema : public Object {
  public:
   virtual ~Schema();
   virtual KmlDomType Type() const { return Type_Schema; }
   virtual bool IsA(KmlDomType type) const {
-    return type == Type_Schema;
+    return type == Type_Schema || Object::IsA(type);
   }
 
   const std::string& get_name() const { return name_; }
@@ -112,17 +114,6 @@ class Schema : public Element {
   void clear_name() {
     name_.clear();
     has_name_ = false;
-  }
-
-  const std::string& get_id() const { return id_; }
-  bool has_id() const { return has_id_; }
-  void set_id(const std::string& value) {
-    id_ = value;
-    has_id_ = true;
-  }
-  void clear_id() {
-    id_.clear();
-    has_id_ = false;
   }
 
   void add_simplefield(const SimpleFieldPtr& simplefield) {
