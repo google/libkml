@@ -88,23 +88,8 @@ class SimpleData : public Element {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleData);
 };
 
-// ExtendedDataMember
-// An internal class from which both Data and SchemaData derive.
-// It is derived from Object such that Serialize etc. are passed on to
-// inherited classes.
-class ExtendedDataMember : public Object {
- public:
-  virtual ~ExtendedDataMember();
-
- protected:
-  ExtendedDataMember();
-
- private:
-  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtendedDataMember);
-};
-
 // <SchemaData>
-class SchemaData : public ExtendedDataMember {
+class SchemaData : public Object {
  public:
   virtual ~SchemaData();
   virtual KmlDomType Type() const { return Type_SchemaData; }
@@ -142,6 +127,7 @@ class SchemaData : public ExtendedDataMember {
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
+  friend class ExtendedData;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;
@@ -152,7 +138,7 @@ class SchemaData : public ExtendedDataMember {
 };
 
 // <Data>
-class Data : public ExtendedDataMember {
+class Data : public Object {
  public:
   virtual ~Data();
   virtual KmlDomType Type() const { return Type_Data; }
@@ -202,6 +188,7 @@ class Data : public ExtendedDataMember {
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(const Attributes& attributes);
+  friend class ExtendedData;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void GetAttributes(Attributes* attributes) const;
@@ -223,17 +210,30 @@ class ExtendedData : public Element {
     return type == Type_ExtendedData;
   }
 
-  void add_extendeddatamember(const ExtendedDataMemberPtr& extendeddatamember) {
-    AddComplexChild(extendeddatamember, &extendeddatamember_array_);
+  // <Data>.
+  void add_data(const DataPtr& data) {
+    AddComplexChild(data, &data_array_);
   }
 
-  const size_t get_extendeddatamember_array_size() const {
-    return extendeddatamember_array_.size();
+  const size_t get_data_array_size() const {
+    return data_array_.size();
   }
 
-  const ExtendedDataMemberPtr& get_extendeddatamember_array_at(
-      unsigned int index) const {
-    return extendeddatamember_array_[index];
+  const DataPtr& get_data_array_at(unsigned int index) const {
+    return data_array_[index];
+  }
+
+  // <SchemaData>.
+  void add_schemadata(const SchemaDataPtr& schemadata) {
+    AddComplexChild(schemadata, &schemadata_array_);
+  }
+
+  const size_t get_schemadata_array_size() const {
+    return schemadata_array_.size();
+  }
+
+  const SchemaDataPtr& get_schemadata_array_at(unsigned int index) const {
+    return schemadata_array_[index];
   }
 
  private:
@@ -243,7 +243,8 @@ class ExtendedData : public Element {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::vector<ExtendedDataMemberPtr> extendeddatamember_array_;
+  std::vector<DataPtr> data_array_;
+  std::vector<SchemaDataPtr> schemadata_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtendedData);
 };
 

@@ -77,15 +77,11 @@ bool GetExtendedDataValue(const FeaturePtr& feature,
                           std::string* value) {
   if (value && feature->has_extendeddata()) {
     ExtendedDataPtr extendeddata = feature->get_extendeddata();
-    for (size_t i = 0;
-         i < extendeddata->get_extendeddatamember_array_size();
-         ++i) {
-      if (DataPtr data =
-          AsData(extendeddata->get_extendeddatamember_array_at(i))) {
-        if (data->has_name() && name == data->get_name()) {
-          *value = data->get_value();
-          return true;
-        }
+    for (size_t i = 0; i < extendeddata->get_data_array_size(); ++i) {
+      DataPtr data = extendeddata->get_data_array_at(i);
+      if (data->has_name() && name == data->get_name()) {
+        *value = data->get_value();
+        return true;
       }
     }
   }
@@ -102,7 +98,7 @@ void SetExtendedDataValue(const std::string& name, const std::string& value,
   data->set_name(name);
   data->set_value(value);
   kmldom::ExtendedDataPtr extendeddata = factory->CreateExtendedData();
-  extendeddata->add_extendeddatamember(data);
+  extendeddata->add_data(data);
   feature->set_extendeddata(extendeddata);
 }
 

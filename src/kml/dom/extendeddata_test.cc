@@ -276,36 +276,29 @@ void ExtendedDataTest::TestType() {
 }
 
 void ExtendedDataTest::TestLists() {
-  // Vector is empty.
-  CPPUNIT_ASSERT(0 == extendeddata_->get_extendeddatamember_array_size());
+  // Vectors are empty.
+  CPPUNIT_ASSERT(0 == extendeddata_->get_data_array_size());
+  CPPUNIT_ASSERT(0 == extendeddata_->get_schemadata_array_size());
   // Add three <Data> and three <SchemaData> elements:
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_data(
       KmlFactory::GetFactory()->CreateData());
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_data(
       KmlFactory::GetFactory()->CreateData());
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_schemadata(
       KmlFactory::GetFactory()->CreateSchemaData());
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_schemadata(
       KmlFactory::GetFactory()->CreateSchemaData());
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_data(
       KmlFactory::GetFactory()->CreateData());
-  extendeddata_->add_extendeddatamember(
+  extendeddata_->add_schemadata(
       KmlFactory::GetFactory()->CreateSchemaData());
   // We have six items in the array:
-  CPPUNIT_ASSERT(6 == extendeddata_->get_extendeddatamember_array_size());
-  // Assert ordering is preserved:
-  CPPUNIT_ASSERT(
-      Type_Data == extendeddata_->get_extendeddatamember_array_at(0)->Type());
-  CPPUNIT_ASSERT(
-      Type_Data == extendeddata_->get_extendeddatamember_array_at(1)->Type());
-  CPPUNIT_ASSERT(Type_SchemaData ==
-                 extendeddata_->get_extendeddatamember_array_at(2)->Type());
-  CPPUNIT_ASSERT(Type_SchemaData ==
-                 extendeddata_->get_extendeddatamember_array_at(3)->Type());
-  CPPUNIT_ASSERT(Type_Data ==
-                 extendeddata_->get_extendeddatamember_array_at(4)->Type());
-  CPPUNIT_ASSERT(Type_SchemaData ==
-                 extendeddata_->get_extendeddatamember_array_at(5)->Type());
+  CPPUNIT_ASSERT(3 == extendeddata_->get_data_array_size());
+  CPPUNIT_ASSERT(3 == extendeddata_->get_schemadata_array_size());
+  // Assert elements can be read from vector.
+  CPPUNIT_ASSERT_EQUAL(Type_Data, extendeddata_->get_data_array_at(0)->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_SchemaData,
+                       extendeddata_->get_schemadata_array_at(0)->Type());
 }
 
 void ExtendedDataTest::TestParse() {
@@ -331,8 +324,11 @@ void ExtendedDataTest::TestParse() {
   CPPUNIT_ASSERT(errors.empty());
   const ExtendedDataPtr extendeddata = AsExtendedData(root);
   CPPUNIT_ASSERT(extendeddata);
-  CPPUNIT_ASSERT(2 == extendeddata->get_extendeddatamember_array_size());
-  const DataPtr data = AsData(extendeddata->get_extendeddatamember_array_at(0));
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       extendeddata->get_data_array_size());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+                       extendeddata->get_schemadata_array_size());
+  const DataPtr data = AsData(extendeddata->get_data_array_at(0));
   CPPUNIT_ASSERT(data);
   CPPUNIT_ASSERT(data->has_name());
   CPPUNIT_ASSERT_EQUAL(d_name, data->get_name());
@@ -341,7 +337,7 @@ void ExtendedDataTest::TestParse() {
   CPPUNIT_ASSERT(data->has_value());
   CPPUNIT_ASSERT_EQUAL(value, data->get_value());
   const SchemaDataPtr schemadata = AsSchemaData(
-      extendeddata->get_extendeddatamember_array_at(1));
+      extendeddata->get_schemadata_array_at(0));
   CPPUNIT_ASSERT(schemadata);
   CPPUNIT_ASSERT(schemadata->has_schemaurl());
   CPPUNIT_ASSERT_EQUAL(schemaurl, schemadata->get_schemaurl());
