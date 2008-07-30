@@ -1,0 +1,259 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		69C962070DC7D26000A98182 /* wxviewer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 69C962050DC7D26000A98182 /* wxviewer.cc */; };
+		69C9626A0DC8F4A800A98182 /* icon_file.xpm in Resources */ = {isa = PBXBuildFile; fileRef = 69C962670DC8F4A800A98182 /* icon_file.xpm */; };
+		69C9626B0DC8F4A800A98182 /* icon_folder_closed.xpm in Resources */ = {isa = PBXBuildFile; fileRef = 69C962680DC8F4A800A98182 /* icon_folder_closed.xpm */; };
+		69C9626C0DC8F4A800A98182 /* icon_folder_opened.xpm in Resources */ = {isa = PBXBuildFile; fileRef = 69C962690DC8F4A800A98182 /* icon_folder_opened.xpm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		69C961FE0DC7D19B00A98182 /* wxviewer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = wxviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69C962010DC7D19B00A98182 /* wxviewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "wxviewer-Info.plist"; sourceTree = "<group>"; };
+		69C962050DC7D26000A98182 /* wxviewer.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = wxviewer.cc; sourceTree = "<group>"; };
+		69C962060DC7D26000A98182 /* wxviewer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = wxviewer.h; sourceTree = "<group>"; };
+		69C962670DC8F4A800A98182 /* icon_file.xpm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = icon_file.xpm; sourceTree = "<group>"; };
+		69C962680DC8F4A800A98182 /* icon_folder_closed.xpm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = icon_folder_closed.xpm; sourceTree = "<group>"; };
+		69C962690DC8F4A800A98182 /* icon_folder_opened.xpm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = icon_folder_opened.xpm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		69C961FC0DC7D19B00A98182 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		69C961E20DC7D09700A98182 = {
+			isa = PBXGroup;
+			children = (
+				69C962670DC8F4A800A98182 /* icon_file.xpm */,
+				69C962680DC8F4A800A98182 /* icon_folder_closed.xpm */,
+				69C962690DC8F4A800A98182 /* icon_folder_opened.xpm */,
+				69C962050DC7D26000A98182 /* wxviewer.cc */,
+				69C962060DC7D26000A98182 /* wxviewer.h */,
+				69C961FF0DC7D19B00A98182 /* Products */,
+				69C962010DC7D19B00A98182 /* wxviewer-Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		69C961FF0DC7D19B00A98182 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69C961FE0DC7D19B00A98182 /* wxviewer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		69C961FD0DC7D19B00A98182 /* wxviewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69C962020DC7D19C00A98182 /* Build configuration list for PBXNativeTarget "wxviewer" */;
+			buildPhases = (
+				69C961FA0DC7D19B00A98182 /* Resources */,
+				69C961FB0DC7D19B00A98182 /* Sources */,
+				69C961FC0DC7D19B00A98182 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = wxviewer;
+			productName = wxviewer;
+			productReference = 69C961FE0DC7D19B00A98182 /* wxviewer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		69C961E40DC7D09700A98182 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 69C961E50DC7D09700A98182 /* Build configuration list for PBXProject "wxviewer" */;
+			hasScannedForEncodings = 0;
+			mainGroup = 69C961E20DC7D09700A98182;
+			productRefGroup = 69C961FF0DC7D19B00A98182 /* Products */;
+			projectDirPath = "";
+			targets = (
+				69C961FD0DC7D19B00A98182 /* wxviewer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		69C961FA0DC7D19B00A98182 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69C9626A0DC8F4A800A98182 /* icon_file.xpm in Resources */,
+				69C9626B0DC8F4A800A98182 /* icon_folder_closed.xpm in Resources */,
+				69C9626C0DC8F4A800A98182 /* icon_folder_opened.xpm in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		69C961FB0DC7D19B00A98182 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				69C962070DC7D26000A98182 /* wxviewer.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		69C961E60DC7D09700A98182 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					.,
+					"/usr/local/include/wx-2.8",
+					"/usr/local/lib/wx/include/mac-ansi-release-2.8",
+					/usr/local/include/kml/third_party/boost_1_34_1,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+			};
+			name = Debug;
+		};
+		69C961E70DC7D09700A98182 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					.,
+					"/usr/local/include/wx-2.8",
+					"/usr/local/lib/wx/include/mac-ansi-release-2.8",
+					/usr/local/include/kml/third_party/boost_1_34_1,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/lib,
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-D_FILE_OFFSET_BITS=64",
+					"-D_LARGE_FILES",
+					"-D__WXMAC__",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+			};
+			name = Release;
+		};
+		69C962030DC7D19C00A98182 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "wxviewer-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-lwx_mac-2.8",
+					"-lkmldom",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = wxviewer;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		69C962040DC7D19C00A98182 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Carbon.framework/Headers/Carbon.h";
+				INFOPLIST_FILE = "wxviewer-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					IOKit,
+					"-framework",
+					Carbon,
+					"-framework",
+					Cocoa,
+					"-framework",
+					System,
+					"-framework",
+					QuickTime,
+					"-lwx_mac-2.8",
+					"-lkmldom",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = wxviewer;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		69C961E50DC7D09700A98182 /* Build configuration list for PBXProject "wxviewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69C961E60DC7D09700A98182 /* Debug */,
+				69C961E70DC7D09700A98182 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		69C962020DC7D19C00A98182 /* Build configuration list for PBXNativeTarget "wxviewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				69C962030DC7D19C00A98182 /* Debug */,
+				69C962040DC7D19C00A98182 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 69C961E40DC7D09700A98182 /* Project object */;
+}
