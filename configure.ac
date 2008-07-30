@@ -200,7 +200,6 @@ AC_CONFIG_FILES([
 	src/swig/java/Makefile
 	src/swig/python/Makefile
 	testdata/Makefile
-	testdata/balloon/Makefile
 	testdata/csv/Makefile
 	testdata/kmz/Makefile
 	testdata/links/Makefile

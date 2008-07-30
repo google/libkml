@@ -36,42 +36,27 @@ using std::cout;
 using std::endl;
 using kmlbase::File;
 using kmlengine::KmzCache;
-using kmlengine::KmlFile;
 
 int main(int argc, char** argv) {
-  if (argc != 2 && argc != 3) {
-    cout << "usage: " << argv[0] << " url.kmz[/file/in/kmz] [output_file]"
+  if (argc != 3) {
+    cout << "usage: " << argv[0] << " url.kmz[/file/in/kmz] output_file"
       << endl;
     return 1;
   }
-  const char* url = argv[1];
-  const char* output = argc == 3 ? argv[2] : NULL;
-
   KmzCache kmz_cache(CurlToString, 2);
-
+  const char* url = argv[1];
+  const char* output = argv[2];
   std::string data;
   if (!kmz_cache.FetchUrl(url, &data)) {
     cout << "fetch failed " << url << endl;
     return 1;
   }
 
-  if (output) {
-    if (!File::WriteStringToFile(data, output)) {
-      cout << "write failed " << output << endl;
-      return 1;
-    }
-    cout << "wrote " << data.size() << " bytes to " << output << endl;
-    return 0;
+  if (!File::WriteStringToFile(data, output)) {
+    cout << "write failed " << output << endl;
+    return 1;
   }
 
-  // Try to parse it as KML.
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(data, NULL));
-  if (kml_file.get()) {
-    std::string output;
-    if (kml_file->SerializeToString(&output)) {
-      cout << output;
-    }
-  }
-
+  cout << "wrote " << data.size() << " bytes to " << output << endl;
   return 0;
 }
