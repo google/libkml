@@ -50,21 +50,6 @@ endElement(void *userData, const char *name) {
   ((ExpatHandler*)userData)->EndElement(name);
 }
 
-// startCdata and endCdata insert the <![CDATA[  ]]> tags, stripped by expat
-// during its parse. The intent is that we exactly preserve the author's
-// markup and avoid superfluous entity escaping.
-static void XMLCALL
-startCdata(void *userData) {
-  const char* s = "<![CDATA[";
-  ((ExpatHandler*)userData)->CharData(s, strlen(s));
-}
-
-static void XMLCALL
-endCdata(void *userData) {
-  const char* s = "]]>";
-  ((ExpatHandler*)userData)->CharData(s, strlen(s));
-}
-
 static void XMLCALL
 charData(void *userData, const XML_Char *s, int len) {
   ((ExpatHandler*)userData)->CharData(s, len);
@@ -76,7 +61,6 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
   expat_handler->set_parser(parser);
   XML_SetUserData(parser, expat_handler);
   XML_SetElementHandler(parser, startElement, endElement);
-  XML_SetCdataSectionHandler(parser, startCdata, endCdata);
   XML_SetCharacterDataHandler(parser, charData);
   XML_Status status = XML_Parse(parser, xml.c_str(), xml.size(), xml.size());
   if (status != XML_STATUS_OK && errors) {

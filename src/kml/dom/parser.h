@@ -37,6 +37,13 @@
 namespace kmldom {
 
 // The internal Parser class implements the public Parse API.
+// CDATA tags are dropped (by expat) upon parse and internally we carry
+// around the resultant representation. There are thus no methods within
+// the KML DOM to set/get/query for the presence of CDATA. The serializer
+// scans the markup and conditionally wraps entities with CDATA. For files
+// with multiple CDATA wrappers in a single element's character data, this
+// will result in a single CDATA wrapper.
+//
 // Intended usage:
 //   Parser parser;
 //   parser.AddObserver(...);
