@@ -53,6 +53,18 @@ class SubStyle : public Object {
 
 %nodefaultctor ColorStyle;
 class ColorStyle : public SubStyle {
+public:
+  // <color>
+  const std::string& get_color();
+  void set_color(const std::string& color);
+  bool has_color();
+  void clear_color();
+
+  // <colorMode>
+  int get_colormode();
+  void set_colormode(int colormode);
+  bool has_colormode();
+  void clear_colormode();
 };
 
 %nodefaultctor SnippetCommon;
@@ -185,18 +197,17 @@ public:
   void clear_lod();
 };
 
-%nodefaultctor ExtendedDataMember;
-class ExtendedDataMember : public Object {
-};
-
 %nodefaultctor ExtendedData;
 class ExtendedData : public Element {
 public:
-  // <Data>, <SchemaData>...
-  void add_extendeddatamember(ExtendedDataMemberPtr extendeddatamember);
-  const size_t get_extendeddatamember_array_size();
-  const ExtendedDataMemberPtr get_extendeddatamember_array_at(
-                                unsigned int index);
+  // <Data>.
+  void add_data(DataPtr data);
+  const size_t get_data_array_size();
+  const DataPtr get_data_array_at(unsigned int index);
+  // <SchemaData>.
+  void add_schemadata(SchemaDataPtr schemadata);
+  const size_t get_schemadata_array_size();
+  const SchemaDataPtr get_schemadata_array_at(unsigned int index);
 };
 
 %nodefaultctor Feature;
@@ -479,7 +490,7 @@ public:
 };
 
 %nodefaultctor Data;
-class Data : public ExtendedDataMember {
+class Data : public Object {
 public:
   // <displayName>
   const std::string& get_displayname();
@@ -520,19 +531,13 @@ public:
 };
 
 %nodefaultctor Schema;
-class Schema : public Element {
+class Schema : public Object {
 public:
   // name=
   const std::string& get_name();
   bool has_name();
   void set_name(const std::string& value);
   void clear_name();
-
-  // id=
-  const std::string& get_id();
-  bool has_id();
-  void set_id(const std::string& value);
-  void clear_id();
 
   // <SimpleField>...
   void add_simplefield(SimpleFieldPtr simplefield);
@@ -1287,7 +1292,7 @@ class SimpleData : public Element {
 };
 
 %nodefaultctor SchemaData;
-class SchemaData : public ExtendedDataMember {
+class SchemaData : public Object {
 public:
   // <SimpleData>...
   void add_simpledata(SimpleDataPtr simpledata);

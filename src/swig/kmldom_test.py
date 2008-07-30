@@ -437,8 +437,84 @@ class SimpleExtendedDataTestCase(unittest.TestCase):
 
   def testDefault(self):
     assert kmldom.AsExtendedData(self.extendeddata)
-    assert 0 == self.extendeddata.get_extendeddatamember_array_size()
+    assert 0 == self.extendeddata.get_data_array_size()
+    assert 0 == self.extendeddata.get_schemadata_array_size()
 
+def TestColorStyle(colorstyle):
+  """ This tests the ColorStyle elements of the given ColorStyle-derived element"""
+  # ColorStyle fields
+  # Verify default state of <color>
+  assert not colorstyle.has_color()
+  # Set <color> to a given value and verify get_ and has_
+  color = 'f0f0c80f'
+  colorstyle.set_color(color)
+  assert colorstyle.has_color()
+  assert color == colorstyle.get_color()
+  # Clear <color> and verify has_
+  colorstyle.clear_color()
+  assert not colorstyle.has_color()
+
+  assert not colorstyle.has_colormode()
+  colormode = kmldom.COLORMODE_RANDOM
+  colorstyle.set_colormode(colormode)
+  assert colorstyle.has_colormode()
+  assert colormode == colorstyle.get_colormode()
+  colorstyle.clear_colormode()
+  assert not colorstyle.has_colormode()
+
+class SimpleIconStyleTestCase(unittest.TestCase):
+  """ This tests the IconStyle element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.iconstyle = self.factory.CreateIconStyle()
+
+  def testDefault(self):
+    assert kmldom.AsObject(self.iconstyle)
+    assert kmldom.AsSubStyle(self.iconstyle)
+    assert kmldom.AsColorStyle(self.iconstyle)
+
+    TestColorStyle(self.iconstyle)
+
+class SimpleLabelStyleTestCase(unittest.TestCase):
+  """ This tests the LabelStyle element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.labelstyle = self.factory.CreateLabelStyle()
+
+  def testDefault(self):
+    assert kmldom.AsObject(self.labelstyle)
+    assert kmldom.AsSubStyle(self.labelstyle)
+    assert kmldom.AsColorStyle(self.labelstyle)
+
+    TestColorStyle(self.labelstyle)
+
+class SimpleLineStyleTestCase(unittest.TestCase):
+  """ This tests the LineStyle element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.linestyle = self.factory.CreateLineStyle()
+
+  def testDefault(self):
+    assert kmldom.AsObject(self.linestyle)
+    assert kmldom.AsSubStyle(self.linestyle)
+    assert kmldom.AsColorStyle(self.linestyle)
+
+    TestColorStyle(self.linestyle)
+
+    # LineStyle fields
+    # Verify default state of <width>
+    assert not self.linestyle.has_width()
+    # Set <width> and verify get_ and has_
+    width = 4
+    self.linestyle.set_width(width)
+    assert self.linestyle.has_width()
+    assert width == self.linestyle.get_width()
+    # Clear <width> and verify has_
+    self.linestyle.clear_width()
+    assert not self.linestyle.has_width()
 
 class SimpleListStyleTestCase(unittest.TestCase):
   """ This tests the ListStyle element."""
@@ -774,6 +850,42 @@ class SimpleInnerBoundaryIsTestCase(unittest.TestCase):
 class SimplePolygonTestCase(unittest.TestCase):
   """  TODO: This tests the Polygon element."""
 
+class SimplePolyStyleTestCase(unittest.TestCase):
+  """ This tests the PolyStyle element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.polystyle = self.factory.CreatePolyStyle()
+
+  def testDefault(self):
+    assert kmldom.AsObject(self.polystyle)
+    assert kmldom.AsSubStyle(self.polystyle)
+    assert kmldom.AsColorStyle(self.polystyle)
+
+    TestColorStyle(self.polystyle)
+
+    # PolyStyle fields
+    # Verify default state of <fill>
+    assert not self.polystyle.has_fill()
+    # Set <fill> and verify get_ and has_
+    fill = True
+    self.polystyle.set_fill(fill)
+    assert self.polystyle.has_fill()
+    assert fill == self.polystyle.get_fill()
+    # Clear <fill> and verify has_
+    self.polystyle.clear_fill()
+    assert not self.polystyle.has_fill()
+
+    # Verify default state of <outline>
+    assert not self.polystyle.has_outline()
+    # Set <outline> and verify get_ and has_
+    outline = True
+    self.polystyle.set_outline(outline)
+    assert self.polystyle.has_outline()
+    assert outline == self.polystyle.get_outline()
+    # Clear <outline> and verify has_
+    self.polystyle.clear_outline()
+    assert not self.polystyle.has_outline()
 
 class SimpleResourceMapTestCase(unittest.TestCase):
   """ This tests the ResourceMap element."""
@@ -886,10 +998,14 @@ def suite():
   suite.addTest(SimpleSerializePrettyTestCase('testBasic'))
   suite.addTest(SimpleSerializeRawTestCase('testBasic'))
   suite.addTest(SimpleExtendedDataTestCase('testDefault'))
+  suite.addTest(SimpleIconStyleTestCase('testDefault'))
+  suite.addTest(SimpleLabelStyleTestCase('testDefault'))
+  suite.addTest(SimpleLineStyleTestCase('testDefault'))
   suite.addTest(SimpleListStyleTestCase('testDefault'))
   suite.addTest(SimplePhotoOverlayTestCase('testDefault'))
   suite.addTest(SimplePlacemarkTestCase('testDefault'))
   suite.addTest(SimplePlacemarkTestCase('testName'))
+  suite.addTest(SimplePolyStyleTestCase('testDefault'))
   suite.addTest(SimpleLatLonBoxTestCase('testDefault'))
   suite.addTest(SimpleLatLonBoxTestCase('testSetClear'))
   suite.addTest(SimpleLinkTestCase('testDefault'))
