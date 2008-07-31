@@ -31,7 +31,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/dom/xsd.h"  // TODO: expose Xsd::ElementName() properly
 #include "kml/engine.h"
@@ -42,6 +41,7 @@ using kmldom::FeaturePtr;
 using kmldom::NetworkLinkPtr;
 using kmldom::OverlayPtr;
 using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 using kmlengine::KmzCache;
 using std::cout;
 using std::endl;
@@ -80,7 +80,7 @@ static void PrintFeatureCounts() {
 
 class FeatureCounter : public kmlengine::FeatureVisitor {
  public:
-  FeatureCounter(const KmlFile& kml_file, KmzCache* kmz_cache)
+  FeatureCounter(const KmlFilePtr& kml_file, KmzCache* kmz_cache)
       : kml_file_(kml_file), kmz_cache_(kmz_cache) {}
 
   virtual void VisitFeature(const kmldom::FeaturePtr& feature) {
@@ -89,7 +89,7 @@ class FeatureCounter : public kmlengine::FeatureVisitor {
       std::string href;
       if (kmlengine::GetIconParentHref(overlay, &href)) {
         std::string url;
-        if (kmlengine::ResolveUri(kml_file_.get_url(), href, &url)) {
+        if (kmlengine::ResolveUri(kml_file_->get_url(), href, &url)) {
           std::string data;
           if (!kmz_cache_->FetchUrl(url.c_str(), &data)) {
             cout << "fetch failed " << url << endl;
@@ -102,25 +102,25 @@ class FeatureCounter : public kmlengine::FeatureVisitor {
   }
 
  private:
-  const KmlFile& kml_file_;
+  const KmlFilePtr kml_file_;
   KmzCache* kmz_cache_;
 };
 
-static void HandleFile(const KmlFile& kml_file, KmzCache* kmz_cache) {
+static void HandleFile(const KmlFilePtr& kml_file, KmzCache* kmz_cache) {
   FeatureCounter feature_counter(kml_file, kmz_cache);
-  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file.root()),
+  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file->root()),
                                    feature_counter);
 }
 
-static void WalkNetworkLinks(const KmlFile& kml_file, KmzCache* kmz_cache) {
+static void WalkNetworkLinks(const KmlFilePtr& kml_file, KmzCache* kmz_cache) {
   const kmlengine::ElementVector& link_vector =
-      kml_file.get_link_parent_vector();
+      kml_file->get_link_parent_vector();
   for (size_t i = 0; i < link_vector.size(); ++i) {
     if (NetworkLinkPtr networklink = AsNetworkLink(link_vector[i])) {
       std::string href;
       if (kmlengine::GetLinkParentHref(networklink, &href)) {
          std::string url;
-         if (kmlengine::ResolveUri(kml_file.get_url(), href, &url)) {
+         if (kmlengine::ResolveUri(kml_file->get_url(), href, &url)) {
            WalkFile(url, kmz_cache);
          }
       }
@@ -139,8 +139,8 @@ static void WalkFile(const std::string& url, KmzCache* kmz_cache) {
 
   // Parse it.
   std::string errors;
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(kml, &errors));
-  if (!kml_file.get()) {
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(kml, &errors);
+  if (!kml_file) {
     cout << "parse failed " << url << endl;
     cout << errors;
     return;
@@ -148,9 +148,9 @@ static void WalkFile(const std::string& url, KmzCache* kmz_cache) {
   kml_file->set_url(url);
   ++file_count;
 
-  HandleFile(*kml_file.get(), kmz_cache);
+  HandleFile(kml_file, kmz_cache);
 
-  WalkNetworkLinks(*kml_file.get(), kmz_cache);
+  WalkNetworkLinks(kml_file, kmz_cache);
 }
 
 int main(int argc, char** argv) {
