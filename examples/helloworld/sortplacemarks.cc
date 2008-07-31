@@ -33,7 +33,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "kml/base/file.h"
@@ -43,14 +42,16 @@ using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
 using kmldom::KmlPtr;
 using kmldom::PlacemarkPtr;
+using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 using kmlengine::KmzFile;
+using kmlengine::KmzFilePtr;
 using std::cout;
 using std::endl;
 
 // Declare the types and functions defined in this file.
 typedef std::vector<PlacemarkPtr> placemark_vector_t;
 static FeaturePtr GetKmlFileRootFeature(const char* kmlfile);
-static const FeaturePtr GetRootFeature(const ElementPtr& root);
 static void SavePlacemarks(const FeaturePtr& feature,
                            placemark_vector_t* placemarks);
 
@@ -68,17 +69,6 @@ static void SavePlacemarks(const FeaturePtr& feature,
   }
 }
 
-// Get the root Feature of the given element hierarchy.  Note that no null
-// check is required on the root and that failure to find a Feature results
-// in returning an empty FeaturePtr.
-static const FeaturePtr GetRootFeature(const ElementPtr& root) {
-  const KmlPtr kml = kmldom::AsKml(root);
-  if (kml && kml->has_feature()) {
-    return kml->get_feature();
-  }
-  return kmldom::AsFeature(root);
-}
-
 // Return a FeaturePtr to the root Feature in the kmlfile.  If the kmlfile
 // does not parse or has no root Feature then an empty FeaturePtr is returned.
 static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
@@ -92,8 +82,8 @@ static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
   // If the file was KMZ, extract the KML file.
   std::string kml;
   if (KmzFile::IsKmz(file_data)) {
-    boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromString(kmlfile));
-    if (!kmz_file.get()) {
+    KmzFilePtr kmz_file = KmzFile::OpenFromString(kmlfile);
+    if (!kmz_file) {
       cout << "Failed opening KMZ file" << endl;
       return NULL;
     }
@@ -107,14 +97,14 @@ static FeaturePtr GetKmlFileRootFeature(const char* kmlfile) {
 
   // Parse it.
   std::string errors;
-  ElementPtr root = kmldom::Parse(kml, &errors);
-  if (!root) {
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(kml, &errors);
+  if (!kml_file) {
     cout << errors << endl;
     return FeaturePtr();
   }
 
   // Get the root
-  return GetRootFeature(root);
+  return kmlengine::GetRootFeature(kml_file->root());
 }
 
 // This function object is used by STL sort() to alphabetize Placemarks
