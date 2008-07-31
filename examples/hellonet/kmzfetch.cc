@@ -26,7 +26,6 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
@@ -37,6 +36,7 @@ using std::endl;
 using kmlbase::File;
 using kmlengine::KmzCache;
 using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 
 int main(int argc, char** argv) {
   if (argc != 2 && argc != 3) {
@@ -65,8 +65,8 @@ int main(int argc, char** argv) {
   }
 
   // Try to parse it as KML.
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(data, NULL));
-  if (kml_file.get()) {
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(data, NULL);
+  if (kml_file) {
     std::string output;
     if (kml_file->SerializeToString(&output)) {
       cout << output;
