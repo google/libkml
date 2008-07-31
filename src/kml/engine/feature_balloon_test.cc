@@ -55,7 +55,7 @@ class FeatureBalloonTest : public CPPUNIT_NS::TestFixture {
   void TestAllBalloonsFile();
 
  private:
-  boost::scoped_ptr<KmlFile> kml_file_;
+  KmlFilePtr kml_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(FeatureBalloonTest);
@@ -83,11 +83,11 @@ const static struct {
 void FeatureBalloonTest::TestBasicCreateBalloonText() {
   for (size_t i = 0; i < sizeof(kKml)/sizeof(kKml[0]); ++i) {
     // Parse the file into a KmlFile object.
-    kml_file_.reset(KmlFile::CreateFromParse(kKml[i].kml, NULL));
+    kml_file_ = KmlFile::CreateFromParse(kKml[i].kml, NULL);
     // Extract the Placemark.
     const PlacemarkPtr placemark = kmldom::AsPlacemark(kml_file_->root());
     // Verify that that balloon text has been composited as expected.
-    const std::string kResult(CreateBalloonText(*kml_file_.get(), placemark));
+    const std::string kResult(CreateBalloonText(kml_file_, placemark));
     if (kKml[i].balloontext == NULL) {
       CPPUNIT_ASSERT(kResult.empty());
     } else {
@@ -161,16 +161,16 @@ void FeatureBalloonTest::TestComplexCreateBalloonText() {
       "$[geDirections]");  // TODO: geDirections.
 
   // Parse the file into a KmlFile object.
-  kml_file_.reset(KmlFile::CreateFromParse(kKitchenSinkKml, NULL));
+  kml_file_ = KmlFile::CreateFromParse(kKitchenSinkKml, NULL);
 
   // Extract the Placemark.
   const DocumentPtr doc = kmldom::AsDocument(kml_file_->root());
-  const PlacemarkPtr placemark=
-    kmldom::AsPlacemark(doc->get_feature_array_at(0));
+  const PlacemarkPtr placemark =
+      kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   // Verify that that balloon text has been composited as expected.
   CPPUNIT_ASSERT_EQUAL(kKitchenSinkBalloonText,
-                       CreateBalloonText(*kml_file_.get(), placemark));
+                       CreateBalloonText(kml_file_, placemark));
 }
 
 // A struct of the Feature ID from which we'll pull the KML content, and the
@@ -227,16 +227,16 @@ void FeatureBalloonTest::TestAllBalloonsFile() {
   std::string data;
   std::string errors;
   CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(kBalloonKml, &data));
-  kml_file_.reset(KmlFile::CreateFromParse(data, &errors));
+  kml_file_ = KmlFile::CreateFromParse(data, &errors);
   CPPUNIT_ASSERT(!data.empty());
   CPPUNIT_ASSERT(errors.empty());
-  CPPUNIT_ASSERT(kml_file_.get() != NULL);
+  CPPUNIT_ASSERT(kml_file_);
   for (size_t i = 0; i < sizeof(kFeatures)/sizeof(kFeatures[0]); ++i) {
     // Extract the Placemark.
     const FeaturePtr feature=
         kmldom::AsFeature(kml_file_->GetObjectById(kFeatures[i].featureid));
     // Verify that that balloon text has been composited as expected.
-    const std::string kActual(CreateBalloonText(*kml_file_.get(), feature));
+    const std::string kActual(CreateBalloonText(kml_file_, feature));
     if (kFeatures[i].balloontext == NULL) {
       CPPUNIT_ASSERT(kActual.empty());
       CPPUNIT_ASSERT_EQUAL(std::string(""), kActual);

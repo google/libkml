@@ -28,7 +28,7 @@
 
 #include "kml/engine/entity_mapper.h"
 #include "kml/dom/xsd.h"  // TODO: should be Xsd class be public?
-#include "kml/engine/href.h"
+#include "kml/engine/kml_uri.h"
 
 using kmlbase::StringMap;
 using kmldom::DataPtr;
@@ -44,7 +44,7 @@ namespace kmlengine {
 
 static const char kDisplayNamePfx[] = "/displayName";
 
-EntityMapper::EntityMapper(const KmlFile& kml_file, StringMap* string_map)
+EntityMapper::EntityMapper(const KmlFilePtr& kml_file, StringMap* string_map)
     : kml_file_(kml_file), entity_map_(string_map) {}
 EntityMapper::~EntityMapper() {}
 
@@ -126,10 +126,9 @@ void EntityMapper::GatherSchemaDataFields(const SchemaDataPtr& schemadata) {
   if (schemadata->has_schemaurl()) {
     // We need to get the name= attr of the <Schema> with the id= attr that
     // matches this schemaUrl.
-    Href href(schemadata->get_schemaurl());
-    if (href.has_fragment()) {
-      SchemaPtr schema = kmldom::AsSchema(
-          kml_file_.GetObjectById(href.get_fragment()));
+    std::string schema_id;
+    if (SplitUriFragment(schemadata->get_schemaurl(), &schema_id)) {
+      SchemaPtr schema = kmldom::AsSchema(kml_file_->GetObjectById(schema_id));
       if (schema) {
         // Now walk all SimpleFields in schema building concatenations of
         // Schema_name/SimpleField_name/displayName (if we have displayName).

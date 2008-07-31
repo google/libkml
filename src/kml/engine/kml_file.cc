@@ -60,8 +60,8 @@ bool KmlFile::_CreateFromParse(const std::string& kml_or_kmz_data,
 bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
                               std::string* errors) {
   std::string kml_data;
-  kmz_file_.reset(kmlengine::KmzFile::OpenFromString(kmz_data));
-  if (!kmz_file_.get() || !kmz_file_->ReadKml(&kml_data)) {
+  kmz_file_ = kmlengine::KmzFile::OpenFromString(kmz_data);
+  if (!kmz_file_ || !kmz_file_->ReadKml(&kml_data)) {
       return false;
   }
   return ParseFromString(kml_data, errors);

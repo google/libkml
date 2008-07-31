@@ -72,7 +72,7 @@ class StyleResolverTest : public CPPUNIT_NS::TestFixture {
   // the check file.
   int ComparePretty(const ElementPtr& element, const char* check_file) const;
   // KmlFile is used for its GetSharedStyleById().
-  KmlFile kml_file_;
+  KmlFilePtr kml_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(StyleResolverTest);
@@ -124,8 +124,9 @@ void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
   std::string kml_data;
   bool status = ReadDataDirFileToString(filename, &kml_data);
   CPPUNIT_ASSERT(status);
-  kml_file_.ParseFromString(kml_data, NULL);
-  CPPUNIT_ASSERT(kml_file_.root());
+  kml_file_ = KmlFile::CreateFromParse(kml_data, NULL);
+  CPPUNIT_ASSERT(kml_file_);
+  CPPUNIT_ASSERT(kml_file_->root());
 }
 
 // This is a utility function to compare the given element to the KML in the
@@ -143,7 +144,7 @@ void StyleResolverTest::TestFiles() {
     // Read the file and find the feature.
     ParseFromDataDirFile(kTestCases[i].source_file_);
     FeaturePtr feature = kmldom::AsFeature(
-        kml_file_.GetObjectById(kTestCases[i].feature_id_));
+        kml_file_->GetObjectById(kTestCases[i].feature_id_));
     CPPUNIT_ASSERT(feature);  // This is internal to the test.
 
     // This is the function under test.

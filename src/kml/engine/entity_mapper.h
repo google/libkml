@@ -50,7 +50,7 @@ class EntityMapper {
   // Instantiate the class with a reference to a KmlFile object.
   // It is the caller's responsibility to ensure that the pointer to the
   // StringMap instance is not NULL.
-  EntityMapper(const KmlFile& kml_file, kmlbase::StringMap* string_map);
+  EntityMapper(const KmlFilePtr& kml_file, kmlbase::StringMap* string_map);
   ~EntityMapper();
 
   // Fills the given StringMap with a mapping of all replaceable entities
@@ -69,7 +69,7 @@ class EntityMapper {
   void GatherSimpleFieldFields(const kmldom::SimpleFieldPtr& simplefield,
                                const kmldom::SchemaPtr& schema);
   void GatherSimpleDataFields(const kmldom::SimpleDataPtr& simpledata);
-  const KmlFile& kml_file_;
+  const KmlFilePtr kml_file_;
   kmlbase::StringMap* entity_map_;
   std::string schemadata_prefix_;
 };

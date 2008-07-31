@@ -30,7 +30,7 @@
 
 #include <string>
 #include <vector>
-#include "boost/scoped_ptr.hpp"
+#include "kml/base/referent.h"
 #include "kml/dom.h"
 #include "kml/engine/engine_types.h"
 #include "kml/engine/kmz_file.h"
@@ -45,7 +45,7 @@ const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
 const char kDefaultEncoding[] = "utf-8";
 
 // The KmlFile class represents the instance of a KML file from a given URL.
-class KmlFile {
+class KmlFile : public kmlbase::Referent {
  public:
   // This creates a KmlFile from a memory buffer of either KML or KMZ data.
   // In the case of Kmz the KmzFile module's ReadKml() is used to read the
@@ -55,8 +55,10 @@ class KmlFile {
   static KmlFile* CreateFromParse(const std::string& kml_or_kmz_data,
                                   std::string *errors);
 
-  // This public constructor permits use creation of an empty KmlFile.
-  KmlFile();
+  // This permits use creation of an empty KmlFile.
+  static KmlFile* Create() {
+    return new KmlFile;
+  }
 
   // This parses the KML in the given input buffer.  The encoding from the XML
   // header is saved if such exists.  The default XML namespace and any
@@ -66,11 +68,13 @@ class KmlFile {
   // clears the internal state of the instance of this class.  If an errors
   // string is supplied any parse errors are stored there.  On any parse
   // error including duplicate id a NULL is returned.
+  // TODO: deprecate.  Use CreateFromParse.
   const kmldom::ElementPtr& ParseFromString(const std::string& kml,
                                             std::string* errors);
 
   // This returns the root element of this KML file.  The initial state of
   // this is NULL.  A parse failure also sets this to NULL>
+  // TODO: get_root()
   const kmldom::ElementPtr& root() const {
     return root_;
   }
@@ -89,6 +93,7 @@ class KmlFile {
   const std::string CreateXmlHeader() const;
 
   // These methods access the XML encoding of the XML file.
+  // TODO: set should be create time only.
   void set_encoding(const std::string& encoding) {
     encoding_ = encoding;
   }
@@ -117,11 +122,14 @@ class KmlFile {
   const std::string& get_url() const {
     return url_;
   }
+  // TODO: should really happen only at Create-time.
   void set_url(const std::string& url) {
     url_ = url;
   }
 
  private:
+  // Constructor is private.  Use static Create methods.
+  KmlFile();
   // These are helper functions for CreateFromParse().
   bool _CreateFromParse(const std::string& kml_or_kmz_data,
                         std::string* errors);
@@ -134,9 +142,11 @@ class KmlFile {
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;
   ElementVector link_parent_vector_;
-  boost::scoped_ptr<kmlengine::KmzFile> kmz_file_;
+  KmzFilePtr kmz_file_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
+
+typedef boost::intrusive_ptr<KmlFile> KmlFilePtr;
 
 }  // end namespace kmlengine
 
