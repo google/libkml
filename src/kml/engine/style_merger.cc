@@ -28,8 +28,8 @@
 
 #include "kml/engine/style_merger.h"
 #include "kml/dom.h"
-#include "kml/engine/href.h"
 #include "kml/engine/kml_file.h"
+#include "kml/engine/kml_uri.h"
 #include "kml/engine/merge.h"
 
 using kmldom::FeaturePtr;
@@ -41,7 +41,7 @@ using kmldom::StyleSelectorPtr;
 
 namespace kmlengine {
 
-StyleMerger::StyleMerger(const KmlFile& kml_file,
+StyleMerger::StyleMerger(const KmlFilePtr& kml_file,
                          kmldom::StyleStateEnum style_state)
     : kml_file_(kml_file), style_state_(style_state) {
   resolved_style_ = KmlFactory::GetFactory()->CreateStyle();
@@ -52,9 +52,9 @@ void StyleMerger::MergeStyle(const std::string& styleurl,
                              const StyleSelectorPtr& styleselector) {
   // If there's a styleUrl to a shared style merge that in first.
   if (!styleurl.empty()) {
-    Href href(styleurl);
-    if (href.has_fragment()) {
-      MergeStyleSelector(kml_file_.GetSharedStyleById(href.get_fragment()));
+    std::string style_id;
+    if (SplitUriFragment(styleurl, &style_id)) {
+      MergeStyleSelector(kml_file_->GetSharedStyleById(style_id));
     }
   }
 
@@ -90,4 +90,3 @@ void StyleMerger::MergeStyleSelector(const StyleSelectorPtr& styleselector) {
 }
 
 }  // endnamespace kmlengine
-

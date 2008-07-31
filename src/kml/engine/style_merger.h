@@ -30,10 +30,9 @@
 
 #include <string>
 #include "kml/dom.h"
+#include "kml/engine/kml_file.h"
 
 namespace kmlengine {
-
-class KmlFile;
 
 // This class computes a resolved style for a Feature in a KML file.
 // Usage is as follows:
@@ -51,7 +50,7 @@ class KmlFile;
 //  // found in the resolution process are set.
 class StyleMerger {
  public:
-  StyleMerger(const KmlFile& kml_file, kmldom::StyleStateEnum style_state);
+  StyleMerger(const KmlFilePtr& kml_file, kmldom::StyleStateEnum style_state);
 
   const kmldom::StylePtr& GetResolvedStyle() const {
     return resolved_style_;
@@ -68,7 +67,7 @@ class StyleMerger {
   void MergeStyleSelector(const kmldom::StyleSelectorPtr& styleselector);
 
  private:
-  const KmlFile& kml_file_;
+  const KmlFilePtr kml_file_;
   const kmldom::StyleStateEnum style_state_;
   kmldom::StylePtr resolved_style_;
 };

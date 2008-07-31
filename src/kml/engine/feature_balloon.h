@@ -47,7 +47,7 @@ namespace kmlengine {
 // Composite the markup for a Feature's "description balloon" and return it as
 // an HTML-formatted string. It is the responsibility of the caller to ensure
 // that feature exists within kml_file.
-std::string CreateBalloonText(const KmlFile& kml_file,
+std::string CreateBalloonText(const KmlFilePtr& kml_file,
                               const kmldom::FeaturePtr& feature);
 
 }  // end namespace kmlengine

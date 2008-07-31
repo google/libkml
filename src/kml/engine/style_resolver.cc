@@ -41,7 +41,7 @@ namespace kmlengine {
 // resolved style for a given Feature within a KML file.  See the header
 // for the full description of usage.
 StylePtr CreateResolvedStyle(const FeaturePtr& feature,
-                             const KmlFile& kml_file,
+                             const KmlFilePtr& kml_file,
                              kmldom::StyleStateEnum style_state) {
   if (!feature) {
     return NULL;

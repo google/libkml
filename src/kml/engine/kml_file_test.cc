@@ -27,7 +27,6 @@
 
 #include "kml/engine/kml_file.h"
 #include <string>
-#include "boost/scoped_ptr.hpp"
 #include "kml/base/unit_test.h"
 #include "kml/dom.h"
 
@@ -62,12 +61,12 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
  public:
   // Called before each test.
   void setUp() {
-    kml_file_.reset(new KmlFile);
+    kml_file_ = KmlFile::Create();
   }
 
   // Called after each test.
   void tearDown() {
-    // scoped_ptr deletes kml_file_
+    // intrusive_ptr deletes kml_file_
   }
 
  protected:
@@ -92,7 +91,7 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void VerifyIsPlacemarkWithName(const ElementPtr& root,
                                  const std::string& name);
   void KmlToKmz(const std::string& kml_data, std::string* kmz_data);
-  boost::scoped_ptr<KmlFile> kml_file_;
+  KmlFilePtr kml_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmlFileTest);
@@ -250,7 +249,7 @@ void KmlFileTest::TestCreateFromParseOfKml() {
   const std::string kName("my name");
   const std::string kKml("<Placemark><name>" + kName + "</name></Placemark>");
   std::string errors;
-  kml_file_.reset(KmlFile::CreateFromParse(kKml, &errors));
+  kml_file_ = KmlFile::CreateFromParse(kKml, &errors);
   CPPUNIT_ASSERT(errors.empty());
   VerifyIsPlacemarkWithName(kml_file_->root(), kName);
 }
@@ -259,7 +258,7 @@ void KmlFileTest::TestCreateFromParseOfKml() {
 void KmlFileTest::TestCreateFromParseOfJunk() {
   const std::string kJunk("this is obviously neither KML nor KMZ");
   std::string errors;
-  kml_file_.reset(KmlFile::CreateFromParse(kJunk, &errors));
+  kml_file_ = KmlFile::CreateFromParse(kJunk, &errors);
 }
 
 // This is an internal helper function to create a KMZ memory buffer for the
@@ -269,7 +268,8 @@ void KmlFileTest::KmlToKmz(const std::string& kml_data,
   kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
   const char* tempname = tempfile->name().c_str();
   CPPUNIT_ASSERT(KmzFile::WriteKmz(tempname, kml_data));
-  boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromFile(tempname));
+  KmzFilePtr kmz_file = KmzFile::OpenFromFile(tempname);
+  CPPUNIT_ASSERT(kmz_file);
   CPPUNIT_ASSERT(kmz_file->ReadKml(kmz_data));
 }
 
@@ -280,7 +280,7 @@ void KmlFileTest::TestCreateFromParseOfKmz() {
   std::string kmz_data;
   KmlToKmz(kKml, &kmz_data);
   std::string errors;
-  kml_file_.reset(KmlFile::CreateFromParse(kmz_data, &errors));
+  kml_file_ = KmlFile::CreateFromParse(kmz_data, &errors);
   CPPUNIT_ASSERT(errors.empty());
   VerifyIsPlacemarkWithName(kml_file_->root(), kName);
 }
@@ -292,9 +292,9 @@ void KmlFileTest::TestGetLinkParents() {
   std::string kml;
   CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(kAllLinks, &kml));
   std::string errors;
-  kml_file_.reset(KmlFile::CreateFromParse(kml, &errors));
+  kml_file_ = KmlFile::CreateFromParse(kml, &errors);
   CPPUNIT_ASSERT(errors.empty());
-  CPPUNIT_ASSERT(kml_file_.get());
+  CPPUNIT_ASSERT(kml_file_);
   const ElementVector& link_parents = kml_file_->get_link_parent_vector();
   // This is obviously exactly matched to the content of alllinks.kml.
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7), link_parents.size());
@@ -320,9 +320,9 @@ void KmlFileTest::TestGetSetUrl() {
 }
 
 void KmlFileTest::TestConstNull() {
-  const KmlFile kml_file;
-  CPPUNIT_ASSERT(!kml_file.GetObjectById("blah"));
-  CPPUNIT_ASSERT(!kml_file.GetSharedStyleById("blah"));
+  const KmlFilePtr kml_file = KmlFile::Create();
+  CPPUNIT_ASSERT(!kml_file->GetObjectById("blah"));
+  CPPUNIT_ASSERT(!kml_file->GetSharedStyleById("blah"));
 }
 
 }  // end namespace kmlengine

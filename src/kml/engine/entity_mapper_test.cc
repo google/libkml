@@ -57,7 +57,7 @@ class EntitiesTest : public CPPUNIT_NS::TestFixture {
   }
 
  private:
-  boost::scoped_ptr<KmlFile> kml_file_;
+  KmlFilePtr kml_file_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(EntitiesTest);
@@ -122,15 +122,15 @@ const static struct {
 
 void EntitiesTest::TestGetEntityFields() {
   std::string errs;
-  kml_file_.reset(KmlFile::CreateFromParse(kEntityKml, NULL));
-  CPPUNIT_ASSERT(kml_file_.get());
+  kml_file_ = KmlFile::CreateFromParse(kEntityKml, NULL);
+  CPPUNIT_ASSERT(kml_file_);
   CPPUNIT_ASSERT(errs.empty());
 
   DocumentPtr doc = kmldom::AsDocument(kml_file_->root());
   PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   kmlbase::StringMap entity_map;
-  EntityMapper entity_mapper(*kml_file_.get(), &entity_map);
+  EntityMapper entity_mapper(kml_file_, &entity_map);
   entity_mapper.GetEntityFields(p);
 
   // Verify that the correct number of entities were extracted from the KML.
@@ -183,12 +183,12 @@ const static struct {
 };
 
 void EntitiesTest::TestCreateExpandedEntities() {
-  kml_file_.reset(KmlFile::CreateFromParse(kEntityKml, NULL));
+  kml_file_ = KmlFile::CreateFromParse(kEntityKml, NULL);
   DocumentPtr doc = kmldom::AsDocument(kml_file_->root());
   PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   kmlbase::StringMap entity_map;
-  EntityMapper entity_mapper(*kml_file_.get(), &entity_map);
+  EntityMapper entity_mapper(kml_file_, &entity_map);
   entity_mapper.GetEntityFields(p);
 
   // Verify that CreateExpandedEntities handles various kinds of entity

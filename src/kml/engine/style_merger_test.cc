@@ -67,6 +67,7 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
  public:
   // Called before each test.
   void setUp() {
+    kml_file_ = KmlFile::Create();
     style_merger_normal_.reset(
         new StyleMerger(kml_file_, kmldom::STYLESTATE_NORMAL));
     style_merger_highlight_.reset(
@@ -91,7 +92,7 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
   void VerifyStyleLineStyle(const StylePtr& style, const std::string& id,
                             const std::string& color, double width) const;
   void VerifyStyleMergersEmpty() const;
-  KmlFile kml_file_;
+  KmlFilePtr kml_file_;
   KmlFactory* factory_;
   boost::scoped_ptr<StyleMerger> style_merger_normal_;
   boost::scoped_ptr<StyleMerger> style_merger_highlight_;
