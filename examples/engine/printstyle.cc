@@ -44,15 +44,16 @@ void HelloCreateResolvedStyle(const std::string& kml_filename,
   }
 
   // Parse using KmlFile.
-  kmlengine::KmlFile kml_file;
   std::string errors;
-  if (!kml_file.ParseFromString(kml_content, &errors)) {
+  kmlengine::KmlFilePtr kml_file =
+      kmlengine::KmlFile::CreateFromParse(kml_content, &errors);
+  if (!kml_file) {
     std::cerr << errors;
     return;
   }
 
   // Look up the Feature
-  kmldom::FeaturePtr feature = kmldom::AsFeature(kml_file.GetObjectById(id));
+  kmldom::FeaturePtr feature = kmldom::AsFeature(kml_file->GetObjectById(id));
   if (!feature) {
     std::cerr << "no feature with id: " << id << std::endl;
     return;

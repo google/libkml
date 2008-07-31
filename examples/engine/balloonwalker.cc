@@ -41,6 +41,7 @@ using kmldom::SerializePretty;
 using kmldom::SnippetPtr;
 using kmldom::StylePtr;
 using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -50,7 +51,7 @@ using std::endl;
 // the composited text to stdout.
 class FeatureBalloonPrinter : public kmlengine::FeatureVisitor {
  public:
-  FeatureBalloonPrinter(const KmlFile& kml_file) :
+  FeatureBalloonPrinter(const KmlFilePtr& kml_file) :
     kml_file_(kml_file) {}
   // The callback from VisitFeatureHierarchy.
   virtual void VisitFeature(const kmldom::FeaturePtr& f) {
@@ -59,12 +60,12 @@ class FeatureBalloonPrinter : public kmlengine::FeatureVisitor {
     cout << kmlengine::CreateBalloonText(kml_file_, f) << endl << endl;
   }
  private:
-  const KmlFile& kml_file_;
+  const KmlFilePtr kml_file_;
 };
 
-void VisitFeatureBalloons(const KmlFile& kml_file) {
+void VisitFeatureBalloons(const KmlFilePtr& kml_file) {
   FeatureBalloonPrinter feature_balloon_printer(kml_file);
-  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file.root()),
+  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file->root()),
                                    feature_balloon_printer);
 }
 
@@ -75,14 +76,13 @@ int HandleFile(const char* filename) {
     return 1;
   }
   std::string errors;
-  boost::scoped_ptr<KmlFile> kml_file(
-      KmlFile::CreateFromParse(file_data, &errors));
-  if (!kml_file.get() || !errors.empty()) {
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(file_data, &errors);
+  if (!kml_file || !errors.empty()) {
     cerr << "parse failed: " << errors << endl;;
     return 1;
   }
 
-  VisitFeatureBalloons(*kml_file.get());
+  VisitFeatureBalloons(kml_file);
   return 0;
 }
 

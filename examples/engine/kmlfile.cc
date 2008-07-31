@@ -46,16 +46,16 @@ void HelloKmlFile() {
     "</kml>";
 
   // Parsing into a KmlFile creates an internal database of object id mappings.
-  kmlengine::KmlFile kml_file;
-  kml_file.ParseFromString(kKml, NULL);
+  kmlengine::KmlFilePtr kml_file = kmlengine::KmlFile::CreateFromParse(kKml,
+                                                                       NULL);
 
   // Access the 3 Features by their XML Id.  Note that GetObjectById() returns
   // a ObjectPtr, hence the use of the cast to access <name>.
-  kmldom::FolderPtr folder0 = AsFolder(kml_file.GetObjectById("f0"));
+  kmldom::FolderPtr folder0 = AsFolder(kml_file->GetObjectById("f0"));
   std::cout << "Folder 0 name: " << folder0->get_name() << std::endl;
-  kmldom::PlacemarkPtr placemark0 = AsPlacemark(kml_file.GetObjectById("pm0"));
+  kmldom::PlacemarkPtr placemark0 = AsPlacemark(kml_file->GetObjectById("pm0"));
   std::cout << "Placemark 0 name: " << placemark0->get_name() << std::endl;
-  kmldom::PlacemarkPtr placemark1 = AsPlacemark(kml_file.GetObjectById("pm1"));
+  kmldom::PlacemarkPtr placemark1 = AsPlacemark(kml_file->GetObjectById("pm1"));
   std::cout << "Placemark 1 name: " << placemark1->get_name() << std::endl;
 }
 
