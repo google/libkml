@@ -31,10 +31,12 @@ namespace kmlbase {
 class StringUtilTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(StringUtilTest);
   CPPUNIT_TEST(TestBasicReplacements);
+  CPPUNIT_TEST(TestSplitStringUsing);
   CPPUNIT_TEST_SUITE_END();
 
  protected:
   void TestBasicReplacements();
+  void TestSplitStringUsing();
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(StringUtilTest);
@@ -66,6 +68,30 @@ void StringUtilTest::TestBasicReplacements() {
   in = "{{{old}}}}{}{one}";
   expected = "{{new}}}{}two";
   CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
+}
+
+void StringUtilTest::TestSplitStringUsing() {
+  const std::string kHi("hi");
+  const std::string kHow("how");
+  const std::string kAre("are");
+  const std::string kYou("you");
+  const std::string kSep("|");
+  const std::string kCsvLine(kHi + kSep + kHow + kSep + kAre + kSep + kYou);
+  std::vector<std::string> parts;
+
+  // A line with no separator gets one thing.  Special case of the "last" item
+  // on a line.
+  SplitStringUsing(kHi, "|", &parts);
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), parts.size());
+
+  // A line with 3 separators gets you 4 things.
+  parts.clear();
+  SplitStringUsing(kCsvLine, "|", &parts);
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(4), parts.size());
+  CPPUNIT_ASSERT_EQUAL(kHi, parts[0]);
+  CPPUNIT_ASSERT_EQUAL(kHow, parts[1]);
+  CPPUNIT_ASSERT_EQUAL(kAre, parts[2]);
+  CPPUNIT_ASSERT_EQUAL(kYou, parts[3]);
 }
 
 }  // end namespace kmlbase

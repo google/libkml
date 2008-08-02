@@ -30,6 +30,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 namespace kmlbase {
 
@@ -48,6 +49,11 @@ std::string CreateExpandedStrings(const std::string& in,
                                   const StringMap& string_map,
                                   const std::string& start,
                                   const std::string& end);
+
+// Split the input string on the split_string saving each string into the
+// output vector.
+void SplitStringUsing(const std::string& input, const std::string& split_string,
+                      std::vector<std::string>* output);
 
 }  // end namespace kmlbase
 

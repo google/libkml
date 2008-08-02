@@ -46,4 +46,15 @@ std::string CreateExpandedStrings(const std::string& in,
   return out;
 }
 
+void SplitStringUsing(const std::string& input, const std::string& split_string,
+                      std::vector<std::string>* output) {
+  std::string iter = input;
+  size_t separator;
+  while ((separator = iter.find(split_string)) != std::string::npos) {
+    output->push_back(iter.substr(0, separator));
+    iter = iter.substr(separator+1);
+  }
+  output->push_back(iter);
+}
+
 }  // end namespace kmlbase
