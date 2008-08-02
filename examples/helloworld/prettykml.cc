@@ -37,6 +37,7 @@
 
 using kmldom::ElementPtr;
 using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 using std::cout;
 using std::endl;
 
@@ -55,9 +56,8 @@ int main(int argc, char** argv) {
 
   // Parse it.
   std::string errors;
-  boost::scoped_ptr<KmlFile> kml_file(
-      KmlFile::CreateFromParse(file_data, &errors));
-  if (!kml_file.get()) {
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(file_data, &errors);
+  if (!kml_file) {
     cout << errors;
     return 1;
   }
