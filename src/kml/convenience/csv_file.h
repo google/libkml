@@ -33,12 +33,6 @@ namespace kmlconvenience {
 
 class FeatureList;
 
-// Split the input string on the split_string saving each string into the
-// output vector.
-// TODO: move into kml/base
-void SplitStringUsing(const std::string& input, const std::string& split_string,
-                      std::vector<std::string>* output);
-
 // This class converts a CSV file into a FeatureList.
 // Usage:
 //   FeatureList feature_list;
@@ -52,7 +46,7 @@ class CsvFile {
       : feature_list_(feature_list) {}
 
   void ParseCsvLine(const std::string& csv_line);
-  
+
   // Create a Point Placemark for each line of the given CSV file.
   void ParseCsvFile(const char* filename);
 
