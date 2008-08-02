@@ -159,7 +159,8 @@ int main(int argc, char** argv) {
     return 1;
   }
   const char* url = argv[1];
-  KmzCache kmz_cache(CurlToString, 30);
+  CurlNetFetcher curl_net_fetcher;
+  KmzCache kmz_cache(&curl_net_fetcher, 30);
   WalkFile(url, &kmz_cache);
   PrintFileCount();
   PrintFeatureCounts();

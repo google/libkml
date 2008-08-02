@@ -47,7 +47,8 @@ int main(int argc, char** argv) {
   const char* url = argv[1];
   const char* output = argc == 3 ? argv[2] : NULL;
 
-  KmzCache kmz_cache(CurlToString, 2);
+  CurlNetFetcher curl_net_fetcher;
+  KmzCache kmz_cache(&curl_net_fetcher, 2);
 
   std::string data;
   if (!kmz_cache.FetchUrl(url, &data)) {
