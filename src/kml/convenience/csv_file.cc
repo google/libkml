@@ -31,6 +31,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
 #include "kml/convenience/convenience.h"
@@ -44,20 +45,9 @@ using kmldom::PlacemarkPtr;
 using kmlconvenience::FeatureList;
 using std::vector;
 
-void SplitStringUsing(const std::string& input, const std::string& split_string,
-                      vector<std::string>* output) {
-  std::string iter = input;
-  size_t separator;
-  while ((separator = iter.find(split_string)) != std::string::npos) {
-    output->push_back(iter.substr(0, separator));
-    iter = iter.substr(separator+1);
-  }
-  output->push_back(iter);
-}
-
 void CsvFile::ParseCsvLine(const std::string& csv_line) {
   vector<std::string> csv_parts;
-  SplitStringUsing(csv_line, "|", &csv_parts);
+  kmlbase::SplitStringUsing(csv_line, "|", &csv_parts);
   if (csv_parts.size() < 5) {
     return;
   }
@@ -71,7 +61,7 @@ void CsvFile::ParseCsvLine(const std::string& csv_line) {
   kmlconvenience::SetFeatureScore(csv_parts[0], placemark);
   feature_list_->PushBack(placemark);
 }
-  
+ 
 // TODO: create a File line getter in kml/base/file.cc
 void CsvFile::ParseCsvFile(const char* filename) {
   std::ifstream csv_file;

@@ -49,7 +49,6 @@ using std::vector;
 class CsvFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(CsvFileTest);
   CPPUNIT_TEST(TestEmpty);
-  CPPUNIT_TEST(TestSplitStringUsing);
   CPPUNIT_TEST(TestParseCsvLine);
   CPPUNIT_TEST(TestParseCsvFile);
   CPPUNIT_TEST_SUITE_END();
@@ -63,7 +62,6 @@ class CsvFileTest : public CPPUNIT_NS::TestFixture {
 
  protected:
   void TestEmpty();
-  void TestSplitStringUsing();
   void TestParseCsvLine();
   void TestParseCsvFile();
 
@@ -76,30 +74,6 @@ CPPUNIT_TEST_SUITE_REGISTRATION(CsvFileTest);
 void CsvFileTest::TestEmpty() {
   FeatureList feature_list;
   CsvFile cvs_file(&feature_list);
-}
-
-void CsvFileTest::TestSplitStringUsing() {
-  const std::string kHi("hi");
-  const std::string kHow("how");
-  const std::string kAre("are");
-  const std::string kYou("you");
-  const std::string kSep("|");
-  const std::string kCsvLine(kHi + kSep + kHow + kSep + kAre + kSep + kYou);
-  vector<std::string> parts;
-
-  // A line with no separator gets one thing.  Special case of the "last" item
-  // on a line.
-  SplitStringUsing(kHi, "|", &parts);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), parts.size());
-
-  // A line with 3 separators gets you 4 things.
-  parts.clear();
-  SplitStringUsing(kCsvLine, "|", &parts);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(4), parts.size());
-  CPPUNIT_ASSERT_EQUAL(kHi, parts[0]);
-  CPPUNIT_ASSERT_EQUAL(kHow, parts[1]);
-  CPPUNIT_ASSERT_EQUAL(kAre, parts[2]);
-  CPPUNIT_ASSERT_EQUAL(kYou, parts[3]);
 }
 
 static const struct CsvTestLine {
