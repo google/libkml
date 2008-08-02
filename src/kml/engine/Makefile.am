@@ -53,8 +53,7 @@ libkmlengineinclude_HEADERS = \
 	object_id_parser_observer.h \
 	shared_style_parser_observer.h \
 	style_merger.h \
-	style_resolver.h \
-	uri_parser.h
+	style_resolver.h
 
 if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
@@ -77,8 +76,7 @@ TESTS = bbox_test \
 	object_id_parser_observer_test \
 	shared_style_parser_observer_test \
 	style_merger_test \
-	style_resolver_test \
-	uri_parser_test
+	style_resolver_test
 
 check_PROGRAMS = $(TESTS)
 
@@ -164,7 +162,8 @@ kmz_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFL
 kmz_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
 kmz_cache_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
 
 kmz_file_test_SOURCES = kmz_file_test.cc
 kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
@@ -220,14 +219,6 @@ style_resolver_test_LDFLAGS = $(CPPUNIT_LIBS)
 style_resolver_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
-
-uri_parser_test_SOURCES = uri_parser_test.cc
-uri_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-uri_parser_test_LDFLAGS = $(CPPUNIT_LIBS)
-uri_parser_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
 
 CLEANFILES = check_PROGRAMS
 endif
