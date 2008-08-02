@@ -27,7 +27,16 @@
 #define EXAMPLES_HELLONET_CURLFETCH_H__
 
 #include <string>
+#include "kml/base/net_cache.h"
 
 bool CurlToString(const char* url, std::string* data);
+
+// This class matches the NetFetcher concept used with kmlbase::NetCache.
+class CurlNetFetcher : public kmlbase::NetFetcher {
+ public:
+  bool FetchUrl(const std::string& url, std::string* data) const {
+    return CurlToString(url.c_str(), data);
+  }
+};
 
 #endif  // EXAMPLES_HELLONET_CURLFETCH_H__
