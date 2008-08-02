@@ -29,6 +29,7 @@
 // focus on the API behavior of the kml_uri.h functions themselves.
 
 #include "kml/engine/kml_uri.h"
+#include "kml/base/net_cache_test_util.h"
 #include "kml/dom.h"
 #include "kml/engine/find.h"
 #include "kml/engine/kml_file.h"
@@ -57,6 +58,9 @@ class KmlUriTest : public CPPUNIT_NS::TestFixture {
   void TestKmzSplit();
   void TestBasicResolveModelTargetHref();
   void TestModelTargetHrefOnKmz();
+
+ private:
+  kmlbase::TestDataNetFetcher testdata_net_fetcher_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmlUriTest);
@@ -127,20 +131,15 @@ void KmlUriTest::TestBasicResolveModelTargetHref() {
   CPPUNIT_ASSERT(!ResolveModelTargetHref("", "", "", NULL));
 }
 
-// This is a KmzCache NetworkFetchFunc particular to TestModelTargetHrefOnKmz.
-static bool MackyModelFetcher(const char* url, std::string* content) {
-  // The url is ignored because this is intended to fetch exactly one thing.
-  return kmlbase::File::ReadFileToString(
-      std::string(DATADIR) + "/kmz/model-macky.kmz", content);
-}
-
 // This is a real-world test of ResolveModelTargetHref on all targetHref's
 // in the model-macky.kmz test file.
 void KmlUriTest::TestModelTargetHrefOnKmz() {
-  // Create a KmzCache instance with mock fetcher.
-  KmzCache kmz_cache(MackyModelFetcher, 1);
-  // Make up a reasonable enough URL for the benefit of KmzCache.
-  const std::string kMackyUrl("http://host.com/bldgs/model-macky.kmz/doc.kml");
+  // Create a KmzCache instance with NetFetcher into testdata area.
+  KmzCache kmz_cache(&testdata_net_fetcher_, 1);
+
+  // Make up a reasonable enough URL for the benefit of KmzCache and
+  // TestDataNetFetcher.
+  const std::string kMackyUrl("http://host.com/kmz/model-macky.kmz/doc.kml");
 
   // Fetch the model-macky.kmz file into the KmzCache.
   std::string kml_data;
@@ -148,7 +147,7 @@ void KmlUriTest::TestModelTargetHrefOnKmz() {
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), kmz_cache.Size());
 
   // Parse the default KML file.
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromParse(kml_data, NULL));
+  KmlFilePtr kml_file = KmlFile::CreateFromParse(kml_data, NULL);
   CPPUNIT_ASSERT(kml_file.get());
 
   // Find the one Model we know is there.

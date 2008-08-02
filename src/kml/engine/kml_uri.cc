@@ -27,7 +27,9 @@
 
 #include "kml/engine/kml_uri.h"
 #include "boost/scoped_ptr.hpp"
-#include "kml/engine/uri_parser.h"
+#include "kml/base/uri_parser.h"
+
+using kmlbase::UriParser;
 
 namespace kmlengine {
 
@@ -83,16 +85,16 @@ bool SplitUriFragment(const std::string& uri, std::string* fragment) {
 
 bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
               std::string* kmz_path) {
-  size_t kmz = kml_url.find(".kmz"); 
+  size_t kmz = kml_url.find(".kmz");
   if (kmz == std::string::npos) {
     return false;
-  } 
+  }
   if (kmz_url) {
     *kmz_url = kml_url.substr(0, kmz + 4);
-  } 
+  }
   if (kmz_path && kml_url.size() > kmz + 4) {
     *kmz_path = kml_url.substr(kmz + 4 + 1);  // one past / after ".kmz/"
-  } 
+  }
   return true;
 }
 
