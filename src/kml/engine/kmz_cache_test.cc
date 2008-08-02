@@ -30,6 +30,7 @@
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
+#include "kml/base/net_cache_test_util.h"
 #include "kml/base/unit_test.h"
 #include "kml/engine/kml_uri.h"
 
@@ -45,43 +46,24 @@ const static struct {
   const char* kmz_test_file;
 } kMockKmzNet[] = {
   {
-  "http://somehost.com/somedir/doc.kmz",
+  "http://somehost.com/kmz/doc.kmz",
   "/kmz/doc.kmz",
   },
   {
-  "http://otherhost.com/bldgs/model-macky.kmz",
+  "http://otherhost.com/kmz/model-macky.kmz",
   "/kmz/model-macky.kmz",
   },
   {
-  "http://localhost/photos/zermatt-photo.kmz",
+  "http://localhost/kmz/zermatt-photo.kmz",
   "/kmz/zermatt-photo.kmz",
   },
   {
-  "http://foo.com/blah/screen-overlay-continents.kmz",
+  "http://foo.com/kmz/screenoverlay-continents.kmz",
   "/kmz/screenoverlay-continents.kmz",
   }
 };
 
 const size_t kMaxTestCacheSize = 3;
-
-// This is the NetworkFetchFunc used within this unit test.  This essentially
-// mocks out any and all networking.  The "network" is the URLs in kMockKmzNet
-// whose content are DATADIR kmz files.
-static bool MockUrlFetcher(const char* url, std::string* content) {
-  if (!content) {
-    return false;
-  }
-  CPPUNIT_ASSERT(url);
-  for (size_t i = 0; i < sizeof(kMockKmzNet)/sizeof(kMockKmzNet[0]); ++i) {
-    if (strcmp(url, kMockKmzNet[i].url) == 0) {
-      // Read the kmz data from the test dir into the content buf.
-      CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(
-          std::string(DATADIR) + kMockKmzNet[i].kmz_test_file, content));
-      return true;
-    }
-  }
-  return false;  // No such URL in our network.
-}
 
 class KmzCacheTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(KmzCacheTest);
@@ -94,7 +76,7 @@ class KmzCacheTest : public CPPUNIT_NS::TestFixture {
 
  public:
   void setUp() {
-    kmz_cache_.reset(new KmzCache(MockUrlFetcher, kMaxTestCacheSize));
+    kmz_cache_.reset(new KmzCache(&testdata_net_fetcher_, kMaxTestCacheSize));
   }
 
   void tearDown() {
@@ -109,6 +91,7 @@ class KmzCacheTest : public CPPUNIT_NS::TestFixture {
   void TestOverflowCacheWithFetchUrl();
 
  private:
+  kmlbase::TestDataNetFetcher testdata_net_fetcher_;
   boost::scoped_ptr<KmzCache> kmz_cache_;
   void VerifyContentInCache(const std::string& kml_url,
                             const std::string& want_data);
