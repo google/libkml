@@ -58,6 +58,10 @@ class KmzFile : public kmlbase::Referent {
   // returns NULL.
   static KmzFile* OpenFromString(const std::string& kmz_data);
 
+  static KmzFile* CreateFromString(const std::string& kmz_data) {
+    return OpenFromString(kmz_data);
+  }
+
   // Checks to see if kmz_data looks like a PK ZIP file.
   static bool IsKmz(const std::string& kmz_data);
 
