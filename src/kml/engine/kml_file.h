@@ -41,6 +41,8 @@
 
 namespace kmlengine {
 
+class KmlCache;
+
 const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
 const char kDefaultEncoding[] = "utf-8";
 
@@ -54,6 +56,25 @@ class KmlFile : public kmlbase::Referent {
   // The caller is responsible for deleting the KmlFile this creates.
   static KmlFile* CreateFromParse(const std::string& kml_or_kmz_data,
                                   std::string *errors);
+
+  // This method is for use with NetCache CacheItem.
+  static KmlFile* CreateFromString(const std::string& kml_or_kmz_data) {
+    // Internal KML fetch/parse (styleUrl, etc) errors are quietly ignored.
+    return CreateFromParse(kml_or_kmz_data, NULL);
+  }
+
+  // This method is for use with KmlCache.  The purpose is to keep set_url()
+  // and set_kml_cache() private and at creation-time.
+  static KmlFile* CreateFromStringWithUrl(const std::string& kml_data,
+                                          const std::string& url,
+                                          KmlCache* kml_cache) {
+    if (KmlFile* kml_file = CreateFromString(kml_data)) {
+      kml_file->set_url(url);
+      kml_file->set_kml_cache(kml_cache);
+      return kml_file;
+    }
+    return NULL;
+  }
 
   // This permits use creation of an empty KmlFile.
   static KmlFile* Create() {
@@ -118,18 +139,29 @@ class KmlFile : public kmlbase::Referent {
     return link_parent_vector_;
   }
 
-  // These get/set the URL associated with this KmlFile.
+  // This is the URL from which this KmlFile was fetched.  This may be empty
+  // if this KmlFile was not created using CreateFromStringWithUrl().
   const std::string& get_url() const {
     return url_;
   }
-  // TODO: should really happen only at Create-time.
-  void set_url(const std::string& url) {
-    url_ = url;
+
+  // This is the KmlCache which created this KmlFile.  This may NULL if this
+  // KmlFile was not created using CreateFromStringWithUrl().
+  KmlCache* get_kml_cache() const {
+    return kml_cache_;
   }
 
  private:
   // Constructor is private.  Use static Create methods.
   KmlFile();
+  // Only static Create methods can set the KmlCache.
+  void set_kml_cache(KmlCache* kml_cache) {
+    kml_cache_ = kml_cache;
+  }
+  // Only static Create methods can set the URL.
+  void set_url(const std::string& url) {
+    url_ = url;
+  }
   // These are helper functions for CreateFromParse().
   bool _CreateFromParse(const std::string& kml_or_kmz_data,
                         std::string* errors);
@@ -143,6 +175,7 @@ class KmlFile : public kmlbase::Referent {
   SharedStyleMap shared_style_map_;
   ElementVector link_parent_vector_;
   KmzFilePtr kmz_file_;
+  KmlCache* kml_cache_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
 
