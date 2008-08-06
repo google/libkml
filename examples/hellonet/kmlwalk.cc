@@ -40,27 +40,37 @@ using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
 using kmldom::NetworkLinkPtr;
 using kmldom::OverlayPtr;
+using kmldom::StylePtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
-using kmlengine::KmzCache;
+using kmlengine::KmlCache;
 using std::cout;
 using std::endl;
 
 static void CountFeature(int type_id);
 static void PrintFeatureCounts();
 static void PrintFileCount();
-static void WalkFile(const std::string& url, KmzCache* kmz_cache);
+static void WalkKmlFile(const KmlFilePtr& kml_file);
 
 static int file_count;
+static int feature_count;
+static size_t data_size;
+static size_t style_size;
+static size_t balloon_size;
 
 static void PrintFileCount() {
   cout << "files " << file_count << endl;
+  cout << "features " << feature_count << endl;
+  cout << "data bytes " << data_size << endl;
+  cout << "style bytes " << style_size << endl;
+  cout << "balloon bytes " << balloon_size << endl;
 }
 
 typedef std::map<int,int> feature_counter_t;
 feature_counter_t feature_counter;
 
 static void CountFeature(int type_id) {
+  ++feature_count;
   feature_counter_t::const_iterator entry = feature_counter.find(type_id);
   if (entry == feature_counter.end()) {
     feature_counter[type_id] = 1;
@@ -80,22 +90,29 @@ static void PrintFeatureCounts() {
 
 class FeatureCounter : public kmlengine::FeatureVisitor {
  public:
-  FeatureCounter(const KmlFilePtr& kml_file, KmzCache* kmz_cache)
-      : kml_file_(kml_file), kmz_cache_(kmz_cache) {}
+  FeatureCounter(const KmlFilePtr& kml_file)
+      : kml_file_(kml_file) {}
 
   virtual void VisitFeature(const kmldom::FeaturePtr& feature) {
     CountFeature(feature->Type());
+    StylePtr style = CreateResolvedStyle(feature, kml_file_,
+                                         kmldom::STYLESTATE_NORMAL);
+    std::string style_string = kmldom::SerializePretty(style);
+    style_size += style_string.size();
+    std::string balloon_text = CreateBalloonText(kml_file_, feature);
+    balloon_size += balloon_text.size();
     if (OverlayPtr overlay = AsOverlay(feature)) {
       std::string href;
       if (kmlengine::GetIconParentHref(overlay, &href)) {
         std::string url;
         if (kmlengine::ResolveUri(kml_file_->get_url(), href, &url)) {
           std::string data;
-          if (!kmz_cache_->FetchUrl(url.c_str(), &data)) {
+          if (!kml_file_->get_kml_cache()->FetchData(url.c_str(), &data)) {
             cout << "fetch failed " << url << endl;
             return;
           }
           cout << href << " bytes " << data.size() << endl;
+          data_size += data.size();
         }
       }
     }
@@ -103,54 +120,37 @@ class FeatureCounter : public kmlengine::FeatureVisitor {
 
  private:
   const KmlFilePtr kml_file_;
-  KmzCache* kmz_cache_;
 };
 
-static void HandleFile(const KmlFilePtr& kml_file, KmzCache* kmz_cache) {
-  FeatureCounter feature_counter(kml_file, kmz_cache);
+static void HandleFile(const KmlFilePtr& kml_file) {
+  cout << kml_file->get_url() << endl;
+  ++file_count;
+  FeatureCounter feature_counter(kml_file);
   kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file->root()),
                                    feature_counter);
 }
 
-static void WalkNetworkLinks(const KmlFilePtr& kml_file, KmzCache* kmz_cache) {
+static void WalkNetworkLinks(const KmlFilePtr& kml_file) {
   const kmlengine::ElementVector& link_vector =
       kml_file->get_link_parent_vector();
   for (size_t i = 0; i < link_vector.size(); ++i) {
     if (NetworkLinkPtr networklink = AsNetworkLink(link_vector[i])) {
       std::string href;
       if (kmlengine::GetLinkParentHref(networklink, &href)) {
-         std::string url;
-         if (kmlengine::ResolveUri(kml_file->get_url(), href, &url)) {
-           WalkFile(url, kmz_cache);
+         std::string kml_url;
+         if (kmlengine::ResolveUri(kml_file->get_url(), href, &kml_url)) {
+           WalkKmlFile(kml_file->get_kml_cache()->FetchKml(kml_url));
          }
       }
     }
   }
 }
 
-static void WalkFile(const std::string& url, KmzCache* kmz_cache) {
-  cout << url << endl;
-
-  std::string kml;
-  if (!kmz_cache->FetchUrl(url.c_str(), &kml)) {
-    cout << "fetch failed " << url << endl;
-    return;
-  }
-
-  // Parse it.
-  std::string errors;
-  KmlFilePtr kml_file = KmlFile::CreateFromParse(kml, &errors);
-  if (!kml_file) {
-    cout << "parse failed " << url << endl;
-    cout << errors;
-    return;
-  }
-  kml_file->set_url(url);
-  ++file_count;
-
-  HandleFile(kml_file, kmz_cache);
-
-  WalkNetworkLinks(kml_file, kmz_cache);
+static void WalkKmlFile(const KmlFilePtr& kml_file) {
+  // First walk through this KmlFile's Features.
+  HandleFile(kml_file);
+  // Then walk recursively through all of its NetworkLinks.
+  WalkNetworkLinks(kml_file);
 }
 
 int main(int argc, char** argv) {
@@ -158,10 +158,15 @@ int main(int argc, char** argv) {
     cout << "usage: " << argv[0] << " url" << endl;
     return 1;
   }
-  const char* url = argv[1];
+  const char* kml_url = argv[1];
   CurlNetFetcher curl_net_fetcher;
-  KmzCache kmz_cache(&curl_net_fetcher, 30);
-  WalkFile(url, &kmz_cache);
+  KmlCache kml_cache(&curl_net_fetcher, 30);
+  const KmlFilePtr kml_file = kml_cache.FetchKml(kml_url);
+  if (!kml_file) {
+    std::cerr << "failed: " << kml_url << std::endl;
+    return 1;
+  }
+  WalkKmlFile(kml_file);
   PrintFileCount();
   PrintFeatureCounts();
 }
