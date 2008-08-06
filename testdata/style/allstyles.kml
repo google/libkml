@@ -40,7 +40,12 @@
 -->
       <bgColor>00112233</bgColor>
       <textColor>33221100</textColor>
-      <text><![CDATA[<b>$[name]</b><br/><br/>$[description]]]></text>
+      <!--
+      XHTML in CDATA must conform to the HTML Compatibility guidelines as
+      detailed in http://www.w3.org/TR/xhtml1/#guidelines. See in particular section
+      C2, which requires <br /> over <br>.
+      -->
+      <text><![CDATA[<b>$[name]</b><br /><br />$[description]]]></text>
       <displayMode>hide</displayMode>
     </BalloonStyle>
 <!-- TODO serialize attrs
