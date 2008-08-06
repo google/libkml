@@ -1,13 +1,44 @@
-AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
+AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
+	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
 
-SUBDIRS = uriparser-0.7.1
+lib_LTLIBRARIES = libminizip.la liburiparser.la
 
-lib_LTLIBRARIES = libminizip.la
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
 	zlib-1.2.3/contrib/minizip/ioapi.c \
 	zlib-1.2.3/contrib/minizip/zip.c
 libminizip_la_LDFLAGS = -lz
+
+liburiparser_la_SOURCES = \
+	uriparser-0.7.1/lib/UriCommon.c \
+	uriparser-0.7.1/lib/UriCommon.h \
+	uriparser-0.7.1/lib/UriCompare.c \
+	uriparser-0.7.1/lib/UriEscape.c \
+	uriparser-0.7.1/lib/UriFile.c \
+	uriparser-0.7.1/lib/UriIp4.c \
+	uriparser-0.7.1/lib/UriIp4Base.c \
+	uriparser-0.7.1/lib/UriIp4Base.h \
+	uriparser-0.7.1/lib/UriNormalize.c \
+	uriparser-0.7.1/lib/UriNormalizeBase.c \
+	uriparser-0.7.1/lib/UriNormalizeBase.h \
+	uriparser-0.7.1/lib/UriParse.c \
+	uriparser-0.7.1/lib/UriParseBase.c \
+	uriparser-0.7.1/lib/UriParseBase.h \
+	uriparser-0.7.1/lib/UriQuery.c \
+	uriparser-0.7.1/lib/UriRecompose.c \
+	uriparser-0.7.1/lib/UriResolve.c \
+	uriparser-0.7.1/lib/UriShorten.c
+uriparser = uriparser-0.7.1
+uriparserinc = $(includedir)/kml/third_party/$(boost)/include
+liburiparserincludedir = $(uriparserinc)
+liburiparserinclude_HEADERS = \
+	$(uriparser)/include/uriparser/Uri.h \
+	$(uriparser)/include/uriparser/UriBase.h \
+	$(uriparser)/include/uriparser/UriDefsAnsi.h \
+	$(uriparser)/include/uriparser/UriDefsConfig.h \
+	$(uriparser)/include/uriparser/UriDefsUnicode.h \
+	$(uriparser)/include/uriparser/UriIp4.h
+liburiparser_la_LDFLAGS = -version-info 1:5:0
 
 boost = boost_1_34_1/boost
 boostinc = $(includedir)/kml/third_party/$(boost)
