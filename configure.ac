@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl Make sure we're interpreted by some minimal autoconf.
 AC_PREREQ(2.57)
 
-AC_INIT(libkml, 0.3.2, http://code.google.com/p/libkml/issues)
+AC_INIT(libkml, 0.4.0, http://code.google.com/p/libkml/issues)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
@@ -205,8 +205,8 @@ AC_CONFIG_FILES([
 	testdata/kmz/Makefile
 	testdata/links/Makefile
 	testdata/style/Makefile
+	testdata/style/weather/Makefile
 	third_party/Makefile
-	third_party/uriparser-0.7.1/Makefile
 ])
 
 AC_OUTPUT
