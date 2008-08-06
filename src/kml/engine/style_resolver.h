@@ -29,6 +29,7 @@
 #define KML_ENGINE_STYLE_RESOLVER_H__
 
 #include "kml/dom.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 
 namespace kmlengine {
