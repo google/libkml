@@ -21,15 +21,16 @@ libkmlbaseinclude_HEADERS = \
 	memory_file.h \
 	net_cache.h \
 	referent.h \
-	tempfile.h \
 	string_util.h \
+	tempfile.h \
 	time_util.h \
 	unit_test.h \
 	uri_parser.h \
 	util.h
 
 EXTRA_DIST = \
-	file_win32.cc
+	file_win32.cc \
+	net_cache_test_util.h
 
 if HAVE_CPPUNIT 
 DATA_DIR = $(top_srcdir)/testdata
@@ -53,7 +54,7 @@ net_cache_test_SOURCES = net_cache_test.cc
 net_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)
 net_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
 net_cache_test_LDADD = libkmlbase.la \
-        $(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
+        $(top_builddir)/third_party/liburiparser.la
 
 referent_test_SOURCES = referent_test.cc
 referent_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
@@ -80,7 +81,7 @@ uri_parser_test_SOURCES = uri_parser_test.cc
 uri_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 uri_parser_test_LDFLAGS = $(CPPUNIT_LIBS)
 uri_parser_test_LDADD= libkmlbase.la \
-        $(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
+        $(top_builddir)/third_party/liburiparser.la
 
 CLEANFILES = check_PROGRAMS
 endif
