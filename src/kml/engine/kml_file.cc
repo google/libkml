@@ -67,7 +67,7 @@ bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
   return ParseFromString(kml_data, errors);
 }
 
-KmlFile::KmlFile() {
+KmlFile::KmlFile() : kml_cache_(NULL) {
   Clear();
 }
 

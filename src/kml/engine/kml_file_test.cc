@@ -27,8 +27,10 @@
 
 #include "kml/engine/kml_file.h"
 #include <string>
+#include "kml/base/net_cache.h"
 #include "kml/base/unit_test.h"
 #include "kml/dom.h"
+#include "kml/engine/kml_cache.h"
 
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
@@ -54,8 +56,10 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestCreateFromParseOfJunk);
   CPPUNIT_TEST(TestCreateFromParseOfKmz);
   CPPUNIT_TEST(TestGetLinkParents);
-  CPPUNIT_TEST(TestGetSetUrl);
   CPPUNIT_TEST(TestConstNull);
+  CPPUNIT_TEST(TestBasicCreateFromString);
+  CPPUNIT_TEST(TestBasicCreateFromStringWithUrl);
+  CPPUNIT_TEST(TestCreateWithKmlCache);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -84,8 +88,10 @@ class KmlFileTest : public CPPUNIT_NS::TestFixture {
   void TestCreateFromParseOfJunk();
   void TestCreateFromParseOfKmz();
   void TestGetLinkParents();
-  void TestGetSetUrl();
   void TestConstNull();
+  void TestBasicCreateFromString();
+  void TestBasicCreateFromStringWithUrl();
+  void TestCreateWithKmlCache();
 
  private:
   void VerifyIsPlacemarkWithName(const ElementPtr& root,
@@ -168,7 +174,7 @@ void KmlFileTest::TestObjectIdDupe() {
 
 void KmlFileTest::TestObjectIdMapReplaced() {
   const std::string kTestId("the-id");
-  
+
   // Verify that the given id is not found.
   CPPUNIT_ASSERT(!kml_file_->GetObjectById(kTestId));
 
@@ -204,7 +210,7 @@ void KmlFileTest::TestBasicGetSharedStyleById() {
       "</Folder>"
     "</Document>", NULL);
   CPPUNIT_ASSERT(root);  // Verify the parse succeeded.
-  
+
   // Verify both shared style selectors were found.
   kmldom::StyleSelectorPtr style = kml_file_->GetSharedStyleById(kStyleId);
   CPPUNIT_ASSERT(AsStyle(style));  // Verify it's a <Style>
@@ -312,17 +318,50 @@ void KmlFileTest::TestGetLinkParents() {
 #endif
 }
 
-// Verify set_url() and get_url().
-void KmlFileTest::TestGetSetUrl() {
-  const std::string kUrl("http://example.com/foo/boo.kml");
-  kml_file_->set_url(kUrl);
-  CPPUNIT_ASSERT_EQUAL(kUrl, kml_file_->get_url());
-}
-
+// Verify const behavior.
 void KmlFileTest::TestConstNull() {
   const KmlFilePtr kml_file = KmlFile::Create();
   CPPUNIT_ASSERT(!kml_file->GetObjectById("blah"));
   CPPUNIT_ASSERT(!kml_file->GetSharedStyleById("blah"));
+}
+
+// Verify basic usage of the CreateFromString() static method.
+void KmlFileTest::TestBasicCreateFromString() {
+  const std::string kName("my name");
+  const std::string kPlacemark("<Placemark><name>" + kName +
+                               "</name></Placemark>");
+  kml_file_ = KmlFile::CreateFromString(kPlacemark);
+  CPPUNIT_ASSERT(kml_file_);
+}
+
+// Verify basic usage of the CreateFromStringWithUrl() static method.
+void KmlFileTest::TestBasicCreateFromStringWithUrl() {
+  const std::string kName("my name");
+  const std::string kPlacemark("<Placemark><name>" + kName +
+                               "</name></Placemark>");
+  const std::string kUrl("http://foo.com/goo/baz.kml");
+  // There's no requirement a NetCache need exist.
+  kml_file_ = KmlFile::CreateFromStringWithUrl(kPlacemark, kUrl, NULL);
+  CPPUNIT_ASSERT(kml_file_);
+  CPPUNIT_ASSERT_EQUAL(kUrl, kml_file_->get_url());
+  kmldom::PlacemarkPtr placemark = AsPlacemark(kml_file_->root());
+  CPPUNIT_ASSERT(placemark);
+  CPPUNIT_ASSERT_EQUAL(kName, placemark->get_name());
+  CPPUNIT_ASSERT(!kml_file_->get_kml_cache());
+}
+
+// Verify CreateFromStringWithUrl() with a KmlCache.
+void KmlFileTest::TestCreateWithKmlCache() {
+  kmlbase::NetFetcher null_net_fetcher;
+  KmlCache kml_cache(&null_net_fetcher, 1);
+  const std::string kName("my name");
+  const std::string kPlacemark("<Placemark><name>" + kName +
+                               "</name></Placemark>");
+  const std::string kUrl("http://foo.com/goo/baz.kml");
+  // Typically the KmlCache is the one that created the KmlFile.
+  kml_file_ = KmlFile::CreateFromStringWithUrl(kPlacemark, kUrl, &kml_cache);
+  CPPUNIT_ASSERT_EQUAL(kUrl, kml_file_->get_url());
+  CPPUNIT_ASSERT_EQUAL(&kml_cache, kml_file_->get_kml_cache());
 }
 
 }  // end namespace kmlengine
