@@ -205,11 +205,13 @@ const static struct {
   },
   {
   "name-description-entity",
-  "<h3>named</h3><br/><br/>name is named<br/>id is name-description-entity"
+  // TODO: the one br is kind of odd...
+  "<h3>named</h3><br/><br/>name is named<br />id is name-description-entity"
   },
   {
   "simple-balloon-style",
-  "name is named<br/>id is simple-balloon-style"
+  // TODO: same case as above
+  "name is named<br />id is simple-balloon-style"
   },
   {
   "extendeddata-data",
