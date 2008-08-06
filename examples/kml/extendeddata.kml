@@ -19,13 +19,18 @@
     <description>__DESCRIPTION__</description>
     <Style>
       <BalloonStyle>
+        <!--
+        XHTML in CDATA must conform to the HTML Compatibility guidelines as
+        detailed in http://www.w3.org/TR/xhtml1/#guidelines. See in particular section
+        C2, which requires <br /> over <br>.
+        -->
         <text><![CDATA[
-          <b>$[name]</b><br/><br/>
-          <i>$[description]<i><br/><br/>
+          <b>$[name]</b><br /><br />
+          <i>$[description]<i><br /><br />
           The $[TrailHeadType/TrailHeadName/displayName] is
-          <i>$[TrailHeadType/TrailHeadName]</i><br/>
-          The trail is $[TrailHeadType/TrailLength] miles<br/>
-          The climb is $[TrailHeadType/ElevationGain] meters<br/><br/>
+          <i>$[TrailHeadType/TrailHeadName]</i><br />
+          The trail is $[TrailHeadType/TrailLength] miles<br />
+          The climb is $[TrailHeadType/ElevationGain] meters<br /><br />
           $[geDirections]
         ]]></text>  <!-- TODO: decide on $[geDirections -->
       </BalloonStyle>
