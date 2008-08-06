@@ -38,6 +38,7 @@
 #include "kml/engine/find.h"
 #include "kml/engine/get_links.h"
 #include "kml/engine/href.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kml_uri.h"
 #include "kml/engine/kmz_cache.h"
