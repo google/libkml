@@ -29,6 +29,7 @@
 #include "kml/engine/style_merger.h"
 #include "kml/dom.h"
 #include "kml/engine/href.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/merge.h"
 
