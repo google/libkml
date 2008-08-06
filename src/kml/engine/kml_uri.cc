@@ -83,6 +83,39 @@ bool SplitUriFragment(const std::string& uri, std::string* fragment) {
   return uri_parser->GetFragment(fragment);
 }
 
+bool GetFetchableUri(const std::string& uri, std::string* fetchable_uri) {
+  boost::scoped_ptr<UriParser> uri_parser(
+      UriParser::CreateFromParse(uri.c_str()));
+  if (!uri_parser.get()) {
+    return false;
+  }
+
+  if (!fetchable_uri) {
+    return true;  // uri parsed fine, just not interested in output.
+  }
+  std::string scheme;
+  uri_parser->GetScheme(&scheme);
+  std::string host;
+  uri_parser->GetHost(&host);
+
+  if (!scheme.empty() && !host.empty()) {
+    fetchable_uri->append(scheme).append("://",3).append(host);
+    std::string port;
+    uri_parser->GetPort(&port);
+    if (!port.empty()) {
+      fetchable_uri->append(":",1).append(port);
+    }
+    fetchable_uri->append("/",1);
+  }
+
+  std::string path;
+  uri_parser->GetPath(&path);
+  if (!path.empty()) {
+    fetchable_uri->append(path);
+  }
+  return true;
+}
+
 bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
               std::string* kmz_path) {
   size_t kmz = kml_url.find(".kmz");
