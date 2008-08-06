@@ -101,6 +101,10 @@ bool SplitUriFragment(const std::string& uri, std::string* fragment);
 // If is has a path and the string pointer is supplied it is saved there.
 bool SplitUriPath(const std::string& uri, std::string* path);
 
+// This function returns true if the given uri is valid.  If the fetchable_uri
+// output string is supplied a uri w/o the fragment is stored there.
+bool GetFetchableUri(const std::string& uri, std::string* fetchable_uri);
+
 // TODO: split query name-value pairs
 
 // This is a KML standard method to separate the network fetchable URL from
