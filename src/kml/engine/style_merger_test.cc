@@ -27,9 +27,10 @@
 
 #include "kml/engine/style_merger.h"
 #include "boost/scoped_ptr.hpp"
+#include "kml/base/net_cache_test_util.h"
+#include "kml/base/unit_test.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
-#include "kml/base/unit_test.h"
 
 using kmldom::FeaturePtr;
 using kmldom::KmlFactory;
@@ -40,6 +41,8 @@ using kmldom::StyleMapPtr;
 using kmldom::StyleSelectorPtr;
 
 namespace kmlengine {
+
+static const size_t kKmlNetCacheCacheSize = 10;
 
 class StyleMergerTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(StyleMergerTest);
@@ -67,6 +70,8 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
  public:
   // Called before each test.
   void setUp() {
+    kml_file_net_cache_.reset(new KmlFileNetCache(&test_data_net_fetcher_,
+                                                  kKmlNetCacheCacheSize));
     kml_file_ = KmlFile::Create();
     style_merger_normal_.reset(
         new StyleMerger(kml_file_, kmldom::STYLESTATE_NORMAL));
@@ -93,6 +98,8 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
                             const std::string& color, double width) const;
   void VerifyStyleMergersEmpty() const;
   KmlFilePtr kml_file_;
+  kmlbase::TestDataNetFetcher test_data_net_fetcher_;
+  boost::scoped_ptr<KmlFileNetCache> kml_file_net_cache_;
   KmlFactory* factory_;
   boost::scoped_ptr<StyleMerger> style_merger_normal_;
   boost::scoped_ptr<StyleMerger> style_merger_highlight_;

@@ -30,17 +30,20 @@
 
 #include <string>
 #include "kml/dom.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 
 namespace kmlengine {
 
 // This class computes a resolved style for a Feature in a KML file.
 // Usage is as follows:
-//  // Parse into a KmlFile to make use of its GetSharedStyleById().
-//  KmlFile kml_file;
-//  kml_file.ParseFromString(kml);
+//  // Create a KmlFileNetCache to fetch and parse a KML file:
+//  KmlFileNetCache kml_file_net_cache(&your_net_fetcher, max_cache_items);
+//  KmlFilePtr = kml_file_net_cache.Fetch(kml_url);
+//  // (Parse into a KmlFile makes use of its GetSharedStyleById())
 //  // Create a style merger instance for the given style state.
-//  StyleMerger style_merger(kmlfile, STYLESTATE_NORMAL|STYLESTATE_HIGHLIGHT);
+//  StyleMerger style_merger(kmlfile, STYLESTATE_NORMAL|STYLESTATE_HIGHLIGHT,
+//                           &kml_file_net_cache);
 //  // Merge in the Feature's styleUrl and StyleSelector (both may be empty).
 //  style_merger.MergeStyle(styleurl, styleselector);
 //  // MergeStyle() recurses down the styleurl as necessary.
@@ -48,6 +51,8 @@ namespace kmlengine {
 //  StylePtr style = style_merger.ResolvedStyle()
 //  // The style itself is non-null, but only those SubStyles with values
 //  // found in the resolution process are set.
+//  The CreateResolvedStyle() function is the preferred API to use in
+//  application code.
 class StyleMerger {
  public:
   StyleMerger(const KmlFilePtr& kml_file, kmldom::StyleStateEnum style_state);
@@ -59,6 +64,11 @@ class StyleMerger {
   // Both Feature and Pair have a styleUrl and/or StyleSelector.
   void MergeStyle(const std::string& styleurl,
                   const kmldom::StyleSelectorPtr& styleselector);
+
+  // Merge in the StyleSelector this styleurl references.  Remote fetches are
+  // performed through the KmlFileNetCache if one is supplied otherwise
+  // remote fetches are quietly ignored.  An empty styleurl is quietly ignored.
+  void MergeStyleUrl(const std::string& styleurl);
 
   // Merge in the given StyleMap's Pair's whose key's match the style_state_.
   void MergeStyleMap(const kmldom::StyleMapPtr& stylemap);
