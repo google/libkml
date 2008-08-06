@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 All style elements with non-default values.
+
+Note: XHTML in CDATA must conform to the HTML Compatibility guidelines as
+detailed in http://www.w3.org/TR/xhtml1/#guidelines. See in particular section
+C2, which requires <br /> over <br>.
+
 -->
 <kml xmlns="http://earth.google.com/kml/2.2">
 <Document>
@@ -39,7 +44,7 @@ All style elements with non-default values.
     <BalloonStyle>
       <bgcolor>00112233</bgcolor>
       <textColor>33221100</textColor>
-      <text><![CDATA[<b>$[name]</b><br/><br/>$[description]]]></text>
+      <text><![CDATA[<b>$[name]</b><br /><br />$[description]]]></text>
       <displayMode>hide</displayMode>
     </BalloonStyle>
   </Style>
