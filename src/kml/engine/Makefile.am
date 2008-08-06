@@ -17,6 +17,7 @@ libkmlengine_la_SOURCES = \
 	get_links.cc \
 	get_link_parents.cc \
 	href.cc \
+	kml_cache.cc \
 	kml_file.cc \
 	kml_uri.cc \
 	kmz_cache.cc \
@@ -28,7 +29,7 @@ libkmlengine_la_SOURCES = \
 
 libkmlengine_la_LIBADD = \
 	$(top_builddir)/third_party/libminizip.la \
-	$(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la \
+	$(top_builddir)/third_party/liburiparser.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 libkmlengineincludedir = $(includedir)/kml/engine
@@ -43,8 +44,10 @@ libkmlengineinclude_HEADERS = \
 	get_links.h \
 	get_link_parents.h \
 	href.h \
+	kml_cache.h \
 	kml_file.h \
 	kml_uri.h \
+	kmz_cache.h \
 	kmz_cache.h \
 	kmz_file.h \
 	link_util.h \
@@ -67,6 +70,7 @@ TESTS = bbox_test \
 	get_link_parents_test \
 	href_test \
 	kmz_cache_test \
+	kml_cache_test \
 	kml_file_test \
 	kml_uri_test \
 	kmz_file_test \
@@ -142,6 +146,14 @@ href_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
+kml_cache_test_SOURCES = kml_cache_test.cc
+kml_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+kml_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml_cache_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la
+
 kml_file_test_SOURCES = kml_file_test.cc
 kml_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kml_file_test_LDFLAGS = $(CPPUNIT_LIBS)
@@ -155,7 +167,7 @@ kml_uri_test_LDFLAGS = $(CPPUNIT_LIBS)
 kml_uri_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la
 
 kmz_cache_test_SOURCES = kmz_cache_test.cc
 kmz_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
@@ -163,7 +175,7 @@ kmz_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
 kmz_cache_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/uriparser-0.7.1/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la
 
 kmz_file_test_SOURCES = kmz_file_test.cc
 kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
@@ -207,7 +219,7 @@ shared_style_parser_observer_test_LDADD= \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 style_merger_test_SOURCES = style_merger_test.cc
-style_merger_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+style_merger_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 style_merger_test_LDFLAGS = $(CPPUNIT_LIBS)
 style_merger_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
@@ -218,7 +230,8 @@ style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_
 style_resolver_test_LDFLAGS = $(CPPUNIT_LIBS)
 style_resolver_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la
 
 CLEANFILES = check_PROGRAMS
 endif
