@@ -58,7 +58,7 @@ class PointRegionHandler : public RegionHandler {
 public:
   // The depth is how many levels of Region hierarchy to create.
   // The map is where to save the generated KML.
-  PointRegionHandler(int depth, kml_file_map_t* kml_file_map)
+  PointRegionHandler(size_t depth, kml_file_map_t* kml_file_map)
     : depth_(depth), kml_file_map_(kml_file_map) {
   }
 
@@ -90,7 +90,7 @@ public:
   }
 
  private:
-  int depth_;
+  size_t depth_;
   kml_file_map_t* kml_file_map_;
 };
 
