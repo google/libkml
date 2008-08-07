@@ -59,7 +59,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(RegionatorQidTest);
 
 // This tests the CreateRoot(), depth(), and str() methods of class Qid.
 void RegionatorQidTest::TestRoot() {
-  CPPUNIT_ASSERT_EQUAL(1, root_.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), root_.depth());
   CPPUNIT_ASSERT_EQUAL(std::string("q0"), root_.str());
 }
 
@@ -73,10 +73,10 @@ void RegionatorQidTest::TestCreateChild() {
   CPPUNIT_ASSERT_EQUAL(std::string("q01"), ne.str());
   CPPUNIT_ASSERT_EQUAL(std::string("q02"), sw.str());
   CPPUNIT_ASSERT_EQUAL(std::string("q03"), se.str());
-  CPPUNIT_ASSERT_EQUAL(2, nw.depth());
-  CPPUNIT_ASSERT_EQUAL(2, ne.depth());
-  CPPUNIT_ASSERT_EQUAL(2, sw.depth());
-  CPPUNIT_ASSERT_EQUAL(2, se.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), nw.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), ne.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), sw.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), se.depth());
 }
 
 // This tests a few more normal usage scenarios.
@@ -84,12 +84,12 @@ void RegionatorQidTest::TestCreateChildVarious() {
   Qid q0123("q0123");
   Qid q0123_nw = q0123.CreateChild(NW);
   CPPUNIT_ASSERT_EQUAL(std::string("q01230"), q0123_nw.str());
-  CPPUNIT_ASSERT_EQUAL(5, q0123_nw.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(5), q0123_nw.depth());
 
   Qid deep("q01233211231231231231");
   Qid deep_ne = deep.CreateChild(NE);
   CPPUNIT_ASSERT_EQUAL(std::string("q012332112312312312311"), deep_ne.str());
-  CPPUNIT_ASSERT_EQUAL(21, deep_ne.depth());
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(21), deep_ne.depth());
 }
 
 }  // end namespace kmlregionator
