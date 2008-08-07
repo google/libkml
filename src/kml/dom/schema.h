@@ -124,7 +124,7 @@ class Schema : public Object {
     return simplefield_array_.size();
   }
 
-  const SimpleFieldPtr get_simplefield_array_at(unsigned int index) const {
+  const SimpleFieldPtr get_simplefield_array_at(size_t index) const {
     return simplefield_array_[index];
   }
 

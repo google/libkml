@@ -328,7 +328,7 @@ class ResourceMap : public Object {
     return alias_array_.size();
   }
 
-  const AliasPtr& get_alias_array_at(unsigned int index) const {
+  const AliasPtr& get_alias_array_at(size_t index) const {
     return alias_array_[index];
   }
 

@@ -142,7 +142,7 @@ class ListStyle : public SubStyle {
     return itemicon_array_.size();
   }
 
-  const ItemIconPtr& get_itemicon_array_at(unsigned int index) const {
+  const ItemIconPtr& get_itemicon_array_at(size_t index) const {
     return itemicon_array_[index];
   }
 

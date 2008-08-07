@@ -122,7 +122,7 @@ class StyleMap : public StyleSelector {
     return pair_array_.size();
   }
 
-  const PairPtr& get_pair_array_at(unsigned int index) const {
+  const PairPtr& get_pair_array_at(size_t index) const {
     return pair_array_[index];
   }
 

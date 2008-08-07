@@ -122,7 +122,7 @@ void XmlSerializer::SaveContent(const std::string& content, bool maybe_quote) {
 
 // This emits the white space specified by indent_.
 void XmlSerializer::Indent() {
-  int depth = tag_stack_.size();
+  size_t depth = tag_stack_.size();
   while (depth--) {
     xml_.push_back(indent_);
   }

@@ -52,7 +52,7 @@ class Document : public Container {
     return schema_array_.size();
   }
 
-  const SchemaPtr& get_schema_array_at(unsigned int index) const {
+  const SchemaPtr& get_schema_array_at(size_t index) const {
     return schema_array_[index];
   }
 
@@ -65,7 +65,7 @@ class Document : public Container {
     return styleselector_array_.size();
   }
 
-  const StyleSelectorPtr& get_styleselector_array_at(unsigned int index) const {
+  const StyleSelectorPtr& get_styleselector_array_at(size_t index) const {
     return styleselector_array_[index];
   }
 
