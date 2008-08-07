@@ -73,7 +73,7 @@ class Create : public UpdateOperation {
     return container_array_.size();
   }
 
-  const ContainerPtr& get_container_array_at(unsigned int index) const {
+  const ContainerPtr& get_container_array_at(size_t index) const {
     return container_array_[index];
   }
 
@@ -106,7 +106,7 @@ class Delete : public UpdateOperation {
     return feature_array_.size();
   }
 
-  const FeaturePtr& get_feature_array_at(unsigned int index) const {
+  const FeaturePtr& get_feature_array_at(size_t index) const {
     return feature_array_[index];
   }
 
@@ -139,7 +139,7 @@ class Change : public UpdateOperation {
     return object_array_.size();
   }
 
-  const ObjectPtr& get_object_array_at(unsigned int index) const {
+  const ObjectPtr& get_object_array_at(size_t index) const {
     return object_array_[index];
   }
 
@@ -185,7 +185,7 @@ class Update : public Element {
   }
 
   const UpdateOperationPtr& get_updateoperation_array_at(
-      unsigned int index) const {
+      size_t index) const {
     return updateoperation_array_[index];
   }
 

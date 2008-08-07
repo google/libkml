@@ -62,7 +62,8 @@ static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
   XML_SetUserData(parser, expat_handler);
   XML_SetElementHandler(parser, startElement, endElement);
   XML_SetCharacterDataHandler(parser, charData);
-  XML_Status status = XML_Parse(parser, xml.c_str(), xml.size(), xml.size());
+  int xml_size = static_cast<int>(xml.size());
+  XML_Status status = XML_Parse(parser, xml.c_str(), xml_size, xml_size);
   if (status != XML_STATUS_OK && errors) {
     // This is the other half of XML_StopParser() which is our way of
     // stopping expat if the root element is not KML.

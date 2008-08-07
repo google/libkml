@@ -117,7 +117,7 @@ class SchemaData : public Object {
     return simpledata_array_.size();
   }
 
-  const SimpleDataPtr& get_simpledata_array_at(unsigned int index) const {
+  const SimpleDataPtr& get_simpledata_array_at(size_t index) const {
     return simpledata_array_[index];
   }
 
@@ -219,7 +219,7 @@ class ExtendedData : public Element {
     return data_array_.size();
   }
 
-  const DataPtr& get_data_array_at(unsigned int index) const {
+  const DataPtr& get_data_array_at(size_t index) const {
     return data_array_[index];
   }
 
@@ -232,7 +232,7 @@ class ExtendedData : public Element {
     return schemadata_array_.size();
   }
 
-  const SchemaDataPtr& get_schemadata_array_at(unsigned int index) const {
+  const SchemaDataPtr& get_schemadata_array_at(size_t index) const {
     return schemadata_array_[index];
   }
 

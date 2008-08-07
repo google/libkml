@@ -49,7 +49,7 @@ class Container : public Feature {
     return feature_array_.size();
   }
 
-  const FeaturePtr& get_feature_array_at(unsigned int index) const {
+  const FeaturePtr& get_feature_array_at(size_t index) const {
     return feature_array_[index];
   }
 
