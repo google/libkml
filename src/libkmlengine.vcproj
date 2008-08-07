@@ -40,7 +40,7 @@
       <Tool
         Name="VCCLCompilerTool"
         Optimization="0"
-        AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+        AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
         PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
         MinimalRebuild="true"
         BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
       />
       <Tool
         Name="VCCLCompilerTool"
-        AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib"
+        AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
         PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
         RuntimeLibrary="2"
         UsePrecompiledHeader="2"
@@ -152,11 +152,15 @@
       UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
       >
       <File RelativePath="kml\engine\clone.cc"/>
+      <File RelativePath="kml\engine\entity_mapper.cc"/>
+      <File RelativePath="kml\engine\feature_balloon.cc"/>
       <File RelativePath="kml\engine\feature_visitor.cc"/>
       <File RelativePath="kml\engine\find.cc"/>
       <File RelativePath="kml\engine\get_links.cc"/>
       <File RelativePath="kml\engine\href.cc"/>
+      <File RelativePath="kml\engine\kml_cache.cc"/>
       <File RelativePath="kml\engine\kml_file.cc"/>
+      <File RelativePath="kml\engine\kml_uri.cc"/>
       <File RelativePath="kml\engine\kmz_cache.cc"/>
       <File RelativePath="kml\engine\kmz_file.cc"/>
       <File RelativePath="kml\engine\location_util.cc"/>
@@ -181,11 +185,15 @@
       >
       <File RelativePath="kml\engine\bbox.h"/>
       <File RelativePath="kml\engine\clone.h"/>
+      <File RelativePath="kml\engine\entity_mapper.h"/>
+      <File RelativePath="kml\engine\feature_balloon.h"/>
       <File RelativePath="kml\engine\feature_visitor.h"/>
       <File RelativePath="kml\engine\find.h"/>
       <File RelativePath="kml\engine\get_links.h"/>
       <File RelativePath="kml\engine\href.h"/>
+      <File RelativePath="kml\engine\kml_cache.h"/>
       <File RelativePath="kml\engine\kml_file.h"/>
+      <File RelativePath="kml\engine\kml_uri.h"/>
       <File RelativePath="kml\engine\kmz_cache.h"/>
       <File RelativePath="kml\engine\kmz_file.h"/>
       <File RelativePath="kml\engine\location_util.h"/>
