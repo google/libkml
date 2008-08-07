@@ -154,6 +154,7 @@
       <File RelativePath="kml\base\file.cc"/>
       <File RelativePath="kml\base\file_win32.cc"/>
       <File RelativePath="kml\base\referent.cc"/>
+      <File RelativePath="kml\base\string_util.cc"/>
       <File RelativePath="kml\base\time_util.cc"/>
       <File RelativePath="stdafx.cpp">
         <FileConfiguration
@@ -173,10 +174,13 @@
       >
       <File RelativePath="stdafx.h"/>
       <File RelativePath="kml\base\file.h"/>
+      <File RelativePath="kml\base\net_cache.h"/>
       <File RelativePath="kml\base\referent.h"/>
+      <File RelativePath="kml\base\string_util.h"/>
       <File RelativePath="kml\base\tempfile.h"/>
       <File RelativePath="kml\base\time_util.h"/>
       <File RelativePath="kml\base\unit_test.h"/>
+      <File RelativePath="kml\base\uri_parser.h"/>
       <File RelativePath="kml\base\util.h"/>
     </Filter>
     <Filter
