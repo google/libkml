@@ -55,7 +55,7 @@ public:
     ss << quadrant;
     return Qid(qid_ + ss.str());
   }
-  int depth() const {
+  size_t depth() const {
     return qid_.size() - 1;
   }
   const std::string& str() const {
