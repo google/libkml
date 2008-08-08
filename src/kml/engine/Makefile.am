@@ -223,7 +223,8 @@ style_merger_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CX
 style_merger_test_LDFLAGS = $(CPPUNIT_LIBS)
 style_merger_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la
 
 style_resolver_test_SOURCES = style_resolver_test.cc
 style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
