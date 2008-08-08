@@ -170,7 +170,7 @@ AC_CHECK_HEADER([curl/curl.h],
 AC_CHECK_LIB([curl],
              [curl_easy_init],
              [AC_SUBST([HAVE_LIBCURL], [1])],
-             [AC_MSG_ERROR([no libcurl])],
+             [AC_MSG_WARN([no libcurl])],
              [])
 AM_CONDITIONAL(WITH_LIBCURL,
                [test "x$HAVE_CURL_H" != x -a "x$HAVE_LIBCURL" != x])
