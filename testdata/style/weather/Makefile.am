@@ -7,6 +7,5 @@ EXTRA_DIST = \
 	point-sarnen.kml \
 	weather-jpgs.kmz \
 	weather-pngs.kmz \
-	weather-style.kml \
 	styles_new.kml \
 	styles_new.kmz
