@@ -17,6 +17,7 @@ EXTRA_DIST = \
 	remote-styleurl-placemark-style-both-check.kml \
 	remote-styleurl-screenoverlay-check.kml \
 	remote-styleurl.kml \
+	remote-styleurl.kmz \
 	shared-stylemap-pm0-highlight-check.kml \
 	shared-stylemap-pm0-normal-check.kml \
 	shared-stylemap.kml \
