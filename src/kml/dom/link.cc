@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cstring>
 #include "kml/dom/link.h"
 #include "kml/dom/attributes.h"
 #include "kml/dom/serializer.h"
