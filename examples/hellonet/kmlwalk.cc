@@ -44,6 +44,7 @@ using kmldom::StylePtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
 using kmlengine::KmlCache;
+using std::cerr;
 using std::cout;
 using std::endl;
 
@@ -139,7 +140,12 @@ static void WalkNetworkLinks(const KmlFilePtr& kml_file) {
       if (kmlengine::GetLinkParentHref(networklink, &href)) {
          std::string kml_url;
          if (kmlengine::ResolveUri(kml_file->get_url(), href, &kml_url)) {
-           WalkKmlFile(kml_file->get_kml_cache()->FetchKml(kml_url));
+           if (const KmlFilePtr child =
+               kml_file->get_kml_cache()->FetchKml(kml_url)) {
+             WalkKmlFile(kml_file->get_kml_cache()->FetchKml(kml_url));
+           } else {
+             cerr << "failed: " << kml_url << endl;
+           }
          }
       }
     }
@@ -163,7 +169,7 @@ int main(int argc, char** argv) {
   KmlCache kml_cache(&curl_net_fetcher, 30);
   const KmlFilePtr kml_file = kml_cache.FetchKml(kml_url);
   if (!kml_file) {
-    std::cerr << "failed: " << kml_url << std::endl;
+    cerr << "failed: " << kml_url << endl;
     return 1;
   }
   WalkKmlFile(kml_file);
