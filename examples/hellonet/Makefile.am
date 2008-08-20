@@ -1,4 +1,4 @@
-if WITH_LIBCURL
+if HAVE_CURL
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/examples/hellonet \
 	      -I$(top_srcdir)/third_party/boost_1_34_1

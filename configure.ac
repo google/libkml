@@ -164,16 +164,8 @@ AM_CONDITIONAL(WITH_PYTHON, [test "x$PYTHON" != x])
 
 dnl If libcurl is available we will build networking examples.
 dnl TODO: permit a --with-curl-prefix, etc
-AC_CHECK_HEADER([curl/curl.h],
-                [AC_SUBST([HAVE_CURL_H], [1])]
-                [AC_MSG_WARN([no curl.h])])
-AC_CHECK_LIB([curl],
-             [curl_easy_init],
-             [AC_SUBST([HAVE_LIBCURL], [1])],
-             [AC_MSG_WARN([no libcurl])],
-             [])
-AM_CONDITIONAL(WITH_LIBCURL,
-               [test "x$HAVE_CURL_H" != x -a "x$HAVE_LIBCURL" != x])
+AC_CHECK_CURL(7.12.3)
+AM_CONDITIONAL(HAVE_CURL, test "$CURL_LIBS")
 
 dnl automake will add -DHAVE_CONFIG_H to compiler flags.
 AM_CONFIG_HEADER([config.h]) 
