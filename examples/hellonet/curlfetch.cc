@@ -23,6 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <iostream>
+
 #include "curlfetch.h"
 #include <string>
 #include <curl/curl.h>
@@ -57,8 +59,10 @@ static bool DoCurlToString(CURL* curl, const char* url, string* data) {
 // Wrapper to manage curl handle.  Very simple stateless implementation.  Less
 // simplistic would be to reuse the CURL* handle between invocations.
 bool CurlToString(const char* url, string* data) {
+std::cerr << "CurlToString url " << url << std::endl;
   CURL* curl = curl_easy_init();
   bool ret = DoCurlToString(curl, url, data);
+std::cerr << "CurlToString ret " << ret << std::endl;
   curl_easy_cleanup(curl);
   return ret;
 }
