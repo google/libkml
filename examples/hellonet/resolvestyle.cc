@@ -53,7 +53,7 @@ void HelloCreateResolvedStyle(const std::string& kml_url,
   // KmlCache fetches this URL using the supplied CurlNetFetcher,
   // parses the KML into a KmlFile, and sets the URL and KmlCache
   // of the KmlFile.
-  const KmlFilePtr kml_file = kml_cache.FetchKml(kml_url);
+  const KmlFilePtr kml_file = kml_cache.FetchKmlAbsolute(kml_url);
   if (!kml_file) {
     std::cerr << "parse or fetch failed: " << kml_url << std::endl;
     return;
