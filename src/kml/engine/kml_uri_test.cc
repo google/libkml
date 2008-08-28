@@ -37,14 +37,14 @@
 #include "kml/engine/link_util.h"
 #include "kml/base/unit_test.h"
 
-#ifndef DATADIR
-#error *** DATADIR must be defined! ***
-#endif
-
 namespace kmlengine {
+
+const size_t kCacheSize = 14;
 
 class KmlUriTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE(KmlUriTest);
+  CPPUNIT_TEST(TestBasicKmlUriCreateRelative);
+  CPPUNIT_TEST(TestKmlUriTestCases);
   CPPUNIT_TEST(TestResolveUri);
   CPPUNIT_TEST(TestSplitUri);
   CPPUNIT_TEST(TestKmzSplit);
@@ -53,6 +53,8 @@ class KmlUriTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST_SUITE_END();
 
  protected:
+  void TestBasicKmlUriCreateRelative();
+  void TestKmlUriTestCases();
   void TestResolveUri();
   void TestSplitUri();
   void TestKmzSplit();
@@ -61,9 +63,106 @@ class KmlUriTest : public CPPUNIT_NS::TestFixture {
 
  private:
   kmlbase::TestDataNetFetcher testdata_net_fetcher_;
+  boost::scoped_ptr<KmlUri> kml_uri_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(KmlUriTest);
+
+// Verify basic normal usage of the KmlUri::CreateRelative() static method.
+void KmlUriTest::TestBasicKmlUriCreateRelative() {
+  const std::string kBase("http://host.com/path/file.kml");
+  const std::string kHref("image.jpg");
+  const std::string kExpectedUrl("http://host.com/path/image.jpg");
+  kml_uri_.reset(KmlUri::CreateRelative(kBase, kHref));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  CPPUNIT_ASSERT_EQUAL(kExpectedUrl, kml_uri_->get_url());
+}
+
+static struct {
+  // These two are the inputs:
+  const char* base;  // Typically from KmlFile::get_url().
+  const char* target;  // Typically from <href>, etc.
+  // These are the expected outputs:
+  const char* resolved;  // NULL if not expected to resolve
+  const char* kmz_base;  // NULL if not kmz
+  const char* kmz_relative;  // NULL if not kmz
+} kTestCases[] = {
+  {
+    "base/must/have/scheme/to/be/valid",
+    "image.jpg",
+    NULL,
+    NULL,
+    NULL
+  },
+  {
+    "http://a.com/x",
+    "y",
+    "http://a.com/y",
+    NULL,
+    NULL
+  },
+  {
+    "http://host.com/path/file.kml",
+    "image.jpg",
+    "http://host.com/path/image.jpg",
+    NULL,
+    NULL
+  },
+  {
+    "http://host.com/path/file.kml",
+    "http://otherhost.com/dir/image.jpg",
+    "http://otherhost.com/dir/image.jpg",
+    NULL,
+    NULL
+  },
+  {
+    "http://host.com/kmz/screenoverlay-continents.kmz/doc.kml",
+    "pngs/africa.png",
+    "http://host.com/kmz/screenoverlay-continents.kmz/pngs/africa.png",
+    "http://host.com/kmz/screenoverlay-continents.kmz",
+    "http://host.com/kmz/pngs/africa.png"
+  },
+  {
+    "http://host.com/kmz/rumsey/kml/lc01.kmz/L_and_C/kml/01.kml",
+    "../imagery/01_4.png",
+    "http://host.com/kmz/rumsey/kml/lc01.kmz/L_and_C/imagery/01_4.png",
+    "http://host.com/kmz/rumsey/kml/lc01.kmz",
+    "http://host.com/kmz/rumsey/imagery/01_4.png"
+  },
+  {
+    "http://host.com/path/file.kmz/doc.kml",
+    "image.jpg",
+    "http://host.com/path/file.kmz/image.jpg",
+    "http://host.com/path/file.kmz",
+    "http://host.com/path/image.jpg"
+  }
+};
+
+void KmlUriTest::TestKmlUriTestCases() {
+  size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
+  for (size_t i = 0; i < size; ++i) {
+    kml_uri_.reset(
+        KmlUri::CreateRelative(kTestCases[i].base, kTestCases[i].target));
+    if (kTestCases[i].resolved) {
+      CPPUNIT_ASSERT_EQUAL(std::string(kTestCases[i].resolved),
+                           kml_uri_->get_url());
+    } else {
+      CPPUNIT_ASSERT(!kml_uri_.get());
+    }
+    if (kTestCases[i].kmz_base) {
+      CPPUNIT_ASSERT_EQUAL(std::string(kTestCases[i].kmz_base),
+                           kml_uri_->get_kmz_url());
+    }
+    if (kTestCases[i].kmz_relative) {
+      boost::scoped_ptr<KmlUri> kmz_relative(
+          KmlUri::CreateRelative(kml_uri_->get_kmz_url(),
+                                 kml_uri_->get_target()));
+      CPPUNIT_ASSERT(kmz_relative.get());
+      CPPUNIT_ASSERT_EQUAL(std::string(kTestCases[i].kmz_relative),
+                           kmz_relative->get_url());
+    }
+  }
+}
 
 void KmlUriTest::TestResolveUri() {
   const std::string kBase("http://foo.com");
@@ -143,7 +242,9 @@ void KmlUriTest::TestModelTargetHrefOnKmz() {
 
   // Fetch the model-macky.kmz file into the KmzCache.
   std::string kml_data;
-  CPPUNIT_ASSERT(kmz_cache.FetchUrl(kMackyUrl, &kml_data));
+  kml_uri_.reset(KmlUri::CreateRelative(kMackyUrl, kMackyUrl));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  CPPUNIT_ASSERT(kmz_cache.DoFetch(kml_uri_.get(), &kml_data));
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), kmz_cache.Size());
 
   // Parse the default KML file.
@@ -166,8 +267,10 @@ void KmlUriTest::TestModelTargetHrefOnKmz() {
   std::string geometry_url;
   CPPUNIT_ASSERT(ResolveUri(kMackyUrl, geometry_href, &geometry_url));
 
+  kml_uri_.reset(KmlUri::CreateRelative(geometry_url, geometry_url));
+  CPPUNIT_ASSERT(kml_uri_.get());
   std::string data;
-  CPPUNIT_ASSERT(kmz_cache.FetchUrl(geometry_url, &data));
+  CPPUNIT_ASSERT(kmz_cache.DoFetch(kml_uri_.get(), &data));
   CPPUNIT_ASSERT(!data.empty());
 
   // Walk through the Alias's fetching each targetHref all of which are known
@@ -183,8 +286,10 @@ void KmlUriTest::TestModelTargetHrefOnKmz() {
                                           &targethref_url));
     // This presumes KmzCache::FetchUrl works and that the resolved URL
     // of the targetHref succeeds in fetching the data in the KmzCache.
+    kml_uri_.reset(KmlUri::CreateRelative(targethref_url, targethref_url));
+    CPPUNIT_ASSERT(kml_uri_.get());
     data.clear();
-    CPPUNIT_ASSERT(kmz_cache.FetchUrl(targethref_url, &data));
+    CPPUNIT_ASSERT(kmz_cache.DoFetch(kml_uri_.get(), &data));
     CPPUNIT_ASSERT(!data.empty());
   }
 }

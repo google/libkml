@@ -170,7 +170,7 @@ void StyleResolverTest::TestFiles() {
 void StyleResolverTest::TestBasicCreateNetworkResolvedStyle() {
   const std::string kPath("style/weather/point-sarnen.kml");
   const std::string kUrl("http://host.com/" + kPath);
-  KmlFilePtr kml_file = kml_cache_->FetchKml(kUrl);
+  KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kUrl);
   CPPUNIT_ASSERT(kml_file);
   CPPUNIT_ASSERT_EQUAL(kml_cache_.get(), kml_file->get_kml_cache());
   const std::string kFeatureId("SZXX0026");
@@ -300,7 +300,7 @@ void StyleResolverTest::TestRemoteFiles() {
   const size_t size = sizeof(kRemoteTestCases)/sizeof(kRemoteTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     // Read the file and find the feature.
-    kml_file_ = kml_cache_->FetchKml(kRemoteTestCases[i].source_url_);
+    kml_file_ = kml_cache_->FetchKmlAbsolute(kRemoteTestCases[i].source_url_);
     CPPUNIT_ASSERT(kml_file_);
     FeaturePtr feature = kmldom::AsFeature(
         kml_file_->GetObjectById(kRemoteTestCases[i].feature_id_));

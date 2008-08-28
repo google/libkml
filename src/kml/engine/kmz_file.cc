@@ -106,27 +106,38 @@ bool KmzFile::IsKmz(const std::string& kmz_data) {
   return kmz_data.substr(0, 4) == "PK\003\004" ? true : false;
 }
 
-bool KmzFile::ReadKml(std::string* output) const {
+bool KmzFile::ReadKmlAndGetPath(std::string* output,
+                                std::string* kml_name) const {
   if (!output) {
     return false;
   }
   // A doc.kml at the root level is the default KML file.
   if (ReadOne(kDefaultKmlFile, output)) {
+    if (kml_name) {
+      *kml_name = kDefaultKmlFile;
+    }
     return true;
   }
   // If no doc.kml, then we read the first KML file.
   unz_file_info file_info;
   do {
     static char buf[1024];
-    if (unzGetCurrentFileInfo(zlibimpl_->get_unzfile(), &file_info, buf, sizeof(buf),
-                              0, 0, 0, 0) == UNZ_OK) {
+    if (unzGetCurrentFileInfo(zlibimpl_->get_unzfile(), &file_info, buf,
+                              sizeof(buf), 0, 0, 0, 0) == UNZ_OK) {
       if (strlen(buf) >= 4 && strcmp(buf + strlen(buf)-4, ".kml") == 0 &&
           ReadCurrentFile(output)) {
+        if (kml_name) {
+          *kml_name = buf;
+        }
         return true;
       }
     }
   } while (unzGoToNextFile(zlibimpl_->get_unzfile()) == UNZ_OK);
   return false;
+}
+
+bool KmzFile::ReadKml(std::string* output) const {
+  return ReadKmlAndGetPath(output, NULL);
 }
 
 bool KmzFile::ReadFile(const char* subfile, std::string* output) const {

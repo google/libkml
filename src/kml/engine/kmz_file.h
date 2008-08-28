@@ -73,6 +73,12 @@ class KmzFile : public kmlbase::Referent {
   // cleared before being written to.
   bool ReadKml(std::string* output) const;
 
+  // This does the same as ReadKml() and in addition returns the path of the
+  // KML file within the KMZ archive if a non-NULL kml_path is supplied.
+  // NOTE: While it is considered a best practice to have The KML file of
+  // a KMZ archive be "doc.kml" this is not always the case.
+  bool ReadKmlAndGetPath(std::string* output, std::string* kml_path) const;
+
   // Read a specific file from a KMZ archive. Returns false if subfile was not
   // found, or if subfile could not be read. Note: subfile must be a full path
   // from the archive root. Relative references of "../../foo" are not handled.
