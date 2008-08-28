@@ -41,11 +41,7 @@
 namespace kmldom {
 
 void Vec3::Serialize(Serializer& serializer) const {
-  serializer.Indent();
-  serializer.SaveContent(ToString(get_longitude()) + "," +
-                         ToString(get_latitude()) + "," +
-                         ToString(get_altitude()) + "\n",
-                         false);  // No coordinates list needs CDATA.
+  serializer.SaveLonLatAlt(get_longitude(), get_latitude(), get_altitude());
 }
 
 Coordinates::Coordinates() {}
@@ -382,7 +378,7 @@ void MultiGeometry::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   Geometry::Serialize(serializer);
   for (size_t i = 0; i < geometry_array_.size(); ++i) {
-    serializer.SaveElement(geometry_array_[i]);
+    serializer.SaveElementGroup(geometry_array_[i], Type_Geometry);
   }
   SerializeUnknown(serializer);
   serializer.End();

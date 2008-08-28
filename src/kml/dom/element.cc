@@ -92,8 +92,13 @@ void Element::ParseAttributes(const Attributes& attributes) {
 // of the unknown attributes with the knowns. See attributes.h for how
 // conflicts are resolved.
 void Element::GetAttributes(Attributes* attributes) const {
-  if (attributes && unknown_attributes_) {
-    attributes->MergeAttributes(*unknown_attributes_);
+  if (attributes) {
+    if (unknown_attributes_) {
+      attributes->MergeAttributes(*unknown_attributes_);
+    }
+    if (!default_xmlns_.empty()) {
+      attributes->SetString("xmlns", default_xmlns_);
+    }
   }
 }
 

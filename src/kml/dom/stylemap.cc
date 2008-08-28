@@ -71,7 +71,7 @@ void Pair::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_styleUrl, get_styleurl());
   }
   if (has_styleselector()) {
-    serializer.SaveElement(get_styleselector());
+    serializer.SaveElementGroup(get_styleselector(), Type_StyleSelector);
   }
   SerializeUnknown(serializer);
   serializer.End();

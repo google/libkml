@@ -59,7 +59,7 @@ void Create::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < container_array_.size(); ++i) {
-    serializer.SaveElement(get_container_array_at(i));
+    serializer.SaveElementGroup(get_container_array_at(i), Type_Container);
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -85,7 +85,7 @@ void Delete::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < feature_array_.size(); ++i) {
-    serializer.SaveElement(get_feature_array_at(i));
+    serializer.SaveElementGroup(get_feature_array_at(i), Type_Feature);
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -111,7 +111,7 @@ void Change::Serialize(Serializer& serializer) const {
   Attributes attributes;
   serializer.BeginById(Type(), attributes);
   for (size_t i = 0; i < object_array_.size(); ++i) {
-    serializer.SaveElement(get_object_array_at(i));
+    serializer.SaveElementGroup(get_object_array_at(i), Type_Object);
   }
   SerializeUnknown(serializer);
   serializer.End();
@@ -252,7 +252,7 @@ void NetworkLinkControl::Serialize(Serializer& serializer) const {
     serializer.SaveElement(get_update());
   }
   if (abstractview_) {
-    serializer.SaveElement(get_abstractview());
+    serializer.SaveElementGroup(get_abstractview(), Type_AbstractView);
   }
   SerializeUnknown(serializer);
   serializer.End();

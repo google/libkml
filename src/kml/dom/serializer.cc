@@ -64,4 +64,14 @@ void Serializer::SaveElement(const ElementPtr& element) {
   element->Serialize(*this);
 }
 
+// This default implementation turns the tuple into an indented string and
+// emits it as generic content.  This is entirely adequate for any text-based
+// serializer such as XML.
+void Serializer::SaveLonLatAlt(double longitude, double latitude,
+                             double altitude) {
+  Indent();
+  SaveContent(ToString(longitude) + "," + ToString(latitude) + "," +
+              ToString(altitude) + "\n", false); 
+} 
+
 }  // namespace kmldom

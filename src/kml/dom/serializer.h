@@ -64,6 +64,17 @@ class Serializer {
   // Emit a complex element.
   virtual void SaveElement(const ElementPtr& element);
 
+  // Emit a complex element as a member of the specified group.  For example,
+  // when Point is a child of Placemark it is a Geometry, but when it is a
+  // child of PhotoOverlay it is emitted with SaveElement and no group id.
+  virtual void SaveElementGroup(const ElementPtr& element, int group_id) {
+    // Default implementation just calls SaveElement for those serializers
+    // that have no need to use the group id of the given child element.
+    // This also ensures that a serializer recurses on a complex element
+    // whether SaveElement() or SaveElementGroup() is used.
+    SaveElement(element);
+  }
+
   // Emit a simple element.
   virtual void SaveStringFieldById(int type_id, std::string value) {}
 
@@ -71,6 +82,10 @@ class Serializer {
   // for non-XML-valid characters and if so the content is CDATA escaped.
   // If maybe_quote is false the content is emitted directly.
   virtual void SaveContent(const std::string& content, bool maybe_quote) {};
+
+  // Save a lon,lat,alt tuple as appears within <coordinates>.
+  virtual void SaveLonLatAlt(double longitude, double latitude,
+                             double altitude);
 
   // Emit indent.
   virtual void Indent() {}
