@@ -103,18 +103,12 @@ class FeatureCounter : public kmlengine::FeatureVisitor {
     std::string balloon_text = CreateBalloonText(kml_file_, feature);
     balloon_size += balloon_text.size();
     if (OverlayPtr overlay = AsOverlay(feature)) {
-      std::string href;
-      if (kmlengine::GetIconParentHref(overlay, &href)) {
-        std::string url;
-        if (kmlengine::ResolveUri(kml_file_->get_url(), href, &url)) {
-          std::string data;
-          if (!kml_file_->get_kml_cache()->FetchData(url.c_str(), &data)) {
-            cout << "fetch failed " << url << endl;
-            return;
-          }
-          cout << href << " bytes " << data.size() << endl;
-          data_size += data.size();
-        }
+      std::string data;
+      if (kmlengine::FetchIcon(kml_file_, overlay, &data)) {
+        cout << " bytes " << data.size() << endl;
+        data_size += data.size();
+      } else {
+        cout << "fetch failed " << endl;
       }
     }
   }
@@ -136,17 +130,8 @@ static void WalkNetworkLinks(const KmlFilePtr& kml_file) {
       kml_file->get_link_parent_vector();
   for (size_t i = 0; i < link_vector.size(); ++i) {
     if (NetworkLinkPtr networklink = AsNetworkLink(link_vector[i])) {
-      std::string href;
-      if (kmlengine::GetLinkParentHref(networklink, &href)) {
-         std::string kml_url;
-         if (kmlengine::ResolveUri(kml_file->get_url(), href, &kml_url)) {
-           if (const KmlFilePtr child =
-               kml_file->get_kml_cache()->FetchKml(kml_url)) {
-             WalkKmlFile(kml_file->get_kml_cache()->FetchKml(kml_url));
-           } else {
-             cerr << "failed: " << kml_url << endl;
-           }
-         }
+      if (KmlFilePtr child = kmlengine::FetchLink(kml_file, networklink)) {
+        WalkKmlFile(child);
       }
     }
   }
@@ -167,7 +152,7 @@ int main(int argc, char** argv) {
   const char* kml_url = argv[1];
   CurlNetFetcher curl_net_fetcher;
   KmlCache kml_cache(&curl_net_fetcher, 30);
-  const KmlFilePtr kml_file = kml_cache.FetchKml(kml_url);
+  const KmlFilePtr kml_file = kml_cache.FetchKmlAbsolute(kml_url);
   if (!kml_file) {
     cerr << "failed: " << kml_url << endl;
     return 1;

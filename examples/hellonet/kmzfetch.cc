@@ -24,53 +24,41 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <iostream>
-#include <map>
 #include <string>
-#include "kml/base/file.h"
-#include "kml/dom.h"
 #include "kml/engine.h"
 #include "curlfetch.h"
 
 using std::cout;
 using std::endl;
 using kmlbase::File;
-using kmlengine::KmzCache;
+using kmlengine::KmlCache;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
 
 int main(int argc, char** argv) {
   if (argc != 2 && argc != 3) {
-    cout << "usage: " << argv[0] << " url.kmz[/file/in/kmz] [output_file]"
-      << endl;
+    cout << "usage: " << argv[0] << " url.kml [relative]" << endl;
+    cout << "usage: " << argv[0] << " url.kmz [relative]" << endl;
+    cout << "usage: " << argv[0] << " url.kmz/path.kml [relative]" << endl;
+    cout << "usage: " << argv[0] << " url.kmz/non-kml" << endl;
     return 1;
   }
   const char* url = argv[1];
-  const char* output = argc == 3 ? argv[2] : NULL;
+  const char* relative = argc == 3 ? argv[2] : NULL;
 
   CurlNetFetcher curl_net_fetcher;
-  KmzCache kmz_cache(&curl_net_fetcher, 2);
-
-  std::string data;
-  if (!kmz_cache.FetchUrl(url, &data)) {
-    cout << "fetch failed " << url << endl;
-    return 1;
-  }
-
-  if (output) {
-    if (!File::WriteStringToFile(data, output)) {
-      cout << "write failed " << output << endl;
-      return 1;
+  KmlCache kml_cache(&curl_net_fetcher, 1);
+  if (relative) {
+    std::string data;
+    if (kml_cache.FetchDataRelative(url, relative, &data)) {
+      cout << data;
     }
-    cout << "wrote " << data.size() << " bytes to " << output << endl;
-    return 0;
-  }
-
-  // Try to parse it as KML.
-  KmlFilePtr kml_file = KmlFile::CreateFromParse(data, NULL);
-  if (kml_file) {
-    std::string output;
-    if (kml_file->SerializeToString(&output)) {
-      cout << output;
+  } else {
+    if (KmlFilePtr kml_file = kml_cache.FetchKmlAbsolute(url)) {
+      std::string output;
+      if (kml_file->SerializeToString(&output)) {
+        cout << output;
+      }
     }
   }
 
