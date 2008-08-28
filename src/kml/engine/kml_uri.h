@@ -29,7 +29,10 @@
 #ifndef KML_ENGINE_KML_URI_H__
 #define KML_ENGINE_KML_URI_H__
 
+#include <iostream>
+
 #include <string>
+#include "kml/base/uri_parser.h"
 
 namespace kmlengine {
 
@@ -105,31 +108,116 @@ bool SplitUriPath(const std::string& uri, std::string* path);
 // output string is supplied a uri w/o the fragment is stored there.
 bool GetFetchableUri(const std::string& uri, std::string* fetchable_uri);
 
-// TODO: split query name-value pairs
-
-// This is a KML standard method to separate the network fetchable URL from
-// the file reference within a KMZ at a given URL.  A normalized "KML URL" can
-// be one of:
-// 1) http://host.com/path/to/coolstuff.kmz/image/pretty.jpg
-// 2) http://host.com/path/to/coolstuff.kmz
-// 3) http://host.com/path/to/coolstuff.kmz/doc.kml
-// In each of the above cases the "kmz_url" is:
-//    http://host.com/path/to/coolstuff.kmz
-// The return is always true if "kml_url" contains ".kmz".  Either or both
-// of the kmz_url or kmz_path pointers may be null.  This permits use of
-// this method for a simple query.
 bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
               std::string* kmz_path);
 
-// Resolve the URL to the Model's targetHref.  The base_url is the URL
+
+// TODO: split query name-value pairs
+
+// Resolve the URL to the Model's targetHref.  The base is the URL
 // of the KML file holding the Model.  The geometry_href is the value
 // of the Model's Link/href.  The target_href is the value of one of the
 // Model's ResourceMap/Alias/targetHref's.  Note that the result URL may
 // be into a KMZ and hence might be used with KmzSplit.
-bool ResolveModelTargetHref(const std::string& base_url,
+bool ResolveModelTargetHref(const std::string& base,
                             const std::string& geometry_href, 
-                            const std::string& target_href,
+                            const std::string& target,
                             std::string* result);
+
+// The main purpose of the KmlUri class is to hold the URI state for a given
+// fetch.  This state is principally a base url and a relative target to fetch.
+// Ideally any URI stands alone, however, the two-level fetch system used for
+// relative KMZ references requires the target reference to be retained
+// to be resolved against either the full URI of the base (typically that of
+// the KmlFile in the KML Engine) or the URI of the KMZ archive containing
+// the KML file, in that order.  For more details and examples see kml_uri.cc
+// NOTE: This is an internal class.  Do not use in application code.
+// Applications should use KmlFile (where the API provides the means to pass
+// a base URI and target URI for relative fetches).
+class KmlUri {
+ public:
+  // The base is a full absolute URI including scheme.  The base is typically
+  // the URI of a KML file as maintained in KmlFile::get_url().  For example,
+  // http://host.com/dir/path.kml, or http://host.com/dir/path.kmz/doc.kml.
+  // (Note that a "bare" KMZ reference here does _not_ automatically imply
+  // "the KML file" within the KMZ.  See the note above about this being and
+  // internal class).  The target is a relative or abstolue URI typically the
+  // raw content of any <href>, <styleUrl>, schemaUrl=, <targetHref>,
+  // <a href="...">, or <img href="..."> within the KmlFile.  However, there
+  // is no specific knowlege of any KML or HTML element within this class.
+  static KmlUri* CreateRelative(const std::string& base,
+                                const std::string& target) {
+    KmlUri* kml_uri = new KmlUri(base, target);
+    // To create a valid KmlUri the base must be absolute, the target must be
+    // valid and the resolution must succeed.  If any of these are false then
+    // NULL is returned.  The returned KmlUri object must be managed by the
+    // caller; boost::scoped_ptr is recommended.
+    // TODO: streamline UriParser::CreateFromParse, ResolveUri, GetFetchableUri,
+    // and KmzSplit, possibly push all of KmlUri into kmlbase::UriParser.
+    std::string fetchable_url;
+    if (kml_uri->target_uri_.get() &&
+        ResolveUri(base, target, &kml_uri->url_) &&
+        GetFetchableUri(kml_uri->url_, &fetchable_url)) {
+      kml_uri->is_kmz_ = KmzSplit(fetchable_url,
+                                  &kml_uri->kmz_url_,
+                                  &kml_uri->path_in_kmz_);
+      return kml_uri;
+    }
+    // KmlCache NULL or base or target invalid.
+    delete kml_uri;
+    return NULL;
+  }
+
+  bool is_kmz() const {
+    return is_kmz_;
+  }
+
+  const std::string& get_target() const {
+    return target_;
+  }
+
+  const std::string& get_url() const {
+    return url_;
+  }
+
+  const std::string& get_kmz_url() const {
+    return kmz_url_;
+  }
+
+  const std::string& get_path_in_kmz() const {
+    return path_in_kmz_;
+  }
+
+  // TODO Ideally this class has no non-const methods.  No module should alter
+  // a KmlUri.  Instead a new one should be created as needed.
+  void set_path_in_kmz(const std::string path_in_kmz) {
+    path_in_kmz_ = path_in_kmz;
+    url_ = kmz_url_ + "/" + path_in_kmz;
+  }
+
+ private:
+  // Private constructor.  Use static Create() method.
+  // TODO streamline this with the Create method.
+  KmlUri(const std::string& base, const std::string& target)
+    : is_kmz_(false),
+      base_(base),
+      target_(target),
+      target_uri_(kmlbase::UriParser::CreateFromParse(target.c_str())) {
+  }
+
+  bool is_kmz_;  // TODO should this be is_relative_kmz_?
+  const std::string base_;
+  const std::string target_;
+  // TODO use UriParser's throughout _or_ std::string, not both.
+  boost::scoped_ptr<kmlbase::UriParser> target_uri_;
+
+  std::string url_;
+
+  // TODO this is too complex.  Better might be to create a new KmlUri for
+  // a new fetch.
+  std::string kmz_url_;
+  std::string path_in_kmz_;
+};
 
 }  // end namespace kmlengine
 

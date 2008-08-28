@@ -22,6 +22,7 @@ libkmlengine_la_SOURCES = \
 	kml_uri.cc \
 	kmz_cache.cc \
 	kmz_file.cc \
+	link_util.cc \
 	location_util.cc \
 	merge.cc \
 	style_merger.cc \
@@ -185,9 +186,10 @@ kmz_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 link_util_test_SOURCES = link_util_test.cc
-link_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+link_util_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 link_util_test_LDFLAGS = $(CPPUNIT_LIBS)
-link_util_test_LDADD = $(top_builddir)/src/kml/dom/libkmldom.la \
+link_util_test_LDADD = libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 location_util_test_SOURCES = location_util_test.cc

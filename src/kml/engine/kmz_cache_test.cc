@@ -32,6 +32,7 @@
 #include "kml/base/file.h"
 #include "kml/base/net_cache_test_util.h"
 #include "kml/base/unit_test.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_uri.h"
 
 #ifndef DATADIR
@@ -77,6 +78,7 @@ class KmzCacheTest : public CPPUNIT_NS::TestFixture {
  public:
   void setUp() {
     kmz_cache_.reset(new KmzCache(&testdata_net_fetcher_, kMaxTestCacheSize));
+    kml_cache_.reset(new KmlCache(&testdata_net_fetcher_, kMaxTestCacheSize));
   }
 
   void tearDown() {
@@ -92,7 +94,9 @@ class KmzCacheTest : public CPPUNIT_NS::TestFixture {
 
  private:
   kmlbase::TestDataNetFetcher testdata_net_fetcher_;
+  boost::scoped_ptr<KmlUri> kml_uri_;
   boost::scoped_ptr<KmzCache> kmz_cache_;
+  boost::scoped_ptr<KmlCache> kml_cache_;
   void VerifyContentInCache(const std::string& kml_url,
                             const std::string& want_data);
 };
@@ -101,10 +105,15 @@ CPPUNIT_TEST_SUITE_REGISTRATION(KmzCacheTest);
 
 // Verify the state of a freshly created empty KmzCache.
 void KmzCacheTest::TestDefaultState() {
+  // Use a valid looking base url for the sake of creating a proper KmlUri.
+  const std::string kBase("http://hi.com/");
   const std::string kNoSuchUrl("no-such-url-in-mock-net");
   CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0), kmz_cache_->Size());
-  CPPUNIT_ASSERT(!kmz_cache_->FetchUrl(kNoSuchUrl, NULL));
-  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(kNoSuchUrl, "no-such-path", NULL));
+  kml_uri_.reset(KmlUri::CreateRelative(kBase, kNoSuchUrl));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  CPPUNIT_ASSERT(!kmz_cache_->DoFetch(kml_uri_.get(), NULL));
+  kml_uri_->set_path_in_kmz("no-such-path");
+  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(kml_uri_.get(), NULL));
   CPPUNIT_ASSERT(!kmz_cache_->LookUp(kNoSuchUrl));
   CPPUNIT_ASSERT(!kmz_cache_->Delete(kNoSuchUrl));
   CPPUNIT_ASSERT(!kmz_cache_->RemoveOldest());
@@ -147,8 +156,11 @@ void KmzCacheTest::TestBasicSaveLookUpDelete() {
 // NOTE: This is the main public API method of KmzCache.
 void KmzCacheTest::TestBasicFetchUrl() {
   // Read the "network" via the given URL.
+  const std::string& url = kMockKmzNet[0].url;
+  kml_uri_.reset(KmlUri::CreateRelative(url, url));
+  CPPUNIT_ASSERT(kml_uri_.get());
   std::string got_kml_data;
-  CPPUNIT_ASSERT(kmz_cache_->FetchUrl(kMockKmzNet[0].url, &got_kml_data));
+  CPPUNIT_ASSERT(kmz_cache_->DoFetch(kml_uri_.get(), &got_kml_data));
 
   // Read the data for that URL directly.
   std::string want_kml_data;
@@ -159,9 +171,8 @@ void KmzCacheTest::TestBasicFetchUrl() {
   CPPUNIT_ASSERT(kmz_file->ReadKml(&want_kml_data));
 
   CPPUNIT_ASSERT_EQUAL(want_kml_data, got_kml_data);
-
   // Delete this entry from the cache and assert that this entry was found.
-  CPPUNIT_ASSERT(kmz_cache_->Delete(kMockKmzNet[0].url));
+  CPPUNIT_ASSERT(kmz_cache_->Delete(url));
 
   TestDefaultState();  // Verify that kmz_cache_ is back to default state.
 }
@@ -175,13 +186,15 @@ void KmzCacheTest::TestBasicFetchFromCache() {
 
   std::string data;
   // First verify that FetchFromCache() does not have the data.
-  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(net_url, kmz_path, &data));
+  kml_uri_.reset(KmlUri::CreateRelative(kUrl, kUrl));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(kml_uri_.get(), &data));
   // Also verify that a NULL data arg behaves properly.
-  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(net_url, kmz_path, NULL));
+  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(kml_uri_.get(), NULL));
 
   // Use FetchUrl() to bring this into cache.
   std::string got_kml_data;
-  CPPUNIT_ASSERT(kmz_cache_->FetchUrl(kUrl, &got_kml_data));
+  CPPUNIT_ASSERT(kmz_cache_->DoFetch(kml_uri_.get(), &got_kml_data));
 
   // Verify that a NULL data arg behaves properly.
   // TODO: KmzFile::ReadKml() returns false on NULL arg
@@ -190,7 +203,7 @@ void KmzCacheTest::TestBasicFetchFromCache() {
 
   std::string got_data;
   // First verify that FetchFromCache() has the right data.
-  CPPUNIT_ASSERT(kmz_cache_->FetchFromCache(net_url, kmz_path, &data));
+  CPPUNIT_ASSERT(kmz_cache_->FetchFromCache(kml_uri_.get(), &data));
 
   // Read the data for that URL directly from the test data dir.
   std::string want_kml_data;
@@ -211,8 +224,11 @@ void KmzCacheTest::VerifyContentInCache(const std::string& kml_url,
   std::string kmz_path;
   // An internal assertion to verify that we're only ever passing KMZ urls.
   CPPUNIT_ASSERT(KmzSplit(kml_url, &net_url, &kmz_path));
+  kml_uri_.reset(KmlUri::CreateRelative(kml_url, kml_url));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  kml_uri_->set_path_in_kmz(kmz_path);
   std::string got_data;
-  CPPUNIT_ASSERT(kmz_cache_->FetchFromCache(net_url, kmz_path, &got_data));
+  CPPUNIT_ASSERT(kmz_cache_->FetchFromCache(kml_uri_.get(), &got_data));
   CPPUNIT_ASSERT_EQUAL(want_data, got_data);
 }
 
@@ -227,8 +243,11 @@ void KmzCacheTest::TestOverflowCacheWithFetchUrl() {
   // Fetch the whole "network".
   for (size_t i = 0; i < kMockKmzNetSize; ++i) {
     // Use FetchUrl() to bring this into cache.
+    const std::string& url = kMockKmzNet[i].url;
+    kml_uri_.reset(KmlUri::CreateRelative(url, url));
+    CPPUNIT_ASSERT(kml_uri_.get());
     std::string data;
-    CPPUNIT_ASSERT(kmz_cache_->FetchUrl(kMockKmzNet[i].url, &data));
+    CPPUNIT_ASSERT(kmz_cache_->DoFetch(kml_uri_.get(), &data));
     CPPUNIT_ASSERT(!data.empty());
     mock_net_data.push_back(data);
 
@@ -242,9 +261,13 @@ void KmzCacheTest::TestOverflowCacheWithFetchUrl() {
   // Verify that the 0'th entry is gone (it's oldest).
   std::string net_url;
   std::string kmz_path;
-  KmzSplit(kMockKmzNet[0].url, &net_url, &kmz_path);
+  const std::string& url = kMockKmzNet[0].url;
+  KmzSplit(url, &net_url, &kmz_path);
+  kml_uri_.reset(KmlUri::CreateRelative(url, url));
+  CPPUNIT_ASSERT(kml_uri_.get());
+  kml_uri_->set_path_in_kmz(kmz_path);
   std::string data;
-  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(net_url, kmz_path, &data));
+  CPPUNIT_ASSERT(!kmz_cache_->FetchFromCache(kml_uri_.get(), &data));
 
   // Verify the other entries are all in cache.
   for (size_t i = 1; i < kMockKmzNetSize; ++i) {

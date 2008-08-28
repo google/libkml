@@ -27,7 +27,15 @@
 
 #include "kml/engine/link_util.h"
 #include "kml/dom.h"
+#include "kml/base/net_cache_test_util.h"
 #include "kml/base/unit_test.h"
+#include "kml/engine/kml_cache.h"
+#include "kml/engine/feature_visitor.h"
+#include "kml/engine/find.h"
+
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
 
 using kmldom::GroundOverlayPtr;
 using kmldom::IconPtr;
@@ -72,6 +80,8 @@ class LinkUtilTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestGetHref);
   CPPUNIT_TEST(TestGetIconParentHref);
   CPPUNIT_TEST(TestGetLinkParentHref);
+  CPPUNIT_TEST(TestFetchLink);
+  CPPUNIT_TEST(TestFetchIcon);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -96,12 +106,16 @@ class LinkUtilTest : public CPPUNIT_NS::TestFixture {
     SetOverlayIconHref(photooverlay_, kPhotoOverlayHref);
     screenoverlay_ = factory_->CreateScreenOverlay();
     SetOverlayIconHref(screenoverlay_, kScreenOverlayHref);
+    kml_cache_.reset(new KmlCache(&testdata_net_fetcher_, 1));
   }
+
 
  protected:
   void TestGetHref();
   void TestGetIconParentHref();
   void TestGetLinkParentHref();
+  void TestFetchLink();
+  void TestFetchIcon();
 
  private:
   void Init();
@@ -116,7 +130,11 @@ class LinkUtilTest : public CPPUNIT_NS::TestFixture {
   NetworkLinkPtr networklink_;
   PhotoOverlayPtr photooverlay_;
   ScreenOverlayPtr screenoverlay_;
+  kmlbase::TestDataNetFetcher testdata_net_fetcher_;
+  boost::scoped_ptr<KmlCache> kml_cache_;
 };
+
+CPPUNIT_TEST_SUITE_REGISTRATION(LinkUtilTest);
 
 template<typename HP>
 static void VerifyGetHref(const HP& href_parent, const char* want_href) {
@@ -156,10 +174,58 @@ static void VerifyGetLinkParentHref(const LP& link_parent,
   CPPUNIT_ASSERT_EQUAL(std::string(want_href), got_href);
 }
 
+template<typename LP>
+static void SetLinkHref(const LP& link_parent, LinkPtr link,
+                        const std::string& href) {
+  link->set_href(href);
+  link_parent->set_link(link);
+}
+
 // This tests the GetLinkParentHref() function template.
 void LinkUtilTest::TestGetLinkParentHref() {
+  SetLinkHref(networklink_, factory_->CreateLink(), kNetworkLinkHref);
+  SetLinkHref(model_, factory_->CreateLink(), kModelHref);
   VerifyGetLinkParentHref(networklink_, kNetworkLinkHref);
   VerifyGetLinkParentHref(model_, kModelHref);
+}
+
+void LinkUtilTest::TestFetchLink() {
+  const std::string kBase("http://host.com/kmz/radar-animation.kmz");
+  KmlFilePtr base_kml_file = kml_cache_->FetchKmlAbsolute(kBase);
+  CPPUNIT_ASSERT(base_kml_file);
+  ElementVector networklink_vector;
+  GetElementsById(base_kml_file->root(), kmldom::Type_NetworkLink,
+                  &networklink_vector);
+  // The default KML file in radar-animation.kmz has 1 NetworkLink.
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), networklink_vector.size());
+  KmlFilePtr target_kml_file = FetchLink(base_kml_file,
+                                         AsNetworkLink(networklink_vector[0]));
+  CPPUNIT_ASSERT(target_kml_file);
+  kmldom::DocumentPtr document =
+      AsDocument(GetRootFeature(target_kml_file->root()));
+  CPPUNIT_ASSERT(document);
+  // This is kmz/radar-animation.kmz/level00/0.kml.
+  CPPUNIT_ASSERT_EQUAL(std::string("0130_256_-1"), document->get_name());
+}
+
+void LinkUtilTest::TestFetchIcon() {
+  const std::string kBase("http://host.com/kmz/rumsey/kml/lc01.kmz");
+  KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kBase);
+  CPPUNIT_ASSERT(kml_file);
+  ElementVector groundoverlay_vector;
+  GetElementsById(kml_file->root(), kmldom::Type_GroundOverlay,
+                  &groundoverlay_vector);
+  // The default KML file in lc01.kmz has 2 GroundOverlays.
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), groundoverlay_vector.size());
+  std::string data;
+  CPPUNIT_ASSERT(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[0]),
+                           &data));
+  // This is kmz/rumsey/imagery/01_4.png
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(6742), data.size());
+  CPPUNIT_ASSERT(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[1]),
+                           &data));
+  // This is kmz/rumsey/imagery/01_8.png
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7364), data.size());
 }
 
 }  // end namespace kmlengine

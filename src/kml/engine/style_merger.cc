@@ -39,11 +39,12 @@ using kmldom::PairPtr;
 using kmldom::StylePtr;
 using kmldom::StyleMapPtr;
 using kmldom::StyleSelectorPtr;
+using kmldom::StyleStateEnum;
 
 namespace kmlengine {
 
 StyleMerger::StyleMerger(const KmlFilePtr& kml_file,
-                         kmldom::StyleStateEnum style_state)
+                         StyleStateEnum style_state)
     : kml_file_(kml_file), style_state_(style_state) {
   resolved_style_ = KmlFactory::GetFactory()->CreateStyle();
 }
@@ -66,27 +67,18 @@ void StyleMerger::MergeStyleUrl(const std::string& styleurl) {
   if (!kml_file_->get_kml_cache()) {
     return;
   }
-  // Resolve the styleUrl w.r.t. the KmlFile's URL.
-  std::string resolved_styleurl;
-  if (!ResolveUri(kml_file_->get_url(), styleurl, &resolved_styleurl)) {
-    return;
-  }
-  // Attempt a fetch through the cache and parse into a KmlFile.
-  std::string fetchable_url;
-  if (!GetFetchableUri(resolved_styleurl, &fetchable_url)) {
-    return;  // Should really not happen due to ResolveUri having succeeded.
-  }
+
   // This fetches the given style KML from/into the KmlCache.
   // Note that KmlCache::FetchKml() understands any KML URL including those to
   // and into a KMZ (style.kmz#styld_id, style.kmz/style.kml#style_id).
   const KmlFilePtr kml_file =
-      kml_file_->get_kml_cache()->FetchKml(fetchable_url);
+      kml_file_->get_kml_cache()->FetchKmlRelative(kml_file_->get_url(),
+                                                   styleurl);
   if (!kml_file) {
     return;  // Fetch (and parse) failures are quietly ignored.
   }
   // Find the StyleSelector within the KmlFile.
-  kmldom::StyleSelectorPtr styleselector =
-      kml_file->GetSharedStyleById(style_id);
+  StyleSelectorPtr styleselector = kml_file->GetSharedStyleById(style_id);
   if (!styleselector) {
     return;  // No shared style by this id in this KML file: ignore.
   }
