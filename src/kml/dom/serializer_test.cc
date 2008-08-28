@@ -56,6 +56,7 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
     folder_ = KmlFactory::GetFactory()->CreateFolder();
     placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
     point_ = KmlFactory::GetFactory()->CreatePoint();
+    region_ = KmlFactory::GetFactory()->CreateRegion();
   }
 
   // Called after each test.
@@ -67,15 +68,79 @@ class SerializerTest : public CPPUNIT_NS::TestFixture {
   FolderPtr folder_;
   PlacemarkPtr placemark_;
   PointPtr point_;
+  RegionPtr region_;
 };
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SerializerTest);
+
+// The NullSerializer implementation overrides no Serializer virtual methods.
+// This verifies that Serializer has no pure virtual methods.
+class NullSerializer : public Serializer {
+};
+
+// This Serialier implementation provides implementations for all virtual
+// methods.  This should build and run and do nothing.
+class MaximalSerializer : public Serializer {
+ public:
+  virtual void BeginById(int type_id, const Attributes& attributes) {}
+  virtual void End() {}
+  virtual void SaveElement(const ElementPtr& element) {}
+  virtual void SaveElementGroup(const ElementPtr& element, int group_id) {}
+  virtual void SaveStringFieldById(int type_id, std::string value) {}
+  virtual void SaveContent(const std::string& content, bool maybe_quote) {}
+  virtual void SaveLonLatAlt(double longitude, double latitude,
+                             double altitude) {}
+  virtual void Indent() {}
+};
+
+typedef std::vector<KmlDomType> TypeIdVector;
+
+// By default Serializer recurses down every complex element.  By appending
+// each visited complex element to a list in its BeginById() method this
+// serializer provides the means to verify proper depth-first order recursion.
+class HierarchicalSerializer : public Serializer {
+ public:
+  virtual void BeginById(int type_id, const Attributes& attributes) {
+    type_id_vector_.push_back(static_cast<KmlDomType>(type_id));
+  }
+
+  const TypeIdVector& get_type_id_vector() const {
+    return type_id_vector_;
+  }
+
+ private:
+  TypeIdVector type_id_vector_;
+};
+
+typedef std::vector<ElementPtr> ElementVector;
+
+// This serializer implements SaveElement() and does not recurse on complex
+// child elements, but it does append to the list of those visited.
+class FlatSerializer : public Serializer {
+ public:
+  virtual void SaveElement(const ElementPtr& element) {
+    element_vector_.push_back(element);
+  }
+
+  const ElementVector& get_element_vector() const {
+    return element_vector_;
+  }
+
+ private:
+  ElementVector element_vector_;
+};
 
 // This Serializer implementation counts begin and end tags of complex elements
 // and a count of all simple elements (fields).
 class StatsSerializer : public Serializer {
  public:
-  StatsSerializer() : begin_count_(0), end_count_(0), field_count_(0) {}
+  StatsSerializer()
+      : begin_count_(0),
+        end_count_(0),
+        field_count_(0),
+        element_count_(0),
+        element_group_count_(0),
+        content_count_(0) {}
   virtual void BeginById(int type_id, const Attributes& attributes) {
     ++begin_count_;
   }
@@ -92,6 +157,10 @@ class StatsSerializer : public Serializer {
     ++element_count_;
     Serializer::SaveElement(element);
   }
+  virtual void SaveElementGroup(const ElementPtr& element, int group_id) {
+    ++element_group_count_;
+    SaveElement(element);  // To count elements and recurse.
+  }
   int get_begin_count() const {
     return begin_count_;
   }
@@ -101,12 +170,19 @@ class StatsSerializer : public Serializer {
   int get_field_count() const {
     return field_count_;
   }
+  int get_element_count() const {
+    return element_count_;
+  }
+  int get_element_group_count() const {
+    return element_group_count_;
+  }
 
  private:
   int begin_count_;
   int end_count_;
   int field_count_;
   int element_count_;
+  int element_group_count_;
   int content_count_;
 };
 
@@ -119,8 +195,12 @@ static void CallSerializer(const ElementPtr& element, Serializer* serializer) {
 
 // Verify that the default Serializer properly does nothing.
 void SerializerTest::TestNullSerializer() {
-  Serializer null_serializer;
+  Serializer serializer;
+  CallSerializer(placemark_, &serializer);
+  NullSerializer null_serializer;
   CallSerializer(placemark_, &null_serializer);
+  MaximalSerializer max_serializer;
+  CallSerializer(placemark_, &max_serializer);
 }
 
 // Verify that the framework calls out to the Serializer-based class the
@@ -133,8 +213,12 @@ void SerializerTest::TestStatsSerializerOnEmptyElement() {
   CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_begin_count());
   // Once for </Placemark>
   CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
-  // No child elements.
+  // No child simple elements (fields).
   CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
+  // No child complex elements.
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_count());
+  // No child complex elements in substitution groups.
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_group_count());
 }
 
 // Verify that the framework calls out to the Serializer-based class as
@@ -152,6 +236,10 @@ void SerializerTest::TestStatsSerializerOnFields() {
   CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
   // 2: <name>, <visibility>
   CPPUNIT_ASSERT_EQUAL(2, stats_serializer.get_field_count());
+  // No child complex elements.
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_count());
+  // No child complex elements in substitution groups.
+  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_group_count());
 }
 
 // Verify that the framework calls out to the Serializer-based class as
@@ -159,14 +247,41 @@ void SerializerTest::TestStatsSerializerOnFields() {
 void SerializerTest::TestStatsSerializerOnChildren() {
   StatsSerializer stats_serializer;
   placemark_->set_geometry(point_);
+  placemark_->set_region(region_);
   folder_->add_feature(placemark_);
   CallSerializer(folder_, &stats_serializer);
-  // 3: <Folder> <Placemark> <Point>
-  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_begin_count());
-  // 3: </Point> </Placemark> </Folder>
-  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_end_count());
+  // 3: <Folder> <Placemark> <Region> <Point>
+  CPPUNIT_ASSERT_EQUAL(4, stats_serializer.get_begin_count());
+  // 3: </Point> </Region> </Placemark> </Folder>
+  CPPUNIT_ASSERT_EQUAL(4, stats_serializer.get_end_count());
   // 0: none of the complex elements have attributes or fields
   CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
+  // 2: 1 for Folder's Placemark + 1 for Placemark's Point + 1 for Placemark's
+  // Region.
+  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_element_count());
+  // Placemark is a Feature in Folder, and Point is Geometry in Placemark.
+  // Region is not in a group.
+  CPPUNIT_ASSERT_EQUAL(2, stats_serializer.get_element_group_count());
+
+  // Verify that a serializer which provides no implementation of SaveElement()
+  // recurses down the hierarchy of complex elements.
+  HierarchicalSerializer hier_serializer;
+  CallSerializer(folder_, &hier_serializer);
+  const TypeIdVector& type_id_vector = hier_serializer.get_type_id_vector();
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(4), type_id_vector.size());
+  CPPUNIT_ASSERT_EQUAL(Type_Folder, type_id_vector[0]);
+  CPPUNIT_ASSERT_EQUAL(Type_Placemark, type_id_vector[1]);
+  CPPUNIT_ASSERT_EQUAL(Type_Region, type_id_vector[2]);
+  CPPUNIT_ASSERT_EQUAL(Type_Point, type_id_vector[3]);
+
+  // Verify that a serializer which provides a non-recursing implementation
+  // of SaveElement() merely visits each complex element.
+  FlatSerializer flat_serializer;
+  CallSerializer(placemark_, &flat_serializer);
+  const ElementVector& element_vector = flat_serializer.get_element_vector();
+  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), element_vector.size());
+  CPPUNIT_ASSERT_EQUAL(Type_Region, element_vector[0]->Type());
+  CPPUNIT_ASSERT_EQUAL(Type_Point, element_vector[1]->Type());
 }
 
 }  // end namespace kmldom

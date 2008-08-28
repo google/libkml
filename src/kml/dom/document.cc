@@ -53,7 +53,8 @@ void Document::Serialize(Serializer& serializer) const {
     serializer.SaveElement(get_schema_array_at(i));
   }
   for (size_t i = 0; i < styleselector_array_.size(); ++i) {
-    serializer.SaveElement(get_styleselector_array_at(i));
+    serializer.SaveElementGroup(get_styleselector_array_at(i),
+                                Type_StyleSelector);
   }
   Container::Serialize(serializer);
   SerializeUnknown(serializer);

@@ -66,7 +66,7 @@ void Kml::Serialize(Serializer& serializer) const {
     serializer.SaveElement(get_networklinkcontrol());
   }
   if (has_feature()) {
-    serializer.SaveElement(get_feature());
+    serializer.SaveElementGroup(get_feature(), Type_Feature);
   }
   SerializeUnknown(serializer);
   serializer.End();
