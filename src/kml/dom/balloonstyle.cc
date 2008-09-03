@@ -67,6 +67,7 @@ void BalloonStyle::AddElement(const ElementPtr& element) {
 
 void BalloonStyle::Serialize(Serializer& serializer) const {
   Attributes attributes;
+  SubStyle::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   SubStyle::Serialize(serializer);
   if (has_bgcolor()) {

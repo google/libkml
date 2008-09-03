@@ -33,6 +33,7 @@
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
+#include "kml/dom/serializer.h"
 #include "kml/base/unit_test.h"
 
 namespace kmldom {
@@ -474,6 +475,7 @@ class IconStyleIconTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestSetToDefaultValues);
   CPPUNIT_TEST(TestSetGetHasClear);
   CPPUNIT_TEST(TestSerialize);
+  CPPUNIT_TEST(TestXmlSerialize);
   CPPUNIT_TEST_SUITE_END();
 
  public:
@@ -490,6 +492,7 @@ class IconStyleIconTest : public CPPUNIT_NS::TestFixture {
   void TestSetToDefaultValues();
   void TestSetGetHasClear();
   void TestSerialize();
+  void TestXmlSerialize();
 
  private:
   IconStyleIconPtr iconstyleicon_;
@@ -540,6 +543,20 @@ void IconStyleIconTest::TestSetGetHasClear() {
 
 // Verify the Serialize method.
 void IconStyleIconTest::TestSerialize() {
+  // Create a very special Serializer to assert that IconStyleIcon's Serialize
+  // method is advertising itself as Type_IconStyleIcon.
+  class VerifySerializer : public kmldom::Serializer {
+   public:
+    virtual void BeginById(int type_id, const Attributes& attributes) {
+     CPPUNIT_ASSERT(Type_IconStyleIcon == type_id);
+    }
+  } test_serializer;
+  // Serialize is public only on Element.
+  ElementPtr e(iconstyleicon_);
+  e->Serialize(test_serializer);
+}
+
+void IconStyleIconTest::TestXmlSerialize() {
   // This is a special case in KML.
   // Verify that IconStyleIcon is serialized as "<Icon>".
   std::string xml_output = SerializeRaw(iconstyleicon_);

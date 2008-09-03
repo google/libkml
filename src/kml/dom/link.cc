@@ -129,7 +129,7 @@ void AbstractLink::AddElement(const ElementPtr& element) {
 
 void AbstractLink::Serialize(Serializer& serializer) const {
   Attributes attributes;
-  AbstractLink::GetAttributes(&attributes);
+  BasicLink::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   BasicLink::Serialize(serializer);
   if (has_refreshmode()) {
@@ -176,8 +176,12 @@ IconStyleIcon::~IconStyleIcon() {}
 void IconStyleIcon::Serialize(Serializer& serializer) const {
   Attributes attributes;
   BasicLink::GetAttributes(&attributes);
-  // IconStyleIcon is still called Icon.
-  serializer.BeginById(Type_Icon, attributes);
+  // At one point we "lied" here and called ourselves Type_Icon as a trick to
+  // cause the then XML-only Serializer to emit "<Icon/>".  Since then the
+  // Serializer API has been abstracted for other uses making it important
+  // that any element not lie about its actual type.  The actual XML name
+  // of an element is generally outside the scope of the element's own methods.
+  serializer.BeginById(Type(), attributes);
   BasicLink::Serialize(serializer);
   SerializeUnknown(serializer);
   serializer.End();

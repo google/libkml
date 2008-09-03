@@ -51,6 +51,7 @@ void LabelStyle::AddElement(const ElementPtr& element) {
 
 void LabelStyle::Serialize(Serializer& serializer) const {
   Attributes attributes;
+  ColorStyle::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_scale()) {

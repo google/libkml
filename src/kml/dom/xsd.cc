@@ -63,6 +63,11 @@ std::string Xsd::ElementName(int id) const {
   if (!is_valid(id)) {
     return std::string();
   }
+  // This is the other side of the wart found in KmlHandler::StartElement.
+  // TODO: factor this and kKml22 out of Xsd.
+  if (id == Type_IconStyleIcon) {
+    return "Icon";
+  }
   XsdElement element = kKml22Elements[id];
   return element.element_name_;
 }

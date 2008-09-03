@@ -50,6 +50,7 @@ void LineStyle::AddElement(const ElementPtr& element) {
 
 void LineStyle::Serialize(Serializer& serializer) const {
   Attributes attributes;
+  ColorStyle::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_width()) {
