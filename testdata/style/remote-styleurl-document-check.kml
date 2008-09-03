@@ -2,28 +2,28 @@
   <IconStyle id="iconstyle">
     <scale>1.2</scale>
     <heading>90.5</heading>
-    <hotSpot x="0.1" xunits="fraction" y="10" yunits="pixels"/>
     <Icon>
       <href>http://example.com/image.png</href>
     </Icon>
+    <hotSpot x="0.1" xunits="fraction" y="10" yunits="pixels"/>
   </IconStyle>
-  <LabelStyle>
+  <LabelStyle id="labelstyle">
     <scale>0.8</scale>
   </LabelStyle>
-  <LineStyle>
+  <LineStyle id="linestyle">
     <width>2</width>
   </LineStyle>
-  <PolyStyle>
+  <PolyStyle id="polystyle">
     <fill>0</fill>
     <outline>0</outline>
   </PolyStyle>
-  <BalloonStyle>
+  <BalloonStyle id="balloonstyle">
     <bgColor>00112233</bgColor>
     <textColor>33221100</textColor>
     <text><![CDATA[<b>$[name]</b><br /><br />$[description]]]></text>
     <displayMode>hide</displayMode>
   </BalloonStyle>
-  <ListStyle>
+  <ListStyle id="liststyle">
     <listItemType>checkHideChildren</listItemType>
     <bgColor>10112233</bgColor>
     <ItemIcon>

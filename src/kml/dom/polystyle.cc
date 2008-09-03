@@ -55,6 +55,7 @@ void PolyStyle::AddElement(const ElementPtr& element) {
 
 void PolyStyle::Serialize(Serializer& serializer) const {
   Attributes attributes;
+  ColorStyle::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   ColorStyle::Serialize(serializer);
   if (has_fill()) {
