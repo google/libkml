@@ -187,11 +187,9 @@ void StyleResolverTest::TestBasicCreateNetworkResolvedStyle() {
   CPPUNIT_ASSERT(style);
   CPPUNIT_ASSERT_EQUAL(std::string("i27"), style->get_id());
   CPPUNIT_ASSERT(style->has_iconstyle());
-#if 0 // TODO: Merge doesn't know about IconStyle/IconStyleIcon...
   CPPUNIT_ASSERT(style->get_iconstyle()->has_icon());
   CPPUNIT_ASSERT(style->get_iconstyle()->get_icon());
   CPPUNIT_ASSERT(style->get_iconstyle()->get_icon()->has_href());
-#endif
   CPPUNIT_ASSERT(style->has_labelstyle());
   CPPUNIT_ASSERT(style->has_balloonstyle());
 
