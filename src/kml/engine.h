@@ -41,7 +41,6 @@
 #include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kml_uri.h"
-#include "kml/engine/kmz_cache.h"
 #include "kml/engine/kmz_file.h"
 #include "kml/engine/link_util.h"
 #include "kml/engine/location_util.h"
