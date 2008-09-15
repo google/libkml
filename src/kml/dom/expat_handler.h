@@ -41,6 +41,10 @@ public:
   virtual void EndElement(const char *name) = 0;
   virtual void CharData(const XML_Char *s, int len) = 0;
 
+  // Namespace handlers with an empty default implementation.
+  virtual void StartNamespace(const XML_Char *prefix, const XML_Char *uri) {}
+  virtual void EndNamespace(const XML_Char *prefix) {}
+
   void set_parser(XML_Parser parser) {
     parser_ = parser;
   }

@@ -35,6 +35,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_handler.h"
+#include "kml/dom/kml_handler_ns.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
 
@@ -55,13 +56,27 @@ charData(void *userData, const XML_Char *s, int len) {
   ((ExpatHandler*)userData)->CharData(s, len);
 }
 
+static void XMLCALL
+startNamespace(void *userData, const XML_Char *prefix, const XML_Char *uri) {
+  ((ExpatHandler*)userData)->StartNamespace(prefix, uri);
+}
+
+static void XMLCALL
+endNamespace(void *userData, const XML_Char *prefix) {
+  ((ExpatHandler*)userData)->EndNamespace(prefix);
+}
+
 static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
-                        std::string* errors) {
-  XML_Parser parser = XML_ParserCreate(NULL);
+                        std::string* errors, bool namespace_aware) {
+  XML_Parser parser = namespace_aware ? XML_ParserCreateNS(NULL, '|') :
+                                        XML_ParserCreate(NULL);
   expat_handler->set_parser(parser);
   XML_SetUserData(parser, expat_handler);
   XML_SetElementHandler(parser, startElement, endElement);
   XML_SetCharacterDataHandler(parser, charData);
+  if (namespace_aware) {
+    XML_SetNamespaceDeclHandler(parser, startNamespace, endNamespace);
+  }
   int xml_size = static_cast<int>(xml.size());
   XML_Status status = XML_Parse(parser, xml.c_str(), xml_size, xml_size);
   if (status != XML_STATUS_OK && errors) {
@@ -93,7 +108,18 @@ void Parser::AddObserver(ParserObserver* parser_observer) {
 // public and SWIG.
 ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
   KmlHandler kml_handler(observers_);
-  bool status = ExpatParser(kml, &kml_handler, errors);
+  bool status = ExpatParser(kml, &kml_handler, errors, false);
+  if (status) {
+    return kml_handler.PopRoot();
+  }
+  return NULL;
+}
+
+// As Parser::Parse(), but invokes the underlying XML parser's namespace-aware
+// mode.
+ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
+  KmlHandlerNS kml_handler(observers_);
+  bool status = ExpatParser(kml, &kml_handler, errors, true);
   if (status) {
     return kml_handler.PopRoot();
   }
@@ -105,6 +131,12 @@ ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
 ElementPtr Parse(const std::string& kml, std::string* errors) {
   Parser parser;
   return parser.Parse(kml, errors);
+}
+
+// As Parse(), but invokes the underlying XML parser's namespace-aware mode.
+ElementPtr ParseNS(const std::string& kml, std::string* errors) {
+  Parser parser;
+  return parser.ParseNS(kml, errors);
 }
 
 // Parse the KML in the given string.  NULL is returned on any parse errors,

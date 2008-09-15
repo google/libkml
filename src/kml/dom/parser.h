@@ -59,6 +59,10 @@ class Parser {
   // diagnostic is stored there.  If there are no parse errors the root
   // element is returned.  Note that any ParseObserver can terminate the parse.
   ElementPtr Parse(const std::string& kml, std::string *errors);
+
+  // As Parse(), but invokes the underlying XML parser's namespace-aware mode.
+  ElementPtr ParseNS(const std::string& kml, std::string *errors);
+
   // This method registers the given ParserObserver-based class.  Each
   // NewElement() and AddChild() method is called in the order added.
   void AddObserver(ParserObserver* parser_observer);
