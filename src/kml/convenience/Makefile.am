@@ -20,12 +20,17 @@ libkmlconvenienceincludedir = $(includedir)/kml/convenience
 libkmlconvenienceinclude_HEADERS = \
 	csv_file.h \
 	convenience.h \
+	element_counter.h \
 	feature_list.h \
 	kmz_check_links.h
 
 if HAVE_CPPUNIT 
 DATA_DIR = $(top_srcdir)/testdata
-TESTS = csv_file_test convenience_test kmz_check_links_test feature_list_test
+TESTS = csv_file_test \
+	convenience_test \
+	element_counter_test \
+	kmz_check_links_test \
+	feature_list_test
 check_PROGRAMS = $(TESTS)
 
 convenience_test_SOURCES = convenience_test.cc
@@ -40,6 +45,14 @@ csv_file_test_SOURCES = csv_file_test.cc
 csv_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)
 csv_file_test_LDFLAGS = $(CPPUNIT_LIBS)
 csv_file_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+element_counter_test_SOURCES = element_counter_test.cc
+element_counter_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)
+element_counter_test_LDFLAGS = $(CPPUNIT_LIBS)
+element_counter_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
