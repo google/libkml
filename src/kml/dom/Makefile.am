@@ -44,6 +44,7 @@ libkmldom_la_SOURCES = \
 	timeprimitive.cc \
 	vec2.cc \
 	kml_handler.cc \
+	kml_handler_ns.cc \
 	parser.cc \
 	serializer.cc \
 	xml_serializer.cc \
@@ -100,6 +101,7 @@ EXTRA_DIST = \
 	attributes.h \
 	expat_handler.h \
 	kml_handler.h \
+	kml_handler_ns.h \
 	serializer.h \
 	xml_serializer.h \
 	xsd.h \
@@ -145,6 +147,7 @@ TESTS = abstractlatlonbox_test \
 	unknown_test \
 	attributes_test \
 	kml_handler_test \
+	kml_handler_ns_test \
 	parser_test \
 	serializer_test \
 	xml_serializer_test \
@@ -387,6 +390,12 @@ kml_handler_test_SOURCES = kml_handler_test.cc
 kml_handler_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kml_handler_test_LDFLAGS = $(CPPUNIT_LIBS)
 kml_handler_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+kml_handler_ns_test_SOURCES = kml_handler_ns_test.cc
+kml_handler_ns_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+kml_handler_ns_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml_handler_ns_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 parser_test_SOURCES = parser_test.cc

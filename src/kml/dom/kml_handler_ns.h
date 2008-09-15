@@ -23,39 +23,49 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the public Parse and Serialize API
-// functions.
+// This file declares the KmlHandlerNS subclass of KmlHandler.
+// This is used internally to the ParseNS() function. See kml_handler.h for
+// details.
 
-#ifndef KML_DOM_KML_FUNCS_H__
-#define KML_DOM_KML_FUNCS_H__
+#ifndef KML_DOM_KML_HANDLER_NS_H__
+#define KML_DOM_KML_HANDLER_NS_H__
 
+#include <stack>
 #include <string>
+#include "kml_handler.h"
+#include "expat.h"  // XML_Char
 #include "kml/dom/element.h"
+#include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_ptr.h"
+#include "kml/dom/parser_observer.h"
 
 namespace kmldom {
 
-// Parse the KML in the given memory buffer.  On success this returns an
-// Element* to the root of the KML.  On failure 0 is returned and a human
-// readable error string is stored to errors if such is supplied.
-ElementPtr Parse(const std::string& xml, std::string* errors);
+class KmlFactory;
 
-// As Parse(), but invokes the underlying XML parser's namespace-aware mode.
-ElementPtr ParseNS(const std::string& xml, std::string* errors);
+// This subclass of KmlHandler is used with Expat's namespace-aware parsing.
+class KmlHandlerNS : public KmlHandler {
+ public:
+  KmlHandlerNS(parser_observer_vector_t& observers);
+  ~KmlHandlerNS();
+  
+  // ExpatHandler methods.
+  virtual void StartElement(const char *name, const char **atts);
+  virtual void EndElement(const char *name);
+  virtual void CharData(const XML_Char *s, int len);
+  virtual void StartNamespace(const XML_Char *prefix, const XML_Char *uri);
+  virtual void EndNamespace(const XML_Char *prefix);
 
-// This is a simplified interface for the benefit of SWIG.
-ElementPtr ParseKml(const std::string& xml);
+ private:
+  // The namespace-aware StartElement and EndElement receive the full uri and
+  // local name split by a "|" character. This splits the string into
+  // its component pieces. Either or both uri and local_name may be NULL.
+  void SplitPrefixUriString(const std::string& str, std::string* uri,
+                            std::string* local_name);
+  // TODO: A map of namespace URIs to their prefixes found during the parse.
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlHandlerNS);
+};
 
-// This function is the public API for generating "pretty" XML for the KML
-// hierarchy rooted at the given Element.  "pretty" is 2 space indent for
-// each level of XML depth.
-std::string SerializePretty(const ElementPtr& root);
+} // end namespace kmldom
 
-// This function is the public API for generating "raw" XML for the KML
-// hierarchy rooted at the given Element.  "raw" is no indentation white space
-// and no newlines.
-std::string SerializeRaw(const ElementPtr& root);
-
-}  // end namespace kmldom
-
-#endif  // KML_DOM_KML_FUNCS_H__
+#endif  // KML_DOM_KML_HANDLER_NS_H__
