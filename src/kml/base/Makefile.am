@@ -8,6 +8,8 @@ endif
 
 lib_LTLIBRARIES = libkmlbase.la
 libkmlbase_la_SOURCES = \
+	attributes.cc \
+	expat_parser.cc \
 	file.cc \
 	file_posix.cc \
 	referent.cc \
@@ -17,6 +19,8 @@ libkmlbase_la_SOURCES = \
 # These header files will be installed in $(includedir)/kml/base
 libkmlbaseincludedir = $(includedir)/kml/base
 libkmlbaseinclude_HEADERS = \
+	attributes.h \
+	expat_parser.h \
 	file.h \
 	memory_file.h \
 	net_cache.h \
@@ -26,7 +30,8 @@ libkmlbaseinclude_HEADERS = \
 	time_util.h \
 	unit_test.h \
 	uri_parser.h \
-	util.h
+	util.h \
+	xmlns.h
 
 EXTRA_DIST = \
 	file_win32.cc \
@@ -35,15 +40,22 @@ EXTRA_DIST = \
 if HAVE_CPPUNIT 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = \
+	attributes_test \
 	file_test \
 	net_cache_test \
 	referent_test \
 	string_util_test \
 	tempfile_test \
 	time_util_test \
-	uri_parser_test
+	uri_parser_test \
+	xmlns_test
 
 check_PROGRAMS = $(TESTS)
+
+attributes_test_SOURCES = attributes_test.cc
+attributes_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+attributes_test_LDFLAGS = $(CPPUNIT_LIBS)
+attributes_test_LDADD= libkmlbase.la
 
 file_test_SOURCES = file_test.cc
 file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)
@@ -82,6 +94,11 @@ uri_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXF
 uri_parser_test_LDFLAGS = $(CPPUNIT_LIBS)
 uri_parser_test_LDADD= libkmlbase.la \
         $(top_builddir)/third_party/liburiparser.la
+
+xmlns_test_SOURCES = xmlns_test.cc
+xmlns_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+xmlns_test_LDFLAGS = $(CPPUNIT_LIBS)
+xmlns_test_LDADD= libkmlbase.la
 
 CLEANFILES = check_PROGRAMS
 endif
