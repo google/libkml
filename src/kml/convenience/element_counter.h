@@ -29,6 +29,8 @@
 #include <map>
 #include "kml/dom.h"
 
+namespace kmlconvenience {
+
 // This map is used to hold the occurrence count for each element.
 typedef std::map<kmldom::KmlDomType, int> ElementCountMap;
 
@@ -53,5 +55,7 @@ class ElementCounter : public kmldom::ParserObserver {
  private:
   ElementCountMap& element_count_map_;
 };
+
+}  // end namespace kmlconvenience
 
 #endif // KML_CONVENIENCE_ELEMENT_COUNTER_H__
