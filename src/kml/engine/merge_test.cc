@@ -28,7 +28,6 @@
 
 #include "kml/engine/merge.h"
 #include <string>
-#include "kml/dom/attributes.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
@@ -38,6 +37,8 @@
 using kmldom::CoordinatesPtr;
 using kmldom::FolderPtr;
 using kmldom::LineStringPtr;
+using kmldom::IconStylePtr;
+using kmldom::IconStyleIconPtr;
 using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
@@ -54,6 +55,7 @@ class MergeTest : public CPPUNIT_NS::TestFixture {
   CPPUNIT_TEST(TestMergeFieldsMany);
   CPPUNIT_TEST(TestDontMergeComplexChildren);
   CPPUNIT_TEST(TestMergeElementsNull);
+  CPPUNIT_TEST(TestBasicMergeIconStyle);
   CPPUNIT_TEST(TestMergeIconStyle);
   CPPUNIT_TEST(TestMergeFullStyle);
   CPPUNIT_TEST(TestMergePointPlacemark);
@@ -70,6 +72,7 @@ class MergeTest : public CPPUNIT_NS::TestFixture {
   void TestDontMergeComplexChildren();
   void TestMergeElementsNull();
   void TestMergeChildren();
+  void TestBasicMergeIconStyle();
   void TestMergeIconStyle();
   void TestMergeFullStyle();
   void TestMergePointPlacemark();
@@ -213,6 +216,21 @@ void MergeTest::TestMergeElementsNull() {
   MergeElements(NULL, target_placemark_);
   MergeElements(NULL, NULL);
 }
+
+void MergeTest::TestBasicMergeIconStyle() {
+  const std::string kHref("icon.png");
+  IconStylePtr source = KmlFactory::GetFactory()->CreateIconStyle();
+  IconStyleIconPtr icon = KmlFactory::GetFactory()->CreateIconStyleIcon();
+  icon->set_href(kHref);
+  source->set_icon(icon);
+
+  IconStylePtr target = KmlFactory::GetFactory()->CreateIconStyle();
+  MergeElements(source, target);
+  CPPUNIT_ASSERT(target->has_icon());
+  CPPUNIT_ASSERT(target->get_icon()->has_href());
+  CPPUNIT_ASSERT_EQUAL(kHref, target->get_icon()->get_href());
+}
+
 // This verifies that an element hierarchy is properly merged from
 // target to source.  The test of IconStyle/Icon in particular excercises
 // some special handling of this element.
@@ -269,7 +287,7 @@ void MergeTest::TestMergeIconStyle() {
   CPPUNIT_ASSERT(source_style_->get_iconstyle()->has_icon());
   // TODO: IconStyleIcon's Serialize lies and calls itself Icon
   //       Fix it to not lie and make XmlSerialize handle the matter.
-  // CPPUNIT_ASSERT(target_style_->get_iconstyle()->has_icon());
+  CPPUNIT_ASSERT(target_style_->get_iconstyle()->has_icon());
   // CPPUNIT_ASSERT(source->get_iconstyle()->get_icon()->has_href());
   // CPPUNIT_ASSERT(target_style_->get_iconstyle()->get_icon()->has_href());
   // CPPUNIT_ASSERT_EQUAL(kHref,

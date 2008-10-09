@@ -28,7 +28,6 @@
 
 #include "kml/engine/find.h"
 #include <string>
-#include "kml/dom/attributes.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"

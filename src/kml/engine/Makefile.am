@@ -14,8 +14,8 @@ libkmlengine_la_SOURCES = \
 	feature_balloon.cc \
 	feature_visitor.cc \
 	find.cc \
-	get_links.cc \
 	get_link_parents.cc \
+	get_links.cc \
 	href.cc \
 	kml_cache.cc \
 	kml_file.cc \
@@ -42,13 +42,12 @@ libkmlengineinclude_HEADERS = \
 	feature_balloon.h \
 	feature_visitor.h \
 	find.h \
-	get_links.h \
 	get_link_parents.h \
+	get_links.h \
 	href.h \
 	kml_cache.h \
 	kml_file.h \
 	kml_uri.h \
-	kmz_cache.h \
 	kmz_cache.h \
 	kmz_file.h \
 	link_util.h \
@@ -67,8 +66,8 @@ TESTS = bbox_test \
 	feature_balloon_test \
 	feature_visitor_test \
 	find_test \
-	get_links_test \
 	get_link_parents_test \
+	get_links_test \
 	href_test \
 	kmz_cache_test \
 	kml_cache_test \
@@ -126,17 +125,17 @@ find_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
-get_links_test_SOURCES = get_links_test.cc
-get_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-get_links_test_LDFLAGS = $(CPPUNIT_LIBS)
-get_links_test_LDADD= libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
-
 get_link_parents_test_SOURCES = get_link_parents_test.cc
 get_link_parents_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 get_link_parents_test_LDFLAGS = $(CPPUNIT_LIBS)
 get_link_parents_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+get_links_test_SOURCES = get_links_test.cc
+get_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+get_links_test_LDFLAGS = $(CPPUNIT_LIBS)
+get_links_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
