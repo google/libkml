@@ -37,6 +37,8 @@ namespace kmldom {
 
 class Serializer;
 
+// OGC KML 2.2 Standard: 15.1 kml:AbstractTimePrimitiveGroup
+// OGC KML 2.2 XSD: <element name="AbstractTimePrimitiveGroup"...
 class TimePrimitive : public Object {
  public:
   virtual ~TimePrimitive();

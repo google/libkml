@@ -31,9 +31,12 @@
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
-class Attributes;
 class Serializer;
 
 // This is SnippetType in the KML standard.
@@ -72,9 +75,9 @@ class SnippetCommon : public Element {
  protected:
   SnippetCommon();
   virtual void AddElement(const ElementPtr& child);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
 
  private:
   std::string text_;

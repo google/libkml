@@ -33,11 +33,14 @@
 // 4a) call AddChild() for each ParserObserver.
 
 #include "kml/dom/kml_handler.h"
-#include "kml/dom/attributes.h"
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/parser_observer.h"
 #include "kml/dom/xsd.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 
@@ -92,8 +95,10 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
 
     // We parse attributes only if StartElement received any.
     if (attrs && *attrs) {
-      Attributes attributes(attrs);
-      element->ParseAttributes(attributes);
+      boost::scoped_ptr<Attributes> attributes(Attributes::Create(attrs));
+      if (attributes.get()) {
+        element->ParseAttributes(*attributes);
+      }
     }
 
   } else if (xsd_type == XSD_SIMPLE_TYPE) {

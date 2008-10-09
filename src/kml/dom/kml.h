@@ -32,6 +32,10 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/networklinkcontrol.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
 class Serializer;
@@ -81,10 +85,10 @@ class Kml : public Element {
   Kml();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string hint_;
   bool has_hint_;
   NetworkLinkControlPtr networklinkcontrol_;

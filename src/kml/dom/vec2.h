@@ -32,11 +32,16 @@
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
-class Attributes;
 class Serializer;
 
+// OGC KML 2.2 Standard: 16.21 kml:vec2Type
+// OGC KML 2.2 XSD: <complexType name="vec2Type"...
 class Vec2 : public Element {
  public:
   virtual ~Vec2();
@@ -92,8 +97,8 @@ class Vec2 : public Element {
  protected:
   // Vec2 is abstract, derived class access only.
   Vec2();
-  virtual void ParseAttributes(const Attributes& attributes);
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   void Serialize(Serializer& serializer) const;
 
  private:

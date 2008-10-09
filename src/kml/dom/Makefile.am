@@ -98,7 +98,6 @@ libkmldominclude_HEADERS = \
 	vec2.h
 
 EXTRA_DIST = \
-	attributes.h \
 	expat_handler.h \
 	kml_handler.h \
 	kml_handler_ns.h \
@@ -145,7 +144,6 @@ TESTS = abstractlatlonbox_test \
 	timeprimitive_test \
 	vec2_test \
 	unknown_test \
-	attributes_test \
 	kml_handler_test \
 	kml_handler_ns_test \
 	parser_test \
@@ -377,13 +375,6 @@ unknown_test_SOURCES = unknown_test.cc
 unknown_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 unknown_test_LDFLAGS = $(CPPUNIT_LIBS)
 unknown_test_LDADD= libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
-
-# Unit tests for internal classes.
-attributes_test_SOURCES = attributes_test.cc
-attributes_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-attributes_test_LDFLAGS = $(CPPUNIT_LIBS)
-attributes_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 kml_handler_test_SOURCES = kml_handler_test.cc

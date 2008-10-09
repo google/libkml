@@ -156,7 +156,8 @@ class Coordinates : public Element {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Coordinates);
 };
 
-// This is AbstractGeometryGroup in the KML standard.
+// OGC KML 2.2 Standard: 10.1 kml:AbstractGeometryGroup
+// OGC KML 2.2 XSD: <element name="AbstractGeometryGroup"...
 class Geometry : public Object {
  public:
   virtual ~Geometry();

@@ -34,6 +34,8 @@ namespace kmldom {
 class Element;
 class Serializer;
 
+// OGC KML 2.2 Standard: 9.14 kml:AbstractLatLonAltBox
+// OGC KML 2.2 XSD: <complexType name="AbstractLatLonBoxType" abstract="true">
 class AbstractLatLonBox : public Object {
  public:
   virtual ~AbstractLatLonBox();

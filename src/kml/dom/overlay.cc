@@ -28,11 +28,13 @@
 // ScreenXY, RotationXY, Size, and ScreenOverlay elements.
 
 #include "kml/dom/overlay.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

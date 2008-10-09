@@ -57,11 +57,6 @@ class KmlHandlerNS : public KmlHandler {
   virtual void EndNamespace(const XML_Char *prefix);
 
  private:
-  // The namespace-aware StartElement and EndElement receive the full uri and
-  // local name split by a "|" character. This splits the string into
-  // its component pieces. Either or both uri and local_name may be NULL.
-  void SplitPrefixUriString(const std::string& str, std::string* uri,
-                            std::string* local_name);
   // TODO: A map of namespace URIs to their prefixes found during the parse.
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlHandlerNS);
 };

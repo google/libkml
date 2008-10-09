@@ -32,6 +32,8 @@
 
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 12.5 kml:AbstractSubStyleGroup
+// OGC KML 2.2 XSD: <element name="AbstractSubStyleGroup"...
 class SubStyle : public Object {
  public:
   virtual ~SubStyle();

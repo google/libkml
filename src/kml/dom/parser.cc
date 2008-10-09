@@ -66,8 +66,8 @@ endNamespace(void *userData, const XML_Char *prefix) {
   ((ExpatHandler*)userData)->EndNamespace(prefix);
 }
 
-static bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
-                        std::string* errors, bool namespace_aware) {
+bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
+                 std::string* errors, bool namespace_aware) {
   XML_Parser parser = namespace_aware ? XML_ParserCreateNS(NULL, '|') :
                                         XML_ParserCreate(NULL);
   expat_handler->set_parser(parser);

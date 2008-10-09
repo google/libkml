@@ -26,8 +26,10 @@
 // This file contains the implementation of the LookAt and Camera elements.
 
 #include "kml/dom/abstractview.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

@@ -37,6 +37,10 @@
 #include "kml/dom/object.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
 // <SimpleData>
@@ -76,11 +80,11 @@ class SimpleData : public Element {
   friend class KmlFactory;
   SimpleData();
   friend class KmlHandler;
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   virtual void AddElement(const ElementPtr& child);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string name_;
   bool has_name_;
   std::string text_;
@@ -126,11 +130,11 @@ class SchemaData : public Object {
   SchemaData();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   friend class ExtendedData;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string schemaurl_;
   bool has_schemaurl_;
   std::vector<SimpleDataPtr> simpledata_array_;
@@ -187,11 +191,11 @@ class Data : public Object {
   Data();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   friend class ExtendedData;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string name_;
   bool has_name_;
   std::string displayname_;

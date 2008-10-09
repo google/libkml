@@ -30,6 +30,8 @@
 
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 14.1 kml:AbstractViewGroup
+// OGC KML 2.2 XSD: <element name="AbstractViewGroup"...
 class AbstractView : public Object {
  public:
   virtual ~AbstractView() {}

@@ -33,8 +33,14 @@
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 8.1 kml:AbstractObjectGroup
+// OGC KML 2.2 XSD: <element name="AbstractObjectGroup"...
 class Object : public Element {
  public:
   virtual ~Object();
@@ -69,8 +75,8 @@ class Object : public Element {
   // Object is abstract, derived class access only.
   Object();
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
 
  private:
   std::string id_;

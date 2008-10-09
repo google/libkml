@@ -24,9 +24,11 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/snippet.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

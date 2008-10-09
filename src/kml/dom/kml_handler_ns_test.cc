@@ -150,7 +150,7 @@ void KmlHandlerNSTest::TestEndSimpleElement() {
 // This is a test of the CharData() method for a known simple element.
 void KmlHandlerNSTest::TestBasicCharData() {
   // This is what expat sends to KmlHandlerNS on "<name>what is in a</name>":
-  const char* kTagName = "name";
+  const char* kTagName = "http://www.opengis.net/kml/2.2|name";
   const char* kContent = "what is in a name";
 
   kml_handler_ns_->StartElement(kTagName, atts_);

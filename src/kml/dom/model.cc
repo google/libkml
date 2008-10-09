@@ -27,12 +27,14 @@
 // Scale, ResourceMap, Alias and Model elements.
 
 #include "kml/dom/model.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/link.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

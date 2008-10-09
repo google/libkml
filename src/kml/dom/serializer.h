@@ -32,9 +32,12 @@
 #include <string>
 #include "kml/dom/kml_ptr.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
-class Attributes;
 class Xsd;
 
 template<typename T>
@@ -56,7 +59,7 @@ class Serializer {
   virtual ~Serializer() {}
 
   // Emit the start tag of the given element: <Placemark id="pm123">.
-  virtual void BeginById(int type_id, const Attributes& attributes) {};
+  virtual void BeginById(int type_id, const kmlbase::Attributes& attributes) {};
 
   // Emit the end tag of the given element: </Placemark>.
   virtual void End() {};

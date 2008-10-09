@@ -27,8 +27,10 @@
 // and the concrete elements TimeSpan, TimeStamp.
 
 #include "kml/dom/timeprimitive.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 
