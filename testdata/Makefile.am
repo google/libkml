@@ -1,2 +1,2 @@
-SUBDIRS = balloon kmz links style csv
+SUBDIRS = balloon kmz links style csv xsd
 

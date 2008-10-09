@@ -181,6 +181,7 @@ AC_CONFIG_FILES([
 	examples/kml/Makefile
 	examples/python/Makefile
 	examples/regionator/Makefile
+	examples/xsd/Makefile
 	src/Makefile
 	src/kml/Makefile
 	src/kml/convenience/Makefile
@@ -188,6 +189,7 @@ AC_CONFIG_FILES([
 	src/kml/engine/Makefile
 	src/kml/regionator/Makefile
 	src/kml/base/Makefile
+	src/kml/xsd/Makefile
 	src/swig/Makefile
 	src/swig/java/Makefile
 	src/swig/python/Makefile
@@ -201,6 +203,7 @@ AC_CONFIG_FILES([
 	testdata/links/Makefile
 	testdata/style/Makefile
 	testdata/style/weather/Makefile
+	testdata/xsd/Makefile
 	third_party/Makefile
 ])
 
