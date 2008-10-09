@@ -33,11 +33,11 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/serializer.h"
 
-namespace kmldom {
+namespace kmlbase {
 class Attributes;
 }
 
-using kmldom::Attributes;
+using kmlbase::Attributes;
 using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;
 using kmldom::KmlFactory;

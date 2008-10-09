@@ -34,7 +34,7 @@
 #include "kml/engine/clone.h"
 #include "kml/engine/engine_types.h"
 
-using kmldom::Attributes;
+using kmlbase::Attributes;
 using kmldom::ElementPtr;
 using kmldom::KmlDomType;
 using kmldom::KmlFactory;
