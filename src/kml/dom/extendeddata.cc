@@ -27,11 +27,13 @@
 // SchemaData and Data element.
 
 #include "kml/dom/extendeddata.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

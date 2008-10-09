@@ -33,6 +33,8 @@
 
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 12.1 kml:AbstractStyleSelectorGroup
+// OGC KML 2.2 XSD: <element name="AbstractStyleSelectorGroup"...
 class StyleSelector : public Object {
  public:
   virtual ~StyleSelector();

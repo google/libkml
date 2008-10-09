@@ -41,6 +41,8 @@
 
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 9.1 kml:AbstractFeatureGroup
+// OGC KML 2.2 XSD: <element name="AbstractFeatureGroup"...
 class Feature : public Object {
  public:
   virtual ~Feature();

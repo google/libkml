@@ -26,9 +26,11 @@
 // This file contains the implementation of the abstract Vec2 element.
 
 #include "kml/dom/vec2.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

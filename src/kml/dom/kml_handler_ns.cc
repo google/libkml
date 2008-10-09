@@ -27,17 +27,14 @@
 // its namespace-aware mode.  See kml_handler.cc for more details.
 
 #include "kml/dom/kml_handler_ns.h"
-#include "kml/base/string_util.h"
-#include "kml/dom/attributes.h"
-#include "kml/dom/element.h"
-#include "kml/dom/kml_factory.h"
-#include "kml/dom/parser_observer.h"
-#include "kml/dom/xsd.h"
+#include "kml/dom/parser.h"  // for kXmlnsSeparator.
+#include <string.h>  // For strchr().
 
 namespace kmldom {
 
 // The uri:local_name separator used in expat's ParserCreateNS.
-static const char kXmlnsSeparator[] = "|";
+// TODO: pull this from a common header with the separator in parse.h.
+static const char kXmlnsSeparator = '|';
 
 KmlHandlerNS::KmlHandlerNS(parser_observer_vector_t& observers)
   : KmlHandler(observers) {
@@ -47,15 +44,17 @@ KmlHandlerNS::~KmlHandlerNS() {
 }
 
 void KmlHandlerNS::StartElement(const char *name, const char **atts) {
-  std::string uri, localname;
-  SplitPrefixUriString(name, &uri, &localname);
-  KmlHandler::StartElement(localname.c_str(), atts);
+  // Expat guarantees that there will be delimited uri-name string here.
+  const char* start_ = strchr(name, kXmlnsSeparator);
+  // ++start is always a valid character.
+  KmlHandler::StartElement(++start_, atts);
 }
 
 void KmlHandlerNS::EndElement(const char *name) {
-  std::string uri, localname;
-  SplitPrefixUriString(name, &uri, &localname);
-  KmlHandler::EndElement(localname.c_str());
+  // Expat guarantees that there will be delimited uri-name string here.
+  const char* end_ = strchr(name, kXmlnsSeparator);
+  // ++end is always a valid character.
+  KmlHandler::EndElement(++end_);
 }
 
 void KmlHandlerNS::CharData(const XML_Char *s, int len) {
@@ -69,26 +68,6 @@ void KmlHandlerNS::StartNamespace(const XML_Char *prefix, const XML_Char *uri) {
 }
 
 void KmlHandlerNS::EndNamespace(const XML_Char *prefix) {
-}
-
-// Private.
-// TODO: optimize.
-void KmlHandlerNS::SplitPrefixUriString(const std::string& str,
-                                        std::string* uri,
-                                        std::string* localname) {
-  if (str.find(kXmlnsSeparator) != std::string::npos) {
-    std::vector<std::string> string_vec;
-    kmlbase::SplitStringUsing(str, kXmlnsSeparator, &string_vec);
-    assert(string_vec.size() == 2);
-    if (uri) {
-      *uri = string_vec.at(0);
-    }
-    if (localname) {
-      *localname = string_vec.at(1);
-    }
-  } else {  // No namespace separator found.
-    *localname = str;
-  }
 }
 
 }  // end namespace kmldom

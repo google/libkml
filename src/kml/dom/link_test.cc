@@ -36,6 +36,8 @@
 #include "kml/dom/serializer.h"
 #include "kml/base/unit_test.h"
 
+using kmlbase::Attributes;
+
 namespace kmldom {
 
 class LinkTest : public CPPUNIT_NS::TestFixture {

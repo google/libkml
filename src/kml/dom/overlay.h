@@ -44,6 +44,8 @@ namespace kmldom {
 
 class Serializer;
 
+// OGC KML 2.2 Standard: 11.1 kml:AbstractOverlayGroup
+// OGC KML 2.2 XSD: <element name="AbstractOverlayGroup"...
 class Overlay : public Feature {
  public:
   virtual ~Overlay();

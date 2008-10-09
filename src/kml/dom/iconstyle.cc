@@ -26,10 +26,12 @@
 // This file contains the implementation of the IconStyle element.
 
 #include "kml/dom/iconstyle.h"
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

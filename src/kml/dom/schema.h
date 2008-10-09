@@ -32,6 +32,10 @@
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
 // <SimpleField>
@@ -81,10 +85,10 @@ class SimpleField : public Element {
   SimpleField();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string type_;
   bool has_type_;
   std::string name_;
@@ -133,10 +137,10 @@ class Schema : public Object {
   Schema();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
   std::string name_;
   bool has_name_;
   std::string id_;

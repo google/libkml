@@ -23,45 +23,25 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "kml/dom/object.h"
-#include "kml/base/attributes.h"
+// TODO: move to kml/base/expat_parser.h
 
-using kmlbase::Attributes;
+#ifndef KML_DOM_EXPAT_PARSER_H__
+#define KML_DOM_EXPAT_PARSER_H__
+
+#include <string>
 
 namespace kmldom {
 
-Object::Object()
-  : has_id_(false), has_targetid_(false) {}
+class ExpatHandler;
 
-Object::~Object() {}
+// Run expat using the supplied handler over the supplied input.  Any parse
+// errors are are saved to the supplied string.  This returns true if the
+// parse succeeded, false otherwise.
+bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
+                 std::string* errors, bool namespace_aware);
 
-static const char kId[] = "id";
-static const char kTargetId[] = "targetId";
+}  // end namespace kmldom
 
-void Object::AddElement(const ElementPtr& element) {
-  // Any element passed in here is by definition unknown. Specificially,
-  // it will handle a "known" element appearing in the wrong place, e.g.
-  // <Placemark><Document>. We pass everything straight to Element for
-  // storage.
-  Element::AddElement(element);
-}
+#endif  // KML_DOM_EXPAT_PARSER_H__
 
-void Object::ParseAttributes(const Attributes& attributes) {
-  has_id_ = attributes.GetString(kId, &id_);
-  has_targetid_ = attributes.GetString(kTargetId, &targetid_);
-  Element::ParseAttributes(attributes);
-}
 
-void Object::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
-  // If the id or targetId have been explictly set via API calls, we overwrite
-  // the values stored in the attibutes object.
-  if (has_id_) {
-    attributes->SetString(kId, id_);
-  }
-  if (has_targetid_) {
-    attributes->SetString(kTargetId, targetid_);
-  }
-}
-
-}  // namespace kmldom

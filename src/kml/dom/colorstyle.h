@@ -34,6 +34,8 @@
 
 namespace kmldom {
 
+// OGC KML 2.2 Standard: 12.7 kml:AbstractColorStyleGroup
+// OGC KML 2.2 XSD: <element name="AbstractColorStyleGroup"...
 class ColorStyle : public SubStyle {
  public:
   virtual ~ColorStyle();

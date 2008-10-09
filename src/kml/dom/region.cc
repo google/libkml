@@ -27,11 +27,12 @@
 // and Region elements.
 
 #include "kml/dom/region.h"
-#include <stdlib.h>
+#include "kml/base/attributes.h"
 #include "kml/dom/abstractlatlonbox.h"
-#include "kml/dom/attributes.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

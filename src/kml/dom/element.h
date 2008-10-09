@@ -42,9 +42,12 @@
 #include "kml/base/referent.h"
 #include "kml/base/util.h"
 
+namespace kmlbase {
+class Attributes;
+}
+
 namespace kmldom {
 
-class Attributes;
 class Serializer;
 class Xsd;
 
@@ -99,7 +102,7 @@ class Element : public kmlbase::Referent {
   // element examines the passed attributes for any it is aware of and
   // passes the attributes to its parent class and ultimately to Element
   // itself to preserve unknown attributes.
-  virtual void ParseAttributes(const Attributes& attributes);
+  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
 
   // A derived class implements this to use with serialization.  See
   // class Serializer for more information.
@@ -109,7 +112,7 @@ class Element : public kmlbase::Referent {
   // class adds its attributes to the given set and passes attributes
   // along to the parent and utlimately to Element itself to preserve
   // unknown attributes.
-  virtual void GetAttributes(Attributes* attributes) const;
+  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
 
   // Each fully unknown element (and its children) is saved in raw XML form.
   void AddUnknownElement(const std::string& s);
@@ -183,7 +186,7 @@ class Element : public kmlbase::Referent {
   // Unknown attributes found during parse are copied out and a pointer is
   // stored. The object is dynamically allocated so every element is not
   // burdened with an unnecessary Attributes object.
-  Attributes* unknown_attributes_;
+  kmlbase::Attributes* unknown_attributes_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 

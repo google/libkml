@@ -35,7 +35,8 @@
 
 namespace kmldom {
 
-// This is BasicLinkType in the KML 2.2 XSD.
+// OGC KML 2.2 Standard: 12.9 kml:Icon (kml:BasicLinkType)
+// OGC KML 2.2 XSD: <complexType name="BasicLinkType"...
 class BasicLink : public Object {
  public:
   virtual ~BasicLink();

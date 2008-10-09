@@ -27,12 +27,14 @@
 
 #include "kml/dom/serializer.h"
 #include <string>
-#include "kml/dom/attributes.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kmldom.h"
 #include "kml/base/unit_test.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 

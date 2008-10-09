@@ -35,6 +35,8 @@ namespace kmldom {
 
 class Serializer;
 
+// OGC KML 2.2 Standard: 9.6 kml:AbstractContainerGroup
+// OGC KML 2.2 XSD: <element name="AbstractContainerGroup"...
 class Container : public Feature {
  public:
   virtual ~Container();

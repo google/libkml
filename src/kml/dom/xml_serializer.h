@@ -34,9 +34,11 @@
 #include "kml/dom/serializer.h"
 #include "kml/dom.h"
 
-namespace kmldom {
-
+namespace kmlbase {
 class Attributes;
+}
+
+namespace kmldom {
 
 // The XmlSerializer class is internal to the KML DOM and is used by each
 // Element to save its tag name, fields (attributes and simple elements),
@@ -51,7 +53,7 @@ class XmlSerializer : public Serializer {
   virtual ~XmlSerializer() {}
 
   // Emit the start tag of the given element: <Placemark id="pm123">.
-  virtual void BeginById(int type_id, const Attributes& attributes);
+  virtual void BeginById(int type_id, const kmlbase::Attributes& attributes);
 
   // Emit the end tag of the given element: </Placemark>.
   virtual void End();
