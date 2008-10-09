@@ -1,0 +1,9 @@
+alias AbstractColorStyleGroup ColorStyle
+alias AbstractContainerGroup Container
+alias AbstractFeatureGroup Feature
+alias AbstractGeometryGroup Geometry
+alias AbstractObjectGroup Object
+alias AbstractOverlayGroup Overlay
+alias AbstractStyleSelectorGroup StyleSelector
+alias AbstractTimePrimitiveGroup TimePrimitive
+alias AbstractViewGroup AbstractView
