@@ -33,6 +33,7 @@ namespace kmldom {
 class Element;
 
 class AbstractLatLonBox;
+class AbstractLink;
 class AbstractView;
 class BasicLink;
 class ColorStyle;
@@ -44,6 +45,7 @@ class Overlay;
 class StyleSelector;
 class SubStyle;
 class TimePrimitive;
+class Vec2;
 
 class Alias;
 class BalloonStyle;
@@ -115,6 +117,7 @@ class Size;
 typedef boost::intrusive_ptr<Element> ElementPtr;
 
 typedef boost::intrusive_ptr<AbstractLatLonBox> AbstractLatLonBoxPtr;
+typedef boost::intrusive_ptr<AbstractLink> AbstractLinkPtr;
 typedef boost::intrusive_ptr<AbstractView> AbstractViewPtr;
 typedef boost::intrusive_ptr<BasicLink> BasicLinkPtr;
 typedef boost::intrusive_ptr<ColorStyle> ColorStylePtr;
@@ -126,6 +129,7 @@ typedef boost::intrusive_ptr<Overlay> OverlayPtr;
 typedef boost::intrusive_ptr<StyleSelector> StyleSelectorPtr;
 typedef boost::intrusive_ptr<SubStyle> SubStylePtr;
 typedef boost::intrusive_ptr<TimePrimitive> TimePrimitivePtr;
+typedef boost::intrusive_ptr<Vec2> Vec2Ptr;
 
 typedef boost::intrusive_ptr<Alias> AliasPtr;
 typedef boost::intrusive_ptr<BalloonStyle> BalloonStylePtr;
