@@ -150,6 +150,7 @@ typedef enum {
   Type_maxLength,
   Type_maxLodPixels,
   Type_maxSessionLength,
+  Type_maxSnippetLines,
   Type_maxWidth,
   Type_message,
   Type_minAltitude,
@@ -256,10 +257,10 @@ typedef enum {
 } ItemIconStateEnum;
 
 typedef enum {
-  LISTITEMTYPE_RADIOFOLDER = 0,
-  LISTITEMTYPE_CHECK,
-  LISTITEMTYPE_CHECKHIDECHILDREN,
-  LISTITEMTYPE_CHECKOFFONLY
+  LISTITEMTYPE_CHECK = 0,
+  LISTITEMTYPE_RADIOFOLDER,
+  LISTITEMTYPE_CHECKOFFONLY,
+  LISTITEMTYPE_CHECKHIDECHILDREN
 } ListItemTypeEnum;
 
 typedef enum {

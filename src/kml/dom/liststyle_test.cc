@@ -161,6 +161,7 @@ void ListStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(LISTITEMTYPE_CHECK == liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(false == liststyle_->has_bgcolor());
   CPPUNIT_ASSERT("ffffffff" == liststyle_->get_bgcolor());
+  CPPUNIT_ASSERT(2 == liststyle_->get_maxsnippetlines());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -170,6 +171,8 @@ void ListStyleTest::TestSetToDefaultValues() {
   CPPUNIT_ASSERT(true == liststyle_->has_listitemtype());
   liststyle_->set_bgcolor(liststyle_->get_bgcolor());
   CPPUNIT_ASSERT(true == liststyle_->has_bgcolor());
+  liststyle_->set_maxsnippetlines(liststyle_->get_maxsnippetlines());
+  CPPUNIT_ASSERT(true == liststyle_->has_maxsnippetlines());
 }
 
 // Verify set, get, has, clear:
@@ -177,20 +180,25 @@ void ListStyleTest::TestSetGetHasClear() {
   // Non-default values:
   ListItemTypeEnum listitemtype = LISTITEMTYPE_CHECKHIDECHILDREN;
   std::string bgcolor("00112233");
+  int maxsnippetlines(3);
 
   // Set all fields:
   liststyle_->set_listitemtype(listitemtype);
   liststyle_->set_bgcolor(bgcolor);
+  liststyle_->set_maxsnippetlines(maxsnippetlines);
 
   // Verify getter and has_xxx():
   CPPUNIT_ASSERT(true == liststyle_->has_listitemtype());
   CPPUNIT_ASSERT(listitemtype == liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(true == liststyle_->has_bgcolor());
   CPPUNIT_ASSERT(bgcolor == liststyle_->get_bgcolor());
+  CPPUNIT_ASSERT(true == liststyle_->has_maxsnippetlines());
+  CPPUNIT_ASSERT(maxsnippetlines == liststyle_->get_maxsnippetlines());
 
   // Clear all fields:
   liststyle_->clear_listitemtype();
   liststyle_->clear_bgcolor();
+  liststyle_->clear_maxsnippetlines();
 
   // Verify now in default state:
   TestDefaults();
