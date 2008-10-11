@@ -146,6 +146,22 @@ class ListStyle : public SubStyle {
     return itemicon_array_[index];
   }
 
+  // <maxSnippetLines>
+  int get_maxsnippetlines() const {
+    return maxsnippetlines_;
+  }
+  bool has_maxsnippetlines() const {
+    return has_maxsnippetlines_;
+  }
+  void set_maxsnippetlines(int maxsnippetlines) {
+    maxsnippetlines_ = maxsnippetlines;
+    has_maxsnippetlines_ = true;
+  }
+  void clear_maxsnippetlines() {
+    maxsnippetlines_ = 2;
+    has_maxsnippetlines_ = false;
+  }
+
  private:
   friend class KmlFactory;
   ListStyle();
@@ -158,6 +174,8 @@ class ListStyle : public SubStyle {
   std::string bgcolor_;
   bool has_bgcolor_;
   std::vector<ItemIconPtr> itemicon_array_;
+  int maxsnippetlines_;
+  bool has_maxsnippetlines_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ListStyle);
 };
 

@@ -76,7 +76,8 @@ void ItemIcon::Serialize(Serializer& serializer) const {
 // <ListStyle>
 ListStyle::ListStyle()
   : listitemtype_(LISTITEMTYPE_CHECK), has_listitemtype_(false),
-    bgcolor_("ffffffff"), has_bgcolor_(false) {
+    bgcolor_("ffffffff"), has_bgcolor_(false),
+    maxsnippetlines_(2), has_maxsnippetlines_(false) {
 }
 
 ListStyle::~ListStyle() {}
@@ -94,6 +95,9 @@ void ListStyle::AddElement(const ElementPtr& element) {
       break;
     case Type_ItemIcon:
       add_itemicon(AsItemIcon(element));
+      break;
+    case Type_maxSnippetLines:
+      has_maxsnippetlines_ = element->SetInt(&maxsnippetlines_);
       break;
     default:
       SubStyle::AddElement(element);
@@ -114,6 +118,9 @@ void ListStyle::Serialize(Serializer& serializer) const {
   }
   for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
     serializer.SaveElement(get_itemicon_array_at(i));
+  }
+  if (has_maxsnippetlines()) {
+    serializer.SaveFieldById(Type_maxSnippetLines, get_maxsnippetlines());
   }
   SerializeUnknown(serializer);
   serializer.End();
