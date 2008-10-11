@@ -152,6 +152,7 @@ static XsdElement kKml22Elements[] = {
   { "maxLength", XSD_SIMPLE_TYPE },
   { "maxLodPixels", XSD_SIMPLE_TYPE },
   { "maxSessionLength", XSD_SIMPLE_TYPE },
+  { "maxSnippetLines", XSD_SIMPLE_TYPE },
   { "maxWidth", XSD_SIMPLE_TYPE },
   { "message", XSD_SIMPLE_TYPE },
   { "minAltitude", XSD_SIMPLE_TYPE },
@@ -216,7 +217,7 @@ static const char* kGridOriginEnums[] = { "lowerLeft", "upperLeft", NULL };
 static const char* kItemIconStateEnums[] =
   { "open", "closed", "error", "fetching0", "fetching1", "fetching2", NULL };
 static const char* kListItemTypeEnums[] =
-  { "radioFolder", "check", "checkHideChildren", "checkOffOnly", NULL };
+  { "check", "radioFolder", "checkOffOnly", "checkHideChildren", NULL };
 static const char* kRefreshModeEnums[] =
   { "onChange", "onInterval", "onExpire", NULL };
 static const char* kShapeEnums[] = { "rectangle", "cylinder", "sphere", NULL };
@@ -230,11 +231,11 @@ static XsdSimpleTypeEnum kKml22Enums[] = {
   { Type_colorMode, kColorModeEnums },
   { Type_displayMode, kDisplayModeEnums },
   { Type_gridOrigin, kGridOriginEnums },
-  { Type_key, kStyleStateEnums },
+  { Type_state, kItemIconStateEnums },
   { Type_listItemType, kListItemTypeEnums },
   { Type_refreshMode, kRefreshModeEnums },
   { Type_shape, kShapeEnums },
-  { Type_state, kItemIconStateEnums },
+  { Type_key, kStyleStateEnums },
   { Type_units, kUnitsEnums },
   { Type_viewRefreshMode, kViewRefreshModeEnums }
 };
