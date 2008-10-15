@@ -29,10 +29,12 @@
 #include "kml/dom/element.h"
 #include "kml/dom/serializer.h"
 
+using kmlbase::Color32;
+
 namespace kmldom {
 
 ColorStyle::ColorStyle() :
-  color_("ffffffff"),
+  color_(Color32(0xffffffff)),
   has_color_(false),
   colormode_(COLORMODE_NORMAL),
   has_colormode_(false) {
@@ -43,7 +45,7 @@ ColorStyle::~ColorStyle() {}
 void ColorStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_color:
-      has_color_ = element->SetString(&color_);
+      set_color(Color32(element->get_char_data()));
       break;
     case Type_colorMode:
       has_colormode_ = element->SetEnum(&colormode_);
@@ -57,7 +59,8 @@ void ColorStyle::AddElement(const ElementPtr& element) {
 void ColorStyle::Serialize(Serializer& serializer) const {
   SubStyle::Serialize(serializer);
   if (has_color()) {
-    serializer.SaveFieldById(Type_color, get_color());
+    // TODO: Serializer needs a SaveColor().
+    serializer.SaveFieldById(Type_color, get_color().to_string_abgr());
   }
   if (has_colormode()) {
     serializer.SaveEnum(Type_colorMode, get_colormode());

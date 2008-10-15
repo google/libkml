@@ -35,11 +35,12 @@
 #include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
+using kmlbase::Color32;
 
 namespace kmldom {
 
 Overlay::Overlay()
-  : color_("ffffffff"),
+  : color_(Color32(0xffffffff)),
     has_color_(false),
     draworder_(0),
     has_draworder_(false) {
@@ -50,7 +51,7 @@ Overlay::~Overlay() {}
 void Overlay::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_color:
-      has_color_ = element->SetString(&color_);
+      set_color(Color32(element->get_char_data()));
       break;
     case Type_drawOrder:
       has_draworder_ = element->SetInt(&draworder_);
@@ -67,7 +68,8 @@ void Overlay::AddElement(const ElementPtr& element) {
 void Overlay::Serialize(Serializer& serializer) const {
   Feature::Serialize(serializer);
   if (has_color()) {
-    serializer.SaveFieldById(Type_color, get_color());
+    // TODO: Serializer needs a SaveColor().
+    serializer.SaveFieldById(Type_color, get_color().to_string_abgr());
   }
   if (has_draworder()) {
     serializer.SaveFieldById(Type_drawOrder, get_draworder());

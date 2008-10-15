@@ -355,7 +355,8 @@ void MergeTest::VerifySubStyles(StylePtr style,
   CPPUNIT_ASSERT_EQUAL(icon_style_scale, style->get_iconstyle()->get_scale());
   CPPUNIT_ASSERT(style->has_labelstyle());
   CPPUNIT_ASSERT(style->get_labelstyle()->has_color());
-  CPPUNIT_ASSERT_EQUAL(label_style_color, style->get_labelstyle()->get_color());
+  CPPUNIT_ASSERT_EQUAL(label_style_color,
+                       style->get_labelstyle()->get_color().to_string_abgr());
   CPPUNIT_ASSERT(style->has_linestyle());
   CPPUNIT_ASSERT(style->get_linestyle()->has_width());
   CPPUNIT_ASSERT_EQUAL(line_style_width, style->get_linestyle()->get_width());

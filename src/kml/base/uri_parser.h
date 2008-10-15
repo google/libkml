@@ -193,8 +193,6 @@ class UriParser {
     return true;
   }
 
-
-
  private:
   // Only this class can reach into the uriparser-specific internals of a
   // UriParser.
