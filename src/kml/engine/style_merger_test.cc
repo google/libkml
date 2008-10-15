@@ -138,7 +138,8 @@ void StyleMergerTest::VerifyStyleLineStyle(const StylePtr& style,
                                            double width) const {
   CPPUNIT_ASSERT_EQUAL(id, style->get_id());
   CPPUNIT_ASSERT(style->get_linestyle());
-  CPPUNIT_ASSERT_EQUAL(color, style->get_linestyle()->get_color());
+  CPPUNIT_ASSERT_EQUAL(color,
+                       style->get_linestyle()->get_color().to_string_abgr());
   CPPUNIT_ASSERT_EQUAL(width, style->get_linestyle()->get_width());
 }
 

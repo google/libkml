@@ -31,6 +31,7 @@
 #include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
+using kmlbase::Color32;
 
 namespace kmldom {
 
@@ -50,10 +51,10 @@ BalloonStyle::~BalloonStyle() {
 void BalloonStyle::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_bgColor:
-      has_bgcolor_ = element->SetString(&bgcolor_);
+      set_bgcolor(Color32(element->get_char_data()));
       break;
     case Type_textColor:
-      has_textcolor_ = element->SetString(&textcolor_);
+      set_textcolor(Color32(element->get_char_data()));
       break;
     case Type_text:
       has_text_ = element->SetString(&text_);
@@ -73,10 +74,12 @@ void BalloonStyle::Serialize(Serializer& serializer) const {
   serializer.BeginById(Type(), attributes);
   SubStyle::Serialize(serializer);
   if (has_bgcolor()) {
-    serializer.SaveFieldById(Type_bgColor, get_bgcolor());
+    // TODO: Serializer needs a SaveColor().
+    serializer.SaveFieldById(Type_bgColor, get_bgcolor().to_string_abgr());
   }
   if (has_textcolor()) {
-    serializer.SaveFieldById(Type_textColor, get_textcolor());
+    // TODO: Serializer needs a SaveColor().
+    serializer.SaveFieldById(Type_textColor, get_textcolor().to_string_abgr());
   }
   if (has_text()) {
     serializer.SaveFieldById(Type_text, get_text());

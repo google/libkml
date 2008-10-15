@@ -29,6 +29,7 @@
 #define KML_DOM_LISTSTYLE_H__
 
 #include <vector>
+#include "kml/base/color32.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
@@ -118,18 +119,18 @@ class ListStyle : public SubStyle {
   }
 
   // <bgColor>
-  std::string get_bgcolor() const {
+  const kmlbase::Color32& get_bgcolor() const {
     return bgcolor_;
   }
   bool has_bgcolor() const {
     return has_bgcolor_;
   }
-  void set_bgcolor(const std::string& bgcolor) {
+  void set_bgcolor(const kmlbase::Color32& bgcolor) {
     bgcolor_ = bgcolor;
     has_bgcolor_ = true;
   }
   void clear_bgcolor() {
-    bgcolor_ = "ffffffff";
+    bgcolor_ = kmlbase::Color32(0xffffffff);
     has_bgcolor_ = false;
   }
 
@@ -171,7 +172,7 @@ class ListStyle : public SubStyle {
   virtual void Serialize(Serializer& serialize) const;
   int listitemtype_;
   bool has_listitemtype_;
-  std::string bgcolor_;
+  kmlbase::Color32 bgcolor_;
   bool has_bgcolor_;
   std::vector<ItemIconPtr> itemicon_array_;
   int maxsnippetlines_;

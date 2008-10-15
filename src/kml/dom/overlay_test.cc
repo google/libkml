@@ -34,6 +34,8 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/base/unit_test.h"
 
+using kmlbase::Color32;
+
 namespace kmldom {
 
 // This tests the Overlay class.
@@ -82,7 +84,7 @@ void OverlayTest::TestType() {
 // This tests the default values of all fields.
 void OverlayTest::TestDefaults() {
   CPPUNIT_ASSERT(false == overlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == overlay_->get_color());
+  CPPUNIT_ASSERT(Color32(0xffffffff) == overlay_->get_color());
   CPPUNIT_ASSERT(false == overlay_->has_draworder());
   CPPUNIT_ASSERT(0 == overlay_->get_draworder());
   CPPUNIT_ASSERT(false == overlay_->has_icon());
@@ -93,7 +95,7 @@ void OverlayTest::TestDefaults() {
 void OverlayTest::TestSetToDefaultValues() {
   overlay_->set_color(overlay_->get_color());
   CPPUNIT_ASSERT(true == overlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == overlay_->get_color());
+  CPPUNIT_ASSERT(Color32(0xffffffff) == overlay_->get_color());
   overlay_->set_draworder(overlay_->get_draworder());
   CPPUNIT_ASSERT(true == overlay_->has_draworder());
   CPPUNIT_ASSERT(0 == overlay_->get_draworder());
@@ -105,7 +107,7 @@ void OverlayTest::TestSetToDefaultValues() {
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
 void OverlayTest::TestSetGetHasClear() {
   // Non-default values.
-  const std::string kNonDefaultColor = "ff336699";
+  const Color32 kNonDefaultColor = Color32(0xff336699);
   const int kNonDefaultDrawOrder = -10000;
   IconPtr icon = KmlFactory::GetFactory()->CreateIcon();
 
@@ -116,7 +118,7 @@ void OverlayTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(overlay_->has_color());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, overlay_->get_color());
+  CPPUNIT_ASSERT(kNonDefaultColor == overlay_->get_color());
   CPPUNIT_ASSERT(overlay_->has_draworder());
   CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, overlay_->get_draworder());
   CPPUNIT_ASSERT(overlay_->has_icon());
@@ -245,7 +247,7 @@ void GroundOverlayTest::TestType() {
 void GroundOverlayTest::TestDefaults() {
   // Defaults inheried from Overlay.
   CPPUNIT_ASSERT(false == groundoverlay_->has_color());
-  CPPUNIT_ASSERT("ffffffff" == groundoverlay_->get_color());
+  CPPUNIT_ASSERT(Color32(0xffffffff) == groundoverlay_->get_color());
   CPPUNIT_ASSERT(false == groundoverlay_->has_draworder());
   CPPUNIT_ASSERT(0 == groundoverlay_->get_draworder());
 
@@ -263,7 +265,7 @@ void GroundOverlayTest::TestSetToDefaultValues() {
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
 void GroundOverlayTest::TestSetGetHasClear() {
   // Non-default values.
-  const std::string kNonDefaultColor = "ff223311";
+  const Color32 kNonDefaultColor = Color32(0xff223311);
   const int kNonDefaultDrawOrder = -1234;
   LatLonBoxPtr latlonbox = KmlFactory::GetFactory()->CreateLatLonBox();
 
@@ -274,7 +276,7 @@ void GroundOverlayTest::TestSetGetHasClear() {
 
   // Verify getter and has_xxx().
   CPPUNIT_ASSERT(groundoverlay_->has_color());
-  CPPUNIT_ASSERT_EQUAL(kNonDefaultColor, groundoverlay_->get_color());
+  CPPUNIT_ASSERT(kNonDefaultColor == groundoverlay_->get_color());
   CPPUNIT_ASSERT(groundoverlay_->has_draworder());
   CPPUNIT_ASSERT_EQUAL(kNonDefaultDrawOrder, groundoverlay_->get_draworder());
   CPPUNIT_ASSERT(groundoverlay_->has_latlonbox());

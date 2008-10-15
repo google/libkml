@@ -30,6 +30,7 @@
 #include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
+using kmlbase::Color32;
 
 namespace kmldom {
 
@@ -76,7 +77,7 @@ void ItemIcon::Serialize(Serializer& serializer) const {
 // <ListStyle>
 ListStyle::ListStyle()
   : listitemtype_(LISTITEMTYPE_CHECK), has_listitemtype_(false),
-    bgcolor_("ffffffff"), has_bgcolor_(false),
+    bgcolor_(Color32(0xffffffff)), has_bgcolor_(false),
     maxsnippetlines_(2), has_maxsnippetlines_(false) {
 }
 
@@ -91,7 +92,7 @@ void ListStyle::AddElement(const ElementPtr& element) {
       has_listitemtype_ = element->SetEnum(&listitemtype_);
       break;
     case Type_bgColor:
-      has_bgcolor_ = element->SetString(&bgcolor_);
+      set_bgcolor(Color32(element->get_char_data()));
       break;
     case Type_ItemIcon:
       add_itemicon(AsItemIcon(element));
@@ -114,7 +115,8 @@ void ListStyle::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_listItemType, get_listitemtype());
   }
   if (has_bgcolor()) {
-    serializer.SaveFieldById(Type_bgColor, get_bgcolor());
+    // TODO: Serializer needs a SaveColor().
+    serializer.SaveFieldById(Type_bgColor, get_bgcolor().to_string_abgr());
   }
   for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
     serializer.SaveElement(get_itemicon_array_at(i));

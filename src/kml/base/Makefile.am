@@ -9,6 +9,7 @@ endif
 lib_LTLIBRARIES = libkmlbase.la
 libkmlbase_la_SOURCES = \
 	attributes.cc \
+	color32.h \
 	expat_parser.cc \
 	file.cc \
 	file_posix.cc \
@@ -20,6 +21,7 @@ libkmlbase_la_SOURCES = \
 libkmlbaseincludedir = $(includedir)/kml/base
 libkmlbaseinclude_HEADERS = \
 	attributes.h \
+	expat_handler.h \
 	expat_parser.h \
 	file.h \
 	memory_file.h \
@@ -41,6 +43,7 @@ if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = \
 	attributes_test \
+	color32_test \
 	file_test \
 	net_cache_test \
 	referent_test \
@@ -56,6 +59,11 @@ attributes_test_SOURCES = attributes_test.cc
 attributes_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 attributes_test_LDFLAGS = $(CPPUNIT_LIBS)
 attributes_test_LDADD= libkmlbase.la
+
+color32_test_SOURCES = color32_test.cc
+color32_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+color32_test_LDFLAGS = $(CPPUNIT_LIBS)
+color32_test_LDADD= libkmlbase.la
 
 file_test_SOURCES = file_test.cc
 file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS)

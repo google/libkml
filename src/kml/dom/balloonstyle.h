@@ -28,6 +28,7 @@
 #ifndef KML_DOM_BALLOONSTYLE_H__
 #define KML_DOM_BALLOONSTYLE_H__
 
+#include "kml/base/color32.h"
 #include "kml/dom/substyle.h"
 #include "kml/dom/kml22.h"
 
@@ -42,34 +43,34 @@ class BalloonStyle : public SubStyle {
   }
 
   // <bgColor>
-  std::string get_bgcolor() const {
+  const kmlbase::Color32& get_bgcolor() const {
     return bgcolor_;
   }
   bool has_bgcolor() const {
     return has_bgcolor_;
   }
-  void set_bgcolor(const std::string& bgcolor) {
+  void set_bgcolor(const kmlbase::Color32& bgcolor) {
     bgcolor_ = bgcolor;
     has_bgcolor_ = true;
   }
   void clear_bgcolor() {
-    bgcolor_ = "ffffffff";
+    bgcolor_ = kmlbase::Color32(0xffffffff);
     has_bgcolor_ = false;
   }
 
   // <textColor>
-  std::string get_textcolor() const {
+  const kmlbase::Color32& get_textcolor() const {
     return textcolor_;
   }
   bool has_textcolor() const {
     return has_textcolor_;
   }
-  void set_textcolor(const std::string& textcolor) {
+  void set_textcolor(const kmlbase::Color32& textcolor) {
     textcolor_ = textcolor;
     has_textcolor_ = true;
   }
   void clear_textcolor() {
-    textcolor_ = "ff000000";
+    textcolor_ = kmlbase::Color32(0xff000000);
     has_textcolor_ = false;
   }
 
@@ -112,9 +113,9 @@ class BalloonStyle : public SubStyle {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
-  std::string bgcolor_;
+  kmlbase::Color32 bgcolor_;
   bool has_bgcolor_;
-  std::string textcolor_;
+  kmlbase::Color32 textcolor_;
   bool has_textcolor_;
   std::string text_;
   bool has_text_;

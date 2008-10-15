@@ -99,6 +99,7 @@ libkmldominclude_HEADERS = \
 
 EXTRA_DIST = \
 	expat_handler.h \
+	expat_parser.h \
 	kml_handler.h \
 	kml_handler_ns.h \
 	serializer.h \
@@ -123,6 +124,7 @@ TESTS = abstractlatlonbox_test \
 	kml_cast_test \
 	kml_test \
 	kml_factory_test \
+	kml22_test \
 	labelstyle_test \
 	linestyle_test \
 	link_test \
@@ -249,6 +251,12 @@ kml_factory_test_SOURCES = kml_factory_test.cc
 kml_factory_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
 kml_factory_test_LDFLAGS = $(CPPUNIT_LIBS)
 kml_factory_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+kml22_test_SOURCES = kml22_test.cc
+kml22_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
+kml22_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml22_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 labelstyle_test_SOURCES = labelstyle_test.cc

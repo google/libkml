@@ -29,6 +29,8 @@
 #include "kml/dom/kmldom.h"
 #include "kml/base/unit_test.h"
 
+using kmlbase::Color32;
+
 namespace kmldom {
 
 class ItemIconTest : public CPPUNIT_NS::TestFixture {
@@ -160,7 +162,7 @@ void ListStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == liststyle_->has_listitemtype());
   CPPUNIT_ASSERT(LISTITEMTYPE_CHECK == liststyle_->get_listitemtype());
   CPPUNIT_ASSERT(false == liststyle_->has_bgcolor());
-  CPPUNIT_ASSERT("ffffffff" == liststyle_->get_bgcolor());
+  CPPUNIT_ASSERT(Color32(0xffffffff) == liststyle_->get_bgcolor());
   CPPUNIT_ASSERT(2 == liststyle_->get_maxsnippetlines());
 }
 
@@ -179,7 +181,7 @@ void ListStyleTest::TestSetToDefaultValues() {
 void ListStyleTest::TestSetGetHasClear() {
   // Non-default values:
   ListItemTypeEnum listitemtype = LISTITEMTYPE_CHECKHIDECHILDREN;
-  std::string bgcolor("00112233");
+  Color32 bgcolor(Color32(0x00112233));
   int maxsnippetlines(3);
 
   // Set all fields:

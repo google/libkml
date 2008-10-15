@@ -28,6 +28,8 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/base/unit_test.h"
 
+using kmlbase::Color32;
+
 namespace kmldom {
 
 class BalloonStyleTest : public CPPUNIT_NS::TestFixture {
@@ -69,9 +71,9 @@ void BalloonStyleTest::TestType() {
 // Verify proper defaults:
 void BalloonStyleTest::TestDefaults() {
   CPPUNIT_ASSERT(false == balloonstyle_->has_bgcolor());
-  CPPUNIT_ASSERT("ffffffff" == balloonstyle_->get_bgcolor());
+  CPPUNIT_ASSERT(Color32(0xffffffff) == balloonstyle_->get_bgcolor());
   CPPUNIT_ASSERT(false == balloonstyle_->has_textcolor());
-  CPPUNIT_ASSERT("ff000000" == balloonstyle_->get_textcolor());
+  CPPUNIT_ASSERT(Color32(0xff000000) == balloonstyle_->get_textcolor());
   CPPUNIT_ASSERT(false == balloonstyle_->has_text());
   CPPUNIT_ASSERT("" == balloonstyle_->get_text());
   CPPUNIT_ASSERT(false == balloonstyle_->has_displaymode());
@@ -94,8 +96,8 @@ void BalloonStyleTest::TestSetToDefaultValues() {
 // Verify set, get, has, clear:
 void BalloonStyleTest::TestSetGetHasClear() {
   // Non-default values:
-  std::string bgcolor("00112233");
-  std::string textcolor("33221100");
+  Color32 bgcolor = Color32(0x00112233);
+  Color32 textcolor = Color32(0x33221100);
   std::string text("amidoinitrite?");
   DisplayModeEnum displaymode = DISPLAYMODE_HIDE;
 

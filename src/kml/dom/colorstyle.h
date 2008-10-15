@@ -29,6 +29,7 @@
 #define KML_DOM_COLORSTYLE_H__
 
 #include "kml/dom/substyle.h"
+#include "kml/base/color32.h"
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
 
@@ -45,20 +46,18 @@ class ColorStyle : public SubStyle {
   }
 
   // <color>
-  // TODO: Color color(uchar a, uchar b, uchar g, uchar r)
-  // all initialized to 255
-  std::string get_color() const {
+  const kmlbase::Color32& get_color() const {
     return color_;
   }
   bool has_color() const {
     return has_color_;
   }
-  void set_color(const std::string& color) {
+  void set_color(const kmlbase::Color32& color) {
     color_ = color;
     has_color_ = true;
   }
   void clear_color() {
-    color_ = "ffffffff";
+    color_ = kmlbase::Color32(0xffffffff);
     has_color_ = false;
   }
 
@@ -85,7 +84,7 @@ class ColorStyle : public SubStyle {
   virtual void Serialize(Serializer& serializer) const;
 
  private:
-  std::string color_;
+  kmlbase::Color32 color_;
   bool has_color_;
   int colormode_;
   bool has_colormode_;

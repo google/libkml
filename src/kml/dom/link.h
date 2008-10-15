@@ -159,7 +159,7 @@ class AbstractLink : public BasicLink {
     has_viewboundscale_ = false;
   }
 
-  // <viewformat>
+  // <viewFormat>
   const std::string& get_viewformat() const {
     return viewformat_;
   }
@@ -175,7 +175,7 @@ class AbstractLink : public BasicLink {
     has_viewformat_ = false;
   }
 
-  // <httpquery>
+  // <httpQuery>
   const std::string& get_httpquery() const {
     return httpquery_;
   }
