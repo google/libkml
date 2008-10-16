@@ -55,8 +55,8 @@ class SubStyle : public Object {
 class ColorStyle : public SubStyle {
 public:
   // <color>
-  const std::string& get_color();
-  void set_color(const std::string& color);
+  const kmlbase::Color32& get_color();
+  void set_color(const kmlbase::Color32& color);
   bool has_color();
   void clear_color();
 
@@ -375,8 +375,8 @@ public:
 class Overlay : public Feature {
 public:
   // <color>
-  const std::string& get_color();
-  void set_color(const std::string& color);
+  const kmlbase::Color32& get_color();
+  void set_color(const kmlbase::Color32& color);
   bool has_color();
   void clear_color();
 
@@ -397,14 +397,14 @@ public:
 class BalloonStyle : public SubStyle {
 public:
   // <bgColor>
-  const std::string& get_bgcolor();
-  void set_bgcolor(const std::string& bgcolor);
+  const kmlbase::Color32& get_bgcolor();
+  void set_bgcolor(const kmlbase::Color32& bgcolor);
   bool has_bgcolor();
   void clear_bgcolor();
 
   // <textColor>
-  const std::string& get_textcolor();
-  void set_textcolor(const std::string& textcolor);
+  const kmlbase::Color32& get_textcolor();
+  void set_textcolor(const kmlbase::Color32& textcolor);
   bool has_textcolor();
   void clear_textcolor();
 
@@ -804,8 +804,8 @@ public:
   void clear_listitemtype();
 
   // <bgColor>
-  const std::string& get_bgcolor();
-  void set_bgcolor(const std::string& bgcolor);
+  const kmlbase::Color32& get_bgcolor();
+  void set_bgcolor(const kmlbase::Color32& bgcolor);
   bool has_bgcolor();
   void clear_bgcolor();
 
