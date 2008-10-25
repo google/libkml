@@ -160,6 +160,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\kml\dom\atom.cc"
+				>
+			</File>
+			<File
 				RelativePath="kml\dom\balloonstyle.cc"
 				>
 			</File>
@@ -217,6 +221,10 @@
 			</File>
 			<File
 				RelativePath="kml\dom\kml_handler.cc"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\dom\kml_handler_ns.cc"
 				>
 			</File>
 			<File
@@ -342,7 +350,7 @@
 				>
 			</File>
 			<File
-				RelativePath="kml\dom\attributes.h"
+				RelativePath=".\kml\dom\atom.h"
 				>
 			</File>
 			<File
@@ -367,10 +375,6 @@
 			</File>
 			<File
 				RelativePath="kml\dom\element.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\dom\expat_handler.h"
 				>
 			</File>
 			<File
@@ -419,6 +423,10 @@
 			</File>
 			<File
 				RelativePath="kml\dom\kml_handler.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\dom\kml_handler_ns.h"
 				>
 			</File>
 			<File
@@ -518,10 +526,6 @@
 				>
 			</File>
 			<File
-				RelativePath="kml\util\util.h"
-				>
-			</File>
-			<File
 				RelativePath="kml\dom\vec2.h"
 				>
 			</File>
@@ -540,15 +544,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath="libkml\libkml\debug\BuildLog.htm"
-			DeploymentContent="true"
-			>
-		</File>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
