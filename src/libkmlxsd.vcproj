@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8.00"
-	Name="libkmlbase"
-	ProjectGUID="{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
-	RootNamespace="libkmlbase"
+	Name="libkmlxsd"
+	ProjectGUID="{D5CD9019-3AC4-4223-82B2-E3A44A443395}"
+	RootNamespace="libkmlxsd"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -152,31 +152,27 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\kml\base\attributes.cc"
+				RelativePath=".\stdafx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\expat_handler_ns.cc"
+				RelativePath=".\kml\xsd\xsd_complex_type.cc"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\expat_parser.cc"
+				RelativePath=".\kml\xsd\xsd_element.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\file.cc"
+				RelativePath=".\kml\xsd\xsd_file.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\file_win32.cc"
+				RelativePath=".\kml\xsd\xsd_handler.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\referent.cc"
-				>
-			</File>
-			<File
-				RelativePath="stdafx.cpp"
+				RelativePath=".\kml\xsd\xsd_primitive_type.cc"
 				>
 				<FileConfiguration
 					Name="Release|Win32"
@@ -188,11 +184,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="kml\base\string_util.cc"
+				RelativePath=".\kml\xsd\xsd_util.cc"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\time_util.cc"
+				RelativePath=".\kml\xsd\xst_parser.cc"
 				>
 			</File>
 		</Filter>
@@ -202,67 +198,47 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\kml\base\attributes.h"
+				RelativePath=".\stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\expat_handler.h"
+				RelativePath=".\kml\xsd\xsd_complex_type.h"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\expat_handler_ns.h"
+				RelativePath=".\kml\xsd\xsd_element.h"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\expat_parser.h"
+				RelativePath=".\kml\xsd\xsd_file.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\file.h"
+				RelativePath=".\kml\xsd\xsd_handler.h"
 				>
 			</File>
 			<File
-				RelativePath=".\kml\base\memory_file.h"
+				RelativePath=".\kml\xsd\xsd_primitive_type.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\net_cache.h"
+				RelativePath=".\kml\xsd\xsd_schema.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\referent.h"
+				RelativePath=".\kml\xsd\xsd_simple_type.h"
 				>
 			</File>
 			<File
-				RelativePath="stdafx.h"
+				RelativePath=".\kml\xsd\xsd_type.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\string_util.h"
+				RelativePath=".\kml\xsd\xsd_util.h"
 				>
 			</File>
 			<File
-				RelativePath="kml\base\tempfile.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\base\time_util.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\base\unit_test.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\base\uri_parser.h"
-				>
-			</File>
-			<File
-				RelativePath="kml\base\util.h"
-				>
-			</File>
-			<File
-				RelativePath=".\kml\base\xmlns.h"
+				RelativePath=".\kml\xsd\xst_parser.h"
 				>
 			</File>
 		</Filter>
@@ -272,11 +248,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath="libkml\libkml\debug\BuildLog.htm"
-			DeploymentContent="true"
-			>
-		</File>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
