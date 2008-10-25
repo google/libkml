@@ -31,14 +31,47 @@
 #include <string>
 #include "kml/dom.h"
 
+namespace kmlbase {
+class DateTime;
+class Vec3;
+}
+
 namespace kmlconvenience {
 
 // NOTE: this collection of convenience routines is expected to grow.
 // NOTE: for now these are all in one file in alphabetical order.
 
+// This creates a Data element with the given name and value and appends
+// this to the Feature's ExtendedData.  An ExtendedData is created in the
+// Feature if one does not already exist.
+void AddExtendedDataValue(const std::string& name, const std::string& value,
+                          kmldom::FeaturePtr feature);
+
+// This creates a Data element with the name and value specified:
+// <Data name="NAME><value>VALUE</value></Data>
+kmldom::DataPtr CreateDataNameValue(const std::string& name,
+                                    const std::string& value);
+
+// If the atts contains both a double "lat" and double "lon" then create
+// a KML <Point> with <coordinates> set from these attributes.
+kmldom::PointPtr CreatePointFromLatLonAtts(const char** atts);
+
+// Create a <Point> with <coordinates> from the given Vec3.
+kmldom::PointPtr CreatePointFromVec3(const kmlbase::Vec3& vec);
+
+// This creates a Point coordinates set as indicated.
+kmldom::PointPtr CreatePointLatLon(double lat, double lon);
+
 // This is a convenience function to create a Point Placemark.
 kmldom::PlacemarkPtr CreatePointPlacemark(const std::string& name,
                                           double lat, double lon);
+
+// Create a <Placemark> with the given <Point>, DateTime and <styleUrl>.
+// A <TimeStamp> is created from the DateTime and <ExtendedData> fields are
+// created for date and time.
+kmldom::PlacemarkPtr CreatePointPlacemarkWithTimeStamp(
+    const kmldom::PointPtr& point, const kmlbase::DateTime& date_time,
+    const char* style_id);
 
 // Create a Region with LatLonAltBox set to the given bounds and Lod
 // set to the given values.  This is a "2D" Region because no altitude
@@ -55,8 +88,8 @@ bool GetExtendedDataValue(const kmldom::FeaturePtr& feature,
                           std::string* value);
 
 // This sets the ExtendedData element of the feature to hold the given name
-// value as a Data element as described above.  Any previous ExtendedData
-// is destroyed.
+// value as a Data element as described above.  NOTE: Any previous ExtendedData
+// is delete from this feature.
 void SetExtendedDataValue(const std::string& name, const std::string& value,
                           kmldom::FeaturePtr feature);
 

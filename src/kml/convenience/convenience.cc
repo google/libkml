@@ -25,8 +25,15 @@
 
 #include "kml/convenience/convenience.h"
 #include <string>
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/attributes.h"
+#include "kml/base/date_time.h"
+#include "kml/base/vec3.h"
 #include "kml/dom.h"
 
+using kmlbase::Attributes;
+using kmlbase::DateTime;
+using kmlbase::Vec3;
 using kmldom::CoordinatesPtr;
 using kmldom::ExtendedDataPtr;
 using kmldom::DataPtr;
@@ -37,20 +44,70 @@ using kmldom::LodPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
 using kmldom::RegionPtr;
+using kmldom::TimeStampPtr;
 
 namespace kmlconvenience {
 
-// This is a convenience function to create a Point Placemark.
-PlacemarkPtr CreatePointPlacemark(const std::string& name, double lat,
-                                  double lon) {
+void AddExtendedDataValue(const std::string& name, const std::string& value,
+                          FeaturePtr feature) {
+  if (!feature) {
+    return;
+  }
+  if (!feature->has_extendeddata()) {
+    feature->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
+  }
+  feature->get_extendeddata()->add_data(CreateDataNameValue(name, value));
+}
+
+DataPtr CreateDataNameValue(const std::string& name, const std::string& value) {
+  DataPtr data = KmlFactory::GetFactory()->CreateData();
+  data->set_name(name);
+  data->set_value(value);
+  return data;
+}
+
+PointPtr CreatePointFromLatLonAtts(const char** atts) {
+  boost::scoped_ptr<Attributes> attributes(Attributes::Create(atts));
+  if (attributes.get()) {
+    double latitude;
+    double longitude;
+    if (attributes->GetDouble("lat", &latitude) &&
+        attributes->GetDouble("lon", &longitude)) {
+      return CreatePointLatLon(latitude, longitude);
+    }
+  }
+  return NULL;
+}
+
+PointPtr CreatePointFromVec3(const Vec3& vec) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  PlacemarkPtr placemark = factory->CreatePlacemark();
-  placemark->set_name(name);
+  CoordinatesPtr coordinates = factory->CreateCoordinates();
+  if (vec.has_altitude()) {
+    coordinates->add_latlngalt(vec.get_latitude(), vec.get_longitude(),
+                               vec.get_altitude());
+  } else {
+    coordinates->add_latlng(vec.get_latitude(), vec.get_longitude());
+  }
+  PointPtr point = factory->CreatePoint();
+  point->set_coordinates(coordinates);
+  return point;
+}
+
+PointPtr CreatePointLatLon(double lat, double lon) {
+  KmlFactory* factory = KmlFactory::GetFactory();
   CoordinatesPtr coordinates = factory->CreateCoordinates();
   coordinates->add_latlng(lat, lon);
   PointPtr point = factory->CreatePoint();
   point->set_coordinates(coordinates);
-  placemark->set_geometry(point);
+  return point;
+}
+
+// This is a convenience function to create a Point Placemark.
+PlacemarkPtr CreatePointPlacemark(const std::string& name, double lat,
+                                  double lon) {
+  PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  placemark->set_name(name);
+  placemark->set_geometry(CreatePointLatLon(lat, lon));
   return placemark;
 }
 
@@ -93,13 +150,29 @@ void SetExtendedDataValue(const std::string& name, const std::string& value,
   if (!feature) {
     return;
   }
-  KmlFactory* factory = KmlFactory::GetFactory();
-  kmldom::DataPtr data = factory->CreateData();
-  data->set_name(name);
-  data->set_value(value);
-  kmldom::ExtendedDataPtr extendeddata = factory->CreateExtendedData();
-  extendeddata->add_data(data);
-  feature->set_extendeddata(extendeddata);
+  feature->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
+  AddExtendedDataValue(name, value, feature);
+}
+
+PlacemarkPtr CreatePointPlacemarkWithTimeStamp(const PointPtr& point,
+                                               const DateTime& date_time,
+                                               const char* style_id) {
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  PlacemarkPtr placemark = kml_factory->CreatePlacemark();
+  // <name>
+  placemark->set_name(date_time.GetXsdTime());
+  // <styleUrl>
+  placemark->set_styleurl(std::string("#") + style_id);
+  // <TimeStamp>
+  TimeStampPtr time_stamp = kml_factory->CreateTimeStamp();
+  time_stamp->set_when(date_time.GetXsdDateTime());
+  placemark->set_timeprimitive(time_stamp);
+  // <ExtendedData>
+  AddExtendedDataValue("date", date_time.GetXsdDate(), placemark);
+  AddExtendedDataValue("time", date_time.GetXsdTime(), placemark);
+  // <Point>
+  placemark->set_geometry(point);
+  return placemark;
 }
 
 }  // end namespace kmlconvenience

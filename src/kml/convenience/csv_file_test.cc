@@ -27,7 +27,7 @@
 
 #include "kml/convenience/csv_file.h"
 #include <vector>
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/dom.h"
 #include "kml/convenience/convenience.h"
 #include "kml/convenience/feature_list.h"
@@ -46,32 +46,12 @@ using kmldom::PlacemarkPtr;
 using kmlconvenience::FeatureList;
 using std::vector;
 
-class CsvFileTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(CsvFileTest);
-  CPPUNIT_TEST(TestEmpty);
-  CPPUNIT_TEST(TestParseCsvLine);
-  CPPUNIT_TEST(TestParseCsvFile);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
-  }
-
-  void tearDown() {
-  }
-
+class CsvFileTest : public testing::Test {
  protected:
-  void TestEmpty();
-  void TestParseCsvLine();
-  void TestParseCsvFile();
-
- private:
   void ComparePlacemark(const PlacemarkPtr& placemark, size_t csv_offset);
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(CsvFileTest);
-
-void CsvFileTest::TestEmpty() {
+TEST_F(CsvFileTest, TestEmpty) {
   FeatureList feature_list;
   CsvFile cvs_file(&feature_list);
 }
@@ -116,25 +96,25 @@ void CsvFileTest::ComparePlacemark(const PlacemarkPtr& placemark,
   const CsvTestLine& csv_test_line = kCsvTestLines[csv_offset];
   int score = kmlconvenience::GetFeatureScore(placemark);
   double lat, lon;
-  CPPUNIT_ASSERT(kmlengine::GetFeatureLatLon(placemark, &lat, &lon));
-  CPPUNIT_ASSERT_EQUAL(csv_test_line.score, score);
-  CPPUNIT_ASSERT_EQUAL(csv_test_line.lat, lat);
-  CPPUNIT_ASSERT_EQUAL(csv_test_line.lon, lon);
+  ASSERT_TRUE(kmlengine::GetFeatureLatLon(placemark, &lat, &lon));
+  ASSERT_EQ(csv_test_line.score, score);
+  ASSERT_EQ(csv_test_line.lat, lat);
+  ASSERT_EQ(csv_test_line.lon, lon);
   if (csv_test_line.name) {
-    CPPUNIT_ASSERT_EQUAL(std::string(csv_test_line.name),
+    ASSERT_EQ(std::string(csv_test_line.name),
                          placemark->get_name());
   }
   if (csv_test_line.description) {
-    CPPUNIT_ASSERT_EQUAL(std::string(csv_test_line.description),
+    ASSERT_EQ(std::string(csv_test_line.description),
                          placemark->get_description());
   }
   if (csv_test_line.styleurl) {
-    CPPUNIT_ASSERT_EQUAL(std::string(csv_test_line.styleurl),
+    ASSERT_EQ(std::string(csv_test_line.styleurl),
                          placemark->get_styleurl());
   }
 }
 
-void CsvFileTest::TestParseCsvLine() {
+TEST_F(CsvFileTest, TestParseCsvLine) {
   FeatureList feature_list;
   CsvFile csv_file(&feature_list);
   const size_t kLineCount = sizeof(kCsvTestLines)/sizeof(kCsvTestLines[0]);
@@ -143,16 +123,16 @@ void CsvFileTest::TestParseCsvLine() {
   }
   FolderPtr folder = KmlFactory::GetFactory()->CreateFolder();
   feature_list.Save(folder);
-  CPPUNIT_ASSERT_EQUAL(kLineCount, folder->get_feature_array_size());
+  ASSERT_EQ(kLineCount, folder->get_feature_array_size());
   for (size_t i = 0; i < kLineCount; ++i) {
     PlacemarkPtr placemark = kmldom::AsPlacemark(
         folder->get_feature_array_at(i));
-    CPPUNIT_ASSERT(placemark);
+    ASSERT_TRUE(placemark);
     ComparePlacemark(placemark, i);
   }
 }
 
-void CsvFileTest::TestParseCsvFile() {
+TEST_F(CsvFileTest, TestParseCsvFile) {
   FeatureList feature_list;
   CsvFile csv_file(&feature_list);
   const size_t kChStationsLines(15140);
@@ -162,7 +142,7 @@ void CsvFileTest::TestParseCsvFile() {
   FolderPtr folder = KmlFactory::GetFactory()->CreateFolder();
   feature_list.Save(folder);
 
-  CPPUNIT_ASSERT_EQUAL(kChStationsLines, folder->get_feature_array_size());
+  ASSERT_EQ(kChStationsLines, folder->get_feature_array_size());
   PlacemarkPtr placemark;
   ComparePlacemark(kmldom::AsPlacemark(folder->get_feature_array_at(0)),
                    0);
@@ -174,4 +154,7 @@ void CsvFileTest::TestParseCsvFile() {
 
 }  // namespace kmlconvenience
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
