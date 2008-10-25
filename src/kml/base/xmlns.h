@@ -28,6 +28,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include "kml/base/attributes.h"
 
 namespace kmlbase {
@@ -61,10 +62,17 @@ class Xmlns {
     return NULL;
   }
 
+  // This returns the URI of the default namespace.  The returned string is
+  // empty if there is no default namespace.  A default namespace is the value
+  // of an "xmlns" attribute (one with no : and prefix), for example the above
+  // sample has this default namespace URI: "http://www.w3.org/2001/XMLSchema".
   const std::string& get_default() const {
     return default_;
   }
 
+  // This returns the URI of the namespace for the given prefix.  The returned
+  // string is empty if no such prefix-namespace mapping exists.  In the sample
+  // above a prefix of "kml" returns "http://www.opengis.net/kml/2.2".
   const std::string GetNamespace(const std::string& prefix) const {
     StringStringMap::const_iterator iter = prefix_map_.begin();
     for (; iter != prefix_map_.end(); ++iter) {
@@ -75,6 +83,9 @@ class Xmlns {
     return "";  // Empty string.
   }
 
+  // This returns the prefix for the given namespace.  The returned string is
+  // empty if no such namespace has a prefix.  In the sample above a namespace
+  // of "http://www.opengis.net/kml/2.2" returns "kml".
   const std::string GetKey(const std::string& value) const {
     StringStringMap::const_iterator iter = prefix_map_.begin();
     for (; iter != prefix_map_.end(); ++iter) {
@@ -83,6 +94,17 @@ class Xmlns {
       }
     }
     return "";  // Empty string.
+  }
+
+  // This returns a list of all xmlns prefix names.  For example, from the
+  // sample above this returns "kml", "atom", "xal".  Order from the original
+  // XML is not preserved (XML attributes in general have no order semantics
+  // and must each be unique).
+  void GetPrefixes(std::vector<std::string>* prefix_vector) const {
+    StringStringMap::const_iterator iter = prefix_map_.begin();
+    for (; iter != prefix_map_.end(); ++iter) {
+      prefix_vector->push_back(iter->first);
+    }
   }
 
  private:

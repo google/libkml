@@ -24,7 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/base/file.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 #ifndef DATADIR
 #error DATADIR must be defined!
@@ -34,96 +34,81 @@ static const std::string kDataDir = DATADIR;
 
 namespace kmlbase {
 
-class FileTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(FileTest);
-  CPPUNIT_TEST(TestReadFileToString);
-  CPPUNIT_TEST(TestWriteStringToFile);
-  CPPUNIT_TEST(TestExists);
-  CPPUNIT_TEST(TestDelete);
-  CPPUNIT_TEST(TestCreateNewTempFile);
-  CPPUNIT_TEST(TestJoinPaths);
-  CPPUNIT_TEST_SUITE_END();
-
- protected:
-  void TestReadFileToString();
-  void TestWriteStringToFile();
-  void TestExists();
-  void TestDelete();
-  void TestCreateNewTempFile();
-  void TestJoinPaths();
+class FileTest : public testing::Test {
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(FileTest);
-
-void FileTest::TestReadFileToString() {
+TEST_F(FileTest, TestReadFileToString) {
   const std::string kDoc = kDataDir + "/kmz/doc.kmz";
   std::string file_data;
-  CPPUNIT_ASSERT(File::ReadFileToString(kDoc, &file_data));
-  CPPUNIT_ASSERT(!file_data.empty());
+  ASSERT_TRUE(File::ReadFileToString(kDoc, &file_data));
+  ASSERT_FALSE(file_data.empty());
   // doc.kmz is 180 bytes.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(180), file_data.size());
+  ASSERT_EQ(static_cast<size_t>(180), file_data.size());
 }
 
-void FileTest::TestWriteStringToFile() {
+TEST_F(FileTest, TestWriteStringToFile) {
   // Create a temp file into which we'll write data.
   std::string tempfile;
-  CPPUNIT_ASSERT(File::CreateNewTempFile(&tempfile));
-  CPPUNIT_ASSERT(!tempfile.empty());
+  ASSERT_TRUE(File::CreateNewTempFile(&tempfile));
+  ASSERT_FALSE(tempfile.empty());
   // Write some data.
   const std::string kText = "tom dick harry";
-  CPPUNIT_ASSERT(File::WriteStringToFile(kText, tempfile));
+  ASSERT_TRUE(File::WriteStringToFile(kText, tempfile));
   // Read the file back into a different string and assert equality.
   std::string file_data;
-  CPPUNIT_ASSERT(File::ReadFileToString(tempfile, &file_data));
-  CPPUNIT_ASSERT(!file_data.empty());
-  CPPUNIT_ASSERT_EQUAL(kText, file_data);
+  ASSERT_TRUE(File::ReadFileToString(tempfile, &file_data));
+  ASSERT_FALSE(file_data.empty());
+  ASSERT_EQ(kText, file_data);
   // Remove the temp file.
-  CPPUNIT_ASSERT(File::Delete(tempfile));
+  ASSERT_TRUE(File::Delete(tempfile));
 }
 
-void FileTest::TestExists() {
+TEST_F(FileTest, TestExists) {
   const std::string kDoc = kDataDir + "/kmz/doc.kmz";
   const std::string kNoSuchFile = kDataDir + "/kmz/nosuchfile";
-  CPPUNIT_ASSERT(File::Exists(kDoc));
-  CPPUNIT_ASSERT(!File::Exists(kNoSuchFile));
+  ASSERT_TRUE(File::Exists(kDoc));
+  ASSERT_FALSE(File::Exists(kNoSuchFile));
 }
 
-void FileTest::TestDelete() {
+TEST_F(FileTest, TestDelete) {
   // Create a temp file.
   std::string tempfile;
-  CPPUNIT_ASSERT(File::CreateNewTempFile(&tempfile));
+  ASSERT_TRUE(File::CreateNewTempFile(&tempfile));
   // Assert it was created.
-  CPPUNIT_ASSERT(!tempfile.empty());
-  CPPUNIT_ASSERT(File::Exists(tempfile));
+  ASSERT_FALSE(tempfile.empty());
+  ASSERT_TRUE(File::Exists(tempfile));
   // Delete and confirm removal.
-  CPPUNIT_ASSERT(File::Delete(tempfile));
-  CPPUNIT_ASSERT(!File::Exists(tempfile));
+  ASSERT_TRUE(File::Delete(tempfile));
+  ASSERT_FALSE(File::Exists(tempfile));
 }
 
-void FileTest::TestCreateNewTempFile() {
-  CPPUNIT_ASSERT(false == File::CreateNewTempFile(NULL));
+TEST_F(FileTest, TestCreateNewTempFile) {
+  ASSERT_TRUE(false == File::CreateNewTempFile(NULL));
   std::string temp_filename;
-  CPPUNIT_ASSERT(File::CreateNewTempFile(&temp_filename));
-  CPPUNIT_ASSERT(!temp_filename.empty());
-  CPPUNIT_ASSERT(File::Delete(temp_filename));
+  ASSERT_TRUE(File::CreateNewTempFile(&temp_filename));
+  ASSERT_FALSE(temp_filename.empty());
+  ASSERT_TRUE(File::Delete(temp_filename));
 }
 
-void FileTest::TestJoinPaths() {
+TEST_F(FileTest, TestJoinPaths) {
   // TODO: win32 separators for cross-platform testing.
   const std::string kPath1NoSep("/tom/dick");
   const std::string kPath1Sep("/tom/dick/");
   const std::string kPath2("harry");
   const std::string kExpected("/tom/dick/harry");
   // Passing cases.
-  CPPUNIT_ASSERT_EQUAL(kExpected, File::JoinPaths(kPath1NoSep, kPath2));
-  CPPUNIT_ASSERT_EQUAL(kExpected, File::JoinPaths(kPath1Sep, kPath2));
+  ASSERT_EQ(kExpected, File::JoinPaths(kPath1NoSep, kPath2));
+  ASSERT_EQ(kExpected, File::JoinPaths(kPath1Sep, kPath2));
   // Pathological cases.
   // Joining with an empty string does not modify anything.
-  CPPUNIT_ASSERT_EQUAL(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
-  CPPUNIT_ASSERT_EQUAL(kPath2, File::JoinPaths("", kPath2));
-  CPPUNIT_ASSERT_EQUAL(std::string(""), File::JoinPaths("", ""));
+  ASSERT_EQ(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
+  ASSERT_EQ(kPath2, File::JoinPaths("", kPath2));
+  ASSERT_EQ(std::string(""), File::JoinPaths("", ""));
 }
 
 }  // end namespace kmlbase
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

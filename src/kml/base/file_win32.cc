@@ -48,9 +48,11 @@ static std::wstring Str2Wstr(const std::string& str) {
 // Internal to the win32 file class. We need a conversion from std::wstring to
 // std::string.
 std::string Wstr2Str(const std::wstring& wstr) {
-std::string str(wstr.length(), ' ');
-std::copy(wstr.begin(), wstr.end(), str.begin());
-return str;
+  size_t s = wstr.size();
+  std::string str(static_cast<int>(s+1), 0);
+  WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), static_cast<int>(s), &str[0],
+                      static_cast<int>(s), NULL, NULL);
+  return str;
 }
 
 bool File::Exists(const std::string& full_path) {

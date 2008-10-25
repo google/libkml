@@ -46,8 +46,7 @@ Attributes* Attributes::Create(const char** attrs) {
 
 // private
 bool Attributes::Parse(const char** attrs) {
-  // XXX detect odd/empty number of attrs...
-  while (*attrs) {
+  while (*attrs && *(attrs+1)) {  // Quietly ignore unpaired last item.
     const char* attr_name = *attrs++;
     const char* attr_val = *attrs++;
     attributes_[attr_name] = attr_val;
@@ -102,6 +101,24 @@ bool Attributes::GetDouble(const std::string attr_name,
 void Attributes::SetDouble(const std::string attr_name, double attr_val) {
   std::stringstream ss;
   ss.precision(15);
+  ss << attr_val;
+  SetString(attr_name, ss.str());
+}
+
+bool Attributes::GetInt(const std::string attr_name, int* attr_val) const {
+  if (!attr_val) {
+    return false;
+  }
+  std::string string_value;
+  if (GetString(attr_name, &string_value)) {
+    *attr_val = atoi(string_value.c_str());
+    return true;
+  }
+  return false;
+}
+
+void Attributes::SetInt(const std::string attr_name, int attr_val) {
+  std::stringstream ss;
   ss << attr_val;
   SetString(attr_name, ss.str());
 }

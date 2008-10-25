@@ -23,54 +23,65 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Uncomment this #define to enable output of timing results.
-// #define PRINT_TIME_RESULTS
-#ifdef PRINT_TIME_RESULTS
-#include <iostream>
-#endif
+// This file contains the Vec3 class.
+// TODO: update this to match kmldom::Vec3 and remove that
 
-#include "kml/base/time_util.h"
-#include <time.h>
-#include "gtest/gtest.h"
+#ifndef KML_BASE_VEC3_H__
+#define KML_BASE_VEC3_H__
 
 namespace kmlbase {
 
-class TimeUtilTest : public testing::Test {
+// A Vec3 represents a 2d or 3d point.  A Vec3 always has at least longitude
+// and latitude.  Altitude defaults to 0 and has_altitude() returns false if
+// altitude was not set.
+class Vec3 {
+ public:
+  // Create an empty Vec3.
+  Vec3() {
+    vec_[0] = vec_[1] = 0.0;
+    clear_altitude();
+  }
+  // Create a 2d Vec3.
+  Vec3(double longitude, double latitude) {
+    vec_[0] = longitude;
+    vec_[1] = latitude;
+    clear_altitude();
+  }
+
+  // Create a 2d Vec3.
+  Vec3(double longitude, double latitude, double altitude) {
+    vec_[0] = longitude;
+    vec_[1] = latitude;
+    set_altitude(altitude);
+  }
+
+  double get_longitude() const {
+    return vec_[0];
+  }
+  double get_latitude() const {
+    return vec_[1];
+  }
+
+  bool has_altitude() const {
+    return has_altitude_;
+  }
+  double get_altitude() const {
+    return vec_[2];
+  }
+  void set_altitude(double altitude) {
+    vec_[2] = altitude;
+    has_altitude_ = true;
+  }
+  void clear_altitude() {
+    vec_[2] = 0;
+    has_altitude_ = false;
+  }
+
+ private:
+  double vec_[3];
+  bool has_altitude_;
 };
 
-// This verifies the GetMicroTime() function.
-TEST_F(TimeUtilTest, TestGetMicroTime) {
-  // Get the posix time (second resolution).
-  time_t now = time(NULL);
-  // Get the micro time (microsecond resolution).
-  double later = GetMicroTime();
-  // Assert that time has passed.
-  ASSERT_TRUE(later > static_cast<double>(now));
-  // Snapshot the microtime in rapid succession.
-  double even_later = GetMicroTime();
-  double later_still = GetMicroTime();
-  // Verify that time does not go backwards.
-  ASSERT_TRUE(even_later >= later);
-  ASSERT_TRUE(later_still >= even_later);
+}  // namespace kmlbase
 
-  // Here are some values 2.16 GHz MacBook Pro running Mac OS X 10.5.3.
-  //  now         1215742903
-  //  later       1215742903.291807
-  //  even_later  1215742903.291839
-  //  later_still 1215742903.291839
-
-#ifdef PRINT_TIME_RESULTS
-  std::cerr << now << std::endl;
-  std::cerr.precision(16);
-  std::cerr << later << std::endl;
-  std::cerr << even_later << std::endl;
-  std::cerr << later_still << std::endl;
-#endif
-}
-
-}  // end namespace kmlbase
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+#endif  // KML_BASE_VEC3_H__
