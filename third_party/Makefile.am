@@ -1,7 +1,9 @@
 AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
-	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
+	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include \
+	      -I$(top_srcdir)/third_party/googletest-r108 \
+	      -I$(top_srcdir)/third_party/googletest-r108/include
 
-lib_LTLIBRARIES = libminizip.la liburiparser.la
+lib_LTLIBRARIES = libminizip.la liburiparser.la libgtest.la libgtest_main.la
 
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
@@ -29,7 +31,7 @@ liburiparser_la_SOURCES = \
 	uriparser-0.7.1/lib/UriResolve.c \
 	uriparser-0.7.1/lib/UriShorten.c
 uriparser = uriparser-0.7.1
-uriparserinc = $(includedir)/kml/third_party/$(boost)/include
+uriparserinc = $(includedir)/kml/third_party/$(uriparser)/include
 liburiparserincludedir = $(uriparserinc)
 liburiparserinclude_HEADERS = \
 	$(uriparser)/include/uriparser/Uri.h \
@@ -40,7 +42,8 @@ liburiparserinclude_HEADERS = \
 	$(uriparser)/include/uriparser/UriIp4.h
 liburiparser_la_LDFLAGS = -version-info 1:5:0
 
-boost = boost_1_34_1/boost
+boost_root = boost_1_34_1
+boost = $(boost_root)/boost
 boostinc = $(includedir)/kml/third_party/$(boost)
 libboostincludedir = $(boostinc)
 libboostinclude_HEADERS = \
@@ -80,7 +83,42 @@ libboostconfigplatforminclude_HEADERS = \
 	$(boost)/config/platform/linux.hpp \
 	$(boost)/config/platform/macos.hpp
 
+googletest = googletest-r108
+libgtest_la_SOURCES = \
+	$(googletest)/src/gtest.cc \
+	$(googletest)/src/gtest-death-test.cc \
+	$(googletest)/src/gtest-filepath.cc \
+	$(googletest)/src/gtest-internal-inl.h \
+	$(googletest)/src/gtest-port.cc \
+	$(googletest)/src/gtest-test-part.cc \
+	$(googletest)/src/gtest-typed-test.cc
+
+googletestinc = $(includedir)/kml/third_party/$(googletest)/include
+libgtestincludedir = $(googletestinc)
+libgtestinclude_HEADERS = \
+	$(googletest)/include/gtest/gtest.h \
+	$(googletest)/include/gtest/gtest-death-test.h \
+	$(googletest)/include/gtest/gtest-message.h \
+	$(googletest)/include/gtest/gtest-spi.h \
+	$(googletest)/include/gtest/gtest_pred_impl.h \
+	$(googletest)/include/gtest/gtest_prod.h \
+	$(googletest)/include/gtest/gtest-test-part.h \
+	$(googletest)/include/gtest/gtest-typed-test.h \
+	$(googletest)/include/gtest/internal/gtest-death-test-internal.h \
+	$(googletest)/include/gtest/internal/gtest-filepath.h \
+	$(googletest)/include/gtest/internal/gtest-internal.h \
+	$(googletest)/include/gtest/internal/gtest-port.h \
+	$(googletest)/include/gtest/internal/gtest-string.h \
+	$(googletest)/include/gtest/internal/gtest-type-util.h
+
+libgtest_main_la_SOURCES = \
+	$(googletest)/src/gtest_main.cc
+
+libgtest_main_la_LIBADD = \
+	$(top_builddir)/third_party/libgtest.la
+
 EXTRA_DIST = \
+	$(boost_root)/LICENSE_1_0.txt \
 	$(boost)/README \
 	$(boost)/config/abi_prefix.hpp \
 	$(boost)/config/abi_suffix.hpp \
@@ -127,6 +165,9 @@ EXTRA_DIST = \
 	$(boost)/config/stdlib/sgi.hpp \
 	$(boost)/config/stdlib/stlport.hpp \
 	$(boost)/config/stdlib/vacpp.hpp \
+	$(uriparser)/COPYING \
+	$(uriparser).win32/debug/uriparser-debug.lib \
+	$(uriparser).win32/release/uriparser-release.lib \
 	zlib-1.2.3/zconf.h \
 	zlib-1.2.3/zlib.h \
 	zlib-1.2.3/contrib/minizip/crypt.h \
@@ -145,3 +186,6 @@ EXTRA_DIST = \
 	zlib-1.2.3.win32/lib/zdll.lib \
 	zlib-1.2.3.win32/lib/zlib.lib
 
+# Disable parallel builds in this file to avoid automake trying to build
+# libgtest_main while libgtest is still compiling:
+.NOTPARALLEL:
