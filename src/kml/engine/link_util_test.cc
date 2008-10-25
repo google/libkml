@@ -28,7 +28,7 @@
 #include "kml/engine/link_util.h"
 #include "kml/dom.h"
 #include "kml/base/net_cache_test_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/engine/kml_cache.h"
 #include "kml/engine/feature_visitor.h"
 #include "kml/engine/find.h"
@@ -75,17 +75,9 @@ static void SetLinkParentLinkHref(LP link_parent, const char* href) {
   link_parent->set_icon(link);
 }
 
-class LinkUtilTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(LinkUtilTest);
-  CPPUNIT_TEST(TestGetHref);
-  CPPUNIT_TEST(TestGetIconParentHref);
-  CPPUNIT_TEST(TestGetLinkParentHref);
-  CPPUNIT_TEST(TestFetchLink);
-  CPPUNIT_TEST(TestFetchIcon);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
+class LinkUtilTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     factory_ = KmlFactory::GetFactory();
     groundoverlay_ = factory_->CreateGroundOverlay();
     SetOverlayIconHref(groundoverlay_, kGroundOverlayHref);
@@ -109,15 +101,6 @@ class LinkUtilTest : public CPPUNIT_NS::TestFixture {
     kml_cache_.reset(new KmlCache(&testdata_net_fetcher_, 1));
   }
 
-
- protected:
-  void TestGetHref();
-  void TestGetIconParentHref();
-  void TestGetLinkParentHref();
-  void TestFetchLink();
-  void TestFetchIcon();
-
- private:
   void Init();
   GroundOverlayPtr groundoverlay_;
   KmlFactory* factory_;
@@ -134,17 +117,15 @@ class LinkUtilTest : public CPPUNIT_NS::TestFixture {
   boost::scoped_ptr<KmlCache> kml_cache_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(LinkUtilTest);
-
 template<typename HP>
 static void VerifyGetHref(const HP& href_parent, const char* want_href) {
   std::string got_href;
-  CPPUNIT_ASSERT(GetHref(href_parent, &got_href));
-  CPPUNIT_ASSERT_EQUAL(std::string(want_href), got_href);
+  ASSERT_TRUE(GetHref(href_parent, &got_href));
+  ASSERT_EQ(std::string(want_href), got_href);
 }
 
 // This tests the GetHref() function template.
-void LinkUtilTest::TestGetHref() {
+TEST_F(LinkUtilTest, TestGetHref) {
   VerifyGetHref(itemicon_, kItemIconHref);
   VerifyGetHref(link_, kLinkHref);
   VerifyGetHref(icon_, kIconHref);
@@ -154,12 +135,12 @@ template<typename HP>
 static void VerifyGetIconParentHref(const HP& icon_parent,
                                     const char* want_href) {
   std::string got_href;
-  CPPUNIT_ASSERT(GetIconParentHref(icon_parent, &got_href));
-  CPPUNIT_ASSERT_EQUAL(std::string(want_href), got_href);
+  ASSERT_TRUE(GetIconParentHref(icon_parent, &got_href));
+  ASSERT_EQ(std::string(want_href), got_href);
 }
 
 // This tests the GetIconParentHref() function template.
-void LinkUtilTest::TestGetIconParentHref() {
+TEST_F(LinkUtilTest, TestGetIconParentHref) {
   VerifyGetIconParentHref(groundoverlay_, kGroundOverlayHref);
   VerifyGetIconParentHref(photooverlay_, kPhotoOverlayHref);
   VerifyGetIconParentHref(screenoverlay_, kScreenOverlayHref);
@@ -170,8 +151,8 @@ template<typename LP>
 static void VerifyGetLinkParentHref(const LP& link_parent,
                                     const char* want_href) {
   std::string got_href;
-  CPPUNIT_ASSERT(GetLinkParentHref(link_parent, &got_href));
-  CPPUNIT_ASSERT_EQUAL(std::string(want_href), got_href);
+  ASSERT_TRUE(GetLinkParentHref(link_parent, &got_href));
+  ASSERT_EQ(std::string(want_href), got_href);
 }
 
 template<typename LP>
@@ -182,52 +163,55 @@ static void SetLinkHref(const LP& link_parent, LinkPtr link,
 }
 
 // This tests the GetLinkParentHref() function template.
-void LinkUtilTest::TestGetLinkParentHref() {
+TEST_F(LinkUtilTest, TestGetLinkParentHref) {
   SetLinkHref(networklink_, factory_->CreateLink(), kNetworkLinkHref);
   SetLinkHref(model_, factory_->CreateLink(), kModelHref);
   VerifyGetLinkParentHref(networklink_, kNetworkLinkHref);
   VerifyGetLinkParentHref(model_, kModelHref);
 }
 
-void LinkUtilTest::TestFetchLink() {
+TEST_F(LinkUtilTest, TestFetchLink) {
   const std::string kBase("http://host.com/kmz/radar-animation.kmz");
   KmlFilePtr base_kml_file = kml_cache_->FetchKmlAbsolute(kBase);
-  CPPUNIT_ASSERT(base_kml_file);
+  ASSERT_TRUE(base_kml_file);
   ElementVector networklink_vector;
   GetElementsById(base_kml_file->root(), kmldom::Type_NetworkLink,
                   &networklink_vector);
   // The default KML file in radar-animation.kmz has 1 NetworkLink.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), networklink_vector.size());
+  ASSERT_EQ(static_cast<size_t>(1), networklink_vector.size());
   KmlFilePtr target_kml_file = FetchLink(base_kml_file,
                                          AsNetworkLink(networklink_vector[0]));
-  CPPUNIT_ASSERT(target_kml_file);
+  ASSERT_TRUE(target_kml_file);
   kmldom::DocumentPtr document =
       AsDocument(GetRootFeature(target_kml_file->root()));
-  CPPUNIT_ASSERT(document);
+  ASSERT_TRUE(document);
   // This is kmz/radar-animation.kmz/level00/0.kml.
-  CPPUNIT_ASSERT_EQUAL(std::string("0130_256_-1"), document->get_name());
+  ASSERT_EQ(std::string("0130_256_-1"), document->get_name());
 }
 
-void LinkUtilTest::TestFetchIcon() {
+TEST_F(LinkUtilTest, TestFetchIcon) {
   const std::string kBase("http://host.com/kmz/rumsey/kml/lc01.kmz");
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kBase);
-  CPPUNIT_ASSERT(kml_file);
+  ASSERT_TRUE(kml_file);
   ElementVector groundoverlay_vector;
   GetElementsById(kml_file->root(), kmldom::Type_GroundOverlay,
                   &groundoverlay_vector);
   // The default KML file in lc01.kmz has 2 GroundOverlays.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), groundoverlay_vector.size());
+  ASSERT_EQ(static_cast<size_t>(2), groundoverlay_vector.size());
   std::string data;
-  CPPUNIT_ASSERT(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[0]),
+  ASSERT_TRUE(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[0]),
                            &data));
   // This is kmz/rumsey/imagery/01_4.png
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(6742), data.size());
-  CPPUNIT_ASSERT(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[1]),
+  ASSERT_EQ(static_cast<size_t>(6742), data.size());
+  ASSERT_TRUE(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[1]),
                            &data));
   // This is kmz/rumsey/imagery/01_8.png
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(7364), data.size());
+  ASSERT_EQ(static_cast<size_t>(7364), data.size());
 }
 
 }  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -167,7 +167,9 @@ bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
   }
   zipOpenNewFileInZip(zipfile_, kDefaultKmlFile, 0, 0, 0, 0, 0, 0, Z_DEFLATED,
                       Z_DEFAULT_COMPRESSION);
-  zipWriteInFileInZip(zipfile_, (void* const)kml.data(), kml.size());
+  //zipWriteInFileInZip(zipfile_, (void* const)kml.data(),
+  zipWriteInFileInZip(zipfile_, static_cast<const void*>(kml.data()),
+                      static_cast<unsigned int>(kml.size()));
   zipCloseFileInZip(zipfile_);
   zipClose(zipfile_, 0);
   return kmlbase::File::Exists(kmz_filepath);

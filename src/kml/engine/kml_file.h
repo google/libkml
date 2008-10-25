@@ -151,6 +151,15 @@ class KmlFile : public kmlbase::Referent {
     return kml_cache_;
   }
 
+  // Duplicate id attributes are illegal and should cause the parse to fail.
+  // However, Google Earth never enforced this in its KML ingest and thus the
+  // web has a lot of invalid KML. We attempt to parse this by default. A
+  // client may use set_strict_parse(true) to override this, which will
+  // instruct the ObjectIdParserObserver to fail on duplicate ids.
+  void set_strict_parse(bool val) {
+    strict_parse_ = val;
+  }
+
  private:
   // Constructor is private.  Use static Create methods.
   KmlFile();
@@ -176,6 +185,7 @@ class KmlFile : public kmlbase::Referent {
   ElementVector link_parent_vector_;
   KmzFilePtr kmz_file_;
   KmlCache* kml_cache_;
+  bool strict_parse_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);
 };
 

@@ -1,10 +1,12 @@
 AM_CPPFLAGS= -I$(top_srcdir)/src \
 	     -I$(top_srcdir)/third_party/boost_1_34_1 \
 	     -I$(top_srcdir)/third_party/uriparser-0.7.1/include \
-	     -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
+	     -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
+	     -I$(top_srcdir)/third_party/googletest-r108/include
 
 if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
+AM_TEST_CXXFLAGS = -Wall -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
 endif
 
 lib_LTLIBRARIES = libkmlengine.la
@@ -25,6 +27,7 @@ libkmlengine_la_SOURCES = \
 	link_util.cc \
 	location_util.cc \
 	merge.cc \
+	parse_old_schema.cc \
 	style_merger.cc \
 	style_resolver.cc
 
@@ -54,11 +57,11 @@ libkmlengineinclude_HEADERS = \
 	location_util.h \
 	merge.h \
 	object_id_parser_observer.h \
+	parse_old_schema.h \
 	shared_style_parser_observer.h \
 	style_merger.h \
 	style_resolver.h
 
-if HAVE_CPPUNIT
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = bbox_test \
 	clone_test \
@@ -78,6 +81,8 @@ TESTS = bbox_test \
 	location_util_test \
 	merge_test \
 	object_id_parser_observer_test \
+	parse_old_schema_test \
+	schema_parser_observer_test \
 	shared_style_parser_observer_test \
 	style_merger_test \
 	style_resolver_test
@@ -85,155 +90,171 @@ TESTS = bbox_test \
 check_PROGRAMS = $(TESTS)
 
 # Unit tests for KML Engine
-
 bbox_test_SOURCES = bbox_test.cc
-bbox_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-bbox_test_LDFLAGS = $(CPPUNIT_LIBS)
+bbox_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+bbox_test_LDADD = libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 clone_test_SOURCES = clone_test.cc
-clone_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-clone_test_LDFLAGS = $(CPPUNIT_LIBS)
-clone_test_LDADD= libkmlengine.la \
+clone_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+clone_test_LDADD = libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 entity_mapper_test_SOURCES = entity_mapper_test.cc
-entity_mapper_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-entity_mapper_test_LDFLAGS = $(CPPUNIT_LIBS)
+entity_mapper_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 entity_mapper_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 feature_balloon_test_SOURCES = feature_balloon_test.cc
-feature_balloon_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-feature_balloon_test_LDFLAGS = $(CPPUNIT_LIBS)
+feature_balloon_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 feature_balloon_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 feature_visitor_test_SOURCES = feature_visitor_test.cc
-feature_visitor_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-feature_visitor_test_LDFLAGS = $(CPPUNIT_LIBS)
+feature_visitor_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 feature_visitor_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 find_test_SOURCES = find_test.cc
-find_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-find_test_LDFLAGS = $(CPPUNIT_LIBS)
+find_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 find_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 get_link_parents_test_SOURCES = get_link_parents_test.cc
-get_link_parents_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-get_link_parents_test_LDFLAGS = $(CPPUNIT_LIBS)
+get_link_parents_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 get_link_parents_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 get_links_test_SOURCES = get_links_test.cc
-get_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-get_links_test_LDFLAGS = $(CPPUNIT_LIBS)
+get_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 get_links_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 href_test_SOURCES = href_test.cc
-href_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-href_test_LDFLAGS = $(CPPUNIT_LIBS)
+href_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 href_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 kml_cache_test_SOURCES = kml_cache_test.cc
-kml_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-kml_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kml_cache_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 kml_file_test_SOURCES = kml_file_test.cc
-kml_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-kml_file_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kml_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 kml_uri_test_SOURCES = kml_uri_test.cc
-kml_uri_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-kml_uri_test_LDFLAGS = $(CPPUNIT_LIBS)
+kml_uri_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kml_uri_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 kmz_cache_test_SOURCES = kmz_cache_test.cc
-kmz_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-kmz_cache_test_LDFLAGS = $(CPPUNIT_LIBS)
+kmz_cache_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kmz_cache_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 kmz_file_test_SOURCES = kmz_file_test.cc
-kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-kmz_file_test_LDFLAGS = $(CPPUNIT_LIBS)
+kmz_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kmz_file_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 link_util_test_SOURCES = link_util_test.cc
-link_util_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-link_util_test_LDFLAGS = $(CPPUNIT_LIBS)
+link_util_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 link_util_test_LDADD = libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 location_util_test_SOURCES = location_util_test.cc
-location_util_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-location_util_test_LDFLAGS = $(CPPUNIT_LIBS)
+location_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 location_util_test_LDADD = libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 merge_test_SOURCES = merge_test.cc
-merge_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-merge_test_LDFLAGS = $(CPPUNIT_LIBS)
+merge_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 merge_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 object_id_parser_observer_test_SOURCES = object_id_parser_observer_test.cc
-object_id_parser_observer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-object_id_parser_observer_test_LDFLAGS = $(CPPUNIT_LIBS)
+object_id_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 object_id_parser_observer_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+parse_old_schema_test_SOURCES = parse_old_schema_test.cc
+parse_old_schema_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+parse_old_schema_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+schema_parser_observer_test_SOURCES = schema_parser_observer_test.cc
+schema_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+schema_parser_observer_test_LDADD= \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 shared_style_parser_observer_test_SOURCES = shared_style_parser_observer_test.cc
-shared_style_parser_observer_test_CXXFLAGS = $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-shared_style_parser_observer_test_LDFLAGS = $(CPPUNIT_LIBS)
+shared_style_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 shared_style_parser_observer_test_LDADD= \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 style_merger_test_SOURCES = style_merger_test.cc
-style_merger_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-style_merger_test_LDFLAGS = $(CPPUNIT_LIBS)
+style_merger_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 style_merger_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 style_resolver_test_SOURCES = style_resolver_test.cc
-style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(CPPUNIT_CFLAGS) $(AM_CXXFLAGS)
-style_resolver_test_LDFLAGS = $(CPPUNIT_LIBS)
+style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 style_resolver_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/liburiparser.la
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
 
 CLEANFILES = check_PROGRAMS
-endif

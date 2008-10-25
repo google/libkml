@@ -30,7 +30,7 @@
 #include "kml/dom.h"
 #include "kml/base/file.h"
 #include "kml/base/net_cache_test_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 
@@ -46,29 +46,12 @@ namespace kmlengine {
 
 static const size_t kKmlCacheSize = 11;
 
-class StyleResolverTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(StyleResolverTest);
-  CPPUNIT_TEST(TestFiles);
-  CPPUNIT_TEST(TestBasicCreateNetworkResolvedStyle);
-  CPPUNIT_TEST(TestRemoteFiles);
-  CPPUNIT_TEST_SUITE_END();
-
+class StyleResolverTest : public testing::Test {
  protected:
-  void TestFiles();
-  void TestBasicCreateNetworkResolvedStyle();
-  void TestRemoteFiles();
-
- public:
-  // Called before each test.
-  void setUp() {
+  virtual void SetUp() {
     kml_cache_.reset(new KmlCache(&test_data_net_fetcher_, kKmlCacheSize));
   }
 
-  // Called after each test.
-  void tearDown() {
-  }
-
- private:
   // This is an internal utility to read a testdata file.
   bool ReadDataDirFileToString(const std::string& filename,
                                std::string* content) const;
@@ -82,8 +65,6 @@ class StyleResolverTest : public CPPUNIT_NS::TestFixture {
   kmlbase::TestDataNetFetcher test_data_net_fetcher_;
   boost::scoped_ptr<KmlCache> kml_cache_;
 };
-
-CPPUNIT_TEST_SUITE_REGISTRATION(StyleResolverTest);
 
 // This is a table of style resolution test cases.  The resolved style for the
 // the feature given by the id in feature_id_ for the given style state in the
@@ -132,10 +113,10 @@ bool StyleResolverTest::ReadDataDirFileToString(const std::string& filename,
 void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
   std::string kml_data;
   bool status = ReadDataDirFileToString(filename, &kml_data);
-  CPPUNIT_ASSERT(status);
+  ASSERT_TRUE(status);
   kml_file_ = KmlFile::CreateFromParse(kml_data, NULL);
-  CPPUNIT_ASSERT(kml_file_);
-  CPPUNIT_ASSERT(kml_file_->root());
+  ASSERT_TRUE(kml_file_);
+  ASSERT_TRUE(kml_file_->root());
 }
 
 // This is a utility function to compare the given element to the KML in the
@@ -143,64 +124,64 @@ void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
 int StyleResolverTest::ComparePretty(const ElementPtr& element,
                                      const char* check_file) const {
   std::string kml_data;
-  CPPUNIT_ASSERT(ReadDataDirFileToString(check_file, &kml_data));
+  ReadDataDirFileToString(check_file, &kml_data);
   return kml_data.compare(kmldom::SerializePretty(element));
 }
 
 // This function verifies all test cases in the kTestCases table.
-void StyleResolverTest::TestFiles() {
+TEST_F(StyleResolverTest, TestFiles) {
   const size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     // Read the file and find the feature.
     ParseFromDataDirFile(kTestCases[i].source_file_);
     FeaturePtr feature = kmldom::AsFeature(
         kml_file_->GetObjectById(kTestCases[i].feature_id_));
-    CPPUNIT_ASSERT(feature);  // This is internal to the test.
+    ASSERT_TRUE(feature);  // This is internal to the test.
 
     // This is the function under test.
     StylePtr style = CreateResolvedStyle(feature, kml_file_,
                                          kTestCases[i].style_state_);
-    CPPUNIT_ASSERT(style);  // This helps debugging.
+    ASSERT_TRUE(style);  // This helps debugging.
 
     // A text comparison is used as that detects issues with unknown elements.
-    CPPUNIT_ASSERT(!ComparePretty(style, kTestCases[i].check_file_));
+    ASSERT_FALSE(ComparePretty(style, kTestCases[i].check_file_));
   }
 }
 
-void StyleResolverTest::TestBasicCreateNetworkResolvedStyle() {
+TEST_F(StyleResolverTest, TestBasicCreateNetworkResolvedStyle) {
   const std::string kPath("style/weather/point-sarnen.kml");
   const std::string kUrl("http://host.com/" + kPath);
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kUrl);
-  CPPUNIT_ASSERT(kml_file);
-  CPPUNIT_ASSERT_EQUAL(kml_cache_.get(), kml_file->get_kml_cache());
+  ASSERT_TRUE(kml_file);
+  ASSERT_EQ(kml_cache_.get(), kml_file->get_kml_cache());
   const std::string kFeatureId("SZXX0026");
   const FeaturePtr& feature = kmldom::AsFeature(
       kml_file->GetObjectById(kFeatureId));
-  CPPUNIT_ASSERT(feature);
+  ASSERT_TRUE(feature);
   // Verify the feature has a styleUrl to another KML file.
-  CPPUNIT_ASSERT(feature->has_styleurl());
+  ASSERT_TRUE(feature->has_styleurl());
   const std::string kStyleUrl("style.kml#i27");
-  CPPUNIT_ASSERT_EQUAL(kStyleUrl, feature->get_styleurl());
+  ASSERT_EQ(kStyleUrl, feature->get_styleurl());
   const kmldom::StyleStateEnum style_state = kmldom::STYLESTATE_NORMAL;
   StylePtr style = CreateResolvedStyle(feature, kml_file,
                                               style_state);
-  CPPUNIT_ASSERT(style);
-  CPPUNIT_ASSERT_EQUAL(std::string("i27"), style->get_id());
-  CPPUNIT_ASSERT(style->has_iconstyle());
-  CPPUNIT_ASSERT(style->get_iconstyle()->has_icon());
-  CPPUNIT_ASSERT(style->get_iconstyle()->get_icon());
-  CPPUNIT_ASSERT(style->get_iconstyle()->get_icon()->has_href());
-  CPPUNIT_ASSERT(style->has_labelstyle());
-  CPPUNIT_ASSERT(style->has_balloonstyle());
+  ASSERT_TRUE(style);
+  ASSERT_EQ(std::string("i27"), style->get_id());
+  ASSERT_TRUE(style->has_iconstyle());
+  ASSERT_TRUE(style->get_iconstyle()->has_icon());
+  ASSERT_TRUE(style->get_iconstyle()->get_icon());
+  ASSERT_TRUE(style->get_iconstyle()->get_icon()->has_href());
+  ASSERT_TRUE(style->has_labelstyle());
+  ASSERT_TRUE(style->has_balloonstyle());
 
 #if 0  // TODO: proceed to resolve and fetch IconStyle/Icon/href
   std::string iconstyle_icon_url;
-  CPPUNIT_ASSERT(ResolveUri(kml_file->get_url(),
+  ASSERT_TRUE(ResolveUri(kml_file->get_url(),
                             style->get_iconstyle()->get_icon()->get_href(),
                             &iconstyle_icon_url));
   std::string icon_data;
-  CPPUNIT_ASSERT(kmz_cache.FetchUrl(iconstyle_icon_url, &icon_data));
-  CPPUNIT_ASSERT(!icon_data.empty());
+  ASSERT_TRUE(kmz_cache.FetchUrl(iconstyle_icon_url, &icon_data));
+  ASSERT_FALSE(icon_data.empty());
 #endif
 }
 
@@ -294,26 +275,29 @@ static const struct {
     "/style/weather/points-puntas-ARSC0133-check.kml" },
 };
 
-void StyleResolverTest::TestRemoteFiles() {
+TEST_F(StyleResolverTest, TestRemoteFiles) {
   const size_t size = sizeof(kRemoteTestCases)/sizeof(kRemoteTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     // Read the file and find the feature.
     kml_file_ = kml_cache_->FetchKmlAbsolute(kRemoteTestCases[i].source_url_);
-    CPPUNIT_ASSERT(kml_file_);
+    ASSERT_TRUE(kml_file_);
     FeaturePtr feature = kmldom::AsFeature(
         kml_file_->GetObjectById(kRemoteTestCases[i].feature_id_));
-    CPPUNIT_ASSERT(feature);  // This is internal to the test.
+    ASSERT_TRUE(feature);  // This is internal to the test.
 
     // This is the function under test.
     StylePtr style = CreateResolvedStyle(feature, kml_file_,
                                          kRemoteTestCases[i].style_state_);
-    CPPUNIT_ASSERT(style);
+    ASSERT_TRUE(style);
 
     // A text comparison is used as that detects issues with unknown elements.
-    CPPUNIT_ASSERT(!ComparePretty(style, kRemoteTestCases[i].check_file_));
+    ASSERT_FALSE(ComparePretty(style, kRemoteTestCases[i].check_file_));
   }
 }
 
 }  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
