@@ -36,15 +36,5 @@ bool XsdComplexType::ParseAttributes(const kmlbase::Attributes& attributes) {
   return attributes.GetString("name", &name_);
 }
 
-// static
-XsdComplexType* XsdComplexType::Create(const kmlbase::Attributes& attributes) {
-  XsdComplexType* xsd_complex_type = new XsdComplexType;
-  if (xsd_complex_type->ParseAttributes(attributes)) {
-    return xsd_complex_type;
-  }
-  delete xsd_complex_type;
-  return NULL;
-}
-
 }  // end namespace kmlxsd
 

@@ -28,7 +28,7 @@
 #include "kml/xsd/xsd_schema.h"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/xsd/xsd_util.h"
 
 using kmlbase::Attributes;
@@ -36,43 +36,27 @@ using kmlbase::Attributes;
 namespace kmlxsd {
 
 // This class is the unit test fixture for the XsdSchema class.
-class XsdSchemaTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XsdSchemaTest);
-  CPPUNIT_TEST(TestNullCreateNoAttributes);
-  CPPUNIT_TEST(TestNullCreateNoTargetNamespace);
-  CPPUNIT_TEST(TestCreate);
-  CPPUNIT_TEST(TestSplitNsName);
-  CPPUNIT_TEST_SUITE_END();
-
+class XsdSchemaTest : public testing::Test {
  protected:
-  void TestNullCreateNoAttributes();
-  void TestNullCreateNoTargetNamespace();
-  void TestNullCreate();
-  void TestCreate();
-  void TestSplitNsName();
-
- private:
   XsdSchemaPtr xsd_schema_;
   Attributes attributes_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XsdSchemaTest);
-
 // Verify NULL is returned if no attributes are supplied.
-void XsdSchemaTest::TestNullCreateNoAttributes() {
+TEST_F(XsdSchemaTest, TestNullCreateNoAttributes) {
   xsd_schema_ = XsdSchema::Create(attributes_);
-  CPPUNIT_ASSERT(!xsd_schema_);
+  ASSERT_FALSE(xsd_schema_);
 }
 
 // Verify NULL is returned from Create() if attributes has no targetNamespace.
-void XsdSchemaTest::TestNullCreateNoTargetNamespace() {
+TEST_F(XsdSchemaTest, TestNullCreateNoTargetNamespace) {
   attributes_.SetString("random", "junk");
   xsd_schema_ = XsdSchema::Create(attributes_);
-  CPPUNIT_ASSERT(!xsd_schema_);
+  ASSERT_FALSE(xsd_schema_);
 }
 
 // Verify processing of Create method.
-void XsdSchemaTest::TestCreate() {
+TEST_F(XsdSchemaTest, TestCreate) {
   // Send down the attributes from:
   //   <schema xmlns:mcn="my:cool:namespace"
   //           targetNamespace="my:cool:namespace"/>
@@ -81,21 +65,24 @@ void XsdSchemaTest::TestCreate() {
   attributes_.SetString(std::string("xmlns:") + kPrefix, kNamespace);
   attributes_.SetString(kTargetNamespace, kNamespace);
   xsd_schema_ = XsdSchema::Create(attributes_);
-  CPPUNIT_ASSERT(xsd_schema_);
-  CPPUNIT_ASSERT_EQUAL(kNamespace, xsd_schema_->get_target_namespace());
-  CPPUNIT_ASSERT_EQUAL(kPrefix, xsd_schema_->get_target_namespace_prefix());
+  ASSERT_TRUE(xsd_schema_);
+  ASSERT_EQ(kNamespace, xsd_schema_->get_target_namespace());
+  ASSERT_EQ(kPrefix, xsd_schema_->get_target_namespace_prefix());
 }
 
 // Verify SplitNsName().
-void XsdSchemaTest::TestSplitNsName() {
+TEST_F(XsdSchemaTest, TestSplitNsName) {
   const std::string kPrefix("myml");
   xsd_schema_ = CreateXsdSchema(kPrefix, "who:cares");
   const std::string kMyElement("MyElement");
   std::string ncname;
-  CPPUNIT_ASSERT(xsd_schema_->SplitNsName(kPrefix + ":" + kMyElement, &ncname));
-  CPPUNIT_ASSERT_EQUAL(kMyElement, ncname);
+  ASSERT_TRUE(xsd_schema_->SplitNsName(kPrefix + ":" + kMyElement, &ncname));
+  ASSERT_EQ(kMyElement, ncname);
 }
 
 }  // end namespace kmlxsd
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

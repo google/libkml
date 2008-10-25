@@ -27,48 +27,37 @@
 
 #include "kml/xsd/xsd_simple_type.h"
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/base/attributes.h"
 #include "kml/xsd/xsd_util.h"
 
 namespace kmlxsd {
 
 // This class is the unit test fixture for the KmlHandler class.
-class XsdSimpleTypeTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XsdSimpleTypeTest);
-  CPPUNIT_TEST(TestBasicCreate);
-  CPPUNIT_TEST(TestEnumeration);
-  CPPUNIT_TEST_SUITE_END();
-
+class XsdSimpleTypeTest : public testing::Test {
  protected:
-  void TestBasicCreate();
-  void TestEnumeration();
-
- private:
   kmlbase::Attributes attributes_;
   XsdSimpleTypePtr xsd_simple_type_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XsdSimpleTypeTest);
-
-void XsdSimpleTypeTest::TestBasicCreate() {
+TEST_F(XsdSimpleTypeTest, TestBasicCreate) {
   // <xs:simpleType name="anglepos90Type">
   const std::string kTypeName("anglepos90Type");
   attributes_.SetString(kName, kTypeName);
 
   xsd_simple_type_ = XsdSimpleType::Create(attributes_);
 
-  CPPUNIT_ASSERT(xsd_simple_type_);
-  CPPUNIT_ASSERT_EQUAL(kTypeName, xsd_simple_type_->get_name());
+  ASSERT_TRUE(xsd_simple_type_);
+  ASSERT_EQ(kTypeName, xsd_simple_type_->get_name());
 }
 
-void XsdSimpleTypeTest::TestEnumeration() {
+TEST_F(XsdSimpleTypeTest, TestEnumeration) {
   // <simpleType name="altitudeModeEnumType">
   attributes_.SetString(kName, "altitudeModeEnumType");
   xsd_simple_type_ = XsdSimpleType::Create(attributes_);
-  CPPUNIT_ASSERT(xsd_simple_type_);
-  CPPUNIT_ASSERT(!xsd_simple_type_->IsEnumeration());
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+  ASSERT_TRUE(xsd_simple_type_);
+  ASSERT_FALSE(xsd_simple_type_->IsEnumeration());
+  ASSERT_EQ(static_cast<size_t>(0),
                        xsd_simple_type_->get_enumeration_size());
 
   const std::string kClampToGround("clampToGround");
@@ -78,22 +67,25 @@ void XsdSimpleTypeTest::TestEnumeration() {
   xsd_simple_type_->add_enumeration(kRelativeToGround);
   xsd_simple_type_->add_enumeration(kAbsolute);
 
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(3),
+  ASSERT_EQ(static_cast<size_t>(3),
                        xsd_simple_type_->get_enumeration_size());
-  CPPUNIT_ASSERT_EQUAL(kClampToGround,
+  ASSERT_EQ(kClampToGround,
                        xsd_simple_type_->get_enumeration_at(0));
-  CPPUNIT_ASSERT_EQUAL(kRelativeToGround,
+  ASSERT_EQ(kRelativeToGround,
                        xsd_simple_type_->get_enumeration_at(1));
-  CPPUNIT_ASSERT_EQUAL(kAbsolute,
+  ASSERT_EQ(kAbsolute,
                        xsd_simple_type_->get_enumeration_at(2));
 
   // Still not an enumeration given lack of restriction base.
-  CPPUNIT_ASSERT(!xsd_simple_type_->IsEnumeration());
+  ASSERT_FALSE(xsd_simple_type_->IsEnumeration());
   // Add a restriction base and verify IsEnumeration().
   xsd_simple_type_->set_restriction_base("string");
-  CPPUNIT_ASSERT(xsd_simple_type_->IsEnumeration());
+  ASSERT_TRUE(xsd_simple_type_->IsEnumeration());
 }
 
 }  // end namespace kmlxsd
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

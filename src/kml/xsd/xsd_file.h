@@ -34,7 +34,6 @@
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/xmlns.h"
-#include "kml/dom/expat_handler.h"  // TODO: move to kml/base
 #include "kml/xsd/xsd_element.h"
 #include "kml/xsd/xsd_complex_type.h"
 #include "kml/xsd/xsd_schema.h"

@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/xsd/xsd_file.h"
+#include <algorithm>
 #include <string>
 #include <vector>
 #include "kml/base/expat_handler.h"
@@ -40,10 +41,7 @@ XsdFile* XsdFile::CreateFromParse(const std::string& xsd_data,
                                         std::string* errors) {
   XsdFile* xsd_file = new XsdFile;
   XsdHandler xsd_handler(xsd_file);
-  kmlbase::ExpatHandlerSet expat_handler_set;
-  expat_handler_set.set_handler("http://www.w3.org/2001/XMLSchema",
-                                &xsd_handler);
-  if (kmlbase::RunExpat(xsd_data, &expat_handler_set, errors)) {
+  if (kmlbase::ExpatParser(xsd_data, &xsd_handler, errors, false)) {
     return xsd_file;
   }
   delete xsd_file;
