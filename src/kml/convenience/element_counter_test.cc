@@ -27,7 +27,7 @@
 
 #include "kml/convenience/element_counter.h"
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/dom.h"
 #include "kml/dom/xsd.h"
 
@@ -41,75 +41,54 @@ using kmldom::ElementPtr;
 using kmldom::Parser;
 using kmldom::Xsd;
 
-class ElementCounterTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(ElementCounterTest);
-  CPPUNIT_TEST(TestEmpty);
-  CPPUNIT_TEST(TestBasicParse);
-  CPPUNIT_TEST(TestMultipleElements);
-  CPPUNIT_TEST(TestRepeatedParse);
-  CPPUNIT_TEST(TestEachComplex);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
+class ElementCounterTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     element_counter_.reset(new ElementCounter(&element_count_map_));
     parser_.reset(new Parser);
     parser_->AddObserver(element_counter_.get());
     xsd_ = Xsd::GetSchema();
   }
 
-  void tearDown() {
-  }
-
- protected:
-  void TestEmpty();
-  void TestBasicParse();
-  void TestMultipleElements();
-  void TestRepeatedParse();
-  void TestEachComplex();
-
- private:
   ElementCountMap element_count_map_;
   boost::scoped_ptr<ElementCounter> element_counter_;
   boost::scoped_ptr<Parser> parser_;
   Xsd* xsd_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ElementCounterTest);
-
-void ElementCounterTest::TestEmpty() {
-  CPPUNIT_ASSERT(element_count_map_.empty());
+TEST_F(ElementCounterTest, TestEmpty) {
+  ASSERT_TRUE(element_count_map_.empty());
 }
 
-void ElementCounterTest::TestBasicParse() {
+TEST_F(ElementCounterTest, TestBasicParse) {
   ElementPtr root = parser_->Parse("<Placemark/>", NULL);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), element_count_map_.size());
-  CPPUNIT_ASSERT_EQUAL(1, element_count_map_[kmldom::Type_Placemark]);
+  ASSERT_TRUE(root);
+  ASSERT_EQ(static_cast<size_t>(1), element_count_map_.size());
+  ASSERT_EQ(1, element_count_map_[kmldom::Type_Placemark]);
 }
 
-void ElementCounterTest::TestMultipleElements() {
+TEST_F(ElementCounterTest, TestMultipleElements) {
   const std::string kKml("<Folder><Placemark/><Placemark/></Folder>");
   ElementPtr root = parser_->Parse(kKml, NULL);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), element_count_map_.size());
-  CPPUNIT_ASSERT_EQUAL(1, element_count_map_[kmldom::Type_Folder]);
-  CPPUNIT_ASSERT_EQUAL(2, element_count_map_[kmldom::Type_Placemark]);
+  ASSERT_TRUE(root);
+  ASSERT_EQ(static_cast<size_t>(2), element_count_map_.size());
+  ASSERT_EQ(1, element_count_map_[kmldom::Type_Folder]);
+  ASSERT_EQ(2, element_count_map_[kmldom::Type_Placemark]);
 }
 
-void ElementCounterTest::TestRepeatedParse() {
+TEST_F(ElementCounterTest, TestRepeatedParse) {
   const std::string kXml("<Placemark/>");
   ElementPtr root = parser_->Parse(kXml, NULL);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), element_count_map_.size());
-  CPPUNIT_ASSERT_EQUAL(1, element_count_map_[kmldom::Type_Placemark]);
+  ASSERT_TRUE(root);
+  ASSERT_EQ(static_cast<size_t>(1), element_count_map_.size());
+  ASSERT_EQ(1, element_count_map_[kmldom::Type_Placemark]);
   root = parser_->Parse(kXml, NULL);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), element_count_map_.size());
-  CPPUNIT_ASSERT_EQUAL(2, element_count_map_[kmldom::Type_Placemark]);
+  ASSERT_TRUE(root);
+  ASSERT_EQ(static_cast<size_t>(1), element_count_map_.size());
+  ASSERT_EQ(2, element_count_map_[kmldom::Type_Placemark]);
 }
 
-void ElementCounterTest::TestEachComplex() {
+TEST_F(ElementCounterTest, TestEachComplex) {
   const int kBegin = static_cast<int>(kmldom::Type_Alias);
   const int kEnd = static_cast<int>(kmldom::Type_ViewVolume) + 1;
   for (int i = kBegin; i != kEnd; ++i) {
@@ -120,22 +99,25 @@ void ElementCounterTest::TestEachComplex() {
     }
     const std::string kXml(std::string("<") + xsd_->ElementName(i) + "/>");
     ElementPtr root = parser_->Parse(kXml, NULL);
-    CPPUNIT_ASSERT(root);
-    CPPUNIT_ASSERT_EQUAL(type_id, root->Type());
-    CPPUNIT_ASSERT_EQUAL(1, element_count_map_[type_id]);
+    ASSERT_TRUE(root);
+    ASSERT_EQ(type_id, root->Type());
+    ASSERT_EQ(1, element_count_map_[type_id]);
   }
   const size_t kExpectedSize = static_cast<size_t>(kEnd - kBegin - 2);
-  CPPUNIT_ASSERT_EQUAL(kExpectedSize, element_count_map_.size());
+  ASSERT_EQ(kExpectedSize, element_count_map_.size());
   for (int i = kBegin; i != kEnd; ++i) {
     kmldom::KmlDomType type_id = static_cast<kmldom::KmlDomType>(i);
     if (type_id == kmldom::Type_IconStyleIcon ||
         type_id == kmldom::Type_Metadata) {
       continue;
     }
-    CPPUNIT_ASSERT_EQUAL(1, element_count_map_[type_id]);
+    ASSERT_EQ(1, element_count_map_[type_id]);
   }
 }
 
 }  // namespace kmlconvenience
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
