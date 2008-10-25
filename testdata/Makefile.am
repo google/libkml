@@ -1,2 +1,1 @@
-SUBDIRS = balloon kmz links style csv xsd
-
+SUBDIRS = atom balloon csv gpx kmz links style xsd

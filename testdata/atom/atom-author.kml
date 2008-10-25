@@ -1,0 +1,12 @@
+<kml xmlns="http://www.opengis.net/kml/2.2"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+<Placemark>
+  <name>Ernest</name>
+  <visibility>0</visibility>
+  <atom:author>
+    <atom:name>Ernest Hemmingway</atom:name>
+  </atom:author>
+  <Region/>
+  <Point/>
+</Placemark>
+</kml>
