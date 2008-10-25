@@ -24,52 +24,47 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/xsd/xsd_primitive_type.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmlxsd {
 
 // This class is the unit test fixture for the XsdTypes class.
-class XsdPrimitiveTypeTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XsdPrimitiveTypeTest);
-  CPPUNIT_TEST(TestXsdPrimitiveTypeNameId);
-  CPPUNIT_TEST_SUITE_END();
-
- protected:
-  void TestXsdPrimitiveTypeNameId();
+class XsdPrimitiveTypeTest : public testing::Test {
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XsdPrimitiveTypeTest);
-
 // Verify NULL is returned if no attributes are supplied.
-void XsdPrimitiveTypeTest::TestXsdPrimitiveTypeNameId() {
+TEST_F(XsdPrimitiveTypeTest, TestXsdPrimitiveTypeNameId) {
   const std::string kBoolean("boolean");
   const std::string kDouble("double");
   const std::string kInt("int");
   const std::string kString("string");
 
-  CPPUNIT_ASSERT_EQUAL(kBoolean,
+  ASSERT_EQ(kBoolean,
       XsdPrimitiveType::GetTypeName(XsdPrimitiveType::XSD_BOOLEAN));
-  CPPUNIT_ASSERT_EQUAL(kDouble,
+  ASSERT_EQ(kDouble,
       XsdPrimitiveType::GetTypeName(XsdPrimitiveType::XSD_DOUBLE));
-  CPPUNIT_ASSERT_EQUAL(kInt,
+  ASSERT_EQ(kInt,
       XsdPrimitiveType::GetTypeName(XsdPrimitiveType::XSD_INT));
-  CPPUNIT_ASSERT_EQUAL(kString,
+  ASSERT_EQ(kString,
       XsdPrimitiveType::GetTypeName(XsdPrimitiveType::XSD_STRING));
 
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_BOOLEAN,
+  ASSERT_EQ(XsdPrimitiveType::XSD_BOOLEAN,
                        XsdPrimitiveType::GetTypeId(kBoolean));
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_DOUBLE,
+  ASSERT_EQ(XsdPrimitiveType::XSD_DOUBLE,
                        XsdPrimitiveType::GetTypeId(kDouble));
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_INT,
+  ASSERT_EQ(XsdPrimitiveType::XSD_INT,
                        XsdPrimitiveType::GetTypeId(kInt));
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_STRING,
+  ASSERT_EQ(XsdPrimitiveType::XSD_STRING,
                        XsdPrimitiveType::GetTypeId(kString));
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_INVALID,
+  ASSERT_EQ(XsdPrimitiveType::XSD_INVALID,
                        XsdPrimitiveType::GetTypeId("no-such-xsd-type"));
-  CPPUNIT_ASSERT_EQUAL(XsdPrimitiveType::XSD_INVALID,
+  ASSERT_EQ(XsdPrimitiveType::XSD_INVALID,
                        XsdPrimitiveType::GetTypeId("PlacemarkType"));
 }
 
 }  // end namespace kmlxsd
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

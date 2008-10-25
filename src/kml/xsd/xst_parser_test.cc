@@ -29,37 +29,25 @@
 #include <string>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/xsd/xsd_file.h"
 
 namespace kmlxsd {
 
 // This class is the unit test fixture for the XsdHandler class.
-class XstParserTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XstParserTest);
-  CPPUNIT_TEST(TestParseXstAlias);
-  CPPUNIT_TEST(TestParseXst);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
+class XstParserTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     xsd_file_.reset(new XsdFile);
     xst_parser_.reset(new XstParser(xsd_file_.get()));
   }
 
- protected:
-  void TestParseXstAlias();
-  void TestParseXst();
-
- private:
   boost::scoped_ptr<XsdFile> xsd_file_;
   boost::scoped_ptr<XstParser> xst_parser_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XstParserTest);
-
 // Verify the ParseXstAlias() method.
-void XstParserTest::TestParseXstAlias() {
+TEST_F(XstParserTest, TestParseXstAlias) {
   const std::string kRealName("real-name");
   const std::string kAlias("better-name");
   std::vector<std::string> alias;
@@ -68,32 +56,35 @@ void XstParserTest::TestParseXstAlias() {
   alias.push_back(kAlias);
 
   // Verify the XsdFile does not have this alias.
-  CPPUNIT_ASSERT_EQUAL(std::string(""), xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(std::string(""), xsd_file_->get_alias(kRealName));
 
   // Call the method under test.
   xst_parser_->ParseXstAlias(alias);
 
   // Read back the result in the XsdFile.
-  CPPUNIT_ASSERT_EQUAL(kAlias, xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(kAlias, xsd_file_->get_alias(kRealName));
 }
 
 // Verify the ParseXst() method.
-void XstParserTest::TestParseXst() {
+TEST_F(XstParserTest, TestParseXst) {
   const std::string kRealName("real-name");
   const std::string kAlias("better-name");
   const std::string kXstData(
       std::string("alias") + " " + kRealName + " " + kAlias);
 
   // Verify the XsdFile does not have this alias.
-  CPPUNIT_ASSERT_EQUAL(std::string(""), xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(std::string(""), xsd_file_->get_alias(kRealName));
 
   // Call the method under test.
   xst_parser_->ParseXst(kXstData);
 
   // Read back the result in the XsdFile.
-  CPPUNIT_ASSERT_EQUAL(kAlias, xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(kAlias, xsd_file_->get_alias(kRealName));
 }
 
 }  // end namespace kmlxsd
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

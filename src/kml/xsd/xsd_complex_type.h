@@ -107,11 +107,12 @@ class XsdComplexType : public XsdType {
   }
 
  private:
+  bool ParseAttributes(const kmlbase::Attributes& attributes);
   XsdComplexType(const std::string& name)
     : name_(name) {
   }
 
-  const std::string name_;
+  std::string name_;
   std::string extension_base_;  // <xs:extension base="xx">
   std::vector<XsdElementPtr> sequence_;  // <xs:sequence> of <xs:element>'s.
 };

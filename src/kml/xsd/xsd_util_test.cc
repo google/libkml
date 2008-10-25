@@ -26,53 +26,44 @@
 // This file contains the unit tests for the XSD utility functions.
 
 #include "kml/xsd/xsd_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/xsd/xsd_complex_type.h"
 #include "kml/xsd/xsd_element.h"
 #include "kml/xsd/xsd_schema.h"
 
 namespace kmlxsd {
 
-class XsdUtilTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XsdUtilTest);
-  CPPUNIT_TEST(TestCreateXsdComplexType);
-  CPPUNIT_TEST(TestCreateXsdElement);
-  CPPUNIT_TEST(TestCreateXsdSchema);
-  CPPUNIT_TEST_SUITE_END();
-
- protected:
-  void TestCreateXsdComplexType();
-  void TestCreateXsdElement();
-  void TestCreateXsdSchema();
+class XsdUtilTest : public testing::Test {
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XsdUtilTest);
-
-void XsdUtilTest::TestCreateXsdComplexType() {
+TEST_F(XsdUtilTest, TestCreateXsdComplexType) {
   const std::string kTypeName("PlacemarkType");
   XsdComplexTypePtr complex_type = CreateXsdComplexType(kTypeName);
-  CPPUNIT_ASSERT(complex_type);
-  CPPUNIT_ASSERT_EQUAL(kTypeName, complex_type->get_name());
+  ASSERT_TRUE(complex_type);
+  ASSERT_EQ(kTypeName, complex_type->get_name());
 }
 
-void XsdUtilTest::TestCreateXsdElement() {
+TEST_F(XsdUtilTest, TestCreateXsdElement) {
   const std::string kName("Placemark");
   const std::string kType("PlacemarkType");
   XsdElementPtr element = CreateXsdElement(kName, kType);
-  CPPUNIT_ASSERT(element);
-  CPPUNIT_ASSERT_EQUAL(kName, element->get_name());
-  CPPUNIT_ASSERT_EQUAL(kType, element->get_type());
+  ASSERT_TRUE(element);
+  ASSERT_EQ(kName, element->get_name());
+  ASSERT_EQ(kType, element->get_type());
 }
 
-void XsdUtilTest::TestCreateXsdSchema() {
+TEST_F(XsdUtilTest, TestCreateXsdSchema) {
   const std::string kPrefix("fooml");
   const std::string kTargetNamespace("http://foo.com/ml");
   XsdSchemaPtr schema = CreateXsdSchema(kPrefix, kTargetNamespace);
-  CPPUNIT_ASSERT(schema);
-  CPPUNIT_ASSERT_EQUAL(kPrefix, schema->get_target_namespace_prefix());
-  CPPUNIT_ASSERT_EQUAL(kTargetNamespace, schema->get_target_namespace());
+  ASSERT_TRUE(schema);
+  ASSERT_EQ(kPrefix, schema->get_target_namespace_prefix());
+  ASSERT_EQ(kTargetNamespace, schema->get_target_namespace());
 } 
 
 }  // end namespace kmlxsd
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
