@@ -39,3 +39,6 @@ xsdtypes_LDADD = \
 	$(top_builddir)/src/kml/xsd/libkmlxsd.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
+
+EXTRA_DIST = \
+	kml-aliases.txt

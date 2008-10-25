@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src"
+				AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src;..\..\third_party\uriparser-0.7.1\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,9 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libkmlbase.lib libkmldom.lib libkmlengine.lib libexpat.lib minizip.lib zlib.lib"
+				AdditionalDependencies="libkmlbase.lib libkmldom.lib libkmlengine.lib libexpat.lib minizip.lib zlib.lib uriparser-debug.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\debug;..\..\third_party\zlib-1.2.3.win32\lib"
+				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\debug;..\..\third_party\zlib-1.2.3.win32\lib;..\..\third_party\uriparser-0.7.1.win32\debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -118,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src"
+				AdditionalIncludeDirectories="..\..\third_party\boost_1_34_1;..\..\src;..\..\third_party\uriparser-0.7.1\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -137,9 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libkmlbase.lib libkmldom.lib libkmlengine.lib libexpat.lib minizip.lib zlib.lib"
+				AdditionalDependencies="libkmlbase.lib libkmldom.lib libkmlengine.lib libexpat.lib minizip.lib zlib.lib uriparser-release.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\release;..\..\third_party\zlib-1.2.3.win32\lib"
+				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\..\release;..\..\third_party\zlib-1.2.3.win32\lib;..\..\third_party\uriparser-0.7.1.win32\release"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
