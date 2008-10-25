@@ -24,24 +24,14 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/base/string_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmlbase {
 
-class StringUtilTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(StringUtilTest);
-  CPPUNIT_TEST(TestBasicReplacements);
-  CPPUNIT_TEST(TestSplitStringUsing);
-  CPPUNIT_TEST_SUITE_END();
-
- protected:
-  void TestBasicReplacements();
-  void TestSplitStringUsing();
+class StringUtilTest : public testing::Test {
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(StringUtilTest);
-
-void StringUtilTest::TestBasicReplacements() {
+TEST_F(StringUtilTest, TestBasicReplacements) {
   StringMap sm;
   sm["old"] = "new";
   sm["one"] = "two";
@@ -50,27 +40,27 @@ void StringUtilTest::TestBasicReplacements() {
   // Verify that supplying neither start nor end terminators produces a simple
   // key-value replacement.
   std::string expected("new{new}new two{two}two");
-  CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, "", ""));
+  ASSERT_EQ(expected, CreateExpandedStrings(in, sm, "", ""));
 
   // Verify that specifying either of start or end produces the expected
   // replacement.
   const std::string kStart("{");
   const std::string kEnd("}");
   expected = "oldnew}old onetwo}one";
-  CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, kStart, ""));
+  ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, ""));
   expected = "old{newold one{twoone";
-  CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, "", kEnd));
+  ASSERT_EQ(expected, CreateExpandedStrings(in, sm, "", kEnd));
   expected = "oldnewold onetwoone";
-  CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
+  ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
 
   // Verify that the replacement logic is well-behaved in the presence of
   // multiple start/end delimiters.
   in = "{{{old}}}}{}{one}";
   expected = "{{new}}}{}two";
-  CPPUNIT_ASSERT_EQUAL(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
+  ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
 }
 
-void StringUtilTest::TestSplitStringUsing() {
+TEST_F(StringUtilTest, TestSplitStringUsing) {
   const std::string kHi("hi");
   const std::string kHow("how");
   const std::string kAre("are");
@@ -82,18 +72,21 @@ void StringUtilTest::TestSplitStringUsing() {
   // A line with no separator gets one thing.  Special case of the "last" item
   // on a line.
   SplitStringUsing(kHi, "|", &parts);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), parts.size());
+  ASSERT_EQ(static_cast<size_t>(1), parts.size());
 
   // A line with 3 separators gets you 4 things.
   parts.clear();
   SplitStringUsing(kCsvLine, "|", &parts);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(4), parts.size());
-  CPPUNIT_ASSERT_EQUAL(kHi, parts[0]);
-  CPPUNIT_ASSERT_EQUAL(kHow, parts[1]);
-  CPPUNIT_ASSERT_EQUAL(kAre, parts[2]);
-  CPPUNIT_ASSERT_EQUAL(kYou, parts[3]);
+  ASSERT_EQ(static_cast<size_t>(4), parts.size());
+  ASSERT_EQ(kHi, parts[0]);
+  ASSERT_EQ(kHow, parts[1]);
+  ASSERT_EQ(kAre, parts[2]);
+  ASSERT_EQ(kYou, parts[3]);
 }
 
 }  // end namespace kmlbase
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

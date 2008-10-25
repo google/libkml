@@ -32,95 +32,72 @@
 // TODO ;flyTo ,etc
 
 #include "kml/base/uri_parser.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmlbase {
 
 // This test fixture is for the unit test cases of the UriParser class.
-class UriParserTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(UriParserTest);
-  CPPUNIT_TEST(TestBasicCreateFromParse);
-  CPPUNIT_TEST(TestBasicCreateResolvedUri);
-  CPPUNIT_TEST(TestBasicParse);
-  CPPUNIT_TEST(TestBasicNormalize);
-  CPPUNIT_TEST(TestBasicResolve);
-  CPPUNIT_TEST(TestBasicToString);
-  CPPUNIT_TEST(TestBasicGetComponents);
-  CPPUNIT_TEST(TestBasicUriResolutionTestCases);
-  CPPUNIT_TEST_SUITE_END();
-
+class UriParserTest : public testing::Test {
  protected:
-  void TestBasicCreateFromParse();
-  void TestBasicCreateResolvedUri();
-  void TestBasicParse();
-  void TestBasicNormalize();
-  void TestBasicResolve();
-  void TestBasicToString();
-  void TestBasicGetComponents();
-  void TestBasicUriResolutionTestCases();
-
- private:
   boost::scoped_ptr<UriParser> uri_parser_;
   void VerifyUriResolution(const char* base, const char* relative,
                            const char* want_result);
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(UriParserTest);
-
 // Verify basic usage of the CreateFromParse() static method.
-void UriParserTest::TestBasicCreateFromParse() {
+TEST_F(UriParserTest, TestBasicCreateFromParse) {
   // Note: since UriParse does not actually generate any networking traffic
   // the hostnames and TLDs used here generally do not conform to RFC 2606.
   const std::string kUrl("http://host.com/path/to/some.kml#id");
   uri_parser_.reset(UriParser::CreateFromParse(kUrl.c_str()));
-  CPPUNIT_ASSERT(uri_parser_.get());
+  ASSERT_TRUE(uri_parser_.get());
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kUrl, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kUrl, url);
 }
 
 // Verify basic usage of the CreateResolvedUri() static method.
-void UriParserTest::TestBasicCreateResolvedUri() {
+TEST_F(UriParserTest, TestBasicCreateResolvedUri) {
   const std::string kHost("http://hi.there.com/");
   const std::string kPath("blah.kml");
   const std::string kBase = kHost + kPath;
   const std::string kRelative("images/pretty.jpg");
   uri_parser_.reset(UriParser::CreateResolvedUri(kBase.c_str(),
                                                  kRelative.c_str()));
-  CPPUNIT_ASSERT(uri_parser_.get());
+  ASSERT_TRUE(uri_parser_.get());
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kHost + kRelative, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kHost + kRelative, url);
 }
 
 // Verify basic usage of the Parse() method.
-void UriParserTest::TestBasicParse() {
+TEST_F(UriParserTest, TestBasicParse) {
   const std::string kUrl("this/is/a/relative/url.kmz/some/file.kml#id");
   uri_parser_.reset(new UriParser);
-  CPPUNIT_ASSERT(uri_parser_->Parse(kUrl.c_str()));
+  ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kUrl, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kUrl, url);
 }
 
 // Verify basic usage of the Normalize() method.
-void UriParserTest::TestBasicNormalize() {
+TEST_F(UriParserTest, TestBasicNormalize) {
   const std::string kUrl("this/../a/relative/url.kmz/../file.kml#id");
   const std::string kNormalized("a/relative/file.kml#id");
   uri_parser_.reset(new UriParser);
   // Parse() does not normalize.
-  CPPUNIT_ASSERT(uri_parser_->Parse(kUrl.c_str()));
+  ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kUrl, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kUrl, url);
   // Normalize() normalizes.
-  CPPUNIT_ASSERT(uri_parser_->Normalize());
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kNormalized, url);
+  ASSERT_TRUE(uri_parser_->Normalize());
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kNormalized, url);
 }
 
 // Verify basic usage of the Resolve() method.
-void UriParserTest::TestBasicResolve() {
+TEST_F(UriParserTest, TestBasicResolve) {
   const std::string kBase("http://foo.com/hello/");
   const std::string kRelative("../hi");
   const std::string kResult("http://foo.com/hi");
@@ -129,48 +106,48 @@ void UriParserTest::TestBasicResolve() {
   boost::scoped_ptr<UriParser> relative_uri(
       UriParser::CreateFromParse(kRelative.c_str()));
   uri_parser_.reset(new UriParser);
-  CPPUNIT_ASSERT(uri_parser_->Resolve(*base_uri.get(), *relative_uri.get()));
+  ASSERT_TRUE(uri_parser_->Resolve(*base_uri.get(), *relative_uri.get()));
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kResult, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kResult, url);
 }
 
 // Verify basic usage of the ToString() method.
-void UriParserTest::TestBasicToString() {
+TEST_F(UriParserTest, TestBasicToString) {
   uri_parser_.reset(new UriParser);
-  CPPUNIT_ASSERT(!uri_parser_->ToString(NULL));
+  ASSERT_FALSE(uri_parser_->ToString(NULL));
   const std::string kUrl("a/b/c/d");
-  CPPUNIT_ASSERT(uri_parser_->Parse(kUrl.c_str()));
+  ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
   std::string url;
-  CPPUNIT_ASSERT(uri_parser_->ToString(&url));
-  CPPUNIT_ASSERT_EQUAL(kUrl, url);
+  ASSERT_TRUE(uri_parser_->ToString(&url));
+  ASSERT_EQ(kUrl, url);
 }
 
 // Verify basic usage of the GetScheme(), GetHost(), GetPort(), GetPath(),
 // GetQuery(), and GetFragment() methods.
-void UriParserTest::TestBasicGetComponents() {
+TEST_F(UriParserTest, TestBasicGetComponents) {
   uri_parser_.reset(new UriParser);
   // Verify NULL uri returns false for all components.
-  CPPUNIT_ASSERT(!uri_parser_->GetScheme(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetHost(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetPort(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetPath(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetQuery(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetFragment(NULL));
+  ASSERT_FALSE(uri_parser_->GetScheme(NULL));
+  ASSERT_FALSE(uri_parser_->GetHost(NULL));
+  ASSERT_FALSE(uri_parser_->GetPort(NULL));
+  ASSERT_FALSE(uri_parser_->GetPath(NULL));
+  ASSERT_FALSE(uri_parser_->GetQuery(NULL));
+  ASSERT_FALSE(uri_parser_->GetFragment(NULL));
   // Verify initial state returns false with non-NULL string output arg.
   std::string output;
-  CPPUNIT_ASSERT(!uri_parser_->GetScheme(&output));
-  CPPUNIT_ASSERT(output.empty());
-  CPPUNIT_ASSERT(!uri_parser_->GetHost(&output));
-  CPPUNIT_ASSERT(output.empty());
-  CPPUNIT_ASSERT(!uri_parser_->GetPort(&output));
-  CPPUNIT_ASSERT(output.empty());
-  CPPUNIT_ASSERT(!uri_parser_->GetPath(&output));
-  CPPUNIT_ASSERT(output.empty());
-  CPPUNIT_ASSERT(!uri_parser_->GetQuery(&output));
-  CPPUNIT_ASSERT(output.empty());
-  CPPUNIT_ASSERT(!uri_parser_->GetFragment(&output));
-  CPPUNIT_ASSERT(output.empty());
+  ASSERT_FALSE(uri_parser_->GetScheme(&output));
+  ASSERT_TRUE(output.empty());
+  ASSERT_FALSE(uri_parser_->GetHost(&output));
+  ASSERT_TRUE(output.empty());
+  ASSERT_FALSE(uri_parser_->GetPort(&output));
+  ASSERT_TRUE(output.empty());
+  ASSERT_FALSE(uri_parser_->GetPath(&output));
+  ASSERT_TRUE(output.empty());
+  ASSERT_FALSE(uri_parser_->GetQuery(&output));
+  ASSERT_TRUE(output.empty());
+  ASSERT_FALSE(uri_parser_->GetFragment(&output));
+  ASSERT_TRUE(output.empty());
 
   // Verify a typical URI. 
   const std::string kScheme("http");
@@ -180,42 +157,42 @@ void UriParserTest::TestBasicGetComponents() {
   const std::string kFragment("id");
   uri_parser_.reset(UriParser::CreateFromParse(kUrlNoFragment.c_str()));
   // Verify NULL output string returns proper status of component's existence.
-  CPPUNIT_ASSERT(uri_parser_->GetScheme(NULL));
-  CPPUNIT_ASSERT(uri_parser_->GetHost(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetPort(NULL));
-  CPPUNIT_ASSERT(uri_parser_->GetPath(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetQuery(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetFragment(NULL));
+  ASSERT_TRUE(uri_parser_->GetScheme(NULL));
+  ASSERT_TRUE(uri_parser_->GetHost(NULL));
+  ASSERT_FALSE(uri_parser_->GetPort(NULL));
+  ASSERT_TRUE(uri_parser_->GetPath(NULL));
+  ASSERT_FALSE(uri_parser_->GetQuery(NULL));
+  ASSERT_FALSE(uri_parser_->GetFragment(NULL));
   // Verify output string gets proper result.
-  CPPUNIT_ASSERT(uri_parser_->GetScheme(&output));
-  CPPUNIT_ASSERT_EQUAL(kScheme, output);
-  CPPUNIT_ASSERT(uri_parser_->GetHost(&output));
-  CPPUNIT_ASSERT_EQUAL(kHost, output);
-  CPPUNIT_ASSERT(uri_parser_->GetPath(&output));
-  CPPUNIT_ASSERT_EQUAL(kPath, output);
+  ASSERT_TRUE(uri_parser_->GetScheme(&output));
+  ASSERT_EQ(kScheme, output);
+  ASSERT_TRUE(uri_parser_->GetHost(&output));
+  ASSERT_EQ(kHost, output);
+  ASSERT_TRUE(uri_parser_->GetPath(&output));
+  ASSERT_EQ(kPath, output);
   output.clear();
-  CPPUNIT_ASSERT(!uri_parser_->GetFragment(&output));
-  CPPUNIT_ASSERT(output.empty());
+  ASSERT_FALSE(uri_parser_->GetFragment(&output));
+  ASSERT_TRUE(output.empty());
 
   // Verify a URI with fragment.
   const std::string kUrlWithFragment(kUrlNoFragment + "#" + kFragment);
   uri_parser_.reset(UriParser::CreateFromParse(kUrlWithFragment.c_str()));
   // Verify NULL output string returns proper status of component's existence.
-  CPPUNIT_ASSERT(uri_parser_->GetScheme(NULL));
-  CPPUNIT_ASSERT(uri_parser_->GetHost(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetPort(NULL));
-  CPPUNIT_ASSERT(uri_parser_->GetPath(NULL));
-  CPPUNIT_ASSERT(!uri_parser_->GetQuery(NULL));
-  CPPUNIT_ASSERT(uri_parser_->GetFragment(NULL));
+  ASSERT_TRUE(uri_parser_->GetScheme(NULL));
+  ASSERT_TRUE(uri_parser_->GetHost(NULL));
+  ASSERT_FALSE(uri_parser_->GetPort(NULL));
+  ASSERT_TRUE(uri_parser_->GetPath(NULL));
+  ASSERT_FALSE(uri_parser_->GetQuery(NULL));
+  ASSERT_TRUE(uri_parser_->GetFragment(NULL));
   // Verify output string gets proper result.
-  CPPUNIT_ASSERT(uri_parser_->GetScheme(&output));
-  CPPUNIT_ASSERT_EQUAL(kScheme, output);
-  CPPUNIT_ASSERT(uri_parser_->GetHost(&output));
-  CPPUNIT_ASSERT_EQUAL(kHost, output);
-  CPPUNIT_ASSERT(uri_parser_->GetPath(&output));
-  CPPUNIT_ASSERT_EQUAL(kPath, output);
-  CPPUNIT_ASSERT(uri_parser_->GetFragment(&output));
-  CPPUNIT_ASSERT_EQUAL(kFragment, output);
+  ASSERT_TRUE(uri_parser_->GetScheme(&output));
+  ASSERT_EQ(kScheme, output);
+  ASSERT_TRUE(uri_parser_->GetHost(&output));
+  ASSERT_EQ(kHost, output);
+  ASSERT_TRUE(uri_parser_->GetPath(&output));
+  ASSERT_EQ(kPath, output);
+  ASSERT_TRUE(uri_parser_->GetFragment(&output));
+  ASSERT_EQ(kFragment, output);
 }
 
 // This is a table of URI resolution test cases.  The given result is the
@@ -356,16 +333,16 @@ void UriParserTest::VerifyUriResolution(const char* base, const char* relative,
                                         const char* want_result) {
   std::string got_result;
   if (want_result == NULL) {  // We're expecting resolution to fail.
-    CPPUNIT_ASSERT(!UriParser::CreateResolvedUri(base, relative));
+    ASSERT_FALSE(UriParser::CreateResolvedUri(base, relative));
     return;
   }
   uri_parser_.reset(UriParser::CreateResolvedUri(base, relative));
   uri_parser_->ToString(&got_result);
-  CPPUNIT_ASSERT_EQUAL(std::string(want_result), got_result);
+  ASSERT_EQ(std::string(want_result), got_result);
 }
 
 // Verify all expected URI resolution test cases.
-void UriParserTest::TestBasicUriResolutionTestCases() {
+TEST_F(UriParserTest, TestBasicUriResolutionTestCases) {
   const size_t size = sizeof(kUriTestCases)/sizeof(kUriTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     VerifyUriResolution(kUriTestCases[i].base,
@@ -376,4 +353,7 @@ void UriParserTest::TestBasicUriResolutionTestCases() {
 
 }  // end namespace kmlbase
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

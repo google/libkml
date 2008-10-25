@@ -23,54 +23,42 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Uncomment this #define to enable output of timing results.
-// #define PRINT_TIME_RESULTS
-#ifdef PRINT_TIME_RESULTS
-#include <iostream>
-#endif
+// This file contains the declaration of the DateTime class.
 
-#include "kml/base/time_util.h"
+#ifndef KML_BASE_DATE_TIME_H__
+#define KML_BASE_DATE_TIME_H__
+
 #include <time.h>
-#include "gtest/gtest.h"
+#include <string>
 
 namespace kmlbase {
 
-class TimeUtilTest : public testing::Test {
+class DateTime {
+ public:
+  // xsd:datetime: 2008-10-03T09:25:42Z
+  // TODO: date, gYearMonth, gYear
+  static DateTime* Create(const std::string& str);
+
+  // POSIX time
+  time_t GetTimeT() /* const */;
+
+  // XML Schema 3.2.8 time
+  std::string GetXsdTime() const;
+
+  // XML Schema 3.2.9 date
+  std::string GetXsdDate() const;
+
+  // XML Schema 3.2.7 dateTime.
+  std::string GetXsdDateTime() const;
+
+ private:
+  DateTime();
+  template<int N>
+  std::string DoStrftime(const char* format) const;
+  bool ParseXsdDateTime(const std::string& xsd_date_time);
+  struct tm tm_;
 };
-
-// This verifies the GetMicroTime() function.
-TEST_F(TimeUtilTest, TestGetMicroTime) {
-  // Get the posix time (second resolution).
-  time_t now = time(NULL);
-  // Get the micro time (microsecond resolution).
-  double later = GetMicroTime();
-  // Assert that time has passed.
-  ASSERT_TRUE(later > static_cast<double>(now));
-  // Snapshot the microtime in rapid succession.
-  double even_later = GetMicroTime();
-  double later_still = GetMicroTime();
-  // Verify that time does not go backwards.
-  ASSERT_TRUE(even_later >= later);
-  ASSERT_TRUE(later_still >= even_later);
-
-  // Here are some values 2.16 GHz MacBook Pro running Mac OS X 10.5.3.
-  //  now         1215742903
-  //  later       1215742903.291807
-  //  even_later  1215742903.291839
-  //  later_still 1215742903.291839
-
-#ifdef PRINT_TIME_RESULTS
-  std::cerr << now << std::endl;
-  std::cerr.precision(16);
-  std::cerr << later << std::endl;
-  std::cerr << even_later << std::endl;
-  std::cerr << later_still << std::endl;
-#endif
-}
 
 }  // end namespace kmlbase
 
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+#endif  // KML_BASE_DATE_TIME_H__

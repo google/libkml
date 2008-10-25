@@ -28,55 +28,24 @@
 #include "kml/base/attributes.h"
 #include <string>
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmlbase {
 
-const char* kAttr0 = "id";
-const char* kAttr1 = "fraction";
-const char* kAttr2 = "xunits";
-const char* kNoSuchAttr = "no-such-attr";
+static const char kAttr0[] = "id";
+static const char kAttr1[] = "fraction";
+static const char kAttr2[] = "xunits";
+static const char kNoSuchAttr[] = "no-such-attr";
 
-class AttributesTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(AttributesTest);
-  CPPUNIT_TEST(TestCreate);
-  CPPUNIT_TEST(TestSetGetString);
-  CPPUNIT_TEST(TestSetGetDouble);
-  CPPUNIT_TEST(TestClone);
-  CPPUNIT_TEST(TestMerge);
-  CPPUNIT_TEST(TestSerialize);
-  CPPUNIT_TEST(TestMatch);
-  CPPUNIT_TEST(TestMatchNoDefault);
-  CPPUNIT_TEST_SUITE_END();
-
+class AttributesTest : public testing::Test {
  protected:
-  void TestCreate();
-  void TestSetGetString();
-  void TestSetGetDouble();
-  void TestClone();
-  void TestMerge();
-  void TestSerialize();
-  void TestMatch();
-  void TestMatchNoDefault();
-
- public:
-  // Called before each test.
-  void setUp() {
+  virtual void SetUp() {
     attributes_.reset(new Attributes);
   }
-
-  // Called after each test.
-  void tearDown() {
-    // attributes_ managed by scoped_ptr.
-  }
-
- private:
   boost::scoped_ptr<Attributes> attributes_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(AttributesTest);
-
-void AttributesTest::TestCreate() {
+TEST_F(AttributesTest, TestCreate) {
   // A list of name-value pairs as expat might produce.
   const char* atts[] = {
     "name",
@@ -89,63 +58,89 @@ void AttributesTest::TestCreate() {
   };
   // Call the method under test.
   attributes_.reset(Attributes::Create(atts));
-  CPPUNIT_ASSERT(attributes_.get());
+  ASSERT_TRUE(attributes_.get());
   std::string got_val;
-  CPPUNIT_ASSERT(attributes_->GetString(atts[0], &got_val));
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[1]), got_val);
-  CPPUNIT_ASSERT(attributes_->GetString(atts[2], &got_val));
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[3]), got_val);
-  CPPUNIT_ASSERT(attributes_->GetString(atts[4], &got_val));
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[5]), got_val);
-  CPPUNIT_ASSERT(!attributes_->GetString("no-such-attr", &got_val));
+  ASSERT_TRUE(attributes_->GetString(atts[0], &got_val));
+  ASSERT_EQ(std::string(atts[1]), got_val);
+  ASSERT_TRUE(attributes_->GetString(atts[2], &got_val));
+  ASSERT_EQ(std::string(atts[3]), got_val);
+  ASSERT_TRUE(attributes_->GetString(atts[4], &got_val));
+  ASSERT_EQ(std::string(atts[5]), got_val);
+  ASSERT_FALSE(attributes_->GetString("no-such-attr", &got_val));
   // Verify null output is well behaved.
-  CPPUNIT_ASSERT(!attributes_->GetString(atts[0], NULL));
+  ASSERT_FALSE(attributes_->GetString(atts[0], NULL));
 }
 
-void AttributesTest::TestSetGetString() {
+TEST_F(AttributesTest, TestCreateOdd) {
+  // A bad atts list.
+  const char* atts[] = { "a0", "a1", "b0", 0 };
+  // Call the method under test.
+  attributes_.reset(Attributes::Create(atts));
+  ASSERT_TRUE(attributes_.get());
+  std::string got_val;
+  ASSERT_TRUE(attributes_->GetString(atts[0], &got_val));
+  ASSERT_EQ(std::string(atts[1]), got_val);
+  ASSERT_FALSE(attributes_->GetString(atts[2], &got_val));
+}
+
+TEST_F(AttributesTest, TestSetGetString) {
   const std::string kVal0 = "val0";
   const std::string kVal1 = "val1";
   attributes_->SetString(kAttr0, kVal0);
   attributes_->SetString(kAttr1, kVal1);
   std::string got_val;
-  CPPUNIT_ASSERT(attributes_->GetString(kAttr0, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal0, got_val);
-  CPPUNIT_ASSERT(attributes_->GetString(kAttr1, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal1, got_val);
-  CPPUNIT_ASSERT(false == attributes_->GetString(kNoSuchAttr, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal1, got_val);
+  ASSERT_TRUE(attributes_->GetString(kAttr0, &got_val));
+  ASSERT_EQ(kVal0, got_val);
+  ASSERT_TRUE(attributes_->GetString(kAttr1, &got_val));
+  ASSERT_EQ(kVal1, got_val);
+  ASSERT_TRUE(false == attributes_->GetString(kNoSuchAttr, &got_val));
+  ASSERT_EQ(kVal1, got_val);
 }
 
-void AttributesTest::TestSetGetDouble() {
+TEST_F(AttributesTest, TestSetGetDouble) {
   const double kVal0 = 123.456;
   const double kVal1 = 987.654321;
   attributes_->SetDouble(kAttr0, kVal0);
   attributes_->SetDouble(kAttr1, kVal1);
   double got_val;
-  CPPUNIT_ASSERT(attributes_->GetDouble(kAttr0, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal0, got_val);
-  CPPUNIT_ASSERT(attributes_->GetDouble(kAttr1, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal1, got_val);
-  CPPUNIT_ASSERT(false == attributes_->GetDouble(kNoSuchAttr, &got_val));
-  CPPUNIT_ASSERT_EQUAL(kVal1, got_val);
+  ASSERT_TRUE(attributes_->GetDouble(kAttr0, &got_val));
+  ASSERT_EQ(kVal0, got_val);
+  ASSERT_TRUE(attributes_->GetDouble(kAttr1, &got_val));
+  ASSERT_EQ(kVal1, got_val);
+  ASSERT_TRUE(false == attributes_->GetDouble(kNoSuchAttr, &got_val));
+  ASSERT_EQ(kVal1, got_val);
 }
 
-void AttributesTest::TestClone() {
+TEST_F(AttributesTest, TestSetGetInt) {
+  const int kVal0 = 123;
+  const int kVal1 = -987;
+  attributes_->SetInt(kAttr0, kVal0);
+  attributes_->SetInt(kAttr1, kVal1);
+  int got_val;
+  ASSERT_TRUE(attributes_->GetInt(kAttr0, &got_val));
+  ASSERT_EQ(kVal0, got_val);
+  ASSERT_TRUE(attributes_->GetInt(kAttr1, &got_val));
+  ASSERT_EQ(kVal1, got_val);
+  ASSERT_TRUE(false == attributes_->GetInt(kNoSuchAttr, &got_val));
+  ASSERT_EQ(kVal1, got_val);
+}
+
+TEST_F(AttributesTest, TestClone) {
   const std::string kVal0 = "val0";
   const double kVal1 = 123.456789;
   attributes_->SetString(kAttr0, kVal0);
   attributes_->SetDouble(kAttr1, kVal1);
   Attributes* clone = attributes_->Clone();
   std::string got_string;
-  CPPUNIT_ASSERT(clone->GetString(kAttr0, &got_string));
-  CPPUNIT_ASSERT_EQUAL(kVal0, got_string);
+  ASSERT_TRUE(clone->GetString(kAttr0, &got_string));
+  ASSERT_EQ(kVal0, got_string);
   double got_double;
-  CPPUNIT_ASSERT(clone->GetDouble(kAttr1, &got_double));
-  CPPUNIT_ASSERT_EQUAL(kVal1, got_double);
+  ASSERT_TRUE(clone->GetDouble(kAttr1, &got_double));
+  ASSERT_EQ(kVal1, got_double);
   delete clone;
 }
 
-void AttributesTest::TestMerge() {
+TEST_F(AttributesTest, TestMerge) {
   const std::string kVal0 = "val0";
   const double kVal1a = 123.456789;
   const double kVal1b = 78.90123;
@@ -157,16 +152,16 @@ void AttributesTest::TestMerge() {
   attributes.SetString(kAttr2, kVal2);
   attributes_->MergeAttributes(attributes);
   std::string got_string;
-  CPPUNIT_ASSERT(attributes_->GetString(kAttr0, &got_string));
-  CPPUNIT_ASSERT_EQUAL(kVal0, got_string);
+  ASSERT_TRUE(attributes_->GetString(kAttr0, &got_string));
+  ASSERT_EQ(kVal0, got_string);
   double got_double;
-  CPPUNIT_ASSERT(attributes_->GetDouble(kAttr1, &got_double));
-  CPPUNIT_ASSERT_EQUAL(kVal1b, got_double);
-  CPPUNIT_ASSERT(attributes_->GetString(kAttr2, &got_string));
-  CPPUNIT_ASSERT_EQUAL(kVal2, got_string);
+  ASSERT_TRUE(attributes_->GetDouble(kAttr1, &got_double));
+  ASSERT_EQ(kVal1b, got_double);
+  ASSERT_TRUE(attributes_->GetString(kAttr2, &got_string));
+  ASSERT_EQ(kVal2, got_string);
 }
 
-void AttributesTest::TestSerialize() {
+TEST_F(AttributesTest, TestSerialize) {
   const std::string kVal0 = "val0";
   const double kVal1 = 123.456789;
   attributes_->SetString(kAttr0, kVal0);
@@ -175,10 +170,10 @@ void AttributesTest::TestSerialize() {
   attributes_->Serialize(&serialized);
   const std::string expecting = " " + std::string(kAttr1) + "=\"123.456789\" "
     + std::string(kAttr0) + "=\"" + kVal0 + "\"";
-  CPPUNIT_ASSERT_EQUAL(expecting, serialized);
+  ASSERT_EQ(expecting, serialized);
 }
 
-void AttributesTest::TestMatch() {
+TEST_F(AttributesTest, TestMatch) {
   // <kml xmlns="http://www.opengis.net/kml/2.2"
   //      xmlns:ex="http://vendor.com/kml/2.2ext">
   // Expat turns the above XML into this:
@@ -191,11 +186,11 @@ void AttributesTest::TestMatch() {
   StringStringMap xmlns;
   // This is the method under test.
   attributes_->MatchSplitKey("xmlns:", &xmlns);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1), xmlns.size());
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[3]), xmlns["ex"]);
+  ASSERT_EQ(static_cast<size_t>(1), xmlns.size());
+  ASSERT_EQ(std::string(atts[3]), xmlns["ex"]);
 }
 
-void AttributesTest::TestMatchNoDefault() {
+TEST_F(AttributesTest, TestMatchNoDefault) {
   const char* atts[] = {
     "xmlns:kml", "http://www.opengis.net/kml/2.2",
     "xmlns:ex", "http://vendor.com/kml/2.2ext",
@@ -205,11 +200,15 @@ void AttributesTest::TestMatchNoDefault() {
   StringStringMap xmlns;
   // This is the method under test.
   attributes_->MatchSplitKey("xmlns:", &xmlns);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), xmlns.size());
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[1]), xmlns["kml"]);
-  CPPUNIT_ASSERT_EQUAL(std::string(atts[3]), xmlns["ex"]);
+  ASSERT_EQ(static_cast<size_t>(2), xmlns.size());
+  ASSERT_EQ(std::string(atts[1]), xmlns["kml"]);
+  ASSERT_EQ(std::string(atts[3]), xmlns["ex"]);
 }
 
 }  // end namespace kmlbase
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+

@@ -66,7 +66,7 @@ bool File::WriteStringToFile(const std::string& data,
   if (!output_file.is_open() || !output_file.good()) {
     return false;
   }
-  output_file.write(data.c_str(), data.length());
+  output_file.write(data.c_str(), static_cast<std::streamsize>(data.length()));
   output_file.close();
   return true;
 }

@@ -23,49 +23,34 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Uncomment this #define to enable output of timing results.
-// #define PRINT_TIME_RESULTS
-#ifdef PRINT_TIME_RESULTS
-#include <iostream>
-#endif
+// This file contains the unit tests for the DateTime class.
 
-#include "kml/base/time_util.h"
-#include <time.h>
+#include "kml/base/date_time.h"
+#include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
 namespace kmlbase {
 
-class TimeUtilTest : public testing::Test {
+class DateTimeTest : public testing::Test {
+ protected:
+  boost::scoped_ptr<DateTime> date_time_;
 };
 
-// This verifies the GetMicroTime() function.
-TEST_F(TimeUtilTest, TestGetMicroTime) {
-  // Get the posix time (second resolution).
-  time_t now = time(NULL);
-  // Get the micro time (microsecond resolution).
-  double later = GetMicroTime();
-  // Assert that time has passed.
-  ASSERT_TRUE(later > static_cast<double>(now));
-  // Snapshot the microtime in rapid succession.
-  double even_later = GetMicroTime();
-  double later_still = GetMicroTime();
-  // Verify that time does not go backwards.
-  ASSERT_TRUE(even_later >= later);
-  ASSERT_TRUE(later_still >= even_later);
+TEST_F(DateTimeTest, TestCreate) {
+  // Call the method under test.
+  const std::string kDateTime("2008-10-03T09:25:42Z");
+  date_time_.reset(DateTime::Create(kDateTime));
+  ASSERT_TRUE(date_time_.get());
+  ASSERT_EQ(static_cast<time_t>(1223025942), date_time_->GetTimeT());
+  ASSERT_EQ(std::string("09:25:42"), date_time_->GetXsdTime());
+  ASSERT_EQ(std::string("2008-10-03"), date_time_->GetXsdDate());
+  ASSERT_EQ(kDateTime, date_time_->GetXsdDateTime());
+}
 
-  // Here are some values 2.16 GHz MacBook Pro running Mac OS X 10.5.3.
-  //  now         1215742903
-  //  later       1215742903.291807
-  //  even_later  1215742903.291839
-  //  later_still 1215742903.291839
-
-#ifdef PRINT_TIME_RESULTS
-  std::cerr << now << std::endl;
-  std::cerr.precision(16);
-  std::cerr << later << std::endl;
-  std::cerr << even_later << std::endl;
-  std::cerr << later_still << std::endl;
-#endif
+// Verify expected behavior on invalid input.
+TEST_F(DateTimeTest, TestBad) {
+  date_time_.reset(DateTime::Create("garbage"));
+  ASSERT_FALSE(date_time_.get());
 }
 
 }  // end namespace kmlbase

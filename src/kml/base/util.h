@@ -26,6 +26,10 @@
 #ifndef KML_BASE_UTIL_H__
 #define KML_BASE_UTIL_H__
 
+#ifndef _MSC_VER
+#include <stdint.h>  // For fixed-size interger typedefs in this file.
+#endif
+
 // A macro to disallow the evil copy constructor and assignment operator.
 // Should be used in the private: declarations for a class.
 #define LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TypeName) \

@@ -28,30 +28,17 @@
 #include "kml/base/xmlns.h"
 #include <string>
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmlbase {
 
-class XmlnsTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(XmlnsTest);
-  CPPUNIT_TEST(TestCreate);
-  CPPUNIT_TEST(TestNullCreate);
-  CPPUNIT_TEST(TestGetKey);
-  CPPUNIT_TEST_SUITE_END();
-
+class XmlnsTest : public testing::Test {
  protected:
-  void TestCreate();
-  void TestNullCreate();
-  void TestGetKey();
-
- private:
   boost::scoped_ptr<Attributes> attributes_;
   boost::scoped_ptr<Xmlns> xmlns_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(XmlnsTest);
-
-// Just to pick a random example test case...
+// Just to pick a random example test case... (this is from ogckml22.xsd).
 // <schema xmlns="http://www.w3.org/2001/XMLSchema"
 //         xmlns:kml="http://www.opengis.net/kml/2.2"
 //         xmlns:atom="http://www.w3.org/2005/Atom"
@@ -59,47 +46,65 @@ CPPUNIT_TEST_SUITE_REGISTRATION(XmlnsTest);
 //         targetNamespace="http://www.opengis.net/kml/2.2"
 //         elementFormDefault="qualified"
 //         version="2.2.0">
-void XmlnsTest::TestCreate() {
-  // Expat turns the above into this list.
-  const char* schema_attrs[] = {
-    "xmlns", "http://www.w3.org/2001/XMLSchema",
-    "xmlns:kml", "http://www.opengis.net/kml/2.2",
-    "xmlns:atom", "http://www.w3.org/2005/Atom",
-    "xmlns:xal", "urn:oasis:names:tc:ciq:xsdschema:xAL:2.0",
-    "targetNamespace", "http://www.opengis.net/kml/2.2",
-    "elementFormDefault", "qualified",
-    "version", "2.2.0",
-    NULL
-  };
-  attributes_.reset(Attributes::Create(schema_attrs));
-  CPPUNIT_ASSERT(attributes_.get());
+// Expat turns the above into this list.
+static const char* kSchemaAttrs[] = {
+  "xmlns", "http://www.w3.org/2001/XMLSchema",
+  "xmlns:kml", "http://www.opengis.net/kml/2.2",
+  "xmlns:atom", "http://www.w3.org/2005/Atom",
+  "xmlns:xal", "urn:oasis:names:tc:ciq:xsdschema:xAL:2.0",
+  "targetNamespace", "http://www.opengis.net/kml/2.2",
+  "elementFormDefault", "qualified",
+  "version", "2.2.0",
+  NULL
+};
+
+TEST_F(XmlnsTest, TestCreate) {
+  attributes_.reset(Attributes::Create(kSchemaAttrs));
+  ASSERT_TRUE(attributes_.get());
   // This is the method under test.
   xmlns_.reset(Xmlns::Create(*attributes_));
   // The default namespace is the value of the "xmlns" attribute.
-  CPPUNIT_ASSERT_EQUAL(std::string(schema_attrs[1]), xmlns_->get_default());
-  CPPUNIT_ASSERT_EQUAL(std::string(schema_attrs[3]),
+  ASSERT_EQ(std::string(kSchemaAttrs[1]), xmlns_->get_default());
+  ASSERT_EQ(std::string(kSchemaAttrs[3]),
                        xmlns_->GetNamespace("kml"));
-  CPPUNIT_ASSERT_EQUAL(std::string(schema_attrs[5]),
+  ASSERT_EQ(std::string(kSchemaAttrs[5]),
                        xmlns_->GetNamespace("atom"));
 }
 
 // Verify the NULL return path of Create().
-void XmlnsTest::TestNullCreate() {
+TEST_F(XmlnsTest, TestNullCreate) {
   attributes_.reset(new Attributes);  // Empty attributes.
   xmlns_.reset(Xmlns::Create(*attributes_));
   // No attributes, no Xmlns.
-  CPPUNIT_ASSERT(!xmlns_.get());
+  ASSERT_FALSE(xmlns_.get());
 }
 
-void XmlnsTest::TestGetKey() {
+TEST_F(XmlnsTest, TestGetKey) {
   attributes_.reset(new Attributes);
   const std::string kPrefix("mcn");
   const std::string kNamespace("my:cool:namespace");
   attributes_->SetString(std::string("xmlns:") + kPrefix, kNamespace);
   xmlns_.reset(Xmlns::Create(*attributes_));
-  CPPUNIT_ASSERT_EQUAL(kPrefix, xmlns_->GetKey(kNamespace));
+  ASSERT_EQ(kPrefix, xmlns_->GetKey(kNamespace));
+}
+
+// Verify the GetPrefixes() method.
+TEST_F(XmlnsTest, TestGetPrefixes) {
+  attributes_.reset(Attributes::Create(kSchemaAttrs));
+  ASSERT_TRUE(attributes_.get());
+  xmlns_.reset(Xmlns::Create(*attributes_));
+  // This is the method under test.
+  std::vector<std::string> prefix_vector;
+  xmlns_->GetPrefixes(&prefix_vector);
+  ASSERT_EQ(static_cast<size_t>(3), prefix_vector.size());
+  ASSERT_EQ(std::string("atom"), prefix_vector[0]);
+  ASSERT_EQ(std::string("kml"), prefix_vector[1]);
+  ASSERT_EQ(std::string("xal"), prefix_vector[2]);
 }
 
 }  // end namespace kmlbase
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

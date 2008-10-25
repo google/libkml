@@ -66,8 +66,17 @@ class Attributes {
   bool GetDouble(const std::string attr_name, double* attr_val) const;
 
   // Set the value of the given attribute from a double.  Any previous value
-  // for this attribute is overwritten.
+  // for this attribute is overwritten.  If no attribute by this name exists
+  // false is returned and the result pointer is untouched.  If no result
+  // pointer is supplied false is returned.
   void SetDouble(const std::string attr_name, double attr_val);
+
+  // Get the value of the given attribute as an int.  If the attribute value
+  bool GetInt(const std::string attr_name, int* attr_val) const;
+
+  // Set the value of the given attribute from an int.  Any previous value
+  // for this attribute is overwritten.
+  void SetInt(const std::string attr_name, int attr_val);
 
   // Get the value of the given boolean attribute.  If attr_val is supplied
   // it is set to true if the attribute value is "true", else false.  This

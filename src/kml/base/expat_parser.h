@@ -33,7 +33,10 @@
 
 namespace kmlbase {
 
+const char kExpatNsSeparator = '|';
+
 class ExpatHandler;
+class ExpatHandlerNs;
 
 typedef std::map<std::string, ExpatHandler*> ExpatHandlerMap;
 
@@ -73,8 +76,9 @@ class ExpatHandlerSet {
 // Run expat using the supplied handler over the supplied input.  Any parse
 // errors are are saved to the supplied string.  This returns true if the
 // parse succeeded, false otherwise.
-bool RunExpat(const std::string& xml, ExpatHandlerSet* expat_handler_set,
-              std::string* errors);
+bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
+                 std::string* errors, bool namespace_aware);
+
 
 }  // end namespace kmldom
 

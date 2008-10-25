@@ -23,54 +23,54 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// Uncomment this #define to enable output of timing results.
-// #define PRINT_TIME_RESULTS
-#ifdef PRINT_TIME_RESULTS
-#include <iostream>
-#endif
+// This file contains the implementation of the DateTime class.
 
-#include "kml/base/time_util.h"
-#include <time.h>
-#include "gtest/gtest.h"
+#include "kml/base/date_time.h"
+#include <stdlib.h>
 
 namespace kmlbase {
 
-class TimeUtilTest : public testing::Test {
-};
+// static
+DateTime* DateTime::Create(const std::string& str) {
+  DateTime* date_time = new DateTime;
+  if (date_time->ParseXsdDateTime(str)) {
+    return date_time;
+  }
+  delete date_time;
+  return NULL;
+}
 
-// This verifies the GetMicroTime() function.
-TEST_F(TimeUtilTest, TestGetMicroTime) {
-  // Get the posix time (second resolution).
-  time_t now = time(NULL);
-  // Get the micro time (microsecond resolution).
-  double later = GetMicroTime();
-  // Assert that time has passed.
-  ASSERT_TRUE(later > static_cast<double>(now));
-  // Snapshot the microtime in rapid succession.
-  double even_later = GetMicroTime();
-  double later_still = GetMicroTime();
-  // Verify that time does not go backwards.
-  ASSERT_TRUE(even_later >= later);
-  ASSERT_TRUE(later_still >= even_later);
+time_t DateTime::GetTimeT() /* const */ {
+  return timegm(&tm_);
+}
 
-  // Here are some values 2.16 GHz MacBook Pro running Mac OS X 10.5.3.
-  //  now         1215742903
-  //  later       1215742903.291807
-  //  even_later  1215742903.291839
-  //  later_still 1215742903.291839
+template<int N>
+std::string DateTime::DoStrftime(const char* format) const {
+  char buf[N];
+  strftime(buf, N, format, &tm_);
+  return buf;
+}
 
-#ifdef PRINT_TIME_RESULTS
-  std::cerr << now << std::endl;
-  std::cerr.precision(16);
-  std::cerr << later << std::endl;
-  std::cerr << even_later << std::endl;
-  std::cerr << later_still << std::endl;
-#endif
+std::string DateTime::GetXsdTime() const {
+  return DoStrftime<9>("%H:%M:%S");
+}
+
+std::string DateTime::GetXsdDate() const {
+  return DoStrftime<11>("%Y-%m-%d");
+}
+
+std::string DateTime::GetXsdDateTime() const {
+  return GetXsdDate() + "T" + GetXsdTime() + "Z";
+}
+
+// private
+DateTime::DateTime() {
+}
+
+// private
+bool DateTime::ParseXsdDateTime(const std::string& xsd_date_time) {
+  // TODO: strptime on win32?
+  return strptime(xsd_date_time.c_str(), "%Y-%m-%dT%H:%M:%SZ", &tm_) != NULL;
 }
 
 }  // end namespace kmlbase
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
