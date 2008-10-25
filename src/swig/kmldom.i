@@ -73,6 +73,8 @@ SWIG_INTRUSIVE_PTR_DERIVED(Vec2, kmldom::Element, kmldom::Vec2)
 
 // Classes for concrete elements.
 SWIG_INTRUSIVE_PTR_DERIVED(Alias, kmldom::Object, kmldom::Alias)
+SWIG_INTRUSIVE_PTR_DERIVED(AtomAuthor, kmldom::Element, kmldom::AtomAuthor)
+SWIG_INTRUSIVE_PTR_DERIVED(AtomLink, kmldom::Element, kmldom::AtomLink)
 SWIG_INTRUSIVE_PTR_DERIVED(BalloonStyle, kmldom::SubStyle,
                            kmldom::BalloonStyle)
 SWIG_INTRUSIVE_PTR_DERIVED(Camera, kmldom::AbstractView, kmldom::Camera)
@@ -233,6 +235,8 @@ public:
 
   // Factory functions to create all KML complex elements.
   AliasPtr CreateAlias() const;
+  AtomAuthorPtr CreateAtomAuthor() const;
+  AtomLinkPtr CreateAtomLink() const;
   BalloonStylePtr CreateBalloonStyle() const;
   CameraPtr CreateCamera() const;
   ChangePtr CreateChange() const;

@@ -1446,3 +1446,67 @@ public:
   bool has_feature();
   void clear_feature();
 };
+
+// <atom:author>
+%nodefaultctor AtomAuthor;
+class AtomAuthor : public Element {
+public:
+  // <atom:name>
+  const std::string& get_name();
+  void set_name(const std::string& name);
+  bool has_name();
+  void clear_name();
+
+  // <atom:uri>
+  const std::string& get_uri();
+  void set_uri(const std::string& uri);
+  bool has_uri();
+  void clear_uri();
+
+  // <atom:email>
+  const std::string& get_email();
+  void set_email(const std::string& email);
+  bool has_email();
+  void clear_email();
+};
+
+// <atom:link>
+%nodefaultctor AtomLink;
+class AtomLink : public Element {
+public:
+   // href=, RFC 4287 4.2.7.1, RFC 3987
+  const std::string& get_href();
+  bool has_href();
+  void set_href(const std::string& value);
+  void clear_href();
+
+  // rel=, RFC 4287 4.2.7.2, RFC 3987
+  const std::string& get_rel();
+  bool has_rel();
+  void set_rel(const std::string& value);
+  void clear_rel();
+
+  // type=, RFC 4287 4.2.7.3, MIME
+  const std::string& get_type();
+  bool has_type();
+  void set_type(const std::string& value);
+  void clear_type();
+
+  // hreflang=, RFC 4287 4.2.7.4, RFC 3066
+  const std::string& get_hreflang();
+  bool has_hreflang();
+  void set_hreflang(const std::string& value);
+  void clear_hreflang();
+
+  // title=, RFC 4287 4.2.7.5
+  const std::string& get_title();
+  bool has_title();
+  void set_title(const std::string& value);
+  void clear_title();
+
+  // length=, RFC 4287 4.2.7.6
+  const int get_length();
+  bool has_length();
+  void set_length(int value);
+  void clear_length();
+};
