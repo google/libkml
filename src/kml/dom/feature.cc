@@ -74,6 +74,12 @@ void Feature::AddElement(const ElementPtr& element) {
     case Type_open:
       has_open_ = element->SetBool(&open_);
       break;
+    case Type_AtomAuthor:
+      set_atomauthor(AsAtomAuthor(element));
+      break;
+    case Type_AtomLink:
+      set_atomlink(AsAtomLink(element));
+      break;
     case Type_address:
       has_address_ = element->SetString(&address_);
       break;
@@ -109,6 +115,12 @@ void Feature::Serialize(Serializer& serializer) const {
   }
   if (has_open()) {
     serializer.SaveFieldById(Type_open, open_);
+  }
+  if (has_atomauthor()) {
+    serializer.SaveElement(get_atomauthor());
+  }
+  if (has_atomlink()) {
+    serializer.SaveElement(get_atomlink());
   }
   if (has_snippet()) {
     serializer.SaveElement(get_snippet());

@@ -36,15 +36,14 @@ using kmlbase::Attributes;
 namespace kmldom {
 
 Element::Element()
-  : parent_(NULL), unknown_attributes_(NULL) {
+  : parent_(NULL) {
 }
 
 Element::Element(KmlDomType type_id)
-  : parent_(NULL), type_id_(type_id), unknown_attributes_(NULL) {
+  : parent_(NULL), type_id_(type_id) {
 }
 
 Element::~Element() {
-  delete unknown_attributes_;
 }
 
 // Anything reaching this level is an known (KML) element found in an illegal
@@ -87,7 +86,7 @@ void Element::SerializeUnknown(Serializer& serializer) const {
 // Handling of unknown attributes found during parse. We make a copy of the
 // Attributes object and store a pointer.
 void Element::ParseAttributes(const Attributes& attributes) {
-  unknown_attributes_ = attributes.Clone();
+  unknown_attributes_.reset(attributes.Clone());
 }
 
 // Passes the stored Attributes object to the caller which performs a merge
@@ -95,7 +94,7 @@ void Element::ParseAttributes(const Attributes& attributes) {
 // conflicts are resolved.
 void Element::GetAttributes(Attributes* attributes) const {
   if (attributes) {
-    if (unknown_attributes_) {
+    if (unknown_attributes_.get()) {
       attributes->MergeAttributes(*unknown_attributes_);
     }
     if (!default_xmlns_.empty()) {

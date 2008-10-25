@@ -28,43 +28,29 @@
 #include "kml/dom/container.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/placemark.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmldom {
 
-class ContainerTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(ContainerTest);
-  CPPUNIT_TEST(TestType);
-  CPPUNIT_TEST(TestAddGetFeatures);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
+class ContainerTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     container_ = new TestContainer();
   }
-  void tearDown() {
-  }
 
- protected:
-  void TestType();
-  void TestAddGetFeatures();
-
- private:
   // Container is abstract, hence its constructor is protected.
   class TestContainer : public Container {
   };
   boost::intrusive_ptr<TestContainer> container_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ContainerTest);
-
-void ContainerTest::TestType() {
-  CPPUNIT_ASSERT(true == container_->IsA(Type_Container));
-  CPPUNIT_ASSERT(true == container_->IsA(Type_Feature));
-  CPPUNIT_ASSERT(true == container_->IsA(Type_Object));
+TEST_F(ContainerTest, TestType) {
+  ASSERT_TRUE(container_->IsA(Type_Container));
+  ASSERT_TRUE(container_->IsA(Type_Feature));
+  ASSERT_TRUE(container_->IsA(Type_Object));
 }
 
-void ContainerTest::TestAddGetFeatures() {
+TEST_F(ContainerTest, TestAddGetFeatures) {
   // Put each type of Feature in the Container.
   KmlFactory* factory = KmlFactory::GetFactory();
   container_->add_feature(factory->CreateDocument());
@@ -75,24 +61,27 @@ void ContainerTest::TestAddGetFeatures() {
   container_->add_feature(factory->CreatePlacemark());
   container_->add_feature(factory->CreateScreenOverlay());
   // Verify order is preserved.
-  CPPUNIT_ASSERT_EQUAL((size_t)7, container_->get_feature_array_size());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Document,
-                       container_->get_feature_array_at(0)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Folder,
-                       container_->get_feature_array_at(1)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_GroundOverlay,
-                       container_->get_feature_array_at(2)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_NetworkLink,
-                       container_->get_feature_array_at(3)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_PhotoOverlay,
-                       container_->get_feature_array_at(4)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_Placemark,
-                       container_->get_feature_array_at(5)->Type());
-  CPPUNIT_ASSERT_EQUAL(kmldom::Type_ScreenOverlay,
-                       container_->get_feature_array_at(6)->Type());
+  ASSERT_EQ((size_t)7, container_->get_feature_array_size());
+  ASSERT_EQ(Type_Document,
+            container_->get_feature_array_at(0)->Type());
+  ASSERT_EQ(Type_Folder,
+            container_->get_feature_array_at(1)->Type());
+  ASSERT_EQ(Type_GroundOverlay,
+            container_->get_feature_array_at(2)->Type());
+  ASSERT_EQ(Type_NetworkLink,
+            container_->get_feature_array_at(3)->Type());
+  ASSERT_EQ(Type_PhotoOverlay,
+            container_->get_feature_array_at(4)->Type());
+  ASSERT_EQ(Type_Placemark,
+            container_->get_feature_array_at(5)->Type());
+  ASSERT_EQ(Type_ScreenOverlay,
+            container_->get_feature_array_at(6)->Type());
   // Deleting the container deletes all Features in the array.
 }
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

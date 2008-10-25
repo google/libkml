@@ -34,66 +34,38 @@
 #include "kml/dom/placemark.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmldom {
 
 // This class is the unit test fixture for the KmlHandlerNS class.
-class KmlHandlerNSTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(KmlHandlerNSTest);
-  CPPUNIT_TEST(TestInitialState);
-  CPPUNIT_TEST(TestStartEndNamespace);
-  CPPUNIT_TEST(TestStartSimpleElement);
-  CPPUNIT_TEST(TestEndSimpleElement);
-  CPPUNIT_TEST(TestBasicCharData);
-  CPPUNIT_TEST(TestStartComplexElement);
-  CPPUNIT_TEST(TestEndComplexElement);
-  CPPUNIT_TEST(TestStartComplexElementWithAtts);
-  CPPUNIT_TEST(TestNamespaceParsing);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  // Called before each test.
-  void setUp() {
+class KmlHandlerNSTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     // Emulate expat's xmlparse.c:startAtts().
     // 16 == xmlparse.c's INIT_ATTS_SIZE
     atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
     kml_handler_ns_ = new KmlHandlerNS(observers_);
   }
 
-  // Called after each test.
-  void tearDown() {
+  virtual void TearDown() {
     free(atts_);
     delete kml_handler_ns_;
   }
 
- protected:
-  void TestInitialState();
-  void TestStartEndNamespace();
-  void TestStartSimpleElement();
-  void TestEndSimpleElement();
-  void TestBasicCharData();
-  void TestStartComplexElement();
-  void TestEndComplexElement();
-  void TestStartComplexElementWithAtts();
-  void TestNamespaceParsing();
-
- private:
   const char** atts_;
   parser_observer_vector_t observers_;
   KmlHandlerNS* kml_handler_ns_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(KmlHandlerNSTest);
-
 // This verifies the initial state of a freshly constructed KmlHandlerNS.
-void KmlHandlerNSTest::TestInitialState() {
+TEST_F(KmlHandlerNSTest, TestInitialState) {
   // No elements have been processed, but the PopRoot() method should
   // be well behaved.
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
 }
 
-void KmlHandlerNSTest::TestStartEndNamespace() {
+TEST_F(KmlHandlerNSTest, TestStartEndNamespace) {
   const std::string kDefaultPrefix("");
   const std::string kKmlXmlns("http://www.opegis.net/kml/2.2");
   const std::string kAtomPrefix("atom");
@@ -122,33 +94,33 @@ void KmlHandlerNSTest::TestStartEndNamespace() {
 }
 
 // This is a test of the StartElement() method for a known simple element.
-void KmlHandlerNSTest::TestStartSimpleElement() {
+TEST_F(KmlHandlerNSTest, TestStartSimpleElement) {
   // This is what expat sends to StartElement() on "<kml:name>".
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|name", atts_);
 
   // Since "kml:name" is known we will find it as the root element.
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
+  ASSERT_TRUE(root->Type() == Type_name);
 
   // PopRoot() is destructive so now there is nothing.
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
 }
 
 // This is a test of the EndElement() method for a known simple element.
-void KmlHandlerNSTest::TestEndSimpleElement() {
+TEST_F(KmlHandlerNSTest, TestEndSimpleElement) {
   // This is what expat sends to KmlHandlerNS on "<kml:name/>":
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|name", atts_);
   kml_handler_ns_->EndElement("http://www.opengis.net/kml/2.2|name");
 
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
+  ASSERT_TRUE(root->Type() == Type_name);
 
   // PopRoot() is destructive so now there is nothing.
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
 }
 
 // This is a test of the CharData() method for a known simple element.
-void KmlHandlerNSTest::TestBasicCharData() {
+TEST_F(KmlHandlerNSTest, TestBasicCharData) {
   // This is what expat sends to KmlHandlerNS on "<name>what is in a</name>":
   const char* kTagName = "http://www.opengis.net/kml/2.2|name";
   const char* kContent = "what is in a name";
@@ -158,34 +130,34 @@ void KmlHandlerNSTest::TestBasicCharData() {
   kml_handler_ns_->EndElement(kTagName);
 
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
-  CPPUNIT_ASSERT(kContent == root->get_char_data());
+  ASSERT_EQ(root->Type(), Type_name);
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_EQ(kContent, root->get_char_data());
 }
 
 // This is a test of the StartElement() method for a known complex element.
-void KmlHandlerNSTest::TestStartComplexElement() {
+TEST_F(KmlHandlerNSTest, TestStartComplexElement) {
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|Placemark",
                                 atts_);
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_TRUE(root->Type() == Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
 }
 
 // This is a test of the EndElement() method for a known complex element.
-void KmlHandlerNSTest::TestEndComplexElement() {
+TEST_F(KmlHandlerNSTest, TestEndComplexElement) {
   // This is what expat does for "<Placemark/>".
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|Placemark",
                                 atts_);
   kml_handler_ns_->EndElement("http://www.opengis.net/kml/2.2|Placemark");
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_TRUE(root->Type() == Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
 }
 
 // This is a test of StartElement() for a known complex element with known
 // attributes.
-void KmlHandlerNSTest::TestStartComplexElementWithAtts() {
+TEST_F(KmlHandlerNSTest, TestStartComplexElementWithAtts) {
   const char* kAttrName = "id";
   const char* kAttrVal = "foo";
   atts_[0] = kAttrName;
@@ -193,14 +165,14 @@ void KmlHandlerNSTest::TestStartComplexElementWithAtts() {
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|Placemark",
                                 atts_);
   ElementPtr root = kml_handler_ns_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_ns_->PopRoot());
+  ASSERT_EQ(root->Type(), Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_ns_->PopRoot());
   PlacemarkPtr placemark = AsPlacemark(root);
-  CPPUNIT_ASSERT(kAttrVal == placemark->get_id());
+  ASSERT_TRUE(kAttrVal == placemark->get_id());
 }
 
 // A basic test of namespace-aware parsing.
-void KmlHandlerNSTest::TestNamespaceParsing() {
+TEST_F(KmlHandlerNSTest, TestNamespaceParsing) {
   const std::string kNamespaceKml =
     "<kml xmlns=\"http://www.opengis.net/kml/2.2\""
     "     xmlns:atom=\"http://www.w3.org/2005/Atom\""
@@ -215,8 +187,8 @@ void KmlHandlerNSTest::TestNamespaceParsing() {
   Parser parser;
   std::string errors;
   ElementPtr root = parser.ParseNS(kNamespaceKml, &errors);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT(errors.empty());
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
 
   // TODO: ultimately the parse is preserved 1:1. Currently the parse will
   // drop the xmlns attrs and the element prefixes so this is a test of an
@@ -230,9 +202,12 @@ void KmlHandlerNSTest::TestNamespaceParsing() {
     "  </Folder>\n"
     "</kml>\n";
   const std::string kSerializedKml = SerializePretty(root);
-  CPPUNIT_ASSERT_EQUAL(kExpectedSerializedKml, SerializePretty(root));
+  ASSERT_EQ(kExpectedSerializedKml, SerializePretty(root));
 }
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

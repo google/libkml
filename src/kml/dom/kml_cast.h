@@ -46,6 +46,8 @@ const TimePrimitivePtr AsTimePrimitive(const ElementPtr element);
 
 // Concrete elements.
 const AliasPtr AsAlias(const ElementPtr element);
+const AtomAuthorPtr AsAtomAuthor(const ElementPtr element);
+const AtomLinkPtr AsAtomLink(const ElementPtr element);
 const BalloonStylePtr AsBalloonStyle(const ElementPtr element);
 const CameraPtr AsCamera(const ElementPtr element);
 const ChangePtr AsChange(const ElementPtr element);

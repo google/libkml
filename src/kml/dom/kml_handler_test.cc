@@ -33,61 +33,27 @@
 #include "kml/dom/placemark.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmldom {
 
 typedef std::vector<ElementPtr> element_vector_t;
 
 // This class is the unit test fixture for the KmlHandler class.
-class KmlHandlerTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(KmlHandlerTest);
-  CPPUNIT_TEST(TestInitialState);
-  CPPUNIT_TEST(TestStartSimpleElement);
-  CPPUNIT_TEST(TestEndSimpleElement);
-  CPPUNIT_TEST(TestBasicCharData);
-  CPPUNIT_TEST(TestStartComplexElement);
-  CPPUNIT_TEST(TestEndComplexElement);
-  CPPUNIT_TEST(TestStartComplexElementWithAtts);
-  CPPUNIT_TEST(SimpleNewElementObserverTest);
-  CPPUNIT_TEST(NewElementObserverTerminationTest);
-  CPPUNIT_TEST(SimpleAddChildObserverTest);
-  CPPUNIT_TEST(AddChildObserverTerminationTest);
-  CPPUNIT_TEST(MultipleObserverNormalTest);
-  CPPUNIT_TEST(MultipleObserverTerminationTest);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  // Called before each test.
-  void setUp() {
+class KmlHandlerTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     // Emulate expat's xmlparse.c:startAtts().
     // 16 == xmlparse.c's INIT_ATTS_SIZE
     atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
     kml_handler_ = new KmlHandler(observers_);
   }
 
-  // Called after each test.
-  void tearDown() {
+  virtual void TearDown() {
     free(atts_);
     delete kml_handler_;
   }
 
- protected:
-  void TestInitialState();
-  void TestStartSimpleElement();
-  void TestEndSimpleElement();
-  void TestBasicCharData();
-  void TestStartComplexElement();
-  void TestEndComplexElement();
-  void TestStartComplexElementWithAtts();
-  void SimpleNewElementObserverTest();
-  void NewElementObserverTerminationTest();
-  void SimpleAddChildObserverTest();
-  void AddChildObserverTerminationTest();
-  void MultipleObserverNormalTest();
-  void MultipleObserverTerminationTest();
-
- private:
   const char** atts_;
   parser_observer_vector_t observers_;
   KmlHandler* kml_handler_;
@@ -99,43 +65,41 @@ class KmlHandlerTest : public CPPUNIT_NS::TestFixture {
                                   size_t expected_pairs) const;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(KmlHandlerTest);
-
 // This verifies the initial state of a freshly constructed KmlHandler.
-void KmlHandlerTest::TestInitialState() {
+TEST_F(KmlHandlerTest, TestInitialState) {
   // No elements have been processed, but the PopRoot() method should
   // be well behaved.
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
 }
 
 // This is a test of the StartElement() method for a known simple element.
-void KmlHandlerTest::TestStartSimpleElement() {
+TEST_F(KmlHandlerTest, TestStartSimpleElement) {
   // This is what expat sends to StartElement() on "<name>".
   kml_handler_->StartElement("name", atts_);
 
   // Since "name" is known we will find it as the root element.
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
+  ASSERT_EQ(root->Type(), Type_name);
 
   // PopRoot() is destructive so now there is nothing.
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
 }
 
 // This is a test of the EndElement() method for a known simple element.
-void KmlHandlerTest::TestEndSimpleElement() {
+TEST_F(KmlHandlerTest, TestEndSimpleElement) {
   // This is what expat sends to KmlHandler on "<name/>":
   kml_handler_->StartElement("name", atts_);
   kml_handler_->EndElement("name");
 
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
+  ASSERT_EQ(root->Type(), Type_name);
 
   // PopRoot() is destructive so now there is nothing.
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
 }
 
 // This is a test of the CharData() method for a known simple element.
-void KmlHandlerTest::TestBasicCharData() {
+TEST_F(KmlHandlerTest, TestBasicCharData) {
   // This is what expat sends to KmlHandler on "<name>what is in a</name>":
   const char* kTagName = "name";
   const char* kContent = "what is in a name";
@@ -145,42 +109,42 @@ void KmlHandlerTest::TestBasicCharData() {
   kml_handler_->EndElement(kTagName);
 
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_name);
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
-  CPPUNIT_ASSERT(kContent == root->get_char_data());
+  ASSERT_EQ(root->Type(), Type_name);
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
+  ASSERT_EQ(kContent, root->get_char_data());
 }
 
 // This is a test of the StartElement() method for a known complex element.
-void KmlHandlerTest::TestStartComplexElement() {
+TEST_F(KmlHandlerTest, TestStartComplexElement) {
   kml_handler_->StartElement("Placemark", atts_);
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_EQ(root->Type(), Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
 }
 
 // This is a test of the EndElement() method for a known complex element.
-void KmlHandlerTest::TestEndComplexElement() {
+TEST_F(KmlHandlerTest, TestEndComplexElement) {
   // This is what expat does for "<Placemark/>".
   kml_handler_->StartElement("Placemark", atts_);
   kml_handler_->EndElement("Placemark");
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_EQ(root->Type(), Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
 }
 
 // This is a test of StartElement() for a known complex element with known
 // attributes.
-void KmlHandlerTest::TestStartComplexElementWithAtts() {
+TEST_F(KmlHandlerTest, TestStartComplexElementWithAtts) {
   const char* kAttrName = "id";
   const char* kAttrVal = "foo";
   atts_[0] = kAttrName;
   atts_[1] = kAttrVal;
   kml_handler_->StartElement("Placemark", atts_);
   ElementPtr root = kml_handler_->PopRoot();
-  CPPUNIT_ASSERT(root->Type() == Type_Placemark);
-  CPPUNIT_ASSERT(NULL == kml_handler_->PopRoot());
+  ASSERT_EQ(root->Type(), Type_Placemark);
+  ASSERT_TRUE(NULL == kml_handler_->PopRoot());
   PlacemarkPtr placemark = AsPlacemark(root);
-  CPPUNIT_ASSERT(kAttrVal == placemark->get_id());
+  ASSERT_EQ(kAttrVal, placemark->get_id());
 }
 
 // This ParserObserver simply appends each Element passed to its NewElement
@@ -270,32 +234,30 @@ void KmlHandlerTest::VerifyElementTypes(
     const KmlDomType* types_array,
     const element_vector_t& element_vector) const {
   for (size_t i = 0; i < element_vector.size(); ++i) {
-    CPPUNIT_ASSERT_EQUAL(*(types_array+i),
-                         element_vector[i]->Type());
+    ASSERT_EQ(*(types_array+i), element_vector[i]->Type());
   }
 }
 
 // This helper function verifies the proper state of kKmlFolder's DOM.
 void KmlHandlerTest::VerifyFolderParse(const ElementPtr& root) const {
   KmlPtr kml = AsKml(root);
-  CPPUNIT_ASSERT(kml);
+  ASSERT_TRUE(kml);
   FolderPtr folder = AsFolder(kml->get_feature());
-  CPPUNIT_ASSERT(folder);
-  CPPUNIT_ASSERT(folder->has_name());
-  CPPUNIT_ASSERT(!folder->has_visibility());
-  CPPUNIT_ASSERT(!folder->has_open());
-  CPPUNIT_ASSERT(folder->has_description());
-  CPPUNIT_ASSERT(folder->has_region());
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
-                       folder->get_feature_array_size());
+  ASSERT_TRUE(folder);
+  ASSERT_TRUE(folder->has_name());
+  ASSERT_FALSE(folder->has_visibility());
+  ASSERT_FALSE(folder->has_open());
+  ASSERT_TRUE(folder->has_description());
+  ASSERT_TRUE(folder->has_region());
+  ASSERT_EQ(static_cast<size_t>(1), folder->get_feature_array_size());
   PlacemarkPtr placemark = AsPlacemark(folder->get_feature_array_at(0));
   PointPtr point = AsPoint(placemark->get_geometry());
-  CPPUNIT_ASSERT(!point->has_coordinates());
+  ASSERT_FALSE(point->has_coordinates());
 }
 
 // This is a simple test of the NewElement() for an observer which does not
 // terminate the parse.
-void KmlHandlerTest::SimpleNewElementObserverTest() {
+TEST_F(KmlHandlerTest, SimpleNewElementObserverTest) {
   Parser parser;
   element_vector_t element_vector;
   // This specifies to let the parse complete all 7 elements which are saved
@@ -315,7 +277,7 @@ void KmlHandlerTest::SimpleNewElementObserverTest() {
 
 // This verifies that an observer returning false from NewElement() terminates
 // the parse.
-void KmlHandlerTest::NewElementObserverTerminationTest() {
+TEST_F(KmlHandlerTest, NewElementObserverTerminationTest) {
   Parser parser;
   element_vector_t element_vector;
   // This specifies to stop parsing after 2 elements.
@@ -325,18 +287,18 @@ void KmlHandlerTest::NewElementObserverTerminationTest() {
   ElementPtr root = parser.Parse(kKmlFolder, &errors);
 
   // Verify that the parse was terminated.
-  CPPUNIT_ASSERT(!root);
-  CPPUNIT_ASSERT(!errors.empty());
+  ASSERT_FALSE(root);
+  ASSERT_FALSE(errors.empty());
 
   // Verify that exactly the first 2 elements were gathered.
-  CPPUNIT_ASSERT(2 == element_vector.size());
-  CPPUNIT_ASSERT_EQUAL(Type_kml, element_vector[0]->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_Folder, element_vector[1]->Type());
+  ASSERT_EQ(static_cast<size_t>(2), element_vector.size());
+  ASSERT_EQ(Type_kml, element_vector[0]->Type());
+  ASSERT_EQ(Type_Folder, element_vector[1]->Type());
 }
 
 // This is a simple test of the AddChild() for an observer which does not
 // terminate the parse.
-void KmlHandlerTest::SimpleAddChildObserverTest() {
+TEST_F(KmlHandlerTest, SimpleAddChildObserverTest) {
   Parser parser;
   element_vector_t parent_vector;
   element_vector_t child_vector;
@@ -359,7 +321,7 @@ void KmlHandlerTest::SimpleAddChildObserverTest() {
 
 // This verifies that an observer returning false from AddChild() terminates
 // the parse.
-void KmlHandlerTest::AddChildObserverTerminationTest() {
+TEST_F(KmlHandlerTest, AddChildObserverTerminationTest) {
   Parser parser;
   element_vector_t parent_vector;
   element_vector_t child_vector;
@@ -372,12 +334,12 @@ void KmlHandlerTest::AddChildObserverTerminationTest() {
   ElementPtr root = parser.Parse(kKmlFolder, &errors);
 
   // Verify that the parse was terminated.
-  CPPUNIT_ASSERT(!root);
-  CPPUNIT_ASSERT(!errors.empty());
+  ASSERT_FALSE(root);
+  ASSERT_FALSE(errors.empty());
 
   // Verify that exactly the first 4 parent-child pairs were gathered.
-  CPPUNIT_ASSERT(4 == parent_vector.size());
-  CPPUNIT_ASSERT(4 == child_vector.size());
+  ASSERT_EQ(static_cast<size_t>(4),parent_vector.size());
+  ASSERT_EQ(static_cast<size_t>(4), child_vector.size());
   VerifyElementTypes(kKmlFolderParentOrder, parent_vector);
   VerifyElementTypes(kKmlFolderChildOrder, child_vector);
 }
@@ -408,18 +370,18 @@ void KmlHandlerTest::MultipleObserverTestCommon(size_t max_elements,
 
   if (expected_element_count >= kNumElements) {
     // Verify that the observers did not interfere with the parse as normal.
-    CPPUNIT_ASSERT(errors.empty());
+    ASSERT_TRUE(errors.empty());
     VerifyFolderParse(root);
   } else {
     // Verify that an observer teminated the parse.
-    CPPUNIT_ASSERT(!root);
-    CPPUNIT_ASSERT(!errors.empty());
+    ASSERT_FALSE(root);
+    ASSERT_FALSE(errors.empty());
   }
 
   // Verify that the observers functioned properly.
-  CPPUNIT_ASSERT(expected_element_count == element_vector.size());
-  CPPUNIT_ASSERT(expected_pair_count == parent_vector.size());
-  CPPUNIT_ASSERT(expected_pair_count == child_vector.size());
+  ASSERT_TRUE(expected_element_count == element_vector.size());
+  ASSERT_TRUE(expected_pair_count == parent_vector.size());
+  ASSERT_TRUE(expected_pair_count == child_vector.size());
   VerifyElementTypes(kKmlFolderNewElementOrder, element_vector);
   VerifyElementTypes(kKmlFolderParentOrder, parent_vector);
   VerifyElementTypes(kKmlFolderChildOrder, child_vector);
@@ -427,14 +389,14 @@ void KmlHandlerTest::MultipleObserverTestCommon(size_t max_elements,
 
 // Verify proper operation with multiple ParseObservers when no observer
 // terminates the parse.
-void KmlHandlerTest::MultipleObserverNormalTest() {
+TEST_F(KmlHandlerTest, MultipleObserverNormalTest) {
   KmlHandlerTest::MultipleObserverTestCommon(kNumElements, kNumElements,
                                              kNumElements-1);
 }
 
 // Verify proper operation with multiple ParseObservers when an observer
 // terminates the parse.
-void KmlHandlerTest::MultipleObserverTerminationTest() {
+TEST_F(KmlHandlerTest, MultipleObserverTerminationTest) {
   KmlHandlerTest::MultipleObserverTestCommon(0, 0, 0);
   // Accepting just one element results in seeing no pairs.
   KmlHandlerTest::MultipleObserverTestCommon(1, 1, 0);
@@ -445,4 +407,7 @@ void KmlHandlerTest::MultipleObserverTerminationTest() {
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

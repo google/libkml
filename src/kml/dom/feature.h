@@ -29,6 +29,7 @@
 #define KML_DOM_FEATURE_H__
 
 #include "kml/dom/abstractview.h"
+#include "kml/dom/atom.h"
 #include "kml/dom/extendeddata.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
@@ -85,6 +86,26 @@ class Feature : public Object {
   void clear_open() {
     open_ = false;
     has_open_ = false;
+  }
+
+  // <atom:author>
+  const AtomAuthorPtr& get_atomauthor() const { return atomauthor_; }
+  bool has_atomauthor() const { return atomauthor_ != NULL; }
+  void set_atomauthor(const AtomAuthorPtr& atomauthor) {
+    SetComplexChild(atomauthor, &atomauthor_);
+  }
+  void clear_atomauthor() {
+    set_atomauthor(NULL);
+  }
+
+  // <atom:link>
+  const AtomLinkPtr& get_atomlink() const { return atomlink_; }
+  bool has_atomlink() const { return atomlink_ != NULL; }
+  void set_atomlink(const AtomLinkPtr& atomlink) {
+    SetComplexChild(atomlink, &atomlink_);
+  }
+  void clear_atomlink() {
+    set_atomlink(NULL);
   }
 
   // <address>
@@ -209,6 +230,8 @@ class Feature : public Object {
   bool has_visibility_;
   bool open_;
   bool has_open_;
+  AtomAuthorPtr atomauthor_;
+  AtomLinkPtr atomlink_;
   std::string address_;
   bool has_address_;
   std::string phonenumber_;

@@ -23,64 +23,46 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include "kml/dom/polystyle.h"
-#include "kml/dom/kml_factory.h"
-#include "kml/dom/kml_ptr.h"
-#include "kml/dom/kmldom.h"
+#include "kml/dom/kml22.h"
+#include "kml/dom/xsd.h"
+#include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
 namespace kmldom {
 
-class PolyStyleTest : public testing::Test {
+class Kml22Test : public testing::Test {
  protected:
   virtual void SetUp() {
-    polystyle_ = KmlFactory::GetFactory()->CreatePolyStyle();
+    xsd_.reset(Xsd::GetSchema());
   }
 
-  PolyStylePtr polystyle_;
+  boost::scoped_ptr<Xsd> xsd_;
 };
 
-TEST_F(PolyStyleTest, TestType) {
-  ASSERT_EQ(Type_PolyStyle, polystyle_->Type());
-  ASSERT_TRUE(polystyle_->IsA(Type_PolyStyle));
-  ASSERT_TRUE(polystyle_->IsA(Type_ColorStyle));
-}
-
-// Verify proper defaults:
-TEST_F(PolyStyleTest, TestDefaults) {
-  ASSERT_FALSE(polystyle_->has_fill());
-  ASSERT_TRUE(polystyle_->get_fill());
-  ASSERT_FALSE(polystyle_->has_outline());
-  ASSERT_TRUE(polystyle_->get_outline());
-}
-
-// Verify setting default makes has_xxx() true:
-TEST_F(PolyStyleTest, TestSetToDefaultValues) {
-  polystyle_->set_fill(polystyle_->get_fill());
-  ASSERT_TRUE(polystyle_->has_fill());
-  polystyle_->set_outline(polystyle_->get_outline());
-  ASSERT_TRUE(polystyle_->has_outline());
-}
-
-// Verify set, get, has, clear:
-TEST_F(PolyStyleTest, TestSetGetHasClear) {
-  // Non-default values:
-  bool fill = false;
-  bool outline = false;
-
-  // Set all fields:
-  polystyle_->set_fill(fill);
-  polystyle_->set_outline(outline);
-
-  // Verify getter and has_xxx():
-  ASSERT_TRUE(polystyle_->has_fill());
-  ASSERT_TRUE(fill == polystyle_->get_fill());
-  ASSERT_TRUE(polystyle_->has_outline());
-  ASSERT_TRUE(outline == polystyle_->get_outline());
-
-  // Clear all fields:
-  polystyle_->clear_fill();
-  polystyle_->clear_outline();
+// Verify proper enum defaults:
+TEST_F(Kml22Test, TestEnumDefaults) {
+  ASSERT_EQ(std::string("clampToGround"),
+            xsd_->EnumValue(Type_altitudeMode, ALTITUDEMODE_CLAMPTOGROUND));
+  ASSERT_EQ(std::string("normal"),
+            xsd_->EnumValue(Type_colorMode, COLORMODE_NORMAL));
+  ASSERT_EQ(std::string("default"),
+            xsd_->EnumValue(Type_displayMode, DISPLAYMODE_DEFAULT));
+  ASSERT_EQ(std::string("lowerLeft"),
+            xsd_->EnumValue(Type_gridOrigin, GRIDORIGIN_LOWERLEFT));
+  ASSERT_EQ(std::string("open"),
+            xsd_->EnumValue(Type_state, ITEMICONSTATE_OPEN));
+  ASSERT_EQ(std::string("check"),
+            xsd_->EnumValue(Type_listItemType, LISTITEMTYPE_CHECK));
+  ASSERT_EQ(std::string("onChange"),
+            xsd_->EnumValue(Type_refreshMode, REFRESHMODE_ONCHANGE));
+  ASSERT_EQ(std::string("rectangle"),
+            xsd_->EnumValue(Type_shape, SHAPE_RECTANGLE));
+  ASSERT_EQ(std::string("normal"),
+            xsd_->EnumValue(Type_key, STYLESTATE_NORMAL));
+  ASSERT_EQ(std::string("fraction"),
+            xsd_->EnumValue(Type_units, UNITS_FRACTION));
+  ASSERT_EQ(std::string("never"),
+            xsd_->EnumValue(Type_viewRefreshMode, VIEWREFRESHMODE_NEVER));
 }
 
 }  // end namespace kmldom
