@@ -67,7 +67,7 @@ bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
   return ParseFromString(kml_data, errors);
 }
 
-KmlFile::KmlFile() : kml_cache_(NULL) {
+KmlFile::KmlFile() : kml_cache_(NULL), strict_parse_(false) {
   Clear();
 }
 
@@ -87,10 +87,11 @@ const kmldom::ElementPtr& KmlFile::ParseFromString(const std::string& kml,
   // Create a parser object.
   kmldom::Parser parser;
 
-  // Create a ParserObserver to both save the id's of all Objects as
-  // well as check for duplicates.  This ParserObserver fails the parse
-  // immediately on the first duplicate id.
-  ObjectIdParserObserver object_id_parser_observer(&object_id_map_);
+  // Create a ParserObserver both to save the id's of all Objects as well as
+  // check for duplicates if strict parsing has been enabled. If set, this
+  // ParserObserver fails the parse immediately on the first duplicate id.
+  ObjectIdParserObserver object_id_parser_observer(&object_id_map_,
+                                                   strict_parse_);
   parser.AddObserver(&object_id_parser_observer);
 
   // Create a ParserObserver to map and save the id's of all shared

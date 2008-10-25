@@ -28,7 +28,7 @@
 #include "kml/engine/clone.h"
 #include <string>
 #include "kml/dom.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;
@@ -42,31 +42,9 @@ using kmldom::Vec3;
 
 namespace kmlengine {
 
-class CloneTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(CloneTest);
-  CPPUNIT_TEST(TestNullClone);
-  CPPUNIT_TEST(TestEmptyClone);
-  CPPUNIT_TEST(TestCloneFields);
-  CPPUNIT_TEST(TestCloneChildren);
-  CPPUNIT_TEST(TestCloneArray);
-  CPPUNIT_TEST(TestClonePointCoordinates);
-  CPPUNIT_TEST(TestCloneLineCoordinates);
-  CPPUNIT_TEST(TestCloneSnippet);
-  CPPUNIT_TEST_SUITE_END();
-
+class CloneTest : public testing::Test {
  protected:
-  void TestNullClone();
-  void TestEmptyClone();
-  void TestCloneFields();
-  void TestCloneChildren();
-  void TestCloneArray();
-  void TestClonePointCoordinates();
-  void TestCloneLineCoordinates();
-  void TestCloneSnippet();
-
- public:
-  // Called before each test.
-  void setUp() {
+  virtual void SetUp() {
     KmlFactory* factory = KmlFactory::GetFactory();
     coordinates_ = factory->CreateCoordinates();
     folder_ = factory->CreateFolder();
@@ -76,12 +54,6 @@ class CloneTest : public CPPUNIT_NS::TestFixture {
     snippet_ = factory->CreateSnippet();
   }
 
-  // Called after each test.
-  void tearDown() {
-    // Smart pointers free everything.
-  }
-
- private:
   CoordinatesPtr coordinates_;
   FolderPtr folder_;
   GroundOverlayPtr groundoverlay_;
@@ -90,22 +62,20 @@ class CloneTest : public CPPUNIT_NS::TestFixture {
   SnippetPtr snippet_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(CloneTest);
-
 // Verify that a NULL element is handled properly.
-void CloneTest::TestNullClone() {
+TEST_F(CloneTest, TestNullClone) {
   ElementPtr clone = Clone(NULL);
-  CPPUNIT_ASSERT(!clone);
+  ASSERT_FALSE(clone);
 }
 
 // Verify that a empty complex element is cloned properly.
-void CloneTest::TestEmptyClone() {
+TEST_F(CloneTest, TestEmptyClone) {
   ElementPtr clone = Clone(placemark_);
-  CPPUNIT_ASSERT_EQUAL(clone->Type(), placemark_->Type());
+  ASSERT_EQ(clone->Type(), placemark_->Type());
 }
 
 // Verify that a complex element with some fields clones properly.
-void CloneTest::TestCloneFields() {
+TEST_F(CloneTest, TestCloneFields) {
   const std::string kName("clone my name");
   const std::string kId("clone-my-id");
   const bool kVisibility = false;
@@ -119,19 +89,19 @@ void CloneTest::TestCloneFields() {
   ElementPtr clone = Clone(placemark_);
 
   // Verify all values were set in the clone.
-  CPPUNIT_ASSERT_EQUAL(clone->Type(), placemark_->Type());
+  ASSERT_EQ(clone->Type(), placemark_->Type());
   PlacemarkPtr cloned_placemark = AsPlacemark(clone);
-  CPPUNIT_ASSERT(cloned_placemark->has_id());
-  CPPUNIT_ASSERT_EQUAL(kId, cloned_placemark->get_id());
-  CPPUNIT_ASSERT(cloned_placemark->has_name());
-  CPPUNIT_ASSERT_EQUAL(kName, cloned_placemark->get_name());
-  CPPUNIT_ASSERT(cloned_placemark->has_visibility());
-  CPPUNIT_ASSERT_EQUAL(kVisibility, cloned_placemark->get_visibility());
+  ASSERT_TRUE(cloned_placemark->has_id());
+  ASSERT_EQ(kId, cloned_placemark->get_id());
+  ASSERT_TRUE(cloned_placemark->has_name());
+  ASSERT_EQ(kName, cloned_placemark->get_name());
+  ASSERT_TRUE(cloned_placemark->has_visibility());
+  ASSERT_EQ(kVisibility, cloned_placemark->get_visibility());
 }
 
 // Verify that a complex element with both some fields and complex children
 // clones properly.
-void CloneTest::TestCloneChildren() {
+TEST_F(CloneTest, TestCloneChildren) {
   const std::string kDescription("clone my description");
   const std::string kId("clone-my-id");
   const bool kOpen = false;
@@ -146,25 +116,25 @@ void CloneTest::TestCloneChildren() {
   ElementPtr clone = Clone(folder_);
 
   // Verify all values were set in the clone.
-  CPPUNIT_ASSERT_EQUAL(clone->Type(), folder_->Type());
+  ASSERT_EQ(clone->Type(), folder_->Type());
   FolderPtr cloned_folder = AsFolder(clone);
-  CPPUNIT_ASSERT(cloned_folder->has_id());
-  CPPUNIT_ASSERT_EQUAL(kId, cloned_folder->get_id());
-  CPPUNIT_ASSERT(!cloned_folder->has_name());
-  CPPUNIT_ASSERT(cloned_folder->has_description());
-  CPPUNIT_ASSERT_EQUAL(kDescription, cloned_folder->get_description());
-  CPPUNIT_ASSERT(!cloned_folder->has_visibility());
-  CPPUNIT_ASSERT(cloned_folder->has_open());
-  CPPUNIT_ASSERT_EQUAL(kOpen, cloned_folder->get_open());
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
+  ASSERT_TRUE(cloned_folder->has_id());
+  ASSERT_EQ(kId, cloned_folder->get_id());
+  ASSERT_FALSE(cloned_folder->has_name());
+  ASSERT_TRUE(cloned_folder->has_description());
+  ASSERT_EQ(kDescription, cloned_folder->get_description());
+  ASSERT_FALSE(cloned_folder->has_visibility());
+  ASSERT_TRUE(cloned_folder->has_open());
+  ASSERT_EQ(kOpen, cloned_folder->get_open());
+  ASSERT_EQ(static_cast<size_t>(1),
                        cloned_folder->get_feature_array_size());
-  CPPUNIT_ASSERT_EQUAL(placemark_->Type(),
+  ASSERT_EQ(placemark_->Type(),
                        cloned_folder->get_feature_array_at(0)->Type());
 }
 
 // Verify that an element with an array of complex children and fields
 // clones properly.
-void CloneTest::TestCloneArray() {
+TEST_F(CloneTest, TestCloneArray) {
   // <Folder><Placemark><Point/><Placemark/><GroundOverlay/></Folder>
   placemark_->set_geometry(point_);
   folder_->add_feature(placemark_);
@@ -175,23 +145,23 @@ void CloneTest::TestCloneArray() {
 
   // Verify the contents of the Feature array child in the Folder.
   FolderPtr cloned_folder = AsFolder(clone);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2),
+  ASSERT_EQ(static_cast<size_t>(2),
                        cloned_folder->get_feature_array_size());
-  CPPUNIT_ASSERT_EQUAL(placemark_->Type(),
+  ASSERT_EQ(placemark_->Type(),
                        cloned_folder->get_feature_array_at(0)->Type());
-  CPPUNIT_ASSERT_EQUAL(groundoverlay_->Type(),
+  ASSERT_EQ(groundoverlay_->Type(),
                        cloned_folder->get_feature_array_at(1)->Type());
 
   // Verify the Placemark has a Point Geometry.
   PlacemarkPtr cloned_placemark =
       AsPlacemark(cloned_folder->get_feature_array_at(0));
-  CPPUNIT_ASSERT(cloned_placemark->has_geometry());
-  CPPUNIT_ASSERT_EQUAL(point_->Type(),
+  ASSERT_TRUE(cloned_placemark->has_geometry());
+  ASSERT_EQ(point_->Type(),
                        cloned_placemark->get_geometry()->Type());
 }
 
 // Verify that <Point>-style <coordinates> is cloned properly.
-void CloneTest::TestClonePointCoordinates() {
+TEST_F(CloneTest, TestClonePointCoordinates) {
   // Make a point.
   const double kLat(38.38);
   const double kLon(-122.122);
@@ -203,17 +173,17 @@ void CloneTest::TestClonePointCoordinates() {
 
   // Verify that a new <coordinates> was created and has the expected content.
   CoordinatesPtr coordinates_clone = AsCoordinates(clone);
-  CPPUNIT_ASSERT(coordinates_clone);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(1),
-                       coordinates_clone->get_coordinates_array_size());
+  ASSERT_TRUE(coordinates_clone);
+  ASSERT_EQ(static_cast<size_t>(1),
+            coordinates_clone->get_coordinates_array_size());
   Vec3 vec3 = coordinates_clone->get_coordinates_array_at(0);
-  CPPUNIT_ASSERT_EQUAL(kLat, vec3.get_latitude());
-  CPPUNIT_ASSERT_EQUAL(kLon, vec3.get_longitude());
-  CPPUNIT_ASSERT_EQUAL(kAlt, vec3.get_altitude());
+  ASSERT_DOUBLE_EQ(kLat, vec3.get_latitude());
+  ASSERT_DOUBLE_EQ(kLon, vec3.get_longitude());
+  ASSERT_DOUBLE_EQ(kAlt, vec3.get_altitude());
 }
 
 // Verify that LineString/LinearRing-style <coordinates> is cloned properly.
-void CloneTest::TestCloneLineCoordinates() {
+TEST_F(CloneTest, TestCloneLineCoordinates) {
   // Create a <coordinates> as might be found in <LineString>/<LinearRing>.
   const size_t kNumPoints(1001);
   size_t i;
@@ -228,33 +198,36 @@ void CloneTest::TestCloneLineCoordinates() {
 
   // Verify all the points came over okay.
   CoordinatesPtr cloned_coordinates = AsCoordinates(element);
-  CPPUNIT_ASSERT(cloned_coordinates);
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(kNumPoints),
+  ASSERT_TRUE(cloned_coordinates);
+  ASSERT_EQ(static_cast<size_t>(kNumPoints),
                        cloned_coordinates->get_coordinates_array_size());
   for (i = 0; i < kNumPoints; ++i) {
     Vec3 vec3 = cloned_coordinates->get_coordinates_array_at(i);
-    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i % 90), vec3.get_latitude());
-    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i % 180), vec3.get_longitude());
-    CPPUNIT_ASSERT_EQUAL(static_cast<double>(i), vec3.get_altitude());
+    ASSERT_EQ(static_cast<double>(i % 90), vec3.get_latitude());
+    ASSERT_EQ(static_cast<double>(i % 180), vec3.get_longitude());
+    ASSERT_EQ(static_cast<double>(i), vec3.get_altitude());
   }
 }
 
 // Verify that <Snippet> is cloned properly.
-void CloneTest::TestCloneSnippet() {
+TEST_F(CloneTest, TestCloneSnippet) {
   // Clone an empty/default Snippet.
   ElementPtr element = Clone(snippet_);
   SnippetPtr cloned_snippet = AsSnippet(element);
-  CPPUNIT_ASSERT(cloned_snippet);
-  CPPUNIT_ASSERT_EQUAL(snippet_->get_maxlines(),
+  ASSERT_TRUE(cloned_snippet);
+  ASSERT_EQ(snippet_->get_maxlines(),
                        cloned_snippet->get_maxlines());
-  CPPUNIT_ASSERT_EQUAL(snippet_->get_text(), cloned_snippet->get_text());
+  ASSERT_EQ(snippet_->get_text(), cloned_snippet->get_text());
 
   const std::string kText("some snippet text");
   snippet_->set_text(kText);
   cloned_snippet = AsSnippet(Clone(snippet_));
-  CPPUNIT_ASSERT_EQUAL(kText, cloned_snippet->get_text());
+  ASSERT_EQ(kText, cloned_snippet->get_text());
 }
 
 }  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

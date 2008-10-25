@@ -28,7 +28,7 @@
 #include "kml/engine/style_merger.h"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/net_cache_test_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
 
@@ -44,32 +44,9 @@ namespace kmlengine {
 
 static const size_t kKmlNetCacheCacheSize = 10;
 
-class StyleMergerTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(StyleMergerTest);
-  CPPUNIT_TEST(TestConstructor);
-  CPPUNIT_TEST(TestMergeStyleNullEmptyBad);
-  CPPUNIT_TEST(TestMergeStyleBasic);
-  CPPUNIT_TEST(TestMergeStyleMapNullEmpty);
-  CPPUNIT_TEST(TestMergeStyleMapEmptyStyle);
-  CPPUNIT_TEST(TestMergeStyleMapEmptyStyleMap);
-  CPPUNIT_TEST(TestMergeStyleMapBasic);
-  CPPUNIT_TEST(TestMergeStyleSelector);
-
-  CPPUNIT_TEST_SUITE_END();
-
+class StyleMergerTest : public testing::Test {
  protected:
-  void TestConstructor();
-  void TestMergeStyleNullEmptyBad();
-  void TestMergeStyleBasic();
-  void TestMergeStyleMapNullEmpty();
-  void TestMergeStyleMapEmptyStyle();
-  void TestMergeStyleMapEmptyStyleMap();
-  void TestMergeStyleMapBasic();
-  void TestMergeStyleSelector();
-
- public:
-  // Called before each test.
-  void setUp() {
+  virtual void SetUp() {
     kml_file_net_cache_.reset(new KmlFileNetCache(&test_data_net_fetcher_,
                                                   kKmlNetCacheCacheSize));
     kml_file_ = KmlFile::Create();
@@ -82,12 +59,6 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
     stylemap_ = factory_->CreateStyleMap();
   }
 
-  // Called after each test.
-  void tearDown() {
-    // Smart pointers free everything.
-  }
-
- private:
   PairPtr CreateStylePair(kmldom::StyleStateEnum style_state,
                           const StyleSelectorPtr& styleselector) const;
   StylePtr CreateStyleLineStyle(const std::string& id,
@@ -107,26 +78,24 @@ class StyleMergerTest : public CPPUNIT_NS::TestFixture {
   StyleMapPtr stylemap_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(StyleMergerTest);
-
 // This is a helper function to verify that Style has no SubStyles.
 void StyleMergerTest::VerifyEmptyStyle(const StylePtr& style) const {
-  CPPUNIT_ASSERT(!style->has_iconstyle());
-  CPPUNIT_ASSERT(!style->has_labelstyle());
-  CPPUNIT_ASSERT(!style->has_linestyle());
-  CPPUNIT_ASSERT(!style->has_polystyle());
-  CPPUNIT_ASSERT(!style->has_balloonstyle());
-  CPPUNIT_ASSERT(!style->has_liststyle());
+  ASSERT_FALSE(style->has_iconstyle());
+  ASSERT_FALSE(style->has_labelstyle());
+  ASSERT_FALSE(style->has_linestyle());
+  ASSERT_FALSE(style->has_polystyle());
+  ASSERT_FALSE(style->has_balloonstyle());
+  ASSERT_FALSE(style->has_liststyle());
 }
 
 // This is a helper function to verify empty state of the StyleMergers in the
 // test fixture.
 void StyleMergerTest::VerifyStyleMergersEmpty() const {
   StylePtr style = style_merger_normal_->GetResolvedStyle();
-  CPPUNIT_ASSERT(style);
+  ASSERT_TRUE(style);
   VerifyEmptyStyle(style);
   style = style_merger_highlight_->GetResolvedStyle();
-  CPPUNIT_ASSERT(style);
+  ASSERT_TRUE(style);
   VerifyEmptyStyle(style);
 }
 
@@ -136,11 +105,11 @@ void StyleMergerTest::VerifyStyleLineStyle(const StylePtr& style,
                                            const std::string& id,
                                            const std::string& color,
                                            double width) const {
-  CPPUNIT_ASSERT_EQUAL(id, style->get_id());
-  CPPUNIT_ASSERT(style->get_linestyle());
-  CPPUNIT_ASSERT_EQUAL(color,
+  ASSERT_EQ(id, style->get_id());
+  ASSERT_TRUE(style->get_linestyle());
+  ASSERT_EQ(color,
                        style->get_linestyle()->get_color().to_string_abgr());
-  CPPUNIT_ASSERT_EQUAL(width, style->get_linestyle()->get_width());
+  ASSERT_EQ(width, style->get_linestyle()->get_width());
 }
 
 // This is a helper function to create a Pair with key and StyleSelector.
@@ -169,12 +138,12 @@ StylePtr StyleMergerTest::CreateStyleLineStyle(const std::string& id,
 
 // Verify a freshly constructed StyleMerger's GetResolvedStyle() returns an
 // empty Style.
-void StyleMergerTest::TestConstructor() {
+TEST_F(StyleMergerTest, TestConstructor) {
   VerifyStyleMergersEmpty();
 }
 
 // Verify the MergeStyle() method on NULL, empty and bad arguments.
-void StyleMergerTest::TestMergeStyleNullEmptyBad() {
+TEST_F(StyleMergerTest, TestMergeStyleNullEmptyBad) {
   std::string empty_styleurl;
 
   // Verify that an empty styleurl and NULL StyleSelector behaves fine.
@@ -199,29 +168,29 @@ void StyleMergerTest::TestMergeStyleNullEmptyBad() {
 }
 
 // Test basic usage of the MergeStyle() method with various valid arguments.
-void StyleMergerTest::TestMergeStyleBasic() {
+TEST_F(StyleMergerTest, TestMergeStyleBasic) {
   // Set one SubStyle (LineStyle), merge it in and verify it comes out the
   // other end.  No shared styles are in the KML file.
   style_->set_linestyle(factory_->CreateLineStyle());
   style_merger_normal_->MergeStyle("", style_);
   StylePtr style = style_merger_normal_->GetResolvedStyle();
-  CPPUNIT_ASSERT(!style->has_iconstyle());
-  CPPUNIT_ASSERT(!style->has_labelstyle());
-  CPPUNIT_ASSERT(style->has_linestyle());
-  CPPUNIT_ASSERT(!style->has_polystyle());
-  CPPUNIT_ASSERT(!style->has_balloonstyle());
-  CPPUNIT_ASSERT(!style->has_liststyle());
+  ASSERT_FALSE(style->has_iconstyle());
+  ASSERT_FALSE(style->has_labelstyle());
+  ASSERT_TRUE(style->has_linestyle());
+  ASSERT_FALSE(style->has_polystyle());
+  ASSERT_FALSE(style->has_balloonstyle());
+  ASSERT_FALSE(style->has_liststyle());
 
   // Set another.
   style_->set_polystyle(factory_->CreatePolyStyle());
   style_merger_normal_->MergeStyle("", style_);
   style = style_merger_normal_->GetResolvedStyle();
-  CPPUNIT_ASSERT(!style->has_iconstyle());
-  CPPUNIT_ASSERT(!style->has_labelstyle());
-  CPPUNIT_ASSERT(style->has_linestyle());
-  CPPUNIT_ASSERT(style->has_polystyle());
-  CPPUNIT_ASSERT(!style->has_balloonstyle());
-  CPPUNIT_ASSERT(!style->has_liststyle());
+  ASSERT_FALSE(style->has_iconstyle());
+  ASSERT_FALSE(style->has_labelstyle());
+  ASSERT_TRUE(style->has_linestyle());
+  ASSERT_TRUE(style->has_polystyle());
+  ASSERT_FALSE(style->has_balloonstyle());
+  ASSERT_FALSE(style->has_liststyle());
 
   // Set all SubStyles.
   style_->set_iconstyle(factory_->CreateIconStyle());
@@ -231,32 +200,32 @@ void StyleMergerTest::TestMergeStyleBasic() {
 
   style_merger_normal_->MergeStyle("", style_);
   style = style_merger_normal_->GetResolvedStyle();
-  CPPUNIT_ASSERT(style->has_iconstyle());
-  CPPUNIT_ASSERT(style->has_labelstyle());
-  CPPUNIT_ASSERT(style->has_linestyle());
-  CPPUNIT_ASSERT(style->has_polystyle());
-  CPPUNIT_ASSERT(style->has_balloonstyle());
-  CPPUNIT_ASSERT(style->has_liststyle());
+  ASSERT_TRUE(style->has_iconstyle());
+  ASSERT_TRUE(style->has_labelstyle());
+  ASSERT_TRUE(style->has_linestyle());
+  ASSERT_TRUE(style->has_polystyle());
+  ASSERT_TRUE(style->has_balloonstyle());
+  ASSERT_TRUE(style->has_liststyle());
 
   // Verify all behaves well a StyleMerger in highlight mode.
   style_merger_highlight_->MergeStyle("", style_);
   style = style_merger_highlight_->GetResolvedStyle();
-  CPPUNIT_ASSERT(style->has_iconstyle());
-  CPPUNIT_ASSERT(style->has_labelstyle());
-  CPPUNIT_ASSERT(style->has_linestyle());
-  CPPUNIT_ASSERT(style->has_polystyle());
-  CPPUNIT_ASSERT(style->has_balloonstyle());
-  CPPUNIT_ASSERT(style->has_liststyle());
+  ASSERT_TRUE(style->has_iconstyle());
+  ASSERT_TRUE(style->has_labelstyle());
+  ASSERT_TRUE(style->has_linestyle());
+  ASSERT_TRUE(style->has_polystyle());
+  ASSERT_TRUE(style->has_balloonstyle());
+  ASSERT_TRUE(style->has_liststyle());
 }
 
 // Verify the MergeStyleMap() method on NULL and empty args.
-void StyleMergerTest::TestMergeStyleMapNullEmpty() {
+TEST_F(StyleMergerTest, TestMergeStyleMapNullEmpty) {
   style_merger_normal_->MergeStyleMap(NULL);
   style_merger_highlight_->MergeStyleMap(NULL);
   VerifyStyleMergersEmpty();
 
   // An internal check to verify that the StyleMap is empty.
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(0),
+  ASSERT_EQ(static_cast<size_t>(0),
                        stylemap_->get_pair_array_size());
   style_merger_normal_->MergeStyleMap(stylemap_);
   style_merger_highlight_->MergeStyleMap(stylemap_);
@@ -271,7 +240,7 @@ void StyleMergerTest::TestMergeStyleMapNullEmpty() {
 }
 
 // Create a StyleMap with an empty Style for the normal and highlight keys.
-void StyleMergerTest::TestMergeStyleMapEmptyStyle() {
+TEST_F(StyleMergerTest, TestMergeStyleMapEmptyStyle) {
   stylemap_->add_pair(CreateStylePair(kmldom::STYLESTATE_NORMAL,
                                       factory_->CreateStyle()));
   stylemap_->add_pair(CreateStylePair(kmldom::STYLESTATE_HIGHLIGHT,
@@ -282,7 +251,7 @@ void StyleMergerTest::TestMergeStyleMapEmptyStyle() {
 }
 
 // Create a StyleMap with an empty StyleMap for the normal and highlight keys.
-void StyleMergerTest::TestMergeStyleMapEmptyStyleMap() {
+TEST_F(StyleMergerTest, TestMergeStyleMapEmptyStyleMap) {
   stylemap_->add_pair(CreateStylePair(kmldom::STYLESTATE_NORMAL,
                                       factory_->CreateStyleMap()));
   stylemap_->add_pair(CreateStylePair(kmldom::STYLESTATE_HIGHLIGHT,
@@ -293,7 +262,7 @@ void StyleMergerTest::TestMergeStyleMapEmptyStyleMap() {
 }
 
 // Verify basic usage of the MergeStyleMap() method with a simple StyleMap.
-void StyleMergerTest::TestMergeStyleMapBasic() {
+TEST_F(StyleMergerTest, TestMergeStyleMapBasic) {
   // Create a StyleMap with different values for normal and highlight LineStyle.
   const std::string kNormalId("normal-id");           
   const std::string kNormalColor("1f331122");         
@@ -323,7 +292,7 @@ void StyleMergerTest::TestMergeStyleMapBasic() {
 }
 
 // Verify the MergeStyleSelector() method with NULL and empty arguments.
-void StyleMergerTest::TestMergeStyleSelector() {
+TEST_F(StyleMergerTest, TestMergeStyleSelector) {
   style_merger_normal_->MergeStyleSelector(NULL);
   style_merger_highlight_->MergeStyleSelector(NULL);
   VerifyStyleMergersEmpty();
@@ -337,6 +306,9 @@ void StyleMergerTest::TestMergeStyleSelector() {
   VerifyStyleMergersEmpty();
 }
 
-}  // endnamespace kmlengine
+}  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -30,7 +30,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
 #include "kml/base/net_cache_test_util.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/dom.h"
 #include "kml/engine/location_util.h"
 
@@ -42,58 +42,34 @@ namespace kmlengine {
 
 static const size_t kCacheSize = 137;
 
-class KmlCacheTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(KmlCacheTest);
-  CPPUNIT_TEST(TestNullBadFetch);
-  CPPUNIT_TEST(TestBasicFetchKml);
-  CPPUNIT_TEST(TestBasicFetchData);
-  CPPUNIT_TEST(TestBasicFetchKmz);
-  CPPUNIT_TEST(TestFetchDataRelativeTestCases);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  // Called before each test.
-  void setUp() {
+class KmlCacheTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     kml_cache_.reset(new KmlCache(&testdata_net_fetcher_, kCacheSize));
   }
 
-  // Called after each test.
-  void tearDown() {
-    // intrusive_ptr deletes kml_cache_
-  }
-
- protected:
-  void TestNullBadFetch();
-  void TestBasicFetchKml();
-  void TestBasicFetchData();
-  void TestBasicFetchKmz();
-  void TestFetchDataRelativeTestCases();
-
- private:
   kmlbase::TestDataNetFetcher testdata_net_fetcher_;
   boost::scoped_ptr<KmlCache> kml_cache_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(KmlCacheTest);
-
 // Verify the FetchKml() and FetchData() with null/bad arguments.
-void KmlCacheTest::TestNullBadFetch() {
+TEST_F(KmlCacheTest, TestNullBadFetch) {
   const std::string kEmpty;
   std::string data;
-  CPPUNIT_ASSERT(!kml_cache_->FetchKmlAbsolute(kEmpty));
-  CPPUNIT_ASSERT(!kml_cache_->FetchKmlRelative(kEmpty, kEmpty));
-  CPPUNIT_ASSERT(!kml_cache_->FetchDataRelative(kEmpty, kEmpty, NULL));
-  CPPUNIT_ASSERT(!kml_cache_->FetchDataRelative(kEmpty, kEmpty, &data));
-  CPPUNIT_ASSERT(data.empty());
+  ASSERT_FALSE(kml_cache_->FetchKmlAbsolute(kEmpty));
+  ASSERT_FALSE(kml_cache_->FetchKmlRelative(kEmpty, kEmpty));
+  ASSERT_FALSE(kml_cache_->FetchDataRelative(kEmpty, kEmpty, NULL));
+  ASSERT_FALSE(kml_cache_->FetchDataRelative(kEmpty, kEmpty, &data));
+  ASSERT_TRUE(data.empty());
   const std::string kGarbage("this is not a url");
-  CPPUNIT_ASSERT(!kml_cache_->FetchKmlAbsolute(kGarbage));
-  CPPUNIT_ASSERT(!kml_cache_->FetchKmlRelative(kGarbage, kGarbage));
-  CPPUNIT_ASSERT(!kml_cache_->FetchDataRelative(kGarbage, kGarbage, &data));
-  CPPUNIT_ASSERT(data.empty());
+  ASSERT_FALSE(kml_cache_->FetchKmlAbsolute(kGarbage));
+  ASSERT_FALSE(kml_cache_->FetchKmlRelative(kGarbage, kGarbage));
+  ASSERT_FALSE(kml_cache_->FetchDataRelative(kGarbage, kGarbage, &data));
+  ASSERT_TRUE(data.empty());
 }
 
 // Verify basic usage of the FetchKml() method on known valid data.
-void KmlCacheTest::TestBasicFetchKml() {
+TEST_F(KmlCacheTest, TestBasicFetchKml) {
   // Fetch point-sarnen.kml as it if is a relative NetworkLink from
   // some mythic.kml in the same directory on the same server.
   const std::string kHost("http://www.example.com/");
@@ -105,68 +81,68 @@ void KmlCacheTest::TestBasicFetchKml() {
   KmlFilePtr kml_file = kml_cache_->FetchKmlRelative(kBaseUrl, kTargetHref);
   // Verify that this file fetches, parses, has the right url, has a Placemark
   // with the given id and is at the given lat,lon.
-  CPPUNIT_ASSERT(kml_file);
-  CPPUNIT_ASSERT_EQUAL(kTargetUrl, kml_file->get_url());
+  ASSERT_TRUE(kml_file);
+  ASSERT_EQ(kTargetUrl, kml_file->get_url());
      
   kmldom::PlacemarkPtr placemark =
       AsPlacemark(kml_file->GetObjectById("SZXX0026"));
-  CPPUNIT_ASSERT(placemark);
+  ASSERT_TRUE(placemark);
   double lat, lon;
-  CPPUNIT_ASSERT(kmlengine::GetFeatureLatLon(placemark, &lat, &lon));
-  CPPUNIT_ASSERT_EQUAL(46.9, lat);
-  CPPUNIT_ASSERT_EQUAL(8.23, lon);
+  ASSERT_TRUE(kmlengine::GetFeatureLatLon(placemark, &lat, &lon));
+  ASSERT_EQ(46.9, lat);
+  ASSERT_EQ(8.23, lon);
 
   // The preceding should have caused exactly one fetch.
-  //CPPUNIT_ASSERT_EQUAL(1, testdata_net_fetcher_.get_fetch_count());
+  //ASSERT_EQ(1, testdata_net_fetcher_.get_fetch_count());
 
   // Verify that fetching it again works fine.
   kml_file = NULL;  // Releases our reference to this KmlFile.
   placemark = NULL;  // Releases our reference to this Placemark
   kml_file = kml_cache_->FetchKmlRelative(kBaseUrl, kTargetHref);
-  CPPUNIT_ASSERT(kml_file);
+  ASSERT_TRUE(kml_file);
   placemark = AsPlacemark(kml_file->GetObjectById("SZXX0026"));
-  CPPUNIT_ASSERT(placemark);
+  ASSERT_TRUE(placemark);
 
   // The immediately preceding should not have caused a fetch.
-  //CPPUNIT_ASSERT_EQUAL(1, testdata_net_fetcher_.get_fetch_count());
+  //ASSERT_EQ(1, testdata_net_fetcher_.get_fetch_count());
 }
 
 // Verify basic usage of the FetchData() method.
-void KmlCacheTest::TestBasicFetchData() {
+TEST_F(KmlCacheTest, TestBasicFetchData) {
   // Fetch the KML from the previous test, but just as raw data.
   const std::string kPath("style/weather/point-sarnen.kml");
   const std::string kUrl(std::string("http://host.com/" + kPath));
   std::string got_content;
-  CPPUNIT_ASSERT(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));
+  ASSERT_TRUE(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));
 
   // Read this out of the file system to compare.
   std::string want_content;
-  CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(
       kmlbase::File::JoinPaths(DATADIR, kPath), &want_content));
 
-  CPPUNIT_ASSERT_EQUAL(want_content, got_content);
+  ASSERT_EQ(want_content, got_content);
 
   // Fetch again to verify all is well.
   got_content.clear();
-  CPPUNIT_ASSERT(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));
-  CPPUNIT_ASSERT_EQUAL(want_content, got_content);
+  ASSERT_TRUE(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));
+  ASSERT_EQ(want_content, got_content);
 }
 
 // Verify that the URL of the KmlFile created for a fetch of a KMZ for
 // the default KML file is as expected.
-void KmlCacheTest::TestBasicFetchKmz() {
+TEST_F(KmlCacheTest, TestBasicFetchKmz) {
   const std::string kKmzPath("kmz/radar-animation.kmz");
   const std::string kKmzUrl(std::string("http://host.com/" + kKmzPath));
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kKmzUrl);
   // The KML file in this KMZ archive is known to be doc.kml
-  CPPUNIT_ASSERT_EQUAL(std::string(kKmzUrl + "/doc.kml"), kml_file->get_url());
+  ASSERT_EQ(std::string(kKmzUrl + "/doc.kml"), kml_file->get_url());
 
   // Verify that the URL set for the KmlFile for an explicit KML reference
   // into a KMZ is exactly the same as the fetch URL.
   const std::string kLevel03131Path("level03/0131.kml");
   const std::string kLevel03131Url(kKmzUrl + "/" + kLevel03131Path);
   kml_file = kml_cache_->FetchKmlAbsolute(kLevel03131Url);
-  CPPUNIT_ASSERT_EQUAL(kLevel03131Url, kml_file->get_url());
+  ASSERT_EQ(kLevel03131Url, kml_file->get_url());
 }
 
 static struct {
@@ -234,7 +210,7 @@ static struct {
   }
 };
 
-void KmlCacheTest::TestFetchDataRelativeTestCases() {
+TEST_F(KmlCacheTest, TestFetchDataRelativeTestCases) {
   size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     std::string data;
@@ -242,14 +218,17 @@ void KmlCacheTest::TestFetchDataRelativeTestCases() {
                                                 kTestCases[i].target_href,
                                                 &data);
     if (kTestCases[i].bytes) {
-      CPPUNIT_ASSERT(status);
-      CPPUNIT_ASSERT_EQUAL(kTestCases[i].bytes, data.size());
+      ASSERT_TRUE(status);
+      ASSERT_EQ(kTestCases[i].bytes, data.size());
     } else {
-      CPPUNIT_ASSERT(!status);
+      ASSERT_FALSE(status);
     }
   }
 }
 
 }  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

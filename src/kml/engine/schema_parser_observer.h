@@ -23,48 +23,53 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the unit tests for the location utility functions.
+// This file contains the definition of the SchemaParserObserver class.
 
-#include "kml/engine/location_util.h"
+#ifndef KML_ENGINE_SCHEMA_PARSER_OBSERVER_H__
+#define KML_ENGINE_SCHEMA_PARSER_OBSERVER_H__
+
+#include <map>
+#include <string>
 #include "kml/dom.h"
-#include "gtest/gtest.h"
-
-using kmldom::KmlFactory;
-using kmldom::LatLonBoxPtr;
-using kmldom::LatLonAltBoxPtr;
+#include "kml/dom/parser_observer.h"
+#include "kml/engine/engine_types.h"
 
 namespace kmlengine {
 
-class LocationUtilTest : public testing::Test {
-};
+// The SchemaParserObserver is a kmldom::ParserObserver which gathers all
+// all name'ed <Schema>'s into a SchemaNameMap.  This implementation treats
+// <Schema> as global in scope and as such multiple <Schema>'s in the same file
+// with the same name= follow a "last one wins" pattern.
+// TODO: decide if <Schema> is scoped by <Document>
+class SchemaParserObserver : public kmldom::ParserObserver {
+ public:
+  SchemaParserObserver(SchemaNameMap* schema_name_map)
+    : schema_name_map_(schema_name_map) {}
 
-// This tests the GetCenter() function.
-TEST_F(LocationUtilTest, TestGetCenter) {
-  KmlFactory* factory = KmlFactory::GetFactory();
-  // NULL output pointer(s) should not crash.
-  LatLonBoxPtr llb = factory->CreateLatLonBox();
-  GetCenter(llb, NULL, NULL);
-  double lat, lon;
-  GetCenter(llb, &lat, NULL);
-  // Missing lon pointer still saves a result for lat.
-  ASSERT_EQ(0.0, lat);
-  GetCenter(llb, NULL, &lon);
-  // Missing lat pointer still saves a result for lon.
-  ASSERT_EQ(0.0, lat);
-  // A default LatLonBox is well defined thus so is its center.
-  GetCenter(llb, &lat, &lon);
-  ASSERT_EQ(0.0, lat);
-  ASSERT_EQ(0.0, lon);
-  // A default LatLonAltBox is well defined thus so is its center.
-  LatLonAltBoxPtr llab = factory->CreateLatLonAltBox();
-  GetCenter(llab, &lat, &lon);
-  ASSERT_EQ(0.0, lat);
-  ASSERT_EQ(0.0, lon);
-}
+  virtual ~SchemaParserObserver() {}
+
+  // ParserObserver::AddChild()
+  // Old-style <Schema> looked like this:
+  // <Schema parent="Placemark" name="S_park_boundaries_S">
+  //   ...
+  // </Schema>
+  virtual bool AddChild(const kmldom::ElementPtr& parent,
+                        const kmldom::ElementPtr& child) {
+    if (kmldom::DocumentPtr document = kmldom::AsDocument(parent)) {
+      if (kmldom::SchemaPtr schema = kmldom::AsSchema(child)) {
+        if (schema->has_name()) {
+          // Last one wins on name collisions.
+          (*schema_name_map_)[schema->get_name()] = schema;
+        }
+      }
+    }
+    return true;  // Keep parsing.
+  }
+
+ private:
+  SchemaNameMap* schema_name_map_;
+};
 
 }  // end namespace kmlengine
 
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
+#endif  // KML_ENGINE_SCHEMA_PARSER_OBSERVER_H__

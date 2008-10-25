@@ -28,7 +28,7 @@
 #include "kml/engine/feature_balloon.h"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 #include "kml/engine/kml_file.h"
 
 #ifndef DATADIR
@@ -42,23 +42,10 @@ using kmldom::PlacemarkPtr;
 
 namespace kmlengine {
 
-class FeatureBalloonTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(FeatureBalloonTest);
-  CPPUNIT_TEST(TestBasicCreateBalloonText);
-  CPPUNIT_TEST(TestComplexCreateBalloonText);
-  CPPUNIT_TEST(TestAllBalloonsFile);
-  CPPUNIT_TEST_SUITE_END();
-
+class FeatureBalloonTest : public testing::Test {
  protected:
-  void TestBasicCreateBalloonText();
-  void TestComplexCreateBalloonText();
-  void TestAllBalloonsFile();
-
- private:
   KmlFilePtr kml_file_;
 };
-
-CPPUNIT_TEST_SUITE_REGISTRATION(FeatureBalloonTest);
 
 // A struct of the KML content and the expected balloon text.
 const static struct {
@@ -80,7 +67,8 @@ const static struct {
     "<h3>bar</h3><br/><br/>goo"
   },
 };
-void FeatureBalloonTest::TestBasicCreateBalloonText() {
+
+TEST_F(FeatureBalloonTest, TestBasicCreateBalloonText) {
   for (size_t i = 0; i < sizeof(kKml)/sizeof(kKml[0]); ++i) {
     // Parse the file into a KmlFile object.
     kml_file_ = KmlFile::CreateFromParse(kKml[i].kml, NULL);
@@ -89,15 +77,14 @@ void FeatureBalloonTest::TestBasicCreateBalloonText() {
     // Verify that that balloon text has been composited as expected.
     const std::string kResult(CreateBalloonText(kml_file_, placemark));
     if (kKml[i].balloontext == NULL) {
-      CPPUNIT_ASSERT(kResult.empty());
+      ASSERT_TRUE(kResult.empty());
     } else {
-      CPPUNIT_ASSERT_EQUAL(kResult,
-                           static_cast<std::string>(kKml[i].balloontext));
+      ASSERT_EQ(kResult, static_cast<std::string>(kKml[i].balloontext));
     }
   }
 }
 
-void FeatureBalloonTest::TestComplexCreateBalloonText() {
+TEST_F(FeatureBalloonTest, TestComplexCreateBalloonText) {
   // A hunk of KML that requires the ballon to be composited from a
   // BalloonStyle templated on Data and Schema/SchemaData.
   const std::string kKitchenSinkKml(
@@ -169,8 +156,7 @@ void FeatureBalloonTest::TestComplexCreateBalloonText() {
       kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   // Verify that that balloon text has been composited as expected.
-  CPPUNIT_ASSERT_EQUAL(kKitchenSinkBalloonText,
-                       CreateBalloonText(kml_file_, placemark));
+  ASSERT_EQ(kKitchenSinkBalloonText, CreateBalloonText(kml_file_, placemark));
 }
 
 // A struct of the Feature ID from which we'll pull the KML content, and the
@@ -223,16 +209,16 @@ const static struct {
   }
 };
 
-void FeatureBalloonTest::TestAllBalloonsFile() {
+TEST_F(FeatureBalloonTest, TestAllBalloonsFile) {
   const std::string kBalloonKml = std::string(DATADIR) +
                                   "/balloon/all-balloons.kml";
   std::string data;
   std::string errors;
-  CPPUNIT_ASSERT(kmlbase::File::ReadFileToString(kBalloonKml, &data));
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(kBalloonKml, &data));
   kml_file_ = KmlFile::CreateFromParse(data, &errors);
-  CPPUNIT_ASSERT(!data.empty());
-  CPPUNIT_ASSERT(errors.empty());
-  CPPUNIT_ASSERT(kml_file_);
+  ASSERT_FALSE(data.empty());
+  ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(kml_file_);
   for (size_t i = 0; i < sizeof(kFeatures)/sizeof(kFeatures[0]); ++i) {
     // Extract the Placemark.
     const FeaturePtr feature=
@@ -240,15 +226,17 @@ void FeatureBalloonTest::TestAllBalloonsFile() {
     // Verify that that balloon text has been composited as expected.
     const std::string kActual(CreateBalloonText(kml_file_, feature));
     if (kFeatures[i].balloontext == NULL) {
-      CPPUNIT_ASSERT(kActual.empty());
-      CPPUNIT_ASSERT_EQUAL(std::string(""), kActual);
+      ASSERT_TRUE(kActual.empty());
+      ASSERT_EQ(std::string(""), kActual);
     } else {
-      CPPUNIT_ASSERT_EQUAL(static_cast<std::string>(kFeatures[i].balloontext),
-                           kActual);
+      ASSERT_EQ(static_cast<std::string>(kFeatures[i].balloontext), kActual);
     }
   }
 }
 
 }  // end namespace kmlengine
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
