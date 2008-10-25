@@ -6,5 +6,6 @@ EXTRA_DIST = \
 	libkmldom.vcproj \
 	libkmlengine.vcproj \
 	libkmlregionator.vcproj \
+	libkmlxsd.vcproj \
 	stdafx.h \
 	stdafx.cpp
