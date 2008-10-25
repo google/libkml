@@ -38,8 +38,8 @@
 #include <stack>
 #include <string>
 #include "expat.h"  // XML_Char
+#include "kml/base/expat_handler.h"
 #include "kml/dom/element.h"
-#include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/parser_observer.h"
 
@@ -49,7 +49,7 @@ class KmlFactory;
 
 // This class implements the expat handlers for parsing KML.  This class is
 // handed to expat in the ExpatParser() function.
-class KmlHandler : public ExpatHandler {
+class KmlHandler : public kmlbase::ExpatHandler {
 public:
   KmlHandler(parser_observer_vector_t& observers);
   ~KmlHandler();

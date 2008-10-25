@@ -53,6 +53,8 @@ typedef enum {
   Type_Vec2,
 
   Type_Alias,
+  Type_AtomAuthor,
+  Type_AtomLink,
   Type_BalloonStyle,
   Type_Camera,
   Type_Change,
@@ -108,6 +110,9 @@ typedef enum {
   Type_Url,
   Type_ViewVolume,
 
+  Type_atomEmail,
+  Type_atomName,
+  Type_atomUri,
   Type_address,
   Type_altitude,
   Type_altitudeMode,

@@ -27,6 +27,7 @@
 #define KML_DOM_KMLDOM_H__
 
 #include "kml/dom/abstractview.h"
+#include "kml/dom/atom.h"
 #include "kml/dom/balloonstyle.h"
 #include "kml/dom/container.h"
 #include "kml/dom/document.h"

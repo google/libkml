@@ -48,6 +48,8 @@ class TimePrimitive;
 class Vec2;
 
 class Alias;
+class AtomAuthor;
+class AtomLink;
 class BalloonStyle;
 class Camera;
 class Change;
@@ -132,6 +134,8 @@ typedef boost::intrusive_ptr<TimePrimitive> TimePrimitivePtr;
 typedef boost::intrusive_ptr<Vec2> Vec2Ptr;
 
 typedef boost::intrusive_ptr<Alias> AliasPtr;
+typedef boost::intrusive_ptr<AtomAuthor> AtomAuthorPtr;
+typedef boost::intrusive_ptr<AtomLink> AtomLinkPtr;
 typedef boost::intrusive_ptr<BalloonStyle> BalloonStylePtr;
 typedef boost::intrusive_ptr<Camera> CameraPtr;
 typedef boost::intrusive_ptr<Change> ChangePtr;

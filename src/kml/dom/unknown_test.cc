@@ -28,38 +28,24 @@
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmldom {
 
-class UnknownTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(UnknownTest);
-  CPPUNIT_TEST(TestNotXml);
-  CPPUNIT_TEST(TestUnknownElement);
-  CPPUNIT_TEST(TestMisplaced);
-  CPPUNIT_TEST(TestUnknownAttribute);
-  CPPUNIT_TEST_SUITE_END();
-
- protected:
-  void TestNotXml();
-  void TestUnknownElement();
-  void TestMisplaced();
-  void TestUnknownAttribute();
+class UnknownTest : public testing::Test {
 };
-
-CPPUNIT_TEST_SUITE_REGISTRATION(UnknownTest);
 
 // Verify that parsing bad data is well behaved: no crash, NULL return,
 // error message.
-void UnknownTest::TestNotXml() {
+TEST_F(UnknownTest, TestNotXml) {
   std::string errors;
   ElementPtr root = Parse("this is not even xml", &errors);
-  CPPUNIT_ASSERT(NULL == root);
-  CPPUNIT_ASSERT(false == errors.empty());
+  ASSERT_TRUE(NULL == root);
+  ASSERT_FALSE(errors.empty());
 }
 
 // Verify that a fully unknown element round-trips fine.
-void UnknownTest::TestUnknownElement() {
+TEST_F(UnknownTest, TestUnknownElement) {
   std::string errors;
   // <unknown> is not known to be KML element, but its content is preserved.
   ElementPtr root = Parse(
@@ -74,8 +60,8 @@ void UnknownTest::TestUnknownElement() {
     "</Placemark>",
     &errors);
   // This is XML valid and hence parses fine.
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT(errors.empty());
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
   // The root element is a Placemark.
   const PlacemarkPtr placemark = AsPlacemark(root);
   // Known children are in XSD order.  All content within the unknown element
@@ -92,11 +78,11 @@ void UnknownTest::TestUnknownElement() {
       "</unknown>\n"
       "<another>who am I</another>\n"
     "</Placemark>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(placemark));
+  ASSERT_EQ(expected, SerializeRaw(placemark));
 }
 
 // Verify that a misplaced element round-trips fine.
-void UnknownTest::TestMisplaced() {
+TEST_F(UnknownTest, TestMisplaced) {
   std::string errors;
   // <Folder> is a known KML element, but not a valid child of <Placemark>.
   ElementPtr root = Parse(
@@ -105,10 +91,10 @@ void UnknownTest::TestMisplaced() {
       "<name>placemark</name>"
     "</Placemark>",
     &errors);
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT(errors.empty());
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
   const PlacemarkPtr placemark = AsPlacemark(root);
-  CPPUNIT_ASSERT_EQUAL(std::string("placemark"), placemark->get_name());
+  ASSERT_EQ(std::string("placemark"), placemark->get_name());
   // TODO: add test to find Folder via the unknown element api
 
   // Serialized output puts unknown/misplaced elements after known elements.
@@ -117,11 +103,11 @@ void UnknownTest::TestMisplaced() {
       "<name>placemark</name>"
       "<Folder><name>folder</name></Folder>"
     "</Placemark>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(placemark));
+  ASSERT_EQ(expected, SerializeRaw(placemark));
 }
 
 // Verify that unknown attributes on known elements round trip fine.
-void UnknownTest::TestUnknownAttribute() {
+TEST_F(UnknownTest, TestUnknownAttribute) {
   std::string errors;
   ElementPtr root = Parse(
     "<GroundOverlay unknown=\"who knows\" abc=\"zzz\" >"
@@ -129,20 +115,23 @@ void UnknownTest::TestUnknownAttribute() {
     "</GroundOverlay>",
     &errors);
   // This is XML valid so it parses fine.
-  CPPUNIT_ASSERT(root);
-  CPPUNIT_ASSERT(errors.empty());
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
   // The root is a GroundOverlay.
   const GroundOverlayPtr groundoverlay = AsGroundOverlay(root);
   // Unknown attributes don't interefere with known children.
-  CPPUNIT_ASSERT_EQUAL(std::string("groundoverlay"), groundoverlay->get_name());
+  ASSERT_EQ(std::string("groundoverlay"), groundoverlay->get_name());
   // Serializer perserves unknown attributes, but not their order.
   std::string expected =
     "<GroundOverlay abc=\"zzz\" unknown=\"who knows\">"
       "<name>groundoverlay</name>"
     "</GroundOverlay>";
-  CPPUNIT_ASSERT_EQUAL(expected, SerializeRaw(groundoverlay));
+  ASSERT_EQ(expected, SerializeRaw(groundoverlay));
 }
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

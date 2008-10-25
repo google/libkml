@@ -125,6 +125,9 @@ void GroundOverlay::AddElement(const ElementPtr& element) {
     case Type_altitude:
       has_altitude_ = element->SetDouble(&altitude_);
       break;
+    case Type_altitudeMode:
+      has_altitudemode_ = element->SetEnum(&altitudemode_);
+      break;
     case Type_LatLonBox:
       set_latlonbox(AsLatLonBox(element));
       break;
@@ -141,6 +144,9 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
   Overlay::Serialize(serializer);
   if (has_altitude()) {
     serializer.SaveFieldById(Type_altitude, get_altitude());
+  }
+  if (has_altitudemode()) {
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
   if (has_latlonbox()) {
     serializer.SaveElement(get_latlonbox());

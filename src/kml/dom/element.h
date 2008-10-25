@@ -37,6 +37,7 @@
 
 #include <string>
 #include <vector>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/base/referent.h"
@@ -122,15 +123,21 @@ class Element : public kmlbase::Referent {
   void SerializeUnknown(Serializer& serializer) const;
 
   // Returns the unknown elements.
-  const std::vector<std::string>& get_unknown_elements_array() const {
-    return unknown_elements_array_;
+  const size_t get_unknown_elements_array_size() const {
+    return unknown_elements_array_.size();
+  }
+  const std::string& get_unknown_elements_array_at(size_t i) const {
+    return unknown_elements_array_[i];
   }
 
   // Returns the unknown legal (misplaced) elements.
-  // TODO: a real API
-  const std::vector<ElementPtr>& get_unknown_legal_elements_array() const {
-    return unknown_legal_elements_array_;
+  const size_t get_misplaced_elements_array_size() const {
+    return unknown_legal_elements_array_.size();
   }
+  const ElementPtr& get_misplaced_elements_array_at(size_t i) const {
+    return unknown_legal_elements_array_[i];
+  }
+
 
   // Permits polymorphic use of Field methods.
   virtual bool SetBool(bool* val) { return false; }
@@ -186,7 +193,7 @@ class Element : public kmlbase::Referent {
   // Unknown attributes found during parse are copied out and a pointer is
   // stored. The object is dynamically allocated so every element is not
   // burdened with an unnecessary Attributes object.
-  kmlbase::Attributes* unknown_attributes_;
+  boost::scoped_ptr<kmlbase::Attributes> unknown_attributes_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 

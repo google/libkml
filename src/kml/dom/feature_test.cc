@@ -30,108 +30,96 @@
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 namespace kmldom {
 
-class FeatureTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(FeatureTest);
-  CPPUNIT_TEST(TestType);
-  CPPUNIT_TEST(TestDefaults);
-  CPPUNIT_TEST(TestSetToDefaultValues);
-  CPPUNIT_TEST(TestSetGetHasClear);
-  CPPUNIT_TEST_SUITE_END();
-
- public:
-  void setUp() {
+class FeatureTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
     feature_ = new TestFeature();
   }
-  void tearDown() {
-  }
 
- protected:
-  void TestType();
-  void TestDefaults();
-  void TestSetToDefaultValues();
-  void TestSetGetHasClear();
-
- private:
   // Feature is abstract, hence its constructor is protected.
   class TestFeature : public Feature {
   };
   boost::intrusive_ptr<TestFeature> feature_;
 };
 
-CPPUNIT_TEST_SUITE_REGISTRATION(FeatureTest);
-
-void FeatureTest::TestType() {
-  CPPUNIT_ASSERT(true == feature_->IsA(Type_Feature));
-  CPPUNIT_ASSERT(true == feature_->IsA(Type_Object));
+TEST_F(FeatureTest, TestType) {
+  ASSERT_TRUE(feature_->IsA(Type_Feature));
+  ASSERT_TRUE(feature_->IsA(Type_Object));
 }
 
 // Verify proper defaults:
-void FeatureTest::TestDefaults() {
-  CPPUNIT_ASSERT(false == feature_->has_name());
-  CPPUNIT_ASSERT("" == feature_->get_name());
-  CPPUNIT_ASSERT(false == feature_->has_visibility());
-  CPPUNIT_ASSERT(true == feature_->get_visibility());
-  CPPUNIT_ASSERT(false == feature_->has_open());
-  CPPUNIT_ASSERT(false == feature_->get_open());
-  CPPUNIT_ASSERT(false == feature_->has_address());
-  CPPUNIT_ASSERT("" == feature_->get_address());
-  CPPUNIT_ASSERT(false == feature_->has_phonenumber());
-  CPPUNIT_ASSERT("" == feature_->get_phonenumber());
-  CPPUNIT_ASSERT(false == feature_->has_snippet());
-  CPPUNIT_ASSERT(NULL == feature_->get_snippet());
-  CPPUNIT_ASSERT(false == feature_->has_description());
-  CPPUNIT_ASSERT("" == feature_->get_description());
-  CPPUNIT_ASSERT(false == feature_->has_abstractview());
-  CPPUNIT_ASSERT(NULL == feature_->get_abstractview());
-  CPPUNIT_ASSERT(false == feature_->has_timeprimitive());
-  CPPUNIT_ASSERT(NULL == feature_->get_timeprimitive());
-  CPPUNIT_ASSERT(false == feature_->has_styleurl());
-  CPPUNIT_ASSERT("" == feature_->get_styleurl());
-  CPPUNIT_ASSERT(false == feature_->has_styleselector());
-  CPPUNIT_ASSERT(NULL == feature_->get_styleselector());
-  CPPUNIT_ASSERT(false == feature_->has_region());
-  CPPUNIT_ASSERT(NULL == feature_->get_region());
+TEST_F(FeatureTest, TestDefaults) {
+  ASSERT_FALSE(feature_->has_name());
+  ASSERT_EQ(std::string(""), feature_->get_name());
+  ASSERT_FALSE(feature_->has_visibility());
+  ASSERT_TRUE(feature_->get_visibility());
+  ASSERT_FALSE(feature_->has_open());
+  ASSERT_FALSE(feature_->get_open());
+  ASSERT_FALSE(feature_->has_atomauthor());
+  ASSERT_FALSE(feature_->has_atomlink());
+  ASSERT_FALSE(feature_->has_address());
+  ASSERT_EQ(std::string(""), feature_->get_address());
+  ASSERT_FALSE(feature_->has_phonenumber());
+  ASSERT_EQ(std::string(""), feature_->get_phonenumber());
+  ASSERT_FALSE(feature_->has_snippet());
+  ASSERT_TRUE(NULL == feature_->get_snippet());
+  ASSERT_FALSE(feature_->has_description());
+  ASSERT_EQ(std::string(""), feature_->get_description());
+  ASSERT_FALSE(feature_->has_abstractview());
+  ASSERT_TRUE(NULL == feature_->get_abstractview());
+  ASSERT_FALSE(feature_->has_timeprimitive());
+  ASSERT_TRUE(NULL == feature_->get_timeprimitive());
+  ASSERT_FALSE(feature_->has_styleurl());
+  ASSERT_EQ(std::string(""), feature_->get_styleurl());
+  ASSERT_FALSE(feature_->has_styleselector());
+  ASSERT_TRUE(NULL == feature_->get_styleselector());
+  ASSERT_FALSE(feature_->has_region());
+  ASSERT_TRUE(NULL == feature_->get_region());
 }
 
 // Verify setting default makes has_xxx() true:
-void FeatureTest::TestSetToDefaultValues() {
-  TestDefaults();
+TEST_F(FeatureTest, TestSetToDefaultValues) {
   feature_->set_name(feature_->get_name());
-  CPPUNIT_ASSERT(true == feature_->has_name());
+  ASSERT_TRUE(feature_->has_name());
   feature_->set_visibility(feature_->get_visibility());
-  CPPUNIT_ASSERT(true == feature_->has_visibility());
+  ASSERT_TRUE(feature_->has_visibility());
   feature_->set_open(feature_->get_open());
-  CPPUNIT_ASSERT(true == feature_->has_open());
+  ASSERT_TRUE(feature_->has_open());
+  feature_->set_atomauthor(KmlFactory::GetFactory()->CreateAtomAuthor());
+  feature_->set_atomlink(KmlFactory::GetFactory()->CreateAtomLink());
+  ASSERT_TRUE(feature_->has_atomauthor());  // ptr is still null
   feature_->set_address(feature_->get_address());
-  CPPUNIT_ASSERT(true == feature_->has_address());
+  ASSERT_TRUE(feature_->has_address());
   feature_->set_phonenumber(feature_->get_phonenumber());
-  CPPUNIT_ASSERT(true == feature_->has_phonenumber());
+  ASSERT_TRUE(feature_->has_phonenumber());
   feature_->set_snippet(KmlFactory::GetFactory()->CreateSnippet());
-  CPPUNIT_ASSERT(true == feature_->has_snippet());  // ptr is still null
+  ASSERT_TRUE(feature_->has_snippet());  // ptr is still null
   feature_->set_description(feature_->get_description());
-  CPPUNIT_ASSERT(true == feature_->has_description());
+  ASSERT_TRUE(feature_->has_description());
   feature_->set_abstractview(KmlFactory::GetFactory()->CreateLookAt());
-  CPPUNIT_ASSERT(true == feature_->has_abstractview());
+  ASSERT_TRUE(feature_->has_abstractview());
   feature_->set_timeprimitive(KmlFactory::GetFactory()->CreateTimeSpan());
-  CPPUNIT_ASSERT(true == feature_->has_timeprimitive());
+  ASSERT_TRUE(feature_->has_timeprimitive());
   feature_->set_styleurl(feature_->get_styleurl());
-  CPPUNIT_ASSERT(true == feature_->has_styleurl());
+  ASSERT_TRUE(feature_->has_styleurl());
   feature_->set_styleselector(KmlFactory::GetFactory()->CreateStyle());
-  CPPUNIT_ASSERT(true == feature_->has_styleselector());
+  ASSERT_TRUE(feature_->has_styleselector());
   feature_->set_region(KmlFactory::GetFactory()->CreateRegion());
-  CPPUNIT_ASSERT(true == feature_->has_region());
+  ASSERT_TRUE(feature_->has_region());
 }
 
 // Verify set, get, has, clear:
-void FeatureTest::TestSetGetHasClear() {
+TEST_F(FeatureTest, TestSetGetHasClear) {
   // Non-default values:
   std::string name("a");
   bool visibility = false;
   bool open = true;
+  AtomAuthorPtr atomauthor = KmlFactory::GetFactory()->CreateAtomAuthor();
+  AtomLinkPtr atomlink = KmlFactory::GetFactory()->CreateAtomLink();
   std::string address("b");
   std::string phonenumber("c");
   SnippetPtr snippet = KmlFactory::GetFactory()->CreateSnippet();
@@ -146,6 +134,8 @@ void FeatureTest::TestSetGetHasClear() {
   feature_->set_name(name);
   feature_->set_visibility(visibility);
   feature_->set_open(open);
+  feature_->set_atomauthor(atomauthor);
+  feature_->set_atomlink(atomlink);
   feature_->set_address(address);
   feature_->set_phonenumber(phonenumber);
   feature_->set_snippet(snippet);
@@ -157,35 +147,41 @@ void FeatureTest::TestSetGetHasClear() {
   feature_->set_region(region);
 
   // Verify getter and has_xxx():
-  CPPUNIT_ASSERT(name == feature_->get_name());
-  CPPUNIT_ASSERT(true == feature_->has_name());
-  CPPUNIT_ASSERT(visibility == feature_->get_visibility());
-  CPPUNIT_ASSERT(true == feature_->has_visibility());
-  CPPUNIT_ASSERT(open == feature_->get_open());
-  CPPUNIT_ASSERT(true == feature_->has_open());
-  CPPUNIT_ASSERT(address == feature_->get_address());
-  CPPUNIT_ASSERT(true == feature_->has_address());
-  CPPUNIT_ASSERT(phonenumber == feature_->get_phonenumber());
-  CPPUNIT_ASSERT(true == feature_->has_phonenumber());
-  CPPUNIT_ASSERT(snippet == feature_->get_snippet());
-  CPPUNIT_ASSERT(true == feature_->has_snippet());
-  CPPUNIT_ASSERT(description == feature_->get_description());
-  CPPUNIT_ASSERT(true == feature_->has_description());
-  CPPUNIT_ASSERT(lookat == feature_->get_abstractview());
-  CPPUNIT_ASSERT(true == feature_->has_abstractview());
-  CPPUNIT_ASSERT(timespan == feature_->get_timeprimitive());
-  CPPUNIT_ASSERT(true == feature_->has_timeprimitive());
-  CPPUNIT_ASSERT(styleurl == feature_->get_styleurl());
-  CPPUNIT_ASSERT(true == feature_->has_styleurl());
-  CPPUNIT_ASSERT(style == feature_->get_styleselector());
-  CPPUNIT_ASSERT(true == feature_->has_styleselector());
-  CPPUNIT_ASSERT(region == feature_->get_region());
-  CPPUNIT_ASSERT(true == feature_->has_region());
+  ASSERT_TRUE(name == feature_->get_name());
+  ASSERT_TRUE(feature_->has_name());
+  ASSERT_TRUE(visibility == feature_->get_visibility());
+  ASSERT_TRUE(feature_->has_visibility());
+  ASSERT_TRUE(open == feature_->get_open());
+  ASSERT_TRUE(feature_->has_open());
+  ASSERT_TRUE(atomauthor == feature_->get_atomauthor());
+  ASSERT_TRUE(feature_->has_atomauthor());
+  ASSERT_TRUE(atomlink == feature_->get_atomlink());
+  ASSERT_TRUE(feature_->has_atomlink());
+  ASSERT_TRUE(address == feature_->get_address());
+  ASSERT_TRUE(feature_->has_address());
+  ASSERT_TRUE(phonenumber == feature_->get_phonenumber());
+  ASSERT_TRUE(feature_->has_phonenumber());
+  ASSERT_TRUE(snippet == feature_->get_snippet());
+  ASSERT_TRUE(feature_->has_snippet());
+  ASSERT_TRUE(description == feature_->get_description());
+  ASSERT_TRUE(feature_->has_description());
+  ASSERT_TRUE(lookat == feature_->get_abstractview());
+  ASSERT_TRUE(feature_->has_abstractview());
+  ASSERT_TRUE(timespan == feature_->get_timeprimitive());
+  ASSERT_TRUE(feature_->has_timeprimitive());
+  ASSERT_TRUE(styleurl == feature_->get_styleurl());
+  ASSERT_TRUE(feature_->has_styleurl());
+  ASSERT_TRUE(style == feature_->get_styleselector());
+  ASSERT_TRUE(feature_->has_styleselector());
+  ASSERT_TRUE(region == feature_->get_region());
+  ASSERT_TRUE(feature_->has_region());
 
   // Clear all fields:
   feature_->clear_name();
   feature_->clear_visibility();
   feature_->clear_open();
+  feature_->clear_atomauthor();
+  feature_->clear_atomlink();
   feature_->clear_address();
   feature_->clear_phonenumber();
   feature_->clear_snippet();
@@ -195,11 +191,11 @@ void FeatureTest::TestSetGetHasClear() {
   feature_->clear_styleurl();
   feature_->clear_styleselector();
   feature_->clear_region();
-
-  // Verify now in default state:
-  TestDefaults();
 }
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

@@ -54,6 +54,8 @@ static XsdElement kKml22Elements[] = {
 
   // Most elements starting with a big letter are complex.
   { "Alias", XSD_COMPLEX_TYPE },
+  { "atom:author", XSD_COMPLEX_TYPE },
+  { "atom:link", XSD_COMPLEX_TYPE },
   { "BalloonStyle", XSD_COMPLEX_TYPE },
   { "Camera", XSD_COMPLEX_TYPE },
   { "Change", XSD_COMPLEX_TYPE },
@@ -110,6 +112,9 @@ static XsdElement kKml22Elements[] = {
   { "ViewVolume", XSD_COMPLEX_TYPE },
 
   // Most elements (but not all) starting with a little letter are simple.
+  { "atom:email", XSD_SIMPLE_TYPE },
+  { "atom:name", XSD_SIMPLE_TYPE },
+  { "atom:uri", XSD_SIMPLE_TYPE },
   { "address", XSD_SIMPLE_TYPE },
   { "altitude", XSD_SIMPLE_TYPE },
   { "altitudeMode", XSD_SIMPLE_TYPE },

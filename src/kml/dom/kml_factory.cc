@@ -43,6 +43,8 @@ KmlFactory* KmlFactory::GetFactory() {
 ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   switch (id) {
   case Type_Alias: return CreateAlias();
+  case Type_AtomAuthor: return CreateAtomAuthor();
+  case Type_AtomLink: return CreateAtomLink();
   case Type_BalloonStyle: return CreateBalloonStyle();
   case Type_Camera: return CreateCamera();
   case Type_Change: return CreateChange();
@@ -116,6 +118,14 @@ Field* KmlFactory::CreateFieldById(KmlDomType type_id) const {
 
 Alias* KmlFactory::CreateAlias() const {
   return new Alias();
+}
+
+AtomAuthor* KmlFactory::CreateAtomAuthor() const {
+  return new AtomAuthor();
+}
+
+AtomLink* KmlFactory::CreateAtomLink() const {
+  return new AtomLink();
 }
 
 BalloonStyle* KmlFactory::CreateBalloonStyle() const {

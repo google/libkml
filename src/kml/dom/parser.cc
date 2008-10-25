@@ -31,72 +31,14 @@
 #include <cstring>
 #include <sstream>
 #include <string>
-#include "expat.h"
+#include "kml/base/expat_parser.h"
 #include "kml/dom/element.h"
-#include "kml/dom/expat_handler.h"
 #include "kml/dom/kml_handler.h"
 #include "kml/dom/kml_handler_ns.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
 
 namespace kmldom {
-
-static void XMLCALL
-startElement(void *userData, const char *name, const char **atts) {
-  ((ExpatHandler*)userData)->StartElement(name, atts);
-}
-
-static void XMLCALL
-endElement(void *userData, const char *name) {
-  ((ExpatHandler*)userData)->EndElement(name);
-}
-
-static void XMLCALL
-charData(void *userData, const XML_Char *s, int len) {
-  ((ExpatHandler*)userData)->CharData(s, len);
-}
-
-static void XMLCALL
-startNamespace(void *userData, const XML_Char *prefix, const XML_Char *uri) {
-  ((ExpatHandler*)userData)->StartNamespace(prefix, uri);
-}
-
-static void XMLCALL
-endNamespace(void *userData, const XML_Char *prefix) {
-  ((ExpatHandler*)userData)->EndNamespace(prefix);
-}
-
-bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
-                 std::string* errors, bool namespace_aware) {
-  XML_Parser parser = namespace_aware ? XML_ParserCreateNS(NULL, '|') :
-                                        XML_ParserCreate(NULL);
-  expat_handler->set_parser(parser);
-  XML_SetUserData(parser, expat_handler);
-  XML_SetElementHandler(parser, startElement, endElement);
-  XML_SetCharacterDataHandler(parser, charData);
-  if (namespace_aware) {
-    XML_SetNamespaceDeclHandler(parser, startNamespace, endNamespace);
-  }
-  int xml_size = static_cast<int>(xml.size());
-  XML_Status status = XML_Parse(parser, xml.c_str(), xml_size, xml_size);
-  if (status != XML_STATUS_OK && errors) {
-    // This is the other half of XML_StopParser() which is our way of
-    // stopping expat if the root element is not KML.
-    if (status == XML_STATUS_SUSPENDED) {
-      *errors = "Invalid root element";
-    } else {
-      std::stringstream strstream;
-      strstream << XML_ErrorString(XML_GetErrorCode(parser));
-      strstream << " on line ";
-      strstream << XML_GetCurrentLineNumber(parser);
-      strstream << " at offset ";
-      strstream << XML_GetCurrentColumnNumber(parser);
-      *errors = strstream.str();
-    }
-  }
-  XML_ParserFree(parser);
-  return status == XML_STATUS_OK;
-}
 
 // This is an internal API to add Element-level SAX-style handlers to
 // a given parser instance.  TODO: determine how/if to make public and SWIG.
@@ -108,18 +50,19 @@ void Parser::AddObserver(ParserObserver* parser_observer) {
 // public and SWIG.
 ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
   KmlHandler kml_handler(observers_);
-  bool status = ExpatParser(kml, &kml_handler, errors, false);
+  bool status = kmlbase::ExpatParser(kml, &kml_handler, errors, false);
   if (status) {
     return kml_handler.PopRoot();
   }
   return NULL;
 }
 
+
 // As Parser::Parse(), but invokes the underlying XML parser's namespace-aware
 // mode.
 ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
   KmlHandlerNS kml_handler(observers_);
-  bool status = ExpatParser(kml, &kml_handler, errors, true);
+  bool status = kmlbase::ExpatParser(kml, &kml_handler, errors, true);
   if (status) {
     return kml_handler.PopRoot();
   }

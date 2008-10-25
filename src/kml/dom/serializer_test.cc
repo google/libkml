@@ -32,48 +32,26 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kmldom.h"
-#include "kml/base/unit_test.h"
+#include "gtest/gtest.h"
 
 using kmlbase::Attributes;
 
 namespace kmldom {
 
-class SerializerTest : public CPPUNIT_NS::TestFixture {
-  CPPUNIT_TEST_SUITE(SerializerTest);
-  CPPUNIT_TEST(TestNullSerializer);
-  CPPUNIT_TEST(TestStatsSerializerOnEmptyElement);
-  CPPUNIT_TEST(TestStatsSerializerOnFields);
-  CPPUNIT_TEST(TestStatsSerializerOnChildren);
-  CPPUNIT_TEST_SUITE_END();
-
+class SerializerTest : public testing::Test {
  protected:
-  void TestNullSerializer();
-  void TestStatsSerializerOnEmptyElement();
-  void TestStatsSerializerOnFields();
-  void TestStatsSerializerOnChildren();
-
- public:
-  // Called before each test.
-  void setUp() {
+  virtual void SetUp() {
     folder_ = KmlFactory::GetFactory()->CreateFolder();
     placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
     point_ = KmlFactory::GetFactory()->CreatePoint();
     region_ = KmlFactory::GetFactory()->CreateRegion();
   }
 
-  // Called after each test.
-  void tearDown() {
-    // Nothing to tear down due to use of smart pointers.
-  }
-
- private:
   FolderPtr folder_;
   PlacemarkPtr placemark_;
   PointPtr point_;
   RegionPtr region_;
 };
-
-CPPUNIT_TEST_SUITE_REGISTRATION(SerializerTest);
 
 // The NullSerializer implementation overrides no Serializer virtual methods.
 // This verifies that Serializer has no pure virtual methods.
@@ -190,13 +168,13 @@ class StatsSerializer : public Serializer {
 
 // This exists because Serialize is public only on Element.
 static void CallSerializer(const ElementPtr& element, Serializer* serializer) {
-  CPPUNIT_ASSERT(element);  // This is basically an internal check.
-  CPPUNIT_ASSERT(serializer);  // This is basically an internal check.
+  ASSERT_TRUE(element);  // This is basically an internal check.
+  ASSERT_TRUE(serializer);  // This is basically an internal check.
   element->Serialize(*serializer);
 }
 
 // Verify that the default Serializer properly does nothing.
-void SerializerTest::TestNullSerializer() {
+TEST_F(SerializerTest, TestNullSerializer) {
   Serializer serializer;
   CallSerializer(placemark_, &serializer);
   NullSerializer null_serializer;
@@ -208,24 +186,24 @@ void SerializerTest::TestNullSerializer() {
 // Verify that the framework calls out to the Serializer-based class the
 // expected number of times for the very simple case of a complex element
 // with no fields or child elements.
-void SerializerTest::TestStatsSerializerOnEmptyElement() {
+TEST_F(SerializerTest, TestStatsSerializerOnEmptyElement) {
   StatsSerializer stats_serializer;
   CallSerializer(placemark_, &stats_serializer);
   // Once for <Placemark>
-  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_begin_count());
+  ASSERT_EQ(1, stats_serializer.get_begin_count());
   // Once for </Placemark>
-  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
+  ASSERT_EQ(1, stats_serializer.get_end_count());
   // No child simple elements (fields).
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
+  ASSERT_EQ(0, stats_serializer.get_field_count());
   // No child complex elements.
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_count());
+  ASSERT_EQ(0, stats_serializer.get_element_count());
   // No child complex elements in substitution groups.
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_group_count());
+  ASSERT_EQ(0, stats_serializer.get_element_group_count());
 }
 
 // Verify that the framework calls out to the Serializer-based class as
 // expected for a complex element with some fields.
-void SerializerTest::TestStatsSerializerOnFields() {
+TEST_F(SerializerTest, TestStatsSerializerOnFields) {
   StatsSerializer stats_serializer;
   placemark_->set_id("id");  // This is known to be an attribute.
   placemark_->set_name("hi");  // This is known to be a field (<name>).
@@ -233,59 +211,62 @@ void SerializerTest::TestStatsSerializerOnFields() {
   placemark_->set_visibility(true);
   CallSerializer(placemark_, &stats_serializer);
   // 1: <Placemark>
-  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_begin_count());
+  ASSERT_EQ(1, stats_serializer.get_begin_count());
   // 1: </Placemark>
-  CPPUNIT_ASSERT_EQUAL(1, stats_serializer.get_end_count());
+  ASSERT_EQ(1, stats_serializer.get_end_count());
   // 2: <name>, <visibility>
-  CPPUNIT_ASSERT_EQUAL(2, stats_serializer.get_field_count());
+  ASSERT_EQ(2, stats_serializer.get_field_count());
   // No child complex elements.
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_count());
+  ASSERT_EQ(0, stats_serializer.get_element_count());
   // No child complex elements in substitution groups.
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_element_group_count());
+  ASSERT_EQ(0, stats_serializer.get_element_group_count());
 }
 
 // Verify that the framework calls out to the Serializer-based class as
 // expected for a hierarchy of complex elements.
-void SerializerTest::TestStatsSerializerOnChildren() {
+TEST_F(SerializerTest, TestStatsSerializerOnChildren) {
   StatsSerializer stats_serializer;
   placemark_->set_geometry(point_);
   placemark_->set_region(region_);
   folder_->add_feature(placemark_);
   CallSerializer(folder_, &stats_serializer);
   // 3: <Folder> <Placemark> <Region> <Point>
-  CPPUNIT_ASSERT_EQUAL(4, stats_serializer.get_begin_count());
+  ASSERT_EQ(4, stats_serializer.get_begin_count());
   // 3: </Point> </Region> </Placemark> </Folder>
-  CPPUNIT_ASSERT_EQUAL(4, stats_serializer.get_end_count());
+  ASSERT_EQ(4, stats_serializer.get_end_count());
   // 0: none of the complex elements have attributes or fields
-  CPPUNIT_ASSERT_EQUAL(0, stats_serializer.get_field_count());
+  ASSERT_EQ(0, stats_serializer.get_field_count());
   // 2: 1 for Folder's Placemark + 1 for Placemark's Point + 1 for Placemark's
   // Region.
-  CPPUNIT_ASSERT_EQUAL(3, stats_serializer.get_element_count());
+  ASSERT_EQ(3, stats_serializer.get_element_count());
   // Placemark is a Feature in Folder, and Point is Geometry in Placemark.
   // Region is not in a group.
-  CPPUNIT_ASSERT_EQUAL(2, stats_serializer.get_element_group_count());
+  ASSERT_EQ(2, stats_serializer.get_element_group_count());
 
   // Verify that a serializer which provides no implementation of SaveElement()
   // recurses down the hierarchy of complex elements.
   HierarchicalSerializer hier_serializer;
   CallSerializer(folder_, &hier_serializer);
   const TypeIdVector& type_id_vector = hier_serializer.get_type_id_vector();
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(4), type_id_vector.size());
-  CPPUNIT_ASSERT_EQUAL(Type_Folder, type_id_vector[0]);
-  CPPUNIT_ASSERT_EQUAL(Type_Placemark, type_id_vector[1]);
-  CPPUNIT_ASSERT_EQUAL(Type_Region, type_id_vector[2]);
-  CPPUNIT_ASSERT_EQUAL(Type_Point, type_id_vector[3]);
+  ASSERT_EQ(static_cast<size_t>(4), type_id_vector.size());
+  ASSERT_EQ(Type_Folder, type_id_vector[0]);
+  ASSERT_EQ(Type_Placemark, type_id_vector[1]);
+  ASSERT_EQ(Type_Region, type_id_vector[2]);
+  ASSERT_EQ(Type_Point, type_id_vector[3]);
 
   // Verify that a serializer which provides a non-recursing implementation
   // of SaveElement() merely visits each complex element.
   FlatSerializer flat_serializer;
   CallSerializer(placemark_, &flat_serializer);
   const ElementVector& element_vector = flat_serializer.get_element_vector();
-  CPPUNIT_ASSERT_EQUAL(static_cast<size_t>(2), element_vector.size());
-  CPPUNIT_ASSERT_EQUAL(Type_Region, element_vector[0]->Type());
-  CPPUNIT_ASSERT_EQUAL(Type_Point, element_vector[1]->Type());
+  ASSERT_EQ(static_cast<size_t>(2), element_vector.size());
+  ASSERT_EQ(Type_Region, element_vector[0]->Type());
+  ASSERT_EQ(Type_Point, element_vector[1]->Type());
 }
 
 }  // end namespace kmldom
 
-TEST_MAIN
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

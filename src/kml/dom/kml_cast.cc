@@ -113,6 +113,20 @@ const AliasPtr AsAlias(const ElementPtr element) {
   return NULL;
 }
 
+const AtomAuthorPtr AsAtomAuthor(const ElementPtr element) {
+  if (element && element->Type() == Type_AtomAuthor) {
+    return boost::static_pointer_cast<AtomAuthor>(element);
+  }
+  return NULL;
+}
+
+const AtomLinkPtr AsAtomLink(const ElementPtr element) {
+  if (element && element->Type() == Type_AtomLink) {
+    return boost::static_pointer_cast<AtomLink>(element);
+  }
+  return NULL;
+}
+
 const BalloonStylePtr AsBalloonStyle(const ElementPtr element) {
   if (element && element->Type() == Type_BalloonStyle) {
     return boost::static_pointer_cast<BalloonStyle>(element);
