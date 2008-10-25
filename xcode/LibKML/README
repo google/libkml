@@ -1,0 +1,7 @@
+The LibKML Xcode project builds all libraries directly within the Xcode
+environment without use of configure, make, etc. It also builds an OS X
+Framework suitable for binary packaging and distribution.
+
+For more information on Xcode and Frameworks, see:
+  -  http://developer.apple.com/tools/xcode/
+  -  http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Frameworks.html
