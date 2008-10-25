@@ -8,12 +8,6 @@ AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
 
-dnl Where can we find cppunit headers and libs?
-AM_PATH_CPPUNIT(1.12.0)
-dnl If we have cppunit installed, we set a define here. The unit tests 
-dnl elsewhere will build conditionally against this flag.
-AM_CONDITIONAL(HAVE_CPPUNIT, test "$CPPUNIT_LIBS")
-
 AC_PROG_CPP
 AC_PROG_CXX
 AC_PROG_INSTALL
@@ -175,12 +169,15 @@ AC_CONFIG_FILES([
 	examples/Makefile
 	examples/domviewer/Makefile
 	examples/engine/Makefile
+	examples/gpx/Makefile
 	examples/hellonet/Makefile
 	examples/helloworld/Makefile
 	examples/java/Makefile
 	examples/kml/Makefile
 	examples/python/Makefile
 	examples/regionator/Makefile
+	examples/wxregionator/Makefile
+	examples/wxviewer/Makefile
 	examples/xsd/Makefile
 	src/Makefile
 	src/kml/Makefile
@@ -194,8 +191,10 @@ AC_CONFIG_FILES([
 	src/swig/java/Makefile
 	src/swig/python/Makefile
 	testdata/Makefile
+	testdata/atom/Makefile
 	testdata/balloon/Makefile
 	testdata/csv/Makefile
+	testdata/gpx/Makefile
 	testdata/kmz/Makefile
 	testdata/kmz/rumsey/Makefile
 	testdata/kmz/rumsey/kml/Makefile
@@ -205,6 +204,8 @@ AC_CONFIG_FILES([
 	testdata/style/weather/Makefile
 	testdata/xsd/Makefile
 	third_party/Makefile
+	xcode/Makefile
+	xcode/LibKML/Makefile
 ])
 
 AC_OUTPUT
