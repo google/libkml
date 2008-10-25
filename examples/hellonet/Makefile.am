@@ -8,7 +8,7 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = kmlwalk kmzfetch resolvestyle
+noinst_PROGRAMS = kmlwalk kmzfetch resolvestyle xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -33,6 +33,13 @@ resolvestyle_SOURCES = resolvestyle.cc
 resolvestyle_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+xsdprint_SOURCES = xsdprint.cc
+xsdprint_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/xsd/libkmlxsd.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 

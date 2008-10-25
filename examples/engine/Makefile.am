@@ -6,7 +6,7 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = balloonwalker clone kmlfile kmzchecklinks printstyle
+noinst_PROGRAMS = balloonwalker clone kmlfile kmzchecklinks oldschema printstyle
 
 balloonwalker_SOURCES = balloonwalker.cc
 balloonwalker_LDADD = \
@@ -28,6 +28,12 @@ kmlfile_LDADD = \
 
 kmzchecklinks_SOURCES = kmzchecklinks.cc
 kmzchecklinks_LDADD = \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+oldschema_SOURCES = oldschema.cc
+oldschema_LDADD = \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
