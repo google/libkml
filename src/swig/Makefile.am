@@ -15,10 +15,12 @@ pkglib_LTLIBRARIES=
 
 if WITH_SWIG
 if WITH_JAVA
+pkglib_LTLIBRARIES += libkmlbase_swig_java.la
 pkglib_LTLIBRARIES += libkmldom_swig_java.la
 pkglib_LTLIBRARIES += libkmlengine_swig_java.la
 endif
 if WITH_PYTHON
+pkglib_LTLIBRARIES += libkmlbase_swig_python.la
 pkglib_LTLIBRARIES += libkmldom_swig_python.la
 pkglib_LTLIBRARIES += libkmlengine_swig_python.la
 endif
@@ -39,6 +41,21 @@ kmldom_python.cc: kmldom.i
 	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmldom_python.cc \
 	$(top_srcdir)/src/swig/kmldom.i
 
+libkmlbase_swig_java_la_SOURCES = kmlbase_java.cc
+libkmlbase_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
+libkmlbase_swig_java_la_LIBADD = $(COMMONLIBS)
+kmlbase_java.cc: kmlbase.i
+	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmlbase_java.cc \
+	$(top_srcdir)/src/swig/kmlbase.i
+
+libkmlbase_swig_python_la_SOURCES = kmlbase_python.cc kmlbase.py
+libkmlbase_swig_python_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(PYTHON_INCLUDE_DIR)
+libkmlbase_swig_python_la_LIBADD = $(COMMONLIBS)
+libkmlbase_swig_python_la_LDFLAGS = -dynamiclib -python -lexpat
+kmlbase_python.cc: kmlbase.i
+	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmlbase_python.cc \
+	$(top_srcdir)/src/swig/kmlbase.i
+
 libkmlengine_swig_java_la_SOURCES = kmlengine_java.cc
 libkmlengine_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
 libkmlengine_swig_java_la_LIBADD = $(COMMONLIBS)
@@ -56,7 +73,11 @@ kmlengine_python.cc: kmlengine.i
 
 if WITH_SWIG
 if WITH_PYTHON
-pythonext_DATA = _kmldom.so kmldom.py _kmlengine.so kmlengine.py
+pythonext_DATA = _kmlbase.so kmlbase.py _kmldom.so kmldom.py _kmlengine.so kmlengine.py
+_kmlbase.so:
+	cp $(top_builddir)/src/swig/.libs/libkmlbase_swig_python.$(SHLIBSUFFIX) _kmlbase.so
+kmlbase.py:
+	cp $(top_srcdir)/src/swig/kmlbase.py kmlbase.py
 _kmldom.so:
 	cp $(top_builddir)/src/swig/.libs/libkmldom_swig_python.$(SHLIBSUFFIX) _kmldom.so
 kmldom.py:
@@ -69,12 +90,14 @@ kmlengine.py:
 pythonextdir = $(PYTHON_SITE_PACKAGES_DIR)
 
 clean-local:
-	-rm -f _kmldom.so _kmlengine.so
+	-rm -f _kmlbase.so _kmldom.so _kmlengine.so
 endif
 endif
 
 EXTRA_DIST = \
 	intrusive_ptr.i \
+	kmlbase.i \
+	kmlbase_test.py \
 	kmldom.i \
 	kmldom_test.py \
 	kmlelements.i \
