@@ -37,11 +37,11 @@ class ColorTest : public testing::Test {
 };
 
 // Colors we'll use in multiple tests, given as AABBGGRR.
-static const uint32 kOpaqueWhite = 0xffffffff;
-static const uint32 kOpaqueBlack = 0xff000000;
-static const uint32 kOpaqueBlue = 0xffff0000;
-static const uint32 kOpaqueGreen = 0xff00ff00;
-static const uint32 kOpaqueRed = 0xff0000ff;
+static const uint32_t kOpaqueWhite = 0xffffffff;
+static const uint32_t kOpaqueBlack = 0xff000000;
+static const uint32_t kOpaqueBlue = 0xffff0000;
+static const uint32_t kOpaqueGreen = 0xff00ff00;
+static const uint32_t kOpaqueRed = 0xff0000ff;
 
 TEST_F(ColorTest, TestConstruction) {
   // Verify basic instantiation of a default Color32 object.
@@ -49,7 +49,7 @@ TEST_F(ColorTest, TestConstruction) {
   ASSERT_EQ(kOpaqueWhite, color_->get_color_abgr());
 
   // Verify construction from an int.
-  const int32 kRedInt = 0xff0000ff;
+  const int32_t kRedInt = 0xff0000ff;
   color_.reset(new Color32(kRedInt));
   ASSERT_EQ(kOpaqueRed, color_->get_color_abgr());
 
@@ -115,14 +115,14 @@ TEST_F(ColorTest, TestConstruction) {
 TEST_F(ColorTest, TestGetSet) {
   // Verify getters of default state.
   color_.reset(new Color32());
-  const uint32 kFF = 0xff;
+  const uint32_t kFF = 0xff;
   ASSERT_EQ(kFF, color_->get_alpha());
   ASSERT_EQ(kFF, color_->get_blue());
   ASSERT_EQ(kFF, color_->get_green());
   ASSERT_EQ(kFF, color_->get_red());
 
   // Verify getters of newly set state.
-  const uint32 kAB = 0xab;
+  const uint32_t kAB = 0xab;
   color_->set_alpha(kAB);
   color_->set_blue(kAB);
   color_->set_green(kAB);
@@ -134,7 +134,7 @@ TEST_F(ColorTest, TestGetSet) {
 
   // Verify get_color_abgr and get_color_rgba.
   color_.reset(new Color32(kOpaqueGreen));
-  const uint32 kOpaqueGreenARGB = 0xff00ff00;
+  const uint32_t kOpaqueGreenARGB = 0xff00ff00;
   ASSERT_EQ(kOpaqueGreen, color_->get_color_abgr());
   ASSERT_EQ(kOpaqueGreenARGB, color_->get_color_argb());
 
@@ -151,7 +151,7 @@ TEST_F(ColorTest, TestGetSet) {
 
 TEST_F(ColorTest, TestOperators) {
   // Verify correct behavior of overidden class operators.
-  // Assignment from uint32.
+  // Assignment from uint32_t.
   color_.reset(new Color32());
   *color_.get() = kOpaqueGreen;  // Same as: Color32 c; c = kOpaqueGreen;
   ASSERT_EQ(kOpaqueGreen, color_->get_color_abgr());

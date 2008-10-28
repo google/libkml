@@ -35,15 +35,15 @@ class UtilTest : public testing::Test {
 
 TEST_F(UtilTest, TestIntTypedefs) {
   // Signed.
-  ASSERT_TRUE(1 == sizeof(int8));
-  ASSERT_TRUE(2 == sizeof(int16));
-  ASSERT_TRUE(4 == sizeof(int32));
-  ASSERT_TRUE(8 == sizeof(int64));
+  ASSERT_TRUE(1 == sizeof(int8_t));
+  ASSERT_TRUE(2 == sizeof(int16_t));
+  ASSERT_TRUE(4 == sizeof(int32_t));
+  ASSERT_TRUE(8 == sizeof(int64_t));
   // Unsigned.
-  ASSERT_TRUE(1 == sizeof(uint8));
-  ASSERT_TRUE(2 == sizeof(uint16));
-  ASSERT_TRUE(4 == sizeof(uint32));
-  ASSERT_TRUE(8 == sizeof(uint64));
+  ASSERT_TRUE(1 == sizeof(uint8_t));
+  ASSERT_TRUE(2 == sizeof(uint16_t));
+  ASSERT_TRUE(4 == sizeof(uint32_t));
+  ASSERT_TRUE(8 == sizeof(uint64_t));
 }
 
 }  // end namespace kmlbase
