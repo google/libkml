@@ -164,6 +164,10 @@ namespace kmlbase {
 class Referent {
 };
 
+%nodefaultctor Color32;
+class Color32 {
+};
+
 }  // end namespace kmlbase
 
 namespace kmldom {

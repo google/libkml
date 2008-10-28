@@ -30,6 +30,7 @@ This file contains unit tests for the KML DOM Python SWIG bindings.
 """
 
 import unittest
+import kmlbase
 import kmldom
 
 
@@ -446,7 +447,7 @@ def TestColorStyle(colorstyle):
   # Verify default state of <color>
   assert not colorstyle.has_color()
   # Set <color> to a given value and verify get_ and has_
-  color = 'f0f0c80f'
+  color = kmlbase.Color32(0xf0f0c80f)
   colorstyle.set_color(color)
   assert colorstyle.has_color()
   assert color == colorstyle.get_color()
