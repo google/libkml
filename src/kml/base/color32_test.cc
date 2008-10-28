@@ -171,7 +171,7 @@ TEST_F(ColorTest, TestOperators) {
   Color32 black(kOpaqueBlack);
   Color32 green(kOpaqueGreen);
   ASSERT_TRUE(black != green);
-  
+
   // Equality operator.
   ASSERT_TRUE(black == black);
   ASSERT_TRUE(green == green);
@@ -181,6 +181,15 @@ TEST_F(ColorTest, TestOperators) {
 
   // Less-than operator.
   ASSERT_TRUE(black < green);
+}
+
+TEST_F(ColorTest, TestSetFromUint32Argb) {
+  color_.reset(new Color32());
+  color_->set_color_argb(0x7f112233);
+  ASSERT_EQ(static_cast<uint32_t>(0x7f), color_->get_alpha());
+  ASSERT_EQ(static_cast<uint32_t>(0x11), color_->get_red());
+  ASSERT_EQ(static_cast<uint32_t>(0x22), color_->get_green());
+  ASSERT_EQ(static_cast<uint32_t>(0x33), color_->get_blue());
 }
 
 }  // end namespace kmlbase
