@@ -159,6 +159,14 @@ class Color32 {
     set_red(r);
   }
 
+  // Sets the color from a uint of AARRGGBB color.
+  void set_color_argb(uint32_t color_argb) {
+    set_alpha((color_argb >> 24) & 0xff);
+    set_red((color_argb >> 16) & 0xff);
+    set_green((color_argb >> 8) & 0xff);
+    set_blue(color_argb & 0xff);
+  }
+
   // Operator overrides.
   Color32& operator=(uint32_t color_abgr) {
     color_abgr_ = color_abgr;
