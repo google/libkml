@@ -57,7 +57,9 @@ libkmlengineinclude_HEADERS = \
 	location_util.h \
 	merge.h \
 	object_id_parser_observer.h \
+	old_schema_parser_observer.h \
 	parse_old_schema.h \
+	schema_parser_observer.h \
 	shared_style_parser_observer.h \
 	style_merger.h \
 	style_resolver.h
