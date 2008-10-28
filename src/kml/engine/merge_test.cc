@@ -245,17 +245,11 @@ TEST_F(MergeTest, TestMergeIconStyle) {
   ASSERT_EQ(kScale, target_style_->get_iconstyle()->get_scale());
   ASSERT_EQ(kHeading, target_style_->get_iconstyle()->get_heading());
   ASSERT_TRUE(source_style_->get_iconstyle()->has_icon());
-  // TODO: IconStyleIcon's Serialize lies and calls itself Icon
-  //       Fix it to not lie and make XmlSerialize handle the matter.
   ASSERT_TRUE(target_style_->get_iconstyle()->has_icon());
-  // ASSERT_TRUE(source->get_iconstyle()->get_icon()->has_href());
-  // ASSERT_TRUE(target_style_->get_iconstyle()->get_icon()->has_href());
-  // ASSERT_EQ(kHref,
-  //                      source->get_iconstyle()->get_icon()->get_href());
-  // ASSERT_EQ(
-  //     kHref, target_style_->get_iconstyle()->get_icon()->get_href());
-  // NOTE that an XML Serialization of dest _will_ have Icon in IconStyle
-  // due to the unkonwn element handling.
+  ASSERT_TRUE(source_style_->get_iconstyle()->get_icon()->has_href());
+  ASSERT_TRUE(target_style_->get_iconstyle()->get_icon()->has_href());
+  ASSERT_EQ(kHref, source_style_->get_iconstyle()->get_icon()->get_href());
+  ASSERT_EQ(kHref, target_style_->get_iconstyle()->get_icon()->get_href());
 }
 
 // This is a utility function to create each substyle and set the given

@@ -35,7 +35,7 @@ namespace kmlbase {
 
 // TODO: Move to string utils.
 // Binary-to-ASCII hex conversion.
-static void b2a_hex(uint32 i, char* out) {
+static void b2a_hex(uint32_t i, char* out) {
   char map[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                   'a', 'b', 'c', 'd', 'e', 'f'};
   out[0] = map[(i >> 4) & 0xf];
@@ -47,11 +47,11 @@ class Color32 {
   explicit Color32()
     : color_abgr_(0xffffffff) {
   }
-  explicit Color32(uint32 abgr)
+  explicit Color32(uint32_t abgr)
     : color_abgr_(abgr) {
   }
-  explicit Color32(int32 abgr)
-    : color_abgr_(static_cast<uint32>(abgr)) {
+  explicit Color32(int32_t abgr)
+    : color_abgr_(static_cast<uint32_t>(abgr)) {
   }
   Color32(unsigned char a, unsigned char b, unsigned char g, unsigned char r) {
     set_color_abgr((a << 24) | (b << 16) | (g << 8) | r);
@@ -61,7 +61,7 @@ class Color32 {
   }
 
   // Red.
-  uint32 get_red() const {
+  uint32_t get_red() const {
     return color_abgr_ & 0x000000ff;
   }
   void set_red(unsigned char value) {
@@ -69,7 +69,7 @@ class Color32 {
   }
 
   // Green.
-  uint32 get_green() const {
+  uint32_t get_green() const {
     return (color_abgr_ & 0x0000ff00) >> 8;
   }
   void set_green(unsigned char value) {
@@ -77,7 +77,7 @@ class Color32 {
   }
 
   // Blue.
-  uint32 get_blue() const {
+  uint32_t get_blue() const {
     return (color_abgr_ & 0x00ff0000) >> 16;
   }
   void set_blue(unsigned char value) {
@@ -85,7 +85,7 @@ class Color32 {
   }
 
   // Alpha.
-  uint32 get_alpha() const {
+  uint32_t get_alpha() const {
     return (color_abgr_ & 0xff000000) >> 24;
   }
   void set_alpha(unsigned char value) {
@@ -93,12 +93,12 @@ class Color32 {
   }
 
   // Returns the color as AABBGGRR.
-  uint32 get_color_abgr() const {
+  uint32_t get_color_abgr() const {
     return color_abgr_;
   }
 
   // Returns the color as AARRGGBB.
-  uint32 get_color_argb() const {
+  uint32_t get_color_argb() const {
     return (color_abgr_ & 0xff000000) |
            ((color_abgr_ & 0x00ff0000) >> 16) |
            (color_abgr_ & 0x0000ff00) |
@@ -127,14 +127,14 @@ class Color32 {
     return out;
   }
 
-  // Sets the color from an uint32 of AABBGGRR color.
-  void set_color_abgr(uint32 color_abgr) {
+  // Sets the color from an uint32_t of AABBGGRR color.
+  void set_color_abgr(uint32_t color_abgr) {
     color_abgr_ = color_abgr;
   }
 
   // Sets the color from a string of AABBGGRR color.
   void set_color_abgr(const std::string& color_abgr) {
-    uint32 out = 0;
+    uint32_t out = 0;
     for(size_t i = 0; i < color_abgr.size(); ++i) {
       out = out * 16;
       if (color_abgr[i] >= '0' && color_abgr[i] <= '9') {
@@ -160,12 +160,12 @@ class Color32 {
   }
 
   // Operator overrides.
-  Color32& operator=(uint32 color_abgr) {
+  Color32& operator=(uint32_t color_abgr) {
     color_abgr_ = color_abgr;
     return *this;
   }
-  Color32& operator=(int32 color_abgr) {
-    color_abgr_ = static_cast<uint32>(color_abgr);
+  Color32& operator=(int32_t color_abgr) {
+    color_abgr_ = static_cast<uint32_t>(color_abgr);
     return *this;
   }
   Color32& operator=(const Color32& color) {
@@ -186,7 +186,7 @@ class Color32 {
   }
 
  private:
-  uint32 color_abgr_;  // Stored in the standard aabbggrr KML format.
+  uint32_t color_abgr_;  // Stored in the standard aabbggrr KML format.
 };
 
 }  // end namespace kmlbase

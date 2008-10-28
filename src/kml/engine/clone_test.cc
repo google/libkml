@@ -34,6 +34,8 @@ using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;
 using kmldom::FolderPtr;
 using kmldom::GroundOverlayPtr;
+using kmldom::IconStylePtr;
+using kmldom::IconStyleIconPtr;
 using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
@@ -223,6 +225,25 @@ TEST_F(CloneTest, TestCloneSnippet) {
   snippet_->set_text(kText);
   cloned_snippet = AsSnippet(Clone(snippet_));
   ASSERT_EQ(kText, cloned_snippet->get_text());
+}
+
+// <IconStyle>'s <Icon> uses has_icon(), etc but is Type_IconStyleIcon.
+TEST_F(CloneTest, TestCloneIconStyle) {
+  IconStyleIconPtr icon = KmlFactory::GetFactory()->CreateIconStyleIcon();
+  const std::string kImage("icon.png");
+  icon->set_href(kImage);
+  IconStylePtr iconstyle = KmlFactory::GetFactory()->CreateIconStyle();
+  iconstyle->set_icon(icon);
+  ASSERT_TRUE(iconstyle->has_icon());
+  ASSERT_EQ(kmldom::Type_IconStyleIcon, iconstyle->get_icon()->Type());
+
+  IconStylePtr clone = AsIconStyle(Clone(iconstyle));
+  ASSERT_TRUE(clone);
+  ASSERT_EQ(kmldom::Type_IconStyle, clone->Type());
+  ASSERT_TRUE(clone->has_icon());
+  ASSERT_TRUE(clone->get_icon()->has_href());
+  ASSERT_EQ(kmldom::Type_IconStyleIcon, clone->get_icon()->Type());
+  ASSERT_EQ(kImage, clone->get_icon()->get_href());
 }
 
 }  // end namespace kmlengine
