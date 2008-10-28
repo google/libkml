@@ -1,2 +1,9 @@
-SUBDIRS = LibKML
+ACLOCAL_AMFLAGS = -I m4
 
+# Order is important:
+SUBDIRS = third_party src testdata examples xcode
+
+EXTRA_DIST = \
+	DEPENDENCIES \
+	autogen.sh \
+	libkml.sln
