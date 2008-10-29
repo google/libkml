@@ -154,6 +154,10 @@ class TrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
   virtual void HandlePoint(const kmlbase::Vec3& where,
                            const std::string& when) {
     boost::scoped_ptr<DateTime> date_time(DateTime::Create(when));
+    if (!date_time.get()) {
+      std::cerr << "bad DateTime " << when << std::endl;
+      return;
+    }
     PointPtr point = kmlconvenience::CreatePointFromVec3(where);
     FolderPtr folder = ManageFolders(*date_time);
     folder->add_feature(kmlconvenience::CreatePointPlacemarkWithTimeStamp(
