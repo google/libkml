@@ -151,6 +151,9 @@ TEST_F(KmlFactoryTest, TestFactory) {
   e = factory->CreateLookAt();
   ASSERT_EQ(Type_LookAt, e->Type());
 
+  e = factory->CreateMetadata();
+  ASSERT_EQ(Type_Metadata, e->Type());
+
   e = factory->CreateModel();
   ASSERT_EQ(Type_Model, e->Type());
 

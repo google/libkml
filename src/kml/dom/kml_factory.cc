@@ -71,6 +71,7 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   case Type_Location: return CreateLocation();
   case Type_Lod: return CreateLod();
   case Type_LookAt: return CreateLookAt();
+  case Type_Metadata: return CreateMetadata();
   case Type_Model: return CreateModel();
   case Type_MultiGeometry: return CreateMultiGeometry();
   case Type_NetworkLink: return CreateNetworkLink();
@@ -246,6 +247,10 @@ Lod* KmlFactory::CreateLod() const {
 
 LookAt* KmlFactory::CreateLookAt() const {
   return new LookAt();
+}
+
+Metadata* KmlFactory::CreateMetadata() const {
+  return new Metadata();
 }
 
 Model* KmlFactory::CreateModel() const {

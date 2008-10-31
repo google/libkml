@@ -132,6 +132,7 @@ class Feature : public Object {
     has_phonenumber_ = false;
   }
 
+  // TODO: "little" <snippet> (presently preserved as a misplaced child)
   // <Snippet>
   const SnippetPtr get_snippet() const { return snippet_; }
   bool has_snippet() const { return snippet_ != NULL; }
@@ -207,6 +208,7 @@ class Feature : public Object {
     set_region(NULL);
   }
 
+  // TODO: <Metadata> (presently preserved as a misplaced child)
   // <ExtendedData>
   const ExtendedDataPtr get_extendeddata() const { return extendeddata_; }
   bool has_extendeddata() const { return extendeddata_ != NULL; }

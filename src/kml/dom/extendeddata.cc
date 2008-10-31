@@ -210,4 +210,14 @@ void ExtendedData::Serialize(Serializer& serializer) const {
   serializer.End();
 }
 
+// <Metadata>
+Metadata::~Metadata() {}
+
+void Metadata::Serialize(Serializer& serializer) const {
+  Attributes attributes;
+  serializer.BeginById(Type(), attributes);
+  Element::SerializeUnknown(serializer);
+  serializer.End();
+}
+
 }  // end namespace kmldom
