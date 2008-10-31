@@ -78,9 +78,30 @@ TEST_F(XsdSimpleTypeTest, TestEnumeration) {
 
   // Still not an enumeration given lack of restriction base.
   ASSERT_FALSE(xsd_simple_type_->IsEnumeration());
+
   // Add a restriction base and verify IsEnumeration().
   xsd_simple_type_->set_restriction_base("string");
   ASSERT_TRUE(xsd_simple_type_->IsEnumeration());
+}
+
+// This verifies the == operator.
+TEST_F(XsdSimpleTypeTest, TestEqualsOperator) {
+  XsdSimpleTypePtr altitude_mode_type_;
+  XsdSimpleTypePtr angle_pos90_type_;
+  // <simpleType name="altitudeModeEnumType">
+  attributes_.SetString(kName, "altitudeModeEnumType");
+  altitude_mode_type_ = XsdSimpleType::Create(attributes_);
+  ASSERT_TRUE(altitude_mode_type_);
+
+  ASSERT_TRUE(altitude_mode_type_ == altitude_mode_type_);
+
+  // <xs:simpleType name="anglepos90Type">
+  const std::string kTypeName("anglepos90Type");
+  attributes_.SetString(kName, kTypeName);
+  angle_pos90_type_ = XsdSimpleType::Create(attributes_);
+  ASSERT_TRUE(angle_pos90_type_);
+
+  ASSERT_FALSE(angle_pos90_type_ == altitude_mode_type_);
 }
 
 }  // end namespace kmlxsd

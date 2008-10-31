@@ -108,7 +108,7 @@ const XsdTypePtr XsdFile::FindElementType(const XsdElementPtr& element) const {
 }
 
 void XsdFile::FindChildElements(const XsdComplexTypePtr& complex_type,
-                               XsdElementVector* elements) const {
+                                XsdElementVector* elements) const {
   if (!complex_type) {
     return;
   }
@@ -229,6 +229,48 @@ void XsdFile::GenerateElementIdVector(XsdElementVector* elements,
     *begin_simple = elements->size();
   }
   GetSimpleElements(elements);
+}
+
+bool XsdFile::SearchTypeHierarchy(const XsdComplexTypePtr& complex_type,
+                                  const XsdComplexTypePtr& find_type) const {
+  if (!xsd_schema_) {  // Not much we can do w/o a <xs:schema ... >!
+    return false;
+  }
+  if (find_type == complex_type) {
+    return true;
+  }
+  if (XsdComplexTypePtr base_type = GetBaseType(complex_type)) {
+    return SearchTypeHierarchy(base_type, find_type);
+  }
+  return false;
+}
+
+void XsdFile::GetElementsOfType(const XsdComplexTypePtr& type,
+                                XsdElementVector* elements) const {
+  if (!elements) {
+    return;
+  }
+  XsdElementMap::const_iterator iter = element_map_.begin();
+  for (; iter != element_map_.end(); ++iter) {
+    XsdElementPtr element = iter->second;
+    if (XsdComplexTypePtr complex_type =
+            XsdComplexType::AsComplexType(FindElementType(element))) {
+      if (SearchTypeHierarchy(complex_type, type)) {
+        elements->push_back(element);
+      }
+    }
+  }
+}
+
+void XsdFile::GetElementsOfTypeByName(const std::string& type_name,
+                                      XsdElementVector* elements) const {
+  if (!elements) {
+    return;
+  }
+  if (const XsdComplexTypePtr complex_type =
+      XsdComplexType::AsComplexType(FindType(type_name))) {
+    GetElementsOfType(complex_type, elements);
+  }
 }
 
 }  // end namespace kmlxsd

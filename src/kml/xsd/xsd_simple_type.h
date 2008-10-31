@@ -50,10 +50,14 @@ class XsdSimpleType : public XsdType {
   }
 
   static XsdSimpleTypePtr AsSimpleType(const XsdTypePtr& xsd_type) {
-    if (xsd_type && !xsd_type->is_complex()) {
+    if (xsd_type && xsd_type->get_xsd_type_id() == XSD_TYPE_SIMPLE) {
       return boost::static_pointer_cast<XsdSimpleType>(xsd_type);
     }
     return NULL;
+  }
+
+  virtual XsdTypeEnum get_xsd_type_id() const {
+    return XSD_TYPE_SIMPLE;
   }
 
   virtual bool is_complex() const {
@@ -84,7 +88,7 @@ class XsdSimpleType : public XsdType {
 
   // Return the number of <xs:enumeration value="..."/>'s.
   const size_t get_enumeration_size() const {
-    return enumeration_.size();
+    return enumeration_.empty() ? 0 : enumeration_.size();
   }
 
   // Return the index'th <xs:enumeration value="..."/>.  The order is preserved
@@ -99,6 +103,7 @@ class XsdSimpleType : public XsdType {
   }
 
  private: 
+  // Client code should use Create().
   XsdSimpleType(const std::string& name)
     : name_(name) {
   }

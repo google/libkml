@@ -160,15 +160,17 @@ class XsdFile {
                                size_t* begin_complex,
                                size_t *begin_simple) const;
 
-#if 0 // TODO: the shape of things to come
-  // Return the enum values valid for the given element.  The values are
-  // returned in order of appearence in the XSD file.  If the element named
-  // is not an enumerated type no output is returned.
-  void GetEnumValues(const std::string& element_name,
-                     std::vector<std::string>* enum_values) const;
+  // If find_type is a base type of complex_type return true, else false.
+  bool SearchTypeHierarchy(const XsdComplexTypePtr& complex_type,
+                           const XsdComplexTypePtr& find_type) const;
 
-  std::string GetDefault(const std::string& element_name) const;
-#endif
+  // Return all elements derived from the given complex type.
+  void GetElementsOfType(const XsdComplexTypePtr& complex_type,
+                         XsdElementVector* elements) const;
+
+  // Return all elements derived from the given complex type name.
+  void GetElementsOfTypeByName(const std::string& type_name,
+                               XsdElementVector* elements) const;
 
  private:
   XsdSchemaPtr xsd_schema_;
