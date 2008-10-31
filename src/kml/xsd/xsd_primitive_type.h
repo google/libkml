@@ -82,6 +82,10 @@ class XsdPrimitiveType : public XsdType {
     return NULL;
   }
 
+  virtual XsdTypeEnum get_xsd_type_id() const {
+    return XSD_TYPE_PRIMITIVE;
+  }
+
   // The XsdPrimitiveType implementation of this XsdType virtual method always
   // returns false.
   virtual bool is_complex() const {

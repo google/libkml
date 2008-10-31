@@ -45,6 +45,7 @@ class XsdFileTest : public testing::Test {
   void SetTestSchema();
   void AddTestComplexTypes();
   void AddTestElements();
+  void InitTestXsd();
   boost::scoped_ptr<XsdFile> xsd_file_;
 };
 
@@ -228,11 +229,15 @@ void XsdFileTest::AddTestElements() {
   }
 }
 
-// Verify GetTypeHierarchy().
-TEST_F(XsdFileTest, TestGetTypeHierarchy) {
+void XsdFileTest::InitTestXsd() {
   SetTestSchema();
   AddTestComplexTypes();
   AddTestElements();
+}
+
+// Verify GetTypeHierarchy().
+TEST_F(XsdFileTest, TestGetTypeHierarchy) {
+  InitTestXsd();
 
   std::vector<XsdComplexTypePtr> hier;
   const XsdElementPtr element = xsd_file_->FindElement("Placemark");
@@ -284,9 +289,7 @@ TEST_F(XsdFileTest, TestGetComplexElements) {
   ASSERT_TRUE(element_names.empty());
 
   // Add the test namespace, types, and elements to the XsdFile.
-  SetTestSchema();
-  AddTestComplexTypes();
-  AddTestElements();
+  InitTestXsd();
   xsd_file_->GetComplexElements(&element_names);
   ASSERT_EQ(static_cast<size_t>(3), element_names.size());
   ASSERT_EQ(std::string("LineString"), element_names[0]->get_name());
@@ -302,9 +305,7 @@ TEST_F(XsdFileTest, TestGetSimpleElements) {
   ASSERT_TRUE(element_names.empty());
 
   // Add the test namespace, types, and elements to the XsdFile.
-  SetTestSchema();
-  AddTestComplexTypes();
-  AddTestElements();
+  InitTestXsd();
   xsd_file_->GetSimpleElements(&element_names);
   ASSERT_EQ(static_cast<size_t>(3), element_names.size());
 }
@@ -377,6 +378,61 @@ TEST_F(XsdFileTest, TestFindChildElements) {
   ASSERT_EQ(static_cast<size_t>(2), children.size());
   ASSERT_EQ(kLatitude, children[0]->get_name());
   ASSERT_EQ(kLongitude, children[1]->get_name());
+}
+
+TEST_F(XsdFileTest, TestSearchTypeHierarchy) {
+  InitTestXsd();
+  const XsdComplexTypePtr& point_type =
+      XsdComplexType::AsComplexType(xsd_file_->FindType("PointType"));
+  ASSERT_TRUE(point_type);
+  const XsdComplexTypePtr& geometry_type =
+      XsdComplexType::AsComplexType(xsd_file_->FindType("GeometryType"));
+  ASSERT_TRUE(geometry_type);
+  const XsdComplexTypePtr& object_type =
+      XsdComplexType::AsComplexType(xsd_file_->FindType("ObjectType"));
+  ASSERT_TRUE(object_type);
+  ASSERT_TRUE(xsd_file_->SearchTypeHierarchy(point_type, geometry_type));
+  ASSERT_TRUE(xsd_file_->SearchTypeHierarchy(point_type, object_type));
+}
+
+
+TEST_F(XsdFileTest, TestGetElementsOfType) {
+  // Add the test namespace, types, and elements to the XsdFile.
+  InitTestXsd();
+  const XsdComplexTypePtr geometry_type =
+      XsdComplexType::AsComplexType(xsd_file_->FindType("GeometryType"));
+  ASSERT_TRUE(geometry_type);
+  XsdElementVector geometry_elements;
+  xsd_file_->GetElementsOfType(geometry_type, &geometry_elements);
+  ASSERT_EQ(static_cast<size_t>(3), geometry_elements.size());
+  ASSERT_EQ(std::string("GeometryGroup"), geometry_elements[0]->get_name());
+  ASSERT_EQ(std::string("LineString"), geometry_elements[1]->get_name());
+  ASSERT_EQ(std::string("Point"), geometry_elements[2]->get_name());
+
+  // Verify NULL element vector does not crash.
+  xsd_file_->GetElementsOfType(geometry_type, NULL);
+}
+
+TEST_F(XsdFileTest, TestGetElementsOfTypeByName) {
+  // Add the test namespace, types, and elements to the XsdFile.
+  InitTestXsd();
+  XsdElementVector object_elements;
+  xsd_file_->GetElementsOfTypeByName("ObjectType", &object_elements);
+  ASSERT_EQ(static_cast<size_t>(6), object_elements.size());
+  ASSERT_EQ(std::string("FeatureGroup"), object_elements[0]->get_name());
+  ASSERT_EQ(std::string("GeometryGroup"), object_elements[1]->get_name());
+  ASSERT_EQ(std::string("LineString"), object_elements[2]->get_name());
+  ASSERT_EQ(std::string("ObjectGroup"), object_elements[3]->get_name());
+  ASSERT_EQ(std::string("Placemark"), object_elements[4]->get_name());
+  ASSERT_EQ(std::string("Point"), object_elements[5]->get_name());
+
+  object_elements.clear();
+  xsd_file_->GetElementsOfTypeByName("NoSuchType", &object_elements);
+  ASSERT_TRUE(object_elements.empty());
+
+  // Verify NULL elements vector pointer doesn't crash.
+  xsd_file_->GetElementsOfTypeByName("ObjectType", NULL);
+  xsd_file_->GetElementsOfTypeByName("NoSuchType", NULL);
 }
 
 }  // end namespace kmlxsd

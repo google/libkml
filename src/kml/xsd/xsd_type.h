@@ -36,6 +36,14 @@ namespace kmlxsd {
 // <xs:simpleType> and <xs:complexType>.
 class XsdType : public kmlbase::Referent {
  public:
+  typedef enum {
+    XSD_TYPE_PRIMITIVE,
+    XSD_TYPE_SIMPLE,
+    XSD_TYPE_COMPLEX
+  } XsdTypeEnum;
+
+  virtual XsdTypeEnum get_xsd_type_id() const = 0;
+
   virtual ~XsdType() {}
 
   // This returns true of this is an <xs:complexType>.
@@ -49,6 +57,12 @@ class XsdType : public kmlbase::Referent {
   // This returns the extension base for a <xs:complexType>, the restriction
   // base for a <xs:simpleType> and "xsd:primitive" for a primitive type.
   virtual const std::string get_base() const = 0;
+
+  // Two XsdType's are equal if their names are the same.
+  bool operator==(const XsdType& xsd_type) const {
+    return get_name() == xsd_type.get_name();
+  }
+
 };
 
 typedef boost::intrusive_ptr<XsdType> XsdTypePtr;

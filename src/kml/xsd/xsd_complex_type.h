@@ -59,10 +59,14 @@ class XsdComplexType : public XsdType {
   // This dynamic cast to XsdComplexTypePtr returns non-NULL if the xsd_type
   // is non-NULL and is_complex() is true.
   static XsdComplexTypePtr AsComplexType(const XsdTypePtr& xsd_type) {
-    if (xsd_type && xsd_type->is_complex()) {
+    if (xsd_type && xsd_type->get_xsd_type_id() == XSD_TYPE_COMPLEX) {
       return boost::static_pointer_cast<XsdComplexType>(xsd_type);
     }
     return NULL;
+  }
+
+  virtual XsdTypeEnum get_xsd_type_id() const {
+    return XSD_TYPE_COMPLEX;
   }
 
   virtual bool is_complex() const {
