@@ -6,7 +6,7 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = xsdchildren xsdcoverage xsdelements xsdenums xsdtypes
+noinst_PROGRAMS = xsdchildren xsdcoverage xsdelements xsdenums xsdfind xsdtypes
 
 xsdchildren_SOURCES = xsdchildren.cc
 xsdchildren_LDADD = \
@@ -30,6 +30,12 @@ xsdelements_LDADD = \
 
 xsdenums_SOURCES = xsdenums.cc
 xsdenums_LDADD = \
+	$(top_builddir)/src/kml/xsd/libkmlxsd.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+xsdfind_SOURCES = xsdfind.cc
+xsdfind_LDADD = \
 	$(top_builddir)/src/kml/xsd/libkmlxsd.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
