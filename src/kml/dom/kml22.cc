@@ -184,6 +184,7 @@ static XsdElement kKml22Elements[] = {
   { "screenXY", XSD_COMPLEX_TYPE },
   { "shape", XSD_SIMPLE_TYPE },
   { "size", XSD_COMPLEX_TYPE },
+  { "snippet", XSD_SIMPLE_TYPE },
   { "sourceHref", XSD_SIMPLE_TYPE },
   { "south", XSD_SIMPLE_TYPE },
   { "state", XSD_SIMPLE_TYPE },

@@ -76,6 +76,7 @@ class KmlFactory {
   Location* CreateLocation() const;
   Lod* CreateLod() const;
   LookAt* CreateLookAt() const;
+  Metadata* CreateMetadata() const;
   Model* CreateModel() const;
   MultiGeometry* CreateMultiGeometry() const;
   NetworkLink* CreateNetworkLink() const;

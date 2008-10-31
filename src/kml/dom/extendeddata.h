@@ -252,6 +252,22 @@ class ExtendedData : public Element {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ExtendedData);
 };
 
+// <Metadata>
+// This element is deprecated in OGC KML 2.2.  New KML should use
+// <ExtendedData>.
+class Metadata : public Element {
+ public:
+  virtual ~Metadata();
+  virtual KmlDomType Type() const { return Type_Metadata; }
+  virtual bool IsA(KmlDomType type) const {
+    return type == Type_Metadata;
+  }
+
+ private:
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+};
+
 }  // end namespace kmldom
 
 #endif  // KML_DOM_EXTENDEDDATA_H__

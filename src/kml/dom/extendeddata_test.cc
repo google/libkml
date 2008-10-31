@@ -274,6 +274,32 @@ TEST_F(ExtendedDataTest, TestParse) {
   ASSERT_EQ(chardata, simpledata->get_text());
 }
 
+// <Metadata>
+class MetadataTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    metadata_ = KmlFactory::GetFactory()->CreateMetadata();
+  }
+
+  MetadataPtr metadata_;
+};
+
+TEST_F(MetadataTest, TestType) {
+  ASSERT_TRUE(Type_Metadata == metadata_->Type());
+  ASSERT_TRUE(metadata_->IsA(Type_Metadata));
+}
+
+TEST_F(MetadataTest, TestParseSerialize) {
+  const std::string kMetadata(
+    "<Metadata>"
+    "<extra><special>stuff</special></extra>\n"  // TODO: remove this newline...
+    "</Metadata>");
+
+  metadata_ = AsMetadata(Parse(kMetadata, NULL));
+  ASSERT_TRUE(metadata_);
+  ASSERT_EQ(kMetadata, SerializeRaw(metadata_));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {

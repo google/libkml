@@ -344,6 +344,13 @@ const KmlPtr AsKml(const ElementPtr element) {
   return NULL;
 }
 
+const MetadataPtr AsMetadata(const ElementPtr element) {
+  if (element && element->Type() == Type_Metadata) {
+    return boost::static_pointer_cast<Metadata>(element);
+  }
+  return NULL;
+}
+
 const ModelPtr AsModel(const ElementPtr element) {
   if (element && element->Type() == Type_Model) {
     return boost::static_pointer_cast<Model>(element);

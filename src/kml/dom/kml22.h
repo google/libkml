@@ -182,6 +182,7 @@ typedef enum {
   Type_screenXY,
   Type_shape,
   Type_size,
+  Type_snippet,
   Type_sourceHref,
   Type_south,
   Type_state,

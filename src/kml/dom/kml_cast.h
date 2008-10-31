@@ -79,6 +79,7 @@ const ListStylePtr AsListStyle(const ElementPtr element);
 const LocationPtr AsLocation(const ElementPtr element);
 const LodPtr AsLod(const ElementPtr element);
 const LookAtPtr AsLookAt(const ElementPtr element);
+const MetadataPtr AsMetadata(const ElementPtr element);
 const ModelPtr AsModel(const ElementPtr element);
 const MultiGeometryPtr AsMultiGeometry(const ElementPtr element);
 const NetworkLinkPtr AsNetworkLink(const ElementPtr element);
