@@ -148,6 +148,17 @@ TEST_F(NetworkLinkTest, TestSerialize) {
     "</NetworkLink>");
 }
 
+TEST_F(NetworkLinkTest, TestSerializeWithId) {
+  const std::string kId("networklink-id");
+  networklink_->set_id(kId);
+  ASSERT_EQ(std::string("<NetworkLink id=\"" + kId + "\"/>"),
+            SerializeRaw(networklink_));
+  networklink_->clear_id();
+  networklink_->set_targetid(kId);
+  ASSERT_EQ(std::string("<NetworkLink targetId=\"" + kId + "\"/>"),
+            SerializeRaw(networklink_));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
