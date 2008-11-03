@@ -415,7 +415,6 @@
 		699481170EB02EEC0042D241 /* file_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_test.cc; sourceTree = "<group>"; };
 		699481180EB02EEC0042D241 /* file_win32.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = file_win32.cc; sourceTree = "<group>"; };
 		699481190EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		6994811A0EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		6994811B0EB02EEC0042D241 /* memory_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = memory_file.h; sourceTree = "<group>"; };
 		6994811C0EB02EEC0042D241 /* net_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net_cache.h; sourceTree = "<group>"; };
 		6994811D0EB02EEC0042D241 /* net_cache_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = net_cache_test.cc; sourceTree = "<group>"; };
@@ -453,7 +452,6 @@
 		6994813E0EB02EEC0042D241 /* kmz_check_links.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kmz_check_links.h; sourceTree = "<group>"; };
 		6994813F0EB02EEC0042D241 /* kmz_check_links_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kmz_check_links_test.cc; sourceTree = "<group>"; };
 		699481400EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699481410EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699481430EB02EEC0042D241 /* abstractlatlonbox.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = abstractlatlonbox.cc; sourceTree = "<group>"; };
 		699481440EB02EEC0042D241 /* abstractlatlonbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = abstractlatlonbox.h; sourceTree = "<group>"; };
 		699481450EB02EEC0042D241 /* abstractlatlonbox_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = abstractlatlonbox_test.cc; sourceTree = "<group>"; };
@@ -530,7 +528,6 @@
 		6994818C0EB02EEC0042D241 /* liststyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = liststyle.h; sourceTree = "<group>"; };
 		6994818D0EB02EEC0042D241 /* liststyle_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = liststyle_test.cc; sourceTree = "<group>"; };
 		6994818E0EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		6994818F0EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699481900EB02EEC0042D241 /* model.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cc; sourceTree = "<group>"; };
 		699481910EB02EEC0042D241 /* model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = model.h; sourceTree = "<group>"; };
 		699481920EB02EEC0042D241 /* model_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model_test.cc; sourceTree = "<group>"; };
@@ -643,7 +640,6 @@
 		699481FE0EB02EEC0042D241 /* location_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = location_util.h; sourceTree = "<group>"; };
 		699481FF0EB02EEC0042D241 /* location_util_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = location_util_test.cc; sourceTree = "<group>"; };
 		699482000EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482010EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482020EB02EEC0042D241 /* merge.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = merge.cc; sourceTree = "<group>"; };
 		699482030EB02EEC0042D241 /* merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = merge.h; sourceTree = "<group>"; };
 		699482040EB02EEC0042D241 /* merge_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = merge_test.cc; sourceTree = "<group>"; };
@@ -659,12 +655,10 @@
 		6994820E0EB02EEC0042D241 /* style_resolver_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = style_resolver_test.cc; sourceTree = "<group>"; };
 		6994820F0EB02EEC0042D241 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = engine.h; sourceTree = "<group>"; };
 		699482100EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482110EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482130EB02EEC0042D241 /* feature_list_region_handler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature_list_region_handler.cc; sourceTree = "<group>"; };
 		699482140EB02EEC0042D241 /* feature_list_region_handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = feature_list_region_handler.h; sourceTree = "<group>"; };
 		699482150EB02EEC0042D241 /* feature_list_region_handler_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = feature_list_region_handler_test.cc; sourceTree = "<group>"; };
 		699482160EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482170EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482180EB02EEC0042D241 /* region_handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = region_handler.h; sourceTree = "<group>"; };
 		699482190EB02EEC0042D241 /* regionator.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = regionator.cc; sourceTree = "<group>"; };
 		6994821A0EB02EEC0042D241 /* regionator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = regionator.h; sourceTree = "<group>"; };
@@ -675,7 +669,6 @@
 		6994821F0EB02EEC0042D241 /* regionator_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = regionator_util.h; sourceTree = "<group>"; };
 		699482200EB02EEC0042D241 /* regionator_util_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = regionator_util_test.cc; sourceTree = "<group>"; };
 		699482220EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482230EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482240EB02EEC0042D241 /* xsd_complex_type.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xsd_complex_type.cc; sourceTree = "<group>"; };
 		699482250EB02EEC0042D241 /* xsd_complex_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xsd_complex_type.h; sourceTree = "<group>"; };
 		699482260EB02EEC0042D241 /* xsd_complex_type_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xsd_complex_type_test.cc; sourceTree = "<group>"; };
@@ -709,21 +702,17 @@
 		699482420EB02EEC0042D241 /* libkmlregionator.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlregionator.vcproj; sourceTree = "<group>"; };
 		699482430EB02EEC0042D241 /* libkmlxsd.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlxsd.vcproj; sourceTree = "<group>"; };
 		699482440EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482450EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482490EB02EEC0042D241 /* intrusive_ptr.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = intrusive_ptr.i; sourceTree = "<group>"; };
 		6994824B0EB02EEC0042D241 /* boost_intrusive_ptr.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = boost_intrusive_ptr.i; sourceTree = "<group>"; };
 		6994824C0EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		6994824D0EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		6994824E0EB02EEC0042D241 /* kmldom.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = kmldom.i; sourceTree = "<group>"; };
 		6994824F0EB02EEC0042D241 /* kmldom_test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = kmldom_test.py; sourceTree = "<group>"; };
 		699482500EB02EEC0042D241 /* kmlelements.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = kmlelements.i; sourceTree = "<group>"; };
 		699482510EB02EEC0042D241 /* kmlengine.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = kmlengine.i; sourceTree = "<group>"; };
 		699482520EB02EEC0042D241 /* kmlengine_test.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = kmlengine_test.py; sourceTree = "<group>"; };
 		699482530EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482540EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482560EB02EEC0042D241 /* boost_intrusive_ptr.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = boost_intrusive_ptr.i; sourceTree = "<group>"; };
 		699482570EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482580EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		6994825C0EB02EEC0042D241 /* assert.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = assert.hpp; sourceTree = "<group>"; };
 		6994825D0EB02EEC0042D241 /* checked_delete.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = checked_delete.hpp; sourceTree = "<group>"; };
 		699482600EB02EEC0042D241 /* borland_prefix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = borland_prefix.hpp; sourceTree = "<group>"; };
@@ -789,7 +778,6 @@
 		699482A10EB02EEC0042D241 /* scoped_ptr.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = scoped_ptr.hpp; sourceTree = "<group>"; };
 		699482A20EB02EEC0042D241 /* LICENSE_1_0.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_1_0.txt; sourceTree = "<group>"; };
 		699482A30EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
-		699482A40EB02EEC0042D241 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
 		699482A50EB02EEC0042D241 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		699482A70EB02EEC0042D241 /* aclocal.m4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = aclocal.m4; sourceTree = "<group>"; };
 		699482A80EB02EEC0042D241 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
@@ -896,10 +884,6 @@
 		6994831A0EB02EEC0042D241 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		6994831B0EB02EEC0042D241 /* zconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zconf.h; sourceTree = "<group>"; };
 		6994831C0EB02EEC0042D241 /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
-		6994831F0EB02EEC0042D241 /* libminizip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libminizip.dylib; sourceTree = "<group>"; };
-		699483210EB02EEC0042D241 /* libminizip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libminizip.a; sourceTree = "<group>"; };
-		699483240EB02EEC0042D241 /* libminizip.so */ = {isa = PBXFileReference; lastKnownFileType = file; path = libminizip.so; sourceTree = "<group>"; };
-		699483260EB02EEC0042D241 /* libminizip.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libminizip.a; sourceTree = "<group>"; };
 		699483290EB02EEC0042D241 /* minizip.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = minizip.dll; sourceTree = "<group>"; };
 		6994832A0EB02EEC0042D241 /* zlib1.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = zlib1.dll; sourceTree = "<group>"; };
 		6994832C0EB02EEC0042D241 /* minizip.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = minizip.lib; sourceTree = "<group>"; };
@@ -1017,7 +1001,6 @@
 				699482420EB02EEC0042D241 /* libkmlregionator.vcproj */,
 				699482430EB02EEC0042D241 /* libkmlxsd.vcproj */,
 				699482440EB02EEC0042D241 /* Makefile.am */,
-				699482450EB02EEC0042D241 /* Makefile.in */,
 				699482480EB02EEC0042D241 /* swig */,
 			);
 			name = src;
@@ -1034,7 +1017,6 @@
 				699481CF0EB02EEC0042D241 /* engine */,
 				6994820F0EB02EEC0042D241 /* engine.h */,
 				699482100EB02EEC0042D241 /* Makefile.am */,
-				699482110EB02EEC0042D241 /* Makefile.in */,
 				699482120EB02EEC0042D241 /* regionator */,
 				699482210EB02EEC0042D241 /* xsd */,
 			);
@@ -1066,7 +1048,6 @@
 				699481170EB02EEC0042D241 /* file_test.cc */,
 				699481180EB02EEC0042D241 /* file_win32.cc */,
 				699481190EB02EEC0042D241 /* Makefile.am */,
-				6994811A0EB02EEC0042D241 /* Makefile.in */,
 				6994811B0EB02EEC0042D241 /* memory_file.h */,
 				6994811C0EB02EEC0042D241 /* net_cache.h */,
 				6994811D0EB02EEC0042D241 /* net_cache_test.cc */,
@@ -1113,7 +1094,6 @@
 				6994813E0EB02EEC0042D241 /* kmz_check_links.h */,
 				6994813F0EB02EEC0042D241 /* kmz_check_links_test.cc */,
 				699481400EB02EEC0042D241 /* Makefile.am */,
-				699481410EB02EEC0042D241 /* Makefile.in */,
 			);
 			path = convenience;
 			sourceTree = "<group>";
@@ -1197,7 +1177,6 @@
 				6994818C0EB02EEC0042D241 /* liststyle.h */,
 				6994818D0EB02EEC0042D241 /* liststyle_test.cc */,
 				6994818E0EB02EEC0042D241 /* Makefile.am */,
-				6994818F0EB02EEC0042D241 /* Makefile.in */,
 				699481900EB02EEC0042D241 /* model.cc */,
 				699481910EB02EEC0042D241 /* model.h */,
 				699481920EB02EEC0042D241 /* model_test.cc */,
@@ -1323,7 +1302,6 @@
 				699481FE0EB02EEC0042D241 /* location_util.h */,
 				699481FF0EB02EEC0042D241 /* location_util_test.cc */,
 				699482000EB02EEC0042D241 /* Makefile.am */,
-				699482010EB02EEC0042D241 /* Makefile.in */,
 				699482020EB02EEC0042D241 /* merge.cc */,
 				699482030EB02EEC0042D241 /* merge.h */,
 				699482040EB02EEC0042D241 /* merge_test.cc */,
@@ -1348,7 +1326,6 @@
 				699482140EB02EEC0042D241 /* feature_list_region_handler.h */,
 				699482150EB02EEC0042D241 /* feature_list_region_handler_test.cc */,
 				699482160EB02EEC0042D241 /* Makefile.am */,
-				699482170EB02EEC0042D241 /* Makefile.in */,
 				699482180EB02EEC0042D241 /* region_handler.h */,
 				699482190EB02EEC0042D241 /* regionator.cc */,
 				6994821A0EB02EEC0042D241 /* regionator.h */,
@@ -1366,7 +1343,6 @@
 			isa = PBXGroup;
 			children = (
 				699482220EB02EEC0042D241 /* Makefile.am */,
-				699482230EB02EEC0042D241 /* Makefile.in */,
 				699482240EB02EEC0042D241 /* xsd_complex_type.cc */,
 				699482250EB02EEC0042D241 /* xsd_complex_type.h */,
 				699482260EB02EEC0042D241 /* xsd_complex_type_test.cc */,
@@ -1408,7 +1384,6 @@
 				699482510EB02EEC0042D241 /* kmlengine.i */,
 				699482520EB02EEC0042D241 /* kmlengine_test.py */,
 				699482530EB02EEC0042D241 /* Makefile.am */,
-				699482540EB02EEC0042D241 /* Makefile.in */,
 				699482550EB02EEC0042D241 /* python */,
 			);
 			path = swig;
@@ -1419,7 +1394,6 @@
 			children = (
 				6994824B0EB02EEC0042D241 /* boost_intrusive_ptr.i */,
 				6994824C0EB02EEC0042D241 /* Makefile.am */,
-				6994824D0EB02EEC0042D241 /* Makefile.in */,
 			);
 			path = java;
 			sourceTree = "<group>";
@@ -1429,7 +1403,6 @@
 			children = (
 				699482560EB02EEC0042D241 /* boost_intrusive_ptr.i */,
 				699482570EB02EEC0042D241 /* Makefile.am */,
-				699482580EB02EEC0042D241 /* Makefile.in */,
 			);
 			path = python;
 			sourceTree = "<group>";
@@ -1439,7 +1412,6 @@
 			children = (
 				6994825A0EB02EEC0042D241 /* boost_1_34_1 */,
 				699482A30EB02EEC0042D241 /* Makefile.am */,
-				699482A40EB02EEC0042D241 /* Makefile.in */,
 				699482A50EB02EEC0042D241 /* README */,
 				699482A60EB02EEC0042D241 /* uriparser-0.7.1 */,
 				699483090EB02EEC0042D241 /* zlib-1.2.3 */,
@@ -1813,7 +1785,6 @@
 		6994831E0EB02EEC0042D241 /* bin */ = {
 			isa = PBXGroup;
 			children = (
-				6994831F0EB02EEC0042D241 /* libminizip.dylib */,
 			);
 			path = bin;
 			sourceTree = "<group>";
@@ -1821,7 +1792,6 @@
 		699483200EB02EEC0042D241 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				699483210EB02EEC0042D241 /* libminizip.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -1838,7 +1808,6 @@
 		699483230EB02EEC0042D241 /* bin */ = {
 			isa = PBXGroup;
 			children = (
-				699483240EB02EEC0042D241 /* libminizip.so */,
 			);
 			path = bin;
 			sourceTree = "<group>";
@@ -1846,7 +1815,6 @@
 		699483250EB02EEC0042D241 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				699483260EB02EEC0042D241 /* libminizip.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
