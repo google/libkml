@@ -65,6 +65,7 @@ void NetworkLink::AddElement(const ElementPtr& element) {
 
 void NetworkLink::Serialize(Serializer& serializer) const {
   Attributes attributes;
+  Feature::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
   Feature::Serialize(serializer);
   if (has_refreshvisibility()) {
