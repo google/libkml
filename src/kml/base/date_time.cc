@@ -28,6 +28,19 @@
 #include "kml/base/date_time.h"
 #include <stdlib.h>
 
+// TODO: fix this for real.
+#ifdef _WIN32
+time_t timegm(struct tm* tm) {
+  // Not yet implemented on this platform.
+  time_t not_implemented;
+  return not_implemented;
+}
+char* strptime(const char* buf, const char* format, struct tm* tm) {
+  // Not yet implemented on this platform.
+  return NULL;
+}
+#endif
+
 namespace kmlbase {
 
 // static
