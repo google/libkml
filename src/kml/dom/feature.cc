@@ -89,6 +89,15 @@ void Feature::AddElement(const ElementPtr& element) {
     case Type_Snippet:
       set_snippet(AsSnippet(element));
       break;
+// TODO: intentionally do not process <snippet> and let it fall to unknown
+#if 0
+    case Type_snippet:
+      // Recognize (little) <snippet> and save as a big <Snippet>.
+      SnippetPtr snippet = KmlFactory::GetFactory()->CreateSnippet();
+      snippet->set_text(element->get_char_data());
+      set_snippet(snippet);
+#endif
+      break;
     case Type_description:
       has_description_ = element->SetString(&description_);
       break;
@@ -98,6 +107,12 @@ void Feature::AddElement(const ElementPtr& element) {
     case Type_Region:
       set_region(AsRegion(element));
       break;
+// TODO: intentionally do not process <Metadata> and let it fall to unknown
+#if 0
+    case Type_Metadata:
+      // Recognize <Metdata> and save into <ExtendedData>.
+      break;
+#endif
     case Type_ExtendedData:
       set_extendeddata(AsExtendedData(element));
       break;

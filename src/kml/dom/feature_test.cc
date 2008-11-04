@@ -29,6 +29,7 @@
 #include "kml/dom/feature.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
 #include "gtest/gtest.h"
 
@@ -191,6 +192,23 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   feature_->clear_styleurl();
   feature_->clear_styleselector();
   feature_->clear_region();
+}
+
+// Verify <snippet> and <Metadata> are recognized in the small, and not in the
+// large, but are still preserved.  This verifies the AddElement() and
+// Serialize() methods.
+TEST_F(FeatureTest, ParseSerializeMisplaced) {
+  const std::string kPlacemark(
+      "<Placemark>"
+      "<name>my name</name>"
+      "<Snippet maxLines=\"3\"></Snippet>"
+      "<Point/>"
+      "<snippet>little snippy</snippet>"
+      "<Metadata><the>old<way>you see</way></the>\n"
+      "</Metadata>"
+      "</Placemark>");
+
+  ASSERT_EQ(kPlacemark, kmldom::SerializeRaw(kmldom::Parse(kPlacemark, NULL)));
 }
 
 }  // end namespace kmldom
