@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- OGC KML 2.2 XSD valid KML with deprecated elements -->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Placemark>
+      <Snippet maxLines="2">BIG</Snippet>
+    </Placemark>
+    <Placemark>
+      <snippet>little</snippet>
+      <Metadata>
+        <hi>there<blah/></hi>
+      </Metadata>
+    </Placemark>
+    <NetworkLink>
+      <Url>
+        <href>foo.kml</href>
+      </Url>
+    </NetworkLink>
+  </Document>
+</kml>

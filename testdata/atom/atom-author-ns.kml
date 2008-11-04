@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This sample shows the atom elements are known by the namespace not the
+     prefix -->
+<kml xmlns="http://www.opengis.net/kml/2.2"
+     xmlns:at="http://www.w3.org/2005/Atom">
+<Placemark>
+  <name>Ernest</name>
+  <visibility>0</visibility>
+  <at:author>
+    <at:name>Ernest Hemmingway</at:name>
+  </at:author>
+  <Region/>
+  <Point/>
+</Placemark>
+</kml>
