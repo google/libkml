@@ -31,6 +31,7 @@
 namespace kmldom {
 
 class Element;
+class Field;
 
 class AbstractLatLonBox;
 class AbstractLink;
@@ -117,6 +118,7 @@ class ScreenXY;
 class Size;
 
 typedef boost::intrusive_ptr<Element> ElementPtr;
+typedef boost::intrusive_ptr<Field> FieldPtr;
 
 typedef boost::intrusive_ptr<AbstractLatLonBox> AbstractLatLonBoxPtr;
 typedef boost::intrusive_ptr<AbstractLink> AbstractLinkPtr;

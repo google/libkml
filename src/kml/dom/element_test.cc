@@ -29,6 +29,8 @@
 #include "boost/intrusive_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
+#include "kml/dom/kml_ptr.h"
 
 namespace kmldom {
 
@@ -171,7 +173,7 @@ class FieldTest : public testing::Test {
 // This tests Field's SetBool() method.
 TEST_F(FieldTest, TestSetBool) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Field* field = factory->CreateFieldById(Type_open);
+  FieldPtr field = factory->CreateFieldById(Type_open);
   // Pathological, but well defined case.  Note: SetBool always deletes field.
   ASSERT_EQ(false, field->SetBool(NULL));
 
@@ -222,7 +224,7 @@ TEST_F(FieldTest, TestSetBool) {
 // This tests Field's SetDouble() method.
 TEST_F(FieldTest, TestSetDouble) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Field* field = factory->CreateFieldById(Type_north);
+  FieldPtr field = factory->CreateFieldById(Type_north);
   // Pathological, but well defined case.  Note: SetDouble always deletes field.
   ASSERT_EQ(false, field->SetDouble(NULL));
 
@@ -237,7 +239,7 @@ TEST_F(FieldTest, TestSetDouble) {
 // This tests Field's SetInt() method.
 TEST_F(FieldTest, TestSetInt) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Field* field = factory->CreateFieldById(Type_drawOrder);
+  FieldPtr field = factory->CreateFieldById(Type_drawOrder);
   // Pathological, but well defined case.  Note: SetInt always deletes field.
   ASSERT_EQ(false, field->SetInt(NULL));
 
@@ -252,7 +254,7 @@ TEST_F(FieldTest, TestSetInt) {
 // This tests Field's SetEnum() method.
 TEST_F(FieldTest, TestSetEnum) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Field* field = factory->CreateFieldById(Type_altitudeMode);
+  FieldPtr field = factory->CreateFieldById(Type_altitudeMode);
   // Pathological, but well defined case: null pointer to enum val.
   // Note: SetEnum always deletes field.
   ASSERT_EQ(false, field->SetEnum(NULL));
@@ -291,7 +293,7 @@ TEST_F(FieldTest, TestSetEnum) {
 // This tests Field's SetString() method.
 TEST_F(FieldTest, TestSetString) {
   KmlFactory* factory = KmlFactory::GetFactory();
-  Field* field = factory->CreateFieldById(Type_description);
+  FieldPtr field = factory->CreateFieldById(Type_description);
   // Pathological, but well defined case: null pointer to string val.
   // Note: SetString always deletes field.
   ASSERT_EQ(false, field->SetString(NULL));
@@ -304,6 +306,18 @@ TEST_F(FieldTest, TestSetString) {
   field->set_char_data(kMyName);
   ASSERT_EQ(true, field->SetString(&name));
   ASSERT_EQ(std::string(kMyName), name);
+}
+
+// This tests Field's Serialize() method.
+TEST_F(FieldTest, TestSerialize) {
+  const std::string kContent("stuff in little snippet");
+  KmlFactory* factory = KmlFactory::GetFactory();
+  FieldPtr field = factory->CreateFieldById(Type_snippet);
+  field->set_char_data(kContent);
+
+  const std::string kExpectedXml(
+      std::string("<snippet>") + kContent + "</snippet>");
+  ASSERT_EQ(kExpectedXml, SerializeRaw(field));
 }
 
 }  // end namespace kmldom

@@ -107,6 +107,10 @@ Field::Field(KmlDomType type_id)
   : Element(type_id), xsd_(*Xsd::GetSchema()) {
 }
 
+void Field::Serialize(Serializer& serializer) const {
+  serializer.SaveFieldById(Type(), get_char_data());
+}
+
 bool Field::SetBool(bool* val) {
   bool ret = false;
   if (val) {
