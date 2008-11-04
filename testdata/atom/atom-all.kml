@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <Document>
+    <atom:author>
+      <atom:name>Ernest Hemmingway</atom:name>
+      <atom:uri>http://example.com/ErnestH</atom:uri>
+      <atom:email>ernesth@example.com</atom:email>
+    </atom:author>
+    <Placemark>
+      <name>Ernest</name>
+      <visibility>0</visibility>
+      <atom:link href="http://example.com/EH"
+        rel="alternate" type="text/plain" hreflang="en-US"
+        title="For Whom" length="142"/>
+      <Region/>
+      <Point/>
+    </Placemark>
+  </Document>
+</kml>

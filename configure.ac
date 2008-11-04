@@ -194,6 +194,7 @@ AC_CONFIG_FILES([
 	testdata/atom/Makefile
 	testdata/balloon/Makefile
 	testdata/csv/Makefile
+	testdata/deprecated/Makefile
 	testdata/gpx/Makefile
 	testdata/kmz/Makefile
 	testdata/kmz/rumsey/Makefile
