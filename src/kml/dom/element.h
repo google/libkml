@@ -197,9 +197,24 @@ class Element : public kmlbase::Referent {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 
+// A field is generally short lived and holds the element id and character data
+// for that field during parse.  When a Field is presented to AddElement() and
+// is recognized by a parent element that parent typically copies the value of
+// the Field to a field held within the parent.  However, when a "misplaced"
+// field is parsed it is held in this form in Element's misplaced elements
+// list.  Known child fields are serialized by their parents, but a Serialize
+// method implementation is provided specifically to provide a means to
+// serialize a Field held in an Element's misplaced elements list.  For
+// example, <snippet> is a known element and is parsed initially into a Field,
+// but since no element accepts <snippet> this results in a <snippet> Field in
+// the parent element's misplaced elements list.
 class Field : public Element {
  public:
   Field(KmlDomType type_id);
+
+  // Serialize this Field to the given serializer.  See the class comment above
+  // for when this is used.
+  virtual void Serialize(Serializer& serialize) const;
 
   // Sets the given bool from the character data.  If no val pointer is
   // supplied false is returned, else true is returned and the val is set.
