@@ -39,14 +39,14 @@
 typedef unsigned int uint;
 // MSVC has no header for C99 typedefs.
 #ifdef _MSC_VER
-typedef __int8  int_8;
-typedef __int16 int_16;
-typedef __int32 int_32;
-typedef __int64 int_64;
-typedef unsigned __int8  uint_8;
-typedef unsigned __int16 uint_16;
-typedef unsigned __int32 uint_32;
-typedef unsigned __int64 uint_64;
+typedef __int8  int8_t;
+typedef __int16 int16_t;
+typedef __int32 int32_t;
+typedef __int64 int64_t;
+typedef unsigned __int8  uint8_t;
+typedef unsigned __int16 uint16_t;
+typedef unsigned __int32 uint32_t;
+typedef unsigned __int64 uint64_t;
 #endif  // _MSC_VER
 
 #endif  // KML_BASE_UTIL_H__
