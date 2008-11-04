@@ -156,6 +156,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\kml\base\date_time.cc"
+				>
+			</File>
+			<File
 				RelativePath=".\kml\base\expat_handler_ns.cc"
 				>
 			</File>
@@ -203,6 +207,10 @@
 			>
 			<File
 				RelativePath=".\kml\base\attributes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\kml\base\date_time.h"
 				>
 			</File>
 			<File

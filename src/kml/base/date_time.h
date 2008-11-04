@@ -31,6 +31,12 @@
 #include <time.h>
 #include <string>
 
+// TODO: fix this for real.
+#ifdef _WIN32
+time_t timegm(struct tm* tm);
+char* strptime(const char* buf, const char* format, struct tm* tm);
+#endif
+
 namespace kmlbase {
 
 class DateTime {
