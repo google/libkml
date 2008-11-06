@@ -759,6 +759,21 @@ TEST_F(PhotoOverlayTest, TestSetGetHasClear) {
   // Verify now in default state.
 }
 
+TEST_F(PhotoOverlayTest, TestParseSerialize) {
+  const std::string kPhotoOverlay(
+      "<PhotoOverlay>"
+      "<name>hi</name>"
+      "<Icon><href>pretty.jpg</href></Icon>"
+      "<rotation>12.3</rotation>"
+      "<ViewVolume/>"
+      "<ImagePyramid/>"
+      "<Point/>"
+      "<shape>sphere</shape>"
+      "</PhotoOverlay>");
+  ASSERT_EQ(kPhotoOverlay,
+            kmldom::SerializeRaw(kmldom::Parse(kPhotoOverlay, NULL)));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {

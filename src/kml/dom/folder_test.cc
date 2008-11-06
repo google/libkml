@@ -181,6 +181,21 @@ TEST_F(FolderTest, TestAddFeatureToTwoContainers) {
   // placemark is deleted when placemark is deleted.
 }
 
+// Verify serialization follows XSD order.
+TEST_F(FolderTest, TestParseSerialize) {
+  const std::string kFolder(
+      "<Folder>"
+      "<name>hi</name>"
+      "<description>hello</description>"
+      "<styleUrl>#style-id</styleUrl>"
+      "<Style/>"
+      "<Placemark/>"
+      "<Document/>"
+      "<GroundOverlay/>"
+      "</Folder>");
+  ASSERT_EQ(kFolder, kmldom::SerializeRaw(kmldom::Parse(kFolder, NULL)));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {

@@ -25,6 +25,7 @@
 
 #include "kml/dom/document.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
 #include "gtest/gtest.h"
 
@@ -76,6 +77,25 @@ TEST_F(DocumentTest, TestStyleSelectors) {
                  document_->get_styleselector_array_at(1)->Type());
   ASSERT_TRUE(Type_StyleMap ==
                  document_->get_styleselector_array_at(2)->Type());
+}
+
+// Verify serialization follows XSD order.
+TEST_F(DocumentTest, TestParseSerialize) {
+  const std::string kDocument(
+      "<Document>"
+      "<name>hi</name>"
+      "<description>hello</description>"
+      "<styleUrl>#style-id</styleUrl>"
+      "<Style/>"
+      "<StyleMap/>"
+      "<Style/>"
+      "<Schema id=\"schema0\"/>"
+      "<Schema id=\"schema1\"/>"
+      "<Placemark/>"
+      "<Document/>"
+      "<GroundOverlay/>"
+      "</Document>");
+  ASSERT_EQ(kDocument, kmldom::SerializeRaw(kmldom::Parse(kDocument, NULL)));
 }
 
 }  // end namespace kmldom
