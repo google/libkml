@@ -59,6 +59,7 @@ class Container : public Feature {
   // Container is abstract.
   Container();
   virtual void AddElement(const ElementPtr& element);
+  void SerializeFeatureArray(Serializer& serializer) const;
   virtual void Serialize(Serializer& serializer) const;
 
  private:

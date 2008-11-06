@@ -223,6 +223,8 @@ class Feature : public Object {
   // Feature is abstract.
   Feature();
   virtual void AddElement(const ElementPtr& element);
+  void SerializeBeforeStyleSelector(Serializer& serialize) const;
+  void SerializeAfterStyleSelector(Serializer& serialize) const;
   virtual void Serialize(Serializer& serialize) const;
 
  private:

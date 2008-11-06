@@ -47,18 +47,23 @@ void Document::AddElement(const ElementPtr& element) {
   }
 }
 
+// Due to Document being the only Feature with a StyleSelectorArray we have to
+// take some matters into our own hands here and reach up into Feature and
+// Container to serialize in XSD order.
 void Document::Serialize(Serializer& serializer) const {
   Attributes attributes;
   Container::GetAttributes(&attributes);
   serializer.BeginById(Type(), attributes);
-  for (size_t i = 0; i < schema_array_.size(); ++i) {
-    serializer.SaveElement(get_schema_array_at(i));
-  }
+  Feature::SerializeBeforeStyleSelector(serializer);
   for (size_t i = 0; i < styleselector_array_.size(); ++i) {
     serializer.SaveElementGroup(get_styleselector_array_at(i),
                                 Type_StyleSelector);
   }
-  Container::Serialize(serializer);
+  Feature::SerializeAfterStyleSelector(serializer);
+  for (size_t i = 0; i < schema_array_.size(); ++i) {
+    serializer.SaveElement(get_schema_array_at(i));
+  }
+  Container::SerializeFeatureArray(serializer);
   SerializeUnknown(serializer);
   serializer.End();
 }

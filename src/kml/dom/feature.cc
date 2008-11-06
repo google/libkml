@@ -121,7 +121,7 @@ void Feature::AddElement(const ElementPtr& element) {
   }
 }
 
-void Feature::Serialize(Serializer& serializer) const {
+void Feature::SerializeBeforeStyleSelector(Serializer& serializer) const {
   if (has_name()) {
     serializer.SaveFieldById(Type_name, name_);
   }
@@ -152,15 +152,23 @@ void Feature::Serialize(Serializer& serializer) const {
   if (has_styleurl()) {
     serializer.SaveFieldById(Type_styleUrl, styleurl_);
   }
-  if (has_styleselector()) {
-    serializer.SaveElementGroup(get_styleselector(), Type_StyleSelector);
-  }
+}
+
+void Feature::SerializeAfterStyleSelector(Serializer& serializer) const {
   if (has_region()) {
     serializer.SaveElement(get_region());
   }
   if (has_extendeddata()) {
     serializer.SaveElement(get_extendeddata());
   }
+}
+
+void Feature::Serialize(Serializer& serializer) const {
+  Feature::SerializeBeforeStyleSelector(serializer);
+  if (has_styleselector()) {
+    serializer.SaveElementGroup(get_styleselector(), Type_StyleSelector);
+  }
+  Feature::SerializeAfterStyleSelector(serializer);
 }
 
 }  // namespace kmldom

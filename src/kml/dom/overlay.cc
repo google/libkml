@@ -312,14 +312,14 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
   if (has_rotation()) {
     serializer.SaveFieldById(Type_rotation, get_rotation());
   }
-  if (has_point()) {
-    serializer.SaveElement(get_point());
-  }
   if (has_viewvolume()) {
     serializer.SaveElement(get_viewvolume());
   }
   if (has_imagepyramid()) {
     serializer.SaveElement(get_imagepyramid());
+  }
+  if (has_point()) {
+    serializer.SaveElement(get_point());
   }
   if (has_shape()) {
     serializer.SaveEnum(Type_shape, get_shape());
