@@ -28,6 +28,7 @@
 #ifndef KML_CONVENIENCE_GPX_TRK_PT_HANDLER_H__
 #define KML_CONVENIENCE_GPX_TRK_PT_HANDLER_H__
 
+#include <cstring>  // strcmp
 #include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
