@@ -466,6 +466,19 @@ TEST_F(IconStyleIconTest, TestXmlSerialize) {
   ASSERT_EQ(0, xml_output.compare("<Icon/>"));
 }
 
+TEST_F(IconStyleIconTest, TestParseSerializeUnknown) {
+  // <Icon> here is BasicLink which has no <refreshMode>.  However this should
+  // be preserved as unknown xml.
+  const std::string kIcon(
+      "<Icon>"
+      "<href>http://example.com/xyz.png</href>"
+      "<refreshMode>onExpire</refreshMode>"
+      "</Icon>");
+  ElementPtr element(Parse(kIcon, NULL));
+  ASSERT_TRUE(element);
+  ASSERT_EQ(kIcon, SerializeRaw(element));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
