@@ -12,5 +12,3 @@ SUBDIRS = \
 	wxviewer \
 	xsd
 
-EXTRA_DIST = \
-	examples.sln
