@@ -165,6 +165,8 @@ EXTRA_DIST = \
 	$(boost)/config/stdlib/sgi.hpp \
 	$(boost)/config/stdlib/stlport.hpp \
 	$(boost)/config/stdlib/vacpp.hpp \
+	$(googletest).win32/debug/gtest.lib \
+	$(googletest).win32/release/gtest.lib \
 	$(uriparser)/COPYING \
 	$(uriparser).win32/debug/uriparser-debug.lib \
 	$(uriparser).win32/release/uriparser-release.lib \

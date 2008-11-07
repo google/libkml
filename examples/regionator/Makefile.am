@@ -17,5 +17,3 @@ csvregionator_LDADD = \
 	$(top_builddir)/src/kml/regionator/libkmlregionator.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la
 
-EXTRA_DIST = \
-	csvregionator.vcproj

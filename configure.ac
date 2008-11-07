@@ -179,6 +179,9 @@ AC_CONFIG_FILES([
 	examples/wxregionator/Makefile
 	examples/wxviewer/Makefile
 	examples/xsd/Makefile
+	msvc/Makefile
+	msvc/examples/Makefile
+	msvc/tests/Makefile
 	src/Makefile
 	src/kml/Makefile
 	src/kml/convenience/Makefile

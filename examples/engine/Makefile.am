@@ -44,5 +44,3 @@ printstyle_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
-EXTRA_DIST = \
-	printstyle.vcproj

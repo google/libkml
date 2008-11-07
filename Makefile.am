@@ -1,9 +1,9 @@
 ACLOCAL_AMFLAGS = -I m4
 
 # Order is important:
-SUBDIRS = third_party src testdata examples xcode
+SUBDIRS = third_party src testdata examples msvc xcode
 
 EXTRA_DIST = \
-	DEPENDENCIES \
-	autogen.sh \
-	libkml.sln
+	AUTHORS \
+	COPYING \
+	DEPENDENCIES
