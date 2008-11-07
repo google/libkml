@@ -26,6 +26,7 @@
 // This file contains the implementation of the XsdHandler class.
 
 #include "kml/xsd/xsd_handler.h"
+#include <cstring>  // strcmp
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/xsd/xsd_element.h"
