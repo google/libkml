@@ -51,10 +51,45 @@ TEST_F(XsdTest, TestGoodElement) {
   ASSERT_EQ(std::string("Snippet"),
             Xsd::GetSchema()->ElementName(Type_Snippet));
 
-  // <z> is known to be the last element.
   ASSERT_EQ(static_cast<int>(Type_z), Xsd::GetSchema()->ElementId("z"));
   ASSERT_EQ(XSD_SIMPLE_TYPE, Xsd::GetSchema()->ElementType(Type_z));
   ASSERT_EQ(std::string("z"), Xsd::GetSchema()->ElementName(Type_z));
+
+  ASSERT_EQ(static_cast<int>(Type_XalAddressDetails),
+            Xsd::GetSchema()->ElementId("xal:AddressDetails"));
+  ASSERT_EQ(XSD_COMPLEX_TYPE,
+            Xsd::GetSchema()->ElementType(Type_XalAddressDetails));
+  ASSERT_EQ(std::string("xal:AddressDetails"),
+            Xsd::GetSchema()->ElementName(Type_XalAddressDetails));
+
+  ASSERT_EQ(static_cast<int>(Type_XalPostalCode),
+            Xsd::GetSchema()->ElementId("xal:PostalCode"));
+  ASSERT_EQ(XSD_COMPLEX_TYPE,
+            Xsd::GetSchema()->ElementType(Type_XalPostalCode));
+  ASSERT_EQ(std::string("xal:PostalCode"),
+            Xsd::GetSchema()->ElementName(Type_XalPostalCode));
+
+  ASSERT_EQ(static_cast<int>(Type_XalAdministrativeArea),
+            Xsd::GetSchema()->ElementId("xal:AdministrativeArea"));
+  ASSERT_EQ(XSD_COMPLEX_TYPE,
+            Xsd::GetSchema()->ElementType(Type_XalAdministrativeArea));
+  ASSERT_EQ(std::string("xal:AdministrativeArea"),
+            Xsd::GetSchema()->ElementName(Type_XalAdministrativeArea));
+
+  ASSERT_EQ(static_cast<int>(Type_XalSubAdministrativeArea),
+            Xsd::GetSchema()->ElementId("xal:SubAdministrativeArea"));
+  ASSERT_EQ(XSD_COMPLEX_TYPE,
+            Xsd::GetSchema()->ElementType(Type_XalSubAdministrativeArea));
+  ASSERT_EQ(std::string("xal:SubAdministrativeArea"),
+            Xsd::GetSchema()->ElementName(Type_XalSubAdministrativeArea));
+
+  // <xal:ThoroughfareName> is known to be the last element.
+  ASSERT_EQ(static_cast<int>(Type_xalThoroughfareName),
+            Xsd::GetSchema()->ElementId("xal:ThoroughfareName"));
+  ASSERT_EQ(XSD_SIMPLE_TYPE,
+            Xsd::GetSchema()->ElementType(Type_xalThoroughfareName));
+  ASSERT_EQ(std::string("xal:ThoroughfareName"),
+            Xsd::GetSchema()->ElementName(Type_xalThoroughfareName));
 }
 
 // Verify that ElementId(), ElementType() and ElementName() are well

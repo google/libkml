@@ -83,6 +83,9 @@ void Feature::AddElement(const ElementPtr& element) {
     case Type_address:
       has_address_ = element->SetString(&address_);
       break;
+    case Type_XalAddressDetails:
+      set_xaladdressdetails(AsXalAddressDetails(element));
+      break;
     case Type_phoneNumber:
       has_phonenumber_ = element->SetString(&phonenumber_);
       break;
@@ -136,6 +139,12 @@ void Feature::SerializeBeforeStyleSelector(Serializer& serializer) const {
   }
   if (has_atomlink()) {
     serializer.SaveElement(get_atomlink());
+  }
+  if (has_address()) {
+    serializer.SaveFieldById(Type_address, get_address());
+  }
+  if (has_xaladdressdetails()) {
+    serializer.SaveElement(get_xaladdressdetails());
   }
   if (has_snippet()) {
     serializer.SaveElement(get_snippet());

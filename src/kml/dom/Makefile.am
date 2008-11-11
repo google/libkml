@@ -50,6 +50,7 @@ libkmldom_la_SOURCES = \
 	kml_handler_ns.cc \
 	parser.cc \
 	serializer.cc \
+	xal.cc \
 	xml_serializer.cc \
 	xsd.cc
 
@@ -97,7 +98,8 @@ libkmldominclude_HEADERS = \
 	styleselector.h \
 	substyle.h \
 	timeprimitive.h \
-	vec2.h
+	vec2.h \
+	xal.h
 
 EXTRA_DIST = \
 	kml_handler.h \
@@ -150,6 +152,7 @@ TESTS = abstractlatlonbox_test \
 	kml_handler_ns_test \
 	parser_test \
 	serializer_test \
+	xal_test \
 	xml_serializer_test \
 	xsd_test
 
@@ -412,6 +415,12 @@ parser_test_LDADD= libkmldom.la \
 serializer_test_SOURCES = serializer_test.cc
 serializer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 serializer_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+xal_test_SOURCES = xal_test.cc
+xal_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+xal_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 

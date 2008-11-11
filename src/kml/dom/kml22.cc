@@ -54,8 +54,6 @@ static XsdElement kKml22Elements[] = {
 
   // Most elements starting with a big letter are complex.
   { "Alias", XSD_COMPLEX_TYPE },
-  { "atom:author", XSD_COMPLEX_TYPE },
-  { "atom:link", XSD_COMPLEX_TYPE },
   { "BalloonStyle", XSD_COMPLEX_TYPE },
   { "Camera", XSD_COMPLEX_TYPE },
   { "Change", XSD_COMPLEX_TYPE },
@@ -112,9 +110,6 @@ static XsdElement kKml22Elements[] = {
   { "ViewVolume", XSD_COMPLEX_TYPE },
 
   // Most elements (but not all) starting with a little letter are simple.
-  { "atom:email", XSD_SIMPLE_TYPE },
-  { "atom:name", XSD_SIMPLE_TYPE },
-  { "atom:uri", XSD_SIMPLE_TYPE },
   { "address", XSD_SIMPLE_TYPE },
   { "altitude", XSD_SIMPLE_TYPE },
   { "altitudeMode", XSD_SIMPLE_TYPE },
@@ -209,6 +204,32 @@ static XsdElement kKml22Elements[] = {
   { "x", XSD_SIMPLE_TYPE },
   { "y", XSD_SIMPLE_TYPE },
   { "z", XSD_SIMPLE_TYPE },
+
+  // Atom complex elements
+  { "atom:author", XSD_COMPLEX_TYPE },
+  { "atom:link", XSD_COMPLEX_TYPE },
+
+  // Atom simple elements
+  { "atom:email", XSD_SIMPLE_TYPE },
+  { "atom:name", XSD_SIMPLE_TYPE },
+  { "atom:uri", XSD_SIMPLE_TYPE },
+
+  // xAL complex elements
+  { "xal:AddressDetails", XSD_COMPLEX_TYPE },
+  { "xal:AdministrativeArea", XSD_COMPLEX_TYPE },
+  { "xal:Country", XSD_COMPLEX_TYPE },
+  { "xal:Locality", XSD_COMPLEX_TYPE },
+  { "xal:PostalCode", XSD_COMPLEX_TYPE },
+  { "xal:SubAdministrativeArea", XSD_COMPLEX_TYPE },
+  { "xal:Thoroughfare", XSD_COMPLEX_TYPE },
+
+  // xAL simple elements
+  { "xal:AdministrativeAreaName", XSD_SIMPLE_TYPE },
+  { "xal:CountryNameCode", XSD_SIMPLE_TYPE },
+  { "xal:LocalityName", XSD_SIMPLE_TYPE },
+  { "xal:PostalCodeNumber", XSD_SIMPLE_TYPE },
+  { "xal:SubAdministrativeAreaName", XSD_SIMPLE_TYPE },
+  { "xal:ThoroughfareName", XSD_SIMPLE_TYPE },
 
   { "</Unknown>", XSD_UNKNOWN }  // Mark the end appropriately.
 };

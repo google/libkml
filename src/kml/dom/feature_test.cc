@@ -64,6 +64,7 @@ TEST_F(FeatureTest, TestDefaults) {
   ASSERT_FALSE(feature_->has_atomlink());
   ASSERT_FALSE(feature_->has_address());
   ASSERT_EQ(std::string(""), feature_->get_address());
+  ASSERT_FALSE(feature_->has_xaladdressdetails());
   ASSERT_FALSE(feature_->has_phonenumber());
   ASSERT_EQ(std::string(""), feature_->get_phonenumber());
   ASSERT_FALSE(feature_->has_snippet());
@@ -95,6 +96,8 @@ TEST_F(FeatureTest, TestSetToDefaultValues) {
   ASSERT_TRUE(feature_->has_atomauthor());  // ptr is still null
   feature_->set_address(feature_->get_address());
   ASSERT_TRUE(feature_->has_address());
+  feature_->set_xaladdressdetails(
+      KmlFactory::GetFactory()->CreateXalAddressDetails());
   feature_->set_phonenumber(feature_->get_phonenumber());
   ASSERT_TRUE(feature_->has_phonenumber());
   feature_->set_snippet(KmlFactory::GetFactory()->CreateSnippet());
@@ -122,6 +125,8 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   AtomAuthorPtr atomauthor = KmlFactory::GetFactory()->CreateAtomAuthor();
   AtomLinkPtr atomlink = KmlFactory::GetFactory()->CreateAtomLink();
   std::string address("b");
+  XalAddressDetailsPtr xaladdressdetails =
+      KmlFactory::GetFactory()->CreateXalAddressDetails();
   std::string phonenumber("c");
   SnippetPtr snippet = KmlFactory::GetFactory()->CreateSnippet();
   std::string description("d");
@@ -138,6 +143,7 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   feature_->set_atomauthor(atomauthor);
   feature_->set_atomlink(atomlink);
   feature_->set_address(address);
+  feature_->set_xaladdressdetails(xaladdressdetails);
   feature_->set_phonenumber(phonenumber);
   feature_->set_snippet(snippet);
   feature_->set_description(description);
@@ -160,6 +166,8 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   ASSERT_TRUE(feature_->has_atomlink());
   ASSERT_TRUE(address == feature_->get_address());
   ASSERT_TRUE(feature_->has_address());
+  ASSERT_TRUE(xaladdressdetails == feature_->get_xaladdressdetails());
+  ASSERT_TRUE(feature_->has_xaladdressdetails());
   ASSERT_TRUE(phonenumber == feature_->get_phonenumber());
   ASSERT_TRUE(feature_->has_phonenumber());
   ASSERT_TRUE(snippet == feature_->get_snippet());
@@ -184,6 +192,7 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   feature_->clear_atomauthor();
   feature_->clear_atomlink();
   feature_->clear_address();
+  feature_->clear_xaladdressdetails();
   feature_->clear_phonenumber();
   feature_->clear_snippet();
   feature_->clear_description();
