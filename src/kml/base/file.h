@@ -58,7 +58,8 @@ class File {
   // Join two file paths. If the first does not end in the platform-specific
   // path separator, it is appended before the second string is joined. Returns
   // the joined string. If either of the strings is empty, the other string is
-  // returned unmodified.
+  // returned unmodified. This should NOT be used with URL paths, which are
+  // not platform-specific.
   static std::string JoinPaths(const std::string& p1, const std::string& p2);
 };
 
