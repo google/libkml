@@ -109,6 +109,10 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   case Type_rotationXY: return CreateRotationXY();
   case Type_screenXY: return CreateScreenXY();
   case Type_size: return CreateSize();
+  case Type_XalAddressDetails: return CreateXalAddressDetails();
+  case Type_XalAdministrativeArea: return CreateXalAdministrativeArea();
+  case Type_XalCountry: return CreateXalCountry();
+  case Type_XalSubAdministrativeArea: return CreateXalSubAdministrativeArea();
   default: return NULL;
   }
 }
@@ -384,5 +388,22 @@ TimeStamp* KmlFactory::CreateTimeStamp() const {
 ViewVolume* KmlFactory::CreateViewVolume() const {
   return new ViewVolume();
 }
+
+XalAddressDetails* KmlFactory::CreateXalAddressDetails() const {
+  return new XalAddressDetails();
+}
+
+XalAdministrativeArea* KmlFactory::CreateXalAdministrativeArea() const {
+  return new XalAdministrativeArea();
+}
+
+XalCountry* KmlFactory::CreateXalCountry() const {
+  return new XalCountry();
+}
+
+XalSubAdministrativeArea* KmlFactory::CreateXalSubAdministrativeArea() const {
+  return new XalSubAdministrativeArea();
+}
+
 
 }  // namespace kmldom

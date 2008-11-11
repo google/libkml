@@ -38,6 +38,7 @@
 #include "kml/dom/snippet.h"
 #include "kml/dom/styleselector.h"
 #include "kml/dom/timeprimitive.h"
+#include "kml/dom/xal.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
@@ -118,6 +119,18 @@ class Feature : public Object {
   void clear_address() {
     address_.clear();
     has_address_ = false;
+  }
+
+  // <xal:AddressDetails>
+  const XalAddressDetailsPtr get_xaladdressdetails() const {
+    return xaladdressdetails_;
+  }
+  bool has_xaladdressdetails() const { return xaladdressdetails_ != NULL; }
+  void set_xaladdressdetails(const XalAddressDetailsPtr& xaladdressdetails) {
+    SetComplexChild(xaladdressdetails, &xaladdressdetails_);
+  }
+  void clear_xaladdressdetails() {
+    set_xaladdressdetails(NULL);
   }
 
   // <phoneNumber>
@@ -238,6 +251,7 @@ class Feature : public Object {
   AtomLinkPtr atomlink_;
   std::string address_;
   bool has_address_;
+  XalAddressDetailsPtr xaladdressdetails_;
   std::string phonenumber_;
   bool has_phonenumber_;
   SnippetPtr snippet_;

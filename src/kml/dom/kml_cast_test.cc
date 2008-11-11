@@ -91,7 +91,7 @@ TEST_F(KmlCastTest, TestCasts) {
       factory->CreateElementById(Type_MultiGeometry)));
   ASSERT_TRUE(AsNetworkLink(factory->CreateElementById(Type_NetworkLink)));
   ASSERT_TRUE(AsNetworkLinkControl(
-          factory->CreateElementById(Type_NetworkLinkControl)));
+      factory->CreateElementById(Type_NetworkLinkControl)));
   ASSERT_TRUE(AsOrientation(factory->CreateElementById(Type_Orientation)));
   ASSERT_TRUE(AsOuterBoundaryIs(
       factory->CreateElementById(Type_outerBoundaryIs)));
@@ -109,7 +109,7 @@ TEST_F(KmlCastTest, TestCasts) {
   ASSERT_TRUE(AsSchema(factory->CreateElementById(Type_Schema)));
   ASSERT_TRUE(AsSchemaData(factory->CreateElementById(Type_SchemaData)));
   ASSERT_TRUE(AsScreenOverlay(
-     factory->CreateElementById(Type_ScreenOverlay)));
+      factory->CreateElementById(Type_ScreenOverlay)));
   ASSERT_TRUE(AsScreenXY(factory->CreateElementById(Type_screenXY)));
   ASSERT_TRUE(AsSimpleData(factory->CreateElementById(Type_SimpleData)));
   ASSERT_TRUE(AsSimpleField(factory->CreateElementById(Type_SimpleField)));
@@ -121,6 +121,17 @@ TEST_F(KmlCastTest, TestCasts) {
   ASSERT_TRUE(AsTimeStamp(factory->CreateElementById(Type_TimeStamp)));
   ASSERT_TRUE(AsUpdate(factory->CreateElementById(Type_Update)));
   ASSERT_TRUE(AsViewVolume(factory->CreateElementById(Type_ViewVolume)));
+  ASSERT_TRUE(AsXalAddressDetails(
+      factory->CreateElementById(Type_XalAddressDetails)));
+ElementPtr element =
+      factory->CreateElementById(Type_XalAdministrativeArea);
+ASSERT_TRUE(element);
+ASSERT_EQ(Type_XalAdministrativeArea, element->Type());
+  ASSERT_TRUE(AsXalAdministrativeArea(
+      factory->CreateElementById(Type_XalAdministrativeArea)));
+  ASSERT_TRUE(AsXalCountry(factory->CreateElementById(Type_XalCountry)));
+  ASSERT_TRUE(AsXalSubAdministrativeArea(
+      factory->CreateElementById(Type_XalSubAdministrativeArea)));
 }
 
 }  // end namespace kmldom

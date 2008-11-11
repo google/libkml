@@ -46,8 +46,6 @@ const TimePrimitivePtr AsTimePrimitive(const ElementPtr element);
 
 // Concrete elements.
 const AliasPtr AsAlias(const ElementPtr element);
-const AtomAuthorPtr AsAtomAuthor(const ElementPtr element);
-const AtomLinkPtr AsAtomLink(const ElementPtr element);
 const BalloonStylePtr AsBalloonStyle(const ElementPtr element);
 const CameraPtr AsCamera(const ElementPtr element);
 const ChangePtr AsChange(const ElementPtr element);
@@ -111,6 +109,18 @@ const TimeSpanPtr AsTimeSpan(const ElementPtr element);
 const TimeStampPtr AsTimeStamp(const ElementPtr element);
 const UpdatePtr AsUpdate(const ElementPtr element);
 const ViewVolumePtr AsViewVolume(const ElementPtr element);
+
+// Atom
+const AtomAuthorPtr AsAtomAuthor(const ElementPtr element);
+const AtomLinkPtr AsAtomLink(const ElementPtr element);
+
+// xAL
+const XalAddressDetailsPtr AsXalAddressDetails(const ElementPtr element);
+const XalAdministrativeAreaPtr AsXalAdministrativeArea(
+    const ElementPtr element);
+const XalCountryPtr AsXalCountry(const ElementPtr element);
+const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
+    const ElementPtr element);
 
 }  // end namespace kmldom
 

@@ -109,6 +109,10 @@ class KmlFactory {
   ViewVolume* CreateViewVolume() const;
   Update* CreateUpdate() const;
   Url* CreateUrl() const;
+  XalAddressDetails* CreateXalAddressDetails() const;
+  XalAdministrativeArea* CreateXalAdministrativeArea() const;
+  XalCountry* CreateXalCountry() const;
+  XalSubAdministrativeArea* CreateXalSubAdministrativeArea() const;
 
  private:
   KmlFactory() {};  // Singleton class, use GetFactory().

@@ -249,6 +249,18 @@ TEST_F(KmlFactoryTest, TestFactory) {
 
   e = factory->CreateUrl();
   ASSERT_EQ(Type_Url, e->Type());
+
+  e = factory->CreateXalAddressDetails();
+  ASSERT_EQ(Type_XalAddressDetails, e->Type());
+
+  e = factory->CreateXalAdministrativeArea();
+  ASSERT_EQ(Type_XalAdministrativeArea, e->Type());
+
+  e = factory->CreateXalCountry();
+  ASSERT_EQ(Type_XalCountry, e->Type());
+
+  e = factory->CreateXalSubAdministrativeArea();
+  ASSERT_EQ(Type_XalSubAdministrativeArea, e->Type());
 }
 
 }  // end namespace kmldom

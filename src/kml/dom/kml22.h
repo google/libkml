@@ -53,8 +53,6 @@ typedef enum {
   Type_Vec2,
 
   Type_Alias,
-  Type_AtomAuthor,
-  Type_AtomLink,
   Type_BalloonStyle,
   Type_Camera,
   Type_Change,
@@ -110,9 +108,6 @@ typedef enum {
   Type_Url,
   Type_ViewVolume,
 
-  Type_atomEmail,
-  Type_atomName,
-  Type_atomUri,
   Type_address,
   Type_altitude,
   Type_altitudeMode,
@@ -207,6 +202,28 @@ typedef enum {
   Type_x,
   Type_y,
   Type_z,
+
+  Type_AtomAuthor,
+  Type_AtomLink,
+
+  Type_atomEmail,
+  Type_atomName,
+  Type_atomUri,
+
+  Type_XalAddressDetails,
+  Type_XalAdministrativeArea,
+  Type_XalCountry,
+  Type_XalLocality,
+  Type_XalPostalCode,
+  Type_XalSubAdministrativeArea,
+  Type_XalThoroughfare,
+
+  Type_xalAdministrativeAreaName,
+  Type_xalCountryNameCode,
+  Type_xalLocalityName,
+  Type_xalPostalCodeNumber,
+  Type_xalSubAdministrativeAreaName,
+  Type_xalThoroughfareName,
 
   Type_Invalid
 } KmlDomType;

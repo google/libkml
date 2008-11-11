@@ -117,6 +117,11 @@ class RotationXY;
 class ScreenXY;
 class Size;
 
+class XalAddressDetails;
+class XalCountry;
+class XalAdministrativeArea;
+class XalSubAdministrativeArea;
+
 typedef boost::intrusive_ptr<Element> ElementPtr;
 typedef boost::intrusive_ptr<Field> FieldPtr;
 
@@ -203,6 +208,12 @@ typedef boost::intrusive_ptr<OverlayXY> OverlayXYPtr;
 typedef boost::intrusive_ptr<RotationXY> RotationXYPtr;
 typedef boost::intrusive_ptr<ScreenXY> ScreenXYPtr;
 typedef boost::intrusive_ptr<Size> SizePtr;
+
+typedef boost::intrusive_ptr<XalAddressDetails> XalAddressDetailsPtr;
+typedef boost::intrusive_ptr<XalAdministrativeArea> XalAdministrativeAreaPtr;
+typedef boost::intrusive_ptr<XalCountry> XalCountryPtr;
+typedef boost::intrusive_ptr<XalSubAdministrativeArea>
+   XalSubAdministrativeAreaPtr;
 
 }  // end namespace kmldom
 
