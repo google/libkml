@@ -95,10 +95,19 @@ TEST_F(FileTest, TestJoinPaths) {
   const std::string kPath1NoSep("/tom/dick");
   const std::string kPath1Sep("/tom/dick/");
   const std::string kPath2("harry");
-  const std::string kExpected("/tom/dick/harry");
+  const std::string kExpected_posix("/tom/dick/harry");
+  // The following two strings have no real meaning w.r.t. a windows file
+  // system. They merely test correct handling of the underlying code.
+  const std::string kExpected_win32_nosep("/tom/dick\\harry");
+  const std::string kExpected_win32_sep("/tom/dick/\\harry");
   // Passing cases.
-  ASSERT_EQ(kExpected, File::JoinPaths(kPath1NoSep, kPath2));
-  ASSERT_EQ(kExpected, File::JoinPaths(kPath1Sep, kPath2));
+#ifdef WIN32
+  ASSERT_EQ(kExpected_win32_nosep, File::JoinPaths(kPath1NoSep, kPath2));
+  ASSERT_EQ(kExpected_win32_sep, File::JoinPaths(kPath1Sep, kPath2));
+#else
+  ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1NoSep, kPath2));
+  ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1Sep, kPath2));
+#endif
   // Pathological cases.
   // Joining with an empty string does not modify anything.
   ASSERT_EQ(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
