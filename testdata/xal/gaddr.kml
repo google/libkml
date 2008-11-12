@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This a sampling of the xAL elements supported in libkml.  Note that there
+  are additional xAL supported in libkml not used here and note that libkml
+  does not provide support for ALL of xAL (but that unrecognized elements
+  _are_ still preserved on parse and emitted on serialize).
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2"
+    xmlns:xal="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0">
+  <Document>
+    <name>1600 amphitheatre mountain view ca</name>
+    <Placemark>
+      <address> 
+        1600 Amphitheatre Pkwy, Mountain View, CA 94043, USA
+      </address>
+      <xal:AddressDetails>
+        <xal:Country>
+          <xal:CountryNameCode>US</xal:CountryNameCode>
+          <xal:AdministrativeArea>
+            <xal:AdministrativeAreaName>CA</xal:AdministrativeAreaName>
+           <xal:SubAdministrativeArea>
+             <xal:SubAdministrativeAreaName>Santa Clara</xal:SubAdministrativeAreaName>
+             <xal:Locality>
+               <xal:LocalityName>Mountain View</xal:LocalityName>
+               <xal:Thoroughfare>
+                 <xal:ThoroughfareName>1600 Amphitheatre Pkwy</xal:ThoroughfareName>
+               </xal:Thoroughfare>
+               <xal:PostalCode>
+                 <xal:PostalCodeNumber>94043</xal:PostalCodeNumber>
+               </xal:PostalCode>
+             </xal:Locality>
+           </xal:SubAdministrativeArea>
+         </xal:AdministrativeArea>
+       </xal:Country>
+     </xal:AddressDetails>
+     <Point>
+       <coordinates>-122.083739,37.423021,0</coordinates>
+     </Point>
+   </Placemark>
+  </Document>
+</kml>
