@@ -206,6 +206,7 @@ AC_CONFIG_FILES([
 	testdata/links/Makefile
 	testdata/style/Makefile
 	testdata/style/weather/Makefile
+	testdata/xal/Makefile
 	testdata/xsd/Makefile
 	third_party/Makefile
 	xcode/Makefile
