@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\Program Files\Expat 2.0.1\Source\lib;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"

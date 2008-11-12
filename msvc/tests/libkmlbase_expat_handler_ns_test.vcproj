@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;C:\Program Files\Expat 2.0.1\Source\lib"
+				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;..\..\third_party\expat.win32"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libkmlbase.lib libexpat.lib gtest.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\Debug;..\..\third_party\googletest-r108.win32\debug;C:\Program Files\Expat 2.0.1\Bin"
+				AdditionalLibraryDirectories="..\Debug;..\..\third_party\googletest-r108.win32\debug;..\..\third_party\expat.win32"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -121,7 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;C:\Program Files\Expat 2.0.1\Source\lib"
+				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;..\..\third_party\expat.win32"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -142,7 +142,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libkmlbase.lib libexpat.lib gtest.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\Release;..\..\third_party\googletest-r108.win32\release;C:\Program Files\Expat 2.0.1\Bin"
+				AdditionalLibraryDirectories="..\Release;..\..\third_party\googletest-r108.win32\release;..\..\third_party\expat.win32"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"

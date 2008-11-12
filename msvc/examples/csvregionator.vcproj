@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libkmlregionator.lib libkmlconvenience.lib libkmlengine.lib libkmldom.lib libkmlbase.lib libexpat.lib minizip.lib zlib.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\debug;..\..\third_party\zlib-1.2.3.win32\lib"
+				AdditionalLibraryDirectories="..\..\third_party\expat.win32;..\debug;..\..\third_party\zlib-1.2.3.win32\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -139,7 +139,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="libkmlregionator.lib libkmlconvenience.lib libkmlengine.lib libkmldom.lib libkmlbase.lib libexpat.lib minizip.lib zlib.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\Program Files\Expat 2.0.1\Bin;..\release;..\..\third_party\zlib-1.2.3.win32\lib"
+				AdditionalLibraryDirectories="..\..\third_party\expat.win32;..\release;..\..\third_party\zlib-1.2.3.win32\lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -181,7 +181,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-        RelativePath="..\..\examples\regionator\csvregionator.cc"
+				RelativePath="..\..\examples\regionator\csvregionator.cc"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
