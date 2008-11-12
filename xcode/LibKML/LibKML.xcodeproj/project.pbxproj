@@ -270,6 +270,8 @@
 		6994854C0EB040700042D241 /* libkmlengine.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 6994798D0EB003D60042D241 /* libkmlengine.dylib */; };
 		6994854D0EB040700042D241 /* libkmlregionator.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 69947A2D0EB005840042D241 /* libkmlregionator.dylib */; };
 		6994854E0EB040700042D241 /* libkmlxsd.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 69947E130EB020790042D241 /* libkmlxsd.dylib */; };
+		69E0F9D70ECB755E00BDFB5E /* xal.cc in Sources */ = {isa = PBXBuildFile; fileRef = 69E0F9D40ECB754000BDFB5E /* xal.cc */; };
+		69E0F9D80ECB755E00BDFB5E /* xal.h in Headers */ = {isa = PBXBuildFile; fileRef = 69E0F9D50ECB754000BDFB5E /* xal.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -695,12 +697,6 @@
 		6994823B0EB02EEC0042D241 /* xst_parser.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xst_parser.cc; sourceTree = "<group>"; };
 		6994823C0EB02EEC0042D241 /* xst_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xst_parser.h; sourceTree = "<group>"; };
 		6994823D0EB02EEC0042D241 /* xst_parser_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xst_parser_test.cc; sourceTree = "<group>"; };
-		6994823E0EB02EEC0042D241 /* libkmlbase.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlbase.vcproj; sourceTree = "<group>"; };
-		6994823F0EB02EEC0042D241 /* libkmlconvenience.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlconvenience.vcproj; sourceTree = "<group>"; };
-		699482400EB02EEC0042D241 /* libkmldom.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmldom.vcproj; sourceTree = "<group>"; };
-		699482410EB02EEC0042D241 /* libkmlengine.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlengine.vcproj; sourceTree = "<group>"; };
-		699482420EB02EEC0042D241 /* libkmlregionator.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlregionator.vcproj; sourceTree = "<group>"; };
-		699482430EB02EEC0042D241 /* libkmlxsd.vcproj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = libkmlxsd.vcproj; sourceTree = "<group>"; };
 		699482440EB02EEC0042D241 /* Makefile.am */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.am; sourceTree = "<group>"; };
 		699482490EB02EEC0042D241 /* intrusive_ptr.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = intrusive_ptr.i; sourceTree = "<group>"; };
 		6994824B0EB02EEC0042D241 /* boost_intrusive_ptr.i */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.interfacer; path = boost_intrusive_ptr.i; sourceTree = "<group>"; };
@@ -889,6 +885,9 @@
 		6994832C0EB02EEC0042D241 /* minizip.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = minizip.lib; sourceTree = "<group>"; };
 		6994832D0EB02EEC0042D241 /* zdll.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = zdll.lib; sourceTree = "<group>"; };
 		6994832E0EB02EEC0042D241 /* zlib.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = zlib.lib; sourceTree = "<group>"; };
+		69E0F9D40ECB754000BDFB5E /* xal.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xal.cc; sourceTree = "<group>"; };
+		69E0F9D50ECB754000BDFB5E /* xal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xal.h; sourceTree = "<group>"; };
+		69E0F9D60ECB754000BDFB5E /* xal_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xal_test.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -994,12 +993,6 @@
 			isa = PBXGroup;
 			children = (
 				699481070EB02EEC0042D241 /* kml */,
-				6994823E0EB02EEC0042D241 /* libkmlbase.vcproj */,
-				6994823F0EB02EEC0042D241 /* libkmlconvenience.vcproj */,
-				699482400EB02EEC0042D241 /* libkmldom.vcproj */,
-				699482410EB02EEC0042D241 /* libkmlengine.vcproj */,
-				699482420EB02EEC0042D241 /* libkmlregionator.vcproj */,
-				699482430EB02EEC0042D241 /* libkmlxsd.vcproj */,
 				699482440EB02EEC0042D241 /* Makefile.am */,
 				699482480EB02EEC0042D241 /* swig */,
 			);
@@ -1101,6 +1094,9 @@
 		699481420EB02EEC0042D241 /* dom */ = {
 			isa = PBXGroup;
 			children = (
+				69E0F9D40ECB754000BDFB5E /* xal.cc */,
+				69E0F9D50ECB754000BDFB5E /* xal.h */,
+				69E0F9D60ECB754000BDFB5E /* xal_test.cc */,
 				699481430EB02EEC0042D241 /* abstractlatlonbox.cc */,
 				699481440EB02EEC0042D241 /* abstractlatlonbox.h */,
 				699481450EB02EEC0042D241 /* abstractlatlonbox_test.cc */,
@@ -1953,6 +1949,7 @@
 				699483B20EB02FA00042D241 /* vec2.h in Headers */,
 				699483B30EB02FA00042D241 /* xml_serializer.h in Headers */,
 				699483B40EB02FA00042D241 /* xsd.h in Headers */,
+				69E0F9D80ECB755E00BDFB5E /* xal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2369,6 +2366,7 @@
 				699484090EB02FAA0042D241 /* vec2.cc in Sources */,
 				6994840B0EB02FAA0042D241 /* xml_serializer.cc in Sources */,
 				6994840D0EB02FAA0042D241 /* xsd.cc in Sources */,
+				69E0F9D70ECB755E00BDFB5E /* xal.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

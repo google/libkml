@@ -5,7 +5,6 @@ rem this directory to execute all tests.
 rem
 rem TODO: disabled tests:
 rem TODO: kmlbase_date_time_test
-rem TODO: kmlbase_file_test
 
 if not exist Debug\libkmlbase_attributes_test.exe (
   echo No debug tests exist
