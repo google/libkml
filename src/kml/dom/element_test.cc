@@ -31,8 +31,62 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
+#include "kml/dom/stats_serializer.h"
 
 namespace kmldom {
+
+// Any complex child is derived from Element.  This one takes an int in
+// the constructor to uniquely identify instances within this test.
+class ComplexChild : public Element {
+ public:
+  ComplexChild(int id) : id_(id) {}
+  int id() {
+    return id_;
+  }
+ private:
+  int id_;
+};
+
+// A complex child in the DOM API has a typedef like this:
+typedef boost::intrusive_ptr<ComplexChild> ComplexChildPtr;
+
+// This is a sample element with both a single-valued complex child
+// and an array of complex children.
+class TestElement : public Element {
+ public:
+  // This method exemplifies usage of SetComplexChild().
+  void set_child(const ComplexChildPtr& child) {
+    SetComplexChild(child, &child_);  // This is the method under test.
+  }
+  // This method exemplifies how a child is cleared.
+  void clear_child() {
+    set_child(NULL);  // Setting to NULL is well defined for intrusive_ptr.
+  }
+  // This method exemplifies how a complex child is accessed.
+  // Note the use of const reference.
+  const ComplexChildPtr& get_child() {
+    return child_;
+  }
+  // This method exemplifies how a complex array child is added.
+  // Note the use of const reference.
+  void add_child(const ComplexChildPtr& child) {
+    AddComplexChild(child, &child_array_);
+  }
+  // This method exemplifies how a complex array child is accessed.
+  const ComplexChildPtr& get_child_array_at(int i) const {
+    return child_array_[i];
+  }
+ private:
+  // A given single complex child is managed by a smart pointer whose
+  // destructor releases this element's reference to the underlying element.
+  ComplexChildPtr child_;
+  // A given array valued complex child is held in an STL vector whose
+  // destructor calls the destructor of each array element thus releasing
+  // the reference to each underlying element.
+  std::vector<ComplexChildPtr> child_array_;
+};
+
+typedef boost::intrusive_ptr<TestElement> TestElementPtr;
 
 // This tests the Element class.
 class ElementTest : public testing::Test {
@@ -44,57 +98,7 @@ class ElementTest : public testing::Test {
     child3_ = new ComplexChild(3);
   }
 
-  // Any complex child is derived from Element.  This one takes an int in
-  // the constructor to uniquely identify instances within this test.
-  class ComplexChild : public Element {
-   public:
-    ComplexChild(int id) : id_(id) {}
-    int id() {
-      return id_;
-    }
-   private:
-    int id_;
-  };
-
-  // A complex child in the DOM API has a typedef like this:
-  typedef boost::intrusive_ptr<ComplexChild> ComplexChildPtr;
-  // This is a sample element with both a single-valued complex child
-  // and an array of complex children.
-  class TestElement : public Element {
-   public:
-    // This method exemplifies usage of SetComplexChild().
-    void set_child(const ComplexChildPtr& child) {
-      SetComplexChild(child, &child_);  // This is the method under test.
-    }
-    // This method exemplifies how a child is cleared.
-    void clear_child() {
-      set_child(NULL);  // Setting to NULL is well defined for intrusive_ptr.
-    }
-    // This method exemplifies how a complex child is accessed.
-    // Note the use of const reference.
-    const ComplexChildPtr& get_child() {
-      return child_;
-    }
-    // This method exemplifies how a complex array child is added.
-    // Note the use of const reference.
-    void add_child(const ComplexChildPtr& child) {
-      AddComplexChild(child, &child_array_);
-    }
-    // This method exemplifies how a complex array child is accessed.
-    const ComplexChildPtr& get_child_array_at(int i) const {
-      return child_array_[i];
-    }
-   private:
-    // A given single complex child is managed by a smart pointer whose
-    // destructor releases this element's reference to the underlying element.
-    ComplexChildPtr child_;
-    // A given array valued complex child is held in an STL vector whose
-    // destructor calls the destructor of each array element thus releasing
-    // the reference to each underlying element.
-    std::vector<ComplexChildPtr> child_array_;
-  };
   // Smart pointer memory management is used within the test fixture as well.
-  typedef boost::intrusive_ptr<TestElement> TestElementPtr;
   TestElementPtr element_;
   ComplexChildPtr child1_, child2_, child3_;
 };
@@ -165,13 +169,52 @@ TEST_F(ElementTest, TestAddComplexChild) {
   ASSERT_EQ(2, element_->get_child_array_at(2)->get_ref_count());
 }
 
+class ElementSerializerTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    test_element_ = new TestElement();
+    child1_ = new ComplexChild(1);
+    child2_ = new ComplexChild(2);
+    child3_ = new ComplexChild(3);
+  }
 
-// This tests the Field class.
-class FieldTest : public testing::Test {
+  TestElementPtr test_element_;
+  StatsSerializer stats_serializer_;
+  ComplexChildPtr child1_, child2_, child3_;
 };
 
+TEST_F(ElementSerializerTest, TestSimpleUsage) {
+  // This the intended usage of ElementSerializer typically within the
+  // Serialize method of an Element-derived class.
+  {
+    ElementSerializer element_serializer(*test_element_, stats_serializer_);
+  }
+  // This is equivalent to serializing an empty element.
+  ASSERT_EQ(1, stats_serializer_.get_begin_count());
+  ASSERT_EQ(1, stats_serializer_.get_end_count());
+  ASSERT_EQ(0, stats_serializer_.get_field_count());
+  ASSERT_EQ(0, stats_serializer_.get_element_count());
+  ASSERT_EQ(0, stats_serializer_.get_element_group_count());
+}
+
+TEST_F(ElementSerializerTest, TestChildren) {
+  {
+    ElementSerializer element_serializer(*test_element_, stats_serializer_);
+    stats_serializer_.SaveElement(child1_);
+    stats_serializer_.SaveFieldById(42, 42);
+    stats_serializer_.SaveElement(child2_);
+    stats_serializer_.SaveFieldById(137, 137);
+    stats_serializer_.SaveElement(child3_);
+  }
+  ASSERT_EQ(1, stats_serializer_.get_begin_count());
+  ASSERT_EQ(1, stats_serializer_.get_end_count());
+  ASSERT_EQ(2, stats_serializer_.get_field_count());
+  ASSERT_EQ(3, stats_serializer_.get_element_count());
+  ASSERT_EQ(0, stats_serializer_.get_element_group_count());
+}
+
 // This tests Field's SetBool() method.
-TEST_F(FieldTest, TestSetBool) {
+TEST(FieldTest, TestSetBool) {
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_open);
   // Pathological, but well defined case.  Note: SetBool always deletes field.
@@ -222,7 +265,7 @@ TEST_F(FieldTest, TestSetBool) {
 }
 
 // This tests Field's SetDouble() method.
-TEST_F(FieldTest, TestSetDouble) {
+TEST(FieldTest, TestSetDouble) {
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_north);
   // Pathological, but well defined case.  Note: SetDouble always deletes field.
@@ -237,7 +280,7 @@ TEST_F(FieldTest, TestSetDouble) {
 }
 
 // This tests Field's SetInt() method.
-TEST_F(FieldTest, TestSetInt) {
+TEST(FieldTest, TestSetInt) {
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_drawOrder);
   // Pathological, but well defined case.  Note: SetInt always deletes field.
@@ -252,7 +295,7 @@ TEST_F(FieldTest, TestSetInt) {
 }
 
 // This tests Field's SetEnum() method.
-TEST_F(FieldTest, TestSetEnum) {
+TEST(FieldTest, TestSetEnum) {
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_altitudeMode);
   // Pathological, but well defined case: null pointer to enum val.
@@ -291,7 +334,7 @@ TEST_F(FieldTest, TestSetEnum) {
 }
 
 // This tests Field's SetString() method.
-TEST_F(FieldTest, TestSetString) {
+TEST(FieldTest, TestSetString) {
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_description);
   // Pathological, but well defined case: null pointer to string val.
@@ -309,7 +352,7 @@ TEST_F(FieldTest, TestSetString) {
 }
 
 // This tests Field's Serialize() method.
-TEST_F(FieldTest, TestSerialize) {
+TEST(FieldTest, TestSerialize) {
   const std::string kContent("stuff in little snippet");
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_snippet);

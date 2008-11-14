@@ -112,7 +112,10 @@ class KmlFactory {
   XalAddressDetails* CreateXalAddressDetails() const;
   XalAdministrativeArea* CreateXalAdministrativeArea() const;
   XalCountry* CreateXalCountry() const;
+  XalLocality* CreateXalLocality() const;
+  XalPostalCode* CreateXalPostalCode() const;
   XalSubAdministrativeArea* CreateXalSubAdministrativeArea() const;
+  XalThoroughfare* CreateXalThoroughfare() const;
 
  private:
   KmlFactory() {};  // Singleton class, use GetFactory().

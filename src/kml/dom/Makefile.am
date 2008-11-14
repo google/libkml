@@ -109,6 +109,8 @@ EXTRA_DIST = \
 	xsd.h \
 	kml22.cc
 
+DATA_DIR = $(top_srcdir)/testdata
+
 TESTS = abstractlatlonbox_test \
 	abstractview_test \
 	atom_test \
@@ -419,7 +421,7 @@ serializer_test_LDADD= libkmldom.la \
 	$(top_builddir)/third_party/libgtest.la
 
 xal_test_SOURCES = xal_test.cc
-xal_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+xal_test_CXXFLAGS =  -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 xal_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la

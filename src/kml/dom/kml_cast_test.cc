@@ -121,17 +121,18 @@ TEST_F(KmlCastTest, TestCasts) {
   ASSERT_TRUE(AsTimeStamp(factory->CreateElementById(Type_TimeStamp)));
   ASSERT_TRUE(AsUpdate(factory->CreateElementById(Type_Update)));
   ASSERT_TRUE(AsViewVolume(factory->CreateElementById(Type_ViewVolume)));
+
   ASSERT_TRUE(AsXalAddressDetails(
       factory->CreateElementById(Type_XalAddressDetails)));
-ElementPtr element =
-      factory->CreateElementById(Type_XalAdministrativeArea);
-ASSERT_TRUE(element);
-ASSERT_EQ(Type_XalAdministrativeArea, element->Type());
   ASSERT_TRUE(AsXalAdministrativeArea(
       factory->CreateElementById(Type_XalAdministrativeArea)));
   ASSERT_TRUE(AsXalCountry(factory->CreateElementById(Type_XalCountry)));
+  ASSERT_TRUE(AsXalLocality(factory->CreateElementById(Type_XalLocality)));
+  ASSERT_TRUE(AsXalPostalCode(factory->CreateElementById(Type_XalPostalCode)));
   ASSERT_TRUE(AsXalSubAdministrativeArea(
       factory->CreateElementById(Type_XalSubAdministrativeArea)));
+  ASSERT_TRUE(AsXalThoroughfare(
+      factory->CreateElementById(Type_XalThoroughfare)));
 }
 
 }  // end namespace kmldom

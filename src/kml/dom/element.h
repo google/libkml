@@ -197,6 +197,23 @@ class Element : public kmlbase::Referent {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 
+// This class implements common code for use in serializing most elements.
+// Intended usage is as follows:
+// ConcreteElement::Serialize(Serializer& serializer) const {
+//   ElementSerializer element_serializer(Type(), serializer);
+//   // serialize each child element and/or field
+//   // ElementSerializer dtor ends serialization properly.
+// }
+class ElementSerializer {
+ public:
+  ElementSerializer(const Element& element, Serializer& serializer);
+  ~ElementSerializer();
+
+ private:
+  const Element& element_;
+  Serializer& serializer_;
+};
+
 // A field is generally short lived and holds the element id and character data
 // for that field during parse.  When a Field is presented to AddElement() and
 // is recognized by a parent element that parent typically copies the value of

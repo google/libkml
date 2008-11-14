@@ -31,6 +31,18 @@
 
 namespace kmldom {
 
+// This function template operates akin to dynamic_cast.  If the given
+// Element-derived type is of the template type then a pointer is returned,
+// else NULL.  It is safe to pass a NULL to this function.
+template<class T>
+inline const boost::intrusive_ptr<T> DynamicPointerCast(
+    const ElementPtr& element) {
+  if (element && element->Type() == T::static_type()) {
+    return boost::static_pointer_cast<T>(element);
+  }
+  return NULL;
+}
+
 // Abstract element groups.
 const AbstractLatLonBoxPtr AsAbstractLatLonBox(const ElementPtr element);
 const AbstractViewPtr AsAbstractView(const ElementPtr element);
@@ -115,12 +127,35 @@ const AtomAuthorPtr AsAtomAuthor(const ElementPtr element);
 const AtomLinkPtr AsAtomLink(const ElementPtr element);
 
 // xAL
-const XalAddressDetailsPtr AsXalAddressDetails(const ElementPtr element);
-const XalAdministrativeAreaPtr AsXalAdministrativeArea(
-    const ElementPtr element);
-const XalCountryPtr AsXalCountry(const ElementPtr element);
-const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
-    const ElementPtr element);
+inline const XalAddressDetailsPtr AsXalAddressDetails(
+    const ElementPtr element) {
+  return DynamicPointerCast<XalAddressDetails>(element);
+}
+inline const XalAdministrativeAreaPtr AsXalAdministrativeArea(
+    const ElementPtr element) {
+  return DynamicPointerCast<XalAdministrativeArea>(element);
+}
+
+inline const XalCountryPtr AsXalCountry(const ElementPtr element) {
+  return DynamicPointerCast<XalCountry>(element);
+}
+
+inline const XalLocalityPtr AsXalLocality(const ElementPtr element) {
+  return DynamicPointerCast<XalLocality>(element);
+}
+
+inline const XalPostalCodePtr AsXalPostalCode(const ElementPtr element) {
+  return DynamicPointerCast<XalPostalCode>(element);
+}
+
+inline const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
+    const ElementPtr element) {
+  return DynamicPointerCast<XalSubAdministrativeArea>(element);
+}
+
+inline const XalThoroughfarePtr AsXalThoroughfare(const ElementPtr element) {
+  return DynamicPointerCast<XalThoroughfare>(element);
+}
 
 }  // end namespace kmldom
 
