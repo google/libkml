@@ -224,6 +224,7 @@ typedef enum {
   Type_xalPostalCodeNumber,
   Type_xalSubAdministrativeAreaName,
   Type_xalThoroughfareName,
+  Type_xalThoroughfareNumber,
 
   Type_Invalid
 } KmlDomType;

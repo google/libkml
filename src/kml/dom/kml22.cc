@@ -230,6 +230,7 @@ static XsdElement kKml22Elements[] = {
   { "xal:PostalCodeNumber", XSD_SIMPLE_TYPE },
   { "xal:SubAdministrativeAreaName", XSD_SIMPLE_TYPE },
   { "xal:ThoroughfareName", XSD_SIMPLE_TYPE },
+  { "xal:ThoroughfareNumber", XSD_SIMPLE_TYPE },
 
   { "</Unknown>", XSD_UNKNOWN }  // Mark the end appropriately.
 };

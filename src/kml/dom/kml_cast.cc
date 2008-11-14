@@ -568,34 +568,4 @@ const ViewVolumePtr AsViewVolume(const ElementPtr element) {
   return NULL;
 }
 
-const XalAddressDetailsPtr AsXalAddressDetails(const ElementPtr element) {
-  if (element && element->Type() == Type_XalAddressDetails) {
-    return boost::static_pointer_cast<XalAddressDetails>(element);
-  }
-  return NULL;
-}
-
-const XalAdministrativeAreaPtr AsXalAdministrativeArea(
-    const ElementPtr element) {
-  if (element && element->Type() == Type_XalAdministrativeArea) {
-    return boost::static_pointer_cast<XalAdministrativeArea>(element);
-  }
-  return NULL;
-}
-
-const XalCountryPtr AsXalCountry(const ElementPtr element) {
-  if (element && element->Type() == Type_XalCountry) {
-    return boost::static_pointer_cast<XalCountry>(element);
-  }
-  return NULL;
-}
-
-const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
-    const ElementPtr element) {
-  if (element && element->Type() == Type_XalSubAdministrativeArea) {
-    return boost::static_pointer_cast<XalSubAdministrativeArea>(element);
-  }
-  return NULL;
-}
-
 }  // end namespace kmldom

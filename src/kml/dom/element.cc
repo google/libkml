@@ -103,6 +103,19 @@ void Element::GetAttributes(Attributes* attributes) const {
   }
 }
 
+ElementSerializer::ElementSerializer(const Element& element,
+                                     Serializer& serializer)
+    : element_(element), serializer_(serializer) {
+  kmlbase::Attributes attributes;
+  element_.GetAttributes(&attributes);
+  serializer.BeginById(element_.Type(), attributes);
+}
+
+ElementSerializer::~ElementSerializer() {
+  element_.SerializeUnknown(serializer_);
+  serializer_.End();
+}
+
 Field::Field(KmlDomType type_id)
   : Element(type_id), xsd_(*Xsd::GetSchema()) {
 }

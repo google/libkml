@@ -112,7 +112,10 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   case Type_XalAddressDetails: return CreateXalAddressDetails();
   case Type_XalAdministrativeArea: return CreateXalAdministrativeArea();
   case Type_XalCountry: return CreateXalCountry();
+  case Type_XalLocality: return CreateXalLocality();
+  case Type_XalPostalCode: return CreateXalPostalCode();
   case Type_XalSubAdministrativeArea: return CreateXalSubAdministrativeArea();
+  case Type_XalThoroughfare: return CreateXalThoroughfare();
   default: return NULL;
   }
 }
@@ -401,9 +404,20 @@ XalCountry* KmlFactory::CreateXalCountry() const {
   return new XalCountry();
 }
 
+XalLocality* KmlFactory::CreateXalLocality() const {
+  return new XalLocality();
+}
+
+XalPostalCode* KmlFactory::CreateXalPostalCode() const {
+  return new XalPostalCode();
+}
+
 XalSubAdministrativeArea* KmlFactory::CreateXalSubAdministrativeArea() const {
   return new XalSubAdministrativeArea();
 }
 
+XalThoroughfare* KmlFactory::CreateXalThoroughfare() const {
+  return new XalThoroughfare();
+}
 
 }  // namespace kmldom

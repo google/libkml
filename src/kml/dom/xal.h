@@ -29,7 +29,8 @@
 // is employed thus all of XAL is preserved on parse and emitted on
 // serialization.  The portion implemented here pertains to programmatic
 // dom access.
-// xAL complex elements
+//
+// xAL complex elements:
 // <xal:AddressDetails>
 // <xal:AdministrativeArea>
 // <xal:Country>
@@ -37,61 +38,118 @@
 // <xal:PostalCode>
 // <xal:SubAdministrativeArea>
 // <xal:Thoroughfare>
-// xAL simple elements
+//
+// xAL simple elements:
 // <xal:AdministrativeAreaName>
 // <xal:CountryNameCode>
 // <xal:LocalityName>
 // <xal:PostalCodeNumber>
 // <xal:SubAdministrativeAreaName>
 // <xal:ThoroughfareName>
+// <xal:ThoroughfareNumber>
 
 #ifndef KML_DOM_XAL_H__
 #define KML_DOM_XAL_H__
 
 #include "kml/dom/element.h"
+#include "kml/base/attributes.h"
+#include "kml/dom/serializer.h"
 
 namespace kmldom {
 
-// <xal:AddressDetails>
-class XalAddressDetails : public Element {
+// TODO: use something akin to this for all kmldom::Element's.
+template<int I>
+class XalElement : public Element {
  public:
-  virtual ~XalAddressDetails();
-  virtual KmlDomType Type() const { return Type_XalAddressDetails; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalAddressDetails;
-  }
+  static KmlDomType static_type() { return static_cast<KmlDomType>(I); }
+  virtual KmlDomType Type() const { return static_type(); }
+  virtual bool IsA(KmlDomType type) const { return type == static_type(); }
+};
+
+// <xal:AddressDetails>
+class XalAddressDetails : public XalElement<Type_XalAddressDetails> {
+ public:
+  virtual ~XalAddressDetails() {}
 
   // <xal:Country>
-  const XalCountryPtr get_country() const {
-    return country_;
-  }
+  const XalCountryPtr& get_country() const { return country_; }
   bool has_country() const { return country_ != NULL; }
   void set_country(const XalCountryPtr& country) {
     SetComplexChild(country, &country_);
   }
-  void clear_country() {
-    set_country(NULL);
-  }
+  void clear_country() { set_country(NULL); }
 
  private:
+  XalAddressDetails() {}
   XalCountryPtr country_;
   friend class KmlFactory;
-  XalAddressDetails();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(XalAddressDetails);
+};
+ 
+// <xal:AdministrativeArea>
+class XalAdministrativeArea : public XalElement<Type_XalAdministrativeArea> {
+ public:
+  virtual ~XalAdministrativeArea() {}
+
+  // <xal:AdministrativeAreaName>
+  const std::string& get_administrativeareaname() const {
+    return administrativeareaname_;
+  }
+  bool has_administrativeareaname() const {
+    return has_administrativeareaname_;
+  }
+  void set_administrativeareaname(const std::string& value) {
+    administrativeareaname_ = value;
+    has_administrativeareaname_ = true;
+  }
+  void clear_administrativeareaname() {
+    administrativeareaname_.clear();
+    has_administrativeareaname_ = false;
+  }
+
+  // <xal:Locality>
+  const XalLocalityPtr& get_locality() const { return locality_; }
+  bool has_locality() const { return locality_ != NULL; }
+  void set_locality(const XalLocalityPtr& locality) {
+    SetComplexChild(locality, &locality_);
+  }
+
+  void clear_locality() { set_locality(NULL); }
+  // <xal:SubAdministrativeArea>
+  const XalSubAdministrativeAreaPtr& get_subadministrativearea() const {
+    return subadministrativearea_;
+  }
+  bool has_subadministrativearea() const {
+    return subadministrativearea_ != NULL;
+  }
+  void set_subadministrativearea(
+      const XalSubAdministrativeAreaPtr& subadministrativearea) {
+    SetComplexChild(subadministrativearea, &subadministrativearea_);
+  }
+  void clear_subadministrativearea() { set_subadministrativearea(NULL); }
+
+ private:
+  XalAdministrativeArea()
+    : has_administrativeareaname_(false) {
+  }
+  bool has_administrativeareaname_;
+  std::string administrativeareaname_;
+  XalLocalityPtr locality_;
+  XalSubAdministrativeAreaPtr subadministrativearea_;
+  friend class KmlFactory;
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
 };
 
 // <xal:Country>
-class XalCountry : public Element {
+class XalCountry : public XalElement<Type_XalCountry> {
  public:
-  virtual ~XalCountry();
-  virtual KmlDomType Type() const { return Type_XalCountry; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalCountry;
-  }
+  virtual ~XalCountry() {}
 
   // <xal:CountryNameCode>, ISO 3166-1
   const std::string& get_countrynamecode() const { return countrynamecode_; }
@@ -106,26 +164,25 @@ class XalCountry : public Element {
   }
 
   // <xal:AdministrativeArea>
-  const XalAdministrativeAreaPtr get_administrativearea() const {
+  const XalAdministrativeAreaPtr& get_administrativearea() const {
     return administrativearea_;
   }
-  bool has_administrativearea() const {
-    return administrativearea_ != NULL;
-  }
+  bool has_administrativearea() const { return administrativearea_ != NULL; }
   void set_administrativearea(
       const XalAdministrativeAreaPtr& administrativearea) {
     SetComplexChild(administrativearea, &administrativearea_);
   }
-  void clear_administrativearea() {
-    set_administrativearea(NULL);
-  }
+  void clear_administrativearea() { set_administrativearea(NULL); }
 
  private:
+  XalCountry()
+    : has_countrynamecode_(false) {
+  }
+
   bool has_countrynamecode_;
   std::string countrynamecode_;
   XalAdministrativeAreaPtr administrativearea_;
   friend class KmlFactory;
-  XalCountry();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
@@ -133,34 +190,86 @@ class XalCountry : public Element {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(XalCountry);
 };
 
-// <xal:AdministrativeArea>
-class XalAdministrativeArea : public Element {
+// <xal:Locality>
+class XalLocality : public XalElement<Type_XalLocality> {
  public:
-  virtual ~XalAdministrativeArea();
-  virtual KmlDomType Type() const { return Type_XalAdministrativeArea; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalAdministrativeArea;
+  virtual ~XalLocality() {}
+
+  // <xal:LocalityName>
+  const std::string& get_localityname() const {
+    return localityname_;
+  }
+  bool has_localityname() const {
+    return has_localityname_;
+  }
+  void set_localityname(const std::string& value) {
+    localityname_ = value;
+    has_localityname_ = true;
+  }
+  void clear_localityname() {
+    localityname_.clear();
+    has_localityname_ = false;
   }
 
-  // <xal:SubAdministrativeArea>
-  const XalSubAdministrativeAreaPtr get_subadministrativearea() const {
-    return subadministrativearea_;
+  // <xal:Thoroughfare>
+  const XalThoroughfarePtr& get_thoroughfare() const { return thoroughfare_; }
+  bool has_thoroughfare() const { return thoroughfare_ != NULL; }
+  void set_thoroughfare(const XalThoroughfarePtr& thoroughfare) {
+    SetComplexChild(thoroughfare, &thoroughfare_);
   }
-  bool has_subadministrativearea() const {
-    return subadministrativearea_ != NULL;
+  void clear_thoroughfare() { set_thoroughfare(NULL); }
+
+  // <xal:PostalCode>
+  const XalPostalCodePtr& get_postalcode() const { return postalcode_; }
+  bool has_postalcode() const { return postalcode_ != NULL; }
+  void set_postalcode(const XalPostalCodePtr& postalcode) {
+    SetComplexChild(postalcode, &postalcode_);
   }
-  void set_subadministrativearea(
-      const XalSubAdministrativeAreaPtr& subadministrativearea) {
-    SetComplexChild(subadministrativearea, &subadministrativearea_);
+  void clear_postalcode() { set_postalcode(NULL); }
+
+ private:
+  XalLocality()
+    : has_localityname_(false) {
   }
-  void clear_subadministrativearea() {
-    set_subadministrativearea(NULL);
+  bool has_localityname_;
+  std::string localityname_;
+  XalThoroughfarePtr thoroughfare_;
+  XalPostalCodePtr postalcode_;
+  friend class KmlFactory;
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+};
+
+// <xal:PostalCode>
+class XalPostalCode : public XalElement<Type_XalPostalCode> {
+ public:
+  virtual ~XalPostalCode() {}
+
+  // <xal:PostalCodeNumber>
+  const std::string& get_postalcodenumber() const {
+    return postalcodenumber_;
+  }
+  bool has_postalcodenumber() const {
+    return has_postalcodenumber_;
+  }
+  void set_postalcodenumber(const std::string& value) {
+    postalcodenumber_ = value;
+    has_postalcodenumber_ = true;
+  }
+  void clear_postalcodenumber() {
+    postalcodenumber_.clear();
+    has_postalcodenumber_ = false;
   }
 
  private:
-  XalSubAdministrativeAreaPtr subadministrativearea_;
+  XalPostalCode()
+    : has_postalcodenumber_(false) {
+  }
+  bool has_postalcodenumber_;
+  std::string postalcodenumber_;
   friend class KmlFactory;
-  XalAdministrativeArea();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
@@ -168,62 +277,100 @@ class XalAdministrativeArea : public Element {
 };
 
 // <xal:SubAdministrativeArea>
-class XalSubAdministrativeArea : public Element {
+class XalSubAdministrativeArea :
+    public XalElement<Type_XalSubAdministrativeArea> {
  public:
-  virtual ~XalSubAdministrativeArea();
-  virtual KmlDomType Type() const { return Type_XalSubAdministrativeArea; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalSubAdministrativeArea;
+  virtual ~XalSubAdministrativeArea() {}
+
+  // <xal:SubAdministrativeAreaName>
+  const std::string& get_subadministrativeareaname() const {
+    return subadministrativeareaname_;
+  }
+  bool has_subadministrativeareaname() const {
+    return has_subadministrativeareaname_;
+  }
+  void set_subadministrativeareaname(const std::string& value) {
+    subadministrativeareaname_ = value;
+    has_subadministrativeareaname_ = true;
+  }
+  void clear_subadministrativeareaname() {
+    subadministrativeareaname_.clear();
+    has_subadministrativeareaname_ = false;
   }
 
-  // TODO: implement children
+  // <xal:Locality>
+  const XalLocalityPtr& get_locality() const { return locality_; }
+  bool has_locality() const { return locality_ != NULL; }
+  void set_locality(const XalLocalityPtr& locality) {
+    SetComplexChild(locality, &locality_);
+  }
+  void clear_locality() { set_locality(NULL); }
 
  private:
+  XalSubAdministrativeArea()
+    : has_subadministrativeareaname_(false) {
+  }
+  bool has_subadministrativeareaname_;
+  std::string subadministrativeareaname_;
+  XalLocalityPtr locality_;
   friend class KmlFactory;
-  XalSubAdministrativeArea();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 };
 
-// <xal:Locality>
-class XalLocality : public Element {
- public:
-  virtual ~XalLocality();
-  virtual KmlDomType Type() const { return Type_XalLocality; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalLocality;
-  }
-
-  // TODO: implement children
-  // TODO: <xal:LocalityName>
-  // TODO: <xal:Thoroughfare>
-  // TODO: <xal:PostalCode>
-};
-
 // <xal:Thoroughfare>
-class XalThoroughfare : public Element {
+class XalThoroughfare : public XalElement<Type_XalThoroughfare> {
  public:
-  virtual ~XalThoroughfare();
-  virtual KmlDomType Type() const { return Type_XalThoroughfare; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalThoroughfare;
+  virtual ~XalThoroughfare() {}
+
+  // <xal:ThoroughfareName>
+  const std::string& get_thoroughfarename() const {
+    return thoroughfarename_;
+  }
+  bool has_thoroughfarename() const {
+    return has_thoroughfarename_;
+  }
+  void set_thoroughfarename(const std::string& value) {
+    thoroughfarename_ = value;
+    has_thoroughfarename_ = true;
+  }
+  void clear_thoroughfarename() {
+    thoroughfarename_.clear();
+    has_thoroughfarename_ = false;
   }
 
-  // TODO: <xal:ThoroughfareName>
-};
-
-// <xal:PostalCode>
-class XalPostalCode : public Element {
- public:
-  virtual ~XalPostalCode();
-  virtual KmlDomType Type() const { return Type_XalPostalCode; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_XalPostalCode;
+  // <xal:ThoroughfareNumber>
+  const std::string& get_thoroughfarenumber() const {
+    return thoroughfarenumber_;
+  }
+  bool has_thoroughfarenumber() const {
+    return has_thoroughfarenumber_;
+  }
+  void set_thoroughfarenumber(const std::string& value) {
+    thoroughfarenumber_ = value;
+    has_thoroughfarenumber_ = true;
+  }
+  void clear_thoroughfarenumber() {
+    thoroughfarenumber_.clear();
+    has_thoroughfarenumber_ = false;
   }
 
-  // TODO: <xal:PostalCodeNumber>
+ private:
+  XalThoroughfare()
+    : has_thoroughfarename_(false),
+      has_thoroughfarenumber_(false) {
+  }
+  bool has_thoroughfarename_;
+  std::string thoroughfarename_;
+  bool has_thoroughfarenumber_;
+  std::string thoroughfarenumber_;
+  friend class KmlFactory;
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
 };
 
 }  // end namespace kmldom

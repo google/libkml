@@ -35,10 +35,7 @@ using kmlbase::Attributes;
 
 namespace kmldom {
 
-XalAddressDetails::XalAddressDetails() {}
-
-XalAddressDetails::~XalAddressDetails() {}
-
+// <xal:AddressDetails>
 void XalAddressDetails::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
@@ -54,32 +51,53 @@ void XalAddressDetails::AddElement(const ElementPtr& element) {
 }
 
 void XalAddressDetails::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
-  // <xal:AddressDetails> is a <xs:sequence>
-  // TODO: <xal:PostalServiceElements>
-  // After <xal:PostalServiceElements> is a <xs:choice>:
-  // TODO: <xal:Address>
-  // TODO: <xal:AddressLines>
+  ElementSerializer element_serializer(*this, serializer);
   // <xal:Country>
   if (has_country()) {
     serializer.SaveElement(get_country());
   } 
-  // TODO: <xal:AdministrativeArea>
-  // TODO: <xal:Locality>
-  // TODO: <xal:Thoroughfare>
-  // TODO <xs:any>
-  SerializeUnknown(serializer);
-  serializer.End();
 } 
 
-XalCountry::XalCountry()
-  : has_countrynamecode_(false) {
+// <xal:AdministrativeArea>
+void XalAdministrativeArea::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  switch(element->Type()) {
+    case Type_xalAdministrativeAreaName:
+      has_administrativeareaname_ =
+          element->SetString(&administrativeareaname_);
+      break;
+    case Type_XalLocality:
+      set_locality(AsXalLocality(element));
+      break;
+    case Type_XalSubAdministrativeArea:
+      set_subadministrativearea(AsXalSubAdministrativeArea(element));
+      break;
+    default:
+      Element::AddElement(element);
+  }
 }
 
-XalCountry::~XalCountry() {}
+void XalAdministrativeArea::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  if (has_administrativeareaname()) {
+    serializer.SaveFieldById(Type_xalAdministrativeAreaName,
+                             get_administrativeareaname());
+  } 
+  if (has_locality()) {
+    serializer.SaveElement(get_locality());
+  }
+  if (has_subadministrativearea()) {
+    serializer.SaveElement(get_subadministrativearea());
+  }
+}
 
+// <xal:Country>
 void XalCountry::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch(element->Type()) {
     case Type_xalCountryNameCode:
       has_countrynamecode_ = element->SetString(&countrynamecode_);
@@ -93,59 +111,126 @@ void XalCountry::AddElement(const ElementPtr& element) {
 }
 
 void XalCountry::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  // xal:Country is a <xs:sequence> of these children in this order:
-  // TODO: <xal:AddressLine>
+  ElementSerializer element_serializer(*this, serializer);
   // <xal:CountryNameCode>
   if (has_countrynamecode()) {
     serializer.SaveFieldById(Type_xalCountryNameCode, get_countrynamecode());
   } 
-  // TODO: <xal:CountryName>
-  // After <xal:CountryName> is an <xs:choice>
   // <xal:AdministrativeArea>
   if (has_administrativearea()) {
     serializer.SaveElement(get_administrativearea());
   }
-  // TODO: <xal:Locality>
-  // TODO: <xal:Thoroughfare>
-  //SerializeUnknown(serializer);
-  serializer.End();
 }
 
-XalAdministrativeArea::XalAdministrativeArea() {}
-
-XalAdministrativeArea::~XalAdministrativeArea() {}
-
-void XalAdministrativeArea::AddElement(const ElementPtr& element) {
-  // TODO: implement parsing
-  Element::AddElement(element);
+// <xal:Locality>
+void XalLocality::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  switch(element->Type()) {
+    case Type_xalLocalityName:
+      has_localityname_ = element->SetString(&localityname_);
+      break;
+    case Type_XalPostalCode:
+      set_postalcode(AsXalPostalCode(element));
+      break;
+    case Type_XalThoroughfare:
+      set_thoroughfare(AsXalThoroughfare(element));
+      break;
+    default:
+      Element::AddElement(element);
+      break;
+  }
 }
 
-void XalAdministrativeArea::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  SerializeUnknown(serializer);
-  serializer.End();
+void XalLocality::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  if (has_thoroughfare()) {
+    serializer.SaveElement(get_thoroughfare());
+  }
+  if (has_postalcode()) {
+    serializer.SaveElement(get_postalcode());
+  }
 }
 
-XalSubAdministrativeArea::XalSubAdministrativeArea() {}
+// <xal:PostalCode>
+void XalPostalCode::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  switch(element->Type()) {
+    case Type_xalPostalCodeNumber:
+      has_postalcodenumber_ = element->SetString(&postalcodenumber_);
+      break;
+    default:
+      Element::AddElement(element);
+      break;
+  }
+}
 
-XalSubAdministrativeArea::~XalSubAdministrativeArea() {}
+void XalPostalCode::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  if (has_postalcodenumber()) {
+    serializer.SaveFieldById(Type_xalPostalCodeNumber, get_postalcodenumber());
+  }
+}
 
+// <xal:SubAdministrativeArea>
 void XalSubAdministrativeArea::AddElement(const ElementPtr& element) {
-  // TODO: implement parsing
-  Element::AddElement(element);
+  if (!element) {
+    return;
+  }
+  switch(element->Type()) {
+    case Type_xalSubAdministrativeAreaName:
+      has_subadministrativeareaname_ =
+          element->SetString(&subadministrativeareaname_);
+      break;
+    case Type_XalLocality:
+      set_locality(AsXalLocality(element));
+      break;
+    default:
+      Element::AddElement(element);
+  }
 }
 
 void XalSubAdministrativeArea::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  SerializeUnknown(serializer);
-  serializer.End();
+  ElementSerializer element_serializer(*this, serializer);
+  if (has_subadministrativeareaname()) {
+    serializer.SaveFieldById(Type_xalSubAdministrativeAreaName,
+                             get_subadministrativeareaname());
+  }
+  if (has_locality()) {
+    serializer.SaveElement(get_locality());
+  }
+}
+
+// <xal:Thoroughfare>
+void XalThoroughfare::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  switch(element->Type()) {
+    case Type_xalThoroughfareName:
+      has_thoroughfarename_ = element->SetString(&thoroughfarename_);
+      break;
+    case Type_xalThoroughfareNumber:
+      has_thoroughfarenumber_ = element->SetString(&thoroughfarenumber_);
+      break;
+    default:
+      Element::AddElement(element);
+      break;
+  }
+}
+
+void XalThoroughfare::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  if (has_thoroughfarenumber()) {
+    serializer.SaveFieldById(Type_xalThoroughfareNumber,
+                             get_thoroughfarenumber());
+  }
+  if (has_thoroughfarename()) {
+    serializer.SaveFieldById(Type_xalThoroughfareName, get_thoroughfarename());
+  }
 }
 
 }  // end namespace kmldom

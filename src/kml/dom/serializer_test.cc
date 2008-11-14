@@ -32,6 +32,7 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kmldom.h"
+#include "kml/dom/stats_serializer.h"
 #include "gtest/gtest.h"
 
 using kmlbase::Attributes;
@@ -108,62 +109,6 @@ class FlatSerializer : public Serializer {
 
  private:
   ElementVector element_vector_;
-};
-
-// This Serializer implementation counts begin and end tags of complex elements
-// and a count of all simple elements (fields).
-class StatsSerializer : public Serializer {
- public:
-  StatsSerializer()
-      : begin_count_(0),
-        end_count_(0),
-        field_count_(0),
-        element_count_(0),
-        element_group_count_(0),
-        content_count_(0) {}
-  virtual void BeginById(int type_id, const Attributes& attributes) {
-    ++begin_count_;
-  }
-  virtual void End() {
-    ++end_count_;
-  }
-  virtual void SaveStringFieldById(int type_id, std::string value) {
-    ++field_count_;
-  }
-  virtual void SaveContent(const std::string& content, bool maybe_quote) {
-    ++content_count_;
-  }
-  virtual void SaveElement(const ElementPtr& element) {
-    ++element_count_;
-    Serializer::SaveElement(element);
-  }
-  virtual void SaveElementGroup(const ElementPtr& element, int group_id) {
-    ++element_group_count_;
-    SaveElement(element);  // To count elements and recurse.
-  }
-  int get_begin_count() const {
-    return begin_count_;
-  }
-  int get_end_count() const {
-    return end_count_;
-  }
-  int get_field_count() const {
-    return field_count_;
-  }
-  int get_element_count() const {
-    return element_count_;
-  }
-  int get_element_group_count() const {
-    return element_group_count_;
-  }
-
- private:
-  int begin_count_;
-  int end_count_;
-  int field_count_;
-  int element_count_;
-  int element_group_count_;
-  int content_count_;
 };
 
 // This exists because Serialize is public only on Element.
