@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 #include "kml/base/attributes.h"
+#include "kml/base/string_string_map.h"
 
 namespace kmlbase {
 
@@ -74,26 +75,14 @@ class Xmlns {
   // string is empty if no such prefix-namespace mapping exists.  In the sample
   // above a prefix of "kml" returns "http://www.opengis.net/kml/2.2".
   const std::string GetNamespace(const std::string& prefix) const {
-    StringStringMap::const_iterator iter = prefix_map_.begin();
-    for (; iter != prefix_map_.end(); ++iter) {
-      if (prefix == iter->first) {
-        return iter->second;
-      }
-    }
-    return "";  // Empty string.
+    return prefix_map_.GetValue(prefix);
   }
 
   // This returns the prefix for the given namespace.  The returned string is
   // empty if no such namespace has a prefix.  In the sample above a namespace
   // of "http://www.opengis.net/kml/2.2" returns "kml".
   const std::string GetKey(const std::string& value) const {
-    StringStringMap::const_iterator iter = prefix_map_.begin();
-    for (; iter != prefix_map_.end(); ++iter) {
-      if (value == iter->second) {
-        return iter->first;
-      }
-    }
-    return "";  // Empty string.
+    return prefix_map_.GetKey(value);
   }
 
   // This returns a list of all xmlns prefix names.  For example, from the
@@ -101,10 +90,7 @@ class Xmlns {
   // XML is not preserved (XML attributes in general have no order semantics
   // and must each be unique).
   void GetPrefixes(std::vector<std::string>* prefix_vector) const {
-    StringStringMap::const_iterator iter = prefix_map_.begin();
-    for (; iter != prefix_map_.end(); ++iter) {
-      prefix_vector->push_back(iter->first);
-    }
+    return prefix_map_.GetKeys(prefix_vector);
   }
 
  private:
@@ -114,7 +100,7 @@ class Xmlns {
     attributes.MatchSplitKey(kXmlns + ":", &prefix_map_);
     // Return true if there is a default xmlns or if there are any
     // xmlns:prefx="ns" pairs.
-    return attributes.GetString(kXmlns, &default_) || !prefix_map_.empty();
+    return attributes.GetString(kXmlns, &default_) || !prefix_map_.Empty();
   }
   std::string default_;
   StringStringMap prefix_map_;

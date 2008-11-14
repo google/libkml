@@ -49,7 +49,7 @@ bool Attributes::Parse(const char** attrs) {
   while (*attrs && *(attrs+1)) {  // Quietly ignore unpaired last item.
     const char* attr_name = *attrs++;
     const char* attr_val = *attrs++;
-    attributes_[attr_name] = attr_val;
+    attributes_map_->Set(attr_name, attr_val);
   }
   return true;
 }
@@ -60,22 +60,14 @@ bool Attributes::Parse(const char** attrs) {
 // pointer is supplied false is returned.
 bool Attributes::GetString(const std::string attr_name,
                            std::string* attr_val) const {
-  if (!attr_val) {
-    return false;
-  }
-  StringStringMap::const_iterator entry = attributes_.find(attr_name);
-  if (entry == attributes_.end()) {
-    return false;
-  }
-  *attr_val = entry->second;
-  return true;
+  return attributes_map_->Find(attr_name, attr_val);
 }
 
 // Set the value of the given attribute.  Any previous value for this
 // attribute is overwritten.
 void Attributes::SetString(const std::string attr_name,
                            const std::string attr_val) {
-  attributes_[attr_name] = attr_val;
+  attributes_map_->Set(attr_name, attr_val);
 }
 
 // Get the value of the given attribute as a double.  If the attribute value
@@ -141,52 +133,28 @@ bool Attributes::GetBool(const std::string& attr_name, bool* attr_val) const {
 // passed string.  This appends to any content previously in the string.
 // If no string pointer is supplied this method does nothing.
 void Attributes::Serialize(std::string* output) const {
-  if (!output) {
-    return;
-  }
-  StringStringMap::const_iterator entry;
-  for (entry = attributes_.begin(); entry != attributes_.end(); ++entry) {
-    *output += " ";
-    *output += entry->first;
-    *output += "=\"";
-    *output += entry->second;
-    *output += "\"";
-  }
+  attributes_map_->SerializeToXml(output);
 }
 
 // Creates an exact copy of the Attributes object. Called by
 // Element::ParseAttributes().
 Attributes* Attributes::Clone() const {
-  Attributes* attributes = new Attributes();
-  for (StringStringMap::const_iterator itr = attributes_.begin();
-       itr != attributes_.end(); ++itr) {
-    attributes->SetString(itr->first, itr->second);
-  }
-  return attributes;
+  return new Attributes(attributes_map_->Clone());
 }
 
 // This sets each attribute from the passed Attributes instance.
 // Any conflicting attributes are overridden from the input.
 void Attributes::MergeAttributes(const Attributes& attrs) {
-  for (StringStringMap::const_iterator itr = attrs.attributes_.begin();
-       itr != attrs.attributes_.end(); ++itr) {
-    attributes_[itr->first] = itr->second;
-  }
+  attributes_map_->Merge(*attrs.attributes_map_);
 }
 
 void Attributes::MatchSplitKey(const std::string& match,
                                StringStringMap* out) const {
-  if (!out) {
-    return;
-  }
-  size_t match_size = match.size();
-  for (StringStringMap::const_iterator itr = attributes_.begin();
-       itr != attributes_.end(); ++itr) {
-    const std::string& lhs = itr->first;
-    if (lhs.size() > match_size && lhs.compare(0, match_size, match) == 0) {
-      (*out)[lhs.substr(match_size)] = itr->second;
-    }
-  }
+  attributes_map_->MatchSplitKey(match, out);
+}
+
+void Attributes::GetAttrNames(std::vector<std::string>* attr_names) const {
+  attributes_map_->GetKeys(attr_names);
 }
 
 }  // end namespace kmlbase
