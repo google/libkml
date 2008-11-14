@@ -26,6 +26,7 @@
 // This file contains the unit tests for the internal Attributes class.
 
 #include "kml/base/attributes.h"
+#include <algorithm>
 #include <string>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
@@ -68,7 +69,8 @@ TEST_F(AttributesTest, TestCreate) {
   ASSERT_EQ(std::string(atts[5]), got_val);
   ASSERT_FALSE(attributes_->GetString("no-such-attr", &got_val));
   // Verify null output is well behaved.
-  ASSERT_FALSE(attributes_->GetString(atts[0], NULL));
+  ASSERT_TRUE(attributes_->GetString(atts[0], NULL));
+  ASSERT_FALSE(attributes_->GetString("no-such_attr", NULL));
 }
 
 TEST_F(AttributesTest, TestCreateOdd) {
@@ -186,8 +188,8 @@ TEST_F(AttributesTest, TestMatch) {
   StringStringMap xmlns;
   // This is the method under test.
   attributes_->MatchSplitKey("xmlns:", &xmlns);
-  ASSERT_EQ(static_cast<size_t>(1), xmlns.size());
-  ASSERT_EQ(std::string(atts[3]), xmlns["ex"]);
+  ASSERT_EQ(static_cast<size_t>(1), xmlns.GetSize());
+  ASSERT_EQ(std::string(atts[3]), xmlns.GetValue("ex"));
 }
 
 TEST_F(AttributesTest, TestMatchNoDefault) {
@@ -200,9 +202,33 @@ TEST_F(AttributesTest, TestMatchNoDefault) {
   StringStringMap xmlns;
   // This is the method under test.
   attributes_->MatchSplitKey("xmlns:", &xmlns);
-  ASSERT_EQ(static_cast<size_t>(2), xmlns.size());
-  ASSERT_EQ(std::string(atts[1]), xmlns["kml"]);
-  ASSERT_EQ(std::string(atts[3]), xmlns["ex"]);
+  ASSERT_EQ(static_cast<size_t>(2), xmlns.GetSize());
+  ASSERT_EQ(std::string(atts[1]), xmlns.GetValue("kml"));
+  ASSERT_EQ(std::string(atts[3]), xmlns.GetValue("ex"));
+}
+
+TEST_F(AttributesTest, TestGetAttrNames) {
+  // A list of name-value pairs as expat might produce.
+  const char* atts[] = {
+    "name",
+    "Placemark",
+    "type",
+    "kml:PlacemarkType",
+    "substitutionGroup",
+    "kml:AbstractFeatureGroup",
+    NULL
+  };
+  attributes_.reset(Attributes::Create(atts));
+  std::vector<std::string> attr_names;
+  attributes_->GetAttrNames(&attr_names);
+  ASSERT_EQ(static_cast<size_t>(3), attr_names.size());
+  ASSERT_FALSE(attr_names.end() ==
+               std::find(attr_names.begin(), attr_names.end(), "name"));
+  ASSERT_FALSE(attr_names.end() ==
+               std::find(attr_names.begin(), attr_names.end(), "type"));
+  ASSERT_FALSE(attr_names.end() == std::find(attr_names.begin(),
+                                             attr_names.end(),
+                                             "substitutionGroup"));
 }
 
 }  // end namespace kmlbase

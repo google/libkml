@@ -33,11 +33,11 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/string_string_map.h"
 #include "kml/base/util.h"
 
 namespace kmlbase {
-
-typedef std::map<std::string, std::string> StringStringMap;
 
 class Attributes {
  public:
@@ -46,7 +46,9 @@ class Attributes {
   static Attributes* Create(const char** attrs);
 
   // Construct the Attributes instance with no initial name-value pairs.
-  Attributes() {}
+  Attributes() {
+    attributes_map_.reset(new StringStringMap);
+  }
 
   // Get the value of the given attribute as a string.  Returns true if an
   // attribute with this name exits.  If no attribute by this name exists
@@ -102,12 +104,18 @@ class Attributes {
   // map.
   void MatchSplitKey(const std::string& key_match, StringStringMap* out) const;
 
+  // Returns all attribute names.
+  void GetAttrNames(std::vector<std::string>* attr_names) const;
+
  private:
+  Attributes(StringStringMap* string_string_map) {
+    attributes_map_.reset(string_string_map);
+  }
   bool Parse(const char** attrs);
 
   // XML attributes have no order and are unique.  The attribute name is
   // preserved to properly save unknown attributes.
-  StringStringMap attributes_;
+  boost::scoped_ptr<StringStringMap> attributes_map_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Attributes);
 };
 

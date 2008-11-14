@@ -36,6 +36,7 @@ libkmlbaseinclude_HEADERS = \
 	memory_file.h \
 	net_cache.h \
 	referent.h \
+	string_string_map.h \
 	string_util.h \
 	tempfile.h \
 	time_util.h \
@@ -58,6 +59,7 @@ TESTS = \
 	file_test \
 	net_cache_test \
 	referent_test \
+	string_string_map_test \
 	string_util_test \
 	tempfile_test \
 	time_util_test \
@@ -108,6 +110,11 @@ tempfile_test_SOURCES = tempfile_test.cc
 tempfile_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 tempfile_test_LDADD = libkmlbase.la \
 		      $(top_builddir)/third_party/libgtest.la
+
+string_string_map_test_SOURCES = string_string_map_test.cc
+string_string_map_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+string_string_map_test_LDADD= libkmlbase.la \
+			$(top_builddir)/third_party/libgtest.la
 
 string_util_test_SOURCES = string_util_test.cc
 string_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
