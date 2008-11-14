@@ -246,6 +246,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\string_string_map.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\string_util.h"
 				>
 			</File>

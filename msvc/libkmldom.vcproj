@@ -502,6 +502,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\dom\stats_serializer.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\stdafx.h"
 				>
 			</File>

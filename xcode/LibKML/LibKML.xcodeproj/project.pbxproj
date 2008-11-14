@@ -30,6 +30,8 @@
 		692EDF430EB172BF00F6217F /* parse_old_schema.cc in Sources */ = {isa = PBXBuildFile; fileRef = 692EDF3C0EB172BF00F6217F /* parse_old_schema.cc */; };
 		692EDF440EB172BF00F6217F /* parse_old_schema.h in Headers */ = {isa = PBXBuildFile; fileRef = 692EDF3D0EB172BF00F6217F /* parse_old_schema.h */; };
 		692EDF460EB172BF00F6217F /* schema_parser_observer.h in Headers */ = {isa = PBXBuildFile; fileRef = 692EDF3F0EB172BF00F6217F /* schema_parser_observer.h */; };
+		698F9E270ECE01940039349F /* string_string_map.h in Headers */ = {isa = PBXBuildFile; fileRef = 698F9E250ECE01940039349F /* string_string_map.h */; };
+		698F9E2D0ECE020F0039349F /* stats_serializer.h in Headers */ = {isa = PBXBuildFile; fileRef = 698F9E2C0ECE020F0039349F /* stats_serializer.h */; };
 		699479410EB001770042D241 /* libkmlbase.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 698338E90EA9B2E300B9A213 /* libkmlbase.dylib */; };
 		699479830EB0039F0042D241 /* libkmldom.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 698339400EA9B3E700B9A213 /* libkmldom.dylib */; };
 		699479870EB003C20042D241 /* libkmlbase.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 698338E90EA9B2E300B9A213 /* libkmlbase.dylib */; };
@@ -394,6 +396,9 @@
 		698338BA0EA9B1D500B9A213 /* liburiparser.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = liburiparser.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		698338E90EA9B2E300B9A213 /* libkmlbase.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkmlbase.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		698339400EA9B3E700B9A213 /* libkmldom.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkmldom.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		698F9E250ECE01940039349F /* string_string_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_string_map.h; sourceTree = "<group>"; };
+		698F9E260ECE01940039349F /* string_string_map_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_string_map_test.cc; sourceTree = "<group>"; };
+		698F9E2C0ECE020F0039349F /* stats_serializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stats_serializer.h; sourceTree = "<group>"; };
 		699479510EB002370042D241 /* libkmlconvenience.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkmlconvenience.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		6994798D0EB003D60042D241 /* libkmlengine.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkmlengine.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		69947A2D0EB005840042D241 /* libkmlregionator.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkmlregionator.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1019,6 +1024,8 @@
 		699481080EB02EEC0042D241 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				698F9E250ECE01940039349F /* string_string_map.h */,
+				698F9E260ECE01940039349F /* string_string_map_test.cc */,
 				692EDF280EB1722400F6217F /* date_time.cc */,
 				692EDF290EB1722400F6217F /* date_time.h */,
 				692EDF2A0EB1722400F6217F /* date_time_test.cc */,
@@ -1094,6 +1101,7 @@
 		699481420EB02EEC0042D241 /* dom */ = {
 			isa = PBXGroup;
 			children = (
+				698F9E2C0ECE020F0039349F /* stats_serializer.h */,
 				69E0F9D40ECB754000BDFB5E /* xal.cc */,
 				69E0F9D50ECB754000BDFB5E /* xal.h */,
 				69E0F9D60ECB754000BDFB5E /* xal_test.cc */,
@@ -1894,6 +1902,7 @@
 				6994835F0EB02F5A0042D241 /* xmlns.h in Headers */,
 				692EDF2E0EB1722400F6217F /* date_time.h in Headers */,
 				692EDF300EB1722400F6217F /* vec3.h in Headers */,
+				698F9E270ECE01940039349F /* string_string_map.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1950,6 +1959,7 @@
 				699483B30EB02FA00042D241 /* xml_serializer.h in Headers */,
 				699483B40EB02FA00042D241 /* xsd.h in Headers */,
 				69E0F9D80ECB755E00BDFB5E /* xal.h in Headers */,
+				698F9E2D0ECE020F0039349F /* stats_serializer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
