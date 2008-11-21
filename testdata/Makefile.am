@@ -1,1 +1,1 @@
-SUBDIRS = atom balloon csv deprecated gpx kmz links style xal xsd
+SUBDIRS = atom balloon deprecated gpx kmz links style xal xsd
