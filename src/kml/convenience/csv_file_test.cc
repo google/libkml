@@ -65,30 +65,8 @@ static const struct CsvTestLine {
   const char* description;
   const char* styleurl;
 } kCsvTestLines[] = {
-  {  // 0th line of testdata/kmz/ch-stations.csv
-  "41|46.6245|9.57563|Salouf, posta|41 connections",
-  41,46.6245,9.57563,"Salouf, posta","41 connections",NULL,
-  },
-  {
-  "74|47.4938|8.44866|Steinmaur, Gemeindehaus|74 connections",
-  74,47.4938,8.44866,"Steinmaur, Gemeindehaus","74 connections",NULL,
-  },
-  {
-  "50|46.934|8.61257|Tellsplatte|50 connections|foo.kml#style-me",
-  50,46.934,8.61257,"Tellsplatte","50 connections","foo.kml#style-me",
-  },
-  {
-  "2|46.0237|8.85624|Miglieglia SMM|2 connections",
-  2,46.0237,8.85624,"Miglieglia SMM","2 connections",NULL,
-  },
-  {
-  "294|46.9913|8.66783|Schlattli, Talstation|294 connections",
-  294,46.9913,8.66783,"Schlattli, Talstation","294 connections",NULL,
-  },
-  { // last line of testdata/kmz/ch-stations.csv
-  "60|46.0526|7.14872|La Douay|60 connections",
-  60,46.0526,7.14872,"La Douay","60 connections",NULL,
-  }
+  // TODO 0th line of testdata/csv/data.csv
+  // TODO last line of testdata/csv/data.csv
 };
 
 void CsvFileTest::ComparePlacemark(const PlacemarkPtr& placemark,
@@ -133,23 +111,27 @@ TEST_F(CsvFileTest, TestParseCsvLine) {
 }
 
 TEST_F(CsvFileTest, TestParseCsvFile) {
+  // TODO
+#if 0
   FeatureList feature_list;
   CsvFile csv_file(&feature_list);
-  const size_t kChStationsLines(15140);
-  const std::string kChStationsCsv(std::string(DATADIR) +
-                                   std::string("/csv/ch-stations.csv"));
-  csv_file.ParseCsvFile(kChStationsCsv.c_str());
+  // TODO const size_t kTestCsvLines(XXX);
+  // TODO const std::string kTestCsv(std::string(DATADIR) +
+  //                               std::string("/csv/test.csv"));
+  // TODO
+  csv_file.ParseCsvFile(kTestCsv.c_str());
   FolderPtr folder = KmlFactory::GetFactory()->CreateFolder();
   feature_list.Save(folder);
 
-  ASSERT_EQ(kChStationsLines, folder->get_feature_array_size());
+  ASSERT_EQ(kTestCsvLines, folder->get_feature_array_size());
   PlacemarkPtr placemark;
   ComparePlacemark(kmldom::AsPlacemark(folder->get_feature_array_at(0)),
                    0);
   const size_t kTestLineCount = sizeof(kCsvTestLines)/sizeof(kCsvTestLines[0]);
   ComparePlacemark(kmldom::AsPlacemark(
-                       folder->get_feature_array_at(kChStationsLines-1)),
+                       folder->get_feature_array_at(kTestCsvLines-1)),
                    kTestLineCount-1);
+#endif
 }
 
 }  // namespace kmlconvenience

@@ -24,12 +24,8 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Build a Region-based NetworkLink hierarchy from a CSV file.
-// This is a C++ version of this:
-//   http://regionator.googlecode.com/svn/trunk/kml/csvregionator.py
 // Each line of the input.csv is in this format:
 //   score|lat|lon|name|description[|style_url]
-// A data set for use with this program is here:
-//   http://regionator.googlecode.com/svn/trunk/ch-sbb/ch-stations.csv
 
 #include <iostream>
 #include <string>
