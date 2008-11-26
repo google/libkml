@@ -54,7 +54,7 @@ class FieldMerger : public Serializer {
 
   // Set the attributes in the target.
   virtual void BeginById(int type_id, const Attributes& attributes) {
-    target_->ParseAttributes(attributes);
+    target_->ParseAttributes(attributes.Clone());
   }
 
   // The default implementation recurses on complex children.  FieldMerger is

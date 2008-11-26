@@ -58,7 +58,7 @@ class ElementReplicator : public kmldom::Serializer {
   virtual void BeginById(int type_id, const Attributes& attributes) {
     KmlDomType id = static_cast<KmlDomType>(type_id);
     ElementPtr clone = KmlFactory::GetFactory()->CreateElementById(id);
-    clone->ParseAttributes(attributes);
+    clone->ParseAttributes(attributes.Clone());
     clone_stack_.push(clone);
   }
 
