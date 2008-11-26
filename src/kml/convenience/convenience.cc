@@ -71,8 +71,8 @@ PointPtr CreatePointFromLatLonAtts(const char** atts) {
   if (attributes.get()) {
     double latitude;
     double longitude;
-    if (attributes->GetDouble("lat", &latitude) &&
-        attributes->GetDouble("lon", &longitude)) {
+    if (attributes->GetValue("lat", &latitude) &&
+        attributes->GetValue("lon", &longitude)) {
       return CreatePointLatLon(latitude, longitude);
     }
   }
