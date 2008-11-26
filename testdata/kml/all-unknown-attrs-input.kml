@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- libkml: testdata/kml/all-unknown-attrs-input.kml
+  This file contains every complex element in KML mostly in alphabetical order
+  with parentage established to put everything in the top level Document or
+  NetworkLinkControl.  Note that the input order of the different kinds of
+  unknown/misplaced attributes changes as reflected in all-unknown-golden.kml.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2" id="kml" unknown="not known" not-known="nope">
+  <NetworkLinkControl id="NetworkLinkControl" unknown="not known" not-known="nope">
+    <!-- TODO: serializes to <linkSnippet...></linkSnippet> -->
+    <linkSnippet id="linkSnippet" unknown="not known" not-known="nope"/>
+    <Update id="Update" unknown="not known" not-known="nope">
+      <targetHref/>
+      <Change id="Change" unknown="not known" not-known="nope"/>
+      <Create id="Create" unknown="not known" not-known="nope"/>
+      <Delete id="Delete" unknown="not known" not-known="nope"/>
+    </Update>
+  </NetworkLinkControl>
+  <Document>
+
+    <Placemark>
+      <Model>
+        <ResourceMap>
+          <Alias id="Alias" unknown="not known" not-known="nope"/>
+        </ResourceMap>
+      </Model>
+    </Placemark>
+
+    <Document><Style>
+    <BalloonStyle id="BalloonStyle" unknown="not known" not-known="nope"/>
+    </Style></Document>
+
+    <Placemark>
+      <Camera id="Camera" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <ExtendedData>
+        <Data id="Data" not-known="nope" unknown="not known"/>
+      </ExtendedData>
+    </Placemark>
+
+    <Document id="Document" unknown="not known" not-known="nope"/>
+    
+    <Placemark>
+      <ExtendedData id="ExtendedData" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Folder id="Folder" unknown="not known" not-known="nope"/>
+    <GroundOverlay id="GroundOverlay" unknown="not known" not-known="nope"/>
+    
+    <GroundOverlay>
+      <Icon id="Icon" unknown="not known" not-known="nope"/>
+    </GroundOverlay>
+    
+    <Document><Style>
+      <IconStyle id="IconStyle" unknown="not known" not-known="nope"/>
+    </Style></Document>
+    
+    <PhotoOverlay>
+      <ImagePyramid id="ImagePyramid" unknown="not known" not-known="nope"/>
+    </PhotoOverlay>
+    
+    <Document>
+      <Style>
+        <ListStyle>
+          <ItemIcon id="ItemIcon" unknown="not known" not-known="nope"/>
+        </ListStyle>
+      </Style>
+    </Document>
+    
+    <Document><Style>
+      <LabelStyle id="LabelStyle" unknown="not known" not-known="nope"/>
+    </Style></Document>
+
+    <Placemark>
+      <Region>
+        <LatLonAltBox id="LatLonAltBox" unknown="not known" not-known="nope"/>
+      </Region>
+    </Placemark>
+    
+    <GroundOverlay>
+      <LatLonBox id="LatLonBox" unknown="not known" not-known="nope"/>
+    </GroundOverlay>
+    
+    <Placemark>
+      <LineString id="LineString" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Document>
+      <Style>
+        <LineStyle id="LineStyle" unknown="not known" not-known="nope"/>
+      </Style>
+      </Document>
+    
+    <Placemark>
+      <LinearRing id="LinearRing" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <NetworkLink>
+      <Link id="Link" unknown="not known" not-known="nope"/>
+    </NetworkLink>
+    
+    <Document><Style>
+      <ListStyle id="ListStyle" unknown="not known" not-known="nope"/>
+    </Style></Document>
+    
+    <Placemark>
+      <Model>
+        <Location id="Location" unknown="not known" not-known="nope"/>
+      </Model>
+    </Placemark>
+    
+    <Placemark>
+      <Region>
+        <Lod id="Lod" unknown="not known" not-known="nope"/>
+      </Region>
+    </Placemark>
+    
+    <Placemark>
+      <LookAt id="LookAt" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <Metadata id="Metadata" unknown="not known" not-known="nope"/>
+    </Placemark>
+
+    <Placemark>
+      <Model id="Model" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <MultiGeometry id="MultiGeometry" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <NetworkLink id="NetworkLink" unknown="not known" not-known="nope"/>
+    
+    <Placemark>
+      <Model>
+        <Orientation id="Orientation" unknown="not known" not-known="nope"/>
+      </Model>
+    </Placemark>
+    
+    <Document>
+      <StyleMap>
+        <Pair id="Pair" unknown="not known" not-known="nope"/>
+      </StyleMap>
+    </Document>
+    
+    <PhotoOverlay id="PhotoOverlay" unknown="not known" not-known="nope"/>
+    
+    <Placemark id="Placemark" unknown="not known" not-known="nope"/>
+    
+    <Placemark>
+      <Point id="Point" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Document>
+      <Style>
+        <PolyStyle id="PolyStyle" unknown="not known" not-known="nope"/>
+      </Style>
+    </Document>
+    
+    <Placemark>
+      <Polygon id="Polygon" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <Region id="Region" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <Model>
+        <ResourceMap id="ResourceMap" unknown="not known" not-known="nope"/>
+      </Model>
+    </Placemark>
+    
+    <Placemark>
+      <Model>
+        <Scale id="Scale" unknown="not known" not-known="nope"/>
+      </Model>
+    </Placemark>
+    
+    <Document>
+      <Schema id="Schema" unknown="not known" not-known="nope"/>
+    </Document>
+    
+    <Placemark>
+      <ExtendedData>
+        <SchemaData id="SchemaData" unknown="not known" not-known="nope"/>
+      </ExtendedData>
+    </Placemark>
+    
+    <ScreenOverlay id="ScreenOverlay" unknown="not known" not-known="nope"/>
+    
+    <Placemark>
+      <ExtendedData>
+        <SchemaData>
+          <!-- TODO: Xml serialize formatting problem -->
+          <SimpleData id="SimpleData" unknown="not known" not-known="nope"/>
+        </SchemaData>
+      </ExtendedData>
+    </Placemark>
+    
+    <Document>
+      <Schema>
+        <!-- TODO: Xml serialize formatting problem -->
+        <SimpleField id="SimpleField" unknown="not known" not-known="nope"/>
+      </Schema>
+    </Document>
+    
+    <Placemark>
+      <!-- TODO: same issue as <linkSnippet> -->
+      <Snippet id="Snippet" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Document>  
+      <Style id="Style" unknown="not known" not-known="nope"/>
+    </Document>
+      
+    <Document>
+      <StyleMap id="StyleMap" unknown="not known" not-known="nope"/>
+    </Document>
+
+    <Placemark>
+      <TimeSpan id="TimeSpan" unknown="not known" not-known="nope"/>
+    </Placemark>
+    
+    <Placemark>
+      <TimeStamp id="TimeStamp" unknown="not known" not-known="nope"/>
+    </Placemark>
+      
+    <NetworkLink>
+      <Url id="Url" unknown="not known" not-known="nope"/>
+    </NetworkLink>
+    
+    <PhotoOverlay>
+      <ViewVolume id="ViewVolume" unknown="not known" not-known="nope"/>
+    </PhotoOverlay>
+    
+    <Document>
+      <Style>
+        <ListStyle>
+          <hotSpot id="hotSpot" unknown="not known" not-known="nope"/>
+        </ListStyle>
+      </Style>
+    </Document>
+
+ 
+    <!-- Note: these are generally not really handled as real elements in KML
+    <innerBoundaryIs id="innerBoundaryIs" unknown="not known" not-known="nope"/>
+    <outerBoundaryIs id="outerBoundaryIs" unknown="not known" not-known="nope"/> 
+    -->
+    
+    <ScreenOverlay>
+      <overlayXY id="overlayXY" unknown="not known" not-known="nope"/>
+      <rotationXY id="rotationXY" unknown="not known" not-known="nope"/>
+      <screenXY id="screenXY" unknown="not known" not-known="nope"/>
+      <size id="size" unknown="not known" not-known="nope"/>
+    </ScreenOverlay>
+
+ 
+  </Document>
+</kml>

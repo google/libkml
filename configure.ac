@@ -199,6 +199,7 @@ AC_CONFIG_FILES([
 	testdata/csv/Makefile
 	testdata/deprecated/Makefile
 	testdata/gpx/Makefile
+	testdata/kml/Makefile
 	testdata/kmz/Makefile
 	testdata/kmz/rumsey/Makefile
 	testdata/kmz/rumsey/kml/Makefile

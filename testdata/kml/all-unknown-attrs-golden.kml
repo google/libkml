@@ -1,0 +1,206 @@
+<kml id="kml" not-known="nope" unknown="not known" xmlns="http://www.opengis.net/kml/2.2">
+  <NetworkLinkControl id="NetworkLinkControl" not-known="nope" unknown="not known">
+    <linkSnippet id="linkSnippet" not-known="nope" unknown="not known">
+    </linkSnippet>
+    <Update id="Update" not-known="nope" unknown="not known">
+      <targetHref/>
+      <Change id="Change" not-known="nope" unknown="not known"/>
+      <Create id="Create" not-known="nope" unknown="not known"/>
+      <Delete id="Delete" not-known="nope" unknown="not known"/>
+    </Update>
+  </NetworkLinkControl>
+  <Document>
+    <Placemark>
+      <Model>
+        <ResourceMap>
+          <Alias id="Alias" not-known="nope" unknown="not known"/>
+        </ResourceMap>
+      </Model>
+    </Placemark>
+    <Document>
+      <Style>
+        <BalloonStyle id="BalloonStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <Placemark>
+      <Camera id="Camera" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <ExtendedData>
+        <Data id="Data" not-known="nope" unknown="not known"/>
+      </ExtendedData>
+    </Placemark>
+    <Document id="Document" not-known="nope" unknown="not known"/>
+    <Placemark>
+      <ExtendedData id="ExtendedData" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Folder id="Folder" not-known="nope" unknown="not known"/>
+    <GroundOverlay id="GroundOverlay" not-known="nope" unknown="not known"/>
+    <GroundOverlay>
+      <Icon id="Icon" not-known="nope" unknown="not known"/>
+    </GroundOverlay>
+    <Document>
+      <Style>
+        <IconStyle id="IconStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <PhotoOverlay>
+      <ImagePyramid id="ImagePyramid" not-known="nope" unknown="not known"/>
+    </PhotoOverlay>
+    <Document>
+      <Style>
+        <ListStyle>
+          <ItemIcon id="ItemIcon" not-known="nope" unknown="not known"/>
+        </ListStyle>
+      </Style>
+    </Document>
+    <Document>
+      <Style>
+        <LabelStyle id="LabelStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <Placemark>
+      <Region>
+        <LatLonAltBox id="LatLonAltBox" not-known="nope" unknown="not known"/>
+      </Region>
+    </Placemark>
+    <GroundOverlay>
+      <LatLonBox id="LatLonBox" not-known="nope" unknown="not known"/>
+    </GroundOverlay>
+    <Placemark>
+      <LineString id="LineString" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Document>
+      <Style>
+        <LineStyle id="LineStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <Placemark>
+      <LinearRing id="LinearRing" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <NetworkLink>
+      <Link id="Link" not-known="nope" unknown="not known"/>
+    </NetworkLink>
+    <Document>
+      <Style>
+        <ListStyle id="ListStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <Placemark>
+      <Model>
+        <Location id="Location" not-known="nope" unknown="not known"/>
+      </Model>
+    </Placemark>
+    <Placemark>
+      <Region>
+        <Lod id="Lod" not-known="nope" unknown="not known"/>
+      </Region>
+    </Placemark>
+    <Placemark>
+      <LookAt id="LookAt" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <Metadata id="Metadata" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <Model id="Model" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <MultiGeometry id="MultiGeometry" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <NetworkLink id="NetworkLink" not-known="nope" unknown="not known"/>
+    <Placemark>
+      <Model>
+        <Orientation id="Orientation" not-known="nope" unknown="not known"/>
+      </Model>
+    </Placemark>
+    <Document>
+      <StyleMap>
+        <Pair id="Pair" not-known="nope" unknown="not known"/>
+      </StyleMap>
+    </Document>
+    <PhotoOverlay id="PhotoOverlay" not-known="nope" unknown="not known"/>
+    <Placemark id="Placemark" not-known="nope" unknown="not known"/>
+    <Placemark>
+      <Point id="Point" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Document>
+      <Style>
+        <PolyStyle id="PolyStyle" not-known="nope" unknown="not known"/>
+      </Style>
+    </Document>
+    <Placemark>
+      <Polygon id="Polygon" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <Region id="Region" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <Model>
+        <ResourceMap id="ResourceMap" not-known="nope" unknown="not known"/>
+      </Model>
+    </Placemark>
+    <Placemark>
+      <Model>
+        <Scale id="Scale" not-known="nope" unknown="not known"/>
+      </Model>
+    </Placemark>
+    <Document>
+      <Schema id="Schema" not-known="nope" unknown="not known"/>
+    </Document>
+    <Placemark>
+      <ExtendedData>
+        <SchemaData id="SchemaData" not-known="nope" unknown="not known"/>
+      </ExtendedData>
+    </Placemark>
+    <ScreenOverlay id="ScreenOverlay" not-known="nope" unknown="not known"/>
+    <Placemark>
+      <ExtendedData>
+        <SchemaData>
+          <SimpleData id="SimpleData" not-known="nope" unknown="not known">
+          </SimpleData>
+        </SchemaData>
+      </ExtendedData>
+    </Placemark>
+    <Document>
+      <Schema>
+        <SimpleField id="SimpleField" not-known="nope" unknown="not known"/>
+      </Schema>
+    </Document>
+    <Placemark>
+      <Snippet id="Snippet" not-known="nope" unknown="not known">
+      </Snippet>
+    </Placemark>
+    <Document>
+      <Style id="Style" not-known="nope" unknown="not known"/>
+    </Document>
+    <Document>
+      <StyleMap id="StyleMap" not-known="nope" unknown="not known"/>
+    </Document>
+    <Placemark>
+      <TimeSpan id="TimeSpan" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <Placemark>
+      <TimeStamp id="TimeStamp" not-known="nope" unknown="not known"/>
+    </Placemark>
+    <NetworkLink>
+      <Url id="Url" not-known="nope" unknown="not known"/>
+    </NetworkLink>
+    <PhotoOverlay>
+      <ViewVolume id="ViewVolume" not-known="nope" unknown="not known"/>
+    </PhotoOverlay>
+    <Document>
+      <Style>
+        <ListStyle>
+          <hotSpot id="hotSpot" not-known="nope" unknown="not known"/>
+        </ListStyle>
+      </Style>
+    </Document>
+    <ScreenOverlay>
+      <overlayXY id="overlayXY" not-known="nope" unknown="not known"/>
+      <screenXY id="screenXY" not-known="nope" unknown="not known"/>
+      <rotationXY id="rotationXY" not-known="nope" unknown="not known"/>
+      <size id="size" not-known="nope" unknown="not known"/>
+    </ScreenOverlay>
+  </Document>
+</kml>
