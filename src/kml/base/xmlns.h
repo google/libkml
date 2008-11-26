@@ -23,14 +23,16 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// The Xmlns class is deprecated.  Use Attributes.
+
 #ifndef KML_BASE_XMLNS_H__
 #define KML_BASE_XMLNS_H__
 
 #include <map>
 #include <string>
 #include <vector>
+#include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
-#include "kml/base/string_string_map.h"
 
 namespace kmlbase {
 
@@ -75,14 +77,22 @@ class Xmlns {
   // string is empty if no such prefix-namespace mapping exists.  In the sample
   // above a prefix of "kml" returns "http://www.opengis.net/kml/2.2".
   const std::string GetNamespace(const std::string& prefix) const {
-    return prefix_map_.GetValue(prefix);
+    std::string name_space;
+    if (prefix_map_.get()) {
+      prefix_map_->GetValue(prefix, &name_space);
+    }
+    return name_space;
   }
 
   // This returns the prefix for the given namespace.  The returned string is
   // empty if no such namespace has a prefix.  In the sample above a namespace
   // of "http://www.opengis.net/kml/2.2" returns "kml".
   const std::string GetKey(const std::string& value) const {
-    return prefix_map_.GetKey(value);
+    std::string key;
+    if (prefix_map_.get()) {
+      prefix_map_->FindKey(value, &key);
+    }
+    return key;
   }
 
   // This returns a list of all xmlns prefix names.  For example, from the
@@ -90,20 +100,24 @@ class Xmlns {
   // XML is not preserved (XML attributes in general have no order semantics
   // and must each be unique).
   void GetPrefixes(std::vector<std::string>* prefix_vector) const {
-    return prefix_map_.GetKeys(prefix_vector);
+    if (prefix_map_.get()) {
+      prefix_map_->GetAttrNames(prefix_vector);
+    }
   }
 
  private:
   Xmlns() {}
   bool Parse(const kmlbase::Attributes& attributes) {
-    const std::string kXmlns("xmlns");
-    attributes.MatchSplitKey(kXmlns + ":", &prefix_map_);
+    // Create a copy so that we can use non-const SplitByPrefix.
+    boost::scoped_ptr<Attributes> clone(attributes.Clone());
+    prefix_map_.reset(clone->SplitByPrefix("xmlns"));
+    attributes.GetValue("xmlns", &default_);
     // Return true if there is a default xmlns or if there are any
     // xmlns:prefx="ns" pairs.
-    return attributes.GetString(kXmlns, &default_) || !prefix_map_.Empty();
+    return !default_.empty() || prefix_map_.get();
   }
   std::string default_;
-  StringStringMap prefix_map_;
+  boost::scoped_ptr<Attributes> prefix_map_;
 };
 
 }  // end namespace kmlbase

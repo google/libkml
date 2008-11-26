@@ -28,10 +28,7 @@
 
 namespace kmlbase {
 
-class StringUtilTest : public testing::Test {
-};
-
-TEST_F(StringUtilTest, TestBasicReplacements) {
+TEST(StringUtilTest, TestBasicReplacements) {
   StringMap sm;
   sm["old"] = "new";
   sm["one"] = "two";
@@ -60,7 +57,7 @@ TEST_F(StringUtilTest, TestBasicReplacements) {
   ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
 }
 
-TEST_F(StringUtilTest, TestSplitStringUsing) {
+TEST(StringUtilTest, TestSplitStringUsing) {
   const std::string kHi("hi");
   const std::string kHow("how");
   const std::string kAre("are");
@@ -82,6 +79,73 @@ TEST_F(StringUtilTest, TestSplitStringUsing) {
   ASSERT_EQ(kHow, parts[1]);
   ASSERT_EQ(kAre, parts[2]);
   ASSERT_EQ(kYou, parts[3]);
+}
+
+class ThingMappingStrings {
+ public:
+  void AddMapping(const std::string& key, const std::string& value) {
+    map_[key] = value;
+  }
+
+  StringMapIterator CreateIterator () {
+    return StringMapIterator(map_);
+  }
+
+ private:
+  StringMap map_;
+};
+
+// Verity the StringMapIterator class.
+TEST(StringUtiltest, TestStringMapIterator) {
+  std::map<std::string, std::string> map;
+  ThingMappingStrings thing;
+  const std::string k0("a");
+  const std::string v0("b");
+  const std::string k1("c");
+  const std::string v1("d");
+  const std::string k2("z");
+  const std::string v2("q");
+  thing.AddMapping(k0, v0);
+  map[k0] = v0;
+  thing.AddMapping(k1, v1);
+  map[k1] = v1;
+  thing.AddMapping(k2, v2);
+  map[k2] = v2;
+
+  StringMapIterator iter = thing.CreateIterator();
+  for (; !iter.AtEnd(); iter.Advance()) {
+    ASSERT_EQ(map[iter.Data().first], iter.Data().second);
+  }
+}
+
+// Verify the FromString function template.
+TEST(StringUtilTest, TestFromString) {
+  double pi;
+  FromString("3.1415926535", &pi);
+  ASSERT_EQ(3.1415926535, pi);
+
+  bool val;
+  FromString("true", &val);
+  ASSERT_EQ(true, val);
+  FromString("1", &val);
+  ASSERT_EQ(true, val);
+  FromString("false", &val);
+  ASSERT_EQ(false, val);
+  FromString("0", &val);
+  ASSERT_EQ(false, val);
+
+  int fsc;
+  FromString("137", &fsc);
+  ASSERT_EQ(137, fsc);
+}
+
+// Verify the ToString function template.
+TEST(StringUtilTest, TestToString) {
+  ASSERT_EQ(std::string("3.1415926535"), ToString(3.1415926535));
+  ASSERT_EQ(std::string("1"), ToString(1));
+  ASSERT_EQ(std::string("-42"), ToString(-42));
+  ASSERT_EQ(std::string("1"), ToString(true));
+  ASSERT_EQ(std::string("0"), ToString(false));
 }
 
 }  // end namespace kmlbase

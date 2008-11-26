@@ -26,6 +26,7 @@
 // This file contains the declarations of various string utility functions.
 
 #include "kml/base/string_util.h"
+#include <stdlib.h>  // strtod()
 
 namespace kmlbase {
 
@@ -55,6 +56,35 @@ void SplitStringUsing(const std::string& input, const std::string& split_string,
     iter = iter.substr(separator+1);
   }
   output->push_back(iter);
+}
+
+template<>
+void FromString(const std::string& str, bool* out) {
+  if (out) {
+    *out = str == "true" || str == "1";
+  }
+}
+
+
+template<>
+void FromString(const std::string& str, double* out) {
+  if (out) {
+    *out = strtod(str.c_str(), NULL);
+  }
+}
+
+template<>
+void FromString(const std::string& str, int* out) {
+  if (out) {
+    *out = atoi(str.c_str());
+  }
+}
+
+template<>
+void FromString(const std::string& str, std::string* out) {
+  if (out) {
+    *out = str;
+  }
 }
 
 }  // end namespace kmlbase

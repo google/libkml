@@ -29,12 +29,40 @@
 #define KML_BASE_STRING_UTIL_H__
 
 #include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
 namespace kmlbase {
 
 typedef std::map<std::string, std::string> StringMap;
+typedef std::map<std::string, std::string>::value_type StringPair;
+
+// This permits a class containing a StringMap to export a way to iterate the
+// internal container without exposing it directly.  In the future the STL
+// map presently used internally may be replaced with a hash map, for example.
+class StringMapIterator {
+ public:
+  StringMapIterator(const StringMap& map)
+    : map_(map), iter_(map.begin()) {
+  }
+
+  StringPair Data() const {
+    return *iter_;
+  }
+
+  bool AtEnd() const {
+    return iter_ == map_.end();
+  }
+
+  void Advance() {
+    ++iter_;
+  }
+
+ private:
+  const StringMap& map_;
+  StringMap::const_iterator iter_;
+};
 
 // Walks through the input string, replacing all keys in StringMap
 // with the corresponding key value. The key strings are wrapped with the
@@ -49,6 +77,19 @@ std::string CreateExpandedStrings(const std::string& in,
                                   const StringMap& string_map,
                                   const std::string& start,
                                   const std::string& end);
+
+// This converts from std::string to any T of int, bool or double.
+template<typename T>
+void FromString(const std::string& in, T* out);
+
+// This converts to std::string from any T of int, bool or double.
+template<typename T>
+inline std::string ToString(T value) {
+  std::stringstream ss;
+  ss.precision(15);
+  ss << value;
+  return ss.str();
+}
 
 // Split the input string on the split_string saving each string into the
 // output vector.
