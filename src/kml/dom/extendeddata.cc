@@ -47,15 +47,18 @@ SimpleData::~SimpleData() {}
 
 static const char kSimpleDataName[] = "name";
 
-void SimpleData::ParseAttributes(const Attributes& attributes) {
-  has_name_ = attributes.GetString(kSimpleDataName, &name_);
+void SimpleData::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_name_ = attributes->CutValue(kSimpleDataName, &name_);
   Element::ParseAttributes(attributes);
 }
 
-void SimpleData::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void SimpleData::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_name_) {
-    attributes->SetString(kSimpleDataName, name_);
+    attributes->SetValue(kSimpleDataName, name_);
   }
 }
 
@@ -73,14 +76,10 @@ void SimpleData::AddElement(const ElementPtr& element) {
 }
 
 void SimpleData::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_text()) {
     serializer.SaveContent(text_, true);
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <SchemaData>
@@ -95,14 +94,18 @@ SchemaData::~SchemaData() {
 
 static const char kSchemaUrl[] = "schemaUrl";
 
-void SchemaData::ParseAttributes(const Attributes& attributes) {
-  has_schemaurl_ = attributes.GetString(kSchemaUrl, &schemaurl_);
+void SchemaData::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_schemaurl_ = attributes->CutValue(kSchemaUrl, &schemaurl_);
   Object::ParseAttributes(attributes);
 }
 
-void SchemaData::GetAttributes(Attributes* attributes) const {
+void SchemaData::SerializeAttributes(Attributes* attributes) const {
+  Object::SerializeAttributes(attributes);
   if (has_schemaurl_) {
-    attributes->SetString(kSchemaUrl, schemaurl_);
+    attributes->SetValue(kSchemaUrl, schemaurl_);
   }
 }
 
@@ -115,16 +118,11 @@ void SchemaData::AddElement(const ElementPtr& element) {
 }
 
 void SchemaData::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   for (size_t i = 0; i < get_simpledata_array_size(); ++i) {
     serializer.SaveElement(get_simpledata_array_at(i));
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Data>
@@ -138,14 +136,18 @@ Data::~Data() {}
 
 static const char kDataName[] = "name";
 
-void Data::ParseAttributes(const Attributes& attributes) {
-  has_name_ = attributes.GetString(kDataName, &name_);
+void Data::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_name_ = attributes->CutValue(kDataName, &name_);
   Object::ParseAttributes(attributes);
 }
 
-void Data::GetAttributes(Attributes* attributes) const {
+void Data::SerializeAttributes(Attributes* attributes) const {
+  Object::SerializeAttributes(attributes);
   if (has_name_) {
-    attributes->SetString(kDataName, name_);
+    attributes->SetValue(kDataName, name_);
   }
 }
 
@@ -163,10 +165,7 @@ void Data::AddElement(const ElementPtr& element) {
 }
 
 void Data::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_displayname()) {
     serializer.SaveFieldById(Type_displayName, get_displayname());
@@ -174,8 +173,6 @@ void Data::Serialize(Serializer& serializer) const {
   if (has_value()) {
     serializer.SaveFieldById(Type_value, get_value());
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <ExtendedData>
@@ -198,26 +195,20 @@ void ExtendedData::AddElement(const ElementPtr& element) {
 }
 
 void ExtendedData::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < data_array_.size(); i++) {
     data_array_[i]->Serialize(serializer);
   }
   for (size_t i = 0; i < schemadata_array_.size(); i++) {
     schemadata_array_[i]->Serialize(serializer);
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Metadata>
 Metadata::~Metadata() {}
 
 void Metadata::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
-  Element::SerializeUnknown(serializer);
-  serializer.End();
+  ElementSerializer element_serializer(*this, serializer);
 }
 
 }  // end namespace kmldom

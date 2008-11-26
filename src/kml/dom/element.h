@@ -60,13 +60,8 @@ class Element : public kmlbase::Referent {
     return type == Type_Unknown;
   }
 
-  void set_default_xmlns(const std::string& xmlns) {
-    default_xmlns_ = xmlns;
-  }
-  const std::string& get_default_xmlns() const {
-    return default_xmlns_;
-  }
-  // TODO: list of prefixes and namespaces
+  void set_default_xmlns(const std::string& xmlns);
+  const std::string get_default_xmlns() const;
 
   // This sets this element's parent element.  Returns false if the element
   // already has a parent.  Returns true if the parent is set successfully.
@@ -102,8 +97,10 @@ class Element : public kmlbase::Referent {
   // A derived class implements this to use with parsing.  A given concrete
   // element examines the passed attributes for any it is aware of and
   // passes the attributes to its parent class and ultimately to Element
-  // itself to preserve unknown attributes.
-  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
+  // itself to preserve unknown attributes.  The caller takes ownership of
+  // the passed attributes class instance and is expected to erase any items
+  // it parses.
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
 
   // A derived class implements this to use with serialization.  See
   // class Serializer for more information.
@@ -113,7 +110,7 @@ class Element : public kmlbase::Referent {
   // class adds its attributes to the given set and passes attributes
   // along to the parent and utlimately to Element itself to preserve
   // unknown attributes.
-  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
 
   // Each fully unknown element (and its children) is saved in raw XML form.
   void AddUnknownElement(const std::string& s);
@@ -138,6 +135,22 @@ class Element : public kmlbase::Referent {
     return unknown_legal_elements_array_[i];
   }
 
+  // This returns a pointer to the Attributes class holding all unknown
+  // attributes for this element found during parse.  This returns NULL if
+  // there are no unparsed attributes.  Ownership of the object is retained
+  // by the Element class.
+  const kmlbase::Attributes* GetUnknownAttributes() const {
+    return unknown_attributes_.get();
+  }
+
+  // This is the set of xmlns:PREFIX=NAMESPACE attributes on the
+  // element if any.  The attribute keys are without the "xmlns:" prefix.
+  // The default namespace is merely an "unknown" attribute
+  // of "xmlns" in the normal "unknown" attributes list.  Use
+  // get_default_xmlns() to access the default namespace for an element.
+  const kmlbase::Attributes* GetXmlns() const {
+    return xmlns_.get();
+  }
 
   // Permits polymorphic use of Field methods.
   virtual bool SetBool(bool* val) { return false; }
@@ -177,10 +190,6 @@ class Element : public kmlbase::Referent {
   }
 
  private:
-  // Any XML element may have a default xmlns= and or a list of namespace
-  // prefix mappings: xmlns:PREFIX="NAMESPACE".
-  // TODO: save the prefix-namespace mappings as well.
-  std::string default_xmlns_;
   Element* parent_;  // TODO: not ElementPtr to avoid cycles.  TBD parent check
   KmlDomType type_id_;
   std::string char_data_;
@@ -194,6 +203,8 @@ class Element : public kmlbase::Referent {
   // stored. The object is dynamically allocated so every element is not
   // burdened with an unnecessary Attributes object.
   boost::scoped_ptr<kmlbase::Attributes> unknown_attributes_;
+  // Any Element may have 0 or more xmlns attributes.
+  boost::scoped_ptr<kmlbase::Attributes> xmlns_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Element);
 };
 

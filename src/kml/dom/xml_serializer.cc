@@ -108,8 +108,12 @@ void XmlSerializer::End() {
 void XmlSerializer::SaveStringFieldById(int type_id, std::string value) {
   std::string tagName = Xsd::GetSchema()->ElementName(type_id);
   Indent();
-  xml_.push_back("<" + tagName + ">" + MaybeQuoteString(value) +
-                 "</" + tagName + ">" + newline_);
+  if (value.empty()) {
+    xml_.push_back("<" + tagName + "/>" + newline_);
+  } else {
+    xml_.push_back("<" + tagName + ">" + MaybeQuoteString(value) +
+                   "</" + tagName + ">" + newline_);
+  }
 }
 
 // This is used to emit raw character data content.  Honor request to emit

@@ -35,12 +35,9 @@
 
 namespace kmldom {
 
-class ParserTest : public testing::Test {
-};
-
 // Verify proper behavior for good KML.  The XML is valid and all elements
 // are known and contained by proper parents.
-TEST_F(ParserTest, TestValidKml) {
+TEST(ParserTest, TestValidKml) {
   std::string errors;
   ElementPtr root = Parse("<kml>"
                           "<Placemark>"
@@ -70,7 +67,7 @@ TEST_F(ParserTest, TestValidKml) {
   // Parse.
 }
 
-TEST_F(ParserTest, TestJunkInput) {
+TEST(ParserTest, TestJunkInput) {
   // Parse a garbage string.
   std::string errors;
   ElementPtr root = Parse("This is not even xml", &errors);
@@ -84,7 +81,7 @@ TEST_F(ParserTest, TestJunkInput) {
   ASSERT_FALSE(root);
 }
 
-TEST_F(ParserTest, TestFullyUnknownXml) {
+TEST(ParserTest, TestFullyUnknownXml) {
   // Parse perfectly valid, but fully unknown XML.  "Fully unknown" means
   // the root element is not known.  When Parse returns NULL an error string
   // is set.  The error string is considered human readable and not
@@ -126,7 +123,7 @@ TEST_F(ParserTest, TestFullyUnknownXml) {
   ASSERT_FALSE(errors.empty());
 }
 
-TEST_F(ParserTest, TestPartlyValidKml) {
+TEST(ParserTest, TestPartlyValidKml) {
   // This pushes several elements onto the stack within the parser to
   // excercise the destructor which frees them all.
   std::string errors;
@@ -142,6 +139,19 @@ TEST_F(ParserTest, TestPartlyValidKml) {
                           &errors);
   ASSERT_FALSE(root);
   ASSERT_FALSE(errors.empty());
+}
+
+TEST(ParserTest, TestKmlWithUnknownEmptyFields) {
+  // Note that the unknown element handling logic still engages expat handlers
+  // hence nil elements (<c/>) are turned into <c></c>.  Note also the newline
+  // added by the unknown element handler.
+  const std::string kUnknownXml("<a>b<c></c></a>\n");
+  const std::string kKml(
+      std::string("<kml>") + kUnknownXml + "</kml>");
+  ElementPtr root = Parse(kKml, NULL);
+  ASSERT_TRUE(root);
+  ASSERT_EQ(static_cast<size_t>(1), root->get_unknown_elements_array_size());
+  ASSERT_EQ(kUnknownXml, root->get_unknown_elements_array_at(0));
 }
 
 }  // end namespace kmldom

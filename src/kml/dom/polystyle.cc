@@ -55,9 +55,7 @@ void PolyStyle::AddElement(const ElementPtr& element) {
 }
 
 void PolyStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  ColorStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   ColorStyle::Serialize(serializer);
   if (has_fill()) {
     serializer.SaveFieldById(Type_fill, get_fill());
@@ -65,8 +63,6 @@ void PolyStyle::Serialize(Serializer& serializer) const {
   if (has_outline()) {
     serializer.SaveFieldById(Type_outline, get_outline());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

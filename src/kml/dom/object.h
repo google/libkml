@@ -75,8 +75,8 @@ class Object : public Element {
   // Object is abstract, derived class access only.
   Object();
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
-  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
 
  private:
   std::string id_;

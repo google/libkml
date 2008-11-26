@@ -66,9 +66,7 @@ void TimeSpan::AddElement(const ElementPtr& element) {
 }
 
 void TimeSpan::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  TimePrimitive::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   TimePrimitive::Serialize(serializer);
   if (has_begin()) {
     serializer.SaveFieldById(Type_begin, begin_);
@@ -76,8 +74,6 @@ void TimeSpan::Serialize(Serializer& serializer) const {
   if (has_end()) {
     serializer.SaveFieldById(Type_end, end_);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 TimeStamp::TimeStamp()
@@ -98,15 +94,11 @@ void TimeStamp::AddElement(const ElementPtr& element) {
 }
 
 void TimeStamp::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  TimePrimitive::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   TimePrimitive::Serialize(serializer);
   if (has_when()) {
     serializer.SaveFieldById(Type_when, when_);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

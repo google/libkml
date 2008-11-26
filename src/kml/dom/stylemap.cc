@@ -62,10 +62,8 @@ void Pair::AddElement(const ElementPtr& element) {
 }
 
 void Pair::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
-  serializer.BeginById(Type(), attributes);
   if (has_key()) {
     serializer.SaveEnum(Type_key, get_key());
   }
@@ -75,8 +73,6 @@ void Pair::Serialize(Serializer& serializer) const {
   if (has_styleselector()) {
     serializer.SaveElementGroup(get_styleselector(), Type_StyleSelector);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <StyleMap>
@@ -96,15 +92,11 @@ void StyleMap::AddElement(const ElementPtr& element) {
 }
 
 void StyleMap::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  StyleSelector::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   StyleSelector::Serialize(serializer);
   for (size_t i = 0; i < get_pair_array_size(); ++i) {
     serializer.SaveElement(get_pair_array_at(i));
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

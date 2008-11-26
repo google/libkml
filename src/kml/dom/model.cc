@@ -67,9 +67,7 @@ void Location::AddElement(const ElementPtr& element) {
 }
 
 void Location::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_longitude()) {
     serializer.SaveFieldById(Type_longitude, get_longitude());
@@ -80,8 +78,6 @@ void Location::Serialize(Serializer& serializer) const {
   if (has_altitude()) {
     serializer.SaveFieldById(Type_altitude, get_altitude());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Orientation::Orientation()
@@ -113,9 +109,7 @@ void Orientation::AddElement(const ElementPtr& element) {
 }
 
 void Orientation::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_heading()) {
     serializer.SaveFieldById(Type_heading, get_heading());
@@ -126,8 +120,6 @@ void Orientation::Serialize(Serializer& serializer) const {
   if (has_roll()) {
     serializer.SaveFieldById(Type_roll, get_roll());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Scale::Scale()
@@ -160,9 +152,7 @@ void Scale::AddElement(const ElementPtr& element) {
 }
 
 void Scale::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_x()) {
     serializer.SaveFieldById(Type_x, get_x());
@@ -173,8 +163,6 @@ void Scale::Serialize(Serializer& serializer) const {
   if (has_z()) {
     serializer.SaveFieldById(Type_z, get_z());
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Alias::Alias()
@@ -200,9 +188,7 @@ void Alias::AddElement(const ElementPtr& element) {
 }
 
 void Alias::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_targethref()) {
     serializer.SaveFieldById(Type_targetHref, get_targethref());
@@ -210,8 +196,6 @@ void Alias::Serialize(Serializer& serializer) const {
   if (has_sourcehref()) {
     serializer.SaveFieldById(Type_sourceHref, get_sourcehref());
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 ResourceMap::ResourceMap() {}
@@ -234,15 +218,11 @@ void ResourceMap::AddElement(const ElementPtr& element) {
 }
 
 void ResourceMap::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   for (size_t i = 0; i < alias_array_.size(); ++i) {
     serializer.SaveElement(get_alias_array_at(i));
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Model::Model() {}
@@ -275,9 +255,7 @@ void Model::AddElement(const ElementPtr& element) {
 }
 
 void Model::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Geometry::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
@@ -297,8 +275,6 @@ void Model::Serialize(Serializer& serializer) const {
   if (has_resourcemap()) {
     serializer.SaveElement(get_resourcemap());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

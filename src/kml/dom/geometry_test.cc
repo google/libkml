@@ -30,6 +30,7 @@
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
+#include "kml/dom/kml_funcs.h"
 #include "gtest/gtest.h"
 
 namespace kmldom {
@@ -322,6 +323,19 @@ TEST_F(PointTest, TestSetGetHasClear) {
 
 }
 
+TEST_F(PointTest, TestSerialize) {
+  point_->set_id("point-id");
+  point_->set_extrude(true);
+  point_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<Point id=\"point-id\">"
+    "<extrude>1</extrude>"
+    "<coordinates/>"
+    "</Point>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(point_));
+}
+
 // Test LineString.
 class LineStringTest : public testing::Test {
  protected:
@@ -395,6 +409,19 @@ TEST_F(LineStringTest, TestSetGetHasClear) {
   linestring_->clear_coordinates();
 }
 
+TEST_F(LineStringTest, TestSerialize) {
+  linestring_->set_id("linestring-id");
+  linestring_->set_tessellate(true);
+  linestring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<LineString id=\"linestring-id\">"
+    "<tessellate>1</tessellate>"
+    "<coordinates/>"
+    "</LineString>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(linestring_));
+}
+
 // Test LinearRing.
 class LinearRingTest : public testing::Test {
  protected:
@@ -466,6 +493,19 @@ TEST_F(LinearRingTest, TestSetGetHasClear) {
   linearring_->clear_tessellate();
   linearring_->clear_altitudemode();
   linearring_->clear_coordinates();
+}
+
+TEST_F(LinearRingTest, TestSerialize) {
+  linearring_->set_id("linearring-id");
+  linearring_->set_tessellate(false);
+  linearring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<LinearRing id=\"linearring-id\">"
+    "<tessellate>0</tessellate>"
+    "<coordinates/>"
+    "</LinearRing>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(linearring_));
 }
 
 // Test OuterBoundaryIs.
@@ -604,6 +644,20 @@ TEST_F(PolygonTest, TestSetGetHasClear) {
   polygon_->clear_outerboundaryis();
 }
 
+TEST_F(PolygonTest, TestSerialize) {
+  polygon_->set_id("polygon-id");
+  polygon_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
+  polygon_->set_outerboundaryis(
+      KmlFactory::GetFactory()->CreateOuterBoundaryIs());
+  std::string expected(
+    "<Polygon id=\"polygon-id\">"
+    "<altitudeMode>absolute</altitudeMode>"
+    "<outerBoundaryIs/>"
+    "</Polygon>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(polygon_));
+}
+
 // Test MultiGeometry.
 class MultiGeometryTest : public testing::Test {
  protected:
@@ -645,6 +699,27 @@ TEST_F(MultiGeometryTest, TestAddGetGeometries) {
   ASSERT_EQ(Type_Model, multigeometry_->get_geometry_array_at(3)->Type());
   ASSERT_EQ(Type_LineString, multigeometry_->get_geometry_array_at(4)->Type());
   ASSERT_EQ(Type_LinearRing, multigeometry_->get_geometry_array_at(5)->Type());
+}
+
+TEST_F(MultiGeometryTest, TestSerialize) {
+  multigeometry_->set_id("multigeometry-id");
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreatePoint());
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateLineString());
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateLinearRing());
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreatePolygon());
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateModel());
+  multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateMultiGeometry());
+  std::string expected(
+    "<MultiGeometry id=\"multigeometry-id\">"
+    "<Point/>"
+    "<LineString/>"
+    "<LinearRing/>"
+    "<Polygon/>"
+    "<Model/>"
+    "<MultiGeometry/>"
+    "</MultiGeometry>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(multigeometry_));
 }
 
 }  // end namespace kmldom

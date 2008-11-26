@@ -28,6 +28,7 @@
 #include "kml/dom/element.h"
 #include <stdlib.h>
 #include "kml/base/attributes.h"
+#include "kml/base/string_util.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
 
@@ -63,17 +64,8 @@ void Element::AddUnknownElement(const std::string& s) {
 void Element::SerializeUnknown(Serializer& serializer) const {
   // First serialize the misplaced elements:
   for (size_t i = 0; i < unknown_legal_elements_array_.size(); ++i) {
-    // We need to serialize each according to its type.
-    KmlDomType type_id = unknown_legal_elements_array_[i]->Type();
-    XsdType xsd_type = Xsd::GetSchema()->ElementType(type_id);
-    if (xsd_type == XSD_COMPLEX_TYPE) {
-      // Can serialize itself.
-      unknown_legal_elements_array_[i]->Serialize(serializer);
-    } else {
-      // Is field, serialize directly.
-      serializer.SaveFieldById(
-          type_id, unknown_legal_elements_array_[i]->get_char_data());
-    }
+    // Anything derived from Element implements a Serialize() method.
+    unknown_legal_elements_array_[i]->Serialize(serializer);
   }
   // Now serialize unknown elements:
   for (size_t i = 0; i < unknown_elements_array_.size(); ++i) {
@@ -83,31 +75,50 @@ void Element::SerializeUnknown(Serializer& serializer) const {
   }
 }
 
-// Handling of unknown attributes found during parse. We make a copy of the
-// Attributes object and store a pointer.
-void Element::ParseAttributes(const Attributes& attributes) {
-  unknown_attributes_.reset(attributes.Clone());
+// Handling of unknown attributes found during parse.  Split out
+// xmlns attributes.  Take ownership of the passed attributes object.
+void Element::ParseAttributes(Attributes* attributes) {
+  if (attributes) {
+    // Split out any attribute of the form xmlns= or xmlns:PREFIX=.
+    xmlns_.reset(attributes->SplitByPrefix("xmlns"));
+    // Anything left is saved as fully unknown.
+    unknown_attributes_.reset(attributes);
+  }
 }
 
-// Passes the stored Attributes object to the caller which performs a merge
-// of the unknown attributes with the knowns. See attributes.h for how
-// conflicts are resolved.
-void Element::GetAttributes(Attributes* attributes) const {
+// This is the reverse of ParseAttributes().
+void Element::SerializeAttributes(Attributes* attributes) const {
   if (attributes) {
     if (unknown_attributes_.get()) {
       attributes->MergeAttributes(*unknown_attributes_);
     }
-    if (!default_xmlns_.empty()) {
-      attributes->SetString("xmlns", default_xmlns_);
+    if (xmlns_.get()) {
+      xmlns_->MergeAttributes(*xmlns_);
     }
   }
+}
+
+// The default namespace for an element is the xmlns attribute.
+void Element::set_default_xmlns(const std::string& xmlns) {
+  if (!unknown_attributes_.get()) {
+    unknown_attributes_.reset(new Attributes);
+  }
+  unknown_attributes_->SetValue("xmlns", xmlns);
+}
+
+const std::string Element::get_default_xmlns() const {
+  std::string default_xmlns;
+  if (unknown_attributes_.get()) {
+    unknown_attributes_->GetValue("xmlns", &default_xmlns);
+  }
+  return default_xmlns;
 }
 
 ElementSerializer::ElementSerializer(const Element& element,
                                      Serializer& serializer)
     : element_(element), serializer_(serializer) {
   kmlbase::Attributes attributes;
-  element_.GetAttributes(&attributes);
+  element_.SerializeAttributes(&attributes);
   serializer.BeginById(element_.Type(), attributes);
 }
 
@@ -127,7 +138,7 @@ void Field::Serialize(Serializer& serializer) const {
 bool Field::SetBool(bool* val) {
   bool ret = false;
   if (val) {
-    *val = get_char_data() == "1" || get_char_data() == "true";
+    kmlbase::FromString(get_char_data(), val);
     ret = true;
   }
   return ret;
@@ -136,7 +147,7 @@ bool Field::SetBool(bool* val) {
 bool Field::SetDouble(double* val) {
   bool ret = false;
   if (val) {
-    *val = strtod(get_char_data().c_str(), NULL);
+    kmlbase::FromString(get_char_data(), val);
     ret = true;
   }
   return ret;
@@ -145,7 +156,7 @@ bool Field::SetDouble(double* val) {
 bool Field::SetInt(int* val) {
   bool ret = false;
   if (val) {
-    *val = atoi(get_char_data().c_str());
+    kmlbase::FromString(get_char_data(), val);
     ret = true;
   }
   return ret;

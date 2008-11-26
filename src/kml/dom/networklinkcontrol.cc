@@ -58,13 +58,10 @@ void Create::AddElement(const ElementPtr& element) {
 }
 
 void Create::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < container_array_.size(); ++i) {
     serializer.SaveElementGroup(get_container_array_at(i), Type_Container);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Delete>
@@ -84,13 +81,10 @@ void Delete::AddElement(const ElementPtr& element) {
 }
 
 void Delete::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < feature_array_.size(); ++i) {
     serializer.SaveElementGroup(get_feature_array_at(i), Type_Feature);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Change>
@@ -110,13 +104,10 @@ void Change::AddElement(const ElementPtr& element) {
 }
 
 void Change::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < object_array_.size(); ++i) {
     serializer.SaveElementGroup(get_object_array_at(i), Type_Object);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Update>
@@ -150,16 +141,13 @@ void Update::AddElement(const ElementPtr& element) {
 }
 
 void Update::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_targethref()) {
     serializer.SaveFieldById(Type_targetHref, get_targethref());
   }
   for (size_t i = 0; i < updateoperation_array_.size(); ++i) {
     serializer.SaveElement(get_updateoperation_array_at(i));
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <NetworkLinkControl>
@@ -223,9 +211,7 @@ void NetworkLinkControl::AddElement(const ElementPtr& element) {
 }
 
 void NetworkLinkControl::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Element::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_minrefreshperiod_) {
     serializer.SaveFieldById(Type_minRefreshPeriod, minrefreshperiod_);
   }
@@ -256,8 +242,6 @@ void NetworkLinkControl::Serialize(Serializer& serializer) const {
   if (abstractview_) {
     serializer.SaveElementGroup(get_abstractview(), Type_AbstractView);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

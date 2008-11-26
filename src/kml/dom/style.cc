@@ -67,9 +67,7 @@ void Style::AddElement(const ElementPtr& element) {
 }
 
 void Style::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  StyleSelector::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   StyleSelector::Serialize(serializer);
   if (has_iconstyle()) {
     serializer.SaveElement(get_iconstyle());
@@ -89,8 +87,6 @@ void Style::Serialize(Serializer& serializer) const {
   if (has_liststyle()) {
     serializer.SaveElement(get_liststyle());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

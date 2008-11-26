@@ -28,10 +28,13 @@
 #include "kml/dom/element.h"
 #include "boost/intrusive_ptr.hpp"
 #include "gtest/gtest.h"
+#include "kml/base/attributes.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/stats_serializer.h"
+
+using kmlbase::Attributes;
 
 namespace kmldom {
 
@@ -50,10 +53,13 @@ class ComplexChild : public Element {
 // A complex child in the DOM API has a typedef like this:
 typedef boost::intrusive_ptr<ComplexChild> ComplexChildPtr;
 
+const char kEgo[] = "ego";
+
 // This is a sample element with both a single-valued complex child
 // and an array of complex children.
 class TestElement : public Element {
  public:
+  TestElement() : has_ego_(false) {}
   // This method exemplifies usage of SetComplexChild().
   void set_child(const ComplexChildPtr& child) {
     SetComplexChild(child, &child_);  // This is the method under test.
@@ -76,7 +82,30 @@ class TestElement : public Element {
   const ComplexChildPtr& get_child_array_at(int i) const {
     return child_array_[i];
   }
+  // This method exemplifies how attributes are parsed.
+  virtual void ParseAttributes(Attributes* attributes) {
+    if (attributes) {
+      has_ego_ = attributes->CutValue(kEgo, &ego_);
+      Element::ParseAttributes(attributes);
+    }
+  }
+  // This method exemplifies how attributes are serialized.
+  virtual void SerializeAttributes(Attributes* attributes) const {
+    Element::SerializeAttributes(attributes);
+    if (has_ego_) {
+      attributes->SetValue(kEgo, get_ego());
+    }
+  }
+
+  bool has_ego() const {
+    return has_ego_;
+  }
+  std::string get_ego() const {
+    return ego_;
+  }
+
  private:
+
   // A given single complex child is managed by a smart pointer whose
   // destructor releases this element's reference to the underlying element.
   ComplexChildPtr child_;
@@ -84,6 +113,9 @@ class TestElement : public Element {
   // destructor calls the destructor of each array element thus releasing
   // the reference to each underlying element.
   std::vector<ComplexChildPtr> child_array_;
+  // This element keeps the value of any "ego" attribute here.
+  std::string ego_;
+  bool has_ego_;
 };
 
 typedef boost::intrusive_ptr<TestElement> TestElementPtr;
@@ -111,10 +143,10 @@ TEST_F(ElementTest, TestXmlns) {
   ASSERT_EQ(kOgcKml22Ns, element_->get_default_xmlns());
 }
 
-TEST_F(ElementTest, TestUnknowns) {
+TEST_F(ElementTest, TestAddGetUnknowns) {
   // Unrecognised elements:
-  const std::string unknown1("unknownFoo");
-  const std::string unknown2("unknownBar");
+  const std::string unknown1("<unknown>zzz<Foo/></unknown>");
+  const std::string unknown2("<unknownBar/>");
   element_->AddUnknownElement(unknown1);
   element_->AddUnknownElement(unknown2);
   ASSERT_EQ(static_cast<size_t>(2),
@@ -167,6 +199,38 @@ TEST_F(ElementTest, TestAddComplexChild) {
   ASSERT_EQ(2, element_->get_child_array_at(1)->get_ref_count());
   ASSERT_EQ(3, element_->get_child_array_at(2)->id());
   ASSERT_EQ(2, element_->get_child_array_at(2)->get_ref_count());
+}
+
+// This tests the ParseAttributes() method.
+TEST_F(ElementTest, TestParseAttributes) {
+  // Initial conditions: TestElement has no ego= attribute and base element
+  // has no id= or ego= in its "unparsed" attributes array.
+  ASSERT_FALSE(element_->has_ego());
+  Attributes attributes;
+  element_->SerializeAttributes(&attributes);
+  std::string val;
+  ASSERT_FALSE(attributes.GetValue("ego", &val));
+  ASSERT_FALSE(attributes.GetValue("id", &val));
+
+  // Create and parse attributes.
+  const char* kAttrs[] = { "ego", "major", "id", "none", NULL };
+  element_->ParseAttributes(Attributes::Create(kAttrs));
+  // Verify that TestElement grabbed the ego= attr
+  ASSERT_TRUE(element_->has_ego());
+  ASSERT_EQ(std::string(kAttrs[1]), element_->get_ego());
+  // Verify serialization picked up both attributes.
+  element_->SerializeAttributes(&attributes);
+  ASSERT_TRUE(attributes.GetValue("ego", &val));
+  ASSERT_TRUE(attributes.GetValue("id", &val));
+  // Verify that the base Element grabbed the id= attr _and_ did _not_ also
+  // wind up with the ego attr.  (Note: earlier versions of libkml did pass
+  // _all_ attribute name-value pairs up to Element::ParseAttributes even if
+  // a derived class accepted one or more or all attributes).
+  const Attributes* unknown = element_->GetUnknownAttributes();
+  ASSERT_TRUE(unknown);
+  ASSERT_EQ(static_cast<size_t>(1), unknown->GetSize());
+  ASSERT_FALSE(unknown->GetValue("ego", &val));
+  ASSERT_TRUE(unknown->GetValue("id", &val));
 }
 
 class ElementSerializerTest : public testing::Test {
@@ -356,8 +420,11 @@ TEST(FieldTest, TestSerialize) {
   const std::string kContent("stuff in little snippet");
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_snippet);
-  field->set_char_data(kContent);
+  // Test empty field is serialized as nil element.
+  ASSERT_EQ(std::string("<snippet/>"), SerializeRaw(field));
 
+  // Give it content and verify serializing of content-full field.
+  field->set_char_data(kContent);
   const std::string kExpectedXml(
       std::string("<snippet>") + kContent + "</snippet>");
   ASSERT_EQ(kExpectedXml, SerializeRaw(field));

@@ -30,6 +30,7 @@
 #include "gtest/gtest.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/model.h"
 
@@ -298,6 +299,11 @@ TEST_F(AliasTest, TestSetGetHasClear) {
   // Clear all fields:
   alias_->clear_targethref();
   alias_->clear_sourcehref();
+}
+
+// Verify Serialize.
+TEST_F(AliasTest, TestSerialize) {
+  ASSERT_EQ(std::string("<Alias/>"), SerializeRaw(alias_));
 }
 
 // This tests the ResourceMap class:

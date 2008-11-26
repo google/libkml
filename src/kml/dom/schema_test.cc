@@ -27,6 +27,7 @@
 #include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
 #include "gtest/gtest.h"
 
 namespace kmldom {
@@ -144,6 +145,20 @@ TEST_F(SchemaTest, TestLists) {
   }
 }
 
+TEST_F(SchemaTest, TestSerialize) {
+  schema_->set_id("schema-id");
+  schema_->set_name("schema-name");
+  schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
+  schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
+
+  std::string expected(
+    "<Schema id=\"schema-id\" name=\"schema-name\">"
+    "<SimpleField/>"
+    "<SimpleField/>"
+    "</Schema>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(schema_));
+}
 
 }  // end namespace kmldom
 

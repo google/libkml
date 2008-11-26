@@ -64,8 +64,7 @@ void AtomAuthor::AddElement(const ElementPtr& element) {
 }
 
 void AtomAuthor::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   // In order of http://schemas.opengis.net/kml/2.2.0/atom-author-link.xsd
   // although no order is specified (this is not an XSD sequence, for example).
   if (has_name()) {
@@ -77,8 +76,6 @@ void AtomAuthor::Serialize(Serializer& serializer) const {
   if (has_email()) {
     serializer.SaveFieldById(Type_atomEmail, get_email());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 } 
 
 AtomLink::AtomLink()
@@ -106,44 +103,43 @@ static const char kHrefLang[] = "hreflang";
 static const char kTitle[] = "title";
 static const char kLength[] = "length";
 
-void AtomLink::ParseAttributes(const Attributes& attributes) {
-  has_href_ = attributes.GetString(kHref, &href_);
-  has_rel_ = attributes.GetString(kRel, &rel_);
-  has_type_ = attributes.GetString(kType, &type_);
-  has_hreflang_ = attributes.GetString(kHrefLang, &hreflang_);
-  has_title_ = attributes.GetString(kTitle, &title_);
-  has_length_ = attributes.GetInt(kLength, &length_);
+void AtomLink::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_href_ = attributes->CutValue(kHref, &href_);
+  has_rel_ = attributes->CutValue(kRel, &rel_);
+  has_type_ = attributes->CutValue(kType, &type_);
+  has_hreflang_ = attributes->CutValue(kHrefLang, &hreflang_);
+  has_title_ = attributes->CutValue(kTitle, &title_);
+  has_length_ = attributes->CutValue(kLength, &length_);
   Element::ParseAttributes(attributes);
 }
 
-void AtomLink::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void AtomLink::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_href()) {
-    attributes->SetString(kHref, get_href());
+    attributes->SetValue(kHref, get_href());
   }
   if (has_rel()) {
-    attributes->SetString(kRel, get_rel());
+    attributes->SetValue(kRel, get_rel());
   }
   if (has_type()) {
-    attributes->SetString(kType, get_type());
+    attributes->SetValue(kType, get_type());
   }
   if (has_hreflang()) {
-    attributes->SetString(kHrefLang, get_hreflang());
+    attributes->SetValue(kHrefLang, get_hreflang());
   }
   if (has_title()) {
-    attributes->SetString(kTitle, get_title());
+    attributes->SetValue(kTitle, get_title());
   }
   if (has_length()) {
-    attributes->SetInt(kLength, get_length());
+    attributes->SetValue(kLength, get_length());
   }
 }
 
 void AtomLink::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  SerializeUnknown(serializer);
-  serializer.End();
+  ElementSerializer element_serializer(*this, serializer);
 }
 
 }  // end namespace kmldom

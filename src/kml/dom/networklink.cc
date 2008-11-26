@@ -64,9 +64,7 @@ void NetworkLink::AddElement(const ElementPtr& element) {
 }
 
 void NetworkLink::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Feature::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Feature::Serialize(serializer);
   if (has_refreshvisibility()) {
     serializer.SaveFieldById(Type_refreshVisibility, get_refreshvisibility());
@@ -78,8 +76,6 @@ void NetworkLink::Serialize(Serializer& serializer) const {
     // If this is <Url> it will serialize as such.
     serializer.SaveElement(get_link());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom
