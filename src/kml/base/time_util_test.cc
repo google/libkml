@@ -45,13 +45,13 @@ TEST_F(TimeUtilTest, TestGetMicroTime) {
   // Get the micro time (microsecond resolution).
   double later = GetMicroTime();
   // Assert that time has passed.
-  ASSERT_TRUE(later > static_cast<double>(now));
+  ASSERT_PRED_FORMAT2(testing::DoubleLE, static_cast<double>(now), later);
   // Snapshot the microtime in rapid succession.
   double even_later = GetMicroTime();
   double later_still = GetMicroTime();
   // Verify that time does not go backwards.
-  ASSERT_TRUE(even_later >= later);
-  ASSERT_TRUE(later_still >= even_later);
+  ASSERT_PRED_FORMAT2(testing::DoubleLE, later, even_later);
+  ASSERT_PRED_FORMAT2(testing::DoubleLE, even_later, later_still);
 
   // Here are some values 2.16 GHz MacBook Pro running Mac OS X 10.5.3.
   //  now         1215742903

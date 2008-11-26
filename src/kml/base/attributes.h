@@ -23,8 +23,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration and definition of the internal
-// Attributes class.
+// This file contains the declaration of the internal Attributes class.
 
 #ifndef KML_BASE_ATTRIBUTES_H__
 #define KML_BASE_ATTRIBUTES_H__
@@ -34,7 +33,7 @@
 #include <sstream>
 #include <string>
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/string_string_map.h"
+#include "kml/base/string_util.h"
 #include "kml/base/util.h"
 
 namespace kmlbase {
@@ -46,76 +45,92 @@ class Attributes {
   static Attributes* Create(const char** attrs);
 
   // Construct the Attributes instance with no initial name-value pairs.
-  Attributes() {
-    attributes_map_.reset(new StringStringMap);
+  Attributes() {}
+
+  // Creates an exact copy of the Attributes object.
+  Attributes* Clone() const;
+
+  bool FindValue(const std::string& key, std::string* value) const;
+  bool FindKey(const std::string& value, std::string* key) const;
+  size_t GetSize() const {
+    return attributes_map_.size();
   }
 
-  // Get the value of the given attribute as a string.  Returns true if an
-  // attribute with this name exits.  If no attribute by this name exists
-  // false is returned and the string is untouched.  If no result string
-  // pointer is supplied false is returned.
-  bool GetString(const std::string attr_name, std::string* attr_val) const;
+  // Split prefixed attributes out to a new Attributes.
+  Attributes* SplitByPrefix(const std::string& prefix);
+
+  StringMapIterator CreateIterator() const {
+    return StringMapIterator(attributes_map_);
+  }
+
+  // Get the value of the given attribute as the templated type.  Returns true
+  // if an attribute with this name exits.  If no attribute by this name exists
+  // false is returned and the attr_val is untouched.  T can be one of
+  // std::string, int, double or bool.
+  template<typename T>
+  bool GetValue(const std::string& attr_name, T* attr_val) const {
+    std::string string_val;
+    if (FindValue(attr_name, &string_val)) {
+      if (attr_val) {
+        FromString(string_val, attr_val);
+      }
+      return true;
+    }
+    return false;
+  }
+
+  // This is the same as GetValue() + erase().
+  template<typename T>
+  bool CutValue(const std::string& attr_name, T* attr_val) {
+    if (GetValue(attr_name, attr_val)) {
+      attributes_map_.erase(attr_name);
+      return true;
+    }
+    return false;
+  }
 
   // Set the value of the given attribute.  Any previous value for this
-  // attribute is overwritten.
-  void SetString(const std::string attr_name, const std::string attr_val);
+  // attribute is overwritten.  T can be one of std::string, int, double or
+  // bool.
+  template<typename T>
+  void SetValue(const std::string& attr_name, const T& attr_val) {
+    attributes_map_[attr_name] = ToString(attr_val);
+  }
 
-  // Get the value of the given attribute as a double.  If the attribute value
-  // is not a valid double the output is 0.  This returns true if an attribute
-  // with this name exists.  If no attribute by this name exists false is
-  // returned and the result pointer is untouched.  If no result pointer is
-  // supplied false is returned.
-  bool GetDouble(const std::string attr_name, double* attr_val) const;
-
-  // Set the value of the given attribute from a double.  Any previous value
-  // for this attribute is overwritten.  If no attribute by this name exists
-  // false is returned and the result pointer is untouched.  If no result
-  // pointer is supplied false is returned.
-  void SetDouble(const std::string attr_name, double attr_val);
-
-  // Get the value of the given attribute as an int.  If the attribute value
-  bool GetInt(const std::string attr_name, int* attr_val) const;
-
-  // Set the value of the given attribute from an int.  Any previous value
-  // for this attribute is overwritten.
-  void SetInt(const std::string attr_name, int attr_val);
-
-  // Get the value of the given boolean attribute.  If attr_val is supplied
-  // it is set to true if the attribute value is "true", else false.  This
-  // method returns true if the given attribute exists, else false.
-  bool GetBool(const std::string& attr_name, bool* attr_val) const;
+  // These are deprecated.  Use Get() and Set().
+  // TODO: remove usage elsewhere.
+  bool GetString(const std::string& attr_name, std::string* attr_val) const {
+    return GetValue(attr_name, attr_val);
+  }
+  bool GetBool(const std::string& attr_name, bool* attr_val) const {
+    return GetValue(attr_name, attr_val);
+  }
+  bool GetDouble(const std::string& attr_name, double* attr_val) const {
+    return GetValue(attr_name, attr_val);
+  }
+  void SetString(const std::string& attr_name, const std::string& attr_val) {
+    SetValue(attr_name, attr_val);
+  }
 
   // Serialize the current state of the Attributes instance into the
   // passed string.  This appends to any content previously in the string.
   // If no string pointer is supplied this method does nothing.
   void Serialize(std::string* output) const;
 
-  // Creates an exact copy of the Attributes object.
-  Attributes* Clone() const;
-
   // This sets each attribute from the passed Attributes instance.
   // Any conflicting attributes are overridden from the input.
   void MergeAttributes(const Attributes& attrs);
 
-  // For cracking xmlns:prefix="namespace" pairs.  If key_match matches the
-  // first part of a key then the rest of the key is used to store the mapped
-  // value into the out map.  For example, if key_match="xmlns:" then any key
-  // matching "xmlns:foo" is matched and "foo" is used as the key in the out
-  // map.
-  void MatchSplitKey(const std::string& key_match, StringStringMap* out) const;
-
   // Returns all attribute names.
+  // NOTE: This is deprecated.  Use CreateIterator().
   void GetAttrNames(std::vector<std::string>* attr_names) const;
 
  private:
-  Attributes(StringStringMap* string_string_map) {
-    attributes_map_.reset(string_string_map);
-  }
   bool Parse(const char** attrs);
 
   // XML attributes have no order and are unique.  The attribute name is
   // preserved to properly save unknown attributes.
-  boost::scoped_ptr<StringStringMap> attributes_map_;
+  StringMap attributes_map_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Attributes);
 };
 
