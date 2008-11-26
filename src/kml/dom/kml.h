@@ -85,10 +85,10 @@ class Kml : public Element {
   Kml();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
   std::string hint_;
   bool has_hint_;
   NetworkLinkControlPtr networklinkcontrol_;

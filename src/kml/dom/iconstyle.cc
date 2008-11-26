@@ -68,9 +68,7 @@ void IconStyle::AddElement(const ElementPtr& element) {
 }
 
 void IconStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  ColorStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   ColorStyle::Serialize(serializer);
   if (has_scale()) {
     serializer.SaveFieldById(Type_scale, get_scale());
@@ -84,8 +82,6 @@ void IconStyle::Serialize(Serializer& serializer) const {
   if (has_hotspot()) {
     serializer.SaveElement(get_hotspot());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

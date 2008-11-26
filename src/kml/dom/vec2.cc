@@ -54,49 +54,47 @@ static const char kYUnits[] = "yunits";
 
 // Look up the given attribute and convert it to an enum val of the given
 // enum type.  For example, attr_name="xunits" and enum_type=Type_units.
-static bool GetEnumAttr(const Attributes& attributes,
-                        const std::string attr_name,
-                        int enum_type, int* enum_val) {
+static bool CutEnumAttr(Attributes* attributes, const std::string attr_name,
+                            int enum_type, int* enum_val) {
   std::string attr_val;
-  if (attributes.GetString(attr_name, &attr_val)) {
+  if (attributes->CutValue(attr_name, &attr_val)) {
     *enum_val = Xsd::GetSchema()->EnumId(enum_type, attr_val);
     return true;
   }
   return false;
 }
 
-void Vec2::ParseAttributes(const Attributes& attributes) {
+void Vec2::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_x_ = attributes->CutValue(kX, &x_);
+  has_y_ = attributes->CutValue(kY, &y_);
+  has_xunits_ = CutEnumAttr(attributes, kXUnits, Type_units, &xunits_);
+  has_yunits_ = CutEnumAttr(attributes, kYUnits, Type_units, &yunits_);
   Element::ParseAttributes(attributes);
-  has_x_ = attributes.GetDouble(kX, &x_);
-  has_y_ = attributes.GetDouble(kY, &y_);
-  has_xunits_ = GetEnumAttr(attributes, kXUnits, Type_units, &xunits_);
-  has_yunits_ = GetEnumAttr(attributes, kYUnits, Type_units, &yunits_);
 }
 
-void Vec2::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void Vec2::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_x_) {
-    attributes->SetDouble(kX, x_);
+    attributes->SetValue(kX, x_);
   }
   if (has_y_) {
-    attributes->SetDouble(kY, y_);
+    attributes->SetValue(kY, y_);
   }
   if (has_xunits_) {
-    attributes->SetString(kXUnits,
-                          Xsd::GetSchema()->EnumValue(Type_units, xunits_));
+    attributes->SetValue(kXUnits,
+                         Xsd::GetSchema()->EnumValue(Type_units, xunits_));
   }
   if (has_yunits_) {
-    attributes->SetString(kYUnits,
-                          Xsd::GetSchema()->EnumValue(Type_units, yunits_));
+    attributes->SetValue(kYUnits,
+                         Xsd::GetSchema()->EnumValue(Type_units, yunits_));
   }
 }
 
 void Vec2::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  SerializeUnknown(serializer);
-  serializer.End();
+  ElementSerializer element_serializer(*this, serializer);
 }
 
 }  // end namespace kmldom

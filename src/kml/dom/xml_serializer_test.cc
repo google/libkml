@@ -68,6 +68,17 @@ TEST_F(XmlSerializerTest, TestWriteString) {
   ASSERT_EQ(expected_result, output);
 }
 
+TEST_F(XmlSerializerTest, TestSaveEmptyStringFieldById) {
+  // Assert that the <name/> field serializes as expected.
+  const int type_id = Type_name;
+  const std::string expected_result("<name/>");
+  const std::string empty;
+  xml_serializer_->SaveFieldById(type_id, empty);
+  std::string output;
+  xml_serializer_->WriteString(&output);
+  ASSERT_EQ(expected_result, output);
+}
+
 TEST_F(XmlSerializerTest, TestSaveStringFieldById) {
   // Assert that the <name> field serializes as expected.
   const int type_id = Type_name;
@@ -211,6 +222,20 @@ TEST_F(XmlSerializerTest, TestSerializeRawNilWithAttrs) {
   placemark_->set_id("hi");  // Adds the id= attribute.
   ASSERT_EQ(std::string("<Placemark id=\"hi\"/>"),
                        SerializeRaw(placemark_));
+}
+
+TEST_F(XmlSerializerTest, TestSerializeUnknowns) {
+  // Unrecognised elements:
+  const std::string unknown1("<unknown>zzz<Foo/></unknown>");
+  const std::string unknown2("<unknownBar/>");
+  placemark_->AddUnknownElement(unknown1);
+  placemark_->AddUnknownElement(unknown2);
+  ASSERT_EQ(static_cast<size_t>(2),
+                       placemark_->get_unknown_elements_array_size());
+  ASSERT_EQ(unknown1, placemark_->get_unknown_elements_array_at(0));
+  ASSERT_EQ(unknown2, placemark_->get_unknown_elements_array_at(1));
+  ASSERT_EQ(std::string("<Placemark>") + unknown1 + unknown2 + "</Placemark>",
+            SerializeRaw(placemark_));
 }
 
 }  // end namespace kmldom

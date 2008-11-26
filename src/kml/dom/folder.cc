@@ -38,12 +38,8 @@ Folder::~Folder() {
 }
 
 void Folder::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Container::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Container::Serialize(serializer);
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

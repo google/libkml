@@ -141,6 +141,7 @@ TESTS = abstractlatlonbox_test \
 	placemark_test \
 	polystyle_test \
 	region_test \
+	round_trip_test \
 	schema_test \
 	snippet_test \
 	style_test \
@@ -339,6 +340,12 @@ polystyle_test_LDADD= libkmldom.la \
 region_test_SOURCES = region_test.cc
 region_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 region_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+round_trip_test_SOURCES = round_trip_test.cc
+round_trip_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+round_trip_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 

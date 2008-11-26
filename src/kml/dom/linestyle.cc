@@ -51,15 +51,11 @@ void LineStyle::AddElement(const ElementPtr& element) {
 }
 
 void LineStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  ColorStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   ColorStyle::Serialize(serializer);
   if (has_width()) {
     serializer.SaveFieldById(Type_width, get_width());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

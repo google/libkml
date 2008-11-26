@@ -69,9 +69,7 @@ void BalloonStyle::AddElement(const ElementPtr& element) {
 }
 
 void BalloonStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  SubStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   SubStyle::Serialize(serializer);
   if (has_bgcolor()) {
     // TODO: Serializer needs a SaveColor().
@@ -87,8 +85,6 @@ void BalloonStyle::Serialize(Serializer& serializer) const {
   if (has_displaymode()) {
     serializer.SaveEnum(Type_displayMode, get_displaymode());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

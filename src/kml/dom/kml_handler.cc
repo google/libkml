@@ -33,7 +33,6 @@
 // 4a) call AddChild() for each ParserObserver.
 
 #include "kml/dom/kml_handler.h"
-#include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_factory.h"
@@ -95,10 +94,8 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
 
     // We parse attributes only if StartElement received any.
     if (attrs && *attrs) {
-      boost::scoped_ptr<Attributes> attributes(Attributes::Create(attrs));
-      if (attributes.get()) {
-        element->ParseAttributes(*attributes);
-      }
+      // Element::ParseAttributes takes ownership of the created Attributes.
+      element->ParseAttributes(Attributes::Create(attrs));
     }
 
   } else if (xsd_type == XSD_SIMPLE_TYPE) {

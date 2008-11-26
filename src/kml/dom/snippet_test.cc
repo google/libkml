@@ -54,7 +54,7 @@ TEST_F(SnippetTest, TestDefaults) {
   ASSERT_FALSE(snippet_->has_text());
   ASSERT_TRUE(snippet_->get_text().empty());
   ASSERT_FALSE(snippet_->has_maxlines());
-  ASSERT_EQ(static_cast<size_t>(2), snippet_->get_maxlines());
+  ASSERT_EQ(2, snippet_->get_maxlines());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -69,7 +69,7 @@ TEST_F(SnippetTest, TestSetToDefaultValues) {
 TEST_F(SnippetTest, TestSetGetHasClear) {
   // Non-default values:
   const std::string kText = "snippet body";
-  const unsigned int kMaxlines = 10;
+  const int kMaxlines = 10;
 
   // Set all fields:
   snippet_->set_text(kText);
@@ -98,8 +98,7 @@ TEST_F(SnippetTest, TestBasicParse) {
   ASSERT_TRUE(placemark);
   ASSERT_TRUE(placemark->has_snippet());
   ASSERT_FALSE(placemark->get_snippet()->has_maxlines());
-  ASSERT_EQ(static_cast<unsigned int>(2),  // The default.
-                       placemark->get_snippet()->get_maxlines());
+  ASSERT_EQ(2, placemark->get_snippet()->get_maxlines());  // The default.
   ASSERT_TRUE(placemark->get_snippet()->has_text());
   ASSERT_EQ(kText, placemark->get_snippet()->get_text());
 }
@@ -124,7 +123,7 @@ TEST_F(SnippetTest, TestParseMaxLines) {
   const SnippetPtr snippet = folder->get_snippet();
   ASSERT_TRUE(snippet);
   ASSERT_TRUE(snippet->has_maxlines());
-  ASSERT_EQ(static_cast<unsigned int>(5), snippet->get_maxlines());
+  ASSERT_EQ(5, snippet->get_maxlines());
 }
 
 TEST_F(SnippetTest, TestSerializeCdata) {
@@ -157,7 +156,7 @@ TEST_F(LinkSnippetTest, TestDefaults) {
   ASSERT_FALSE(linksnippet_->has_text());
   ASSERT_TRUE(linksnippet_->get_text().empty());
   ASSERT_FALSE(linksnippet_->has_maxlines());
-  ASSERT_EQ(static_cast<size_t>(2), linksnippet_->get_maxlines());
+  ASSERT_EQ(2, linksnippet_->get_maxlines());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -172,7 +171,7 @@ TEST_F(LinkSnippetTest, TestSetToDefaultValues) {
 TEST_F(LinkSnippetTest, TestSetGetHasClear) {
   // Non-default values:
   const std::string kText = "snippet body";
-  const unsigned int kMaxlines = 11;
+  const int kMaxlines = 11;
 
   // Set all fields:
   linksnippet_->set_text(kText);
@@ -202,8 +201,7 @@ TEST_F(LinkSnippetTest, TestBasicParse) {
   ASSERT_TRUE(networklinkcontrol->has_linksnippet());
   const LinkSnippetPtr linksnippet = networklinkcontrol->get_linksnippet();
   ASSERT_FALSE(linksnippet->has_maxlines());
-  ASSERT_EQ(static_cast<unsigned int>(2),
-                       linksnippet->get_maxlines());
+  ASSERT_EQ(2, linksnippet->get_maxlines());
   ASSERT_TRUE(linksnippet->has_text());
   ASSERT_EQ(kText, linksnippet->get_text());
 }
@@ -227,8 +225,7 @@ TEST_F(LinkSnippetTest, TestParseMaxLines) {
   const LinkSnippetPtr linksnippet = networklinkcontrol->get_linksnippet();
   ASSERT_TRUE(linksnippet);
   ASSERT_TRUE(linksnippet->has_maxlines());
-  ASSERT_EQ(static_cast<unsigned int>(7),
-                       linksnippet->get_maxlines());
+  ASSERT_EQ(7, linksnippet->get_maxlines());
 }
 
 TEST_F(LinkSnippetTest, TestSerializeCdata) {

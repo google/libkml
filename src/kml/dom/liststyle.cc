@@ -60,9 +60,7 @@ void ItemIcon::AddElement(const ElementPtr& element) {
 }
 
 void ItemIcon::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_state()) {
     serializer.SaveEnum(Type_state, get_state());
@@ -70,8 +68,6 @@ void ItemIcon::Serialize(Serializer& serializer) const {
   if (has_href()) {
     serializer.SaveFieldById(Type_href, get_href());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <ListStyle>
@@ -107,9 +103,7 @@ void ListStyle::AddElement(const ElementPtr& element) {
 }
 
 void ListStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  SubStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   SubStyle::Serialize(serializer);
   if (has_listitemtype()) {
     serializer.SaveEnum(Type_listItemType, get_listitemtype());
@@ -124,8 +118,6 @@ void ListStyle::Serialize(Serializer& serializer) const {
   if (has_maxsnippetlines()) {
     serializer.SaveFieldById(Type_maxSnippetLines, get_maxsnippetlines());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

@@ -42,19 +42,18 @@ SnippetCommon::~SnippetCommon() {}
 
 static const char kMaxLines[] = "maxLines";
 
-void SnippetCommon::ParseAttributes(const Attributes& attributes) {
-  double maxlines_attr = 0.0;
-  has_maxlines_ = attributes.GetDouble(kMaxLines, &maxlines_attr);
-  if (has_maxlines_) {
-    set_maxlines(static_cast<unsigned int>(maxlines_attr));
+void SnippetCommon::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
   }
+  has_maxlines_ = attributes->CutValue(kMaxLines, &maxlines_);
   Element::ParseAttributes(attributes);
 }
 
-void SnippetCommon::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void SnippetCommon::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_maxlines_) {
-    attributes->SetDouble(kMaxLines, static_cast<double>(maxlines_));
+    attributes->SetValue(kMaxLines, static_cast<double>(maxlines_));
   }
 }
 
@@ -67,12 +66,8 @@ void SnippetCommon::AddElement(const ElementPtr& element) {
 }
 
 void SnippetCommon::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
-  Element::SerializeUnknown(serializer);
+  ElementSerializer element_serializer(*this, serializer);
   serializer.SaveContent(text_, true);
-  serializer.End();
 }
 
 Snippet::Snippet() {}

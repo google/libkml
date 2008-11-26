@@ -82,9 +82,7 @@ void LookAt::AddElement(const ElementPtr& element) {
 }
 
 void LookAt::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  AbstractView::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   AbstractView::Serialize(serializer);
   if (has_longitude()) {
     serializer.SaveFieldById(Type_longitude, get_longitude());
@@ -107,8 +105,6 @@ void LookAt::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Camera::Camera()
@@ -160,9 +156,7 @@ void Camera::AddElement(const ElementPtr& element) {
 }
 
 void Camera::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  AbstractView::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   AbstractView::Serialize(serializer);
   if (has_longitude()) {
     serializer.SaveFieldById(Type_longitude, get_longitude());
@@ -185,8 +179,6 @@ void Camera::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

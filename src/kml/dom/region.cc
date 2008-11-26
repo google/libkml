@@ -62,9 +62,7 @@ void LatLonAltBox::AddElement(const ElementPtr& element) {
 }
 
 void LatLonAltBox::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  AbstractLatLonBox::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   AbstractLatLonBox::Serialize(serializer);
   if (has_minaltitude()) {
     serializer.SaveFieldById(Type_minAltitude, get_minaltitude());
@@ -75,8 +73,6 @@ void LatLonAltBox::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Lod::Lod()
@@ -109,9 +105,7 @@ void Lod::AddElement(const ElementPtr& element) {
 }
 
 void Lod::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_minlodpixels()) {
     serializer.SaveFieldById(Type_minLodPixels, get_minlodpixels());
@@ -125,8 +119,6 @@ void Lod::Serialize(Serializer& serializer) const {
   if (has_maxfadeextent()) {
     serializer.SaveFieldById(Type_maxFadeExtent, get_maxfadeextent());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 Region::Region() {
@@ -149,9 +141,7 @@ void Region::AddElement(const ElementPtr& element) {
 }
 
 void Region::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_latlonaltbox()) {
     serializer.SaveElement(get_latlonaltbox());
@@ -159,8 +149,6 @@ void Region::Serialize(Serializer& serializer) const {
   if (has_lod()) {
     serializer.SaveElement(get_lod());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

@@ -51,9 +51,7 @@ void Document::AddElement(const ElementPtr& element) {
 // take some matters into our own hands here and reach up into Feature and
 // Container to serialize in XSD order.
 void Document::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Container::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Feature::SerializeBeforeStyleSelector(serializer);
   for (size_t i = 0; i < styleselector_array_.size(); ++i) {
     serializer.SaveElementGroup(get_styleselector_array_at(i),
@@ -64,8 +62,6 @@ void Document::Serialize(Serializer& serializer) const {
     serializer.SaveElement(get_schema_array_at(i));
   }
   Container::SerializeFeatureArray(serializer);
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

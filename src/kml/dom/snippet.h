@@ -61,9 +61,9 @@ class SnippetCommon : public Element {
   }
 
   // maxlines=
-  unsigned int get_maxlines() const { return maxlines_; }
+  int get_maxlines() const { return maxlines_; }
   bool has_maxlines() const { return has_maxlines_; }
-  void set_maxlines(unsigned int value) {
+  void set_maxlines(int value) {
     maxlines_ = value;
     has_maxlines_ = true;
   }
@@ -75,14 +75,14 @@ class SnippetCommon : public Element {
  protected:
   SnippetCommon();
   virtual void AddElement(const ElementPtr& child);
-  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
   virtual void Serialize(Serializer& serializer) const;
-  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
 
  private:
   std::string text_;
   bool has_text_;
-  unsigned int maxlines_;
+  int maxlines_;
   bool has_maxlines_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SnippetCommon);
 };

@@ -46,21 +46,24 @@ void Object::AddElement(const ElementPtr& element) {
   Element::AddElement(element);
 }
 
-void Object::ParseAttributes(const Attributes& attributes) {
-  has_id_ = attributes.GetString(kId, &id_);
-  has_targetid_ = attributes.GetString(kTargetId, &targetid_);
+void Object::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_id_ = attributes->CutValue(kId, &id_);
+  has_targetid_ = attributes->CutValue(kTargetId, &targetid_);
   Element::ParseAttributes(attributes);
 }
 
-void Object::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void Object::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   // If the id or targetId have been explictly set via API calls, we overwrite
-  // the values stored in the attibutes object.
+  // the values stored in the attributes object.
   if (has_id_) {
-    attributes->SetString(kId, id_);
+    attributes->SetValue(kId, id_);
   }
   if (has_targetid_) {
-    attributes->SetString(kTargetId, targetid_);
+    attributes->SetValue(kTargetId, targetid_);
   }
 }
 

@@ -52,15 +52,11 @@ void LabelStyle::AddElement(const ElementPtr& element) {
 }
 
 void LabelStyle::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  ColorStyle::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   ColorStyle::Serialize(serializer);
   if (has_scale()) {
     serializer.SaveFieldById(Type_scale, get_scale());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

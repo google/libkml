@@ -59,7 +59,7 @@ class XmlSerializer : public Serializer {
   virtual void End();
 
   // Emit the XML for the field of the given type with the given content
-  // as its character data.
+  // as its character data.  If value is empty a nil element is emitted.
   virtual void SaveStringFieldById(int type_id, std::string value);
 
   // Save out character data.

@@ -97,8 +97,8 @@ class Vec2 : public Element {
  protected:
   // Vec2 is abstract, derived class access only.
   Vec2();
-  virtual void ParseAttributes(const kmlbase::Attributes& attributes);
-  virtual void GetAttributes(kmlbase::Attributes* attributes) const;
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
   void Serialize(Serializer& serializer) const;
 
  private:

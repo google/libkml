@@ -46,18 +46,22 @@ SimpleField::~SimpleField() {}
 static const char kSimpleFieldTypeAttr[] = "type";
 static const char kSimpleFieldNameAttr[] = "name";
 
-void SimpleField::ParseAttributes(const Attributes& attributes) {
-  has_type_ = attributes.GetString(kSimpleFieldTypeAttr, &type_);
-  has_name_ = attributes.GetString(kSimpleFieldNameAttr, &name_);
+void SimpleField::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_type_ = attributes->CutValue(kSimpleFieldTypeAttr, &type_);
+  has_name_ = attributes->CutValue(kSimpleFieldNameAttr, &name_);
   Element::ParseAttributes(attributes);
 }
 
-void SimpleField::GetAttributes(Attributes* attributes) const {
+void SimpleField::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_type_) {
-    attributes->SetString(kSimpleFieldTypeAttr, type_);
+    attributes->SetValue(kSimpleFieldTypeAttr, type_);
   }
   if (has_name_) {
-    attributes->SetString(kSimpleFieldNameAttr, name_);
+    attributes->SetValue(kSimpleFieldNameAttr, name_);
   }
 }
 
@@ -73,35 +77,33 @@ void SimpleField::AddElement(const ElementPtr& element) {
 }
 
 void SimpleField::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Element::GetAttributes(&attributes);
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_displayname()) {
     serializer.SaveFieldById(Type_displayName, get_displayname());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 // <Schema>
 Schema::Schema()
-  : has_name_(false),
-    has_id_(false) {
+  : has_name_(false) {
 }
 
 Schema::~Schema() {}
 
 static const char kSchemaNameAttr[] = "name";
 
-void Schema::ParseAttributes(const Attributes& attributes) {
-  has_name_ = attributes.GetString(kSchemaNameAttr, &name_);
+void Schema::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_name_ = attributes->CutValue(kSchemaNameAttr, &name_);
   Object::ParseAttributes(attributes);
 }
 
-void Schema::GetAttributes(Attributes* attributes) const {
+void Schema::SerializeAttributes(Attributes* attributes) const {
+  Object::SerializeAttributes(attributes);
   if (has_name_) {
-    attributes->SetString(kSchemaNameAttr, name_);
+    attributes->SetValue(kSchemaNameAttr, name_);
   }
 }
 
@@ -117,15 +119,10 @@ void Schema::AddElement(const ElementPtr& element) {
 }
 
 void Schema::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < simplefield_array_.size(); ++i) {
     serializer.SaveElement(get_simplefield_array_at(i));
   }
-  Element::SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

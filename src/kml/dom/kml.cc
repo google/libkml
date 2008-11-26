@@ -38,15 +38,18 @@ Kml::~Kml() {}
 
 static const char kHint[] = "hint";
 
-void Kml::ParseAttributes(const Attributes& attributes) {
-  has_hint_ = attributes.GetString(kHint, &hint_);
+void Kml::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_hint_ = attributes->CutValue(kHint, &hint_);
   Element::ParseAttributes(attributes);
 }
 
-void Kml::GetAttributes(Attributes* attributes) const {
-  Element::GetAttributes(attributes);
+void Kml::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
   if (has_hint_) {
-    attributes->SetString(kHint, hint_);
+    attributes->SetValue(kHint, hint_);
   }
 }
 
@@ -61,17 +64,13 @@ void Kml::AddElement(const ElementPtr& element) {
 }
 
 void Kml::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_networklinkcontrol()) {
     serializer.SaveElement(get_networklinkcontrol());
   }
   if (has_feature()) {
     serializer.SaveElementGroup(get_feature(), Type_Feature);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

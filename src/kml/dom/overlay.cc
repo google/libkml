@@ -99,15 +99,11 @@ void LatLonBox::AddElement(const ElementPtr& element) {
 }
 
 void LatLonBox::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  AbstractLatLonBox::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   AbstractLatLonBox::Serialize(serializer);
   if (has_rotation()) {
     serializer.SaveFieldById(Type_rotation, get_rotation());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 GroundOverlay::GroundOverlay()
@@ -138,9 +134,7 @@ void GroundOverlay::AddElement(const ElementPtr& element) {
 }
 
 void GroundOverlay::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Overlay::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Overlay::Serialize(serializer);
   if (has_altitude()) {
     serializer.SaveFieldById(Type_altitude, get_altitude());
@@ -151,8 +145,6 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
   if (has_latlonbox()) {
     serializer.SaveElement(get_latlonbox());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 ViewVolume::ViewVolume()
@@ -194,9 +186,7 @@ void ViewVolume::AddElement(const ElementPtr& element) {
 }
 
 void ViewVolume::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_leftfov()) {
     serializer.SaveFieldById(Type_leftFov, get_leftfov());
@@ -213,8 +203,6 @@ void ViewVolume::Serialize(Serializer& serializer) const {
   if (has_near()) {
     serializer.SaveFieldById(Type_near, get_near());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 ImagePyramid::ImagePyramid()
@@ -251,9 +239,7 @@ void ImagePyramid::AddElement(const ElementPtr& element) {
 }
 
 void ImagePyramid::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Object::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_tilesize()) {
     serializer.SaveFieldById(Type_tileSize, get_tilesize());
@@ -267,8 +253,6 @@ void ImagePyramid::Serialize(Serializer& serializer) const {
   if (has_gridorigin()) {
     serializer.SaveEnum(Type_gridOrigin, get_gridorigin());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 PhotoOverlay::PhotoOverlay()
@@ -305,9 +289,7 @@ void PhotoOverlay::AddElement(const ElementPtr& element) {
 }
 
 void PhotoOverlay::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Overlay::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Overlay::Serialize(serializer);
   if (has_rotation()) {
     serializer.SaveFieldById(Type_rotation, get_rotation());
@@ -324,8 +306,6 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
   if (has_shape()) {
     serializer.SaveEnum(Type_shape, get_shape());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 OverlayXY::OverlayXY() {}
@@ -376,9 +356,7 @@ void ScreenOverlay::AddElement(const ElementPtr& element) {
 }
 
 void ScreenOverlay::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Overlay::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Overlay::Serialize(serializer);
   if (has_overlayxy()) {
     serializer.SaveElement(get_overlayxy());
@@ -395,8 +373,6 @@ void ScreenOverlay::Serialize(Serializer& serializer) const {
   if (has_rotation()) {
     serializer.SaveFieldById(Type_rotation, get_rotation());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

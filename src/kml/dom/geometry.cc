@@ -144,12 +144,10 @@ void Coordinates::AddElement(const ElementPtr& element) {
 }
 
 void Coordinates::Serialize(Serializer& serializer) const {
-  Attributes attributes;  // dummy
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < coordinates_array_.size(); ++i) {
     coordinates_array_[i].Serialize(serializer);
   }
-  serializer.End();
 }
 
 Geometry::Geometry() {}
@@ -211,9 +209,7 @@ Point::Point() {}
 Point::~Point() {}
 
 void Point::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Geometry::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
     serializer.SaveFieldById(Type_extrude, get_extrude());
@@ -224,8 +220,6 @@ void Point::Serialize(Serializer& serializer) const {
   if (has_coordinates()) {
     serializer.SaveElement(get_coordinates());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 LineCommon::LineCommon()
@@ -247,9 +241,7 @@ void LineCommon::AddElement(const ElementPtr& element) {
 }
 
 void LineCommon::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Geometry::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
     serializer.SaveFieldById(Type_extrude, get_extrude());
@@ -263,8 +255,6 @@ void LineCommon::Serialize(Serializer& serializer) const {
   if (has_coordinates()) {
     serializer.SaveElement(get_coordinates());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 LineString::LineString() {}
@@ -288,13 +278,10 @@ void BoundaryCommon::AddElement(const ElementPtr& element) {
 }
 
 void BoundaryCommon::Serialize(Serializer& serializer) const {
-  Attributes attributes;  // None.
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   if (has_linearring()) {
     serializer.SaveElement(get_linearring());
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 OuterBoundaryIs::OuterBoundaryIs() {}
@@ -332,9 +319,7 @@ void Polygon::AddElement(const ElementPtr& element) {
 }
 
 void Polygon::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Geometry::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
   if (has_extrude()) {
     serializer.SaveFieldById(Type_extrude, get_extrude());
@@ -351,8 +336,6 @@ void Polygon::Serialize(Serializer& serializer) const {
   for (size_t i = 0; i < innerboundaryis_array_.size(); ++i) {
     serializer.SaveElement(innerboundaryis_array_[i]);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 MultiGeometry::MultiGeometry() {}
@@ -375,15 +358,11 @@ void MultiGeometry::AddElement(const ElementPtr& element) {
 }
 
 void MultiGeometry::Serialize(Serializer& serializer) const {
-  Attributes attributes;
-  Geometry::GetAttributes(&attributes);
-  serializer.BeginById(Type(), attributes);
+  ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
   for (size_t i = 0; i < geometry_array_.size(); ++i) {
     serializer.SaveElementGroup(geometry_array_[i], Type_Geometry);
   }
-  SerializeUnknown(serializer);
-  serializer.End();
 }
 
 }  // end namespace kmldom

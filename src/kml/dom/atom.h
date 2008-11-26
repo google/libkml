@@ -192,8 +192,8 @@ class AtomLink : public Element {
   AtomLink();
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
-  void ParseAttributes(const kmlbase::Attributes& attributes);
-  void GetAttributes(kmlbase::Attributes* attributes) const;
+  void ParseAttributes(kmlbase::Attributes* attributes);
+  void SerializeAttributes(kmlbase::Attributes* attributes) const;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomLink);
