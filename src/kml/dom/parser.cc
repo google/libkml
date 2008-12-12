@@ -50,8 +50,8 @@ void Parser::AddObserver(ParserObserver* parser_observer) {
 // public and SWIG.
 ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
   KmlHandler kml_handler(observers_);
-  bool status = kmlbase::ExpatParser(kml, &kml_handler, errors, false);
-  if (status) {
+  kmlbase::ExpatParser parser(&kml_handler, false);
+  if (kmlbase::ExpatParser::ParseString(kml, &kml_handler, errors, false)) {
     return kml_handler.PopRoot();
   }
   return NULL;
@@ -62,8 +62,7 @@ ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
 // mode.
 ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
   KmlHandlerNS kml_handler(observers_);
-  bool status = kmlbase::ExpatParser(kml, &kml_handler, errors, true);
-  if (status) {
+  if (kmlbase::ExpatParser::ParseString(kml, &kml_handler, errors, true)) {
     return kml_handler.PopRoot();
   }
   return NULL;

@@ -42,6 +42,7 @@
 #include "kml/convenience/gpx_trk_pt_handler.h"
 #include "kml/dom.h"
 
+using kmlbase::ExpatParser;
 using kmlbase::DateTime;
 using kmlbase::Vec3;
 using kmldom::ContainerPtr;
@@ -229,7 +230,8 @@ static bool ConvertGpxTrkPtsToKml(const char* gpx_pathname,
 
   // Parse the GPX data into the <Document>.
   std::string errors;
-  if (!kmlbase::ExpatParser(gpx_data, &trk_pt_handler, &errors, false)) {
+
+  if (!ExpatParser::ParseString(gpx_data, &trk_pt_handler, &errors, false)) {
     std::cerr << "parse failed: " << gpx_pathname << std::endl;
     return false;
   }

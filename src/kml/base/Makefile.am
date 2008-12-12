@@ -57,6 +57,7 @@ TESTS = \
 	color32_test \
 	date_time_test \
 	expat_handler_ns_test \
+	expat_parser_test \
 	file_test \
 	net_cache_test \
 	referent_test \
@@ -90,6 +91,11 @@ date_time_test_LDADD = libkmlbase.la \
 expat_handler_ns_test_SOURCES = expat_handler_ns_test.cc
 expat_handler_ns_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 expat_handler_ns_test_LDADD = libkmlbase.la \
+			      $(top_builddir)/third_party/libgtest.la
+
+expat_parser_test_SOURCES = expat_parser_test.cc
+expat_parser_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+expat_parser_test_LDADD = libkmlbase.la \
 			      $(top_builddir)/third_party/libgtest.la
 
 file_test_SOURCES = file_test.cc

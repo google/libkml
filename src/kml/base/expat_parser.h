@@ -30,6 +30,7 @@
 
 #include <map>
 #include <string>
+#include "expat.h"
 
 namespace kmlbase {
 
@@ -73,11 +74,29 @@ class ExpatHandlerSet {
   ExpatHandlerMap expat_handler_map_;
 };
 
-// Run expat using the supplied handler over the supplied input.  Any parse
-// errors are are saved to the supplied string.  This returns true if the
-// parse succeeded, false otherwise.
-bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
-                 std::string* errors, bool namespace_aware);
+class ExpatParser {
+ public:
+  ExpatParser(ExpatHandler* handler, bool namespace_aware);
+  ~ExpatParser();
+
+  // Parses a string of XML data in one operation. The xml string must be a
+  // complete, well-formed XML document.
+  static bool ParseString(const std::string& xml, ExpatHandler* handler,
+                          std::string* errors, bool namespace_aware);
+
+  // Parse a chunk of XML data. The input does not have to be split on element
+  // boundaries. The is_final flag indicates to expat if it should consider
+  // this buffer the end of the content.
+  bool ParseBuffer(const std::string& input, std::string* errors,
+                   bool is_final);
+
+ private:
+  ExpatHandler* expat_handler_;
+  XML_Parser parser_;
+  // Used by the static ParseString public method.
+  bool _ParseString(const std::string& xml, std::string* errors);
+  void ReportError(XML_Parser parser, std::string* errors);
+};
 
 
 }  // end namespace kmldom

@@ -78,7 +78,7 @@ TEST_F(ExpatHandlerNsTest, TestExpatParserDefault) {
   const std::string kXml(
       std::string("<hi xmlns=\"") + kDefaultNamespace + "\"/>");
   std::string errors;
-  ASSERT_TRUE(ExpatParser(kXml, &expat_handler_ns, &errors, true));
+  ASSERT_TRUE(ExpatParser::ParseString(kXml, &expat_handler_ns, &errors, true));
   ASSERT_EQ(static_cast<size_t>(2), log.size());
   ASSERT_EQ(std::string("hi"), log[0]);
   ASSERT_EQ(std::string("hi"), log[1]);
@@ -101,7 +101,7 @@ TEST_F(ExpatHandlerNsTest, TestExpatParserPrefixed) {
                   "xmlns:" + kDefaultPrefix + "=\"" + kDefaultNamespace +
                    "\"" + "/>");
   std::string errors;
-  ASSERT_TRUE(ExpatParser(kXml, &expat_handler_ns, &errors, true));
+  ASSERT_TRUE(ExpatParser::ParseString(kXml, &expat_handler_ns, &errors, true));
   ASSERT_EQ(static_cast<size_t>(2), log.size());
   ASSERT_EQ(std::string(kDefaultPrefix) + ":" + kTag, log[0]);
   ASSERT_EQ(std::string(kDefaultPrefix) + ":" + kTag, log[1]);
@@ -127,7 +127,7 @@ TEST_F(ExpatHandlerNsTest, TestExpatParserDefaultAndPrefixed) {
                   "<" + kOtherPrefix + ":" + kThere + "/>" +
                   "</" + kHi + ">");
   std::string errors;
-  ASSERT_TRUE(ExpatParser(kXml, &expat_handler_ns, &errors, true));
+  ASSERT_TRUE(ExpatParser::ParseString(kXml, &expat_handler_ns, &errors, true));
   ASSERT_EQ(static_cast<size_t>(4), log.size());
   ASSERT_EQ(kHi, log[0]);
   ASSERT_EQ(std::string(kOtherPrefix) + ":" + kThere, log[1]);
