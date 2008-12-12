@@ -38,6 +38,7 @@
 #include "kml/engine/object_id_parser_observer.h"
 #include "kml/engine/shared_style_parser_observer.h"
 #include "kml/base/util.h"
+#include "kml/base/xml_file.h"
 
 namespace kmlengine {
 
@@ -47,10 +48,14 @@ const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
 const char kDefaultEncoding[] = "utf-8";
 
 // The KmlFile class represents the instance of a KML file from a given URL.
-class KmlFile : public kmlbase::Referent {
+// A KmlFile manages an XML id domain and includes an internal map of all
+// id'ed Objects, shared styles, and name'ed Schemas and a list of all links.
+// KmlFile is a fundamental component of the KML Engine and is central in the
+// use of shared style resolution.
+class KmlFile : public kmlbase::XmlFile {
  public:
   // This creates a KmlFile from a memory buffer of either KML or KMZ data.
-  // In the case of Kmz the KmzFile module's ReadKml() is used to read the
+  // In the case of KMZ the KmzFile module's ReadKml() is used to read the
   // KML data from the KMZ archive.  On any parse errors NULL is returned
   // and a human readable error message is saved in the supplied string.
   // The caller is responsible for deleting the KmlFile this creates.
@@ -67,37 +72,26 @@ class KmlFile : public kmlbase::Referent {
   // and set_kml_cache() private and at creation-time.
   static KmlFile* CreateFromStringWithUrl(const std::string& kml_data,
                                           const std::string& url,
-                                          KmlCache* kml_cache) {
-    if (KmlFile* kml_file = CreateFromString(kml_data)) {
-      kml_file->set_url(url);
-      kml_file->set_kml_cache(kml_cache);
-      return kml_file;
-    }
-    return NULL;
-  }
+                                          KmlCache* kml_cache);
+
+  // This creates a KmlFile from the given element hierarchy.
+  static KmlFile* CreateFromImport(kmldom::ElementPtr element);
 
   // This permits use creation of an empty KmlFile.
+  // TODO: this is used only in unit tests, make this private and friend the
+  // tests or change the tests.
   static KmlFile* Create() {
     return new KmlFile;
   }
 
-  // This parses the KML in the given input buffer.  The encoding from the XML
-  // header is saved if such exists.  The default XML namespace and any
-  // namespace prefix definitions found in the root element are also saved.
-  // The root element of the parse is returned.  All Objects with ids are
-  // saved in a map for use with GetObjectById.  Any use of this method
-  // clears the internal state of the instance of this class.  If an errors
-  // string is supplied any parse errors are stored there.  On any parse
-  // error including duplicate id a NULL is returned.
-  // TODO: deprecate.  Use CreateFromParse.
-  const kmldom::ElementPtr& ParseFromString(const std::string& kml,
-                                            std::string* errors);
-
-  // This returns the root element of this KML file.  The initial state of
-  // this is NULL.  A parse failure also sets this to NULL>
-  // TODO: get_root()
-  const kmldom::ElementPtr& root() const {
-    return root_;
+ public:
+  // This returns the root element of this KML file.
+  const kmldom::ElementPtr get_root() const {
+    return kmldom::AsElement(XmlFile::get_root());
+  }
+  // TODO: deprecated.  use get_root()
+  const kmldom::ElementPtr root() const {
+    return get_root();
   }
 
   // This serializes the KML from the root.  The xmlns() value is added to
@@ -139,12 +133,6 @@ class KmlFile : public kmlbase::Referent {
     return link_parent_vector_;
   }
 
-  // This is the URL from which this KmlFile was fetched.  This may be empty
-  // if this KmlFile was not created using CreateFromStringWithUrl().
-  const std::string& get_url() const {
-    return url_;
-  }
-
   // This is the KmlCache which created this KmlFile.  This may NULL if this
   // KmlFile was not created using CreateFromStringWithUrl().
   KmlCache* get_kml_cache() const {
@@ -163,23 +151,21 @@ class KmlFile : public kmlbase::Referent {
  private:
   // Constructor is private.  Use static Create methods.
   KmlFile();
+
+  // This is an internal method used in the static Create methods.
+  bool ParseFromString(const std::string& kml, std::string* errors);
+
   // Only static Create methods can set the KmlCache.
   void set_kml_cache(KmlCache* kml_cache) {
     kml_cache_ = kml_cache;
-  }
-  // Only static Create methods can set the URL.
-  void set_url(const std::string& url) {
-    url_ = url;
   }
   // These are helper functions for CreateFromParse().
   bool _CreateFromParse(const std::string& kml_or_kmz_data,
                         std::string* errors);
   bool OpenAndParseKmz(const std::string& kmz_data, std::string* errors);
-  void Clear();
   std::string encoding_;
   std::string default_xmlns_;
-  std::string url_;
-  kmldom::ElementPtr root_;
+  // TODO: use XmlElement's id map.
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;
   ElementVector link_parent_vector_;

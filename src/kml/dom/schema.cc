@@ -52,7 +52,7 @@ void SimpleField::ParseAttributes(Attributes* attributes) {
   }
   has_type_ = attributes->CutValue(kSimpleFieldTypeAttr, &type_);
   has_name_ = attributes->CutValue(kSimpleFieldNameAttr, &name_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void SimpleField::SerializeAttributes(Attributes* attributes) const {

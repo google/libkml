@@ -36,12 +36,11 @@ using kmlbase::Attributes;
 
 namespace kmldom {
 
-Element::Element()
-  : parent_(NULL) {
+Element::Element() {
 }
 
 Element::Element(KmlDomType type_id)
-  : parent_(NULL), type_id_(type_id) {
+  : type_id_(type_id) {
 }
 
 Element::~Element() {
@@ -77,13 +76,40 @@ void Element::SerializeUnknown(Serializer& serializer) const {
 
 // Handling of unknown attributes found during parse.  Split out
 // xmlns attributes.  Take ownership of the passed attributes object.
-void Element::ParseAttributes(Attributes* attributes) {
+void Element::AddUnknownAttributes(Attributes* attributes) {
   if (attributes) {
-    // Split out any attribute of the form xmlns= or xmlns:PREFIX=.
-    xmlns_.reset(attributes->SplitByPrefix("xmlns"));
+    // Split out any attribute of the form xmlns:PREFIX=.
+    if (Attributes* xmlns = attributes->SplitByPrefix("xmlns")) {
+      if (xmlns_.get()) {
+        xmlns_->MergeAttributes(*xmlns);
+        delete xmlns;
+      } else {
+        xmlns_.reset(xmlns);
+      }
+    }
+    // Split out xmlns= itself.
+    std::string xmlns;
+    if (attributes->CutValue("xmlns", &xmlns)) {
+      if (!xmlns_.get()) {
+        xmlns_.reset(new Attributes);
+      }
+      // "xmlns" can never be an xml namespace prefix.
+      xmlns_->SetValue("xmlns", xmlns);
+    }
     // Anything left is saved as fully unknown.
-    unknown_attributes_.reset(attributes);
+    if (attributes->GetSize() == 0) {
+      delete attributes;  // Nothing left so delete it.
+    } else {
+      unknown_attributes_.reset(attributes);
+    }
   }
+}
+
+// This default implementation for elements that otherwise have no attributes
+// to parse simply add all attributes to the unknown attributes held in Element
+// for later retreival with GetUnknownAttributes().
+void Element::ParseAttributes(Attributes* attributes) {
+  AddUnknownAttributes(attributes);
 }
 
 // This is the reverse of ParseAttributes().
@@ -93,23 +119,28 @@ void Element::SerializeAttributes(Attributes* attributes) const {
       attributes->MergeAttributes(*unknown_attributes_);
     }
     if (xmlns_.get()) {
-      xmlns_->MergeAttributes(*xmlns_);
+      kmlbase::StringMapIterator iter = xmlns_->CreateIterator();
+      for (; !iter.AtEnd(); iter.Advance()) {
+        std::string key = iter.Data().first == "xmlns" ? iter.Data().first :
+                          std::string("xmlns:") + iter.Data().first;
+        attributes->SetValue(key, iter.Data().second);
+      }
     }
   }
 }
 
 // The default namespace for an element is the xmlns attribute.
 void Element::set_default_xmlns(const std::string& xmlns) {
-  if (!unknown_attributes_.get()) {
-    unknown_attributes_.reset(new Attributes);
+  if (!xmlns_.get()) {
+    xmlns_.reset(new Attributes);
   }
-  unknown_attributes_->SetValue("xmlns", xmlns);
+  xmlns_->SetValue("xmlns", xmlns);
 }
 
 const std::string Element::get_default_xmlns() const {
   std::string default_xmlns;
-  if (unknown_attributes_.get()) {
-    unknown_attributes_->GetValue("xmlns", &default_xmlns);
+  if (xmlns_.get()) {
+    xmlns_->GetValue("xmlns", &default_xmlns);
   }
   return default_xmlns;
 }

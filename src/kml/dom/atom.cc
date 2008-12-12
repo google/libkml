@@ -113,7 +113,7 @@ void AtomLink::ParseAttributes(Attributes* attributes) {
   has_hreflang_ = attributes->CutValue(kHrefLang, &hreflang_);
   has_title_ = attributes->CutValue(kTitle, &title_);
   has_length_ = attributes->CutValue(kLength, &length_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void AtomLink::SerializeAttributes(Attributes* attributes) const {

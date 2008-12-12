@@ -5,6 +5,13 @@
   unknown/misplaced elements changes as reflected in all-unknown-golden.kml.
 -->
 <kml xmlns="http://www.opengis.net/kml/2.2">
+  <a>b<c/></a>
+  <Point/>
+  <name/>
+  <!-- Note: according to the "last one wins" rule for non-repeated
+       (XSD maxOccurs=1) elements this Feature will be over-written by
+       the <Document> below -->
+  <Placemark/>
   <NetworkLinkControl>
     <a>b<c/></a>
     <Point/>
@@ -438,11 +445,4 @@
       </ViewVolume>
     </PhotoOverlay>
   </Document>
-  <a>b<c/></a>
-  <Point/>
-  <name/>
-  <!-- Note: using a Feature here engages last-one-wins and overwrites
-       kml's Document
-  <Placemark/>
-  -->
 </kml>

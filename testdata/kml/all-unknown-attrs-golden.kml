@@ -191,9 +191,9 @@
     </PhotoOverlay>
     <Document>
       <Style>
-        <ListStyle>
+        <IconStyle>
           <hotSpot id="hotSpot" not-known="nope" unknown="not known"/>
-        </ListStyle>
+        </IconStyle>
       </Style>
     </Document>
     <ScreenOverlay>

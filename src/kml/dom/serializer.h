@@ -30,6 +30,7 @@
 
 #include <sstream>
 #include <string>
+#include "kml/base/string_util.h"
 #include "kml/dom/kml_ptr.h"
 
 namespace kmlbase {
@@ -39,14 +40,6 @@ class Attributes;
 namespace kmldom {
 
 class Xsd;
-
-template<typename T>
-inline std::string ToString(T value) {
-  std::stringstream ss;
-  ss.precision(15);
-  ss << value;
-  return ss.str();
-}
 
 // The Serializer class is internal to the KML DOM and is used by each
 // Element to save its tag name, fields (attributes and simple elements),
@@ -103,7 +96,7 @@ class Serializer {
   // Save the given value out as the simple element identified by type_id.
   template<typename T>
   void SaveFieldById(int type_id, T value) {
-    SaveStringFieldById(type_id, ToString(value));
+    SaveStringFieldById(type_id, kmlbase::ToString(value));
   }
 
  protected:

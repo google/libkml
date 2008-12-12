@@ -23,32 +23,37 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This is the main include file for the KMLENGINE library. Clients of
-// kmlengine should include only this header file.
+// This file contains the declaration of the IdMapper class and MapIds function.
 
-#ifndef KML_ENGINE_H__
-#define KML_ENGINE_H__
+#ifndef KML_ENGINE_ID_MAPPER_H__
+#define KML_ENGINE_ID_MAPPER_H__
 
-#include "kml/engine/bbox.h"
-#include "kml/engine/clone.h"
+#include "kml/dom.h"
 #include "kml/engine/engine_types.h"
-#include "kml/engine/entity_mapper.h"
-#include "kml/engine/feature_balloon.h"
-#include "kml/engine/feature_visitor.h"
-#include "kml/engine/find.h"
-#include "kml/engine/get_links.h"
-#include "kml/engine/href.h"
-#include "kml/engine/kml_cache.h"
-#include "kml/engine/kml_file.h"
-#include "kml/engine/kml_uri.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/link_util.h"
-#include "kml/engine/location_util.h"
-#include "kml/engine/merge.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
-#include "kml/engine/style_merger.h"
-#include "kml/engine/style_resolver.h"
-#include "kml/engine/update.h"
 
-#endif  // KML_ENGINE_H__
+namespace kmlengine {
+
+// This class walks the element hierarchy and assigns any Object with an id
+// to the given required ObjectIdMap.  Objects with duplicate ids are appended
+// to the given ElementVector if one is supplied.
+class IdMapper : public kmldom::Serializer {
+ public:
+  IdMapper(ObjectIdMap* object_id_map, ElementVector* dup_id_vector)
+    : object_id_map_(object_id_map),
+      dup_id_vector_(dup_id_vector) {
+  }
+
+  // This is the Serializer method used to recurse on each child element.
+  virtual void SaveElement(const kmldom::ElementPtr& element);
+
+ private:
+  ObjectIdMap* object_id_map_;
+  ElementVector* dup_id_vector_;
+};
+
+void MapIds(const kmldom::ElementPtr& root, ObjectIdMap* object_id_map,
+            ElementVector* element_vector);
+
+}  // end namespace kmlengine
+
+#endif  // KML_ENGINE_ID_MAPPER_H__

@@ -26,6 +26,7 @@
 // This file contains the implementation of the KmlFile class methods.
 
 #include "kml/engine/kml_file.h"
+#include "kml/engine/id_mapper.h"
 #include "kml/dom.h"
 
 namespace kmlengine {
@@ -40,6 +41,18 @@ KmlFile* KmlFile::CreateFromParse(const std::string& kml_or_kmz_data,
     return kml_file;
   }
   delete kml_file;
+  return NULL;
+}
+
+// static
+KmlFile* KmlFile::CreateFromStringWithUrl(const std::string& kml_data,
+                                          const std::string& url,
+                                          KmlCache* kml_cache) {
+  if (KmlFile* kml_file = CreateFromString(kml_data)) {
+    kml_file->set_url(url);
+    kml_file->set_kml_cache(kml_cache);
+    return kml_file;
+  }
   return NULL;
 }
 
@@ -67,23 +80,17 @@ bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
   return ParseFromString(kml_data, errors);
 }
 
-KmlFile::KmlFile() : kml_cache_(NULL), strict_parse_(false) {
-  Clear();
+// private
+// TODO: push strict parsing out as a Create() method arg
+KmlFile::KmlFile()
+  : encoding_(kDefaultEncoding),
+    default_xmlns_(kDefaultXmlns),
+    kml_cache_(NULL),
+    strict_parse_(false) {
 }
 
-// This clears the state of the KmlFile to all default settings.
-void KmlFile::Clear() {
-  object_id_map_.clear();
-  shared_style_map_.clear();
-  root_ = NULL;  // Releases any reference if there was one.
-  encoding_ = kDefaultEncoding;
-  default_xmlns_ = kDefaultXmlns;
-}
-
-const kmldom::ElementPtr& KmlFile::ParseFromString(const std::string& kml,
-                                                   std::string* errors) {
-  Clear();
-
+// private
+bool KmlFile::ParseFromString(const std::string& kml, std::string* errors) {
   // Create a parser object.
   kmldom::Parser parser;
 
@@ -96,7 +103,8 @@ const kmldom::ElementPtr& KmlFile::ParseFromString(const std::string& kml,
 
   // Create a ParserObserver to map and save the id's of all shared
   // StyleSelectors.
-  SharedStyleParserObserver shared_style_parser_observer(&shared_style_map_);
+  SharedStyleParserObserver shared_style_parser_observer(&shared_style_map_,
+                                                         strict_parse_);
   parser.AddObserver(&shared_style_parser_observer);
 
   // Create a ParserObserver to save the parent of all <Link> and <Icon>
@@ -105,13 +113,34 @@ const kmldom::ElementPtr& KmlFile::ParseFromString(const std::string& kml,
   parser.AddObserver(&get_link_parents);
 
   // Actually perform the parse.
-  kmldom::ElementPtr root = parser.Parse(kml, errors);
-  if (root == NULL) {
-    Clear();  // On failure clear the state of KmlFile.
+  if (kmldom::ElementPtr root = parser.Parse(kml, errors)) {
+    // TODO: set encoding, xmlns, etc from parse
+    set_root(root);
+    return true;
   }
-  root_ = root;
-  // TODO: set encoding, xmlns, etc from parse
-  return root_;
+  return false;
+}
+
+// static
+// TODO: add a bool strict arg and decide on dup handling strategy in MapIds
+// in the case of lax import.  At present the import is strict and fails
+// completely if there are any dups.
+KmlFile* KmlFile::CreateFromImport(kmldom::ElementPtr element) {
+  if (!element) {
+    return NULL;
+  }
+  KmlFile* kml_file = new KmlFile;
+  ElementVector dup_id_elements;
+  MapIds(element, &kml_file->object_id_map_, &dup_id_elements);
+  if (dup_id_elements.empty()) {
+    // TODO: look for shared styles in object_id_map_ and add to
+    // shared_style_map_
+    // TODO check/set all elements under elements to be in this file.
+    kml_file->set_root(element);
+    return kml_file;
+  }
+  delete kml_file;
+  return NULL;
 }
 
 const std::string KmlFile::CreateXmlHeader() const {
@@ -119,18 +148,18 @@ const std::string KmlFile::CreateXmlHeader() const {
 }
 
 bool KmlFile::SerializeToString(std::string* xml_output) const {
-  if (!xml_output || !root_) {
+  if (!xml_output || !get_root()) {
     return false;
   }
   xml_output->append(CreateXmlHeader());
-  root_->set_default_xmlns(default_xmlns_);
-  xml_output->append(kmldom::SerializePretty(root_));
+  get_root()->set_default_xmlns(default_xmlns_);
+  xml_output->append(kmldom::SerializePretty(get_root()));
   return true;
 }
 
 kmldom::ObjectPtr KmlFile::GetObjectById(std::string id) const {
   ObjectIdMap::const_iterator find = object_id_map_.find(id);
-  return find != object_id_map_.end() ? find->second : NULL;
+  return find != object_id_map_.end() ? kmldom::AsObject(find->second) : NULL;
 }
 
 kmldom::StyleSelectorPtr KmlFile::GetSharedStyleById(std::string id) const {

@@ -3,6 +3,8 @@ EXTRA_DIST = \
 	allstyles-f0-highlight-check.kml \
 	allstyles-f0-normal-check.kml \
 	allstyles.kml \
+	dup-id.kml \
+	dup-id-normal-check.kml \
 	empty-style-check.kml \
 	iconstyle.kml \
 	inline-style-f0-check.kml \

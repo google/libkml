@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file demonstrates the "last one wins" approach to duplicate id
+  handling in Google Earth.  In this file the shared style of id "dup-style"
+  appears twice.  In the Placemarks using styleUrl to reference "dup-style"
+  the last style of id="dup-style" is always used.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Style id="dup-style">
+      <IconStyle id="default-yellow-pushpin">
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+        </Icon>
+        <hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+      </IconStyle>
+      <LineStyle id="thick-red-line">
+        <color>ff0000ff</color>
+        <width>4</width>
+      </LineStyle>
+    </Style>
+    <Style id="dup-style">
+      <IconStyle id="red-L-paddle">
+        <scale>1.1</scale>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/paddle/L.png</href>
+        </Icon>
+        <hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+      </IconStyle>
+      <LineStyle id="thin-blue-line">
+        <color>ffff0000</color>
+        <width>1</width>
+      </LineStyle>
+    </Style>
+    <Placemark id="line">
+      <!-- GE 4.3.7284.3916 (Mac OS X 10.5.5) draws a thin blue line -->
+      <styleUrl>#dup-style</styleUrl>
+      <LineString>
+        <!-- from "Paths" in
+           http://code.google.com/apis/kml/documentation/kml_tut.html -->
+        <coordinates> -112.2550785337791,36.07954952145647,2357
+          -112.2549277039738,36.08117083492122,2357 -112.2552505069063,36.08260761307279,2357
+          -112.2564540158376,36.08395660588506,2357 -112.2580238976449,36.08511401044813,2357
+          -112.2595218489022,36.08584355239394,2357 -112.2608216347552,36.08612634548589,2357
+          -112.262073428656,36.08626019085147,2357 -112.2633204928495,36.08621519860091,2357
+          -112.2644963846444,36.08627897945274,2357 -112.2656969554589,36.08649599090644,2357
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark id="point">
+      <!-- GE 4.3.7284.3916 (Mac OS X 10.5.5) draws a red L paddle -->
+      <styleUrl>#dup-style</styleUrl>
+      <Point>
+        <coordinates>-112.2594359071773,36.08469720347697,0</coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>

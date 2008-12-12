@@ -47,7 +47,7 @@ void SnippetCommon::ParseAttributes(Attributes* attributes) {
     return;
   }
   has_maxlines_ = attributes->CutValue(kMaxLines, &maxlines_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void SnippetCommon::SerializeAttributes(Attributes* attributes) const {

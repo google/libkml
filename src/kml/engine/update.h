@@ -23,32 +23,38 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This is the main include file for the KMLENGINE library. Clients of
-// kmlengine should include only this header file.
+#ifndef KML_ENGINE_UPDATE_H__
+#define KML_ENGINE_UPDATE_H__
 
-#ifndef KML_ENGINE_H__
-#define KML_ENGINE_H__
-
-#include "kml/engine/bbox.h"
-#include "kml/engine/clone.h"
-#include "kml/engine/engine_types.h"
-#include "kml/engine/entity_mapper.h"
-#include "kml/engine/feature_balloon.h"
-#include "kml/engine/feature_visitor.h"
-#include "kml/engine/find.h"
-#include "kml/engine/get_links.h"
-#include "kml/engine/href.h"
-#include "kml/engine/kml_cache.h"
+#include "kml/dom.h"
 #include "kml/engine/kml_file.h"
-#include "kml/engine/kml_uri.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/link_util.h"
-#include "kml/engine/location_util.h"
-#include "kml/engine/merge.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
-#include "kml/engine/style_merger.h"
-#include "kml/engine/style_resolver.h"
-#include "kml/engine/update.h"
 
-#endif  // KML_ENGINE_H__
+namespace kmlengine {
+
+// In-place (destructive) processing of the given update against the given
+// KmlFile.  In the case of NetworkLinkControl it is presumed the caller has
+// checked Update's targetHref against KmlFile's url.
+void ProcessUpdate(const kmldom::UpdatePtr& update, KmlFilePtr kml_file);
+
+// Process the <Change> into the KmlFile.
+void ProcessUpdateChange(const kmldom::ChangePtr& change, KmlFilePtr kml_file);
+
+// Process the <Create> into the KmlFile.
+void ProcessUpdateCreate(const kmldom::CreatePtr& create, KmlFilePtr kml_file);
+
+// Clone each Feature in the source_container and append to the target.
+// TODO: This belongs with Container.
+void CopyFeatures(const kmldom::ContainerPtr& source_container,
+                  kmldom::ContainerPtr target_container);
+
+// Process the <Delete> into the KmlFile.
+void ProcessUpdateDelete(const kmldom::DeletePtr& deleet, KmlFilePtr kml_file);
+
+// Delete the id'ed Feature from the KmlFile.
+// TODO: This belongs in KmlFile.
+void DeleteFeatureById(const std::string& id, KmlFilePtr kml_file);
+
+
+}  // namespace kmlengine
+
+#endif  // KML_ENGINE_UPDATE_H__

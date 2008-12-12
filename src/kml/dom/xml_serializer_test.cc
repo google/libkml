@@ -34,6 +34,8 @@
 #include "kml/dom/kmldom.h"
 #include "gtest/gtest.h"
 
+using kmlbase::ToString;
+
 namespace kmldom {
 
 class XmlSerializerTest : public testing::Test {
