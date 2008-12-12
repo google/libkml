@@ -25,7 +25,6 @@
 
 #include "kml/base/expat_parser.h"
 #include <sstream>
-#include "expat.h"
 #include "kml/base/expat_handler.h"
 
 namespace kmlbase {
@@ -55,42 +54,84 @@ endNamespace(void *userData, const XML_Char *prefix) {
   ((ExpatHandler*)userData)->EndNamespace(prefix);
 }
 
-bool ExpatParser(const std::string& xml, ExpatHandler* expat_handler,
-                 std::string* errors, bool namespace_aware) {
+ExpatParser::ExpatParser(ExpatHandler* handler, bool namespace_aware)
+  : expat_handler_(handler) {
   XML_Parser parser =
     namespace_aware ? XML_ParserCreateNS(NULL, kExpatNsSeparator)
                     : XML_ParserCreate(NULL);
-  expat_handler->set_parser(parser);
-  XML_SetUserData(parser, expat_handler);
+  expat_handler_->set_parser(parser);
+  XML_SetUserData(parser, expat_handler_);
   XML_SetElementHandler(parser, startElement, endElement);
   XML_SetCharacterDataHandler(parser, charData);
   if (namespace_aware) {
     XML_SetNamespaceDeclHandler(parser, startNamespace, endNamespace);
   }
+  parser_ = parser;
+}
+
+ExpatParser::~ExpatParser() {
+  XML_ParserFree(parser_);
+}
+
+// Static.
+bool ExpatParser::ParseString(const std::string& xml, ExpatHandler* handler,
+                              std::string* errors, bool namespace_aware) {
+  ExpatParser parser(handler, namespace_aware);
+  return parser._ParseString(xml, errors);
+}
+
+bool ExpatParser::ParseBuffer(const std::string& input, std::string* errors,
+                              bool is_final) {
+  void* buf = XML_GetBuffer(parser_, input.size());
+  if (!buf) {
+    *errors = "could not allocate memory";
+    return false;
+  }
+  memcpy(buf, input.c_str(), input.size());
+  XML_Status status = XML_ParseBuffer(parser_, input.size(), is_final);
+
+  // If we have just parsed the final buffer, we need to check if Expat
+  // has stopped parsing. Failure here indicates invalid (badly formed)
+  // XML content.
+  if (is_final) {
+    XML_ParsingStatus parsing_status;
+    XML_GetParsingStatus(parser_, &parsing_status);
+    if (parsing_status.parsing != XML_FINISHED) {
+      ReportError(parser_, errors);
+      return false;
+    }
+  }
+  if (status != XML_STATUS_OK) {
+    ReportError(parser_, errors);
+  }
+  return status == XML_STATUS_OK;
+}
+
+// Private.
+bool ExpatParser::_ParseString(const std::string& xml, std::string* errors) {
   int xml_size = static_cast<int>(xml.size());
-  XML_Status status = XML_Parse(parser, xml.c_str(), xml_size, xml_size);
+  XML_Status status = XML_Parse(parser_, xml.c_str(), xml_size, xml_size);
   if (status != XML_STATUS_OK && errors) {
     // This is the other half of XML_StopParser() which is our way of
     // stopping expat if the root element is not KML.
     if (status == XML_STATUS_SUSPENDED) {
       *errors = "Invalid root element";
     } else {
-      std::stringstream strstream;
-      strstream << XML_ErrorString(XML_GetErrorCode(parser));
-      strstream << " on line ";
-      strstream << XML_GetCurrentLineNumber(parser);
-      strstream << " at offset ";
-      strstream << XML_GetCurrentColumnNumber(parser);
-      *errors = strstream.str();
+      ReportError(parser_, errors);
     }
   }
-  XML_ParserFree(parser);
   return status == XML_STATUS_OK;
 }
 
-bool RunExpat(const std::string& xml, ExpatHandler* expat_handler,
-              std::string* errors) {
-  return ExpatParser(xml, expat_handler, errors, false);
+// Private.
+void ExpatParser::ReportError(XML_Parser parser, std::string* errors) {
+  std::stringstream strstream;
+  strstream << XML_ErrorString(XML_GetErrorCode(parser));
+  strstream << " on line ";
+  strstream << XML_GetCurrentLineNumber(parser);
+  strstream << " at offset ";
+  strstream << XML_GetCurrentColumnNumber(parser);
+  *errors = strstream.str();
 }
 
 }  // end namespace kmlbase

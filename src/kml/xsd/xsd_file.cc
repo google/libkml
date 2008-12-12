@@ -33,6 +33,7 @@
 #include "kml/xsd/xsd_handler.h"
 
 using std::vector;
+using kmlbase::ExpatParser;
 
 namespace kmlxsd {
 
@@ -41,7 +42,7 @@ XsdFile* XsdFile::CreateFromParse(const std::string& xsd_data,
                                         std::string* errors) {
   XsdFile* xsd_file = new XsdFile;
   XsdHandler xsd_handler(xsd_file);
-  if (kmlbase::ExpatParser(xsd_data, &xsd_handler, errors, false)) {
+  if (ExpatParser::ParseString(xsd_data, &xsd_handler, errors, false)) {
     return xsd_file;
   }
   delete xsd_file;

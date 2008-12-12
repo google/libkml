@@ -142,8 +142,8 @@ TEST_F(GpxTrkPtHandlerTest, TestTrkPtFile) {
   PointVector point_vector;
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
   std::string errors;
-  ASSERT_TRUE(
-      kmlbase::ExpatParser(gpx_data, &test_gpx_trk_pt_handler, &errors, false));
+  ASSERT_TRUE(kmlbase::ExpatParser::ParseString(
+        gpx_data, &test_gpx_trk_pt_handler, &errors, false));
   ASSERT_TRUE(errors.empty());
   ASSERT_EQ(static_cast<size_t>(143), point_vector.size());
   size_t size = sizeof(kTrkPtsFileData)/sizeof(kTrkPtsFileData[0]);
