@@ -98,7 +98,11 @@ static const struct {
   { "/style/allstyles.kml", "f1", kmldom::STYLESTATE_NORMAL,
     "/style/empty-style-check.kml" },
   { "/style/allstyles.kml", "f1", kmldom::STYLESTATE_HIGHLIGHT,
-    "/style/empty-style-check.kml" }
+    "/style/empty-style-check.kml" },
+  { "/style/dup-id.kml", "line", kmldom::STYLESTATE_NORMAL,
+    "/style/dup-id-normal-check.kml" },
+  { "/style/dup-id.kml", "point", kmldom::STYLESTATE_NORMAL,
+    "/style/dup-id-normal-check.kml" }
 };
 
 // This is a utility function to read a file relative to the testdata directory.
@@ -115,7 +119,7 @@ void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
   bool status = ReadDataDirFileToString(filename, &kml_data);
   ASSERT_TRUE(status);
   kml_file_ = KmlFile::CreateFromParse(kml_data, NULL);
-  ASSERT_TRUE(kml_file_);
+  ASSERT_TRUE(kml_file_) << filename;
   ASSERT_TRUE(kml_file_->root());
 }
 
@@ -141,10 +145,11 @@ TEST_F(StyleResolverTest, TestFiles) {
     // This is the function under test.
     StylePtr style = CreateResolvedStyle(feature, kml_file_,
                                          kTestCases[i].style_state_);
-    ASSERT_TRUE(style);  // This helps debugging.
+    ASSERT_TRUE(style) << kTestCases[i].style_state_;  // This helps debugging.
 
     // A text comparison is used as that detects issues with unknown elements.
-    ASSERT_FALSE(ComparePretty(style, kTestCases[i].check_file_));
+    ASSERT_FALSE(ComparePretty(style, kTestCases[i].check_file_))
+      << kTestCases[i].check_file_;
   }
 }
 

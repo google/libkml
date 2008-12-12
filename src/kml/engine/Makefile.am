@@ -19,6 +19,7 @@ libkmlengine_la_SOURCES = \
 	get_link_parents.cc \
 	get_links.cc \
 	href.cc \
+	id_mapper.cc \
 	kml_cache.cc \
 	kml_file.cc \
 	kml_uri.cc \
@@ -29,7 +30,8 @@ libkmlengine_la_SOURCES = \
 	merge.cc \
 	parse_old_schema.cc \
 	style_merger.cc \
-	style_resolver.cc
+	style_resolver.cc \
+	update.cc
 
 libkmlengine_la_LIBADD = \
 	$(top_builddir)/third_party/libminizip.la \
@@ -48,6 +50,7 @@ libkmlengineinclude_HEADERS = \
 	get_link_parents.h \
 	get_links.h \
 	href.h \
+	id_mapper.h \
 	kml_cache.h \
 	kml_file.h \
 	kml_uri.h \
@@ -62,7 +65,8 @@ libkmlengineinclude_HEADERS = \
 	schema_parser_observer.h \
 	shared_style_parser_observer.h \
 	style_merger.h \
-	style_resolver.h
+	style_resolver.h \
+	update.h
 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = bbox_test \
@@ -74,6 +78,7 @@ TESTS = bbox_test \
 	get_link_parents_test \
 	get_links_test \
 	href_test \
+	id_mapper_test \
 	kmz_cache_test \
 	kml_cache_test \
 	kml_file_test \
@@ -87,7 +92,8 @@ TESTS = bbox_test \
 	schema_parser_observer_test \
 	shared_style_parser_observer_test \
 	style_merger_test \
-	style_resolver_test
+	style_resolver_test \
+	update_test
 
 check_PROGRAMS = $(TESTS)
 
@@ -151,6 +157,13 @@ get_links_test_LDADD= libkmlengine.la \
 href_test_SOURCES = href_test.cc
 href_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 href_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+id_mapper_test_SOURCES = id_mapper_test.cc
+id_mapper_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+id_mapper_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
@@ -254,6 +267,14 @@ style_merger_test_LDADD= libkmlengine.la \
 style_resolver_test_SOURCES = style_resolver_test.cc
 style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 style_resolver_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
+
+update_test_SOURCES = update_test.cc
+update_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+update_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/liburiparser.la \

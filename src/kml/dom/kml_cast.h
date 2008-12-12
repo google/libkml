@@ -26,6 +26,7 @@
 #ifndef KML_DOM_KML_CAST_H__
 #define KML_DOM_KML_CAST_H__
 
+#include "kml/base/xml_element.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml_ptr.h"
 
@@ -41,6 +42,10 @@ inline const boost::intrusive_ptr<T> DynamicPointerCast(
     return boost::static_pointer_cast<T>(element);
   }
   return NULL;
+}
+
+inline const ElementPtr AsElement(const kmlbase::XmlElementPtr& xml_element) {
+  return boost::static_pointer_cast<Element>(xml_element);
 }
 
 // Abstract element groups.

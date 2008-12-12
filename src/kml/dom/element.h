@@ -40,8 +40,8 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/base/referent.h"
 #include "kml/base/util.h"
+#include "kml/base/xml_element.h"
 
 namespace kmlbase {
 class Attributes;
@@ -52,7 +52,9 @@ namespace kmldom {
 class Serializer;
 class Xsd;
 
-class Element : public kmlbase::Referent {
+// This is a KML-specific implementation of the somewhat abstracted
+// kmlbase::XmlElement.
+class Element : public kmlbase::XmlElement {
  public:
   virtual ~Element();
   virtual KmlDomType Type() const { return type_id_; }
@@ -63,17 +65,6 @@ class Element : public kmlbase::Referent {
   void set_default_xmlns(const std::string& xmlns);
   const std::string get_default_xmlns() const;
 
-  // This sets this element's parent element.  Returns false if the element
-  // already has a parent.  Returns true if the parent is set successfully.
-  // To directly mirror XML each element has exactly one parent.
-  bool set_parent(const ElementPtr& parent) {
-    if (parent_ || (parent.get() == this)) {
-      return false;
-    }
-    parent_ = parent.get();
-    return true;
-  }
-
   // This is the concatenation of all character data found parsing this element.
   const std::string& get_char_data() const {
     return char_data_;
@@ -81,6 +72,8 @@ class Element : public kmlbase::Referent {
   void set_char_data(const std::string& char_data) {
     char_data_ = char_data;
   }
+
+  // TODO: AddElement() and ParseAttributes() should really be protected.
 
   // A derived class implements this to use with parsing.  Element is
   // either a complex or simple element which the given concrete element
@@ -135,6 +128,10 @@ class Element : public kmlbase::Referent {
     return unknown_legal_elements_array_[i];
   }
 
+  // Add the given set of attributes to the element's unknown attributes.
+  // Element takes ownership of attributes.
+  void AddUnknownAttributes(kmlbase::Attributes* attributes);
+
   // This returns a pointer to the Attributes class holding all unknown
   // attributes for this element found during parse.  This returns NULL if
   // there are no unparsed attributes.  Ownership of the object is retained
@@ -170,9 +167,10 @@ class Element : public kmlbase::Referent {
   template <class T>
   bool SetComplexChild(const T& child, T* field) {
     if (child == NULL) {
+      // TODO: remove child and children from ID maps...
       *field = NULL;  // Assign removes reference and possibly deletes Element.
       return true;
-    } else if (child->set_parent(this)) {
+    } else if (child->SetParent(this)) {
       *field = child;  // This first releases the reference to previous field.
       return true;
     }
@@ -182,7 +180,8 @@ class Element : public kmlbase::Referent {
   // This adds the given complex child to an array in this element.
   template <class T>
   bool AddComplexChild(const T& child, std::vector<T>* vec) {
-    if (child && child->set_parent(this)) {  // NULL child ignored.
+    // NULL child ignored.
+    if (child && child->SetParent(this)) {
       vec->push_back(child);
       return true;
     }
@@ -190,7 +189,6 @@ class Element : public kmlbase::Referent {
   }
 
  private:
-  Element* parent_;  // TODO: not ElementPtr to avoid cycles.  TBD parent check
   KmlDomType type_id_;
   std::string char_data_;
   // A vector of strings to contain unknown non-KML elements discovered during

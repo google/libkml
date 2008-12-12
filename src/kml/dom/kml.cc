@@ -43,7 +43,7 @@ void Kml::ParseAttributes(Attributes* attributes) {
     return;
   }
   has_hint_ = attributes->CutValue(kHint, &hint_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void Kml::SerializeAttributes(Attributes* attributes) const {

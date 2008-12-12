@@ -43,6 +43,8 @@ libkmlbaseinclude_HEADERS = \
 	uri_parser.h \
 	util.h \
 	vec3.h \
+	xml_element.h \
+	xml_file.h \
 	xmlns.h
 
 EXTRA_DIST = \
@@ -64,6 +66,8 @@ TESTS = \
 	util_test \
 	uri_parser_test \
 	vec3_test \
+	xml_element_test \
+	xml_file_test \
 	xmlns_test
 
 check_PROGRAMS = $(TESTS)
@@ -133,6 +137,16 @@ uri_parser_test_LDADD= libkmlbase.la \
 vec3_test_SOURCES = vec3_test.cc
 vec3_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 vec3_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
+
+xml_element_test_SOURCES = xml_element_test.cc
+xml_element_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+xml_element_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
+
+xml_file_test_SOURCES = xml_file_test.cc
+xml_file_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+xml_file_test_LDADD= libkmlbase.la \
 		 $(top_builddir)/third_party/libgtest.la
 
 xmlns_test_SOURCES = xmlns_test.cc

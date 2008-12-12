@@ -86,7 +86,7 @@ class TestElement : public Element {
   virtual void ParseAttributes(Attributes* attributes) {
     if (attributes) {
       has_ego_ = attributes->CutValue(kEgo, &ego_);
-      Element::ParseAttributes(attributes);
+      Element::AddUnknownAttributes(attributes);
     }
   }
   // This method exemplifies how attributes are serialized.
@@ -135,7 +135,7 @@ class ElementTest : public testing::Test {
   ComplexChildPtr child1_, child2_, child3_;
 };
 
-TEST_F(ElementTest, TestXmlns) {
+TEST_F(ElementTest, TestDefaultXmlns) {
   ASSERT_TRUE(element_->get_default_xmlns().empty());
 
   const std::string kOgcKml22Ns("http://www.opengis.net/kml/2.2");
@@ -231,6 +231,42 @@ TEST_F(ElementTest, TestParseAttributes) {
   ASSERT_EQ(static_cast<size_t>(1), unknown->GetSize());
   ASSERT_FALSE(unknown->GetValue("ego", &val));
   ASSERT_TRUE(unknown->GetValue("id", &val));
+}
+
+// This tests GetXmlns() and xmlns handling of SerializeAttributes().
+TEST_F(ElementTest, TestXmlns) {
+  std::map<std::string, std::string> source_map;
+  const std::string kXmlns("xmlns");
+  const std::string kGx("gx");
+  const std::string kXx("xx");
+  source_map[kXmlns] = "default-namespace";
+  source_map[kGx] = "extension-namespace";
+  source_map[kXx] = "yet-another-namespace";
+  // Create and parse xmlns attributes.
+  Attributes* attributes = new Attributes();  // Element takes ownership.
+  attributes->SetValue("xmlns", source_map[kXmlns]);
+  attributes->SetValue(std::string("xmlns:") + kGx, source_map[kGx]);
+  attributes->SetValue(std::string("xmlns:") + kXx, source_map[kXx]);
+  element_->ParseAttributes(attributes);
+
+  // Verify the xmlns Attributes returned from GetXmlns().
+  const Attributes* xmlns = element_->GetXmlns();
+  ASSERT_TRUE(xmlns);
+  // STL set does not permit dupes.
+  std::set<std::string> found_keys;
+  kmlbase::StringMapIterator iter = xmlns->CreateIterator();
+  for (; !iter.AtEnd(); iter.Advance()) {
+    found_keys.insert(iter.Data().first);
+    ASSERT_EQ(source_map[iter.Data().first], iter.Data().second);
+  }
+  ASSERT_EQ(source_map.size(), found_keys.size());
+  // Verify that no xmlns attributes fell to the fully unknown attributes list.
+  ASSERT_FALSE(element_->GetUnknownAttributes());
+
+  // Verify the xmlns attributes output from SerializeAttributes().
+  Attributes serialized_attrs;
+  element_->SerializeAttributes(&serialized_attrs);
+  ASSERT_EQ(source_map.size(), serialized_attrs.GetSize());
 }
 
 class ElementSerializerTest : public testing::Test {

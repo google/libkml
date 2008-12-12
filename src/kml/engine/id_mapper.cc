@@ -23,32 +23,47 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This is the main include file for the KMLENGINE library. Clients of
-// kmlengine should include only this header file.
+// This file contains the implementation of the MapIds function.
 
-#ifndef KML_ENGINE_H__
-#define KML_ENGINE_H__
-
-#include "kml/engine/bbox.h"
-#include "kml/engine/clone.h"
+#include "kml/engine/id_mapper.h"
+#include "kml/dom/serializer.h"
 #include "kml/engine/engine_types.h"
-#include "kml/engine/entity_mapper.h"
-#include "kml/engine/feature_balloon.h"
-#include "kml/engine/feature_visitor.h"
-#include "kml/engine/find.h"
-#include "kml/engine/get_links.h"
-#include "kml/engine/href.h"
-#include "kml/engine/kml_cache.h"
-#include "kml/engine/kml_file.h"
-#include "kml/engine/kml_uri.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/link_util.h"
-#include "kml/engine/location_util.h"
-#include "kml/engine/merge.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
-#include "kml/engine/style_merger.h"
-#include "kml/engine/style_resolver.h"
-#include "kml/engine/update.h"
 
-#endif  // KML_ENGINE_H__
+using kmldom::ElementPtr;
+using kmldom::ObjectPtr;
+using kmldom::Serializer;
+
+namespace kmlengine {
+
+// SaveElement is the only virtual method required given that IdMapper is only
+// concerned with Objects which are Elements (no fields).
+void IdMapper::SaveElement(const ElementPtr& element) {
+  if (ObjectPtr object = AsObject(element)) {
+    if (object->has_id()) {
+      const std::string& id = object->get_id();
+      ObjectIdMap::const_iterator iter = object_id_map_->find(id);
+      if (iter != object_id_map_->end()) {
+        // Save this as a dupe if a vector was supplied.
+        if (dup_id_vector_) {
+          dup_id_vector_->push_back(iter->second);
+        }
+      }
+      // This matches the semantics of ObjectIdParserObserver.
+      (*object_id_map_)[id] = object;  // "Last one wins"
+    }
+  }
+  // Call Serializer to recurse.
+  Serializer::SaveElement(element);
+}
+
+// Append all elements of the given type id in the hierarchy rooted at element.
+void MapIds(const ElementPtr& root, ObjectIdMap* object_id_map,
+            ElementVector* dup_id_vector) {
+  if (root && object_id_map) {  // NULL dup_id_vector ok.
+    // The IdMapper derivation of Serializer does all the work.
+    IdMapper id_mapper(object_id_map, dup_id_vector);
+    id_mapper.SaveElement(root);
+  }
+}
+
+}  // end namespace kmlengine

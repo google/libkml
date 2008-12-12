@@ -23,32 +23,58 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This is the main include file for the KMLENGINE library. Clients of
-// kmlengine should include only this header file.
+// This file contains the unit tests for the XmlFile class.
 
-#ifndef KML_ENGINE_H__
-#define KML_ENGINE_H__
+#include "kml/base/xml_file.h"
+#include "gtest/gtest.h"
 
-#include "kml/engine/bbox.h"
-#include "kml/engine/clone.h"
-#include "kml/engine/engine_types.h"
-#include "kml/engine/entity_mapper.h"
-#include "kml/engine/feature_balloon.h"
-#include "kml/engine/feature_visitor.h"
-#include "kml/engine/find.h"
-#include "kml/engine/get_links.h"
-#include "kml/engine/href.h"
-#include "kml/engine/kml_cache.h"
-#include "kml/engine/kml_file.h"
-#include "kml/engine/kml_uri.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/link_util.h"
-#include "kml/engine/location_util.h"
-#include "kml/engine/merge.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
-#include "kml/engine/style_merger.h"
-#include "kml/engine/style_resolver.h"
-#include "kml/engine/update.h"
+namespace kmlbase {
 
-#endif  // KML_ENGINE_H__
+// Derive the simplest possible class to test XmlFile.
+class TestFile : public XmlFile {
+ public:
+  // Reflect the otherwise protected set_url out to public for unit testing.
+  void set_url(const std::string& url) {
+    XmlFile::set_url(url);
+  }
+  bool set_root(const XmlElementPtr& element) {
+    return XmlFile::set_root(element);
+  }
+};
+typedef boost::intrusive_ptr<TestFile> TestFilePtr;
+
+class TestElement : public XmlElement {
+ public:
+  TestElement(int id) : id_(id) {}
+  int get_id() const {
+    return id_;
+  }
+ private:
+  int id_;
+};
+typedef boost::intrusive_ptr<TestElement> TestElementPtr;
+
+TEST(XmlFileTest, TestDefault) {
+  TestFilePtr xml_file = new TestFile;
+  ASSERT_TRUE(xml_file->get_url().empty());
+  ASSERT_FALSE(xml_file->get_root());
+}
+
+TEST(XmlFileTest, TestSetGet) {
+  const std::string kUrl("http://example.com");
+  const int kId = 42;
+  TestFilePtr xml_file = new TestFile;
+  xml_file->set_url(kUrl);
+  xml_file->set_root(new TestElement(kId));
+  ASSERT_EQ(kUrl, xml_file->get_url());
+  TestElementPtr element =
+    boost::static_pointer_cast<TestElement>(xml_file->get_root());
+  ASSERT_EQ(kId, element->get_id());
+}
+
+}  // end namespace kmlbase
+
+int main(int argc, char** argv) {
+  testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

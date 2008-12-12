@@ -52,7 +52,7 @@ void SimpleData::ParseAttributes(Attributes* attributes) {
     return;
   }
   has_name_ = attributes->CutValue(kSimpleDataName, &name_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void SimpleData::SerializeAttributes(Attributes* attributes) const {

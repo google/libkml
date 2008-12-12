@@ -1,0 +1,13 @@
+<Style id="dup-style">
+  <IconStyle id="red-L-paddle">
+    <scale>1.1</scale>
+    <Icon>
+      <href>http://maps.google.com/mapfiles/kml/paddle/L.png</href>
+    </Icon>
+    <hotSpot x="32" xunits="pixels" y="1" yunits="pixels"/>
+  </IconStyle>
+  <LineStyle id="thin-blue-line">
+    <color>ffff0000</color>
+    <width>1</width>
+  </LineStyle>
+</Style>

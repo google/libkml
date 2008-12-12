@@ -31,6 +31,8 @@
 #include "kml/dom/element.h"
 #include "kml/dom/xsd.h"
 
+using kmlbase::ToString;
+
 namespace kmldom {
 
 Serializer::Serializer() : xsd_(*Xsd::GetSchema()) {

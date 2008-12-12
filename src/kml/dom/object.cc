@@ -52,7 +52,7 @@ void Object::ParseAttributes(Attributes* attributes) {
   }
   has_id_ = attributes->CutValue(kId, &id_);
   has_targetid_ = attributes->CutValue(kTargetId, &targetid_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void Object::SerializeAttributes(Attributes* attributes) const {

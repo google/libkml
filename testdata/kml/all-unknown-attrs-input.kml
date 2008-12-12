@@ -240,9 +240,9 @@
     
     <Document>
       <Style>
-        <ListStyle>
+        <IconStyle>
           <hotSpot id="hotSpot" unknown="not known" not-known="nope"/>
-        </ListStyle>
+        </IconStyle>
       </Style>
     </Document>
 

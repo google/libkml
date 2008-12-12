@@ -72,7 +72,7 @@ void Vec2::ParseAttributes(Attributes* attributes) {
   has_y_ = attributes->CutValue(kY, &y_);
   has_xunits_ = CutEnumAttr(attributes, kXUnits, Type_units, &xunits_);
   has_yunits_ = CutEnumAttr(attributes, kYUnits, Type_units, &yunits_);
-  Element::ParseAttributes(attributes);
+  AddUnknownAttributes(attributes);
 }
 
 void Vec2::SerializeAttributes(Attributes* attributes) const {
