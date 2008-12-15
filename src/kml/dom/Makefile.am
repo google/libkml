@@ -93,6 +93,7 @@ libkmldominclude_HEADERS = \
 	region.h \
 	schema.h \
 	snippet.h \
+	stats_serializer.h \
 	style.h \
 	stylemap.h \
 	styleselector.h \

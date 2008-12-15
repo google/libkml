@@ -1,5 +1,6 @@
 EXTRA_DIST = \
 	exec_tests.bat \
+	libkml_tests.sln \
 	libkmlbase_attributes_test.vcproj \
 	libkmlbase_color32_test.vcproj \
 	libkmlbase_date_time_test.vcproj \
@@ -9,13 +10,57 @@ EXTRA_DIST = \
 	libkmlbase_referent_test.vcproj \
 	libkmlbase_string_util_test.vcproj \
 	libkmlbase_tempfile_test.vcproj \
-	libkmlbase_tests.sln \
-	libkmlbase_tile_util_test.vcproj \
+	libkmlbase_time_util_test.vcproj \
 	libkmlbase_uri_parser_test.vcproj \
 	libkmlbase_util_test.vcproj \
 	libkmlbase_vec3_test.vcproj \
 	libkmlbase_xmlns_test.vcproj \
+	libkmldom_abstractlatlonbox_test.vcproj \
+	libkmldom_abstractview_test.vcproj \
+	libkmldom_atom_test.vcproj \
+	libkmldom_balloonstyle_test.vcproj \
+	libkmldom_colorstyle_test.vcproj \
+	libkmldom_container_test.vcproj \
+	libkmldom_document_test.vcproj \
+	libkmldom_element_test.vcproj \
+	libkmldom_extendeddata_test.vcproj \
+	libkmldom_feature_test.vcproj \
+	libkmldom_folder_test.vcproj \
+	libkmldom_geometry_test.vcproj \
+	libkmldom_hotspot_test.vcproj \
+	libkmldom_iconstyle_test.vcproj \
+	libkmldom_kml22_test.vcproj \
+	libkmldom_kml_cast_test.vcproj \
+	libkmldom_kml_factory_test.vcproj \
+	libkmldom_kml_handler_ns_test.vcproj \
+	libkmldom_kml_handler_test.vcproj \
+	libkmldom_kml_test.vcproj \
+	libkmldom_labelstyle_test.vcproj \
+	libkmldom_linestyle_test.vcproj \
+	libkmldom_link_test.vcproj \
+	libkmldom_liststyle_test.vcproj \
+	libkmldom_model_test.vcproj \
+	libkmldom_networklink_test.vcproj \
+	libkmldom_networklinkcontrol_test.vcproj \
+	libkmldom_object_test.vcproj \
+	libkmldom_overlay_test.vcproj \
+	libkmldom_parser_test.vcproj \
+	libkmldom_placemark_test.vcproj \
+	libkmldom_polystyle_test.vcproj \
+	libkmldom_region_test.vcproj \
+	libkmldom_schema_test.vcproj \
+	libkmldom_serializer_test.vcproj \
+	libkmldom_snippet_test.vcproj \
+	libkmldom_style_test.vcproj \
+	libkmldom_stylemap_test.vcproj \
+	libkmldom_styleselector_test.vcproj \
+	libkmldom_substyle_test.vcproj \
+	libkmldom_timeprimitive_test.vcproj \
+	libkmldom_unknown_test.vcproj \
+	libkmldom_vec2_test.vcproj \
+	libkmldom_xal_test.vcproj \
+	libkmldom_xml_serializer_test.vcproj \
+	libkmldom_xsd_test.vcproj \
 	run_tests.bat \
 	stdafx.cpp \
 	stdafx.h
-
