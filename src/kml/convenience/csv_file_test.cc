@@ -65,8 +65,26 @@ static const struct CsvTestLine {
   const char* description;
   const char* styleurl;
 } kCsvTestLines[] = {
-  // TODO 0th line of testdata/csv/data.csv
-  // TODO last line of testdata/csv/data.csv
+  // 0th line of testdata/csv/data.csv
+  {
+    "1733|34.7339215|-109.731499|Potter Mesa|1733 meters Apache AZ",
+    1733,
+    34.7339215,
+    -109.731499,
+    "Potter Mesa",
+    "1733 meters Apache AZ",
+    NULL
+  },
+  // last line of testdata/csv/data.csv
+  {
+    "2143|34.0631006|-110.0189953|Big Mountain|2143 meters Navajo AZ",
+    2143,
+    34.0631006,
+    -110.0189953,
+    "Big Mountain",
+    "2143 meters Navajo AZ",
+    NULL
+  }
 };
 
 void CsvFileTest::ComparePlacemark(const PlacemarkPtr& placemark,
@@ -111,14 +129,11 @@ TEST_F(CsvFileTest, TestParseCsvLine) {
 }
 
 TEST_F(CsvFileTest, TestParseCsvFile) {
-  // TODO
-#if 0
   FeatureList feature_list;
   CsvFile csv_file(&feature_list);
-  // TODO const size_t kTestCsvLines(XXX);
-  // TODO const std::string kTestCsv(std::string(DATADIR) +
-  //                               std::string("/csv/test.csv"));
-  // TODO
+  const size_t kTestCsvLines(101);
+  const std::string kTestCsv(std::string(DATADIR) +
+                             std::string("/csv/test.csv"));
   csv_file.ParseCsvFile(kTestCsv.c_str());
   FolderPtr folder = KmlFactory::GetFactory()->CreateFolder();
   feature_list.Save(folder);
@@ -131,7 +146,6 @@ TEST_F(CsvFileTest, TestParseCsvFile) {
   ComparePlacemark(kmldom::AsPlacemark(
                        folder->get_feature_array_at(kTestCsvLines-1)),
                    kTestLineCount-1);
-#endif
 }
 
 }  // namespace kmlconvenience
