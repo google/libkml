@@ -23,6 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// This file contains the implementation of the internal ExpatParser class.
+
 #include "kml/base/expat_parser.h"
 #include <sstream>
 #include "kml/base/expat_handler.h"
@@ -80,16 +82,26 @@ bool ExpatParser::ParseString(const std::string& xml, ExpatHandler* handler,
   return parser._ParseString(xml, errors);
 }
 
+void* ExpatParser::GetInternalBuffer(size_t len) {
+  return static_cast<void*>(XML_GetBuffer(parser_, len));
+}
+
 bool ExpatParser::ParseBuffer(const std::string& input, std::string* errors,
                               bool is_final) {
-  void* buf = XML_GetBuffer(parser_, input.size());
+  void* buf = GetInternalBuffer(input.size());
   if (!buf) {
-    *errors = "could not allocate memory";
+    if (errors) {
+      *errors = "could not allocate memory";
+    }
     return false;
   }
-  memcpy(buf, input.c_str(), input.size());
-  XML_Status status = XML_ParseBuffer(parser_, input.size(), is_final);
+  memcpy(buf, input.data(), input.size());
+  return ParseInternalBuffer(input.size(), errors, is_final);
+}
 
+bool ExpatParser::ParseInternalBuffer(size_t len, std::string* errors,
+                                      bool is_final) {
+  XML_Status status = XML_ParseBuffer(parser_, len, is_final);
   // If we have just parsed the final buffer, we need to check if Expat
   // has stopped parsing. Failure here indicates invalid (badly formed)
   // XML content.
@@ -125,6 +137,9 @@ bool ExpatParser::_ParseString(const std::string& xml, std::string* errors) {
 
 // Private.
 void ExpatParser::ReportError(XML_Parser parser, std::string* errors) {
+  if (!errors) {
+    return;
+  }
   std::stringstream strstream;
   strstream << XML_ErrorString(XML_GetErrorCode(parser));
   strstream << " on line ";

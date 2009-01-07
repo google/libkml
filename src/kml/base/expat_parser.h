@@ -23,7 +23,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// TODO: actually implement RunExpat and get rid of kml/dom/parser.cc
+// This file contains the declaration of the internal ExpatParser class.
+// Direct use of this class in application code is not recommended.  Typical
+// applications should use kmlengine::KmlFile for parsing KML (and KMZ) files.
 
 #ifndef KML_BASE_EXPAT_PARSER_H__
 #define KML_BASE_EXPAT_PARSER_H__
@@ -74,6 +76,14 @@ class ExpatHandlerSet {
   ExpatHandlerMap expat_handler_map_;
 };
 
+// This internal class front-ends expat.  Usage is as follows:
+// class SomeXmlLanguageHandler : public kmlbase::ExpatHandler {
+//   // See expat_handler.h for methods to implement.
+// };
+// SomeXmlLanguageHandler some_handler;
+// bool status = ExpatParser::ParseString(xml_file_contents, &some_handler,
+//                                        &errors, namespace_aware_bool);
+// State of parse (if any) is held in the class derived from ExpatHandler.
 class ExpatParser {
  public:
   ExpatParser(ExpatHandler* handler, bool namespace_aware);
@@ -83,6 +93,16 @@ class ExpatParser {
   // complete, well-formed XML document.
   static bool ParseString(const std::string& xml, ExpatHandler* handler,
                           std::string* errors, bool namespace_aware);
+
+  // This allocates a buffer for use with ParseInternalBuffer.  The caller is
+  // expected to put the next buffer's worth of XML to parse into this buffer.
+  void* GetInternalBuffer(size_t size);
+
+  // This sends the data the caller put in the buffer in GetInternalBuffer to
+  // the parser.  The size indicates the number of bytes of data in the buffer.
+  // If an error string is supplied any error messages are stored there.
+  // If this buffer is the final chunk of XML to parse set is_final to true.
+  bool ParseInternalBuffer(size_t size, std::string* errors, bool is_final);
 
   // Parse a chunk of XML data. The input does not have to be split on element
   // boundaries. The is_final flag indicates to expat if it should consider
