@@ -33,8 +33,7 @@
 
 namespace kmlbase {
 
-// A basic ExpatParser handler that simply reconstructs parsed XML in a
-// string.
+// A basic ExpatParser handler that simply reconstructs parsed XML in a string.
 class TestXmlHandler : public ExpatHandler {
  public:
   virtual void StartElement(const char* name, const char** atts) {
@@ -52,82 +51,115 @@ class TestXmlHandler : public ExpatHandler {
   std::string xml_;
 };
 
+class ExpatParserTest : public testing::Test {
+ protected:
+  std::string errors_;
+  TestXmlHandler handler_;
+};
+
 // Verify basic usage of the static ParseString method.
-TEST(ExpatParserTest, TestPassingParseString) {
+TEST_F(ExpatParserTest, TestPassingParseString) {
   const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
-  std::string errors;
-  TestXmlHandler handler;
-  ASSERT_TRUE(ExpatParser::ParseString(kXml, &handler, &errors, false));
-  ASSERT_TRUE(errors.empty());
-  ASSERT_EQ(kXml, handler.get_xml());
+  ASSERT_TRUE(ExpatParser::ParseString(kXml, &handler_, &errors_, false));
+  ASSERT_TRUE(errors_.empty());
+  ASSERT_EQ(kXml, handler_.get_xml());
 }
 
 // Verify failure of ParseString on badly formed XML content.
-TEST(ExpatParserTest, TestFailingParseString) {
+TEST_F(ExpatParserTest, TestFailingParseString) {
   // kXml is not well-formed.
   const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
-  std::string errors;
-  TestXmlHandler handler;
-  ASSERT_FALSE(ExpatParser::ParseString(kXml, &handler, &errors, false));
-  ASSERT_FALSE(errors.empty());
-  ASSERT_EQ(kXml, handler.get_xml());
+  ASSERT_FALSE(ExpatParser::ParseString(kXml, &handler_, &errors_, false));
+  ASSERT_FALSE(errors_.empty());
+  ASSERT_EQ(kXml, handler_.get_xml());
 }
 
 // Verify basic usage of the ParseBuffer method.
-TEST(ExpatParserTest, TestPassingParseBuffer) {
+TEST_F(ExpatParserTest, TestPassingParseBuffer) {
   const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
-  std::string errors;
-  TestXmlHandler handler;
-  ExpatParser parser(&handler, false);
+  ExpatParser parser(&handler_, false);
 
   // Parse the string one character at a time.
   for (size_t i = 0; i < kXml.length(); ++i) {
-    ASSERT_TRUE(parser.ParseBuffer(kXml.substr(i, 1), &errors,
+    ASSERT_TRUE(parser.ParseBuffer(kXml.substr(i, 1), &errors_,
                                    i == kXml.length()-1));
   }
-  ASSERT_EQ(kXml, handler.get_xml());
+  ASSERT_EQ(kXml, handler_.get_xml());
 }
 
 // Verify failure of ParseBuffer on badly formed XML content.
-TEST(ExpatParserTest, TestFailingParseBuffer) {
+TEST_F(ExpatParserTest, TestFailingParseBuffer) {
   // kXml is not well-formed.
   const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
-  std::string errors;
-  TestXmlHandler handler;
-  ExpatParser parser(&handler, false);
+  ExpatParser parser(&handler_, false);
 
   // Parse the string one character at a time.
   for (size_t i = 0; i < kXml.length(); ++i) {
-    ASSERT_TRUE(parser.ParseBuffer(kXml.substr(i, 1), &errors, false));
-    ASSERT_TRUE(errors.empty());
+    ASSERT_TRUE(parser.ParseBuffer(kXml.substr(i, 1), &errors_, false));
+    ASSERT_TRUE(errors_.empty());
   }
   // Now set the is_final bool to true to indicate that we believe parsing
   // is done. Expat will check and see that its own parsing state shows
   // more content is necessary because our XML is missing the closing
   // </Tom> tag.
-  ASSERT_FALSE(parser.ParseBuffer("", &errors, true));
-  ASSERT_FALSE(errors.empty());
+  ASSERT_FALSE(parser.ParseBuffer("", &errors_, true));
+  ASSERT_FALSE(errors_.empty());
 
-  ASSERT_EQ(kXml, handler.get_xml());
+  ASSERT_EQ(kXml, handler_.get_xml());
 }
 
 // Assert that we detect a mid-stream parsing failure.
-TEST(ExpatParserTest, TestMidstreamFailingParseBuffer) {
+TEST_F(ExpatParserTest, TestMidstreamFailingParseBuffer) {
   const std::string k0("<A><B><C><D>");
   const std::string k1("</D>");  // This is fine.
   const std::string k2("</B>");  // XML is badly formed here, missing </C>.
-  std::string errors;
-  TestXmlHandler handler;
-  ExpatParser parser(&handler, false);
+  ExpatParser parser(&handler_, false);
 
-  ASSERT_TRUE(parser.ParseBuffer(k0, &errors, false));
-  ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(parser.ParseBuffer(k0, &errors_, false));
+  ASSERT_TRUE(errors_.empty());
 
-  ASSERT_TRUE(parser.ParseBuffer(k1, &errors, false));
-  ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(parser.ParseBuffer(k1, &errors_, false));
+  ASSERT_TRUE(errors_.empty());
 
-  ASSERT_FALSE(parser.ParseBuffer(k2, &errors, false));
-  ASSERT_FALSE(errors.empty());
+  ASSERT_FALSE(parser.ParseBuffer(k2, &errors_, false));
+  ASSERT_FALSE(errors_.empty());
+}
+
+// Verify basic usage of the GetInternalBuffer and ParseInternalBuffer methods.
+TEST_F(ExpatParserTest, TestPassingParseInternalBuffer) {
+  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
+  ExpatParser parser(&handler_, false);
+
+  // Parse the string one character at a time.
+  for (size_t i = 0; i < kXml.length(); ++i) {
+    char* buf = static_cast<char*>(parser.GetInternalBuffer(1));
+    *buf = kXml[i];
+    ASSERT_TRUE(parser.ParseInternalBuffer(1, &errors_, i == kXml.length()-1));
+  }
+  ASSERT_EQ(kXml, handler_.get_xml());
+  ASSERT_TRUE(errors_.empty());
+}
+
+TEST_F(ExpatParserTest, TestFailingInternalBuffer) {
+  const std::string k0("<A><B><C><D>");
+  const std::string k1("</D>");  // This is fine.
+  const std::string k2("</B>");  // XML is badly formed here, missing </C>.
+  ExpatParser parser(&handler_, false);
+
+  void* buf = parser.GetInternalBuffer(k0.size());
+  memcpy(buf, k0.data(), k0.size());
+  ASSERT_TRUE(parser.ParseInternalBuffer(k0.size(), &errors_, false));
+  ASSERT_TRUE(errors_.empty());
+
+  buf = parser.GetInternalBuffer(k1.size());
+  memcpy(buf, k1.data(), k1.size());
+  ASSERT_TRUE(parser.ParseInternalBuffer(k1.size(), &errors_, false));
+  ASSERT_TRUE(errors_.empty());
+
+  buf = parser.GetInternalBuffer(k2.size());
+  memcpy(buf, k2.data(), k2.size());
+  ASSERT_FALSE(parser.ParseInternalBuffer(k2.size(), &errors_, true));
+  ASSERT_FALSE(errors_.empty());
 }
 
 }  // end namespace kmlbase
