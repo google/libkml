@@ -22,6 +22,7 @@ libkmlengine_la_SOURCES = \
 	id_mapper.cc \
 	kml_cache.cc \
 	kml_file.cc \
+	kml_stream.cc \
 	kml_uri.cc \
 	kmz_cache.cc \
 	kmz_file.cc \
@@ -53,6 +54,7 @@ libkmlengineinclude_HEADERS = \
 	id_mapper.h \
 	kml_cache.h \
 	kml_file.h \
+	kml_stream.h \
 	kml_uri.h \
 	kmz_cache.h \
 	kmz_file.h \
@@ -82,6 +84,7 @@ TESTS = bbox_test \
 	kmz_cache_test \
 	kml_cache_test \
 	kml_file_test \
+	kml_stream_test \
 	kml_uri_test \
 	kmz_file_test \
 	link_util_test \
@@ -179,6 +182,13 @@ kml_cache_test_LDADD= libkmlengine.la \
 kml_file_test_SOURCES = kml_file_test.cc
 kml_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kml_file_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+kml_stream_test_SOURCES = kml_stream_test.cc
+kml_stream_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+kml_stream_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
