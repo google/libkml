@@ -1,0 +1,15 @@
+test.csv:
+
+  The format of test.csv is as follows:
+    score|lat|lon|name|description[|style_url]
+
+  The data are the first 101 Summit items from the USGS BGN
+  national features file "NationalFile_20081228.zip" from
+  http://geonames.usgs.gov/domestic/download_data.htm as follows:
+
+  score: ELEVATION
+  lat: SOURCE_LAT_DEC
+  lon: SOURCE_LONG_DEC
+  name: FEATURE_NAME
+  description: ELEVATION + COUNTY_NAME + STATE_ALPHA
+
