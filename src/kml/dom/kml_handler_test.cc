@@ -27,6 +27,7 @@
 
 #include "kml/dom/kml_handler.h"
 #include <stdlib.h>  // For calloc() and free().
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_ptr.h"
@@ -46,17 +47,16 @@ class KmlHandlerTest : public testing::Test {
     // Emulate expat's xmlparse.c:startAtts().
     // 16 == xmlparse.c's INIT_ATTS_SIZE
     atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
-    kml_handler_ = new KmlHandler(observers_);
+    kml_handler_.reset(new KmlHandler(observers_));
   }
 
   virtual void TearDown() {
     free(atts_);
-    delete kml_handler_;
   }
 
   const char** atts_;
   parser_observer_vector_t observers_;
-  KmlHandler* kml_handler_;
+  boost::scoped_ptr<KmlHandler> kml_handler_;
   void VerifyFolderParse(const ElementPtr& root) const;
   void VerifyElementTypes(const KmlDomType* types_array,
                           const element_vector_t& element_vector) const;
@@ -403,6 +403,68 @@ TEST_F(KmlHandlerTest, MultipleObserverTerminationTest) {
   // These are highly dependent on the exact form of kKmlFolder!
   KmlHandlerTest::MultipleObserverTestCommon(2, 2, 1);
   KmlHandlerTest::MultipleObserverTestCommon(6, 6, 4);
+}
+
+// This ParserObserver collects all Features in the parse.
+class FeatureCollector : public ParserObserver {
+ public:
+  FeatureCollector(element_vector_t* element_vector)
+    : element_vector_(element_vector) {
+  }
+  // This EndElement saves each non-Container Feature and returns false to
+  // request that the parser not give this feature to the given parent.
+  // All other parent-child relationships are preserved (such as all children
+  // of the collected feature).
+  virtual bool EndElement(const kmldom::ElementPtr& parent,
+                          const kmldom::ElementPtr& child) {
+    if (child->IsA(Type_Feature) && !child->IsA(Type_Container)) {
+      element_vector_->push_back(child);
+      return false;
+    }
+    return true;
+  }
+ private:
+  element_vector_t* element_vector_;
+};
+
+TEST_F(KmlHandlerTest, InhibitingEndElement) {
+  element_vector_t features;
+  FeatureCollector feature_collector(&features);
+  observers_.push_back(&feature_collector);
+  KmlHandler kml_handler(observers_);
+  kml_handler.StartElement("kml", atts_);
+  kml_handler.StartElement("Document", atts_);
+  kml_handler.StartElement("Placemark", atts_);
+  kml_handler.StartElement("name", atts_);
+  kml_handler.EndElement("name");
+  kml_handler.StartElement("Point", atts_);
+  kml_handler.StartElement("coordinates", atts_);
+  kml_handler.EndElement("coordinates");
+  kml_handler.EndElement("Point");
+  kml_handler.EndElement("Placemark");
+  kml_handler.EndElement("Document");
+  kml_handler.StartElement("NetworkLinkControl", atts_);
+  kml_handler.EndElement("NetworkLinkControl");
+  kml_handler.EndElement("kml");
+  ElementPtr root = kml_handler.PopRoot();
+  ASSERT_TRUE(root);
+  KmlPtr kml = AsKml(root);
+  ASSERT_TRUE(kml);
+  // Document is a Container and is not collected.
+  ASSERT_TRUE(kml->has_feature());
+  ASSERT_TRUE(AsDocument(kml->get_feature()));
+  // NetworkLinkControl is not a Feature is not collected.
+  ASSERT_TRUE(kml->has_networklinkcontrol());
+  // One non-Container Feature is collected.
+  ASSERT_EQ(static_cast<size_t>(1), features.size());
+  PlacemarkPtr placemark = AsPlacemark(features[0]);
+  ASSERT_TRUE(placemark);
+  // Verify the collected feature has all expected children.
+  ASSERT_TRUE(placemark->has_name());
+  ASSERT_TRUE(placemark->has_geometry());
+  PointPtr point = AsPoint(placemark->get_geometry());
+  ASSERT_TRUE(point);
+  ASSERT_TRUE(point->has_coordinates());
 }
 
 }  // end namespace kmldom
