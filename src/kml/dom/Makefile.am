@@ -92,6 +92,7 @@ libkmldominclude_HEADERS = \
 	polystyle.h \
 	region.h \
 	schema.h \
+	serializer.h \
 	snippet.h \
 	stats_serializer.h \
 	style.h \
@@ -105,7 +106,6 @@ libkmldominclude_HEADERS = \
 EXTRA_DIST = \
 	kml_handler.h \
 	kml_handler_ns.h \
-	serializer.h \
 	xml_serializer.h \
 	xsd.h \
 	kml22.cc
