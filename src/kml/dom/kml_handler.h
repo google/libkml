@@ -80,12 +80,21 @@ private:
   // If all ParserObserver::NewElement()'s return true this returns true.
   bool CallNewElementObservers(const parser_observer_vector_t& observers,
                                const ElementPtr& element);
+
+  // This calls the EndElement() method of each ParserObserver.  If any
+  // ParserObserver::EndElement() returns false the child is NOT added to
+  // the parent.
+  bool CallEndElementObservers(const parser_observer_vector_t& observers,
+                               const ElementPtr& parent,
+                               const ElementPtr& child);
+
   // This calls the AddChild() method of each ParserObserver.  If any
   // ParserObserver::AddChild() returns false this immediately returns false.
   // If all ParserObserver::AddChild()'s return true this returns true.
   bool CallAddChildObservers(const parser_observer_vector_t& observers,
                              const ElementPtr& parent,
                              const ElementPtr& child);
+
   const parser_observer_vector_t& observers_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlHandler);
 };

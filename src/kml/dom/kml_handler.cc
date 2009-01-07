@@ -182,11 +182,24 @@ void KmlHandler::EndElement(const char *name) {
     // or 3) unknown is passed onwards to its parent and possibly ultimately
     // to the unknown element list in Element.
     stack_.pop();
-    stack_.top()->AddElement(child);
+    if (CallEndElementObservers(observers_, stack_.top(), child)) {
+      stack_.top()->AddElement(child);
+    }
     if (!CallAddChildObservers(observers_, stack_.top(), child)) {
       XML_StopParser(get_parser(), XML_TRUE);
     }
   }
+}
+
+bool KmlHandler::CallEndElementObservers(
+    const parser_observer_vector_t& observers, const ElementPtr& parent,
+    const ElementPtr& child) {
+  for (size_t i = 0; i < observers_.size(); ++i) {
+    if (!observers_[i]->EndElement(parent, child)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // private
