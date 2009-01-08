@@ -492,11 +492,23 @@ public:
 %nodefaultctor Data;
 class Data : public Object {
 public:
-  // <displayName>
+  // name=
+  const std::string& get_name();
+  bool has_name();
+  void set_name(const std::string& name);
+  void clear_name();
+
+  // <displayname>
   const std::string& get_displayname();
-  void set_displayname(const std::string& displayname);
   bool has_displayname();
+  void set_displayname(const std::string& displayname);
   void clear_displayname();
+
+  // <value>
+  const std::string& get_value();
+  bool has_value();
+  void set_value(const std::string& value);
+  void clear_value();
 };
 
 %nodefaultctor Delete;
