@@ -441,6 +441,22 @@ class SimpleExtendedDataTestCase(unittest.TestCase):
     assert 0 == self.extendeddata.get_data_array_size()
     assert 0 == self.extendeddata.get_schemadata_array_size()
 
+class SimpleDataTestCase(unittest.TestCase):
+  """ This tests the Data element """
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.data = self.factory.CreateData()
+
+  def testDefault(self):
+    assert kmldom.AsData(self.data)
+    assert not self.data.has_name()
+    assert "" == self.data.get_name()
+    assert not self.data.has_displayname()
+    assert "" == self.data.get_displayname()
+    assert not self.data.has_value()
+    assert "" == self.data.get_value()
+
 def TestColorStyle(colorstyle):
   """ This tests the ColorStyle elements of the given ColorStyle-derived element"""
   # ColorStyle fields
@@ -999,6 +1015,7 @@ def suite():
   suite.addTest(SimpleSerializePrettyTestCase('testBasic'))
   suite.addTest(SimpleSerializeRawTestCase('testBasic'))
   suite.addTest(SimpleExtendedDataTestCase('testDefault'))
+  suite.addTest(SimpleDataTestCase('testDefault'))
   suite.addTest(SimpleIconStyleTestCase('testDefault'))
   suite.addTest(SimpleLabelStyleTestCase('testDefault'))
   suite.addTest(SimpleLineStyleTestCase('testDefault'))
