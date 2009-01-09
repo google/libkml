@@ -58,6 +58,8 @@ class SimpleFactoryTestCase(unittest.TestCase):
   def runTest(self):
     factory = kmldom.KmlFactory_GetFactory()
     assert factory.CreateAlias()
+    assert factory.CreateAtomAuthor()
+    assert factory.CreateAtomLink()
     assert factory.CreateBalloonStyle()
     assert factory.CreateCamera()
     assert factory.CreateChange()
@@ -175,6 +177,131 @@ class VerySimpleComplexChildTestCase(unittest.TestCase):
     assert not region.has_lod()
     assert not region.has_latlonaltbox()
 
+
+class SimpleAtomAuthorTestCase(unittest.TestCase):
+  """ This tests the AtomAuthor element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.atomauthor = self.factory.CreateAtomAuthor()
+
+  def testDefault(self):
+    assert kmldom.Type_AtomAuthor == self.atomauthor.Type()
+    assert self.atomauthor.IsA(kmldom.Type_AtomAuthor)
+    # default state
+    assert not self.atomauthor.has_name()
+    assert "" == self.atomauthor.get_name()
+    assert not self.atomauthor.has_uri()
+    assert "" == self.atomauthor.get_uri()
+    assert not self.atomauthor.has_email()
+    assert "" == self.atomauthor.get_email()
+
+  def testSetClear(self):
+    # name
+    name = 'Scott Turow'
+    self.atomauthor.set_name(name)
+    assert self.atomauthor.has_name()
+    assert name == self.atomauthor.get_name()
+    self.atomauthor.clear_name()
+
+    # uri
+    uri = 'http://www.authorsguild.org/'
+    self.atomauthor.set_uri(uri)
+    assert self.atomauthor.has_uri()
+    assert uri == self.atomauthor.get_uri()
+    self.atomauthor.clear_uri()
+
+    # email
+    email = 'jsmith@example.com'
+    self.atomauthor.set_email(email)
+    assert self.atomauthor.has_email()
+    assert email == self.atomauthor.get_email()
+    self.atomauthor.clear_email()
+
+    self.testDefault()
+
+
+class SimpleAtomLinkTestCase(unittest.TestCase):
+  """ This tests the AtomLink element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.atomlink = self.factory.CreateAtomLink()
+
+  def testDefault(self):
+    assert kmldom.Type_AtomLink == self.atomlink.Type()
+    assert self.atomlink.IsA(kmldom.Type_AtomLink)
+    assert not self.atomlink.has_href()
+    assert "" == self.atomlink.get_href()
+    assert not self.atomlink.has_rel()
+    assert "" == self.atomlink.get_rel()
+    assert not self.atomlink.has_type()
+    assert "" == self.atomlink.get_type()
+    assert not self.atomlink.has_hreflang()
+    assert "" == self.atomlink.get_hreflang()
+    assert not self.atomlink.has_title()
+    assert "" == self.atomlink.get_title()
+    assert not self.atomlink.has_length()
+    assert 0 == self.atomlink.get_length()
+
+  def testSetClear(self):
+    # href
+    href = 'http://example.com'
+    self.atomlink.set_href(href)
+    assert self.atomlink.has_href()
+    assert href == self.atomlink.get_href()
+    self.atomlink.clear_href()
+
+    rel = 'alternate'
+    self.atomlink.set_rel(rel)
+    assert self.atomlink.has_rel()
+    assert rel == self.atomlink.get_rel()
+    self.atomlink.clear_rel()
+
+    type = 'text/html'
+    self.atomlink.set_type(type)
+    assert self.atomlink.has_type()
+    assert type == self.atomlink.get_type()
+    self.atomlink.clear_type()
+
+    hreflang = 'en'
+    self.atomlink.set_hreflang(hreflang)
+    assert self.atomlink.has_hreflang()
+    assert hreflang == self.atomlink.get_hreflang()
+    self.atomlink.clear_hreflang()
+
+    title = 'dive into mark'
+    self.atomlink.set_title(title)
+    assert self.atomlink.has_title()
+    assert title == self.atomlink.get_title()
+    self.atomlink.clear_title()
+
+    length = 42
+    self.atomlink.set_length(length)
+    assert self.atomlink.has_length()
+    assert length == self.atomlink.get_length()
+    self.atomlink.clear_length()
+
+    self.testDefault()
+
+  def testParse(self):
+    # Straight out of RFC 4287
+    link_xml = '<link rel=\"alternate\" type=\"text/html\" '
+    link_xml += 'hreflang=\"en\" href=\"http://example.org/\"/>'
+    self.atomlink = kmldom.ParseKml(link_xml)
+    assert self.atomlink.has_rel()
+    assert self.atomlink.has_type()
+    assert self.atomlink.has_hreflang()
+    assert self.atomlink.has_href()
+    assert not self.atomlink.has_title()
+    assert not self.atomlink.has_length()
+
+    assert self.atomlink.clear_rel()
+    assert self.atomlink.clear_type()
+    assert self.atomlink.clear_hreflang()
+    assert self.atomlink.clear_href()
+
+    self.testDefault()
 
 class SimpleCoordinatesTestCase(unittest.TestCase):
   """ This tests the methods on Coordinates and Vec3 """
@@ -493,6 +620,31 @@ class SimpleIconStyleTestCase(unittest.TestCase):
 
     TestColorStyle(self.iconstyle)
 
+class SimpleKmlTestCase(unittest.TestCase):
+  """ This tests the Kml element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.kml = self.factory.CreateKml()
+
+  def testDefault(self):
+    assert kmldom.Type_kml == self.kml.Type()
+    assert self.kml.IsA(kmldom.Type_kml)
+    assert not self.kml.has_hint()
+    assert "" == self.kml.get_hint()
+    assert not self.kml.has_networklinkcontrol()
+    assert None == self.kml.get_networklinkcontrol()
+    assert not self.kml.has_feature()
+    assert None == self.kml.get_feature()
+
+  def testSetClear(self):
+    hint = 'target=sky'
+    self.kml.set_hint(hint)
+    assert self.kml.has_hint()
+    assert hint == self.kml.get_hint()
+    self.kml.clear_hint()
+    self.testDefault()
+
 class SimpleLabelStyleTestCase(unittest.TestCase):
   """ This tests the LabelStyle element."""
 
@@ -547,6 +699,34 @@ class SimpleListStyleTestCase(unittest.TestCase):
     assert not self.liststyle.has_id()
     assert 0 == self.liststyle.get_itemicon_array_size()
 
+class SimpleNetworkLinkControlTestCase(unittest.TestCase):
+  """ This tests the NetworkLinkControl element."""
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.nlc = self.factory.CreateNetworkLinkControl()
+
+  def testDefault(self):
+    assert kmldom.Type_NetworkLinkControl == self.nlc.Type()
+    assert self.nlc.IsA(kmldom.Type_NetworkLinkControl)
+    assert not self.nlc.has_minrefreshperiod()
+    assert not self.nlc.has_maxsessionlength()
+    assert not self.nlc.has_cookie()
+    assert not self.nlc.has_message()
+    assert not self.nlc.has_linkname()
+    assert not self.nlc.has_linkdescription()
+    assert not self.nlc.has_linksnippet()
+    assert not self.nlc.has_expires()
+    assert not self.nlc.has_update()
+    assert not self.nlc.has_abstractview()
+
+  def testSetClear(self):
+    minrefreshperiod = 42.123
+    self.nlc.set_minrefreshperiod(minrefreshperiod)
+    assert self.nlc.has_minrefreshperiod()
+    assert minrefreshperiod == self.nlc.get_minrefreshperiod()
+    self.nlc.clear_minrefreshperiod()
+    assert not self.nlc.has_minrefreshperiod()
 
 class SimplePhotoOverlayTestCase(unittest.TestCase):
   """ This tests the PhotoOverlay element."""
@@ -1006,6 +1186,10 @@ def suite():
   suite.addTest(VerySimpleCastTestCase())
   suite.addTest(VerySimpleSimpleChildTestCase())
   suite.addTest(VerySimpleComplexChildTestCase())
+  suite.addTest(SimpleAtomAuthorTestCase('testDefault'))
+  suite.addTest(SimpleAtomAuthorTestCase('testSetClear'))
+  suite.addTest(SimpleAtomLinkTestCase('testDefault'))
+  suite.addTest(SimpleAtomLinkTestCase('testSetClear'))
   suite.addTest(SimpleCoordinatesTestCase())
   suite.addTest(SimpleVec2TestCase())
   suite.addTest(SimpleObjectTestCase())
@@ -1017,6 +1201,10 @@ def suite():
   suite.addTest(SimpleExtendedDataTestCase('testDefault'))
   suite.addTest(SimpleDataTestCase('testDefault'))
   suite.addTest(SimpleIconStyleTestCase('testDefault'))
+  suite.addTest(SimpleKmlTestCase('testDefault'))
+  suite.addTest(SimpleKmlTestCase('testSetClear'))
+  suite.addTest(SimpleNetworkLinkControlTestCase('testDefault'))
+  suite.addTest(SimpleNetworkLinkControlTestCase('testSetClear'))
   suite.addTest(SimpleLabelStyleTestCase('testDefault'))
   suite.addTest(SimpleLineStyleTestCase('testDefault'))
   suite.addTest(SimpleListStyleTestCase('testDefault'))
