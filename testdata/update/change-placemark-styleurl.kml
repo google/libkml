@@ -1,0 +1,8 @@
+<Update>
+  <targetHref/>
+  <Change>
+    <Placemark targetId="placemark123">
+      <styleUrl>http://example.com/style.kml#pretty</styleUrl>
+    </Placemark>
+  </Change>
+</Update>

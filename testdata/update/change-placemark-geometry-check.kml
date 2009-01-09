@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark id="placemark123">
+    <name>This is a Point</name>
+    <description>I have no Point</description>
+    <Point>
+      <coordinates>
+        1,2,3
+      </coordinates>
+    </Point>
+  </Placemark>
+</kml>

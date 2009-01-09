@@ -1,0 +1,16 @@
+<Update>
+  <targetHref/>
+  <Change>
+    <Placemark targetId="placemark123">
+      <name>This is name of the Point</name>
+    </Placemark>
+    <Placemark targetId="placemark123">
+      <description>This is the description of the Point</description>
+      <Point>
+        <extrude>1</extrude>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>1,2,3</coordinates>
+      </Point>
+    </Placemark>
+  </Change>
+</Update>

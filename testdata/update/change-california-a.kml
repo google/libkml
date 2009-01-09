@@ -1,0 +1,11 @@
+<Update>
+  <targetHref/>
+  <Change>
+    <Placemark targetId="placemark-a">
+      <styleUrl>#red-icon</styleUrl>
+    </Placemark>
+    <Placemark targetId="placemark-l">
+      <styleUrl>#yellow-line</styleUrl>
+    </Placemark>
+  </Change>
+</Update>
