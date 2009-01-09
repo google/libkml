@@ -44,13 +44,9 @@ class Attributes;
 namespace kmldom {
 
 // <SimpleData>
-class SimpleData : public Element {
+class SimpleData : public BasicElement<Type_SimpleData> {
  public:
   virtual ~SimpleData();
-  virtual KmlDomType Type() const { return Type_SimpleData; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_SimpleData;
-  }
 
   // name=
   const std::string& get_name() const { return name_; }
@@ -96,10 +92,11 @@ class SimpleData : public Element {
 class SchemaData : public Object {
  public:
   virtual ~SchemaData();
-  virtual KmlDomType Type() const { return Type_SchemaData; }
+  virtual KmlDomType Type() const { return ElementType(); }
   virtual bool IsA(KmlDomType type) const {
-    return type == Type_SchemaData || Object::IsA(type);
+    return type == ElementType() || Object::IsA(type);
   }
+  static KmlDomType ElementType() { return Type_SchemaData; }
 
   // schemaUrl=
   const std::string& get_schemaurl() const { return schemaurl_; }
@@ -145,10 +142,11 @@ class SchemaData : public Object {
 class Data : public Object {
  public:
   virtual ~Data();
-  virtual KmlDomType Type() const { return Type_Data; }
+  virtual KmlDomType Type() const { return ElementType(); }
   virtual bool IsA(KmlDomType type) const {
-    return type == Type_Data || Object::IsA(type);
+    return type == ElementType() || Object::IsA(type);
   }
+  static KmlDomType ElementType() { return Type_Data; }
 
   // name=
   const std::string& get_name() const { return name_; }
@@ -206,13 +204,9 @@ class Data : public Object {
 };
 
 // <ExtendedData>
-class ExtendedData : public Element {
+class ExtendedData : public BasicElement<Type_ExtendedData> {
  public:
   virtual ~ExtendedData();
-  virtual KmlDomType Type() const { return Type_ExtendedData; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_ExtendedData;
-  }
 
   // <Data>.
   void add_data(const DataPtr& data) {
@@ -255,13 +249,9 @@ class ExtendedData : public Element {
 // <Metadata>
 // This element is deprecated in OGC KML 2.2.  New KML should use
 // <ExtendedData>.
-class Metadata : public Element {
+class Metadata : public BasicElement<Type_Metadata> {
  public:
   virtual ~Metadata();
-  virtual KmlDomType Type() const { return Type_Metadata; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Metadata;
-  }
 
  private:
   friend class Serializer;

@@ -36,9 +36,9 @@ namespace kmldom {
 // Element-derived type is of the template type then a pointer is returned,
 // else NULL.  It is safe to pass a NULL to this function.
 template<class T>
-inline const boost::intrusive_ptr<T> DynamicPointerCast(
+inline const boost::intrusive_ptr<T> ElementCast(
     const ElementPtr& element) {
-  if (element && element->Type() == T::static_type()) {
+  if (element && element->IsA(T::ElementType())) {
     return boost::static_pointer_cast<T>(element);
   }
   return NULL;
@@ -66,12 +66,16 @@ const AliasPtr AsAlias(const ElementPtr element);
 const BalloonStylePtr AsBalloonStyle(const ElementPtr element);
 const CameraPtr AsCamera(const ElementPtr element);
 const ChangePtr AsChange(const ElementPtr element);
-const CoordinatesPtr AsCoordinates(const ElementPtr element);
+inline const CoordinatesPtr AsCoordinates(const ElementPtr& element) {
+  return ElementCast<Coordinates>(element);
+}
 const CreatePtr AsCreate(const ElementPtr element);
 const DataPtr AsData(const ElementPtr element);
 const DeletePtr AsDelete(const ElementPtr element);
 const DocumentPtr AsDocument(const ElementPtr element);
-const ExtendedDataPtr AsExtendedData(const ElementPtr element);
+inline const ExtendedDataPtr AsExtendedData(const ElementPtr& element) {
+  return ElementCast<ExtendedData>(element);
+}
 const FolderPtr AsFolder(const ElementPtr element);
 const GroundOverlayPtr AsGroundOverlay(const ElementPtr element);
 const HotSpotPtr AsHotSpot(const ElementPtr element);
@@ -81,7 +85,9 @@ const IconStyleIconPtr AsIconStyleIcon(const ElementPtr element);
 const ImagePyramidPtr AsImagePyramid(const ElementPtr element);
 const InnerBoundaryIsPtr AsInnerBoundaryIs(const ElementPtr element);
 const ItemIconPtr AsItemIcon(const ElementPtr element);
-const KmlPtr AsKml(const ElementPtr element);
+inline const KmlPtr AsKml(const ElementPtr& element) {
+  return ElementCast<Kml>(element);
+}
 const LabelStylePtr AsLabelStyle(const ElementPtr element);
 const LatLonAltBoxPtr AsLatLonAltBox(const ElementPtr element);
 const LatLonBoxPtr AsLatLonBox(const ElementPtr element);
@@ -94,11 +100,16 @@ const ListStylePtr AsListStyle(const ElementPtr element);
 const LocationPtr AsLocation(const ElementPtr element);
 const LodPtr AsLod(const ElementPtr element);
 const LookAtPtr AsLookAt(const ElementPtr element);
-const MetadataPtr AsMetadata(const ElementPtr element);
+inline const MetadataPtr AsMetadata(const ElementPtr& element) {
+  return ElementCast<Metadata>(element);
+}
 const ModelPtr AsModel(const ElementPtr element);
 const MultiGeometryPtr AsMultiGeometry(const ElementPtr element);
 const NetworkLinkPtr AsNetworkLink(const ElementPtr element);
-const NetworkLinkControlPtr AsNetworkLinkControl(const ElementPtr element);
+inline const NetworkLinkControlPtr AsNetworkLinkControl(
+    const ElementPtr& element) {
+  return ElementCast<NetworkLinkControl>(element);
+}
 const OrientationPtr AsOrientation(const ElementPtr element);
 const OuterBoundaryIsPtr AsOuterBoundaryIs(const ElementPtr element);
 const OverlayXYPtr AsOverlayXY(const ElementPtr element);
@@ -116,50 +127,60 @@ const SchemaPtr AsSchema(const ElementPtr element);
 const SchemaDataPtr AsSchemaData(const ElementPtr element);
 const ScreenOverlayPtr AsScreenOverlay(const ElementPtr element);
 const ScreenXYPtr AsScreenXY(const ElementPtr element);
-const SimpleDataPtr AsSimpleData(const ElementPtr element);
-const SimpleFieldPtr AsSimpleField(const ElementPtr element);
+inline const SimpleDataPtr AsSimpleData(const ElementPtr& element) {
+  return ElementCast<SimpleData>(element);
+}
+inline const SimpleFieldPtr AsSimpleField(const ElementPtr& element) {
+  return ElementCast<SimpleField>(element);
+}
 const SizePtr AsSize(const ElementPtr element);
 const SnippetPtr AsSnippet(const ElementPtr element);
 const StylePtr AsStyle(const ElementPtr element);
 const StyleMapPtr AsStyleMap(const ElementPtr element);
 const TimeSpanPtr AsTimeSpan(const ElementPtr element);
 const TimeStampPtr AsTimeStamp(const ElementPtr element);
-const UpdatePtr AsUpdate(const ElementPtr element);
+inline const UpdatePtr AsUpdate(const ElementPtr& element) {
+  return ElementCast<Update>(element);
+}
 const ViewVolumePtr AsViewVolume(const ElementPtr element);
 
 // Atom
-const AtomAuthorPtr AsAtomAuthor(const ElementPtr element);
-const AtomLinkPtr AsAtomLink(const ElementPtr element);
+inline const AtomAuthorPtr AsAtomAuthor(const ElementPtr& element) {
+  return ElementCast<AtomAuthor>(element);
+}
+inline const AtomLinkPtr AsAtomLink(const ElementPtr& element) {
+  return ElementCast<AtomLink>(element);
+}
 
 // xAL
 inline const XalAddressDetailsPtr AsXalAddressDetails(
-    const ElementPtr element) {
-  return DynamicPointerCast<XalAddressDetails>(element);
+    const ElementPtr& element) {
+  return ElementCast<XalAddressDetails>(element);
 }
 inline const XalAdministrativeAreaPtr AsXalAdministrativeArea(
-    const ElementPtr element) {
-  return DynamicPointerCast<XalAdministrativeArea>(element);
+    const ElementPtr& element) {
+  return ElementCast<XalAdministrativeArea>(element);
 }
 
-inline const XalCountryPtr AsXalCountry(const ElementPtr element) {
-  return DynamicPointerCast<XalCountry>(element);
+inline const XalCountryPtr AsXalCountry(const ElementPtr& element) {
+  return ElementCast<XalCountry>(element);
 }
 
-inline const XalLocalityPtr AsXalLocality(const ElementPtr element) {
-  return DynamicPointerCast<XalLocality>(element);
+inline const XalLocalityPtr AsXalLocality(const ElementPtr& element) {
+  return ElementCast<XalLocality>(element);
 }
 
-inline const XalPostalCodePtr AsXalPostalCode(const ElementPtr element) {
-  return DynamicPointerCast<XalPostalCode>(element);
+inline const XalPostalCodePtr AsXalPostalCode(const ElementPtr& element) {
+  return ElementCast<XalPostalCode>(element);
 }
 
 inline const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
-    const ElementPtr element) {
-  return DynamicPointerCast<XalSubAdministrativeArea>(element);
+    const ElementPtr& element) {
+  return ElementCast<XalSubAdministrativeArea>(element);
 }
 
-inline const XalThoroughfarePtr AsXalThoroughfare(const ElementPtr element) {
-  return DynamicPointerCast<XalThoroughfare>(element);
+inline const XalThoroughfarePtr AsXalThoroughfare(const ElementPtr& element) {
+  return ElementCast<XalThoroughfare>(element);
 }
 
 }  // end namespace kmldom

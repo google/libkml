@@ -41,13 +41,9 @@ namespace kmldom {
 class Serializer;
 
 // <kml>
-class Kml : public Element {
+class Kml : public BasicElement<Type_kml> {
  public:
   virtual ~Kml();
-  virtual KmlDomType Type() const { return Type_kml; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_kml;
-  }
 
   const std::string& get_hint() { return hint_; }
   bool has_hint() const { return has_hint_; }

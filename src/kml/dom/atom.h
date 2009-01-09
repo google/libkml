@@ -34,13 +34,9 @@
 namespace kmldom {
 
 // <atom:author>, RFC 4287 4.2.1, and 3.2 (atomPersonConstruct)
-class AtomAuthor : public Element {
+class AtomAuthor : public BasicElement<Type_AtomAuthor> {
  public:
   virtual ~AtomAuthor();
-  virtual KmlDomType Type() const { return Type_AtomAuthor; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_AtomAuthor;
-  }
 
   // <atom:name>
   const std::string& get_name() const { return name_; }
@@ -95,13 +91,9 @@ class AtomAuthor : public Element {
 };
 
 // <atom:link>, RFC 4287 4.2.7
-class AtomLink : public Element {
+class AtomLink : public BasicElement<Type_AtomLink> {
  public:
   virtual ~AtomLink();
-  virtual KmlDomType Type() const { return Type_AtomLink; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_AtomLink;
-  }
 
   // href=, RFC 4287 4.2.7.1, RFC 3987
   const std::string& get_href() const { return href_; }

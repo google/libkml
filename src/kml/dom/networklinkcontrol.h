@@ -59,10 +59,9 @@ class UpdateOperation : public Element {
 class Create : public UpdateOperation {
  public:
   virtual ~Create();
-  virtual KmlDomType Type() const { return Type_Create; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Create;
-  }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const { return type == ElementType(); }
+  static KmlDomType ElementType() { return Type_Create; }
 
   // Create targets containers.
   void add_container(const ContainerPtr& container) {
@@ -92,10 +91,9 @@ class Create : public UpdateOperation {
 class Delete : public UpdateOperation {
  public:
   virtual ~Delete();
-  virtual KmlDomType Type() const { return Type_Delete; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Delete || Element::IsA(type);
-  }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const { return type == ElementType(); }
+  static KmlDomType ElementType() { return Type_Delete; }
 
   // Delete targets Features.
   void add_feature(const FeaturePtr& feature) {
@@ -125,10 +123,9 @@ class Delete : public UpdateOperation {
 class Change : public UpdateOperation {
  public:
   virtual ~Change();
-  virtual KmlDomType Type() const { return Type_Change; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Change || Element::IsA(type);
-  }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const { return type == ElementType(); }
+  static KmlDomType ElementType() { return Type_Change; }
 
   // Change targets Objects.
   void add_object(const ObjectPtr& object) {
@@ -155,13 +152,9 @@ class Change : public UpdateOperation {
 };
 
 // <Update>
-class Update : public Element {
+class Update : public BasicElement<Type_Update> {
  public:
   virtual ~Update();
-  virtual KmlDomType Type() const { return Type_Update; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Update || Element::IsA(type);
-  }
 
   // <targetHref>
   const std::string& get_targethref() const { return targethref_; }
@@ -203,13 +196,9 @@ class Update : public Element {
 };
 
 // <NetworkLinkControl>
-class NetworkLinkControl : public Element {
+class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
  public:
   virtual ~NetworkLinkControl();
-  virtual KmlDomType Type() const { return Type_NetworkLinkControl; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_NetworkLinkControl || Element::IsA(type);
-  }
 
   // <minRefreshPeriod>
   double get_minrefreshperiod() const { return minrefreshperiod_; }

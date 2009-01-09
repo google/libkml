@@ -113,20 +113,6 @@ const AliasPtr AsAlias(const ElementPtr element) {
   return NULL;
 }
 
-const AtomAuthorPtr AsAtomAuthor(const ElementPtr element) {
-  if (element && element->Type() == Type_AtomAuthor) {
-    return boost::static_pointer_cast<AtomAuthor>(element);
-  }
-  return NULL;
-}
-
-const AtomLinkPtr AsAtomLink(const ElementPtr element) {
-  if (element && element->Type() == Type_AtomLink) {
-    return boost::static_pointer_cast<AtomLink>(element);
-  }
-  return NULL;
-}
-
 const BalloonStylePtr AsBalloonStyle(const ElementPtr element) {
   if (element && element->Type() == Type_BalloonStyle) {
     return boost::static_pointer_cast<BalloonStyle>(element);
@@ -144,13 +130,6 @@ const CameraPtr AsCamera(const ElementPtr element) {
 const ChangePtr AsChange(const ElementPtr element) {
   if (element && element->Type() == Type_Change) {
     return boost::static_pointer_cast<Change>(element);
-  }
-  return NULL;
-}
-
-const CoordinatesPtr AsCoordinates(const ElementPtr element) {
-  if (element && element->Type() == Type_coordinates) {
-    return boost::static_pointer_cast<Coordinates>(element);
   }
   return NULL;
 }
@@ -179,13 +158,6 @@ const DeletePtr AsDelete(const ElementPtr element) {
 const DocumentPtr AsDocument(const ElementPtr element) {
   if (element && element->Type() == Type_Document) {
     return boost::static_pointer_cast<Document>(element);
-  }
-  return NULL;
-}
-
-const ExtendedDataPtr AsExtendedData(const ElementPtr element) {
-  if (element && element->Type() == Type_ExtendedData) {
-    return boost::static_pointer_cast<ExtendedData>(element);
   }
   return NULL;
 }
@@ -337,20 +309,6 @@ const LookAtPtr AsLookAt(const ElementPtr element) {
   return NULL;
 }
 
-const KmlPtr AsKml(const ElementPtr element) {
-  if (element && element->Type() == Type_kml) {
-    return boost::static_pointer_cast<Kml>(element);
-  }
-  return NULL;
-}
-
-const MetadataPtr AsMetadata(const ElementPtr element) {
-  if (element && element->Type() == Type_Metadata) {
-    return boost::static_pointer_cast<Metadata>(element);
-  }
-  return NULL;
-}
-
 const ModelPtr AsModel(const ElementPtr element) {
   if (element && element->Type() == Type_Model) {
     return boost::static_pointer_cast<Model>(element);
@@ -368,13 +326,6 @@ const MultiGeometryPtr AsMultiGeometry(const ElementPtr element) {
 const NetworkLinkPtr AsNetworkLink(const ElementPtr element) {
   if (element && element->Type() == Type_NetworkLink) {
     return boost::static_pointer_cast<NetworkLink>(element);
-  }
-  return NULL;
-}
-
-const NetworkLinkControlPtr AsNetworkLinkControl(const ElementPtr element) {
-  if (element && element->Type() == Type_NetworkLinkControl) {
-    return boost::static_pointer_cast<NetworkLinkControl>(element);
   }
   return NULL;
 }
@@ -494,20 +445,6 @@ const ScreenOverlayPtr AsScreenOverlay(const ElementPtr element) {
 const ScreenXYPtr AsScreenXY(const ElementPtr element) {
   if (element && element->Type() == Type_screenXY) {
     return boost::static_pointer_cast<ScreenXY>(element);
-  }
-  return NULL;
-}
-
-const SimpleDataPtr AsSimpleData(const ElementPtr element) {
-  if (element && element->Type() == Type_SimpleData) {
-    return boost::static_pointer_cast<SimpleData>(element);
-  }
-  return NULL;
-}
-
-const SimpleFieldPtr AsSimpleField(const ElementPtr element) {
-  if (element && element->Type() == Type_SimpleField) {
-    return boost::static_pointer_cast<SimpleField>(element);
   }
   return NULL;
 }

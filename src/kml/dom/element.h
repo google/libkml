@@ -223,6 +223,17 @@ class ElementSerializer {
   Serializer& serializer_;
 };
 
+// This class template is essentially common code for all elements based
+// directly on Element.
+template<int I>
+class BasicElement : public Element {
+ public:
+  // This static method makes the class useable with ElementCast.
+  static KmlDomType ElementType() { return static_cast<KmlDomType>(I); }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const { return type == ElementType(); }
+};
+
 // A field is generally short lived and holds the element id and character data
 // for that field during parse.  When a Field is presented to AddElement() and
 // is recognized by a parent element that parent typically copies the value of
