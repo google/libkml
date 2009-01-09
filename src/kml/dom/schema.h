@@ -39,13 +39,9 @@ class Attributes;
 namespace kmldom {
 
 // <SimpleField>
-class SimpleField : public Element {
+class SimpleField : public BasicElement<Type_SimpleField> {
  public:
   virtual ~SimpleField();
-  virtual KmlDomType Type() const { return Type_SimpleField; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_SimpleField;
-  }
 
   const std::string& get_type() const { return type_; }
   bool has_type() const { return has_type_; }

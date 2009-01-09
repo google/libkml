@@ -114,13 +114,9 @@ class Vec3 {
 };
 
 // <coordinates>
-class Coordinates : public Element {
+class Coordinates : public BasicElement<Type_coordinates> {
  public:
   virtual ~Coordinates();
-  virtual KmlDomType Type() const { return Type_coordinates; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_coordinates || Element::IsA(type);
-  }
 
   // The main KML-specific API
   void add_latlngalt(double latitude, double longitude, double altitude) {

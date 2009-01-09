@@ -48,18 +48,36 @@ class ItemIcon : public Object {
   }
 
   // <state>
-  int get_state() const {
-    return state_;
+  // Note that <state> within <ItemIcon> is an oddity within KML. It is the
+  // only instance of an element whose character data is an array of
+  // enumerations.
+  //
+  // Also note that since the element has a default enumeration
+  // (<state>open</state>) the API usage is a little different. Calling
+  // add_state(...) will simply append to the array of state enums. If you
+  // initalize an ItemIcon object and wish to give it an explicit state, e.g.
+  // <state>closed</state>, you should call clear_state() before using
+  // add_state(...).
+  //
+  // State enumerations must be space-delimited. New lines, tabs, etc. are not
+  // supported. This is consistent with the use of xsd:list in the KML schema.
+  const int get_state_array_at(size_t index) const {
+    return state_array_[index];
+  }
+  const size_t get_state_array_size() const {
+    return state_array_.size();
   }
   bool has_state() const {
     return has_state_;
   }
-  void set_state(int state) {
-    state_ = state;
+  void add_state(int state) {
+    state_array_.push_back(state);
     has_state_ = true;
   }
+  // Note that clear_state will empty ALL stored state enums and thus does
+  // not return the element to its default value of <state>open</state>.
   void clear_state() {
-    state_ = ITEMICONSTATE_OPEN;
+    state_array_.clear();
     has_state_ = false;
   }
 
@@ -86,7 +104,7 @@ class ItemIcon : public Object {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serialize) const;
-  int state_;
+  std::vector<int> state_array_;
   bool has_state_;
   std::string href_;
   bool has_href_;

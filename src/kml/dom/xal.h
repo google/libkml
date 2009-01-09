@@ -57,17 +57,8 @@
 
 namespace kmldom {
 
-// TODO: use something akin to this for all kmldom::Element's.
-template<int I>
-class XalElement : public Element {
- public:
-  static KmlDomType static_type() { return static_cast<KmlDomType>(I); }
-  virtual KmlDomType Type() const { return static_type(); }
-  virtual bool IsA(KmlDomType type) const { return type == static_type(); }
-};
-
 // <xal:AddressDetails>
-class XalAddressDetails : public XalElement<Type_XalAddressDetails> {
+class XalAddressDetails : public BasicElement<Type_XalAddressDetails> {
  public:
   virtual ~XalAddressDetails() {}
 
@@ -90,7 +81,7 @@ class XalAddressDetails : public XalElement<Type_XalAddressDetails> {
 };
  
 // <xal:AdministrativeArea>
-class XalAdministrativeArea : public XalElement<Type_XalAdministrativeArea> {
+class XalAdministrativeArea : public BasicElement<Type_XalAdministrativeArea> {
  public:
   virtual ~XalAdministrativeArea() {}
 
@@ -147,7 +138,7 @@ class XalAdministrativeArea : public XalElement<Type_XalAdministrativeArea> {
 };
 
 // <xal:Country>
-class XalCountry : public XalElement<Type_XalCountry> {
+class XalCountry : public BasicElement<Type_XalCountry> {
  public:
   virtual ~XalCountry() {}
 
@@ -191,7 +182,7 @@ class XalCountry : public XalElement<Type_XalCountry> {
 };
 
 // <xal:Locality>
-class XalLocality : public XalElement<Type_XalLocality> {
+class XalLocality : public BasicElement<Type_XalLocality> {
  public:
   virtual ~XalLocality() {}
 
@@ -243,7 +234,7 @@ class XalLocality : public XalElement<Type_XalLocality> {
 };
 
 // <xal:PostalCode>
-class XalPostalCode : public XalElement<Type_XalPostalCode> {
+class XalPostalCode : public BasicElement<Type_XalPostalCode> {
  public:
   virtual ~XalPostalCode() {}
 
@@ -278,7 +269,7 @@ class XalPostalCode : public XalElement<Type_XalPostalCode> {
 
 // <xal:SubAdministrativeArea>
 class XalSubAdministrativeArea :
-    public XalElement<Type_XalSubAdministrativeArea> {
+    public BasicElement<Type_XalSubAdministrativeArea> {
  public:
   virtual ~XalSubAdministrativeArea() {}
 
@@ -321,7 +312,7 @@ class XalSubAdministrativeArea :
 };
 
 // <xal:Thoroughfare>
-class XalThoroughfare : public XalElement<Type_XalThoroughfare> {
+class XalThoroughfare : public BasicElement<Type_XalThoroughfare> {
  public:
   virtual ~XalThoroughfare() {}
 
