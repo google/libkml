@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
+				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
+				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
@@ -184,11 +184,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\id_mapper.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\kml_cache.cc"
 				>
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\kml_file.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\kml_stream.cc"
 				>
 			</File>
 			<File
@@ -216,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\parse_old_schema.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -233,6 +245,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\style_resolver.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\update.cc"
 				>
 			</File>
 		</Filter>
@@ -282,11 +298,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\id_mapper.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\kml_cache.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\kml_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\kml_stream.h"
 				>
 			</File>
 			<File
@@ -318,6 +342,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\old_schema_parser_observer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\parse_old_schema.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\schema_parser_observer.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\shared_style_parser_observer.h"
 				>
 			</File>
@@ -331,6 +367,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\style_resolver.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\update.h"
 				>
 			</File>
 		</Filter>

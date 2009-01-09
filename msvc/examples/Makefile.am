@@ -1,4 +1,5 @@
 EXTRA_DIST = \
+	change.vcproj \
 	createkml.vcproj \
 	csvregionator.vcproj \
 	examples.sln \
