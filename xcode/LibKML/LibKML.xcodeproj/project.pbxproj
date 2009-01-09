@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		691BE6F30F1686B700775E11 /* kml_stream.cc in Sources */ = {isa = PBXBuildFile; fileRef = 691BE6EF0F16866000775E11 /* kml_stream.cc */; };
+		691BE6F40F1686B800775E11 /* kml_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = 691BE6F00F16866000775E11 /* kml_stream.h */; };
 		691D4C400EF3181500D1A69D /* xml_element.h in Headers */ = {isa = PBXBuildFile; fileRef = 691D4C3E0EF3181500D1A69D /* xml_element.h */; };
 		691D4C410EF3181500D1A69D /* xml_file.h in Headers */ = {isa = PBXBuildFile; fileRef = 691D4C3F0EF3181500D1A69D /* xml_file.h */; };
 		691D4C460EF3185300D1A69D /* id_mapper.cc in Sources */ = {isa = PBXBuildFile; fileRef = 691D4C420EF3185200D1A69D /* id_mapper.cc */; };
@@ -383,6 +385,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		691BE6EA0F16860F00775E11 /* expat_parser_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = expat_parser_test.cc; sourceTree = "<group>"; };
+		691BE6EB0F16860F00775E11 /* xml_element_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xml_element_test.cc; sourceTree = "<group>"; };
+		691BE6EC0F16860F00775E11 /* xml_file_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = xml_file_test.cc; sourceTree = "<group>"; };
+		691BE6ED0F16863600775E11 /* round_trip_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = round_trip_test.cc; sourceTree = "<group>"; };
+		691BE6EE0F16866000775E11 /* id_mapper_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = id_mapper_test.cc; sourceTree = "<group>"; };
+		691BE6EF0F16866000775E11 /* kml_stream.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kml_stream.cc; sourceTree = "<group>"; };
+		691BE6F00F16866000775E11 /* kml_stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kml_stream.h; sourceTree = "<group>"; };
+		691BE6F10F16866000775E11 /* kml_stream_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kml_stream_test.cc; sourceTree = "<group>"; };
+		691BE6F20F16866000775E11 /* update_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = update_test.cc; sourceTree = "<group>"; };
 		691D4C3E0EF3181500D1A69D /* xml_element.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xml_element.h; sourceTree = "<group>"; };
 		691D4C3F0EF3181500D1A69D /* xml_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xml_file.h; sourceTree = "<group>"; };
 		691D4C420EF3185200D1A69D /* id_mapper.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = id_mapper.cc; sourceTree = "<group>"; };
@@ -1033,6 +1044,9 @@
 		699481080EB02EEC0042D241 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				691BE6EA0F16860F00775E11 /* expat_parser_test.cc */,
+				691BE6EB0F16860F00775E11 /* xml_element_test.cc */,
+				691BE6EC0F16860F00775E11 /* xml_file_test.cc */,
 				691D4C3E0EF3181500D1A69D /* xml_element.h */,
 				691D4C3F0EF3181500D1A69D /* xml_file.h */,
 				692EDF280EB1722400F6217F /* date_time.cc */,
@@ -1110,6 +1124,7 @@
 		699481420EB02EEC0042D241 /* dom */ = {
 			isa = PBXGroup;
 			children = (
+				691BE6ED0F16863600775E11 /* round_trip_test.cc */,
 				698F9E2C0ECE020F0039349F /* stats_serializer.h */,
 				69E0F9D40ECB754000BDFB5E /* xal.cc */,
 				69E0F9D50ECB754000BDFB5E /* xal.h */,
@@ -1259,6 +1274,11 @@
 		699481CF0EB02EEC0042D241 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				691BE6EE0F16866000775E11 /* id_mapper_test.cc */,
+				691BE6EF0F16866000775E11 /* kml_stream.cc */,
+				691BE6F00F16866000775E11 /* kml_stream.h */,
+				691BE6F10F16866000775E11 /* kml_stream_test.cc */,
+				691BE6F20F16866000775E11 /* update_test.cc */,
 				691D4C420EF3185200D1A69D /* id_mapper.cc */,
 				691D4C430EF3185300D1A69D /* id_mapper.h */,
 				691D4C440EF3185300D1A69D /* update.cc */,
@@ -2021,6 +2041,7 @@
 				692EDF460EB172BF00F6217F /* schema_parser_observer.h in Headers */,
 				691D4C470EF3185300D1A69D /* id_mapper.h in Headers */,
 				691D4C490EF3185300D1A69D /* update.h in Headers */,
+				691BE6F40F1686B800775E11 /* kml_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2432,6 +2453,7 @@
 				692EDF430EB172BF00F6217F /* parse_old_schema.cc in Sources */,
 				691D4C460EF3185300D1A69D /* id_mapper.cc in Sources */,
 				691D4C480EF3185300D1A69D /* update.cc in Sources */,
+				691BE6F30F1686B700775E11 /* kml_stream.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
