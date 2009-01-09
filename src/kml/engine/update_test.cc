@@ -208,7 +208,7 @@ static const struct {
 } kTestCases [] = {
   {
     "/update/placemark.kml", "/update/change-placemark-styleurl.kml",
-    "/update/change-placemark-style-url-check.kml"
+    "/update/change-placemark-styleurl-check.kml"
   },
   {
     "/update/placemark.kml", "/update/change-placemark-geometry.kml",
