@@ -429,6 +429,20 @@ TEST_F(MergeTest, TestMergeFieldsSerialize) {
                        kmldom::SerializeRaw(source_style_));
 }
 
+// An early version of MergeElements did not properly preserve the state of
+// previously set attributes.
+TEST_F(MergeTest, TestMergeAttributes) {
+  const std::string kId("style-id");
+  const std::string kTargetId("style-target-id");
+  source_style_->set_targetid(kTargetId);
+  target_style_->set_id(kId);
+  MergeElements(source_style_, target_style_);
+  ASSERT_TRUE(target_style_->has_id());
+  ASSERT_EQ(kId, target_style_->get_id());
+  ASSERT_TRUE(target_style_->has_targetid());
+  ASSERT_EQ(kTargetId, target_style_->get_targetid());
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {

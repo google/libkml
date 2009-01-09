@@ -25,14 +25,22 @@
 
 #include "kml/engine/update.h"
 #include "gtest/gtest.h"
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
 
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
+
+using kmlbase::File;
 using kmldom::ContainerPtr;
 using kmldom::FolderPtr;
 using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
 using kmldom::UpdatePtr;
+using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 
 namespace kmlengine {
 
@@ -193,7 +201,58 @@ TEST(UpdateTest, TestSingleSimpleDelete) {
   // ASSERT_FALSE(target_file->GetObjectById("p"));
 }
 
-// TODO: a table of a bunch of data-driven test case files
+static const struct {
+  const char* target_file_;  // Any valid KML file.
+  const char* source_file_;  // <Update> is root element.
+  const char* check_file_;  // Result of applying source to target.
+} kTestCases [] = {
+  {
+    "/update/placemark.kml", "/update/change-placemark-styleurl.kml",
+    "/update/change-placemark-style-url-check.kml"
+  },
+  {
+    "/update/placemark.kml", "/update/change-placemark-geometry.kml",
+    "/update/change-placemark-geometry-check.kml"
+  },
+  {
+    "/update/placemark.kml", "/update/change-placemark-geometry2x.kml",
+    "/update/change-placemark-geometry2x-check.kml"
+  },
+  {
+    "/update/california.kml", "/update/change-california-a.kml",
+    "/update/change-california-a-check.kml"
+  }
+};
+
+// This is a utility function to parse the given string KML file.
+static KmlFilePtr ParseTestCaseFile(const std::string& filename) {
+  std::string kml_data;
+  if (File::ReadFileToString(std::string(DATADIR) + filename, &kml_data)) {
+    return KmlFile::CreateFromParse(kml_data, NULL);
+  }
+  return NULL;
+}
+
+// This function verifies all test cases in the kTestCases table.
+TEST(UpdateTest, TestFiles) {
+  const size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
+  for (size_t i = 0; i < size; ++i) {
+    KmlFilePtr target = ParseTestCaseFile(kTestCases[i].target_file_);
+    ASSERT_TRUE(target);
+    KmlFilePtr source = ParseTestCaseFile(kTestCases[i].source_file_);
+    ASSERT_TRUE(source);
+    UpdatePtr update = AsUpdate(source->get_root());
+    ASSERT_TRUE(update);
+    ProcessUpdate(update, target);
+    std::string actual;
+    ASSERT_TRUE(target->SerializeToString(&actual));
+    std::string expected;
+    ASSERT_TRUE(
+        File::ReadFileToString(std::string(DATADIR) + kTestCases[i].check_file_,
+                               &expected));
+    ASSERT_EQ(expected, actual);
+  }
+}
 
 }  // end namespace kmlengine
 
