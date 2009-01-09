@@ -210,6 +210,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\color32.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\date_time.h"
 				>
 			</File>
@@ -235,6 +239,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\net_cache.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\net_cache_test_util.h"
 				>
 			</File>
 			<File
@@ -271,6 +279,18 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\util.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\vec3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\xml_element.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\xml_file.h"
 				>
 			</File>
 			<File
