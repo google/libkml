@@ -118,6 +118,14 @@ libgtest_main_la_LIBADD = \
 	$(top_builddir)/third_party/libgtest.la
 
 EXTRA_DIST = \
+	expat.win32/expat.h \
+	expat.win32/expat_external.h \
+	expat.win32/libexpat.dll \
+	expat.win32/libexpat.lib \
+	expat.win32/libexpatMT.lib \
+	expat.win32/libexpatw.dll \
+	expat.win32/libexpatw.lib \
+	expat.win32/libexpatwMT.lib \
 	$(boost_root)/LICENSE_1_0.txt \
 	$(boost)/README \
 	$(boost)/config/abi_prefix.hpp \
