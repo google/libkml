@@ -74,10 +74,10 @@ class KmlFile {
  public:
   static KmlFile* CreateFromParse(const std::string& kml_data,
                                   std::string* errors);
-  const kmldom::ElementPtr& root() const;
+  static KmlFile* CreateFromImport(const kmldom::ElementPtr& root);
+  const kmldom::ElementPtr get_root() const;
   kmldom::ObjectPtr GetObjectById(const std::string& id) const;
-  // TODO:
-  // kmldom::ObjectPtr GetSharedStyleById(const std::string& id) const;
+  kmldom::StyleSelectorPtr GetSharedStyleById(const std::string& id) const;
 };
 
 %apply std::string* OUTPUT { std::string* kmz_url };

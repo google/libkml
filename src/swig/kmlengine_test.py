@@ -91,15 +91,6 @@ class VerySimpleGetRootFeatureTestCase(unittest.TestCase):
     assert feature
     assert kmldom.AsPlacemark(feature)
 
-class VerySimpleKmlFileTestCase(unittest.TestCase):
-  """ Verify very simple usage of the KmlFile::CreateFromParse() method """
-  def runTest(self):
-    kml = '<Placemark><name>hello</name></Placemark>'
-    kmlfile,errors = kmlengine.KmlFile.CreateFromParse(kml)
-    assert kmlfile
-    assert kmlfile.get_root()
-    assert kmldom.AsPlacemark(kmlfile.get_root())
-
 class VerySimpleKmzSplitTestCase(unittest.TestCase):
   def runTest(self):
     kml_url = 'http://foo.com/goo.kmz/bar.jpg'
@@ -119,38 +110,40 @@ class VerySimpleSplitUriTestCase(unittest.TestCase):
     assert 'p=q' == query
     assert 'id' == fragment
 
-class VerySimpleKmlFileTestCase(unittest.TestCase):
+class BasicKmlFileCreateFromParseTestCase(unittest.TestCase):
   """ Verify very simple usage of the KmlFile::CreateFromParse() method """
   def runTest(self):
-    kml = '<Placemark><name>hello</name></Placemark>'
+    id = 'pm123'
+    kml = '<Placemark id="%s"><name>hello</name></Placemark>' % id
     kmlfile,errors = kmlengine.KmlFile.CreateFromParse(kml)
     assert kmlfile
-    assert kmlfile.root()
-    assert kmldom.AsPlacemark(kmlfile.root())
-
-class BasicKmlFileTestCase(unittest.TestCase):
-  def setUp(self):
-    self.name = 'Hello, KmlFile!'
-    self.id = 'placemark123'
-    kml = '<Placemark id=\"%s\"><name>%s</name></Placemark>' % \
-           (self.id, self.name)
-    self.kmlfile,errors = kmlengine.KmlFile.CreateFromParse(kml)
-
-  def testGetRoot(self):
-    root = self.kmlfile.root()
-    assert root
-    placemark = kmldom.AsPlacemark(root)
+    object = kmlfile.GetObjectById(id)
+    assert object
+    placemark = kmldom.AsPlacemark(object)
     assert placemark
-    assert self.name == placemark.get_name()
-    assert self.id == placemark.get_id()
-  
-  def testGetObjectById(self):
-    obj = self.kmlfile.GetObjectById(self.id)
-    assert obj
-    pm = kmldom.AsPlacemark(obj)
-    assert pm
-    assert self.id == pm.get_id()
-    assert self.name == pm.get_name()
+    assert placemark.has_id()
+    assert id == placemark.get_id()
+
+class BasicKmlFileCreateFromImportTestCase(unittest.TestCase):
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    placemark = factory.CreatePlacemark()
+    id = 'placemark123'
+    name = 'some name'
+    placemark.set_id(id)
+    placemark.set_name(name)
+    folder = factory.CreateFolder()
+    folder.add_feature(placemark)
+    kmlfile = kmlengine.KmlFile.CreateFromImport(folder)
+    assert kmlfile
+    object = kmlfile.GetObjectById(id)
+    assert object
+    placemark = kmldom.AsPlacemark(object)
+    assert placemark
+    assert placemark.has_id()
+    assert id == placemark.get_id()
+    assert placemark.has_name()
+    assert name == placemark.get_name()
 
 def suite():
   suite = unittest.TestSuite()
@@ -161,8 +154,8 @@ def suite():
   suite.addTest(VerySimpleGetFeatureLatLonTestCase())
   suite.addTest(VerySimpleKmzSplitTestCase())
   suite.addTest(VerySimpleSplitUriTestCase())
-  suite.addTest(BasicKmlFileTestCase('testGetRoot'))
-  suite.addTest(BasicKmlFileTestCase('testGetObjectById'))
+  suite.addTest(BasicKmlFileCreateFromParseTestCase())
+  suite.addTest(BasicKmlFileCreateFromImportTestCase())
   return suite
 
 
