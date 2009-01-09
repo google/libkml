@@ -27,6 +27,7 @@
     <listItemType>checkHideChildren</listItemType>
     <bgColor>10112233</bgColor>
     <ItemIcon>
+      <state>open closed</state>
       <href>http://example.com/image.png</href>
     </ItemIcon>
     <ItemIcon>

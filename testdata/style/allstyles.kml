@@ -41,9 +41,7 @@
 -->
       <bgColor>10112233</bgColor>
       <ItemIcon>
-<!-- TODO enum list
         <state>open closed</state>
--->
         <href>http://example.com/image.png</href>
       </ItemIcon>
       <ItemIcon>
