@@ -15,7 +15,7 @@ libhelloutil_la_LIBADD = $(top_builddir)/third_party/libminizip.la
 
 noinst_PROGRAMS = countkml createkml checklinks helloattrs helloenum \
                   hellofeatures hellofolder hellogeometry hellohref hellokmz \
-                  helloregion helloworld parsebuf parsekml parsens prettykml \
+                  helloregion helloworld parsekml parsens prettykml \
                   printgeometry sharedstyles sortplacemarks
 
 createkml_SOURCES = createkml.cc
@@ -81,11 +81,6 @@ helloregion_LDADD = \
 
 helloworld_SOURCES = helloworld.cc
 helloworld_LDADD = \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la
-
-parsebuf_SOURCES = parsebuf.cc
-parsebuf_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
