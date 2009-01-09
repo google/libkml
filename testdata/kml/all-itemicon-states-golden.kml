@@ -1,0 +1,266 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>ItemIcon examples</name>
+    <open>1</open>
+    <Style id="open_folder">
+      <ListStyle>
+        <ItemIcon>
+          <state>open</state>
+          <href>icons/openfolder.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_folder">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed</state>
+          <href>icons/closedfolder.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_netlink">
+      <ListStyle>
+        <ItemIcon>
+          <state>open</state>
+          <href>icons/ni_open_connected.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_netlink">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed</state>
+          <href>icons/ni_closed_connected.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_error">
+      <ListStyle>
+        <ItemIcon>
+          <state>open error</state>
+          <href>icons/ni_open_disconnected.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_error">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed error</state>
+          <href>icons/ni_closed_disconnected.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_fetching0">
+      <ListStyle>
+        <ItemIcon>
+          <state>open fetching0</state>
+          <href>icons/ni_open_fetching_01.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_fetching1">
+      <ListStyle>
+        <ItemIcon>
+          <state>open fetching1</state>
+          <href>icons/ni_open_fetching_02.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_fetching2">
+      <ListStyle>
+        <ItemIcon>
+          <state>open fetching2</state>
+          <href>icons/ni_open_fetching_03.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_fetching0">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed fetching0</state>
+          <href>icons/ni_closed_fetching_01.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_fetching1">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed fetching1</state>
+          <href>icons/ni_closed_fetching_02.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_fetching2">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed fetching2</state>
+          <href>icons/ni_closed_fetching_03.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="open_fetching_anim">
+      <ListStyle>
+        <ItemIcon>
+          <state>fetching0</state>
+          <href>icons/ni_open_fetching_01.png</href>
+        </ItemIcon>
+        <ItemIcon>
+          <state>fetching1</state>
+          <href>icons/ni_open_fetching_02.png</href>
+        </ItemIcon>
+        <ItemIcon>
+          <state>fetching2</state>
+          <href>icons/ni_open_fetching_03.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Style id="closed_fetching_anim">
+      <ListStyle>
+        <ItemIcon>
+          <state>closed fetching0</state>
+          <href>icons/ni_closed_fetching_01.png</href>
+        </ItemIcon>
+        <ItemIcon>
+          <state>closed fetching1</state>
+          <href>icons/ni_closed_fetching_02.png</href>
+        </ItemIcon>
+        <ItemIcon>
+          <state>closed fetching2</state>
+          <href>icons/ni_closed_fetching_03.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Folder>
+      <name>Static icons</name>
+      <open>1</open>
+      <Placemark>
+        <name>open folder</name>
+        <styleUrl>#open_folder</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.011,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed folder</name>
+        <styleUrl>#closed_folder</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.01,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>open network link</name>
+        <styleUrl>#open_netlink</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.009,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed network link</name>
+        <styleUrl>#closed_netlink</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.008,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>open error</name>
+        <styleUrl>#open_error</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.007,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed error</name>
+        <styleUrl>#closed_error</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.006,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>open_fetching0</name>
+        <styleUrl>#open_fetching0</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.005,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>open_fetching1</name>
+        <styleUrl>#open_fetching1</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.004,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>open_fetching2</name>
+        <styleUrl>#open_fetching2</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.003,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed_fetching0</name>
+        <styleUrl>#closed_fetching0</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.002,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed_fetching1</name>
+        <styleUrl>#closed_fetching1</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37.001,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>closed_fetching2</name>
+        <styleUrl>#closed_fetching2</styleUrl>
+        <Point>
+          <coordinates>
+            -100,37,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Anmiated fetches</name>
+      <open>1</open>
+      <NetworkLink>
+        <name>open fetching</name>
+        <visibility>0</visibility>
+        <styleUrl>#open_fetching_anim</styleUrl>
+        <Link>
+          <href>http://dev.keyhole.com/cgi-bin/waitonemin.py</href>
+        </Link>
+      </NetworkLink>
+      <NetworkLink>
+        <name>closed fetching</name>
+        <visibility>0</visibility>
+        <styleUrl>#closed_fetching_anim</styleUrl>
+        <Link>
+          <href>http://dev.keyhole.com/cgi-bin/waitonemin.py</href>
+        </Link>
+      </NetworkLink>
+    </Folder>
+  </Document>
+</kml>

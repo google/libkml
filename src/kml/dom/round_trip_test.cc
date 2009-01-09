@@ -45,7 +45,8 @@ static struct {
   const char* golden_kml;
 } kTestCases[] = {
   { "kml", "all-unknown-input.kml", "all-unknown-golden.kml" },
-  { "kml", "all-unknown-attrs-input.kml", "all-unknown-attrs-golden.kml" }
+  { "kml", "all-unknown-attrs-input.kml", "all-unknown-attrs-golden.kml" },
+  { "kml", "all-itemicon-states-input.kml", "all-itemicon-states-golden.kml" }
 };
 
 static std::string ReadTestCase(const char *subdir, const char* filename) {
