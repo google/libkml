@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark id="placemark123">
+    <name>This is name of the Point</name>
+    <description>This is the description of the Point</description>
+    <Point>
+      <extrude>1</extrude>
+      <altitudeMode>relativeToGround</altitudeMode>
+      <coordinates>
+        1,2,3
+      </coordinates>
+    </Point>
+  </Placemark>
+</kml>

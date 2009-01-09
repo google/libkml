@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark id="placemark123">
+    <name>My name is placemark123</name>
+    <description>I have no Point</description>
+    <styleUrl>http://example.com/style.kml#pretty</styleUrl>
+  </Placemark>
+</kml>
