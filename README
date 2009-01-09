@@ -1,13 +1,18 @@
 Welcome to libkml!
 
-This is the source code for the libkml project.
+This is the source code for the libkml project. The main project page is at:
+http://libkml.googlecode.com/
 
-See the wiki release notes to get started:
-http://code.google.com/p/libkml/wiki/UserGuide01x
+All of our documentation is on the project wiki:
+http://code.google.com/p/libkml/w/list
 
-Style Notes:
-- The "using namespace xxx" declaration is explicitly forbidden.
-- Declarations of the form "using kmldom::Element*" are permissible. However,
-  we explicitly avoid the use of "using std::string".
+The wiki contains documents that describe:
+- An overview of the most recent release
+- Building and running the code
+- Running the unit tests
+- A general API reference guide
+- More details guides to each of the libkml modules
 
-March 2008
+The main project page has links to the discussion group and the mailing list
+that mirrors the commit and issue logs.
+
