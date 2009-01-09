@@ -50,14 +50,15 @@ TEST_F(ItemIconTest, TestType) {
 // Verify proper defaults:
 TEST_F(ItemIconTest, TestDefaults) {
   ASSERT_FALSE(itemicon_->has_state());
-  ASSERT_EQ(ITEMICONSTATE_OPEN, itemicon_->get_state());
+  ASSERT_EQ(static_cast<size_t>(1), itemicon_->get_state_array_size());
+  ASSERT_EQ(ITEMICONSTATE_OPEN, itemicon_->get_state_array_at(0));
   ASSERT_FALSE(itemicon_->has_href());
   ASSERT_EQ(std::string(""), itemicon_->get_href());
 }
 
 // Verify setting default makes has_xxx() true:
 TEST_F(ItemIconTest, TestSetToDefaultValues) {
-  itemicon_->set_state(itemicon_->get_state());
+  itemicon_->add_state(itemicon_->get_state_array_at(0));
   ASSERT_TRUE(itemicon_->has_state());
   itemicon_->set_href(itemicon_->get_href());
   ASSERT_TRUE(itemicon_->has_href());
@@ -70,12 +71,13 @@ TEST_F(ItemIconTest, TestSetGetHasClear) {
   std::string href("http://example.com/foo.jpg");
 
   // Set all fields:
-  itemicon_->set_state(state);
+  itemicon_->clear_state();
+  itemicon_->add_state(state);
   itemicon_->set_href(href);
 
   // Verify getter and has_xxx():
   ASSERT_TRUE(itemicon_->has_state());
-  ASSERT_EQ(state, itemicon_->get_state());
+  ASSERT_EQ(state, itemicon_->get_state_array_at(0));
   ASSERT_TRUE(itemicon_->has_href());
   ASSERT_EQ(href, itemicon_->get_href());
 
@@ -84,6 +86,34 @@ TEST_F(ItemIconTest, TestSetGetHasClear) {
   itemicon_->clear_href();
 }
 
+TEST_F(ItemIconTest, TestStateArrays) {
+  ItemIconStateEnum iis_open= ITEMICONSTATE_OPEN;
+  ItemIconStateEnum iis_error = ITEMICONSTATE_ERROR;
+  ItemIconStateEnum iis_fetching0 = ITEMICONSTATE_FETCHING0;
+
+  // Verify the default constructed state.
+  ASSERT_FALSE(itemicon_->has_state());
+  ASSERT_EQ(static_cast<size_t>(1), itemicon_->get_state_array_size());
+  ASSERT_EQ(iis_open, itemicon_->get_state_array_at(0));
+
+  // Clear <state> array.
+  itemicon_->clear_state();
+  ASSERT_FALSE(itemicon_->has_state());
+  ASSERT_EQ(static_cast<size_t>(0), itemicon_->get_state_array_size());
+
+  // Add an explict error enum.
+  itemicon_->add_state(iis_error);
+  ASSERT_TRUE(itemicon_->has_state());
+  ASSERT_EQ(static_cast<size_t>(1), itemicon_->get_state_array_size());
+  ASSERT_EQ(iis_error, itemicon_->get_state_array_at(0));
+
+  // Add a fetching0 to the open.
+  itemicon_->add_state(iis_fetching0);
+  ASSERT_TRUE(itemicon_->has_state());
+  ASSERT_EQ(static_cast<size_t>(2), itemicon_->get_state_array_size());
+  ASSERT_EQ(iis_error, itemicon_->get_state_array_at(0));
+  ASSERT_EQ(iis_fetching0, itemicon_->get_state_array_at(1));
+}
 
 class ListStyleTest : public testing::Test {
  protected:

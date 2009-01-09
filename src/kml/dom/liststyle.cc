@@ -24,10 +24,12 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/liststyle.h"
+#include "kml/base/string_util.h"
 #include "kml/base/attributes.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
+#include "kml/dom/xsd.h"
 
 using kmlbase::Attributes;
 using kmlbase::Color32;
@@ -36,7 +38,8 @@ namespace kmldom {
 
 // <ItemIcon>
 ItemIcon::ItemIcon()
-  : state_(ITEMICONSTATE_OPEN), has_state_(false), has_href_(false) {
+  : has_state_(false), has_href_(false) {
+    state_array_.push_back(ITEMICONSTATE_OPEN);
 }
 
 ItemIcon::~ItemIcon() {}
@@ -47,8 +50,19 @@ void ItemIcon::AddElement(const ElementPtr& element) {
   }
   switch (element->Type()) {
     case Type_state:
-      // TODO: multiple space-separated enums.
-      has_state_ = element->SetEnum(&state_);
+      {
+        clear_state();
+        std::vector<std::string> v;
+        kmlbase::SplitStringUsing(element->get_char_data(), " ", &v);
+        std::vector<std::string>::const_iterator itr;
+        for (itr = v.begin(); itr != v.end(); ++itr) {
+          int val = Xsd::GetSchema()->EnumId(Type_state, *itr);
+          if (val != -1) {
+            add_state(val);
+          }
+        }
+        has_state_ = true;
+      }
       break;
     case Type_href:
       has_href_ = element->SetString(&href_);
@@ -63,7 +77,16 @@ void ItemIcon::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   if (has_state()) {
-    serializer.SaveEnum(Type_state, get_state());
+    std::string content;
+    for (size_t i = 0; i != get_state_array_size(); ++i) {
+      std::string s = Xsd::GetSchema()->EnumValue(Type_state,
+                                                  get_state_array_at(i));
+      content.append(s);
+      if (i != get_state_array_size() - 1) {
+        content.append(" ");
+      }
+    }
+    serializer.SaveFieldById(Type_state, content);
   }
   if (has_href()) {
     serializer.SaveFieldById(Type_href, get_href());
