@@ -26,6 +26,7 @@
 // This file contains the implementation of the internal ExpatParser class.
 
 #include "kml/base/expat_parser.h"
+#include <cstring>  // For memcpy.
 #include <sstream>
 #include "kml/base/expat_handler.h"
 
