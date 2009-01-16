@@ -1,0 +1,16 @@
+<Update>
+  <targetHref/>
+  <Delete>
+    <Placemark targetId="floating-placemark"/>
+    <Placemark targetId="extruded-placemark"/>
+    <Placemark targetId="purple-line-placemark"/>
+    <Placemark targetId="there-is-no-placemark-with-this-id"/>
+  </Delete>
+  <Delete>
+    <Placemark targetId="green-wall-placemark"/>
+    <Placemark targetId="black-line-placemark"/>
+    <Placemark targetId="blue-walls-placemark"/>
+    <Placemark targetId="pentagon"/>
+    <Folder targetId="absolute-and-relative-folder"/>
+  </Delete>
+</Update>
