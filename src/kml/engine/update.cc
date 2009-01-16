@@ -23,6 +23,11 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+// TODO: nothing here updates the id maps in KmlFile.  <Create> can add
+// an Object with an id (such as a shared style) and <Delete> always deletes
+// an Object with an id.  <Change> should probably be prevented from ever
+// changing an id.
+
 #include "kml/engine/update.h"
 #include "kml/engine/clone.h"
 #include "kml/engine/merge.h"
@@ -112,19 +117,17 @@ void ProcessUpdateDelete(const DeletePtr& deleet, KmlFilePtr kml_file) {
   }
 }
 
-void DeleteFeatureById(const std::string& id, KmlFilePtr kml_file) {
-  if (FeaturePtr target_feature = AsFeature(kml_file->GetObjectById(id))) {
-    // TODO: to delete a feature remove it from its parent, this obviously
-    // requires getting the parent, seeing if it's <kml> or a Container,
-    // and in the latter an array-delete operation.
-#if 0
-    if (KmlPtr kml = AsKml(target_feature->GetParent())) {
-      kml->clear_feature();
-    } else if (ContainerPtr kml = AsContainer(target_feature->GetParent())) {
-      container->DeleteFeatureById(id);
+FeaturePtr DeleteFeatureById(const std::string& id, KmlFilePtr kml_file) {
+  if (FeaturePtr feature = AsFeature(kml_file->GetObjectById(id))) {
+    if (ContainerPtr container = AsContainer(feature->GetParent())) {
+      return container->DeleteFeatureById(id);
     }
-#endif
+    if (KmlPtr kml = AsKml(feature->GetParent())) {
+      kml->clear_feature();
+      return feature;
+    }
   }
+  return NULL;
 }
 
 }  // end namespace kmlengine

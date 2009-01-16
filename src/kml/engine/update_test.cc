@@ -26,6 +26,7 @@
 #include "kml/engine/update.h"
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
+#include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
 
@@ -35,6 +36,8 @@
 
 using kmlbase::File;
 using kmldom::ContainerPtr;
+using kmldom::DeletePtr;
+using kmldom::FeaturePtr;
 using kmldom::FolderPtr;
 using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
@@ -181,7 +184,7 @@ static const char source_delete[] =
     "<Update>"
     "<targetHref/>"
     "<Delete>"
-    "<Placemark id=\"p\"/>"
+    "<Placemark targetId=\"p\"/>"
     "</Delete>"
     "</Update>";
 
@@ -193,12 +196,59 @@ TEST(UpdateTest, TestSingleSimpleDelete) {
   UpdatePtr update = AsUpdate(kmldom::Parse(source_delete, NULL));
   ASSERT_TRUE(update);
   ProcessUpdate(update, target_file);
-  // TODO:
   // Verify the Placemark has been removed from the Folder.
-  // ASSERT_EQ(static_cast<size_t>(0),
-  //           AsFeature(kml_file->get_root())->get_feature_array_size());
+  FolderPtr folder = kmldom::AsFolder(target_file->get_root());
+  ASSERT_TRUE(folder);
+  ASSERT_EQ(static_cast<size_t>(0), folder->get_feature_array_size());
+  // TODO: actually remove the object from the KmlFile's map(s).
   // Verify the KmlFile's id mapping for the Placemark is gone.
   // ASSERT_FALSE(target_file->GetObjectById("p"));
+}
+
+static const kmldom::KmlDomType kFeatures[] = {
+  kmldom::Type_Placemark, kmldom::Type_Folder, kmldom::Type_Document,
+  kmldom::Type_NetworkLink, kmldom::Type_GroundOverlay,
+  kmldom::Type_ScreenOverlay, kmldom::Type_PhotoOverlay
+};
+
+// Create a Feature and give it an id based on i.  If id set id=, else targetId.
+static FeaturePtr CreateFeature(int i, bool id) {
+  int num_features = sizeof(kFeatures)/sizeof(kFeatures[0]);
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  FeaturePtr feature = AsFeature(kml_factory->CreateElementById(
+      kFeatures[i % num_features]));
+  const std::string kId(std::string("i") + kmlbase::ToString(i));
+  if (id) {
+    feature->set_id(kId);
+  } else {
+    feature->set_targetid(kId);
+  }
+  return feature;
+}
+
+TEST(UpdateTest, TestManyDeletes) {
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  FolderPtr folder = kml_factory->CreateFolder();
+  const int kNumFeatures = 1237;
+  for (int i = 0; i < kNumFeatures; ++i) {
+    folder->add_feature(CreateFeature(i, true));  // Set id=
+  }
+  ASSERT_EQ(static_cast<size_t>(kNumFeatures),
+            folder->get_feature_array_size());
+  ASSERT_EQ(std::string("i0"), folder->get_feature_array_at(0)->get_id());
+  ASSERT_EQ(kmldom::Type_Placemark, folder->get_feature_array_at(0)->Type());
+  KmlFilePtr kml_file = KmlFile::CreateFromImport(folder);
+  ASSERT_TRUE(kml_file);
+  for (int i = 0; i < kNumFeatures; ++i) {
+    DeletePtr deleet = kml_factory->CreateDelete();
+    deleet->add_feature(CreateFeature(i, false));  // Set targetId=
+    UpdatePtr update = kml_factory->CreateUpdate();
+    update->set_targethref("");
+    update->add_updateoperation(deleet);
+    ProcessUpdate(update, kml_file);
+    ASSERT_EQ(static_cast<size_t>(kNumFeatures - i - 1),
+              folder->get_feature_array_size());
+  }
 }
 
 static const struct {
@@ -221,6 +271,22 @@ static const struct {
   {
     "/update/california.kml", "/update/change-california-a.kml",
     "/update/change-california-a-check.kml"
+  },
+  {
+    "/update/california.kml", "/update/california-delete-ad.kml",
+    "/update/california-delete-ad-check.kml"
+  },
+  {
+    "/kml/kmlsamples.kml", "/update/kmlsamples-delete-many.kml",
+    "/update/kmlsamples-delete-many-check.kml"
+  },
+  {
+    "/kml/kmlsamples.kml", "/update/kmlsamples-change-many.kml",
+    "/update/kmlsamples-change-many-check.kml"
+  },
+  {
+    "/kml/kmlsamples.kml", "/update/kmlsamples-multi-update.kml",
+    "/update/kmlsamples-multi-update-check.kml"
   }
 };
 
