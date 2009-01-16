@@ -1155,6 +1155,13 @@ class SimpleUpdateTestCase(unittest.TestCase):
     assert kmldom.AsUpdate(self.update)
     assert 0 == self.update.get_updateoperation_array_size()
 
+  def testTargetHref(self):
+    assert not self.update.has_targethref()
+    assert '' == self.update.get_targethref()
+    href = 'mycoolhref'
+    self.update.set_targethref(href)
+    assert self.update.has_targethref()
+    assert href == self.update.get_targethref()
 
 class SimpleStyleMapTestCase(unittest.TestCase):
   """  TODO: This tests the StyleMap element."""
@@ -1231,6 +1238,7 @@ def suite():
   suite.addTest(SimpleSchemaDataTestCase('testDefault'))
   suite.addTest(SimpleSimpleFieldTestCase('testDefault'))
   suite.addTest(SimpleUpdateTestCase('testDefault'))
+  suite.addTest(SimpleUpdateTestCase('testTargetHref'))
   suite.addTest(SimpleIconStyleIconTestCase('testBasic'))
   return suite
 

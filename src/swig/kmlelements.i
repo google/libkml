@@ -1038,6 +1038,12 @@ public:
 %nodefaultctor Update;
 class Update : public Element {
 public:
+  // <targetHref>
+  const std::string& get_targethref();
+  bool has_targethref();
+  void set_targethref(const std::string& targethref);
+  void clear_targethref();
+
   // <Change>,<Create>,<Delete>...
   void add_updateoperation(UpdateOperationPtr updateoperation);
   const size_t get_updateoperation_array_size();
