@@ -1,0 +1,53 @@
+<Update>
+  <targetHref/>
+  <Delete>
+    <Folder targetId="polygons-folder"/>
+    <Folder targetId="paths-folder"/>
+  </Delete>
+  <Create>
+    <Folder targetId="placemarks-folder">
+      <Placemark>
+        <name>Some new Placemark</name>
+        <Point/>
+      </Placemark>
+      <Placemark>
+        <name>Another new Placemark</name>
+        <Point/>
+          <coordinates>1,2,3</coordinates>
+        <Point/>
+      </Placemark>
+    </Folder>
+  </Create>
+  <Change>
+    <Placemark targetId="floating-placemark">
+      <LookAt>
+        <range>252.123</range>
+      </LookAt>
+    </Placemark>
+    <Style targetId="transPurpleLineGreenPoly">
+      <LineStyle>
+        <width>3.9</width>
+      </LineStyle>
+    </Style>
+  </Change>
+  <Delete>
+    <Placemark targetId="simple-placemark"/>
+    <Placemark targetId="purple-line-placemark"/>
+    <Placemark targetId="there-is-no-placemark-with-this-id"/>
+  </Delete>
+  <Create/>
+  <Delete>
+    <Placemark targetId="green-wall-placemark"/>
+    <Placemark targetId="black-line-placemark"/>
+    <Placemark targetId="blue-walls-placemark"/>
+    <Placemark targetId="pentagon"/>
+    <Folder targetId="absolute-and-relative-folder"/>
+  </Delete>
+  <Change/>
+  <Create/>
+  <Delete>
+    <Folder targetId="styles-and-markup-folder"/>
+    <Folder targetId="ground-overlays-folder"/>
+    <Folder targetId="screen-overlays-folder"/>
+  </Delete>
+</Update>

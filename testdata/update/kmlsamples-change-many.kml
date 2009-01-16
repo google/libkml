@@ -1,0 +1,29 @@
+<Update>
+  <targetHref/>
+  <Change>
+    <Style targetId="downArrowIcon">
+      <IconStyle>
+        <color>ff00ffff</color>
+        <Icon>
+          <href>http://maps.google.com/mapfiles/kml/shapes/arrow-reverse.png</href>
+        </Icon>
+      </IconStyle>
+    </Style>
+    <Folder targetId="placemarks-folder">
+      <name>The Placemarks Folder</name>
+    </Folder>
+    <Placemark targetId="floating-placemark">
+      <visibility>1</visibility>
+      <LookAt>
+        <altitude>30</altitude>
+      </LookAt>
+    </Placemark>
+  </Change>
+  <Change>
+    <Placemark targetId="purple-line-placemark">
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+      </LineString>
+    </Placemark>
+  </Change>
+</Update>

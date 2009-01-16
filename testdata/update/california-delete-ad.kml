@@ -1,0 +1,7 @@
+<Update>
+  <targetHref/>
+  <Delete>
+    <Placemark targetId="placemark-a"/>
+    <Placemark targetId="placemark-d"/>
+  </Delete>
+</Update>
