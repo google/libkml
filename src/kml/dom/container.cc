@@ -65,4 +65,17 @@ void Container::Serialize(Serializer& serializer) const {
   SerializeFeatureArray(serializer);
 }
 
+FeaturePtr Container::DeleteFeatureById(const std::string& id) {
+  // TODO: push all this to Element to properly/centrally remove parent.
+  std::vector<FeaturePtr>::iterator iter = feature_array_.begin();
+  for (; iter != feature_array_.end(); ++iter) {
+    FeaturePtr feature = *iter;
+    if (feature->has_id() && id == feature->get_id()) {
+      feature_array_.erase(iter);
+      return feature;
+    }
+  }
+  return NULL;
+}
+
 }  // end namespace kmldom

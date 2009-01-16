@@ -26,9 +26,10 @@
 // This file contains the unit tests for the abstract Container element.
 
 #include "kml/dom/container.h"
+#include "gtest/gtest.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/placemark.h"
-#include "gtest/gtest.h"
 
 namespace kmldom {
 
@@ -77,6 +78,64 @@ TEST_F(ContainerTest, TestAddGetFeatures) {
   ASSERT_EQ(Type_ScreenOverlay,
             container_->get_feature_array_at(6)->Type());
   // Deleting the container deletes all Features in the array.
+}
+
+TEST_F(ContainerTest, TestDeleteFeatureByIdOne) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  PlacemarkPtr placemark = factory->CreatePlacemark();
+  const std::string id("placemark123");
+  placemark->set_id(id);
+  container_->add_feature(placemark);
+  ASSERT_EQ(static_cast<size_t>(1), container_->get_feature_array_size());
+  ASSERT_EQ(Type_Placemark, container_->get_feature_array_at(0)->Type());
+  FeaturePtr feature = container_->DeleteFeatureById(id);
+  ASSERT_EQ(static_cast<size_t>(0), container_->get_feature_array_size());
+  ASSERT_EQ(id, feature->get_id());
+  ASSERT_FALSE(container_->DeleteFeatureById("no-such-feature"));
+}
+
+// A proper XML id cannot be simply a number.
+static std::string CreateId(int i) {
+  return std::string("i") + kmlbase::ToString(i);
+}
+
+static const kmldom::KmlDomType kFeatures[] = {
+  kmldom::Type_Folder, kmldom::Type_NetworkLink, kmldom::Type_GroundOverlay,
+  kmldom::Type_Document, kmldom::Type_ScreenOverlay, kmldom::Type_Placemark,
+  kmldom::Type_PhotoOverlay
+};
+
+// Create a Feature and give it an id based on i.
+static FeaturePtr CreateFeature(int i) {
+  int num_features = sizeof(kFeatures)/sizeof(kFeatures[0]);
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  FeaturePtr feature =
+    AsFeature(kml_factory->CreateElementById(kFeatures[i % num_features]));
+  feature->set_id(CreateId(i));
+  return feature;
+} 
+
+TEST_F(ContainerTest, TestDeleteFeatureByIdMany) {
+  const size_t kNumFeatures(123);
+  for (size_t i = 0; i < kNumFeatures; ++i) {
+    container_->add_feature(CreateFeature(i));
+  }
+  ASSERT_EQ(kNumFeatures, container_->get_feature_array_size());
+  std::vector<FeaturePtr> deleted_features;
+  for (size_t i = 0; i < kNumFeatures; i += 2) {
+    deleted_features.push_back(container_->DeleteFeatureById(CreateId(i)));
+  }
+  const size_t new_size = container_->get_feature_array_size();
+  ASSERT_EQ(kNumFeatures - deleted_features.size(), new_size);
+  // Verify the container only has the odd features.
+  for (size_t i = 0; i < new_size; ++i) {
+    ASSERT_EQ(CreateId(2*i + 1), container_->get_feature_array_at(i)->get_id());
+  }
+  // Verfiy the deleted features are all even.
+  for (size_t i = 0; i < deleted_features.size(); ++i) {
+    ASSERT_EQ(CreateId(2*i), deleted_features[i]->get_id());
+  }
+  // TODO: Verify deleted features are dis-parented.
 }
 
 }  // end namespace kmldom

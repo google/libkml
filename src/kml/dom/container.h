@@ -55,6 +55,11 @@ class Container : public Feature {
     return feature_array_[index];
   }
 
+  // If a Feature with the given id exists in this Container remove it from
+  // the container and return it.  If no such Feature exists NULL is returned.
+  // Note: This method is a special mostly for use with Update/Delete.
+  FeaturePtr DeleteFeatureById(const std::string& id);
+
  protected:
   // Container is abstract.
   Container();
