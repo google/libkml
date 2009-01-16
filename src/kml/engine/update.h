@@ -52,7 +52,8 @@ void ProcessUpdateDelete(const kmldom::DeletePtr& deleet, KmlFilePtr kml_file);
 
 // Delete the id'ed Feature from the KmlFile.
 // TODO: This belongs in KmlFile.
-void DeleteFeatureById(const std::string& id, KmlFilePtr kml_file);
+kmldom::FeaturePtr DeleteFeatureById(const std::string& id,
+                                     KmlFilePtr kml_file);
 
 
 }  // namespace kmlengine
