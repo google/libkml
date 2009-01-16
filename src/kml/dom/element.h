@@ -62,6 +62,9 @@ class Element : public kmlbase::XmlElement {
     return type == Type_Unknown;
   }
 
+  // This returns the element of which this is a child (if any).
+  ElementPtr GetParent() const;
+
   void set_default_xmlns(const std::string& xmlns);
   const std::string get_default_xmlns() const;
 

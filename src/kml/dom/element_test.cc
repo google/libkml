@@ -269,6 +269,18 @@ TEST_F(ElementTest, TestXmlns) {
   ASSERT_EQ(source_map.size(), serialized_attrs.GetSize());
 }
 
+TEST_F(ElementTest, TestGetParent) {
+  ASSERT_FALSE(child1_->GetParent());
+  element_->set_child(child1_);
+  ASSERT_EQ(element_, child1_->GetParent());
+  ASSERT_FALSE(child2_->GetParent());
+#if 0 // TODO
+  element_->set_child(child2_);
+  ASSERT_EQ(element_, child2_->GetParent());
+  ASSERT_FALSE(child1_->GetParent());
+#endif
+}
+
 class ElementSerializerTest : public testing::Test {
  protected:
   virtual void SetUp() {
