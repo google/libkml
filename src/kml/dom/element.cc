@@ -29,10 +29,12 @@
 #include <stdlib.h>
 #include "kml/base/attributes.h"
 #include "kml/base/string_util.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
 
 using kmlbase::Attributes;
+using kmlbase::XmlElement;
 
 namespace kmldom {
 
@@ -129,6 +131,10 @@ void Element::SerializeAttributes(Attributes* attributes) const {
   }
 }
 
+ElementPtr Element::GetParent() const {
+  return AsElement(const_cast<XmlElement*>(XmlElement::GetParent()));
+}
+
 // The default namespace for an element is the xmlns attribute.
 void Element::set_default_xmlns(const std::string& xmlns) {
   if (!xmlns_.get()) {
@@ -148,7 +154,7 @@ const std::string Element::get_default_xmlns() const {
 ElementSerializer::ElementSerializer(const Element& element,
                                      Serializer& serializer)
     : element_(element), serializer_(serializer) {
-  kmlbase::Attributes attributes;
+  Attributes attributes;
   element_.SerializeAttributes(&attributes);
   serializer.BeginById(element_.Type(), attributes);
 }
