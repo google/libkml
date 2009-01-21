@@ -68,8 +68,7 @@ void Overlay::AddElement(const ElementPtr& element) {
 void Overlay::Serialize(Serializer& serializer) const {
   Feature::Serialize(serializer);
   if (has_color()) {
-    // TODO: Serializer needs a SaveColor().
-    serializer.SaveFieldById(Type_color, get_color().to_string_abgr());
+    serializer.SaveColor(Type_color, get_color());
   }
   if (has_draworder()) {
     serializer.SaveFieldById(Type_drawOrder, get_draworder());

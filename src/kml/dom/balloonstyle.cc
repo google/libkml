@@ -72,12 +72,10 @@ void BalloonStyle::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   SubStyle::Serialize(serializer);
   if (has_bgcolor()) {
-    // TODO: Serializer needs a SaveColor().
-    serializer.SaveFieldById(Type_bgColor, get_bgcolor().to_string_abgr());
+    serializer.SaveColor(Type_bgColor, get_bgcolor());
   }
   if (has_textcolor()) {
-    // TODO: Serializer needs a SaveColor().
-    serializer.SaveFieldById(Type_textColor, get_textcolor().to_string_abgr());
+    serializer.SaveColor(Type_textColor, get_textcolor());
   }
   if (has_text()) {
     serializer.SaveFieldById(Type_text, get_text());

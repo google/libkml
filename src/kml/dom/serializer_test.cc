@@ -59,7 +59,7 @@ class SerializerTest : public testing::Test {
 class NullSerializer : public Serializer {
 };
 
-// This Serialier implementation provides implementations for all virtual
+// This Serializer implementation provides implementations for all virtual
 // methods.  This should build and run and do nothing.
 class MaximalSerializer : public Serializer {
  public:
@@ -72,6 +72,7 @@ class MaximalSerializer : public Serializer {
   virtual void SaveLonLatAlt(double longitude, double latitude,
                              double altitude) {}
   virtual void Indent() {}
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
 };
 
 typedef std::vector<KmlDomType> TypeIdVector;
@@ -109,6 +110,21 @@ class FlatSerializer : public Serializer {
 
  private:
   ElementVector element_vector_;
+};
+
+// This serializer implements SaveColor() only.
+typedef std::pair<int, kmlbase::Color32> TypeColorPair;
+typedef std::vector<TypeColorPair> ColorVector;
+class ColorSerializer : public Serializer {
+ public:
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color) {
+    color_vector_.push_back(std::make_pair(type_id, color));
+  }
+
+  const ColorVector& get_color_vector() const { return color_vector_; }
+ 
+ private:
+  ColorVector color_vector_;
 };
 
 // This exists because Serialize is public only on Element.
@@ -207,6 +223,26 @@ TEST_F(SerializerTest, TestStatsSerializerOnChildren) {
   ASSERT_EQ(static_cast<size_t>(2), element_vector.size());
   ASSERT_EQ(Type_Region, element_vector[0]->Type());
   ASSERT_EQ(Type_Point, element_vector[1]->Type());
+}
+
+
+TEST_F(SerializerTest, TestSaveColor) {
+  const kmlbase::Color32 kOpaqueWhite(0xffffffff);
+  const kmlbase::Color32 kOpaqueBlack(0xff000000);
+  const kmlbase::Color32 kOpaqueBlue(0xffff0000);
+  ColorSerializer color_serializer;
+  color_serializer.SaveColor(Type_bgColor, kOpaqueWhite);
+  color_serializer.SaveColor(Type_color, kOpaqueBlack);
+  color_serializer.SaveColor(Type_textColor, kOpaqueBlue);
+
+  const ColorVector& color_vector = color_serializer.get_color_vector();
+  ASSERT_EQ(static_cast<size_t>(3), color_vector.size()); 
+  ASSERT_EQ(Type_bgColor, color_vector[0].first);
+  ASSERT_TRUE(kOpaqueWhite == color_vector[0].second);
+  ASSERT_EQ(Type_color, color_vector[1].first);
+  ASSERT_TRUE(kOpaqueBlack == color_vector[1].second);
+  ASSERT_EQ(Type_textColor, color_vector[2].first);
+  ASSERT_TRUE(kOpaqueBlue == color_vector[2].second);
 }
 
 }  // end namespace kmldom

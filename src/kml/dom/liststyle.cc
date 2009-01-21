@@ -132,8 +132,7 @@ void ListStyle::Serialize(Serializer& serializer) const {
     serializer.SaveEnum(Type_listItemType, get_listitemtype());
   }
   if (has_bgcolor()) {
-    // TODO: Serializer needs a SaveColor().
-    serializer.SaveFieldById(Type_bgColor, get_bgcolor().to_string_abgr());
+    serializer.SaveColor(Type_bgColor, get_bgcolor());
   }
   for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
     serializer.SaveElement(get_itemicon_array_at(i));

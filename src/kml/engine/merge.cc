@@ -66,7 +66,8 @@ class FieldMerger : public Serializer {
   }
 
   // The default implementation recurses on complex children.  FieldMerger is
-  // only interested in the immediate simple children of the serialized element   // so its implementation is empty to prevent recursing on complex children.
+  // only interested in the immediate simple children of the serialized element
+  // so its implementation is empty to prevent recursing on complex children.
   virtual void SaveElement(const ElementPtr& element) {
   }
 
@@ -77,6 +78,12 @@ class FieldMerger : public Serializer {
     field->set_char_data(value);
     target_->AddElement(field);
   }
+
+  // Serializer::SaveColor() is called to save all Color32 values.
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color) {
+    SaveFieldById(type_id, color.to_string_abgr());
+  }
+
 
  private:
   ElementPtr target_;

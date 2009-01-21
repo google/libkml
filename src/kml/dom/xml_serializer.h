@@ -65,6 +65,9 @@ class XmlSerializer : public Serializer {
   // Save out character data.
   virtual void SaveContent(const std::string& content, bool maybe_quote);
 
+  // Save a Color32 value as its AABBGGRR representation.
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color);
+
   // Emit one level of indentation.
   virtual void Indent();
 
