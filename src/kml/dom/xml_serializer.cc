@@ -126,6 +126,10 @@ void XmlSerializer::SaveContent(const std::string& content, bool maybe_quote) {
   }
 }
 
+void XmlSerializer::SaveColor(int type_id, const kmlbase::Color32& color) {
+  SaveFieldById(type_id, color.to_string_abgr());
+}
+
 // This emits the white space specified by indent_.
 void XmlSerializer::Indent() {
   size_t depth = tag_stack_.size();

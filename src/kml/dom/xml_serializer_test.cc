@@ -167,6 +167,15 @@ TEST_F(XmlSerializerTest, TestSaveContent) {
   ASSERT_EQ(expected_result, output);
 }
 
+TEST_F(XmlSerializerTest, TestSaveColor) {
+  const kmlbase::Color32 kRed(0xff0000ff);
+  const std::string kExpected("<color>ff0000ff</color>");
+  xml_serializer_->SaveColor(Type_color, kRed);
+  std::string output;
+  xml_serializer_->WriteString(&output);
+  ASSERT_EQ(kExpected, output);
+}
+
 TEST_F(XmlSerializerTest, TestPrecision) {
   double a = 1.0;
   // Will round down to int:

@@ -103,6 +103,11 @@ class ElementReplicator : public kmldom::Serializer {
     }  // else something is very wrong.
   }
 
+  // Serializer::SaveColor() is called to save all Color32 values.
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color) {
+    SaveFieldById(type_id, color.to_string_abgr());
+  }
+
   // Return the top of the stack which holds the root element.
   ElementPtr root() {
     if (clone_stack_.empty()) {

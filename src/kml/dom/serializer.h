@@ -30,6 +30,7 @@
 
 #include <sstream>
 #include <string>
+#include "kml/base/color32.h"
 #include "kml/base/string_util.h"
 #include "kml/dom/kml_ptr.h"
 
@@ -85,6 +86,9 @@ class Serializer {
 
   // Emit indent.
   virtual void Indent() {}
+
+  // Save a Color32 value.
+  virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
 
   // If value contains any non-XML valid characters a CDATA-escaped
   // string is returned, else the original string is returned.
