@@ -38,6 +38,9 @@ namespace kmlbase {
 typedef std::map<std::string, std::string> StringMap;
 typedef std::map<std::string, std::string>::value_type StringPair;
 
+// Binary-to-ASCII hex conversion.
+void b2a_hex(uint32_t i, char* out);
+
 // This permits a class containing a StringMap to export a way to iterate the
 // internal container without exposing it directly.  In the future the STL
 // map presently used internally may be replaced with a hash map, for example.

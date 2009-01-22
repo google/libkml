@@ -29,18 +29,10 @@
 #define KML_BASE_COLOR_H__
 
 #include <string>
+#include "kml/base/string_util.h"
 #include "kml/base/util.h"
 
 namespace kmlbase {
-
-// TODO: Move to string utils.
-// Binary-to-ASCII hex conversion.
-static void b2a_hex(uint32_t i, char* out) {
-  char map[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                  'a', 'b', 'c', 'd', 'e', 'f'};
-  out[0] = map[(i >> 4) & 0xf];
-  out[1] = map[(i) & 0xf];
-}
 
 class Color32 {
  public:

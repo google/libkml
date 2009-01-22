@@ -30,6 +30,13 @@
 
 namespace kmlbase {
 
+void b2a_hex(uint32_t i, char* out) {
+  char map[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                  'a', 'b', 'c', 'd', 'e', 'f'};
+  out[0] = map[(i >> 4) & 0xf];
+  out[1] = map[(i) & 0xf];
+}
+
 std::string CreateExpandedStrings(const std::string& in,
                                   const StringMap& string_map,
                                   const std::string& start,
