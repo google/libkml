@@ -34,6 +34,7 @@
 #include "kml/dom/kmldom.h"
 #include "gtest/gtest.h"
 
+using kmlbase::Vec3;
 using kmldom::CoordinatesPtr;
 using kmldom::FolderPtr;
 using kmldom::LineStringPtr;
@@ -43,7 +44,6 @@ using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
 using kmldom::StylePtr;
-using kmldom::Vec3;
 
 namespace kmlengine {
 

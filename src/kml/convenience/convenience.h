@@ -29,11 +29,11 @@
 #define KML_CONVENIENCE_CONVENIENCE_H__
 
 #include <string>
+#include "kml/base/vec3.h"
 #include "kml/dom.h"
 
 namespace kmlbase {
 class DateTime;
-class Vec3;
 }
 
 namespace kmlconvenience {
@@ -46,6 +46,16 @@ namespace kmlconvenience {
 // Feature if one does not already exist.
 void AddExtendedDataValue(const std::string& name, const std::string& value,
                           kmldom::FeaturePtr feature);
+
+// Creates a simple Polygon from a LinearRing.
+kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
+    const kmldom::LinearRingPtr& lr);
+
+// Creates a <coordinates> element filled with the lng, lat[, alt] tuples
+// describing a great circle of radius around a point lat, lng. The
+// antemeridian is not considered here.
+kmldom::CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
+                                               double radius, size_t segments);
 
 // This creates a Data element with the name and value specified:
 // <Data name="NAME><value>VALUE</value></Data>

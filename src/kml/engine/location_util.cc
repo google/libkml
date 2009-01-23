@@ -30,12 +30,12 @@
 #include "kml/engine/location_util.h"
 #include "kml/dom.h"
 
+using kmlbase::Vec3;
 using kmldom::AbstractLatLonBoxPtr;
 using kmldom::CoordinatesPtr;
 using kmldom::FeaturePtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
-using kmldom::Vec3;
 
 namespace kmlengine {
 

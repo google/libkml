@@ -19,6 +19,7 @@ libkmlbase_la_SOURCES = \
 	expat_parser.cc \
 	file.cc \
 	file_posix.cc \
+	math_util.cc \
 	referent.cc \
 	string_util.cc \
 	time_util.cc
@@ -33,6 +34,7 @@ libkmlbaseinclude_HEADERS = \
 	expat_handler_ns.h \
 	expat_parser.h \
 	file.h \
+	math_util.h \
 	memory_file.h \
 	net_cache.h \
 	referent.h \
@@ -59,6 +61,7 @@ TESTS = \
 	expat_handler_ns_test \
 	expat_parser_test \
 	file_test \
+	math_util_test \
 	net_cache_test \
 	referent_test \
 	string_util_test \
@@ -101,6 +104,11 @@ expat_parser_test_LDADD = libkmlbase.la \
 file_test_SOURCES = file_test.cc
 file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 file_test_LDADD = libkmlbase.la \
+		  $(top_builddir)/third_party/libgtest.la
+
+math_util_test_SOURCES = math_util_test.cc
+math_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+math_util_test_LDADD = libkmlbase.la \
 		  $(top_builddir)/third_party/libgtest.la
 
 net_cache_test_SOURCES = net_cache_test.cc

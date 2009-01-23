@@ -30,6 +30,7 @@
 #include "kml/dom.h"
 #include "gtest/gtest.h"
 
+using kmlbase::Vec3;
 using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;
 using kmldom::FolderPtr;
@@ -40,7 +41,6 @@ using kmldom::KmlFactory;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
 using kmldom::SnippetPtr;
-using kmldom::Vec3;
 
 namespace kmlengine {
 
