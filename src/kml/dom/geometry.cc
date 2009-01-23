@@ -39,12 +39,9 @@
 #include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
+using kmlbase::Vec3;
 
 namespace kmldom {
-
-void Vec3::Serialize(Serializer& serializer) const {
-  serializer.SaveLonLatAlt(get_longitude(), get_latitude(), get_altitude());
-}
 
 Coordinates::Coordinates() {}
 
@@ -146,7 +143,9 @@ void Coordinates::AddElement(const ElementPtr& element) {
 void Coordinates::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   for (size_t i = 0; i < coordinates_array_.size(); ++i) {
-    coordinates_array_[i].Serialize(serializer);
+    serializer.SaveLonLatAlt(coordinates_array_[i].get_longitude(),
+                             coordinates_array_[i].get_latitude(),
+                             coordinates_array_[i].get_altitude());
   }
 }
 

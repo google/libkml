@@ -28,6 +28,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/base/date_time.h"
+#include "kml/base/math_util.h"
 #include "kml/base/vec3.h"
 #include "kml/dom.h"
 
@@ -41,8 +42,10 @@ using kmldom::FeaturePtr;
 using kmldom::KmlFactory;
 using kmldom::LatLonAltBoxPtr;
 using kmldom::LodPtr;
+using kmldom::OuterBoundaryIsPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
+using kmldom::PolygonPtr;
 using kmldom::RegionPtr;
 using kmldom::TimeStampPtr;
 
@@ -57,6 +60,27 @@ void AddExtendedDataValue(const std::string& name, const std::string& value,
     feature->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
   }
   feature->get_extendeddata()->add_data(CreateDataNameValue(name, value));
+}
+
+kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
+    const kmldom::LinearRingPtr& lr) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  OuterBoundaryIsPtr obi = factory->CreateOuterBoundaryIs();
+  obi->set_linearring(lr);
+  PolygonPtr poly = factory->CreatePolygon();
+  poly->set_outerboundaryis(obi);
+  PlacemarkPtr placemark = factory->CreatePlacemark();
+  placemark->set_geometry(poly);
+  return placemark;
+}
+
+CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
+                                       double radius, size_t segments) {
+  CoordinatesPtr coords = KmlFactory::GetFactory()->CreateCoordinates();
+  for (size_t i = 0; i < segments; ++i) {
+    coords->add_vec3(kmlbase::LatLngOnRadialFromPoint(lat, lng, radius, i));
+  }
+  return coords;
 }
 
 DataPtr CreateDataNameValue(const std::string& name, const std::string& value) {

@@ -78,40 +78,11 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/object.h"
 #include "kml/base/util.h"
+#include "kml/base/vec3.h"
 
 namespace kmldom {
 
 class Serializer;
-
-// Just a basic struct of 3 doubles.  Copy and assign at will.
-class Vec3 {
- public:
-  Vec3() {
-    vec_[0] = vec_[1] = vec_[2] = 0.0;
-  }
-  Vec3(double longitude, double latitude, double altitude) {
-    vec_[0] = longitude;
-    vec_[1] = latitude;
-    vec_[2] = altitude;
-  }
-  void set(int i, double val) {
-    vec_[i] = val;
-  }
-  double get_longitude() const {
-    return vec_[0];
-  }
-  double get_latitude() const {
-    return vec_[1];
-  }
-  double get_altitude() const {
-    return vec_[2];
-  }
-
-  void Serialize(Serializer& serializer) const;
-
- private:
-  double vec_[3];
-};
 
 // <coordinates>
 class Coordinates : public BasicElement<Type_coordinates> {
@@ -120,25 +91,29 @@ class Coordinates : public BasicElement<Type_coordinates> {
 
   // The main KML-specific API
   void add_latlngalt(double latitude, double longitude, double altitude) {
-    coordinates_array_.push_back(Vec3(longitude, latitude, altitude));
+    coordinates_array_.push_back(kmlbase::Vec3(longitude, latitude, altitude));
   }
 
   void add_latlng(double latitude, double longitude) {
-    coordinates_array_.push_back(Vec3(longitude, latitude, 0.0));
+    coordinates_array_.push_back(kmlbase::Vec3(longitude, latitude, 0.0));
+  }
+
+  void add_vec3(const kmlbase::Vec3& vec3) {
+    coordinates_array_.push_back(vec3);
   }
 
   const size_t get_coordinates_array_size() const {
     return coordinates_array_.size();
   }
 
-  const Vec3 get_coordinates_array_at(unsigned int index) const {
+  const kmlbase::Vec3 get_coordinates_array_at(unsigned int index) const {
     return coordinates_array_[index];
   }
 
   // Internal methods used in parser.  Public for unittest purposes.
   // See .cc for more details.
   void Parse(const std::string& char_data);
-  static bool ParseVec3(const char* coords, char** nextp, Vec3* vec);
+  static bool ParseVec3(const char* coords, char** nextp, kmlbase::Vec3* vec);
 
  private:
   friend class KmlFactory;
@@ -148,7 +123,7 @@ class Coordinates : public BasicElement<Type_coordinates> {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 
-  std::vector<Vec3> coordinates_array_;
+  std::vector<kmlbase::Vec3> coordinates_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Coordinates);
 };
 

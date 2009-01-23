@@ -23,69 +23,44 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the Vec3 class.
+// This file contains the declarations of some mathematical functions useful
+// when working with KML or, more generally, geometry on a Great Circle.
+//
+// Many of the formulae here were cribbed from the excellent Aviation
+// Formulary: http://williams.best.vwh.net/avform.htm
+//
+// NOTE: with the exception of the functions explicitly for converting between
+// units, all functions here accept and return coordinates and angles in
+// decimal degrees, and distances in meters.
 
-#ifndef KML_BASE_VEC3_H__
-#define KML_BASE_VEC3_H__
+#ifndef KML_BASE_MATH_UTIL_H__
+#define KML_BASE_MATH_UTIL_H__
+
+#include <math.h>
+#include <utility>
+#include "kml/base/vec3.h"
 
 namespace kmlbase {
 
-// A Vec3 represents a 2d or 3d point.  A Vec3 always has at least longitude
-// and latitude.  Altitude defaults to 0 and has_altitude() returns false if
-// altitude was not set.
-class Vec3 {
- public:
-  // Create an empty Vec3.
-  Vec3() {
-    vec_[0] = vec_[1] = 0.0;
-    clear_altitude();
-  }
+// Returns a Vec3 containing the latitude and longitude of a point at a
+// distance (meters) out on the radial (degrees) from a center point lat, lng.
+// The radial is measured clockwise from north. The antemeridian is not
+// considered here.
+Vec3 LatLngOnRadialFromPoint(double lat, double lng,
+                             double distance, double radial);
 
-  // Create a 2d Vec3.
-  Vec3(double longitude, double latitude) {
-    vec_[0] = longitude;
-    vec_[1] = latitude;
-    clear_altitude();
-  }
+// Returns the great circle distance in meters between two points. The
+// antemeridian is not considered here.
+double DistanceBetweenPoints(double lat1, double lng1,
+                             double lat2, double lng2);
 
-  // Create a 2d Vec3.
-  Vec3(double longitude, double latitude, double altitude) {
-    vec_[0] = longitude;
-    vec_[1] = latitude;
-    set_altitude(altitude);
-  }
+// These functions are mostly internal, used in converting between degrees and
+// radians.
+double DegToRad(double degrees);
+double RadToDeg(double radians);
+double MetersToRadians(double meters);
+double RadiansToMeters(double radians);
 
-  void set(int i, double val) {
-    vec_[i] = val;
-  }
+}  // end namespace kmlbase
 
-  double get_longitude() const {
-    return vec_[0];
-  }
-  double get_latitude() const {
-    return vec_[1];
-  }
-
-  bool has_altitude() const {
-    return has_altitude_;
-  }
-  double get_altitude() const {
-    return vec_[2];
-  }
-  void set_altitude(double altitude) {
-    vec_[2] = altitude;
-    has_altitude_ = true;
-  }
-  void clear_altitude() {
-    vec_[2] = 0;
-    has_altitude_ = false;
-  }
-
- private:
-  double vec_[3];
-  bool has_altitude_;
-};
-
-}  // namespace kmlbase
-
-#endif  // KML_BASE_VEC3_H__
+#endif  // KML_BASE_MATH_UTIL_H__

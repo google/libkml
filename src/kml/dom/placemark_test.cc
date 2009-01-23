@@ -33,6 +33,8 @@
 #include "kml/dom/serializer.h"
 #include "gtest/gtest.h"
 
+using kmlbase::Vec3;
+
 namespace kmldom {
 
 class PlacemarkTest : public testing::Test {

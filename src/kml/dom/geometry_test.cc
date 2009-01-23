@@ -23,9 +23,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the unit tests for Vec3, Coordinates, Geometry,
-// Point, LineString, LinearRing, Polygon, InnerBoundaryIs, OuterBoundaryIs,
-// and MultiGeometry.
+// This file contains the unit tests for Coordinates, Geometry, Point,
+// LineString, LinearRing, Polygon, InnerBoundaryIs, OuterBoundaryIs, and
+// MultiGeometry.
 
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml_factory.h"
@@ -33,35 +33,9 @@
 #include "kml/dom/kml_funcs.h"
 #include "gtest/gtest.h"
 
+using kmlbase::Vec3;
+
 namespace kmldom {
-
-// Test Vec3.
-class Vec3Test : public testing::Test {
-};
-
-TEST_F(Vec3Test, TestConstructor) {
-  // Construct a Vec3 with initial arguments:
-  const double longitude = -122.345;
-  const double latitude =  37.123;
-  const double altitude =  101.202;
-  Vec3 vec3(longitude, latitude, altitude);
-
-  // Verify constructor set the right fields:
-  ASSERT_TRUE(longitude == vec3.get_longitude());
-  ASSERT_TRUE(latitude == vec3.get_latitude());
-  ASSERT_TRUE(altitude == vec3.get_altitude());
-
-  // Construct a Vec3 with no initializers:
-  Vec3 vec0;
-
-  // Verify all fields are zero:
-  ASSERT_EQ(0, vec0.get_longitude());
-  ASSERT_EQ(0, vec0.get_latitude());
-  ASSERT_EQ(0, vec0.get_altitude());
-}
-
-TEST_F(Vec3Test, TestSerializer) {
-}
 
 // Test Coordinates.
 class CoordinatesTest : public testing::Test {
@@ -108,6 +82,37 @@ TEST_F(CoordinatesTest, TestAddLatLngAlt) {
   ASSERT_DOUBLE_EQ(kLat, vec3.get_latitude());
   ASSERT_DOUBLE_EQ(kLon, vec3.get_longitude());
   ASSERT_DOUBLE_EQ(kAlt, vec3.get_altitude());
+}
+
+// Verify the add_vec3() setter.
+TEST_F(CoordinatesTest, TestAddVec3) {
+  const double kLat(-22.22);
+  const double kLon(44.44);
+  const double kAlt(10001.2002);
+  Vec3 v(kLon, kLat, kAlt);
+  coordinates_->add_vec3(v);
+  ASSERT_EQ(static_cast<size_t>(1),
+            coordinates_->get_coordinates_array_size());
+  Vec3 vec3_0 = coordinates_->get_coordinates_array_at(0);
+  ASSERT_DOUBLE_EQ(kLat, vec3_0.get_latitude());
+  ASSERT_DOUBLE_EQ(kLon, vec3_0.get_longitude());
+  ASSERT_DOUBLE_EQ(kAlt, vec3_0.get_altitude());
+
+  coordinates_->add_vec3(Vec3());
+  ASSERT_EQ(static_cast<size_t>(2),
+            coordinates_->get_coordinates_array_size());
+  Vec3 vec3_1 = coordinates_->get_coordinates_array_at(1);
+  ASSERT_DOUBLE_EQ(0.0, vec3_1.get_latitude());
+  ASSERT_DOUBLE_EQ(0.0, vec3_1.get_longitude());
+  ASSERT_DOUBLE_EQ(0.0, vec3_1.get_altitude());
+
+  coordinates_->add_vec3(Vec3(kLon, kLat));
+  ASSERT_EQ(static_cast<size_t>(3),
+            coordinates_->get_coordinates_array_size());
+  Vec3 vec3_2 = coordinates_->get_coordinates_array_at(2);
+  ASSERT_DOUBLE_EQ(kLat, vec3_2.get_latitude());
+  ASSERT_DOUBLE_EQ(kLon, vec3_2.get_longitude());
+  ASSERT_DOUBLE_EQ(0.0, vec3_2.get_altitude());
 }
 
 // Verify a bunch of points in a <coordinates> element.

@@ -33,20 +33,21 @@
 #include "kml/base/vec3.h"
 
 using kmlbase::DateTime;
+using kmlbase::Vec3;
 using kmldom::CoordinatesPtr;
 using kmldom::DataPtr;
 using kmldom::KmlFactory;
+using kmldom::LinearRingPtr;
+using kmldom::OuterBoundaryIsPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
+using kmldom::PolygonPtr;
 using kmldom::RegionPtr;
 
 namespace kmlconvenience {
 
-class ConvenienceTest : public testing::Test {
-};
-
 // This tests the AddExtendedDataValue() function.
-TEST_F(ConvenienceTest, TestAddExtendedDataValue) {
+TEST(ConvenienceTest, TestAddExtendedDataValue) {
   const std::string kName("population");
   const std::string kValue("42000");
   PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
@@ -60,8 +61,34 @@ TEST_F(ConvenienceTest, TestAddExtendedDataValue) {
             placemark->get_extendeddata()->get_data_array_at(0)->get_value());
 }
 
+// This tests the CreateBasicPolygonPlacemark() function.
+TEST(ConvenienceTest, TestCreateBasicPolygonPlacemark) {
+  LinearRingPtr linearring = KmlFactory::GetFactory()->CreateLinearRing();
+  PlacemarkPtr placemark = CreateBasicPolygonPlacemark(linearring);
+  ASSERT_TRUE(placemark);
+  ASSERT_TRUE(placemark->has_geometry());
+  ASSERT_TRUE(AsPolygon(placemark->get_geometry()));
+  PolygonPtr poly = AsPolygon(placemark->get_geometry());
+  ASSERT_TRUE(poly->has_outerboundaryis());
+  ASSERT_TRUE(AsOuterBoundaryIs(poly->get_outerboundaryis()));
+  OuterBoundaryIsPtr ob = AsOuterBoundaryIs(poly->get_outerboundaryis());
+  ASSERT_TRUE(ob->has_linearring());
+  ASSERT_TRUE(AsLinearRing(ob->get_linearring()));
+}
+
+// This tests the CreateCoordinatesCircle() functio.
+TEST(ConvenienceTest, TestCreateCoordinatesCircle) {
+  const double kLat = 0.0;
+  const double kLng = 0.0;
+  const double kRadius = 100;
+  const double kSegments = 360;
+  CoordinatesPtr coords = CreateCoordinatesCircle(kLat, kLng, kRadius,
+                                                  kSegments);
+  ASSERT_EQ(kSegments, coords->get_coordinates_array_size());
+}
+
 // This tests the CreateDataNameValue() function.
-TEST_F(ConvenienceTest, TestCreateDataNameValue) {
+TEST(ConvenienceTest, TestCreateDataNameValue) {
   const std::string kName("par");
   const std::string kValue("5");
   DataPtr data = CreateDataNameValue(kName, kValue);
@@ -71,7 +98,7 @@ TEST_F(ConvenienceTest, TestCreateDataNameValue) {
 }
 
 // This tests the CreatePointFromLatLonAtts() function.
-TEST_F(ConvenienceTest, TestCreatePointFromLatLonAtts) {
+TEST(ConvenienceTest, TestCreatePointFromLatLonAtts) {
   const char* atts[] = { "lat", "38.38", "lon", "-121.456", NULL };
   PointPtr point = CreatePointFromLatLonAtts(atts);
   ASSERT_TRUE(point);
@@ -89,7 +116,7 @@ TEST_F(ConvenienceTest, TestCreatePointFromLatLonAtts) {
 }
 
 // This tests the CreatePointFromVec3() function.
-TEST_F(ConvenienceTest, TestCreatePointFromVec3) {
+TEST(ConvenienceTest, TestCreatePointFromVec3) {
   kmlbase::Vec3 vec3(1.1, 2.2, 3.3);
   PointPtr point = CreatePointFromVec3(vec3);
   ASSERT_TRUE(point);
@@ -105,7 +132,7 @@ TEST_F(ConvenienceTest, TestCreatePointFromVec3) {
 }
 
 // This tests the CreatePointLatLon() function.
-TEST_F(ConvenienceTest, TestCreatePointLatLon) {
+TEST(ConvenienceTest, TestCreatePointLatLon) {
   PointPtr point = CreatePointLatLon(-42.42, 150.160);
   ASSERT_TRUE(point);
   ASSERT_TRUE(point->has_coordinates());
@@ -122,7 +149,7 @@ TEST_F(ConvenienceTest, TestCreatePointLatLon) {
 }
 
 // This tests the CreatePointPlacemark() function.
-TEST_F(ConvenienceTest, TestCreatePointPlacemark) {
+TEST(ConvenienceTest, TestCreatePointPlacemark) {
   const std::string kName("my point placemark");
   const double kLat = 38.0987123;
   const double kLon = -123.123;
@@ -135,13 +162,13 @@ TEST_F(ConvenienceTest, TestCreatePointPlacemark) {
   CoordinatesPtr coordinates = point->get_coordinates();
   ASSERT_EQ(static_cast<size_t>(1),
                        coordinates->get_coordinates_array_size());
-  kmldom::Vec3 vec = coordinates->get_coordinates_array_at(0);
+  Vec3 vec = coordinates->get_coordinates_array_at(0);
   ASSERT_EQ(kLat, vec.get_latitude());
   ASSERT_EQ(kLon, vec.get_longitude());
 }
 
 // This tests the PointPlacemarkWithTimeStamp() function.
-TEST_F(ConvenienceTest, TestCreatePointPlacemarkWithTimeStamp) {
+TEST(ConvenienceTest, TestCreatePointPlacemarkWithTimeStamp) {
   const std::string kWhen("2008-10-03T09:25:42Z");
   PointPtr point = KmlFactory::GetFactory()->CreatePoint();
   boost::scoped_ptr<DateTime> date_time(DateTime::Create(kWhen));
@@ -157,7 +184,7 @@ TEST_F(ConvenienceTest, TestCreatePointPlacemarkWithTimeStamp) {
 }
 
 // This tests the CreateRegion2d() function.
-TEST_F(ConvenienceTest, TestCreateRegion2d) {
+TEST(ConvenienceTest, TestCreateRegion2d) {
   const double kNorth(67.87);
   const double kSouth(-56.78);
   const double kEast(98.12);
@@ -182,7 +209,7 @@ TEST_F(ConvenienceTest, TestCreateRegion2d) {
 }
 
 // This tests the GetExtendedDataValue() function.
-TEST_F(ConvenienceTest, TestGetExtendedDataValue) {
+TEST(ConvenienceTest, TestGetExtendedDataValue) {
   const std::string kName("yardage");
   const std::string kValue("0");
   PlacemarkPtr placemark = CreatePointPlacemark("19", 38, -122);
@@ -195,7 +222,7 @@ TEST_F(ConvenienceTest, TestGetExtendedDataValue) {
 }
 
 // This tests the SetExtendedDataValue() function.
-TEST_F(ConvenienceTest, TestSetExtendedDataValue) {
+TEST(ConvenienceTest, TestSetExtendedDataValue) {
   const std::string kName0("name0");
   const std::string kValue0("value0");
   const std::string kName1("name1");

@@ -23,65 +23,55 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the unit tests for the Vec3 class.
+// This file contains the unit tests for the mathematical functions.
 
-#include "kml/base/vec3.h"
+#include "kml/base/math_util.h"
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
 namespace kmlbase {
 
-TEST(Vec3Test, TestConstructEmpty) {
-  Vec3 vec3;
-  ASSERT_EQ(0.0, vec3.get_latitude());
-  ASSERT_EQ(0.0, vec3.get_longitude());
-  ASSERT_EQ(0.0, vec3.get_altitude());
-  ASSERT_EQ(false, vec3.has_altitude());
+TEST(BaseMathTest, TestLatLngOnRadialFromPoint) {
+  // See http://williams.best.vwh.net/avform.htm#Example
+  // Coordinates of LAX.
+  const double kLAX_lat = 33.944066;
+  const double kLAX_lng = -118.408294;
+  // A distance and radial.
+  const double kDistance = 185200.0;
+  const double kRadial = 66.0;
+  // The known-accurate coordinates of the point along that radial from LAX.
+  const double kRadial_lat = 34.608154;
+  const double kRadial_lng = -116.558327;
+
+  Vec3 v = LatLngOnRadialFromPoint(kLAX_lat, kLAX_lng, kDistance, kRadial);
+  ASSERT_NEAR(kRadial_lat, v.get_latitude(), 0.000001);
+  ASSERT_NEAR(kRadial_lng, v.get_longitude(), 0.000001);
 }
 
-TEST(Vec3Test, TestConstruct2d) {
-  const double kLatitude(-12.12);
-  const double kLongitude(23.46);
-  Vec3 vec3(kLongitude, kLatitude);
-  ASSERT_EQ(kLatitude, vec3.get_latitude());
-  ASSERT_EQ(kLongitude, vec3.get_longitude());
-  ASSERT_EQ(0.0, vec3.get_altitude());
-  ASSERT_EQ(false, vec3.has_altitude());
+TEST(BaseMathTest, TestDistanceBetweenPoints) {
+  const double kLAX_lat = 33.944066;
+  const double kLAX_lng = -118.408294;
+  const double kJFK_lat = 40.642480;
+  const double kJFK_lng = -73.788071;
+  // The known great circle distance in meters between LAX and JFK.
+  const double kDistance = 3970683.0;
+  double d = DistanceBetweenPoints(kLAX_lat, kLAX_lng, kJFK_lat, kJFK_lng);
+  ASSERT_NEAR(kDistance, d, 0.1);
 }
 
-TEST(Vec3Test, TestConstruct3d) {
-  const double kLatitude(-12.12);
-  const double kLongitude(23.46);
-  const double kAltitude(54321.0987);
-  Vec3 vec3(kLongitude, kLatitude, kAltitude);
-  ASSERT_EQ(kLatitude, vec3.get_latitude());
-  ASSERT_EQ(kLongitude, vec3.get_longitude());
-  ASSERT_EQ(kAltitude, vec3.get_altitude());
-  ASSERT_EQ(true, vec3.has_altitude());
+// Tese test the conversion functions.
+TEST(BaseMathTest, TestDegToRad) {
+  ASSERT_DOUBLE_EQ(0.0, DegToRad(0.0));
+  ASSERT_DOUBLE_EQ(M_PI, DegToRad(180.0));
+  ASSERT_DOUBLE_EQ(M_PI / 2, DegToRad(90.0));
+  ASSERT_DOUBLE_EQ(M_PI / -2, DegToRad(-90.0));
 }
 
-TEST(Vec3Test, TestSetClearAltitude) {
-  const double kAltitude(54321.0987);
-  Vec3 vec3(1,2);
-  vec3.set_altitude(kAltitude);
-  ASSERT_EQ(kAltitude, vec3.get_altitude());
-  ASSERT_EQ(true, vec3.has_altitude());
-  vec3.clear_altitude();
-  ASSERT_EQ(0.0, vec3.get_altitude());
-  ASSERT_EQ(false, vec3.has_altitude());
-}
-
-TEST(Vec3Test, TestSet) {
-  const double k0(0.0);
-  const double k1(1.0);
-  const double k2(2.0);
-  Vec3 vec;
-  vec.set(0, k0);
-  vec.set(1, k1);
-  vec.set(2, k2);
-  ASSERT_EQ(k0, vec.get_longitude());
-  ASSERT_EQ(k1, vec.get_latitude());
-  ASSERT_EQ(k2, vec.get_altitude());
+TEST(BaseMathTest, TestRadToDeg) {
+  ASSERT_DOUBLE_EQ(0.0, RadToDeg(0));
+  ASSERT_DOUBLE_EQ(360.0, RadToDeg(2 * M_PI));
+  ASSERT_DOUBLE_EQ(90.0, RadToDeg(M_PI / 2));
+  ASSERT_DOUBLE_EQ(-90.0, RadToDeg(M_PI / -2));
 }
 
 }  // end namespace kmlbase

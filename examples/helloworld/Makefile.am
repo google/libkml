@@ -13,7 +13,7 @@ noinst_LTLIBRARIES = libhelloutil.la
 libhelloutil_la_SOURCES = print.cc
 libhelloutil_la_LIBADD = $(top_builddir)/third_party/libminizip.la
 
-noinst_PROGRAMS = countkml createkml checklinks helloattrs helloenum \
+noinst_PROGRAMS = countkml createkml checklinks circlegen helloattrs helloenum \
                   hellofeatures hellofolder hellogeometry hellohref hellokmz \
                   helloregion helloworld parsekml parsens prettykml \
                   printgeometry sharedstyles sortplacemarks
@@ -22,6 +22,13 @@ createkml_SOURCES = createkml.cc
 createkml_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
+
+circlegen_SOURCES = circlegen.cc
+circlegen_LDADD = \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la
 
 checklinks_SOURCES = checklinks.cc
 checklinks_LDADD = \
