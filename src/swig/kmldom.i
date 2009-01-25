@@ -168,6 +168,17 @@ class Referent {
 class Color32 {
 };
 
+class Vec3 {
+public:
+  void set(int i, double val);
+  double get_longitude();
+  double get_latitude();
+  bool has_altitude();
+  double get_altitude();
+  void set_altitude(double altitude);
+  void clear_altitude();
+};
+
 }  // end namespace kmlbase
 
 namespace kmldom {
@@ -184,13 +195,6 @@ public:
   virtual bool IsA(KmlDomType type_id);
 };
 
-class Vec3 {
-public:
-  double get_longitude();
-  double get_latitude();
-  double get_altitude();
-};
-
 // This is <coordinates> in the KML 2.2 XSD.
 %nodefaultctor Coordinates;
 class Coordinates : public Element {
@@ -198,7 +202,7 @@ public:
   void add_latlng(double latitude, double longitude);
   void add_latlngalt(double latitude, double longitude, double altitude);
   size_t get_coordinates_array_size();
-  const Vec3 get_coordinates_array_at(unsigned int index);
+  const kmlbase::Vec3 get_coordinates_array_at(unsigned int index);
 };
 
 // This is vec2Type in the KML 2.2 XSD.
