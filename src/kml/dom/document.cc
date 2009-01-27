@@ -53,14 +53,9 @@ void Document::AddElement(const ElementPtr& element) {
 void Document::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Feature::SerializeBeforeStyleSelector(serializer);
-  for (size_t i = 0; i < styleselector_array_.size(); ++i) {
-    serializer.SaveElementGroup(get_styleselector_array_at(i),
-                                Type_StyleSelector);
-  }
+  serializer.SaveElementGroupArray(styleselector_array_, Type_StyleSelector);
   Feature::SerializeAfterStyleSelector(serializer);
-  for (size_t i = 0; i < schema_array_.size(); ++i) {
-    serializer.SaveElement(get_schema_array_at(i));
-  }
+  serializer.SaveElementArray(schema_array_);
   Container::SerializeFeatureArray(serializer);
 }
 

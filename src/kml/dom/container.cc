@@ -52,12 +52,10 @@ void Container::AddElement(const ElementPtr& element) {
   }
 }
 
-// This is done for the benefit of Document which has special serialization
+// This exists for the benefit of Document which has special serialization
 // needs.  See document.cc.
 void Container::SerializeFeatureArray(Serializer& serializer) const {
-  for (size_t i = 0; i < get_feature_array_size(); ++i) {
-    serializer.SaveElementGroup(get_feature_array_at(i), Type_Feature);
-  }
+  serializer.SaveElementGroupArray(feature_array_, Type_Feature);
 }
 
 void Container::Serialize(Serializer& serializer) const {

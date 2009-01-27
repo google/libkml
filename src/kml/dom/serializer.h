@@ -103,6 +103,49 @@ class Serializer {
     SaveStringFieldById(type_id, kmlbase::ToString(value));
   }
 
+  // Notify the serializer that an array of the given type of element is being
+  // saved.  SaveElement will now be called N times (N == element_count).
+  virtual void BeginElementArray(int type_id, size_t element_count) {}
+
+  // Notify the serializer that an array of the given type was just saved.
+  virtual void EndElementArray(int type_id) {}
+
+  // This is common code for saving any element array.  The BeginElementArray
+  // and EndElementArray methods are called before/after saving all elements.
+  template<class T>
+  void SaveElementArray(const std::vector<T>& element_array) {
+    if (size_t element_count = element_array.size()) {
+      BeginElementArray(element_array[0]->Type(), element_count);
+      for (size_t i = 0; i < element_count; ++i) {
+        SaveElement(element_array[i]);
+      }
+      EndElementArray(element_array[0]->Type());
+    }
+  }
+
+  // Notify the serializer that an array of the given group type of element is
+  // being saved.  SaveElementGroup will now be called N times (N ==
+  // element_count).
+  virtual void BeginElementGroupArray(int group_id, size_t element_count) {}
+
+  // Notify the serializer that an array of the given group type was just saved.
+  virtual void EndElementGroupArray(int group_id) {}
+
+  // This is common code for saving any substitution group element array.  The
+  // BeginElementArray and EndElementArray methods are called before/after
+  // saving all elements.
+  template<class T>
+  void SaveElementGroupArray(const std::vector<T>& element_array,
+                             int group_id) {
+    if (size_t element_count = element_array.size()) {
+      BeginElementGroupArray(group_id, element_count);
+      for (size_t i = 0; i < element_count; ++i) {
+        SaveElementGroup(element_array[i], group_id);
+      }
+      EndElementGroupArray(group_id);
+    }
+  }
+
  protected:
    const Xsd& xsd_;
 };

@@ -42,16 +42,24 @@ namespace kmldom {
 class SerializerTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    folder_ = KmlFactory::GetFactory()->CreateFolder();
-    placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
-    point_ = KmlFactory::GetFactory()->CreatePoint();
-    region_ = KmlFactory::GetFactory()->CreateRegion();
+    kml_factory_ = KmlFactory::GetFactory();
+    document_ = kml_factory_->CreateDocument();
+    folder_ = kml_factory_->CreateFolder();
+    placemark_ = kml_factory_->CreatePlacemark();
+    point_ = kml_factory_->CreatePoint();
+    region_ = kml_factory_->CreateRegion();
+    style_ = kml_factory_->CreateStyle();
+    style_map_ = kml_factory_->CreateStyleMap();
   }
 
+  KmlFactory* kml_factory_;
+  DocumentPtr document_;
   FolderPtr folder_;
   PlacemarkPtr placemark_;
   PointPtr point_;
   RegionPtr region_;
+  StylePtr style_;
+  StyleMapPtr style_map_;
 };
 
 // The NullSerializer implementation overrides no Serializer virtual methods.
@@ -73,6 +81,10 @@ class MaximalSerializer : public Serializer {
                              double altitude) {}
   virtual void Indent() {}
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
+  virtual void BeginElementArray(int type_id, size_t element_count) {}
+  virtual void EndElementArray(int type_id, size_t element_count) {}
+  virtual void BeginElementGroupArray(int group_id, size_t element_count) {}
+  virtual void EndElementGroupArray(int group_id, size_t element_count) {}
 };
 
 typedef std::vector<KmlDomType> TypeIdVector;
@@ -225,7 +237,6 @@ TEST_F(SerializerTest, TestStatsSerializerOnChildren) {
   ASSERT_EQ(Type_Point, element_vector[1]->Type());
 }
 
-
 TEST_F(SerializerTest, TestSaveColor) {
   const kmlbase::Color32 kOpaqueWhite(0xffffffff);
   const kmlbase::Color32 kOpaqueBlack(0xff000000);
@@ -243,6 +254,117 @@ TEST_F(SerializerTest, TestSaveColor) {
   ASSERT_TRUE(kOpaqueBlack == color_vector[1].second);
   ASSERT_EQ(Type_textColor, color_vector[2].first);
   ASSERT_TRUE(kOpaqueBlue == color_vector[2].second);
+}
+
+// This Serializer implementation provides implementations for virtual methods
+// used to serialize element arrays.  This simply logs every id of everything
+// it sees.
+typedef std::vector<int> IntVector;
+class ArraySerializer : public Serializer {
+ public:
+  ArraySerializer(IntVector* int_vector)
+    : int_vector_(int_vector) {
+  }
+
+  // Called for each non-substitution-group element including each element
+  // in an array.
+  virtual void SaveElement(const ElementPtr& element) {
+    int_vector_->push_back(element->Type());
+  }
+
+  // Called for each substitution-group element including each element
+  // in an array.
+  virtual void SaveElementGroup(const ElementPtr& element, int group_id) {
+    int_vector_->push_back(element->Type());
+    int_vector_->push_back(group_id);
+  }
+
+  // Called before calling SaveElement on each element in an array.  The
+  // element_count is the number of elements in the array and the type_id
+  // is the type of each element.
+  virtual void BeginElementArray(int type_id, size_t element_count) {
+    int_vector_->push_back(type_id);
+    int_vector_->push_back(element_count);
+  }
+
+  // Called after saving each element in an array.  Every element was of
+  // the given type.
+  virtual void EndElementArray(int type_id) {
+    int_vector_->push_back(type_id);
+  }
+
+  // Called before calling SaveElementGroup on each element in an array.  The
+  // element_count is the number of elements in the array and the group_id
+  // is the substitution group type of each element.  Examples of group_id
+  // in KML include Type_Feature, Type_Object, and Type_StyleSelector.
+  virtual void BeginElementGroupArray(int group_id, size_t element_count) {
+    int_vector_->push_back(group_id);
+    int_vector_->push_back(element_count);
+  }
+
+  // Called after saving each group element in an array.  Every element was of
+  // the given group type.
+  virtual void EndElementGroupArray(int group_id) {
+    int_vector_->push_back(group_id);
+  }
+
+ private:
+  IntVector* int_vector_;
+};
+
+// Test Serializer::SaveElementGroupArray.
+TEST_F(SerializerTest, TestSaveElementGroupArray) {
+  document_->set_region(region_);
+  document_->add_feature(kml_factory_->CreatePlacemark());
+  document_->add_feature(kml_factory_->CreateGroundOverlay());
+  document_->add_feature(kml_factory_->CreateScreenOverlay());
+
+  IntVector int_vector;
+  ArraySerializer array_serializer(&int_vector);
+  CallSerializer(document_, &array_serializer);
+
+  ASSERT_EQ(static_cast<size_t>(10), int_vector.size());
+  // The order presumes that of KML Document.
+  // SaveElement(Region)
+  ASSERT_EQ(Type_Region, int_vector[0]);
+  // BeginElementGroupArray(Type_Feature, 3)
+  ASSERT_EQ(Type_Feature, int_vector[1]);
+  ASSERT_EQ(3, int_vector[2]);
+  // SaveElementGroup(Placemark)
+  ASSERT_EQ(Type_Placemark, int_vector[3]);
+  ASSERT_EQ(Type_Feature, int_vector[4]);
+  // SaveElementGroup(GroundOverlay)
+  ASSERT_EQ(Type_GroundOverlay, int_vector[5]);
+  ASSERT_EQ(Type_Feature, int_vector[6]);
+  // SaveElementGroup(ScreenOverlay)
+  ASSERT_EQ(Type_ScreenOverlay, int_vector[7]);
+  ASSERT_EQ(Type_Feature, int_vector[8]);
+  // EndElementGroupArray(Type_Feature)
+  ASSERT_EQ(Type_Feature, int_vector[9]);
+
+}
+
+// Test Serializer::SaveElementArray.
+TEST_F(SerializerTest, TestSaveElementArray) {
+  document_->set_region(region_);
+  document_->add_schema(kml_factory_->CreateSchema());
+  document_->add_schema(kml_factory_->CreateSchema());
+
+  IntVector int_vector;
+  ArraySerializer array_serializer(&int_vector);
+  CallSerializer(document_, &array_serializer);
+
+  ASSERT_EQ(static_cast<size_t>(6), int_vector.size());
+  // SaveElement(Region)
+  ASSERT_EQ(Type_Region, int_vector[0]);
+  // BeginElementArray(Type_Schema, 2)
+  ASSERT_EQ(Type_Schema, int_vector[1]);
+  ASSERT_EQ(2, int_vector[2]);
+  // SaveElement(Schema) x 2
+  ASSERT_EQ(Type_Schema, int_vector[3]);
+  ASSERT_EQ(Type_Schema, int_vector[4]);
+  // EndElementArray(Type_Schema)
+  ASSERT_EQ(Type_Schema, int_vector[5]);
 }
 
 }  // end namespace kmldom
