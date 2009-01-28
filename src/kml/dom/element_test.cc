@@ -281,6 +281,33 @@ TEST_F(ElementTest, TestGetParent) {
 #endif
 }
 
+// This tests the MergeXmlns method.
+TEST_F(ElementTest, TestMergeXmlns) {
+  ASSERT_TRUE(element_->get_default_xmlns().empty());
+
+  const std::string kOgcKml22Ns("http://www.opengis.net/kml/2.2");
+  element_->set_default_xmlns(kOgcKml22Ns);
+  ASSERT_EQ(kOgcKml22Ns, element_->get_default_xmlns());
+
+  const std::string kFooPrefix("foo");
+  const std::string kFooNamespace("foo:is:foo");
+  Attributes xmlns;
+  xmlns.SetValue(kFooPrefix, kFooNamespace);
+  element_->MergeXmlns(xmlns);
+
+  Attributes attrs;
+  element_->SerializeAttributes(&attrs);
+  ASSERT_EQ(static_cast<size_t>(2), attrs.GetSize());
+  std::string xml_namespace;
+  ASSERT_TRUE(attrs.FindValue("xmlns", &xml_namespace));
+  ASSERT_EQ(kOgcKml22Ns, xml_namespace);
+
+  xml_namespace.clear();
+  ASSERT_TRUE(attrs.FindValue(std::string("xmlns:") + kFooPrefix,
+                              &xml_namespace));
+  ASSERT_EQ(kFooNamespace, xml_namespace);
+}
+
 class ElementSerializerTest : public testing::Test {
  protected:
   virtual void SetUp() {
