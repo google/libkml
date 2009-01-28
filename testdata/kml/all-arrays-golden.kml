@@ -1,0 +1,159 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <NetworkLinkControl>
+    <Update>
+      <targetHref/>
+      <Create>
+        <Folder/>
+      </Create>
+      <Delete>
+        <Placemark/>
+      </Delete>
+      <Change>
+        <LatLonBox/>
+      </Change>
+      <Create>
+        <Document/>
+        <Folder targetId="f0"/>
+        <Folder targetId="f1"/>
+      </Create>
+      <Delete>
+        <GroundOverlay/>
+        <ScreenOverlay/>
+        <PhotoOverlay/>
+      </Delete>
+      <Change>
+        <IconStyle/>
+        <LineStyle/>
+        <Point/>
+      </Change>
+    </Update>
+  </NetworkLinkControl>
+  <Folder>
+    <Document id="document-styleselector">
+      <styleUrl>#dummy</styleUrl>
+      <Style id="n0"/>
+      <Style id="h0"/>
+      <StyleMap id="r0"/>
+      <Style id="n1"/>
+      <Style id="h1"/>
+      <StyleMap id="r1"/>
+      <Region id="region0"/>
+    </Document>
+    <Placemark id="placemark-extendeddata-data">
+      <ExtendedData>
+        <Data id="data0">
+          <value/>
+        </Data>
+        <Data id="data1">
+          <value/>
+        </Data>
+        <Data id="data2">
+          <value/>
+        </Data>
+        <SchemaData id="data-schemadata0"/>
+      </ExtendedData>
+    </Placemark>
+    <Placemark id="placemark-extendeddata-schemadata">
+      <ExtendedData>
+        <Data id="schemadata-data0">
+          <value/>
+        </Data>
+        <SchemaData id="schemdata0"/>
+        <SchemaData id="schemadata1"/>
+        <SchemaData id="schemadata2"/>
+      </ExtendedData>
+    </Placemark>
+    <Placemark id="placemark-extendeddata-schemadata-simpledata">
+      <ExtendedData>
+        <SchemaData id="simpledata-schemdata0">
+          <SimpleData name="simpledata-name0">
+          </SimpleData>
+          <SimpleData name="simpledata-name1">
+          </SimpleData>
+          <SimpleData name="simpledata-name2">
+          </SimpleData>
+        </SchemaData>
+      </ExtendedData>
+    </Placemark>
+    <Document id="document-schema">
+      <ExtendedData/>
+      <Schema id="schema0"/>
+      <Schema id="schema1"/>
+      <Schema id="schema2"/>
+      <Placemark/>
+    </Document>
+    <Document id="document-feature">
+      <Schema/>
+      <Placemark id="document-placemark"/>
+      <Folder id="document-folder"/>
+      <Document id="document-document"/>
+      <NetworkLink id="document-networklink"/>
+      <GroundOverlay id="document-groundoverlay"/>
+      <PhotoOverlay id="document-photooverlay"/>
+      <ScreenOverlay id="document-screenoverlay"/>
+    </Document>
+    <Document id="document-schema-simplefield">
+      <Schema>
+        <SimpleField name="simplefield0"/>
+        <SimpleField name="simplefield1"/>
+        <SimpleField name="simplefield2"/>
+      </Schema>
+    </Document>
+    <Folder id="folder-feature">
+      <ExtendedData/>
+      <Placemark id="folder-placemark"/>
+      <Folder id="folder-folder"/>
+      <Document id="folder-document"/>
+      <NetworkLink id="folder-networklink"/>
+      <GroundOverlay id="folder-groundoverlay"/>
+      <PhotoOverlay id="folder-photooverlay"/>
+      <ScreenOverlay id="folder-screenoverlay"/>
+    </Folder>
+    <Placemark id="placemark-multigeometry-geometry">
+      <MultiGeometry>
+        <Point id="multigeometry-point"/>
+        <LineString id="multigeometry-linestring"/>
+        <LinearRing id="multigeometry-linearring"/>
+        <MultiGeometry id="multigeometry-multigeometry"/>
+        <Polygon id="multigeometry-polygon"/>
+        <Model id="multigeometry-model"/>
+      </MultiGeometry>
+    </Placemark>
+    <Placemark id="placemark-polygon-innerboundaryis">
+      <Polygon>
+        <outerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+      </Polygon>
+    </Placemark>
+    <Placemark>
+      <Model>
+        <ResourceMap>
+          <Alias id="alias0"/>
+          <Alias id="alias1"/>
+          <Alias id="alias2"/>
+        </ResourceMap>
+      </Model>
+    </Placemark>
+    <Placemark>
+      <StyleMap>
+        <Pair id="pair0"/>
+        <Pair id="pair1"/>
+        <Pair id="pair2"/>
+      </StyleMap>
+    </Placemark>
+    <Folder>
+      <Style>
+        <ListStyle>
+          <bgColor>00000000</bgColor>
+          <ItemIcon id="itemicon0"/>
+          <ItemIcon id="itemicon1"/>
+          <ItemIcon id="itemicon2"/>
+          <maxSnippetLines>0</maxSnippetLines>
+        </ListStyle>
+      </Style>
+    </Folder>
+  </Folder>
+</kml>
