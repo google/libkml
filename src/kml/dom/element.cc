@@ -151,6 +151,10 @@ const std::string Element::get_default_xmlns() const {
   return default_xmlns;
 }
 
+void Element::MergeXmlns(const Attributes& xmlns) {
+  xmlns_->MergeAttributes(xmlns);
+}
+
 ElementSerializer::ElementSerializer(const Element& element,
                                      Serializer& serializer)
     : element_(element), serializer_(serializer) {
