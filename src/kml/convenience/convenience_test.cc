@@ -238,6 +238,73 @@ TEST(ConvenienceTest, TestSetExtendedDataValue) {
   ASSERT_EQ(kValue1, value);
 }
 
+// This tests the SimplifyCoordinates() function.
+TEST(ConvenienceTest, TestSimplifyCoordinates) {
+  // For reference, the hypotenuse (in meters) of an N by N triangle at the
+  // equator is:
+  // N        = Distance
+  // 0.000001 = 0.157147 m
+  // 0.000010 = 1.571475 m
+  // 0.000100 = 15.714748 m
+  // 0.001000 = 157.147485 m
+  // 0.010000 = 1571.474842 m
+  // 0.100000 = 15714.744473 m
+
+  CoordinatesPtr c1 = KmlFactory::GetFactory()->CreateCoordinates();
+  c1->add_vec3(Vec3(0.000000, 0.000000, 0.000000));
+  c1->add_vec3(Vec3(0.000001, 0.000001, 0.000001));
+  c1->add_vec3(Vec3(0.000003, 0.000003, 0.000003));
+
+  c1->add_vec3(Vec3(0.000030, 0.000030, 0.000030));
+  c1->add_vec3(Vec3(0.000040, 0.000040, 0.000040));
+  c1->add_vec3(Vec3(0.000070, 0.000070, 0.000070));
+
+  c1->add_vec3(Vec3(0.000500, 0.000500, 0.000500));
+  c1->add_vec3(Vec3(0.000700, 0.000700, 0.000700));
+  c1->add_vec3(Vec3(0.000900, 0.000900, 0.000900));
+
+  // This will not elide near-coincident points.
+  CoordinatesPtr notmerged = KmlFactory::GetFactory()->CreateCoordinates();
+  SimplifyCoordinates(c1, notmerged, 0.0);
+  ASSERT_EQ(static_cast<size_t>(9), notmerged->get_coordinates_array_size()); 
+
+  // This will elide the first and second coordinate tuples since they are less
+  // than 0.2 meters apart.
+  CoordinatesPtr merged1 = KmlFactory::GetFactory()->CreateCoordinates();
+  SimplifyCoordinates(c1, merged1, 0.2);
+  ASSERT_EQ(static_cast<size_t>(8), merged1->get_coordinates_array_size()); 
+  // Assert that the second coordinate was the one elided.
+  ASSERT_DOUBLE_EQ(
+      0.0, merged1->get_coordinates_array_at(0).get_latitude());
+  ASSERT_DOUBLE_EQ(
+      0.000003, merged1->get_coordinates_array_at(1).get_latitude());
+  ASSERT_DOUBLE_EQ(
+      0.000030, merged1->get_coordinates_array_at(2).get_latitude());
+
+  // A tolerance of 20 meters will elide the first 6 coordinates.
+  CoordinatesPtr merged2 = KmlFactory::GetFactory()->CreateCoordinates();
+  SimplifyCoordinates(c1, merged2, 20.0);
+  ASSERT_EQ(static_cast<size_t>(4), merged2->get_coordinates_array_size()); 
+  // Assert that the remaining coordinates.
+  ASSERT_DOUBLE_EQ(
+      0.0, merged2->get_coordinates_array_at(0).get_latitude());
+  ASSERT_DOUBLE_EQ(
+      0.0005, merged2->get_coordinates_array_at(1).get_latitude());
+  ASSERT_DOUBLE_EQ(
+      0.0007, merged2->get_coordinates_array_at(2).get_latitude());
+  ASSERT_DOUBLE_EQ(
+      0.0009, merged2->get_coordinates_array_at(3).get_latitude());
+
+  // This distance is greater than the separation of all coordinate elements
+  // and thus all elements after the first will be elided.
+  CoordinatesPtr merged3 = KmlFactory::GetFactory()->CreateCoordinates();
+  SimplifyCoordinates(c1, merged3, 200.0);
+  ASSERT_EQ(static_cast<size_t>(1), merged3->get_coordinates_array_size()); 
+  // Assert that the only coordinate remaining is the first. 
+  ASSERT_DOUBLE_EQ(
+      0.0, merged2->get_coordinates_array_at(0).get_latitude());
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {

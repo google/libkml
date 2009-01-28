@@ -29,6 +29,7 @@
 #define KML_CONVENIENCE_CONVENIENCE_H__
 
 #include <string>
+#include <vector>
 #include "kml/base/vec3.h"
 #include "kml/dom.h"
 
@@ -47,7 +48,7 @@ namespace kmlconvenience {
 void AddExtendedDataValue(const std::string& name, const std::string& value,
                           kmldom::FeaturePtr feature);
 
-// Creates a simple Polygon from a LinearRing.
+// Creates a simple Polygon Placemark from a LinearRing.
 kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
     const kmldom::LinearRingPtr& lr);
 
@@ -102,6 +103,23 @@ bool GetExtendedDataValue(const kmldom::FeaturePtr& feature,
 // is delete from this feature.
 void SetExtendedDataValue(const std::string& name, const std::string& value,
                           kmldom::FeaturePtr feature);
+
+// Returns a simplification of coordinates elements. merge_tolerance specifies
+// a distance (in meters) within which adjacent coordinates tuples will be
+// merged. If set to 0, no merge will occur.
+// For example, assume we have coordinates of:
+// (0,0,0 0,0,0 2,2,2 5,5,5 6,6,6 9,9,9)
+// where the first two coordinates elements are coincident.
+// If SimplifyCoordinates is called with a merge_tolerance of 1.0, the
+// coincident points will be elided and the returned coordinates will be:
+// (0,0,0 2,2,2 5,5,5 6,6,6 9,9,9)
+// Since a 1 x 1 degree square near the equator has a diagonal of around
+// 157,147m, if SimplifyCoordinates is called with a merge
+// tolerance of 160000 the points at (5,5,5 6,6,6) will also be elided and the
+// returned coordinates will be:
+// (0,0,0 2,2,2 5,5,5 9,9,9)
+void SimplifyCoordinates(const kmldom::CoordinatesPtr& src,
+                         kmldom::CoordinatesPtr dest, double merge_tolerance);
 
 }  // end namespace kmlconvenience
 
