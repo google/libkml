@@ -152,6 +152,12 @@ class Element : public kmlbase::XmlElement {
     return xmlns_.get();
   }
 
+  // This merges in the given set of prefix/namespace attributes into the
+  // the xml namespaces set for this element.  Each prefix is is _just_ the
+  // namespace prefix.  Each prefix added here appears in the
+  // SerializeAttributeswith a "xmlns:" prepended.
+  void MergeXmlns(const kmlbase::Attributes& xmlns);
+
   // Permits polymorphic use of Field methods.
   virtual bool SetBool(bool* val) { return false; }
   virtual bool SetDouble(double* val) { return false; }
