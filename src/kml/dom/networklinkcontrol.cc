@@ -59,9 +59,7 @@ void Create::AddElement(const ElementPtr& element) {
 
 void Create::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  for (size_t i = 0; i < container_array_.size(); ++i) {
-    serializer.SaveElementGroup(get_container_array_at(i), Type_Container);
-  }
+  serializer.SaveElementGroupArray(container_array_, Type_Container);
 }
 
 // <Delete>
@@ -82,9 +80,7 @@ void Delete::AddElement(const ElementPtr& element) {
 
 void Delete::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  for (size_t i = 0; i < feature_array_.size(); ++i) {
-    serializer.SaveElementGroup(get_feature_array_at(i), Type_Feature);
-  }
+  serializer.SaveElementGroupArray(feature_array_, Type_Feature);
 }
 
 // <Change>
@@ -105,9 +101,7 @@ void Change::AddElement(const ElementPtr& element) {
 
 void Change::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  for (size_t i = 0; i < object_array_.size(); ++i) {
-    serializer.SaveElementGroup(get_object_array_at(i), Type_Object);
-  }
+  serializer.SaveElementGroupArray(object_array_, Type_Object);
 }
 
 // <Update>

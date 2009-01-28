@@ -332,9 +332,7 @@ void Polygon::Serialize(Serializer& serializer) const {
   if (has_outerboundaryis()) {
     serializer.SaveElement(get_outerboundaryis());
   }
-  for (size_t i = 0; i < innerboundaryis_array_.size(); ++i) {
-    serializer.SaveElement(innerboundaryis_array_[i]);
-  }
+  serializer.SaveElementArray(innerboundaryis_array_);
 }
 
 MultiGeometry::MultiGeometry() {}
@@ -359,9 +357,7 @@ void MultiGeometry::AddElement(const ElementPtr& element) {
 void MultiGeometry::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
-  for (size_t i = 0; i < geometry_array_.size(); ++i) {
-    serializer.SaveElementGroup(geometry_array_[i], Type_Geometry);
-  }
+  serializer.SaveElementGroupArray(geometry_array_, Type_Geometry);
 }
 
 }  // end namespace kmldom
