@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This file has at least one of each "array" element in KML.  In XSD terms an
+  array is any element with maxOccurs=unbounded.  When relevant and possible at
+  least one non-array element before and/or after the array is used to test
+  ordering.  Each element in an array is given an id attribute or other means
+  to identify that element uniquely amongst the others in the array.
+  The order of array elements is that in which they appear in the
+  OGC KML 2.2 XSD (http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd).  Each
+  array is put in its proper parentage up to a Feature child of the root
+  container feature of this file.  Extension groups are always arrays, but are
+  not used here.  This file is 100% XSD valid w.r.t. OGC KML 2.2.  NOTE:
+  This file is not expected to be especially useful beyond illustrating and
+  testing element arrays in KML.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+
+  <!-- Update/{Create,Delete,Change} -->
+  <NetworkLinkControl>
+    <Update>
+      <targetHref/>
+      <Create>
+        <Folder/>
+      </Create>
+      <Delete>
+        <Placemark/>
+      </Delete>
+      <Change>
+        <LatLonBox/>
+      </Change>
+      <!-- Create/Container -->
+      <Create>
+        <Document/>
+        <Folder targetId="f0"/>
+        <Folder targetId="f1"/>
+      </Create>
+      <!-- Delete/Feature -->
+      <Delete>
+        <GroundOverlay/>
+        <ScreenOverlay/>
+        <PhotoOverlay/>
+      </Delete>
+      <!-- Change/Object -->
+      <Change>
+        <IconStyle/>
+        <LineStyle/>
+        <Point/>
+      </Change>
+    </Update>
+  </NetworkLinkControl>
+
+  <Folder>
+
+    <!-- Document/StyleSelector -->
+    <Document id="document-styleselector">
+      <styleUrl>#dummy</styleUrl>
+      <Style id="n0"/>
+      <Style id="h0"/>
+      <StyleMap id="r0"/>
+      <Style id="n1"/>
+      <Style id="h1"/>
+      <StyleMap id="r1"/>
+      <Region id="region0"/>
+    </Document>
+
+    <!-- ExtendedData/Data -->
+    <Placemark id="placemark-extendeddata-data">
+      <ExtendedData>
+        <Data id="data0">
+          <value/>
+        </Data>
+        <Data id="data1">
+          <value/>
+        </Data>
+        <Data id="data2">
+          <value/>
+        </Data>
+        <SchemaData id="data-schemadata0"/>
+      </ExtendedData>
+    </Placemark>
+
+    <!-- ExtendedData/SchemaData -->
+    <Placemark id="placemark-extendeddata-schemadata">
+      <ExtendedData>
+        <Data id="schemadata-data0">
+          <value/>
+        </Data>
+        <SchemaData id="schemdata0"/>
+        <SchemaData id="schemadata1"/>
+        <SchemaData id="schemadata2"/>
+      </ExtendedData>
+    </Placemark>
+
+    <!-- SchemaData/SimpleData -->
+    <Placemark id="placemark-extendeddata-schemadata-simpledata">
+      <ExtendedData>
+        <SchemaData id="simpledata-schemdata0">
+          <!-- TODO: serializes to <SimpleData></SimpleData> -->
+          <SimpleData name="simpledata-name0"/>
+          <SimpleData name="simpledata-name1"/>
+          <SimpleData name="simpledata-name2"/>
+        </SchemaData>
+      </ExtendedData>
+    </Placemark>
+
+    <!-- Document/Schema -->
+    <Document id="document-schema">
+      <ExtendedData/>
+      <Schema id="schema0"/>
+      <Schema id="schema1"/>
+      <Schema id="schema2"/>
+      <Placemark/>
+    </Document>
+
+    <!-- Document/Feature -->
+    <Document id="document-feature">
+      <!-- In Document Schema is the last element before the feature array -->
+      <Schema/>
+      <Placemark id="document-placemark"/>
+      <Folder id="document-folder"/>
+      <Document id="document-document"/>
+      <NetworkLink id="document-networklink"/>
+      <GroundOverlay id="document-groundoverlay"/>
+      <PhotoOverlay id="document-photooverlay"/>
+      <ScreenOverlay id="document-screenoverlay"/>
+    </Document>
+
+    <!-- Schema/SimpleField -->
+    <Document id="document-schema-simplefield">
+      <Schema>
+        <SimpleField name="simplefield0"/>
+        <SimpleField name="simplefield1"/>
+        <SimpleField name="simplefield2"/>
+      </Schema>
+    </Document>
+
+    <!-- Folder/Feature -->
+    <Folder id="folder-feature">
+      <!-- In Folder ExtendedData is the last element before the feature array -->
+      <ExtendedData/>
+      <Placemark id="folder-placemark"/>
+      <Folder id="folder-folder"/>
+      <Document id="folder-document"/>
+      <NetworkLink id="folder-networklink"/>
+      <GroundOverlay id="folder-groundoverlay"/>
+      <PhotoOverlay id="folder-photooverlay"/>
+      <ScreenOverlay id="folder-screenoverlay"/>
+    </Folder>
+
+    <!-- MultiGeometry/Geometry -->
+    <Placemark id="placemark-multigeometry-geometry">
+      <MultiGeometry>
+        <Point id="multigeometry-point"/>
+        <LineString id="multigeometry-linestring"/>
+        <LinearRing id="multigeometry-linearring"/>
+        <MultiGeometry id="multigeometry-multigeometry"/>
+        <Polygon id="multigeometry-polygon"/>
+        <Model id="multigeometry-model"/>
+      </MultiGeometry>
+    </Placemark>
+
+    <!-- Polygon/innerBoundaryIs -->
+    <Placemark id="placemark-polygon-innerboundaryis">
+      <Polygon>
+        <outerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+        <innerBoundaryIs/>
+      </Polygon>
+    </Placemark>
+
+    <!-- ResourceMap/Alias -->
+    <Placemark>
+      <Model>
+        <ResourceMap>
+          <Alias id="alias0"/>
+          <Alias id="alias1"/>
+          <Alias id="alias2"/>
+        </ResourceMap>
+      </Model>
+    </Placemark>
+
+    <!-- StyleMap/Pair -->
+    <Placemark>
+      <StyleMap>
+        <Pair id="pair0"/>
+        <Pair id="pair1"/>
+        <Pair id="pair2"/>
+      </StyleMap>
+    </Placemark>
+
+    <!-- ListStyle/ItemIcon -->
+    <Folder>
+      <Style>
+        <ListStyle>
+          <!-- TODO: serializes to <bgColor>00000000</bgColor> -->
+          <bgColor/>
+          <ItemIcon id="itemicon0"/>
+          <ItemIcon id="itemicon1"/>
+          <ItemIcon id="itemicon2"/>
+          <!-- TODO: serializes to <maxSnippetLines>0</maxSnippetLines> -->
+          <maxSnippetLines/>
+        </ListStyle>
+      </Style>
+    </Folder>
+
+  </Folder>
+</kml>
