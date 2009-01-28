@@ -62,7 +62,7 @@ void AddExtendedDataValue(const std::string& name, const std::string& value,
   feature->get_extendeddata()->add_data(CreateDataNameValue(name, value));
 }
 
-kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
+PlacemarkPtr CreateBasicPolygonPlacemark(
     const kmldom::LinearRingPtr& lr) {
   KmlFactory* factory = KmlFactory::GetFactory();
   OuterBoundaryIsPtr obi = factory->CreateOuterBoundaryIs();
@@ -197,6 +197,37 @@ PlacemarkPtr CreatePointPlacemarkWithTimeStamp(const PointPtr& point,
   // <Point>
   placemark->set_geometry(point);
   return placemark;
+}
+
+void SimplifyCoordinates(const CoordinatesPtr& src,
+                         CoordinatesPtr dest, double merge_tolerance) {
+  if (!src || !dest) {
+    return;
+  }
+  // Remember the last coordinate.
+  Vec3 last_vec;
+  for (size_t i = 0; i < src->get_coordinates_array_size(); ++i) {
+    // If this is the first tuple, just append it to the result vec.
+    if (i == 0) {
+      dest->add_vec3(src->get_coordinates_array_at(i));
+      last_vec = src->get_coordinates_array_at(i);
+      continue;
+    }
+    // If the distance between the position of the last point and the current
+    // point is greater than merge_tolerance, do not append it to the vector.
+    if (merge_tolerance > 0.0) {
+      Vec3 this_vec = src->get_coordinates_array_at(i);
+      if (merge_tolerance >= kmlbase::DistanceBetweenPoints3d(
+            last_vec.get_latitude(), last_vec.get_longitude(),
+            last_vec.get_altitude(), this_vec.get_latitude(),
+            this_vec.get_longitude(), this_vec.get_altitude())) {
+        last_vec = src->get_coordinates_array_at(i);
+        continue;
+      }
+    }
+    last_vec = src->get_coordinates_array_at(i);
+    dest->add_vec3(src->get_coordinates_array_at(i));
+  }
 }
 
 }  // end namespace kmlconvenience
