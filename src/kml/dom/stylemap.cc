@@ -94,9 +94,7 @@ void StyleMap::AddElement(const ElementPtr& element) {
 void StyleMap::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   StyleSelector::Serialize(serializer);
-  for (size_t i = 0; i < get_pair_array_size(); ++i) {
-    serializer.SaveElement(get_pair_array_at(i));
-  }
+  serializer.SaveElementArray(pair_array_);
 }
 
 }  // end namespace kmldom

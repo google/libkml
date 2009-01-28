@@ -120,9 +120,7 @@ void Schema::AddElement(const ElementPtr& element) {
 
 void Schema::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  for (size_t i = 0; i < simplefield_array_.size(); ++i) {
-    serializer.SaveElement(get_simplefield_array_at(i));
-  }
+  serializer.SaveElementArray(simplefield_array_);
 }
 
 }  // end namespace kmldom

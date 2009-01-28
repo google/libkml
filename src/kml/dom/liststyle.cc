@@ -134,9 +134,7 @@ void ListStyle::Serialize(Serializer& serializer) const {
   if (has_bgcolor()) {
     serializer.SaveColor(Type_bgColor, get_bgcolor());
   }
-  for (size_t i = 0; i < get_itemicon_array_size(); ++i) {
-    serializer.SaveElement(get_itemicon_array_at(i));
-  }
+  serializer.SaveElementArray(itemicon_array_);
   if (has_maxsnippetlines()) {
     serializer.SaveFieldById(Type_maxSnippetLines, get_maxsnippetlines());
   }

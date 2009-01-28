@@ -120,9 +120,7 @@ void SchemaData::AddElement(const ElementPtr& element) {
 void SchemaData::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
-  for (size_t i = 0; i < get_simpledata_array_size(); ++i) {
-    serializer.SaveElement(get_simpledata_array_at(i));
-  }
+  serializer.SaveElementArray(simpledata_array_);
 }
 
 // <Data>
@@ -196,12 +194,8 @@ void ExtendedData::AddElement(const ElementPtr& element) {
 
 void ExtendedData::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  for (size_t i = 0; i < data_array_.size(); i++) {
-    data_array_[i]->Serialize(serializer);
-  }
-  for (size_t i = 0; i < schemadata_array_.size(); i++) {
-    schemadata_array_[i]->Serialize(serializer);
-  }
+  serializer.SaveElementArray(data_array_);
+  serializer.SaveElementArray(schemadata_array_);
 }
 
 // <Metadata>

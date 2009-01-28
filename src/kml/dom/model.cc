@@ -220,9 +220,7 @@ void ResourceMap::AddElement(const ElementPtr& element) {
 void ResourceMap::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
-  for (size_t i = 0; i < alias_array_.size(); ++i) {
-    serializer.SaveElement(get_alias_array_at(i));
-  }
+  serializer.SaveElementArray(alias_array_);
 }
 
 Model::Model() {}
