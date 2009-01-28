@@ -36,7 +36,7 @@
 // that are spatially coincident but not adjacent in the file.
 //
 // For example, to merge adjacent points if they are closer than 1 meter:
-// ./simplifycoordinates infile.kml outfile.kml 1.0
+// ./simplifylines infile.kml outfile.kml 1.0
 //
 // The default behaviour is not to elide points (tolerance=0.0).
 
