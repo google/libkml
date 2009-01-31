@@ -42,17 +42,60 @@
 
 namespace kmlbase {
 
+// Returns the initial azimuth (the angle measured clockwise from true north)
+// at a point from that point to a second point. For example, the azimuth
+// from 0,0 to 1,0 is 0 degrees. From 0,0 to 0,1 is 90 degrees (due east).
+// The range of the result is (-180, 180].
+//
+// This is directly useful as the value of <heading> in KML's AbstractView.
+//
+// Note that this is the _initial_ azimuth; it changes as one follows the
+// great circle path from point 1 to point2.
+double AzimuthBetweenPoints(double lat_from, double lng_from,
+                            double lat_to, double lng_to);
+
+// Returns the angle from the horizontal plane between alt1 and alt2.
+// For example, the returned angle from (37.00, -121.98, 600) to a point
+// about 1778 meters west, 400 meters below at (37.00, -122.00, 200) is
+// -12.7 degrees.
+//
+// To use this as the value of KML's <tilt>, add 90 degrees (since in KML a
+// tilt of 0 is vertical.
+//
+// TODO: this is a naive implementation accurate only over short distances.
+// It does not yet account for surface curvature.
+double ElevationBetweenPoints(double lat_from, double lng_from, double alt_from,
+                              double lat_to, double lng_to, double alt_to);
+
+// Returns the great circle distance in meters between two points on the
+// Earth's surface. The antemeridian is not considered here.
+double DistanceBetweenPoints(double lat_from, double lng_from,
+                             double lat_to, double lng_to);
+
+// Returns the great circle distance in meters between two 3d points. The
+// antemeridian is not considered here.
+double DistanceBetweenPoints3d(
+    double lat_from, double lng_from, double alt_from,
+    double lat_to, double lng_to, double alt_to);
+
+// Given a vector describing a line at an angle from the horizontal plane,
+// where the vector starts at a point on the surface of the Earth,
+// returns the absolute distance between the ground point and the point
+// directly under the end point.
+double GroundDistanceFromRangeAndElevation(double range, double elevation);
+
+// Given a vector describing a line at an angle from the horizontal plane,
+// where the vector starts at a point on the surface of the Earth,
+// returns the absolute height between the end point and the surface
+// point directly under it.
+double HeightFromRangeAndElevation(double range, double elevation);
+
 // Returns a Vec3 containing the latitude and longitude of a point at a
 // distance (meters) out on the radial (degrees) from a center point lat, lng.
 // The radial is measured clockwise from north. The antemeridian is not
 // considered here.
 Vec3 LatLngOnRadialFromPoint(double lat, double lng,
                              double distance, double radial);
-
-// Returns the great circle distance in meters between two points. The
-// antemeridian is not considered here.
-double DistanceBetweenPoints(double lat1, double lng1,
-                             double lat2, double lng2);
 
 // These functions are mostly internal, used in converting between degrees and
 // radians.
