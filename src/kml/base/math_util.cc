@@ -31,6 +31,51 @@ static const unsigned int kEarthRadius = 6366710;
 
 namespace kmlbase {
 
+double AzimuthBetweenPoints(double lat1, double lng1,
+                            double lat2, double lng2) {
+  const double lat1_r = DegToRad(lat1);
+  const double lng1_r = DegToRad(lng1);
+  const double lat2_r = DegToRad(lat2);
+  const double lng2_r = DegToRad(lng2);
+  return RadToDeg(fmod(atan2(sin(lng2_r - lng1_r) * cos(lat2_r),
+                  cos(lat1_r) * sin(lat2_r) - sin(lat1_r) *
+                  cos(lat2_r) * cos(lng2_r - lng1_r)), 2 * M_PI));
+}
+
+double DistanceBetweenPoints(double lat1, double lng1,
+                             double lat2, double lng2) {
+  const double lat1_r = DegToRad(lat1);
+  const double lng1_r = DegToRad(lng1);
+  const double lat2_r = DegToRad(lat2);
+  const double lng2_r = DegToRad(lng2);
+  return RadiansToMeters(2 * asin(sqrt(pow(sin((lat1_r - lat2_r)/2), 2) +
+                         cos(lat1_r) * cos(lat2_r) *
+                         pow(sin((lng1_r - lng2_r) / 2), 2))));
+}
+
+double DistanceBetweenPoints3d(double lat1, double lng1,
+                               double alt1, double lat2,
+                               double lng2, double alt2) {
+  double surface_distance = DistanceBetweenPoints(lat1, lng1, lat2, lng2);
+  return sqrt(pow(surface_distance, 2) + pow(alt2 - alt1, 2));
+}
+
+double ElevationBetweenPoints(double lat1, double lng1, double alt1,
+                              double lat2, double lng2, double alt2) {
+  // Naive implementation, accurate only over short distances.
+  // TODO: see header comment about curvature.
+  double distance = DistanceBetweenPoints(lat1, lng1, lat2, lng2);
+  return RadToDeg(atan((alt2 - alt1) / distance));
+}
+
+double GroundDistanceFromRangeAndElevation(double range, double elevation) {
+  return fabs(cos(DegToRad(elevation)) * range);
+}
+
+double HeightFromRangeAndElevation(double range, double elevation) {
+  return fabs(sin(DegToRad(elevation)) * range);
+}
+
 Vec3 LatLngOnRadialFromPoint(double lat, double lng,
                              double distance, double radial) {
   const double lat_r = DegToRad(lat);
@@ -43,17 +88,6 @@ Vec3 LatLngOnRadialFromPoint(double lat, double lng,
                            cos(distance_r) - sin(lat_r) * sin(radial_lat));
   const double radial_lng = fmod(lng_r + delta_lng + M_PI, 2 * M_PI) - M_PI;
   return Vec3(RadToDeg(radial_lng), RadToDeg(radial_lat));
-}
-
-double DistanceBetweenPoints(double lat1, double lng1,
-                             double lat2, double lng2) {
-  double lat1_r = DegToRad(lat1);
-  double lng1_r = DegToRad(lng1);
-  double lat2_r = DegToRad(lat2);
-  double lng2_r = DegToRad(lng2);
-  double d = 2 * asin(sqrt(pow(sin((lat1_r - lat2_r)/2), 2) +
-             cos(lat1_r) * cos(lat2_r) * pow(sin((lng1_r - lng2_r)/2), 2)));
-  return RadiansToMeters(d);
 }
 
 double DegToRad(double degrees) { return degrees * M_PI / 180.0; }
