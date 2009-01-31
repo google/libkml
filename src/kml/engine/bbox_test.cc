@@ -43,23 +43,30 @@ TEST_F(BboxTest, TestDefault) {
   ASSERT_EQ(kMaxLat, default_bbox.get_south());
   ASSERT_EQ(kMinLon, default_bbox.get_east());
   ASSERT_EQ(kMaxLon, default_bbox.get_west());
+  ASSERT_EQ(0, default_bbox.GetCenterLat());
+  ASSERT_EQ(0, default_bbox.GetCenterLon());
 }
-
 
 void BboxTest::VerifyBounds(const Bbox& bbox, double north, double south,
                             double east, double west) {
-
   // Verify the getters.
   ASSERT_EQ(north, bbox.get_north());
   ASSERT_EQ(south, bbox.get_south());
   ASSERT_EQ(east, bbox.get_east());
   ASSERT_EQ(west, bbox.get_west());
 
+  const double kWantLat((north + south)/2.0);
+  const double kWantLon((east + west)/2.0);
+
   // Verify GetCenter().
   double mid_lat, mid_lon;
   bbox.GetCenter(&mid_lat, &mid_lon);
-  ASSERT_EQ((north + south)/2.0, mid_lat);
-  ASSERT_EQ((east + west)/2.0, mid_lon);
+  ASSERT_EQ(kWantLat, mid_lat);
+  ASSERT_EQ(kWantLon, mid_lon);
+
+  // Verify GetCenterLat,Lon().
+  ASSERT_EQ(kWantLat, bbox.GetCenterLat());
+  ASSERT_EQ(kWantLon, bbox.GetCenterLon());
 
   // Verify Contains().
   ASSERT_TRUE(bbox.Contains(mid_lat, mid_lon));
@@ -154,10 +161,14 @@ TEST_F(BboxTest, TestMultiple) {
   ASSERT_EQ(kEastExpected, bbox.get_east());
   ASSERT_EQ(kWestExpected, bbox.get_west());
 
+  const double kLatExpected = (kNorthExpected + kSouthExpected)/2.0;
+  const double kLonExpected = (kEastExpected + kWestExpected)/2.0;
   double mid_lat, mid_lon;
   bbox.GetCenter(&mid_lat, &mid_lon);
-  ASSERT_EQ((kNorthExpected + kSouthExpected)/2.0, mid_lat);
-  ASSERT_EQ((kEastExpected + kWestExpected)/2.0, mid_lon);
+  ASSERT_EQ(kLatExpected, mid_lat);
+  ASSERT_EQ(kLonExpected, mid_lon);
+  ASSERT_EQ(kLatExpected, bbox.GetCenterLat());
+  ASSERT_EQ(kLonExpected, bbox.GetCenterLon());
 
   for (size_t i = 0; i < sizeof(kPoints)/sizeof(kPoints[0]); ++i) {
     ASSERT_TRUE(bbox.Contains(kPoints[i].lat, kPoints[i].lon));
