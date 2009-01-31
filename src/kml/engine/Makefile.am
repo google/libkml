@@ -225,7 +225,7 @@ link_util_test_LDADD = libkmlengine.la \
 	$(top_builddir)/third_party/libgtest.la
 
 location_util_test_SOURCES = location_util_test.cc
-location_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+location_util_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 location_util_test_LDADD = libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
