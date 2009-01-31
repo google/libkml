@@ -106,11 +106,19 @@ class Bbox {
   // This returns the center of the bounding box.
   void GetCenter(double* latitude, double* longitude) const {
     if (latitude) {
-      *latitude = (north_ + south_)/2.0;
+      *latitude = GetCenterLat();
     }
     if (longitude) {
-      *longitude = (east_ + west_)/2.0;
+      *longitude = GetCenterLon();
     }
+  }
+
+  double GetCenterLat() const {
+    return (north_ + south_)/2.0;
+  }
+
+  double GetCenterLon() const {
+    return (east_ + west_)/2.0;
   }
 
  private:
