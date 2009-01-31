@@ -175,7 +175,7 @@ TEST_F(IdMapperTest, TestAllObjects) {
   ElementPtr root = kmldom::Parse(kml, NULL);
   MapIds(root, &object_id_map_, &dup_id_vector_);
   ASSERT_TRUE(dup_id_vector_.empty());
-  ASSERT_EQ(static_cast<size_t>(42), object_id_map_.size());
+  ASSERT_EQ(static_cast<size_t>(44), object_id_map_.size());
   ObjectIdMap::const_iterator iter = object_id_map_.begin();
   for (; iter != object_id_map_.end(); ++iter) {
     const ObjectPtr& object = iter->second;
