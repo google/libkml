@@ -81,7 +81,7 @@ TEST(ConvenienceTest, TestCreateCoordinatesCircle) {
   const double kLat = 0.0;
   const double kLng = 0.0;
   const double kRadius = 100;
-  const double kSegments = 360;
+  const size_t kSegments = 360;
   CoordinatesPtr coords = CreateCoordinatesCircle(kLat, kLng, kRadius,
                                                   kSegments);
   ASSERT_EQ(kSegments, coords->get_coordinates_array_size());
