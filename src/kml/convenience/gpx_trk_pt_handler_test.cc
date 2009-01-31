@@ -119,6 +119,38 @@ TEST_F(GpxTrkPtHandlerTest, TestTime) {
   ASSERT_EQ(kTime, point_vector[0].second);
 }
 
+// This verifies that a <trkpt> with no <time> child preceded by one with time
+// does not cause that first point's time to be repeated.
+TEST_F(GpxTrkPtHandlerTest, TestMissingTime) {
+  PointVector point_vector;
+  TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
+
+  // Send down one <trkpt> with a <time> child.
+  const char* trkpt0[] = { "lat", "-123.456", "lon", "37.37", NULL };
+  test_gpx_trk_pt_handler.StartElement("trkpt", trkpt0);
+  // <time>2008-10-03T11:10:01Z</time>
+  test_gpx_trk_pt_handler.StartElement("time", NULL);
+  const std::string kTime("2008-10-03T11:10:01Z");
+  test_gpx_trk_pt_handler.CharData(kTime.c_str(), kTime.size());
+  test_gpx_trk_pt_handler.EndElement("time");
+  test_gpx_trk_pt_handler.EndElement("trkpt");
+
+  // Send down another <trkpt> with no <time> child.
+  const char* trkpt1[] = { "lat", "123.456", "lon", "-37.37", NULL };
+  test_gpx_trk_pt_handler.StartElement("trkpt", trkpt1);
+  test_gpx_trk_pt_handler.EndElement("trkpt");
+
+  ASSERT_EQ(static_cast<size_t>(2), point_vector.size());
+  ASSERT_EQ(-123.456, point_vector[0].first.get_latitude());
+  ASSERT_EQ(37.37, point_vector[0].first.get_longitude());
+  ASSERT_EQ(kTime, point_vector[0].second);
+
+  ASSERT_EQ(123.456, point_vector[1].first.get_latitude());
+  ASSERT_EQ(-37.37, point_vector[1].first.get_longitude());
+  // This is the key assertion of this test.
+  ASSERT_TRUE(point_vector[1].second.empty());
+}
+
 // These are some expected values from testdata/gpx/trkpts.gpx.
 static const struct {
   const size_t index;

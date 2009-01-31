@@ -65,6 +65,7 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
           vec3_.reset(new kmlbase::Vec3(longitude, latitude));
         }
       }
+      time_.clear();
     } else if (strcmp("time", name) == 0  ||
                strcmp("ele", name) == 0) {
       // <time>2008-10-11T14:55:41Z</time>
