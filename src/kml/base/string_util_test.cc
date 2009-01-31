@@ -32,8 +32,8 @@ TEST(StringUtilTest, Testb2a_hex) {
   const uint32_t k00 = 0x00;
   const uint32_t kff = 0xff;
 
-  char a[2];
   const char* e = "00";
+  static char a[2];
 
   b2a_hex(k00, a);
   ASSERT_EQ(0, strcmp(e, a));
