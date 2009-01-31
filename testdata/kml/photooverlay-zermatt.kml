@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This is the KML from ../kmz/zermatt-photo.kmz with an id on PhotoOverlay.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <PhotoOverlay id="photooverlay-zermatt">
+    <name>Untitled Photo Overlay</name>
+    <Camera>
+      <longitude>7.71792711000002</longitude>
+      <latitude>45.968226693</latitude>
+      <altitude>496.979999997134</altitude>
+      <heading>16.99</heading>
+      <tilt>83.1600000000001</tilt>
+      <roll>2.13108213421859e-06</roll>
+    </Camera>
+    <Style>
+      <IconStyle>
+        <Icon>
+          <href>files/camera_mode.png</href>
+        </Icon>
+      </IconStyle>
+      <ListStyle>
+        <listItemType>check</listItemType>
+        <bgColor>00ffffff</bgColor>
+        <ItemIcon>
+          <state>open closed error fetching0 fetching1 fetching2</state>
+          <href>http://maps.google.com/mapfiles/kml/shapes/camera-lv.png</href>
+        </ItemIcon>
+      </ListStyle>
+    </Style>
+    <Icon>
+      <href>files/zermatt.jpg</href>
+    </Icon>
+    <ViewVolume>
+      <leftFov>-25</leftFov>
+      <rightFov>25</rightFov>
+      <bottomFov>-17.225</bottomFov>
+      <topFov>17.225</topFov>
+      <near>107.223</near>
+    </ViewVolume>
+    <Point>
+      <altitudeMode>relativeToGround</altitudeMode>
+      <coordinates>
+        7.71792711000002,45.968226693,496.979999997134
+      </coordinates>
+    </Point>
+  </PhotoOverlay>
+</kml>
