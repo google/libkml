@@ -81,6 +81,8 @@ TEST_F(FeatureTest, TestDefaults) {
   ASSERT_TRUE(NULL == feature_->get_styleselector());
   ASSERT_FALSE(feature_->has_region());
   ASSERT_TRUE(NULL == feature_->get_region());
+  ASSERT_FALSE(feature_->has_gx_balloonvisibility());
+  ASSERT_FALSE(feature_->get_gx_balloonvisibility());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -114,6 +116,8 @@ TEST_F(FeatureTest, TestSetToDefaultValues) {
   ASSERT_TRUE(feature_->has_styleselector());
   feature_->set_region(KmlFactory::GetFactory()->CreateRegion());
   ASSERT_TRUE(feature_->has_region());
+  feature_->set_gx_balloonvisibility(feature_->get_gx_balloonvisibility());
+  ASSERT_TRUE(feature_->has_gx_balloonvisibility());
 }
 
 // Verify set, get, has, clear:
@@ -135,6 +139,7 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   std::string styleurl("e");
   StylePtr style = KmlFactory::GetFactory()->CreateStyle();
   RegionPtr region = KmlFactory::GetFactory()->CreateRegion();
+  bool gx_balloonvisibility = true;
 
   // Set all fields:
   feature_->set_name(name);
@@ -152,6 +157,7 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   feature_->set_styleurl(styleurl);
   feature_->set_styleselector(style);
   feature_->set_region(region);
+  feature_->set_gx_balloonvisibility(gx_balloonvisibility);
 
   // Verify getter and has_xxx():
   ASSERT_TRUE(name == feature_->get_name());
@@ -184,6 +190,8 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   ASSERT_TRUE(feature_->has_styleselector());
   ASSERT_TRUE(region == feature_->get_region());
   ASSERT_TRUE(feature_->has_region());
+  ASSERT_TRUE(gx_balloonvisibility == feature_->get_gx_balloonvisibility());
+  ASSERT_TRUE(feature_->has_gx_balloonvisibility());
 
   // Clear all fields:
   feature_->clear_name();
@@ -201,6 +209,38 @@ TEST_F(FeatureTest, TestSetGetHasClear) {
   feature_->clear_styleurl();
   feature_->clear_styleselector();
   feature_->clear_region();
+  feature_->clear_gx_balloonvisibility();
+
+  // Verify default state.
+  ASSERT_FALSE(feature_->has_name());
+  ASSERT_EQ(std::string(""), feature_->get_name());
+  ASSERT_FALSE(feature_->has_visibility());
+  ASSERT_TRUE(feature_->get_visibility());
+  ASSERT_FALSE(feature_->has_open());
+  ASSERT_FALSE(feature_->get_open());
+  ASSERT_FALSE(feature_->has_atomauthor());
+  ASSERT_FALSE(feature_->has_atomlink());
+  ASSERT_FALSE(feature_->has_address());
+  ASSERT_EQ(std::string(""), feature_->get_address());
+  ASSERT_FALSE(feature_->has_xaladdressdetails());
+  ASSERT_FALSE(feature_->has_phonenumber());
+  ASSERT_EQ(std::string(""), feature_->get_phonenumber());
+  ASSERT_FALSE(feature_->has_snippet());
+  ASSERT_TRUE(NULL == feature_->get_snippet());
+  ASSERT_FALSE(feature_->has_description());
+  ASSERT_EQ(std::string(""), feature_->get_description());
+  ASSERT_FALSE(feature_->has_abstractview());
+  ASSERT_TRUE(NULL == feature_->get_abstractview());
+  ASSERT_FALSE(feature_->has_timeprimitive());
+  ASSERT_TRUE(NULL == feature_->get_timeprimitive());
+  ASSERT_FALSE(feature_->has_styleurl());
+  ASSERT_EQ(std::string(""), feature_->get_styleurl());
+  ASSERT_FALSE(feature_->has_styleselector());
+  ASSERT_TRUE(NULL == feature_->get_styleselector());
+  ASSERT_FALSE(feature_->has_region());
+  ASSERT_TRUE(NULL == feature_->get_region());
+  ASSERT_FALSE(feature_->has_gx_balloonvisibility());
+  ASSERT_FALSE(feature_->get_gx_balloonvisibility());
 }
 
 // Verify <snippet> and <Metadata> are recognized in the small, and not in the
@@ -218,6 +258,24 @@ TEST_F(FeatureTest, ParseSerializeMisplaced) {
       "</Placemark>");
 
   ASSERT_EQ(kPlacemark, kmldom::SerializeRaw(kmldom::Parse(kPlacemark, NULL)));
+}
+
+TEST_F(FeatureTest, TestSerializeGx) {
+  PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  placemark->set_name("my name");
+  placemark->set_visibility(false);
+  RegionPtr region = KmlFactory::GetFactory()->CreateRegion();
+  placemark->set_region(region);
+  placemark->set_gx_balloonvisibility(true);
+  const std::string kExpected(
+      "<Placemark>"
+      "<name>my name</name>"
+      "<visibility>0</visibility>"
+      "<Region/>"
+      "<gx:balloonVisibility>1</gx:balloonVisibility>"
+      "</Placemark>");
+
+  ASSERT_EQ(kExpected, SerializeRaw(placemark));
 }
 
 }  // end namespace kmldom

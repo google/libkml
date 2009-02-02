@@ -27,8 +27,9 @@
 
 #include "kml/dom/abstractview.h"
 #include "gtest/gtest.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
-#include "kml/dom/kml_ptr.h"
+#include "kml/dom/kml_funcs.h"
 
 namespace kmldom {
 
@@ -50,6 +51,8 @@ TEST_F(LookAtTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(LookAtTest, TestDefaults) {
+  ASSERT_TRUE(NULL == lookat_->get_gx_timeprimitive());
+  ASSERT_FALSE(lookat_->has_gx_timeprimitive());
   ASSERT_DOUBLE_EQ(0.0, lookat_->get_longitude());
   ASSERT_FALSE(lookat_->has_longitude());
   ASSERT_DOUBLE_EQ(0.0, lookat_->get_latitude());
@@ -64,10 +67,14 @@ TEST_F(LookAtTest, TestDefaults) {
   ASSERT_FALSE(lookat_->has_range());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, lookat_->get_altitudemode());
   ASSERT_FALSE(lookat_->has_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, lookat_->get_gx_altitudemode());
+  ASSERT_FALSE(lookat_->has_gx_altitudemode());
 }
 
 // Verify setting default makes has_xxx() true:
 TEST_F(LookAtTest, TestSetToDefaultValues) {
+  lookat_->set_gx_timeprimitive(lookat_->get_gx_timeprimitive());
+  ASSERT_FALSE(lookat_->has_gx_timeprimitive());
   lookat_->set_longitude(lookat_->get_longitude());
   ASSERT_TRUE(lookat_->has_longitude());
   lookat_->set_latitude(lookat_->get_latitude());
@@ -82,11 +89,14 @@ TEST_F(LookAtTest, TestSetToDefaultValues) {
   ASSERT_TRUE(lookat_->has_range());
   lookat_->set_altitudemode(lookat_->get_altitudemode());
   ASSERT_TRUE(lookat_->has_altitudemode());
+  lookat_->set_gx_altitudemode(lookat_->get_gx_altitudemode());
+  ASSERT_TRUE(lookat_->has_gx_altitudemode());
 }
 
 // Verify set, get, has, clear:
 TEST_F(LookAtTest, TestSetGetHasClear) {
   // Non-default values:
+  GxTimeSpanPtr gx_timespan = KmlFactory::GetFactory()->CreateGxTimeSpan();
   double longitude = 1.0;
   double latitude = 2.0;
   double altitude = 3.0;
@@ -94,8 +104,10 @@ TEST_F(LookAtTest, TestSetGetHasClear) {
   double tilt = 5.0;
   double range = 6.0;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_ABSOLUTE;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
 
   // Set all fields:
+  lookat_->set_gx_timeprimitive(gx_timespan);
   lookat_->set_longitude(longitude);
   lookat_->set_latitude(latitude);
   lookat_->set_altitude(altitude);
@@ -103,8 +115,11 @@ TEST_F(LookAtTest, TestSetGetHasClear) {
   lookat_->set_tilt(tilt);
   lookat_->set_range(range);
   lookat_->set_altitudemode(altitudemode);
+  lookat_->set_gx_altitudemode(gx_altitudemode);
 
   // Verify getter and has_xxx():
+  ASSERT_EQ(gx_timespan, lookat_->get_gx_timeprimitive());
+  ASSERT_TRUE(lookat_->has_gx_timeprimitive());
   ASSERT_DOUBLE_EQ(longitude, lookat_->get_longitude());
   ASSERT_TRUE(lookat_->has_longitude());
   ASSERT_DOUBLE_EQ(latitude, lookat_->get_latitude());
@@ -119,8 +134,11 @@ TEST_F(LookAtTest, TestSetGetHasClear) {
   ASSERT_TRUE(lookat_->has_range());
   ASSERT_DOUBLE_EQ(altitudemode, lookat_->get_altitudemode());
   ASSERT_TRUE(lookat_->has_altitudemode());
+  ASSERT_DOUBLE_EQ(gx_altitudemode, lookat_->get_gx_altitudemode());
+  ASSERT_TRUE(lookat_->has_gx_altitudemode());
 
   // Clear all fields:
+  lookat_->clear_gx_timeprimitive();
   lookat_->clear_longitude();
   lookat_->clear_latitude();
   lookat_->clear_altitude();
@@ -128,6 +146,27 @@ TEST_F(LookAtTest, TestSetGetHasClear) {
   lookat_->clear_tilt();
   lookat_->clear_range();
   lookat_->clear_altitudemode();
+  lookat_->clear_gx_altitudemode();
+
+  // Verify default state:
+  ASSERT_TRUE(NULL == lookat_->get_gx_timeprimitive());
+  ASSERT_FALSE(lookat_->has_gx_timeprimitive());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_longitude());
+  ASSERT_FALSE(lookat_->has_longitude());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_latitude());
+  ASSERT_FALSE(lookat_->has_latitude());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_altitude());
+  ASSERT_FALSE(lookat_->has_altitude());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_heading());
+  ASSERT_FALSE(lookat_->has_heading());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_tilt());
+  ASSERT_FALSE(lookat_->has_tilt());
+  ASSERT_DOUBLE_EQ(0.0, lookat_->get_range());
+  ASSERT_FALSE(lookat_->has_range());
+  ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, lookat_->get_altitudemode());
+  ASSERT_FALSE(lookat_->has_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, lookat_->get_gx_altitudemode());
+  ASSERT_FALSE(lookat_->has_gx_altitudemode());
 }
 
 class CameraTest : public testing::Test {
@@ -148,6 +187,8 @@ TEST_F(CameraTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(CameraTest, TestDefaults) {
+  ASSERT_TRUE(NULL == camera_->get_gx_timeprimitive());
+  ASSERT_FALSE(camera_->has_gx_timeprimitive());
   ASSERT_DOUBLE_EQ(0.0, camera_->get_longitude());
   ASSERT_FALSE(camera_->has_longitude());
   ASSERT_DOUBLE_EQ(0.0, camera_->get_latitude());
@@ -162,10 +203,14 @@ TEST_F(CameraTest, TestDefaults) {
   ASSERT_FALSE(camera_->has_roll());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, camera_->get_altitudemode());
   ASSERT_FALSE(camera_->has_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, camera_->get_gx_altitudemode());
+  ASSERT_FALSE(camera_->has_gx_altitudemode());
 }
 
 // Verify setting default makes has_xxx() true:
 TEST_F(CameraTest, TestSetToDefaultValues) {
+  camera_->set_gx_timeprimitive(camera_->get_gx_timeprimitive());
+  ASSERT_FALSE(camera_->has_gx_timeprimitive());
   camera_->set_longitude(camera_->get_longitude());
   ASSERT_TRUE(camera_->has_longitude());
   camera_->set_latitude(camera_->get_latitude());
@@ -180,11 +225,14 @@ TEST_F(CameraTest, TestSetToDefaultValues) {
   ASSERT_TRUE(camera_->has_roll());
   camera_->set_altitudemode(camera_->get_altitudemode());
   ASSERT_TRUE(camera_->has_altitudemode());
+  camera_->set_gx_altitudemode(camera_->get_gx_altitudemode());
+  ASSERT_TRUE(camera_->has_gx_altitudemode());
 }
 
 // Verify set, get, has, clear:
 TEST_F(CameraTest, TestSetGetHasClear) {
   // Non-default values:
+  GxTimeStampPtr gx_timestamp = KmlFactory::GetFactory()->CreateGxTimeStamp();
   double longitude = 1.0;
   double latitude = 2.0;
   double altitude = 3.0;
@@ -192,8 +240,10 @@ TEST_F(CameraTest, TestSetGetHasClear) {
   double tilt = 5.0;
   double roll = 6.0;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_ABSOLUTE;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
 
   // Set all fields:
+  camera_->set_gx_timeprimitive(gx_timestamp);
   camera_->set_longitude(longitude);
   camera_->set_latitude(latitude);
   camera_->set_altitude(altitude);
@@ -201,8 +251,11 @@ TEST_F(CameraTest, TestSetGetHasClear) {
   camera_->set_tilt(tilt);
   camera_->set_roll(roll);
   camera_->set_altitudemode(altitudemode);
+  camera_->set_gx_altitudemode(gx_altitudemode);
 
   // Verify getter and has_xxx():
+  ASSERT_EQ(gx_timestamp, camera_->get_gx_timeprimitive());
+  ASSERT_TRUE(camera_->has_gx_timeprimitive());
   ASSERT_DOUBLE_EQ(longitude, camera_->get_longitude());
   ASSERT_TRUE(camera_->has_longitude());
   ASSERT_DOUBLE_EQ(latitude, camera_->get_latitude());
@@ -217,8 +270,11 @@ TEST_F(CameraTest, TestSetGetHasClear) {
   ASSERT_TRUE(camera_->has_roll());
   ASSERT_DOUBLE_EQ(altitudemode, camera_->get_altitudemode());
   ASSERT_TRUE(camera_->has_altitudemode());
+  ASSERT_DOUBLE_EQ(gx_altitudemode, camera_->get_gx_altitudemode());
+  ASSERT_TRUE(camera_->has_gx_altitudemode());
 
   // Clear all fields:
+  camera_->clear_gx_timeprimitive();
   camera_->clear_longitude();
   camera_->clear_latitude();
   camera_->clear_altitude();
@@ -226,7 +282,92 @@ TEST_F(CameraTest, TestSetGetHasClear) {
   camera_->clear_tilt();
   camera_->clear_roll();
   camera_->clear_altitudemode();
+  camera_->clear_gx_altitudemode();
 
+  // Verify default state.
+  ASSERT_TRUE(NULL == camera_->get_gx_timeprimitive());
+  ASSERT_FALSE(camera_->has_gx_timeprimitive());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_longitude());
+  ASSERT_FALSE(camera_->has_longitude());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_latitude());
+  ASSERT_FALSE(camera_->has_latitude());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_altitude());
+  ASSERT_FALSE(camera_->has_altitude());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_heading());
+  ASSERT_FALSE(camera_->has_heading());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_tilt());
+  ASSERT_FALSE(camera_->has_tilt());
+  ASSERT_DOUBLE_EQ(0.0, camera_->get_roll());
+  ASSERT_FALSE(camera_->has_roll());
+  ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, camera_->get_altitudemode());
+  ASSERT_FALSE(camera_->has_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, camera_->get_gx_altitudemode());
+  ASSERT_FALSE(camera_->has_gx_altitudemode());
+}
+
+TEST(AbstractViewTest, TestParseSerializeGxAltitudeMode) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  CameraPtr camera = factory->CreateCamera();
+  ASSERT_TRUE(camera);
+  camera->set_latitude(37.0);
+  camera->set_longitude(-122.0);
+  camera->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  const std::string kCameraExpected =
+    "<Camera>"
+    "<longitude>-122</longitude>"
+    "<latitude>37</latitude>"
+    "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
+    "</Camera>";
+  ASSERT_EQ(kCameraExpected, SerializeRaw(camera));
+  ASSERT_EQ(kCameraExpected, SerializeRaw(Parse(kCameraExpected, NULL)));
+
+  LookAtPtr lookat = factory->CreateLookAt();
+  ASSERT_TRUE(lookat);
+  lookat->set_latitude(37.0);
+  lookat->set_longitude(-122.0);
+  lookat->set_gx_altitudemode(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR);
+  const std::string kLookAtExpected =
+    "<LookAt>"
+    "<longitude>-122</longitude>"
+    "<latitude>37</latitude>"
+    "<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>"
+    "</LookAt>";
+  ASSERT_EQ(kLookAtExpected, SerializeRaw(lookat));
+  ASSERT_EQ(kLookAtExpected, SerializeRaw(Parse(kLookAtExpected, NULL)));
+}
+
+TEST(AbstractViewTest, TestGxTimePrimitives) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+
+  CameraPtr camera = factory->CreateCamera();
+  ASSERT_TRUE(camera);
+  camera->set_latitude(37.0);
+  camera->set_longitude(-122.0);
+  GxTimeSpanPtr gx_timespan = factory->CreateGxTimeSpan();
+  camera->set_gx_timeprimitive(gx_timespan);
+  const std::string kCameraExpected =
+    "<Camera>"
+    "<gx:TimeSpan/>"
+    "<longitude>-122</longitude>"
+    "<latitude>37</latitude>"
+    "</Camera>";
+  ASSERT_EQ(kCameraExpected, SerializeRaw(camera));
+  ASSERT_EQ(kCameraExpected, SerializeRaw(Parse(kCameraExpected, NULL)));
+
+  LookAtPtr lookat = factory->CreateLookAt();
+  ASSERT_TRUE(lookat);
+  lookat->set_latitude(37.0);
+  lookat->set_longitude(-122.0);
+  GxTimeStampPtr gx_timestamp = factory->CreateGxTimeStamp();
+  lookat->set_gx_timeprimitive(gx_timestamp);
+  const std::string kLookAtExpected =
+    "<LookAt>"
+    "<gx:TimeStamp/>"
+    "<longitude>-122</longitude>"
+    "<latitude>37</latitude>"
+    "</LookAt>";
+  ASSERT_EQ(kLookAtExpected, SerializeRaw(lookat));
+  ASSERT_EQ(kLookAtExpected, SerializeRaw(Parse(kLookAtExpected, NULL)));
 }
 
 }  // end namespace kmldom

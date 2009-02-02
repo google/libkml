@@ -25,6 +25,7 @@
 
 // This file contains the unittests for Model, Location, Orientation, Scale,
 // ResourceMap and Alias.
+// TODO: Parse,Serialize tests
 
 #include <string>
 #include "gtest/gtest.h"
@@ -396,6 +397,7 @@ TEST_F(ModelTest, TestDefaults) {
   ASSERT_FALSE(model_->has_id());
   ASSERT_FALSE(model_->has_targetid());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, model_->get_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, model_->get_gx_altitudemode());
   ASSERT_FALSE(model_->has_location());
   ASSERT_FALSE(model_->has_orientation());
   ASSERT_FALSE(model_->has_scale());
@@ -409,6 +411,9 @@ TEST_F(ModelTest, TestSetGetHasClear) {
   model_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   ASSERT_TRUE(model_->has_altitudemode());
   ASSERT_EQ(ALTITUDEMODE_ABSOLUTE, model_->get_altitudemode());
+  model_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  ASSERT_TRUE(model_->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR, model_->get_gx_altitudemode());
 
   // Create all possible complex children and give to the Model:
   model_->set_location(KmlFactory::GetFactory()->CreateLocation());
@@ -424,6 +429,7 @@ TEST_F(ModelTest, TestSetGetHasClear) {
 
   // Clear all children:
   model_->clear_altitudemode();
+  model_->clear_gx_altitudemode();
   model_->clear_location();
   model_->clear_orientation();
   model_->clear_scale();

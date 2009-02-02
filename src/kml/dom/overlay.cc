@@ -105,11 +105,33 @@ void LatLonBox::Serialize(Serializer& serializer) const {
   }
 }
 
+GxLatLonQuad::GxLatLonQuad() {}
+
+GxLatLonQuad::~GxLatLonQuad() {}
+
+void GxLatLonQuad::AddElement(const ElementPtr& element) {
+  if (CoordinatesPtr coordinates = AsCoordinates(element)) {
+    set_coordinates(coordinates);
+  } else {
+    Object::AddElement(element);
+  }
+}
+
+void GxLatLonQuad::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  Object::Serialize(serializer);
+  if (has_coordinates()) {
+    serializer.SaveElement(get_coordinates());
+  }
+}
+
 GroundOverlay::GroundOverlay()
   : altitude_(0.0),
     has_altitude_(false),
     altitudemode_(ALTITUDEMODE_CLAMPTOGROUND),
-    has_altitudemode_(false) {
+    has_altitudemode_(false),
+    gx_altitudemode_(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR),
+    has_gx_altitudemode_(false) {
 }
 
 GroundOverlay::~GroundOverlay() {
@@ -123,8 +145,14 @@ void GroundOverlay::AddElement(const ElementPtr& element) {
     case Type_altitudeMode:
       has_altitudemode_ = element->SetEnum(&altitudemode_);
       break;
+    case Type_GxAltitudeMode:
+      has_gx_altitudemode_ = element->SetEnum(&gx_altitudemode_);
+      break;
     case Type_LatLonBox:
       set_latlonbox(AsLatLonBox(element));
+      break;
+    case Type_GxLatLonQuad:
+      set_gx_latlonquad(AsGxLatLonQuad(element));
       break;
     default:
       Overlay::AddElement(element);
@@ -141,8 +169,14 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
+  }
   if (has_latlonbox()) {
     serializer.SaveElement(get_latlonbox());
+  }
+  if (has_gx_latlonquad()) {
+    serializer.SaveElement(get_gx_latlonquad());
   }
 }
 

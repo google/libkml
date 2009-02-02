@@ -91,13 +91,15 @@ class TimeSpan : public TimePrimitive {
     has_end_ = false;
   }
 
+ protected:
+  TimeSpan();
+  virtual void AddElement(const ElementPtr& element);
+  virtual void Serialize(Serializer& serializer) const;
+
  private:
   friend class KmlFactory;
-  TimeSpan();
   friend class KmlHandler;
-  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
-  virtual void Serialize(Serializer& serializer) const;
   std::string begin_;
   bool has_begin_;
   std::string end_;
@@ -126,13 +128,15 @@ class TimeStamp : public TimePrimitive {
     has_when_ = false;
   }
 
+ protected:
+  TimeStamp();
+  virtual void AddElement(const ElementPtr& element);
+  virtual void Serialize(Serializer& serializer) const;
+
  private:
   friend class KmlFactory;
-  TimeStamp();
   friend class KmlHandler;
-  virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
-  virtual void Serialize(Serializer& serializer) const;
   std::string when_;
   bool has_when_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimeStamp);

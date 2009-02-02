@@ -47,7 +47,9 @@ static struct {
   { "kml", "all-unknown-input.kml", "all-unknown-golden.kml" },
   { "kml", "all-unknown-attrs-input.kml", "all-unknown-attrs-golden.kml" },
   { "kml", "all-itemicon-states-input.kml", "all-itemicon-states-golden.kml" },
-  { "kml", "all-arrays.kml", "all-arrays-golden.kml" }
+  { "kml", "all-arrays.kml", "all-arrays-golden.kml" },
+  { "kml", "all-altitudemodes.kml", "all-altitudemodes-golden.kml" },
+  { "gx", "all-gx-altitudemodes.kml", "all-gx-altitudemodes-golden.kml" }
 };
 
 static std::string ReadTestCase(const char *subdir, const char* filename) {

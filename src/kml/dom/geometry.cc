@@ -155,7 +155,9 @@ Geometry::~Geometry() {}
 
 AltitudeGeometryCommon::AltitudeGeometryCommon()
   : altitudemode_(ALTITUDEMODE_CLAMPTOGROUND),
-    has_altitudemode_(false) {
+    has_altitudemode_(false),
+    gx_altitudemode_(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR),
+    has_gx_altitudemode_(false) {
 }
 
 AltitudeGeometryCommon::~AltitudeGeometryCommon() {
@@ -165,11 +167,16 @@ void AltitudeGeometryCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  if (element->Type() == Type_altitudeMode) {
-     has_altitudemode_ = element->SetEnum(&altitudemode_);
-     return;
+  switch (element->Type()) {
+    case Type_altitudeMode:
+      has_altitudemode_ = element->SetEnum(&altitudemode_);
+      return;
+    case Type_GxAltitudeMode:
+      has_gx_altitudemode_ = element->SetEnum(&gx_altitudemode_);
+      return;
+    default:
+      Geometry::AddElement(element);
   }
-  Geometry::AddElement(element);
 }
 
 ExtrudeGeometryCommon::ExtrudeGeometryCommon()
@@ -216,6 +223,9 @@ void Point::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
+  }
   if (has_coordinates()) {
     serializer.SaveElement(get_coordinates());
   }
@@ -250,6 +260,9 @@ void LineCommon::Serialize(Serializer& serializer) const {
   }
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
+  }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
   }
   if (has_coordinates()) {
     serializer.SaveElement(get_coordinates());
@@ -328,6 +341,9 @@ void Polygon::Serialize(Serializer& serializer) const {
   }
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
+  }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
   }
   if (has_outerboundaryis()) {
     serializer.SaveElement(get_outerboundaryis());

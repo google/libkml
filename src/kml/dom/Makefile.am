@@ -45,6 +45,7 @@ libkmldom_la_SOURCES = \
 	styleselector.cc \
 	substyle.cc \
 	timeprimitive.cc \
+	gx_tour.cc \
 	vec2.cc \
 	kml_handler.cc \
 	kml_handler_ns.cc \
@@ -100,6 +101,8 @@ libkmldominclude_HEADERS = \
 	styleselector.h \
 	substyle.h \
 	timeprimitive.h \
+	gx_timeprimitive.h \
+	gx_tour.h \
 	vec2.h \
 	xal.h
 
@@ -156,6 +159,8 @@ TESTS = abstractlatlonbox_test \
 	kml_handler_ns_test \
 	parser_test \
 	serializer_test \
+	gx_timeprimitive_test \
+	gx_tour_test \
 	xal_test \
 	xml_serializer_test \
 	xsd_test
@@ -389,6 +394,18 @@ substyle_test_LDADD= libkmldom.la \
 timeprimitive_test_SOURCES = timeprimitive_test.cc
 timeprimitive_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 timeprimitive_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+gx_timeprimitive_test_SOURCES = gx_timeprimitive_test.cc
+gx_timeprimitive_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+gx_timeprimitive_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+gx_tour_test_SOURCES = gx_tour_test.cc
+gx_tour_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+gx_tour_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 

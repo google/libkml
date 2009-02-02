@@ -40,7 +40,9 @@ Feature::Feature() :
   has_address_(false),
   has_phonenumber_(false),
   has_description_(false),
-  has_styleurl_(false) {
+  has_styleurl_(false),
+  gx_balloonvisibility_(false),
+  has_gx_balloonvisibility_(false) {
 }
 
 Feature::~Feature() {}
@@ -119,6 +121,9 @@ void Feature::AddElement(const ElementPtr& element) {
     case Type_ExtendedData:
       set_extendeddata(AsExtendedData(element));
       break;
+    case Type_GxBalloonVisibility:
+      has_gx_balloonvisibility_ = element->SetBool(&gx_balloonvisibility_);
+      break;
     default:
       Object::AddElement(element);
   }
@@ -169,6 +174,9 @@ void Feature::SerializeAfterStyleSelector(Serializer& serializer) const {
   }
   if (has_extendeddata()) {
     serializer.SaveElement(get_extendeddata());
+  }
+  if (has_gx_balloonvisibility()) {
+    serializer.SaveFieldById(Type_GxBalloonVisibility, gx_balloonvisibility_);
   }
 }
 

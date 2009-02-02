@@ -258,6 +258,9 @@ void Model::Serialize(Serializer& serializer) const {
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
   }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
+  }
   if (has_location()) {
     serializer.SaveElement(get_location());
   }

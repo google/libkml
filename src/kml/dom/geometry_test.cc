@@ -28,6 +28,7 @@
 // MultiGeometry.
 
 #include "kml/dom/geometry.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/kml_funcs.h"
@@ -277,6 +278,8 @@ TEST_F(PointTest, TestDefaults) {
   ASSERT_FALSE(point_->get_extrude());
   ASSERT_FALSE(point_->has_altitudemode());
   ASSERT_TRUE(ALTITUDEMODE_CLAMPTOGROUND == point_->get_altitudemode());
+  ASSERT_FALSE(point_->has_gx_altitudemode());
+  ASSERT_TRUE(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR == point_->get_gx_altitudemode());
   ASSERT_FALSE(point_->has_coordinates());
   ASSERT_TRUE(NULL == point_->get_coordinates());
 }
@@ -285,9 +288,11 @@ TEST_F(PointTest, TestDefaults) {
 TEST_F(PointTest, TestSetToDefaultValues) {
   point_->set_extrude(point_->get_extrude());
   point_->set_altitudemode(point_->get_altitudemode());
+  point_->set_gx_altitudemode(point_->get_gx_altitudemode());
   point_->set_coordinates(NULL);  // should not crash
   ASSERT_TRUE(point_->has_extrude());
   ASSERT_TRUE(point_->has_altitudemode());
+  ASSERT_TRUE(point_->has_gx_altitudemode());
   ASSERT_FALSE(point_->has_coordinates());  // ptr is null
 }
 
@@ -296,6 +301,7 @@ TEST_F(PointTest, TestSetGetHasClear) {
   // Non-default values:
   bool extrude = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
   CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
   const char* id = "point-id";
   const char* targetid = "point-targetid";
@@ -305,6 +311,7 @@ TEST_F(PointTest, TestSetGetHasClear) {
   point_->set_targetid(targetid);
   point_->set_extrude(extrude);
   point_->set_altitudemode(altitudemode);
+  point_->set_gx_altitudemode(gx_altitudemode);
   point_->set_coordinates(coordinates);
 
   // Verify getter and has_xxx():
@@ -316,6 +323,8 @@ TEST_F(PointTest, TestSetGetHasClear) {
   ASSERT_EQ(extrude, point_->get_extrude());
   ASSERT_TRUE(point_->has_altitudemode());
   ASSERT_EQ(altitudemode, point_->get_altitudemode());
+  ASSERT_TRUE(point_->has_gx_altitudemode());
+  ASSERT_EQ(gx_altitudemode, point_->get_gx_altitudemode());
   ASSERT_TRUE(point_->has_coordinates());
   ASSERT_EQ(coordinates, point_->get_coordinates());
 
@@ -324,6 +333,7 @@ TEST_F(PointTest, TestSetGetHasClear) {
   point_->clear_targetid();
   point_->clear_extrude();
   point_->clear_altitudemode();
+  point_->clear_gx_altitudemode();
   point_->clear_coordinates();
 
 }
@@ -339,6 +349,34 @@ TEST_F(PointTest, TestSerialize) {
     "</Point>"
   );
   ASSERT_EQ(expected, SerializeRaw(point_));
+}
+
+TEST_F(PointTest, TestSerializeParseAll) {
+  point_->set_id("point-id");
+  point_->set_extrude(false);
+  point_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  point_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<Point id=\"point-id\">"
+    "<extrude>0</extrude>"
+    "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
+    "<coordinates/>"
+    "</Point>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(point_));
+  std::string errors;
+  ElementPtr element = Parse(expected, &errors);
+  ASSERT_TRUE(element);
+  ASSERT_TRUE(errors.empty());
+  PointPtr point = AsPoint(element);
+  ASSERT_TRUE(point);
+  ASSERT_TRUE(point->has_id());
+  ASSERT_EQ(std::string("point-id"), point->get_id());
+  ASSERT_TRUE(point->has_extrude());
+  ASSERT_EQ(0, point->get_extrude());
+  ASSERT_FALSE(point->has_altitudemode());
+  ASSERT_TRUE(point->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR, point->get_gx_altitudemode());
 }
 
 // Test LineString.
@@ -368,6 +406,9 @@ TEST_F(LineStringTest, TestDefaults) {
   ASSERT_FALSE(linestring_->get_tessellate());
   ASSERT_FALSE(linestring_->has_altitudemode());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, linestring_->get_altitudemode());
+  ASSERT_FALSE(linestring_->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR,
+            linestring_->get_gx_altitudemode());
   ASSERT_FALSE(linestring_->has_coordinates());
 }
 
@@ -376,10 +417,12 @@ TEST_F(LineStringTest, TestSetToDefaultValues) {
   linestring_->set_extrude(linestring_->get_extrude());
   linestring_->set_tessellate(linestring_->get_tessellate());
   linestring_->set_altitudemode(linestring_->get_altitudemode());
+  linestring_->set_gx_altitudemode(linestring_->get_gx_altitudemode());
   linestring_->set_coordinates(NULL);  // should not crash
   ASSERT_TRUE(linestring_->has_extrude());
   ASSERT_TRUE(linestring_->has_tessellate());
   ASSERT_TRUE(linestring_->has_altitudemode());
+  ASSERT_TRUE(linestring_->has_gx_altitudemode());
   ASSERT_FALSE(linestring_->has_coordinates());  // ptr is null
 }
 
@@ -389,12 +432,14 @@ TEST_F(LineStringTest, TestSetGetHasClear) {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
   CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
 
   // Set all fields:
   linestring_->set_extrude(extrude);
   linestring_->set_tessellate(tessellate);
   linestring_->set_altitudemode(altitudemode);
+  linestring_->set_gx_altitudemode(gx_altitudemode);
   linestring_->set_coordinates(coordinates);
 
   // Verify getter and has_xxx():
@@ -404,6 +449,8 @@ TEST_F(LineStringTest, TestSetGetHasClear) {
   ASSERT_EQ(tessellate, linestring_->get_tessellate());
   ASSERT_TRUE(linestring_->has_altitudemode());
   ASSERT_EQ(altitudemode, linestring_->get_altitudemode());
+  ASSERT_TRUE(linestring_->has_gx_altitudemode());
+  ASSERT_EQ(gx_altitudemode, linestring_->get_gx_altitudemode());
   ASSERT_TRUE(linestring_->has_coordinates());
   ASSERT_EQ(coordinates, linestring_->get_coordinates());
 
@@ -411,6 +458,7 @@ TEST_F(LineStringTest, TestSetGetHasClear) {
   linestring_->clear_extrude();
   linestring_->clear_tessellate();
   linestring_->clear_altitudemode();
+  linestring_->clear_gx_altitudemode();
   linestring_->clear_coordinates();
 }
 
@@ -425,6 +473,39 @@ TEST_F(LineStringTest, TestSerialize) {
     "</LineString>"
   );
   ASSERT_EQ(expected, SerializeRaw(linestring_));
+}
+
+TEST_F(LineStringTest, TestSerializeParseAll) {
+  linestring_->set_id("linestring-id");
+  linestring_->set_extrude(true);
+  linestring_->set_tessellate(true);
+  linestring_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  linestring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<LineString id=\"linestring-id\">"
+    "<extrude>1</extrude>"
+    "<tessellate>1</tessellate>"
+    "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
+    "<coordinates/>"
+    "</LineString>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(linestring_));
+  std::string errors;
+  ElementPtr element = Parse(expected, &errors);
+  ASSERT_TRUE(element);
+  ASSERT_TRUE(errors.empty());
+  LineStringPtr linestring = AsLineString(element);
+  ASSERT_TRUE(linestring);
+  ASSERT_TRUE(linestring->has_id());
+  ASSERT_EQ(std::string("linestring-id"), linestring->get_id());
+  ASSERT_TRUE(linestring->has_extrude());
+  ASSERT_EQ(1, linestring->get_extrude());
+  ASSERT_TRUE(linestring->has_tessellate());
+  ASSERT_EQ(1, linestring->get_tessellate());
+  ASSERT_FALSE(linestring->has_altitudemode());
+  ASSERT_TRUE(linestring->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR,
+            linestring->get_gx_altitudemode());
 }
 
 // Test LinearRing.
@@ -454,6 +535,9 @@ TEST_F(LinearRingTest, TestDefaults) {
   ASSERT_FALSE(linearring_->get_tessellate());
   ASSERT_FALSE(linearring_->has_altitudemode());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, linearring_->get_altitudemode());
+  ASSERT_FALSE(linearring_->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR,
+            linearring_->get_gx_altitudemode());
   ASSERT_FALSE(linearring_->has_coordinates());
 }
 
@@ -462,10 +546,12 @@ TEST_F(LinearRingTest, TestSetToDefaultValues) {
   linearring_->set_extrude(linearring_->get_extrude());
   linearring_->set_tessellate(linearring_->get_tessellate());
   linearring_->set_altitudemode(linearring_->get_altitudemode());
+  linearring_->set_gx_altitudemode(linearring_->get_gx_altitudemode());
   linearring_->set_coordinates(NULL);  // should not crash
   ASSERT_TRUE(linearring_->has_extrude());
   ASSERT_TRUE(linearring_->has_tessellate());
   ASSERT_TRUE(linearring_->has_altitudemode());
+  ASSERT_TRUE(linearring_->has_gx_altitudemode());
   ASSERT_FALSE(linearring_->has_coordinates());  // ptr is null
 }
 
@@ -475,12 +561,14 @@ TEST_F(LinearRingTest, TestSetGetHasClear) {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
   CoordinatesPtr coordinates = KmlFactory::GetFactory()->CreateCoordinates();
 
   // Set all fields:
   linearring_->set_extrude(extrude);
   linearring_->set_tessellate(tessellate);
   linearring_->set_altitudemode(altitudemode);
+  linearring_->set_gx_altitudemode(gx_altitudemode);
   linearring_->set_coordinates(coordinates);
 
   // Verify getter and has_xxx():
@@ -490,6 +578,8 @@ TEST_F(LinearRingTest, TestSetGetHasClear) {
   ASSERT_EQ(tessellate, linearring_->get_tessellate());
   ASSERT_TRUE(linearring_->has_altitudemode());
   ASSERT_EQ(altitudemode, linearring_->get_altitudemode());
+  ASSERT_TRUE(linearring_->has_gx_altitudemode());
+  ASSERT_EQ(gx_altitudemode, linearring_->get_gx_altitudemode());
   ASSERT_TRUE(linearring_->has_coordinates());
   ASSERT_EQ(coordinates, linearring_->get_coordinates());
 
@@ -497,6 +587,7 @@ TEST_F(LinearRingTest, TestSetGetHasClear) {
   linearring_->clear_extrude();
   linearring_->clear_tessellate();
   linearring_->clear_altitudemode();
+  linearring_->clear_gx_altitudemode();
   linearring_->clear_coordinates();
 }
 
@@ -511,6 +602,39 @@ TEST_F(LinearRingTest, TestSerialize) {
     "</LinearRing>"
   );
   ASSERT_EQ(expected, SerializeRaw(linearring_));
+}
+
+TEST_F(LinearRingTest, TestSerializeParseAll) {
+  linearring_->set_id("linearring-id");
+  linearring_->set_extrude(false);
+  linearring_->set_tessellate(false);
+  linearring_->set_gx_altitudemode(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR);
+  linearring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
+  std::string expected(
+    "<LinearRing id=\"linearring-id\">"
+    "<extrude>0</extrude>"
+    "<tessellate>0</tessellate>"
+    "<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>"
+    "<coordinates/>"
+    "</LinearRing>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(linearring_));
+  std::string errors;
+  ElementPtr element = Parse(expected, &errors);
+  ASSERT_TRUE(element);
+  ASSERT_TRUE(errors.empty());
+  LinearRingPtr linearring = AsLinearRing(element);
+  ASSERT_TRUE(linearring);
+  ASSERT_TRUE(linearring->has_id());
+  ASSERT_EQ(std::string("linearring-id"), linearring->get_id());
+  ASSERT_TRUE(linearring->has_extrude());
+  ASSERT_EQ(0, linearring->get_extrude());
+  ASSERT_TRUE(linearring->has_tessellate());
+  ASSERT_EQ(0, linearring->get_tessellate());
+  ASSERT_FALSE(linearring->has_altitudemode());
+  ASSERT_TRUE(linearring->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR,
+            linearring->get_gx_altitudemode());
 }
 
 // Test OuterBoundaryIs.
@@ -601,6 +725,8 @@ TEST_F(PolygonTest, TestDefaults) {
   ASSERT_FALSE(polygon_->get_tessellate());
   ASSERT_FALSE(polygon_->has_altitudemode());
   ASSERT_EQ(ALTITUDEMODE_CLAMPTOGROUND, polygon_->get_altitudemode());
+  ASSERT_FALSE(polygon_->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR, polygon_->get_gx_altitudemode());
   ASSERT_FALSE(polygon_->has_outerboundaryis());
   ASSERT_EQ(static_cast<size_t>(0), polygon_->get_innerboundaryis_array_size());
 }
@@ -610,10 +736,12 @@ TEST_F(PolygonTest, TestSetToDefaultValues) {
   polygon_->set_extrude(polygon_->get_extrude());
   polygon_->set_tessellate(polygon_->get_tessellate());
   polygon_->set_altitudemode(polygon_->get_altitudemode());
+  polygon_->set_gx_altitudemode(polygon_->get_gx_altitudemode());
   polygon_->set_outerboundaryis(NULL);
   ASSERT_TRUE(polygon_->has_extrude());
   ASSERT_TRUE(polygon_->has_tessellate());
   ASSERT_TRUE(polygon_->has_altitudemode());
+  ASSERT_TRUE(polygon_->has_gx_altitudemode());
   ASSERT_FALSE(polygon_->has_outerboundaryis());  // ptr is null
 }
 
@@ -623,6 +751,7 @@ TEST_F(PolygonTest, TestSetGetHasClear) {
   bool extrude = true;
   bool tessellate = true;
   AltitudeModeEnum altitudemode = ALTITUDEMODE_RELATIVETOGROUND;
+  GxAltitudeModeEnum gx_altitudemode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
   OuterBoundaryIsPtr outerboundaryis =
     KmlFactory::GetFactory()->CreateOuterBoundaryIs();
 
@@ -630,6 +759,7 @@ TEST_F(PolygonTest, TestSetGetHasClear) {
   polygon_->set_extrude(extrude);
   polygon_->set_tessellate(tessellate);
   polygon_->set_altitudemode(altitudemode);
+  polygon_->set_gx_altitudemode(gx_altitudemode);
   polygon_->set_outerboundaryis(outerboundaryis);
 
   // Verify getter and has_xxx():
@@ -639,6 +769,8 @@ TEST_F(PolygonTest, TestSetGetHasClear) {
   ASSERT_EQ(tessellate, polygon_->get_tessellate());
   ASSERT_TRUE(polygon_->has_altitudemode());
   ASSERT_EQ(altitudemode, polygon_->get_altitudemode());
+  ASSERT_TRUE(polygon_->has_gx_altitudemode());
+  ASSERT_EQ(gx_altitudemode, polygon_->get_gx_altitudemode());
   ASSERT_TRUE(polygon_->has_outerboundaryis());
   ASSERT_EQ(outerboundaryis, polygon_->get_outerboundaryis());
 
@@ -646,6 +778,7 @@ TEST_F(PolygonTest, TestSetGetHasClear) {
   polygon_->clear_extrude();
   polygon_->clear_tessellate();
   polygon_->clear_altitudemode();
+  polygon_->clear_gx_altitudemode();
   polygon_->clear_outerboundaryis();
 }
 
@@ -661,6 +794,41 @@ TEST_F(PolygonTest, TestSerialize) {
     "</Polygon>"
   );
   ASSERT_EQ(expected, SerializeRaw(polygon_));
+}
+
+TEST_F(PolygonTest, TestSerializeParseAll) {
+  polygon_->set_id("polygon-id");
+  polygon_->set_extrude(true);
+  polygon_->set_tessellate(true);
+  polygon_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  polygon_->set_outerboundaryis(
+      KmlFactory::GetFactory()->CreateOuterBoundaryIs());
+  std::string expected(
+    "<Polygon id=\"polygon-id\">"
+    "<extrude>1</extrude>"
+    "<tessellate>1</tessellate>"
+    "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
+    "<outerBoundaryIs/>"
+    "</Polygon>"
+  );
+  ASSERT_EQ(expected, SerializeRaw(polygon_));
+  std::string errors;
+  ElementPtr element = Parse(expected, &errors);
+  ASSERT_TRUE(element);
+  ASSERT_TRUE(errors.empty());
+  PolygonPtr polygon = AsPolygon(element);
+  ASSERT_TRUE(polygon);
+  ASSERT_TRUE(polygon->has_id());
+  ASSERT_EQ(std::string("polygon-id"), polygon->get_id());
+  ASSERT_TRUE(polygon->has_extrude());
+  ASSERT_EQ(1, polygon->get_extrude());
+  ASSERT_TRUE(polygon->has_tessellate());
+  ASSERT_EQ(1, polygon->get_tessellate());
+  ASSERT_FALSE(polygon->has_altitudemode());
+  ASSERT_TRUE(polygon->has_gx_altitudemode());
+  ASSERT_EQ(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR,
+            polygon->get_gx_altitudemode());
+  ASSERT_TRUE(polygon->has_outerboundaryis());
 }
 
 // Test MultiGeometry.

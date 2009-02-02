@@ -159,6 +159,41 @@ TEST_F(LatLonBoxTest, TestSetGetHasClear) {
   // Verify now in default state.
 }
 
+// This tests the LatLonQuad class.
+class GxLatLonQuadTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    gx_latlonquad_ = KmlFactory::GetFactory()->CreateGxLatLonQuad();
+  }
+
+  GxLatLonQuadPtr gx_latlonquad_;
+};
+
+// This tests the Type() and IsA() methods.
+TEST_F(GxLatLonQuadTest, TestType) {
+  ASSERT_EQ(Type_GxLatLonQuad, gx_latlonquad_->Type());
+  ASSERT_TRUE(gx_latlonquad_->IsA(Type_GxLatLonQuad));
+  ASSERT_TRUE(gx_latlonquad_->IsA(Type_Object));
+}
+
+// This tests the default values of all fields.
+TEST_F(GxLatLonQuadTest, TestDefaults) {
+  ASSERT_FALSE(gx_latlonquad_->has_coordinates());
+}
+
+TEST_F(GxLatLonQuadTest, TestSetGetHasClear) {
+  // TODO
+}
+
+TEST_F(GxLatLonQuadTest, TestParse) {
+  // TODO
+}
+
+TEST_F(GxLatLonQuadTest, TestSerialize) {
+  // TODO
+}
+
+
 // This tests the GroundOverlay class.
 class GroundOverlayTest : public testing::Test {
  protected:
@@ -191,19 +226,28 @@ TEST_F(GroundOverlayTest, TestDefaults) {
   ASSERT_FALSE(groundoverlay_->has_altitudemode());
   ASSERT_EQ(static_cast<int>(ALTITUDEMODE_CLAMPTOGROUND),
                        groundoverlay_->get_altitudemode());
+  ASSERT_FALSE(groundoverlay_->has_gx_altitudemode());
+  ASSERT_EQ(static_cast<int>(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR),
+                       groundoverlay_->get_gx_altitudemode());
   ASSERT_FALSE(groundoverlay_->has_latlonbox());
   ASSERT_TRUE(NULL == groundoverlay_->get_latlonbox());
+  ASSERT_FALSE(groundoverlay_->has_gx_latlonquad());
+  ASSERT_TRUE(NULL == groundoverlay_->get_gx_latlonquad());
 }
 
 // This tests that has_xxx() is true even if the value is set to the default.
 TEST_F(GroundOverlayTest, TestSetToDefaultValues) {
   groundoverlay_->set_altitude(0.0);
   groundoverlay_->set_altitudemode(ALTITUDEMODE_CLAMPTOGROUND);
+  groundoverlay_->set_gx_altitudemode(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR);
   groundoverlay_->set_latlonbox(NULL);
   ASSERT_TRUE(groundoverlay_->has_altitude());
   ASSERT_TRUE(groundoverlay_->has_altitudemode());
+  ASSERT_TRUE(groundoverlay_->has_gx_altitudemode());
   ASSERT_FALSE(groundoverlay_->has_latlonbox());
   ASSERT_TRUE(NULL == groundoverlay_->get_latlonbox());
+  ASSERT_FALSE(groundoverlay_->has_gx_latlonquad());
+  ASSERT_TRUE(NULL == groundoverlay_->get_gx_latlonquad());
 }
 
 // This tests the set_xxx(), xxx() (getter), has_xxx(), and clear_xxx() methods.
@@ -213,33 +257,44 @@ TEST_F(GroundOverlayTest, TestSetGetHasClear) {
   const int kNonDefaultDrawOrder = -1234;
   const double kAltitude = 314.56;
   const int kAltitudeMode = ALTITUDEMODE_ABSOLUTE;
+  const int kGxAltitudeMode = GX_ALTITUDEMODE_RELATIVETOSEAFLOOR;
   LatLonBoxPtr latlonbox = KmlFactory::GetFactory()->CreateLatLonBox();
+  GxLatLonQuadPtr gx_latlonquad =
+      KmlFactory::GetFactory()->CreateGxLatLonQuad();
 
   // Set all fields.
   groundoverlay_->set_color(kNonDefaultColor);
   groundoverlay_->set_draworder(kNonDefaultDrawOrder);
   groundoverlay_->set_altitude(kAltitude);
   groundoverlay_->set_altitudemode(kAltitudeMode);
+  groundoverlay_->set_gx_altitudemode(kGxAltitudeMode);
   groundoverlay_->set_latlonbox(latlonbox);
+  groundoverlay_->set_gx_latlonquad(gx_latlonquad);
 
   // Verify getter and has_xxx().
   ASSERT_TRUE(groundoverlay_->has_altitude());
   ASSERT_EQ(kAltitude, groundoverlay_->get_altitude());
   ASSERT_TRUE(groundoverlay_->has_altitudemode());
   ASSERT_EQ(kAltitudeMode, groundoverlay_->get_altitudemode());
+  ASSERT_TRUE(groundoverlay_->has_gx_altitudemode());
+  ASSERT_EQ(kGxAltitudeMode, groundoverlay_->get_gx_altitudemode());
   ASSERT_TRUE(groundoverlay_->has_color());
   ASSERT_TRUE(kNonDefaultColor == groundoverlay_->get_color());
   ASSERT_TRUE(groundoverlay_->has_draworder());
   ASSERT_EQ(kNonDefaultDrawOrder, groundoverlay_->get_draworder());
   ASSERT_TRUE(groundoverlay_->has_latlonbox());
   ASSERT_TRUE(latlonbox == groundoverlay_->get_latlonbox());
+  ASSERT_TRUE(groundoverlay_->has_gx_latlonquad());
+  ASSERT_TRUE(gx_latlonquad == groundoverlay_->get_gx_latlonquad());
 
   // Clear all fields.
   groundoverlay_->clear_color();
   groundoverlay_->clear_draworder();
   groundoverlay_->clear_altitude();
   groundoverlay_->clear_altitudemode();
+  groundoverlay_->clear_gx_altitudemode();
   groundoverlay_->clear_latlonbox();
+  groundoverlay_->clear_gx_latlonquad();
 
   // Verify now in default state.
 }
@@ -250,11 +305,40 @@ TEST_F(GroundOverlayTest, TestSerialize) {
   groundoverlay_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   groundoverlay_->set_latlonbox(KmlFactory::GetFactory()->CreateLatLonBox()) ;
 
-  std::string expected =
+  const std::string expected =
       "<GroundOverlay>"
       "<altitude>123.456</altitude>"
       "<altitudeMode>absolute</altitudeMode>"
       "<LatLonBox/>"
+      "</GroundOverlay>";
+  ASSERT_EQ(expected, SerializeRaw(groundoverlay_));
+}
+
+TEST_F(GroundOverlayTest, TestSerializeGxAltitudeMode) {
+  groundoverlay_->set_altitude(123.456);
+  groundoverlay_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
+  groundoverlay_->set_latlonbox(KmlFactory::GetFactory()->CreateLatLonBox()) ;
+
+  const std::string expected =
+      "<GroundOverlay>"
+      "<altitude>123.456</altitude>"
+      "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
+      "<LatLonBox/>"
+      "</GroundOverlay>";
+  ASSERT_EQ(expected, SerializeRaw(groundoverlay_));
+}
+
+// This tests the Serialize method on gx:LatLonQuad.
+TEST_F(GroundOverlayTest, TestSerializeGxLatLonQuad) {
+  groundoverlay_->set_altitude(123.456);
+  groundoverlay_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
+  groundoverlay_->set_gx_latlonquad(KmlFactory::GetFactory()->CreateGxLatLonQuad());
+
+  const std::string expected =
+      "<GroundOverlay>"
+      "<altitude>123.456</altitude>"
+      "<altitudeMode>absolute</altitudeMode>"
+      "<gx:LatLonQuad/>"
       "</GroundOverlay>";
   ASSERT_EQ(expected, SerializeRaw(groundoverlay_));
 }
