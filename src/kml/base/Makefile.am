@@ -22,7 +22,8 @@ libkmlbase_la_SOURCES = \
 	math_util.cc \
 	referent.cc \
 	string_util.cc \
-	time_util.cc
+	time_util.cc \
+	xml_namespaces.cc
 
 # These header files will be installed in $(includedir)/kml/base
 libkmlbaseincludedir = $(includedir)/kml/base
@@ -47,6 +48,7 @@ libkmlbaseinclude_HEADERS = \
 	vec3.h \
 	xml_element.h \
 	xml_file.h \
+	xml_namespaces.h \
 	xmlns.h
 
 EXTRA_DIST = \
@@ -72,6 +74,7 @@ TESTS = \
 	vec3_test \
 	xml_element_test \
 	xml_file_test \
+	xml_namespaces_test \
 	xmlns_test
 
 check_PROGRAMS = $(TESTS)
@@ -161,6 +164,11 @@ xml_element_test_LDADD= libkmlbase.la \
 xml_file_test_SOURCES = xml_file_test.cc
 xml_file_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xml_file_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
+
+xml_namespaces_test_SOURCES = xml_namespaces_test.cc
+xml_namespaces_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+xml_namespaces_test_LDADD= libkmlbase.la \
 		 $(top_builddir)/third_party/libgtest.la
 
 xmlns_test_SOURCES = xmlns_test.cc
