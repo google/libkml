@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\dom\kml22.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\dom\kml_cast.cc"
 				>
 			</File>
@@ -475,6 +479,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\dom\overlay.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\parser.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\parser_observer.h"
 				>
 			</File>
 			<File
