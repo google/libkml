@@ -1,4 +1,5 @@
 EXTRA_DIST = \
+    all-altitudemodes.kml all-altitudemodes-golden.kml \
     all-arrays.kml all-arrays-golden.kml \
     all-unknown-input.kml all-unknown-golden.kml \
     all-unknown-attrs-input.kml all-unknown-attrs-golden.kml \

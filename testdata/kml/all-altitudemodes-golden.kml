@@ -1,0 +1,115 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document id="document">
+    <LookAt id="document-lookat">
+      <longitude>-68.01403801019</longitude>
+      <latitude>-22.33657619233</latitude>
+      <altitude>0</altitude>
+      <heading>27.113655770374</heading>
+      <tilt>65.117194544486</tilt>
+      <range>4630.86597395819</range>
+      <altitudeMode>clampToGround</altitudeMode>
+    </LookAt>
+    <PhotoOverlay id="photoverlay-camera">
+      <Camera>
+        <longitude>126.414570808411</longitude>
+        <latitude>33.2519314668248</latitude>
+        <altitude>11</altitude>
+        <heading>0</heading>
+        <tilt>80</tilt>
+        <roll>0</roll>
+        <altitudeMode>relativeToGround</altitudeMode>
+      </Camera>
+    </PhotoOverlay>
+    <NetworkLink id="networklink-region-latlonaltbox">
+      <Region>
+        <LatLonAltBox>
+          <north>27.2205658918</north>
+          <south>23.4514961082</south>
+          <east>-31.3849931082</east>
+          <west>-35.1540628918</west>
+          <minAltitude>0</minAltitude>
+          <maxAltitude>0</maxAltitude>
+          <altitudeMode>absolute</altitudeMode>
+        </LatLonAltBox>
+        <Lod>
+          <minLodPixels>256</minLodPixels>
+          <maxLodPixels>-1</maxLodPixels>
+          <minFadeExtent>0</minFadeExtent>
+          <maxFadeExtent>0</maxFadeExtent>
+        </Lod>
+      </Region>
+    </NetworkLink>
+    <PhotoOverlay id="photooverlay-point">
+      <Point>
+        <extrude>0</extrude>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+          116.98527466,-1.046186481,20.78
+        </coordinates>
+      </Point>
+    </PhotoOverlay>
+    <Placemark id="placemark-linestring">
+      <LineString>
+        <tessellate>0</tessellate>
+        <altitudeMode>absolute</altitudeMode>
+        <coordinates>
+          -1.1117,52.6794,7360.92
+          -1.1683,52.743,7719.06
+          -1.2189,52.8006,7962.9
+          -1.2522,52.8392,8191.5
+          -1.3358,52.9324,8602.98
+          -1.3862,52.9811,8900.16
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark id="placemark-linearring">
+      <LinearRing>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+          19,37,0
+          19,41,0
+          13,41,0
+          13,37,0
+          19,37,0
+        </coordinates>
+      </LinearRing>
+    </Placemark>
+    <Placemark id="placemark-polygon">
+      <Polygon>
+        <extrude>1</extrude>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>
+              3.666667,56.5,300
+              4,56.5,300
+              4,56.75,300
+              3.666667,56.75,300
+              3.666667,56.5,300
+            </coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+    <Placemark id="placemark-model">
+      <Model>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <Location>
+          <longitude>-57.5</longitude>
+          <latitude>-51.8</latitude>
+          <altitude>0</altitude>
+        </Location>
+      </Model>
+    </Placemark>
+    <GroundOverlay id="groundoverlay">
+      <altitude>4500</altitude>
+      <altitudeMode>absolute</altitudeMode>
+      <LatLonBox>
+        <north>90</north>
+        <south>-90</south>
+        <east>180</east>
+        <west>-180</west>
+      </LatLonBox>
+    </GroundOverlay>
+  </Document>
+</kml>
