@@ -117,6 +117,18 @@ class KmlFactory {
   XalSubAdministrativeArea* CreateXalSubAdministrativeArea() const;
   XalThoroughfare* CreateXalThoroughfare() const;
 
+  // These methods create the elements in the Google extensions to KML 2.2.
+  GxAnimatedUpdate* CreateGxAnimatedUpdate() const;
+  GxFlyTo* CreateGxFlyTo() const;
+  GxLatLonQuad* CreateGxLatLonQuad() const;
+  GxPlaylist* CreateGxPlaylist() const;
+  GxSoundCue* CreateGxSoundCue() const;
+  GxTimeSpan* CreateGxTimeSpan() const;
+  GxTimeStamp* CreateGxTimeStamp() const;
+  GxTour* CreateGxTour() const;
+  GxTourControl* CreateGxTourControl() const;
+  GxWait* CreateGxWait() const;
+
  private:
   KmlFactory() {};  // Singleton class, use GetFactory().
   static KmlFactory* factory_;
