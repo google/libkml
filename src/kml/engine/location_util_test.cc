@@ -132,17 +132,19 @@ TEST(LocationUtilTest, TestGetPointLatLon) {
 }
 
 // This internal utility function parses the testcase file to a KmlFile.
-static KmlFilePtr ParseFromDataDirFile(const std::string& filename) {
+static KmlFilePtr ParseFromDataDirFile(const std::string& subdir,
+                                       const std::string& filename) {
   std::string kml_data;
   const std::string kml_file =
-    File::JoinPaths(File::JoinPaths(std::string(DATADIR), "kml"), filename);
+    File::JoinPaths(File::JoinPaths(std::string(DATADIR), subdir), filename);
   return File::ReadFileToString(kml_file, &kml_data) ?
       KmlFile::CreateFromParse(kml_data, NULL) : NULL;
 }
 
 // This is a table of test cases.
 static const struct {
-  const char* kml_filename;  // Path relative to testdata/kml.
+  const char* subdir;  // Subdirectory of testdata.
+  const char* kml_filename;  // Path relative to subdir.
   const char* feature_id;  // id= of Feature within file.
   bool has_bounds;  // Expected return value of GetFeatureBounds.
   double north;  // Expected values of Bbox fields iff has_bounds == true.
@@ -154,49 +156,49 @@ static const struct {
   double lon;
 } kTestCases[] = {
   {  // A 2d Placemark.
-    "kmlsamples.kml", "simple-placemark",
+    "kml", "kmlsamples.kml", "simple-placemark",
     true, 37.4222899014025, 37.4222899014025, -122.082203542568,
     -122.082203542568,
     true, 37.4222899014025, -122.082203542568 },
   {  // A 3d Placemark.
-    "kmlsamples.kml", "floating-placemark",
+    "kml", "kmlsamples.kml", "floating-placemark",
     true, 37.4220033612141, 37.4220033612141, -122.084075, -122.084075,
     true, 37.4220033612141, -122.084075 },
   {  // A Placemark with no Geometry.
-    "kmlsamples.kml", "descriptive-html-placemark",
+    "kml", "kmlsamples.kml", "descriptive-html-placemark",
     false, 0, 0, 0, 0,
     false, 0, 0 },
   {  // A 2d LineString Placemark.
-    "kmlsamples.kml", "tessellated-linestring-placemark",
+    "kml", "kmlsamples.kml", "tessellated-linestring-placemark",
     true, 36.1067787047714, 36.0905099328766, -112.081423783034,
     -112.087026775269,
     true, 36.098644318824, -112.0842252791515 },
   {  // A 3d LineString Placemark (altitudeMode=absolute, and alt != 0).
-    "kmlsamples.kml", "purple-line-placemark", true, 36.0944767260255,
+    "kml", "kmlsamples.kml", "purple-line-placemark", true, 36.0944767260255,
     36.086463123013, -112.265654928602, -112.269526855561,
     true, 36.09046992451925, -112.2675908920815 },
 #if 0  // TODO
   {  // A Polygon with only an outerBoundaryIs.
-    "kmlsamples.kml", "b41", true, 37.4228181532365, 37.4220817196725,
+    "kml", "kmlsamples.kml", "b41", true, 37.4228181532365, 37.4220817196725,
     -122.08509907149, -122.086016227378,
     true, 37.4224499364545, -122.085557649434 },
 #endif
   {  // A Polygon with holes.
-    "kmlsamples.kml", "pentagon", true, 38.872910162817, 38.868757801256,
+    "kml", "kmlsamples.kml", "pentagon", true, 38.872910162817, 38.868757801256,
     -77.0531553685479, -77.0584405629039,
     true, 38.8708339820365, -77.0557979657259 },
   {  // A Folder with multiple Features, but none with any location info.
-    "kmlsamples.kml", "screen-overlays-folder",
+    "kml", "kmlsamples.kml", "screen-overlays-folder",
     false, 0, 0, 0, 0,
     false, 0, 0 },
   {  // Model
-    "model-macky.kml", "model-macky",
+    "kml", "model-macky.kml", "model-macky",
     true, 40.009993372683, 40.009993372683, -105.272774533734,
     -105.272774533734,
     true, 40.009993372683, -105.272774533734
   },
   {  // PhotoOverlay
-    "photooverlay-zermatt.kml", "photooverlay-zermatt",
+    "kml", "photooverlay-zermatt.kml", "photooverlay-zermatt",
     true, 45.968226693, 45.968226693, 7.71792711000002, 7.71792711000002,
     true, 45.968226693, 7.71792711000002
   },
@@ -218,7 +220,7 @@ TEST(LocationUtilTest, RunTestCases) {
   size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     KmlFilePtr kml_file =
-        ParseFromDataDirFile(kTestCases[i].kml_filename);
+        ParseFromDataDirFile(kTestCases[i].subdir, kTestCases[i].kml_filename);
     // Assert basic sanity of KmlFile.
     ASSERT_TRUE(kml_file) << kTestCases[i].kml_filename;
     ASSERT_TRUE(kml_file->get_root());
