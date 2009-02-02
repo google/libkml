@@ -47,11 +47,19 @@ TEST_F(DateTimeTest, TestCreate) {
   ASSERT_EQ(kDateTime, date_time_->GetXsdDateTime());
 }
 
+// 2007-01-14T22:57:31.000Z
+
 // Verify expected behavior on invalid input.
 TEST_F(DateTimeTest, TestBad) {
   date_time_.reset(DateTime::Create("garbage"));
   ASSERT_FALSE(date_time_.get());
 }
+
+TEST_F(DateTimeTest, TestToTimeT) {
+  ASSERT_EQ(1223025942, DateTime::ToTimeT("2008-10-03T09:25:42Z"));
+  ASSERT_EQ(0, DateTime::ToTimeT("complete invalid input"));
+}
+
 
 }  // end namespace kmlbase
 
