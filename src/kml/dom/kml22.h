@@ -226,6 +226,25 @@ typedef enum {
   Type_xalThoroughfareName,
   Type_xalThoroughfareNumber,
 
+  Type_GxTourPrimitive,
+
+  Type_GxAnimatedUpdate,
+  Type_GxFlyTo,
+  Type_GxLatLonQuad,
+  Type_GxPlaylist,
+  Type_GxSoundCue,
+  Type_GxTimeSpan,
+  Type_GxTimeStamp,
+  Type_GxTour,
+  Type_GxTourControl,
+  Type_GxWait,
+
+  Type_GxAltitudeMode,
+  Type_GxBalloonVisibility,
+  Type_GxDuration,
+  Type_GxFlyToMode,
+  Type_GxPlayMode,
+
   Type_Invalid
 } KmlDomType;
 
@@ -316,6 +335,20 @@ typedef enum {
   VIEWREFRESHMODE_ONSTOP,
   VIEWREFRESHMODE_ONREGION
 } ViewRefreshModeEnum;
+
+typedef enum {
+  GX_ALTITUDEMODE_CLAMPTOSEAFLOOR = 0,
+  GX_ALTITUDEMODE_RELATIVETOSEAFLOOR
+} GxAltitudeModeEnum;
+
+typedef enum {
+  GX_FLYTOMODE_BOUNCE = 0,
+  GX_FLYTOMODE_SMOOTH
+} GxFlyToModeEnum;
+
+typedef enum {
+  GX_PLAYMODE_PAUSE = 0
+} GxPlayModeEnum;
 
 }  // end namespace kmldom
 

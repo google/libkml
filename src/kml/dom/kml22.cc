@@ -232,6 +232,28 @@ static XsdElement kKml22Elements[] = {
   { "xal:ThoroughfareName", XSD_SIMPLE_TYPE },
   { "xal:ThoroughfareNumber", XSD_SIMPLE_TYPE },
 
+  // Google extension abstract substitution group elements
+  { "gx:AbstractTourPrimitiveGroup", XSD_COMPLEX_TYPE },  // "gx:TourPrimitive"
+
+  // Google extension complex elements
+  { "gx:AnimatedUpdate", XSD_COMPLEX_TYPE },
+  { "gx:FlyTo", XSD_COMPLEX_TYPE },
+  { "gx:LatLonQuad", XSD_COMPLEX_TYPE },
+  { "gx:Playlist", XSD_COMPLEX_TYPE },
+  { "gx:SoundCue", XSD_COMPLEX_TYPE },
+  { "gx:TimeSpan", XSD_COMPLEX_TYPE },
+  { "gx:TimeStamp", XSD_COMPLEX_TYPE },
+  { "gx:Tour", XSD_COMPLEX_TYPE },
+  { "gx:TourControl", XSD_COMPLEX_TYPE },
+  { "gx:Wait", XSD_COMPLEX_TYPE },
+
+  // Google extension simple elements
+  { "gx:altitudeMode", XSD_SIMPLE_TYPE },
+  { "gx:balloonVisibility", XSD_SIMPLE_TYPE },
+  { "gx:duration", XSD_SIMPLE_TYPE },
+  { "gx:flyToMode", XSD_SIMPLE_TYPE },
+  { "gx:playMode", XSD_SIMPLE_TYPE },
+
   { "</Unknown>", XSD_UNKNOWN }  // Mark the end appropriately.
 };
 
@@ -254,6 +276,12 @@ static const char* kUnitsEnums[] =
   { "fraction", "pixels", "insetPixels", NULL };
 static const char* kViewRefreshModeEnums[] =
   { "never", "onRequest", "onStop", "onRegion", NULL };
+static const char* kGxAltitudeModeEnums[] =
+  { "clampToSeaFloor", "relativeToSeaFloor", NULL };
+static const char* kGxFlyToViewEnums[] =
+  { "bounce", "smooth", NULL };
+static const char* kGxPlayModeEnums[] =
+  { "pause", NULL };
 static XsdSimpleTypeEnum kKml22Enums[] = {
   { Type_altitudeMode, kAltitudeModeEnums },
   { Type_colorMode, kColorModeEnums },
@@ -265,7 +293,10 @@ static XsdSimpleTypeEnum kKml22Enums[] = {
   { Type_shape, kShapeEnums },
   { Type_key, kStyleStateEnums },
   { Type_units, kUnitsEnums },
-  { Type_viewRefreshMode, kViewRefreshModeEnums }
+  { Type_viewRefreshMode, kViewRefreshModeEnums },
+  { Type_GxAltitudeMode, kGxAltitudeModeEnums },
+  { Type_GxFlyToMode, kGxFlyToViewEnums },
+  { Type_GxPlayMode, kGxPlayModeEnums }
 };
 
 }  // namespace kmldom
