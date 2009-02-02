@@ -2,6 +2,7 @@ SUBDIRS = \
 	domviewer \
 	engine \
 	gpx \
+	gx \
 	hellonet \
 	helloworld \
 	java \
