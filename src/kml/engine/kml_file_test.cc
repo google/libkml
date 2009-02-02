@@ -380,6 +380,27 @@ TEST_F(KmlFileTest, TestCreateFromImportAndGetById) {
   ASSERT_FALSE(kml_file_->GetSharedStyleById("no-shared-style-with-this-id"));
 }
 
+TEST_F(KmlFileTest, TestAddXmlNamespaceById) {
+  kml_file_ = KmlFile::CreateFromString("<kml/>");
+  // The default serialization behavior adds the XML declaration and the OGC
+  // KML 2.2 namespace.
+  const std::string kExpected =
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<kml xmlns=\"http://www.opengis.net/kml/2.2\"/>\n";
+  std::string xml;
+  ASSERT_TRUE(kml_file_->SerializeToString(&xml));
+  ASSERT_EQ(kExpected, xml);
+  // Add the gx: namespace introduced with Google Earth 5.0.
+  kml_file_->AddXmlNamespaceById(kmlbase::XMLNS_GX22); 
+  const std::string kExpected1 =
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
+    "xmlns:gx=\"http://www.google.com/kml/ext/2.2\"/>\n";
+  xml.clear();
+  ASSERT_TRUE(kml_file_->SerializeToString(&xml));
+  ASSERT_EQ(kExpected1, xml);
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {

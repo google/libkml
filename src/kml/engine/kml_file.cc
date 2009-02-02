@@ -26,10 +26,17 @@
 // This file contains the implementation of the KmlFile class methods.
 
 #include "kml/engine/kml_file.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/engine/id_mapper.h"
 #include "kml/dom.h"
 
+using kmlbase::FindXmlNamespaceAndPrefix;
+using kmlbase::XmlnsId;
+
 namespace kmlengine {
+
+static const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
+static const char kDefaultEncoding[] = "utf-8";
 
 // static
 KmlFile* KmlFile::CreateFromParse(const std::string& kml_or_kmz_data,
@@ -84,9 +91,9 @@ bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
 // TODO: push strict parsing out as a Create() method arg
 KmlFile::KmlFile()
   : encoding_(kDefaultEncoding),
-    default_xmlns_(kDefaultXmlns),
     kml_cache_(NULL),
     strict_parse_(false) {
+  xmlns_.SetValue("xmlns", kDefaultXmlns);
 }
 
 // private
@@ -143,6 +150,18 @@ KmlFile* KmlFile::CreateFromImport(kmldom::ElementPtr element) {
   return NULL;
 }
 
+// TODO: CreateFromParse,Import should really discover what namespaces are
+// actually found within the KML file.
+bool KmlFile::AddXmlNamespaceById(XmlnsId xmlns_id) {
+  std::string prefix;
+  std::string xml_namespace;
+  if (FindXmlNamespaceAndPrefix(xmlns_id, &prefix, &xml_namespace)) {
+    xmlns_.SetValue(prefix, xml_namespace);
+    return true;
+  }
+  return false;
+}
+
 const std::string KmlFile::CreateXmlHeader() const {
   return std::string("<?xml version=\"1.0\" encoding=\"" + encoding_ + "\"?>\n");
 }
@@ -152,7 +171,11 @@ bool KmlFile::SerializeToString(std::string* xml_output) const {
     return false;
   }
   xml_output->append(CreateXmlHeader());
-  get_root()->set_default_xmlns(default_xmlns_);
+  std::string default_xmlns;
+  if (xmlns_.GetValue("xmlns", &default_xmlns)) {
+    get_root()->set_default_xmlns(default_xmlns);
+  }
+  get_root()->MergeXmlns(xmlns_);
   xml_output->append(kmldom::SerializePretty(get_root()));
   return true;
 }
