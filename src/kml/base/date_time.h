@@ -45,6 +45,9 @@ class DateTime {
   // TODO: date, gYearMonth, gYear
   static DateTime* Create(const std::string& str);
 
+  // A convenience utility: Create() + GetTimeT().
+  static time_t ToTimeT(const std::string& str);
+
   // POSIX time
   time_t GetTimeT() /* const */;
 
@@ -64,6 +67,8 @@ class DateTime {
   bool ParseXsdDateTime(const std::string& xsd_date_time);
   struct tm tm_;
 };
+
+time_t DateTimeToTimeT(const std::string& date_time_str);
 
 }  // end namespace kmlbase
 
