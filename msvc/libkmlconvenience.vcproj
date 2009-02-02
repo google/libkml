@@ -202,6 +202,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\convenience\gpx_trk_pt_handler.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\convenience\kmz_check_links.h"
 				>
 			</File>
