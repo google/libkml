@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file contains at least one of every kind of gx altitude mode and every
+  element with an altitude mode.  Note the <junkbefore/> and <junkafter/>
+  elements to verify that gx:altitudeMode does not accidently serialize
+  along with these unknown elements.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2"
+  xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Document id="document">
+
+    <!-- LookAt -->
+    <LookAt id="document-lookat">
+      <longitude>-30</longitude>
+      <latitude>30</latitude>
+      <altitude>230</altitude>
+      <junkbefore/>
+      <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+      <junkafter/>
+    </LookAt>
+
+    <!-- Camera -->
+    <PhotoOverlay id="photoverlay-camera">
+      <Camera>
+        <longitude>-30</longitude>
+        <latitude>30</latitude>
+        <altitude>1230</altitude>
+        <junkbefore/>
+        <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+        <junkafter/>
+      </Camera>
+    </PhotoOverlay>
+
+    <!-- LatLonAltBox -->
+    <NetworkLink id="networklink-region-latlonaltbox">
+      <Region>
+        <LatLonAltBox>
+          <minAltitude>0</minAltitude>
+          <maxAltitude>200</maxAltitude>
+          <junkbefore/>
+          <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+          <junkafter/>
+        </LatLonAltBox>
+      </Region>
+      <Link>
+        <href>underwater.kml</href>
+      </Link>
+    </NetworkLink>
+
+    <!-- Point -->
+    <PhotoOverlay id="photooverlay-point">
+      <Point>
+        <extrude>1</extrude>
+        <junkbefore/>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        <junkafter/>
+        <coordinates>-1.3,68.3</coordinates>
+      </Point>
+    </PhotoOverlay>
+
+    <!-- LineString -->
+    <Placemark id="placemark-linestring">
+      <LineString>
+        <tessellate>1</tessellate>
+        <junkbefore/>
+        <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+        <junkafter/>
+        <coordinates>-84,25 -92,25</coordinates>
+      </LineString>
+    </Placemark>
+
+    <!-- LinearRing -->
+    <Placemark id="placemark-linearring">
+      <LinearRing>
+        <junkbefore/>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        <junkafter/>
+        <coordinates>19,37 19,41 13,41 13,37 19,37</coordinates>
+      </LinearRing>
+    </Placemark>
+
+    <!-- Polygon -->
+    <Placemark id="placemark-polygon">
+      <Polygon>
+      <junkbefore/>
+        <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+      <junkafter/>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>-102,11 -107,29 -112,14 -102,11</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+
+    <!-- Model -->
+    <Placemark id="placemark-model">
+      <Model>
+        <junkbefore/>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        <junkafter/>
+        <Location>
+          <longitude>110</longitude>
+          <latitude>-15</latitude>
+        </Location>
+      </Model>
+    </Placemark>
+
+    <!-- GroundOverlay -->
+    <GroundOverlay id="groundoverlay">
+      <Icon>
+        <href>shipwreck.jpg</href>
+      </Icon>
+      <junkbefore/>
+      <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+      <junkafter/>
+      <LatLonBox/>
+    </GroundOverlay>
+
+  </Document>
+</kml>
