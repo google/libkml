@@ -83,13 +83,20 @@ TEST_F(XsdTest, TestGoodElement) {
   ASSERT_EQ(std::string("xal:SubAdministrativeArea"),
             Xsd::GetSchema()->ElementName(Type_XalSubAdministrativeArea));
 
-  // <xal:ThoroughfareName> is known to be the last element.
   ASSERT_EQ(static_cast<int>(Type_xalThoroughfareName),
             Xsd::GetSchema()->ElementId("xal:ThoroughfareName"));
   ASSERT_EQ(XSD_SIMPLE_TYPE,
             Xsd::GetSchema()->ElementType(Type_xalThoroughfareName));
   ASSERT_EQ(std::string("xal:ThoroughfareName"),
             Xsd::GetSchema()->ElementName(Type_xalThoroughfareName));
+
+  // <gx:playMode> is known to be the last element.
+  ASSERT_EQ(static_cast<int>(Type_GxPlayMode),
+            Xsd::GetSchema()->ElementId("gx:playMode"));
+  ASSERT_EQ(XSD_SIMPLE_TYPE,
+            Xsd::GetSchema()->ElementType(Type_GxPlayMode));
+  ASSERT_EQ(std::string("gx:playMode"),
+            Xsd::GetSchema()->ElementName(Type_GxPlayMode));
 }
 
 // Verify that ElementId(), ElementType() and ElementName() are well

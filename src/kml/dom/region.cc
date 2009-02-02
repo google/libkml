@@ -39,7 +39,9 @@ namespace kmldom {
 LatLonAltBox::LatLonAltBox()
   : minaltitude_(0.0), has_minaltitude_(false),
     maxaltitude_(0.0), has_maxaltitude_(false),
-    altitudemode_(ALTITUDEMODE_CLAMPTOGROUND), has_altitudemode_(false)
+    altitudemode_(ALTITUDEMODE_CLAMPTOGROUND), has_altitudemode_(false),
+    gx_altitudemode_(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR),
+    has_gx_altitudemode_(false)
 {}
 
 LatLonAltBox::~LatLonAltBox() {}
@@ -54,6 +56,9 @@ void LatLonAltBox::AddElement(const ElementPtr& element) {
       break;
     case Type_altitudeMode:
       has_altitudemode_ = element->SetEnum(&altitudemode_);
+      break;
+    case Type_GxAltitudeMode:
+      has_gx_altitudemode_ = element->SetEnum(&gx_altitudemode_);
       break;
     default:
       AbstractLatLonBox::AddElement(element);
@@ -72,6 +77,9 @@ void LatLonAltBox::Serialize(Serializer& serializer) const {
   }
   if (has_altitudemode()) {
     serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
+  }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
   }
 }
 

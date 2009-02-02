@@ -152,7 +152,38 @@ class LatLonBox : public AbstractLatLonBox {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LatLonBox);
 };
 
-// <GroundOverlya>
+// <gx:LatLonQuad>
+class GxLatLonQuad : public Object {
+ public:
+  virtual ~GxLatLonQuad();
+  static KmlDomType ElementType() { return Type_GxLatLonQuad; }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const {
+    return type == ElementType() || Object::IsA(type);
+  }
+
+  // <coordinates>
+  const CoordinatesPtr get_coordinates() const { return coordinates_; }
+  bool has_coordinates() const { return coordinates_ != NULL; }
+  void set_coordinates(const CoordinatesPtr& coordinates) {
+    SetComplexChild(coordinates, &coordinates_);
+  }
+  void clear_coordinates() {
+    set_coordinates(NULL);
+  }
+
+ private:
+  friend class KmlFactory;
+  GxLatLonQuad();
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  CoordinatesPtr coordinates_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxLatLonQuad);
+};
+
+// <GroundOverlay>
 class GroundOverlay : public Overlay {
  public:
   virtual ~GroundOverlay();
@@ -193,6 +224,22 @@ class GroundOverlay : public Overlay {
     has_altitudemode_ = false;
   }
 
+  // <gx:altitudeMode>
+  int get_gx_altitudemode() const {
+    return gx_altitudemode_;
+  }
+  bool has_gx_altitudemode() const {
+    return has_gx_altitudemode_;
+  }
+  void set_gx_altitudemode(int gx_altitudemode) {
+    gx_altitudemode_ = gx_altitudemode;
+    has_gx_altitudemode_ = true;
+  }
+  void clear_gx_altitudemode() {
+    gx_altitudemode_ = GX_ALTITUDEMODE_CLAMPTOSEAFLOOR;
+    has_gx_altitudemode_ = false;
+  }
+
   // <LatLonBox>
   const LatLonBoxPtr& get_latlonbox() const { return latlonbox_; }
   bool has_latlonbox() const { return latlonbox_ != NULL; }
@@ -201,6 +248,16 @@ class GroundOverlay : public Overlay {
   }
   void clear_latlonbox() {
     set_latlonbox(NULL);
+  }
+
+  // <gx:LatLonQuad>
+  const GxLatLonQuadPtr& get_gx_latlonquad() const { return gx_latlonquad_; }
+  bool has_gx_latlonquad() const { return gx_latlonquad_ != NULL; }
+  void set_gx_latlonquad(const GxLatLonQuadPtr& gx_latlonquad) {
+    SetComplexChild(gx_latlonquad, &gx_latlonquad_);
+  }
+  void clear_gx_latlonquad() {
+    set_gx_latlonquad(NULL);
   }
 
  private:
@@ -216,7 +273,10 @@ class GroundOverlay : public Overlay {
   bool has_altitude_;
   int altitudemode_;
   bool has_altitudemode_;
+  int gx_altitudemode_;
+  bool has_gx_altitudemode_;
   LatLonBoxPtr latlonbox_;
+  GxLatLonQuadPtr gx_latlonquad_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GroundOverlay);
 };
 

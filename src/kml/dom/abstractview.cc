@@ -27,13 +27,33 @@
 
 #include "kml/dom/abstractview.h"
 #include "kml/base/attributes.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
 
 namespace kmldom {
 
-LookAt::LookAt()
+// AbstractView
+void AbstractView::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  if (element->IsA(Type_TimePrimitive)) {
+    set_gx_timeprimitive(AsTimePrimitive(element));
+    return;
+  }
+  Object::AddElement(element);
+}
+
+void AbstractView::Serialize(Serializer& serializer) const {
+  if (has_gx_timeprimitive()) {
+    serializer.SaveElementGroup(get_gx_timeprimitive(), Type_TimePrimitive);
+  }
+}
+
+// AbstractViewCommon
+AbstractViewCommon::AbstractViewCommon()
   : longitude_(0.0),
     has_longitude_(false),
     latitude_(0.0),
@@ -44,15 +64,13 @@ LookAt::LookAt()
     has_heading_(false),
     tilt_(0.0),
     has_tilt_(false),
-    range_(0.0),
-    has_range_(false),
     altitudemode_(ALTITUDEMODE_CLAMPTOGROUND),
-    has_altitudemode_(false) {
+    has_altitudemode_(false),
+    gx_altitudemode_(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR),
+    has_gx_altitudemode_(false) {
 }
 
-LookAt::~LookAt() {}
-
-void LookAt::AddElement(const ElementPtr& element) {
+void AbstractViewCommon::AddElement(const ElementPtr& element) {
   switch (element->Type()) {
     case Type_longitude:
       has_longitude_ = element->SetDouble(&longitude_);
@@ -69,116 +87,90 @@ void LookAt::AddElement(const ElementPtr& element) {
     case Type_tilt:
       has_tilt_ = element->SetDouble(&tilt_);
       break;
-    case Type_range:
-      has_range_ = element->SetDouble(&range_);
-      break;
     case Type_altitudeMode:
       has_altitudemode_ = element->SetEnum(&altitudemode_);
+      break;
+    case Type_GxAltitudeMode:
+      has_gx_altitudemode_ = element->SetEnum(&gx_altitudemode_);
       break;
     default:
       AbstractView::AddElement(element);
       break;
+  }
+}
+
+void AbstractViewCommon::SerializeBeforeR(Serializer& serializer) const {
+  AbstractView::Serialize(serializer);
+  if (has_longitude()) {
+    serializer.SaveFieldById(Type_longitude, get_longitude());
+  }
+  if (has_latitude()) {
+    serializer.SaveFieldById(Type_latitude, get_latitude());
+  }
+  if (has_altitude()) {
+    serializer.SaveFieldById(Type_altitude, get_altitude());
+  }
+  if (has_heading()) {
+    serializer.SaveFieldById(Type_heading, get_heading());
+  }
+  if (has_tilt()) {
+    serializer.SaveFieldById(Type_tilt, get_tilt());
+  }
+}
+
+void AbstractViewCommon::SerializeAfterR(Serializer& serializer) const {
+  if (has_altitudemode()) {
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
+  }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
+  }
+}
+
+// <LookAt>
+LookAt::LookAt()
+ :  range_(0.0),
+    has_range_(false) {
+}
+
+void LookAt::AddElement(const ElementPtr& element) {
+  if (element && element->Type() == Type_range) {
+    has_range_ = element->SetDouble(&range_);
+  } else {
+    AbstractViewCommon::AddElement(element);
   }
 }
 
 void LookAt::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  AbstractView::Serialize(serializer);
-  if (has_longitude()) {
-    serializer.SaveFieldById(Type_longitude, get_longitude());
-  }
-  if (has_latitude()) {
-    serializer.SaveFieldById(Type_latitude, get_latitude());
-  }
-  if (has_altitude()) {
-    serializer.SaveFieldById(Type_altitude, get_altitude());
-  }
-  if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, get_heading());
-  }
-  if (has_tilt()) {
-    serializer.SaveFieldById(Type_tilt, get_tilt());
-  }
+  AbstractViewCommon::SerializeBeforeR(serializer);
   if (has_range()) {
     serializer.SaveFieldById(Type_range, get_range());
   }
-  if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
-  }
+  AbstractViewCommon::SerializeAfterR(serializer);
 }
 
+// <Camera>
 Camera::Camera()
-  : longitude_(0.0),
-    has_longitude_(false),
-    latitude_(0.0),
-    has_latitude_(false),
-    altitude_(0.0),
-    has_altitude_(false),
-    heading_(0.0),
-    has_heading_(false),
-    tilt_(0.0),
-    has_tilt_(false),
-    roll_(0.0),
-    has_roll_(false),
-    altitudemode_(ALTITUDEMODE_CLAMPTOGROUND),
-    has_altitudemode_(false) {
+ :  roll_(0.0),
+    has_roll_(false) {
 }
-
-Camera::~Camera() {}
 
 void Camera::AddElement(const ElementPtr& element) {
-  switch (element->Type()) {
-    case Type_longitude:
-      has_longitude_ = element->SetDouble(&longitude_);
-      break;
-    case Type_latitude:
-      has_latitude_ = element->SetDouble(&latitude_);
-      break;
-    case Type_altitude:
-      has_altitude_ = element->SetDouble(&altitude_);
-      break;
-    case Type_heading:
-      has_heading_ = element->SetDouble(&heading_);
-      break;
-    case Type_tilt:
-      has_tilt_ = element->SetDouble(&tilt_);
-      break;
-    case Type_roll:
-      has_roll_ = element->SetDouble(&roll_);
-      break;
-    case Type_altitudeMode:
-      has_altitudemode_ = element->SetEnum(&altitudemode_);
-      break;
-    default:
-      AbstractView::AddElement(element);
-      break;
+  if (element && element->Type() == Type_roll) {
+    has_roll_ = element->SetDouble(&roll_);
+  } else {
+    AbstractViewCommon::AddElement(element);
   }
 }
 
 void Camera::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  AbstractView::Serialize(serializer);
-  if (has_longitude()) {
-    serializer.SaveFieldById(Type_longitude, get_longitude());
-  }
-  if (has_latitude()) {
-    serializer.SaveFieldById(Type_latitude, get_latitude());
-  }
-  if (has_altitude()) {
-    serializer.SaveFieldById(Type_altitude, get_altitude());
-  }
-  if (has_heading()) {
-    serializer.SaveFieldById(Type_heading, get_heading());
-  }
-  if (has_tilt()) {
-    serializer.SaveFieldById(Type_tilt, get_tilt());
-  }
+  AbstractViewCommon::SerializeBeforeR(serializer);
   if (has_roll()) {
     serializer.SaveFieldById(Type_roll, get_roll());
   }
-  if (has_altitudemode()) {
-    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
-  }
+  AbstractViewCommon::SerializeAfterR(serializer);
 }
 
 }  // end namespace kmldom

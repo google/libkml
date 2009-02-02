@@ -232,6 +232,20 @@ class Feature : public Object {
     set_extendeddata(NULL);
   }
 
+  // From kml:AbstractFeatureSimpleExtensionGroup.
+
+  // <gx:balloonVisibility>
+  bool get_gx_balloonvisibility() const { return gx_balloonvisibility_; }
+  bool has_gx_balloonvisibility() const { return has_gx_balloonvisibility_; }
+  void set_gx_balloonvisibility(bool value) {
+    gx_balloonvisibility_ = value;
+    has_gx_balloonvisibility_ = true;
+  }
+  void clear_gx_balloonvisibility() {
+    gx_balloonvisibility_ = false;
+    has_gx_balloonvisibility_ = false;
+  }
+
  protected:
   // Feature is abstract.
   Feature();
@@ -264,6 +278,8 @@ class Feature : public Object {
   StyleSelectorPtr styleselector_;
   RegionPtr region_;
   ExtendedDataPtr extendeddata_;
+  bool gx_balloonvisibility_;
+  bool has_gx_balloonvisibility_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Feature);
 };
 

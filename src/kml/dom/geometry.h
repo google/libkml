@@ -167,11 +167,25 @@ class AltitudeGeometryCommon : public Geometry {
     has_altitudemode_ = false;
   }
 
+  // <gx:altitudeMode>
+  int get_gx_altitudemode() const { return gx_altitudemode_; }
+  bool has_gx_altitudemode() const { return has_gx_altitudemode_; }
+  void set_gx_altitudemode(int value) {
+    gx_altitudemode_ = value;
+    has_gx_altitudemode_ = true;
+  }
+  void clear_gx_altitudemode() {
+    gx_altitudemode_ = GX_ALTITUDEMODE_CLAMPTOSEAFLOOR;
+    has_gx_altitudemode_ = false;
+  }
+
   virtual void AddElement(const ElementPtr& element);
 
  private:
   int altitudemode_;
   bool has_altitudemode_;
+  int gx_altitudemode_;
+  bool has_gx_altitudemode_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AltitudeGeometryCommon);
 };
 

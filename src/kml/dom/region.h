@@ -94,6 +94,22 @@ class LatLonAltBox : public AbstractLatLonBox {
     has_altitudemode_ = false;
   }
 
+  // <gx:altitudeMode>
+  int get_gx_altitudemode() const {
+    return gx_altitudemode_;
+  }
+  bool has_gx_altitudemode() const {
+    return has_gx_altitudemode_;
+  }
+  void set_gx_altitudemode(int gx_altitudemode) {
+    gx_altitudemode_ = gx_altitudemode;
+    has_gx_altitudemode_ = true;
+  }
+  void clear_gx_altitudemode() {
+    gx_altitudemode_ = GX_ALTITUDEMODE_CLAMPTOSEAFLOOR;
+    has_gx_altitudemode_ = false;
+  }
+
  private:
   friend class KmlFactory;
   LatLonAltBox();
@@ -107,6 +123,8 @@ class LatLonAltBox : public AbstractLatLonBox {
   bool has_maxaltitude_;
   int altitudemode_;
   bool has_altitudemode_;
+  int gx_altitudemode_;
+  bool has_gx_altitudemode_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(LatLonAltBox);
 };
 
