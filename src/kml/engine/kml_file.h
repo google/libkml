@@ -30,22 +30,22 @@
 
 #include <string>
 #include <vector>
+#include "boost/scoped_ptr.hpp"
+#include "kml/base/attributes.h"
 #include "kml/base/referent.h"
-#include "kml/dom.h"
-#include "kml/engine/engine_types.h"
-#include "kml/engine/kmz_file.h"
-#include "kml/engine/get_link_parents.h"
-#include "kml/engine/object_id_parser_observer.h"
-#include "kml/engine/shared_style_parser_observer.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/base/util.h"
 #include "kml/base/xml_file.h"
+#include "kml/dom.h"
+#include "kml/engine/engine_types.h"
+#include "kml/engine/get_link_parents.h"
+#include "kml/engine/kmz_file.h"
+#include "kml/engine/object_id_parser_observer.h"
+#include "kml/engine/shared_style_parser_observer.h"
 
 namespace kmlengine {
 
 class KmlCache;
-
-const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
-const char kDefaultEncoding[] = "utf-8";
 
 // The KmlFile class represents the instance of a KML file from a given URL.
 // A KmlFile manages an XML id domain and includes an internal map of all
@@ -125,7 +125,12 @@ class KmlFile : public kmlbase::XmlFile {
   // selector in the KML file.
   kmldom::StyleSelectorPtr GetSharedStyleById(std::string id) const;
 
-  // TODO: set/get the default xmlns and prefix-namespace mappings
+  // Indicate that this KmlFile has elements in the given XML namespace such
+  // that serialization writes out xmlns:PREFIX=NAMESPACE.  This returns true
+  // if the given id has a known prefix and xml namespace in which case this
+  // is added to the KML file.  If the given xmlns id is unknown false is
+  // returned and nothing is changed in KmlFile.
+  bool AddXmlNamespaceById(kmlbase::XmlnsId xmlns_id);
 
   // This returns the all Elements that may have link children.  See
   // GetLinkParents() for more information.
@@ -164,7 +169,7 @@ class KmlFile : public kmlbase::XmlFile {
                         std::string* errors);
   bool OpenAndParseKmz(const std::string& kmz_data, std::string* errors);
   std::string encoding_;
-  std::string default_xmlns_;
+  kmlbase::Attributes xmlns_;
   // TODO: use XmlElement's id map.
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;
