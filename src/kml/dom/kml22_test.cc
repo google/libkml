@@ -63,6 +63,10 @@ TEST_F(Kml22Test, TestEnumDefaults) {
             xsd_->EnumValue(Type_units, UNITS_FRACTION));
   ASSERT_EQ(std::string("never"),
             xsd_->EnumValue(Type_viewRefreshMode, VIEWREFRESHMODE_NEVER));
+  ASSERT_EQ(std::string("bounce"),
+            xsd_->EnumValue(Type_GxFlyToMode, GX_FLYTOMODE_BOUNCE));
+  ASSERT_EQ(std::string("pause"),
+            xsd_->EnumValue(Type_GxPlayMode, GX_PLAYMODE_PAUSE));
 }
 
 }  // end namespace kmldom
