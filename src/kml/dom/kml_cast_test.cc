@@ -133,6 +133,33 @@ TEST_F(KmlCastTest, TestCasts) {
       factory->CreateElementById(Type_XalSubAdministrativeArea)));
   ASSERT_TRUE(AsXalThoroughfare(
       factory->CreateElementById(Type_XalThoroughfare)));
+
+  ASSERT_TRUE(AsGxAnimatedUpdate(
+      factory->CreateElementById(Type_GxAnimatedUpdate)));
+  ASSERT_TRUE(AsGxFlyTo(
+      factory->CreateElementById(Type_GxFlyTo)));
+  ASSERT_TRUE(AsGxLatLonQuad(
+      factory->CreateElementById(Type_GxLatLonQuad)));
+  ASSERT_TRUE(AsGxPlaylist(
+      factory->CreateElementById(Type_GxPlaylist)));
+  ASSERT_TRUE(AsGxSoundCue(
+      factory->CreateElementById(Type_GxSoundCue)));
+  ASSERT_TRUE(AsGxTimeSpan(
+      factory->CreateElementById(Type_GxTimeSpan)));
+  ASSERT_TRUE(AsGxTimeStamp(
+      factory->CreateElementById(Type_GxTimeStamp)));
+  ASSERT_TRUE(AsTimePrimitive(
+      factory->CreateElementById(Type_GxTimeSpan)));
+  ASSERT_TRUE(AsTimePrimitive(
+      factory->CreateElementById(Type_GxTimeStamp)));
+  ASSERT_TRUE(AsGxTour(
+      factory->CreateElementById(Type_GxTour)));
+  ASSERT_TRUE(AsGxTourControl(
+      factory->CreateElementById(Type_GxTourControl)));
+  ASSERT_TRUE(AsGxTourPrimitive(
+      factory->CreateElementById(Type_GxFlyTo)));
+  ASSERT_TRUE(AsGxWait(
+      factory->CreateElementById(Type_GxWait)));
 }
 
 }  // end namespace kmldom

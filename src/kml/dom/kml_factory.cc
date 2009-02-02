@@ -116,6 +116,18 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   case Type_XalPostalCode: return CreateXalPostalCode();
   case Type_XalSubAdministrativeArea: return CreateXalSubAdministrativeArea();
   case Type_XalThoroughfare: return CreateXalThoroughfare();
+
+  case Type_GxAnimatedUpdate: return CreateGxAnimatedUpdate();
+  case Type_GxFlyTo: return CreateGxFlyTo();
+  case Type_GxLatLonQuad: return CreateGxLatLonQuad();
+  case Type_GxPlaylist: return CreateGxPlaylist();
+  case Type_GxSoundCue: return CreateGxSoundCue();
+  case Type_GxTimeSpan: return CreateGxTimeSpan();
+  case Type_GxTimeStamp: return CreateGxTimeStamp();
+  case Type_GxTour: return CreateGxTour();
+  case Type_GxTourControl: return CreateGxTourControl();
+  case Type_GxWait: return CreateGxWait();
+
   default: return NULL;
   }
 }
@@ -418,6 +430,46 @@ XalSubAdministrativeArea* KmlFactory::CreateXalSubAdministrativeArea() const {
 
 XalThoroughfare* KmlFactory::CreateXalThoroughfare() const {
   return new XalThoroughfare();
+}
+
+GxAnimatedUpdate* KmlFactory::CreateGxAnimatedUpdate() const {
+  return new GxAnimatedUpdate();
+}
+
+GxFlyTo* KmlFactory::CreateGxFlyTo() const {
+  return new GxFlyTo();
+}
+
+GxLatLonQuad* KmlFactory::CreateGxLatLonQuad() const {
+  return new GxLatLonQuad();
+}
+
+GxPlaylist* KmlFactory::CreateGxPlaylist() const {
+  return new GxPlaylist();
+}
+
+GxSoundCue* KmlFactory::CreateGxSoundCue() const {
+  return new GxSoundCue();
+}
+
+GxTimeSpan* KmlFactory::CreateGxTimeSpan() const {
+  return new GxTimeSpan();
+}
+
+GxTimeStamp* KmlFactory::CreateGxTimeStamp() const {
+  return new GxTimeStamp();
+}
+
+GxTour* KmlFactory::CreateGxTour() const {
+  return new GxTour();
+}
+
+GxTourControl* KmlFactory::CreateGxTourControl() const {
+  return new GxTourControl();
+}
+
+GxWait* KmlFactory::CreateGxWait() const {
+  return new GxWait();
 }
 
 }  // namespace kmldom

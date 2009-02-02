@@ -139,6 +139,7 @@ const StylePtr AsStyle(const ElementPtr element);
 const StyleMapPtr AsStyleMap(const ElementPtr element);
 const TimeSpanPtr AsTimeSpan(const ElementPtr element);
 const TimeStampPtr AsTimeStamp(const ElementPtr element);
+const TimePrimitivePtr AsTimePrimitive(const ElementPtr element);
 inline const UpdatePtr AsUpdate(const ElementPtr& element) {
   return ElementCast<Update>(element);
 }
@@ -181,6 +182,50 @@ inline const XalSubAdministrativeAreaPtr AsXalSubAdministrativeArea(
 
 inline const XalThoroughfarePtr AsXalThoroughfare(const ElementPtr& element) {
   return ElementCast<XalThoroughfare>(element);
+}
+
+inline const GxAnimatedUpdatePtr AsGxAnimatedUpdate(const ElementPtr element) {
+  return ElementCast<GxAnimatedUpdate>(element);
+}
+
+inline const GxFlyToPtr AsGxFlyTo(const ElementPtr element) {
+  return ElementCast<GxFlyTo>(element);
+}
+
+inline const GxLatLonQuadPtr AsGxLatLonQuad(const ElementPtr element) {
+  return ElementCast<GxLatLonQuad>(element);
+}
+
+inline const GxPlaylistPtr AsGxPlaylist(const ElementPtr element) {
+  return ElementCast<GxPlaylist>(element);
+}
+
+inline const GxSoundCuePtr AsGxSoundCue(const ElementPtr element) {
+  return ElementCast<GxSoundCue>(element);
+}
+
+inline const GxTimeSpanPtr AsGxTimeSpan(const ElementPtr element) {
+  return ElementCast<GxTimeSpan>(element);
+}
+
+inline const GxTimeStampPtr AsGxTimeStamp(const ElementPtr element) {
+  return ElementCast<GxTimeStamp>(element);
+}
+
+inline const GxTourPtr AsGxTour(const ElementPtr element) {
+  return ElementCast<GxTour>(element);
+}
+
+inline const GxTourControlPtr AsGxTourControl(const ElementPtr element) {
+  return ElementCast<GxTourControl>(element);
+}
+
+inline const GxTourPrimitivePtr AsGxTourPrimitive(const ElementPtr element) {
+  return ElementCast<GxTourPrimitive>(element);
+}
+
+inline const GxWaitPtr AsGxWait(const ElementPtr element) {
+  return ElementCast<GxWait>(element);
 }
 
 }  // end namespace kmldom
