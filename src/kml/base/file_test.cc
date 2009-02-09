@@ -26,10 +26,13 @@
 #include "kml/base/file.h"
 #include "gtest/gtest.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error DATADIR must be defined!
-#else
-static const std::string kDataDir = DATADIR;
 #endif
 
 namespace kmlbase {
@@ -38,7 +41,7 @@ class FileTest : public testing::Test {
 };
 
 TEST_F(FileTest, TestReadFileToString) {
-  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
+  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   std::string file_data;
   ASSERT_TRUE(File::ReadFileToString(kDoc, &file_data));
   ASSERT_FALSE(file_data.empty());
@@ -64,8 +67,8 @@ TEST_F(FileTest, TestWriteStringToFile) {
 }
 
 TEST_F(FileTest, TestExists) {
-  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
-  const std::string kNoSuchFile = kDataDir + "/kmz/nosuchfile";
+  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
+  const std::string kNoSuchFile = std::string(DATADIR) + "/kmz/nosuchfile";
   ASSERT_TRUE(File::Exists(kDoc));
   ASSERT_FALSE(File::Exists(kNoSuchFile));
 }

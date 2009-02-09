@@ -31,6 +31,11 @@
 #include "kml/dom.h"
 #include "kml/dom/xsd.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
 #endif

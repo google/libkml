@@ -34,6 +34,12 @@
 #include "kml/base/net_cache.h"
 #include "kml/base/uri_parser.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "testing/base/public/googletest.h"
+#define DATADIR FLAGS_test_srcdir + "/google3/third_party/libkml/testdata"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
 #endif

@@ -35,6 +35,11 @@
 #include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_uri.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
 #endif

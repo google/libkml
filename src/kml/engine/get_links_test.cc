@@ -29,10 +29,13 @@
 #include "kml/base/file.h"
 #include "gtest/gtest.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
-#else
-static const std::string kDataDir = DATADIR;
 #endif
 
 namespace kmlengine {
@@ -59,7 +62,7 @@ TEST_F(GetLinksTest, TestBasic) {
 
 // Verify that GetLinks finds all kinds of hrefs in a KML file.
 TEST_F(GetLinksTest, TestAll) {
-  const std::string kAllLinks = kDataDir + "/links/alllinks.kml";
+  const std::string kAllLinks = std::string(DATADIR) + "/links/alllinks.kml";
   std::string kml;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(kAllLinks, &kml));
   href_vector_t href_vector;
