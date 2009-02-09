@@ -32,10 +32,13 @@
 #include "kml/base/file.h"
 #include "gtest/gtest.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
-#else
-static const std::string kDataDir = DATADIR;
 #endif
 
 using kmlbase::File;
@@ -49,7 +52,7 @@ class KmzTest : public testing::Test {
 
 TEST_F(KmzTest, TestOpenFromFile) {
   // doc.kmz contains a simple doc.kml and is a valid zip archive.
-  const std::string kGoodKmz = kDataDir + "/kmz/doc.kmz";
+  const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
   ASSERT_TRUE(kmz_file_);
   std::string kml_data;
@@ -57,7 +60,7 @@ TEST_F(KmzTest, TestOpenFromFile) {
   ASSERT_TRUE(kmz_file_->ReadKml(&kml_data));
   ASSERT_FALSE(kml_data.empty());
   // nokml.kmz is a valid zip archive, but does not contain any KML files
-  const std::string kBadKmz = kDataDir + "/kmz/nokml.kmz";
+  const std::string kBadKmz = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kBadKmz.c_str()));
   ASSERT_TRUE(kmz_file_);
   kml_data.clear();
@@ -74,7 +77,7 @@ TEST_F(KmzTest, TestOpenFromBadFile) {
   // The file cannot be opened.
   ASSERT_TRUE(kmz_file_ == NULL);
   // 2: a file that is not a valid KMZ archive.
-  const std::string kBadKmz= kDataDir + "/kmz/bad.kmz";
+  const std::string kBadKmz= std::string(DATADIR) + "/kmz/bad.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kBadKmz.c_str()));
   // The file could not be read.
   ASSERT_TRUE(kmz_file_ == NULL);
@@ -82,7 +85,7 @@ TEST_F(KmzTest, TestOpenFromBadFile) {
 
 TEST_F(KmzTest, TestOpenFromString) {
   // doc.kmz contains a simple doc.kml and is a valid zip archive.
-  const std::string kGoodKmz = kDataDir + "/kmz/doc.kmz";
+  const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
   std::string kmz_file_data;
   ASSERT_TRUE(File::ReadFileToString(kGoodKmz.c_str(), &kmz_file_data));
   ASSERT_FALSE(kmz_file_data.empty());
@@ -93,7 +96,7 @@ TEST_F(KmzTest, TestOpenFromString) {
   ASSERT_TRUE(kmz_file_->ReadKml(&kml_data));
   ASSERT_FALSE(kml_data.empty());
   // nokml.kmz is a valid zip archive, but does not contain any KML files
-  const std::string kBadKmz = kDataDir + "/kmz/nokml.kmz";
+  const std::string kBadKmz = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_data.clear();
   ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &kmz_file_data));
   ASSERT_FALSE(kmz_file_data.empty());
@@ -109,7 +112,7 @@ TEST_F(KmzTest, TestReadKml) {
   // doc.kmz has two KML files at the root level, a.kml and doc.kml, which were
   // added to the archive in that order. Assert that doc.kml is read instead
   // of a.kml.
-  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
+  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kDoc.c_str()));
   ASSERT_TRUE(kmz_file_);
   std::string kml_data;
@@ -117,7 +120,7 @@ TEST_F(KmzTest, TestReadKml) {
   ASSERT_FALSE(kml_data.empty());
   ASSERT_TRUE(std::string::npos != kml_data.find("doc.kml"));
   // nokml.kmz is a valid zip archive, but does not contain any KML files
-  const std::string kNokml = kDataDir + "/kmz/nokml.kmz";
+  const std::string kNokml = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNokml.c_str()));
   ASSERT_TRUE(kmz_file_);
   kml_data.clear();
@@ -129,7 +132,7 @@ TEST_F(KmzTest, TestReadKml) {
   // - a/a.kml
   // Each file has a placemark whose <name> is the archived filename.
   // Assert that z/c.kml is read first.
-  const std::string kMulti1 = kDataDir + "/kmz/multikml-nodoc.kmz";
+  const std::string kMulti1 = std::string(DATADIR) + "/kmz/multikml-nodoc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti1.c_str()));
   ASSERT_TRUE(kmz_file_);
   kml_data.clear();
@@ -143,7 +146,7 @@ TEST_F(KmzTest, TestReadKml) {
   // - doc/doc.kml
   // Assert that z/c.kml is read because the default file (doc.kml at root
   // level) cannot be found.
-  const std::string kMulti2 = kDataDir + "/kmz/multikml-doc.kmz";
+  const std::string kMulti2 = std::string(DATADIR) + "/kmz/multikml-doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
   ASSERT_TRUE(kmz_file_);
   kml_data.clear();
@@ -160,7 +163,7 @@ TEST_F(KmzTest, TestReadKmlAndGetPath) {
   // doc.kmz has two KML files at the root level, a.kml and doc.kml, which were
   // added to the archive in that order. Assert that doc.kml is read instead
   // of a.kml.
-  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
+  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kDoc.c_str()));
   std::string kml_data;
   std::string kml_path;
@@ -175,12 +178,12 @@ TEST_F(KmzTest, TestReadKmlAndGetPath) {
   // - doc/doc.kml
   // Assert that z/c.kml is read because the default file (doc.kml at root
   // level) cannot be found.
-  const std::string kMulti2 = kDataDir + "/kmz/multikml-doc.kmz";
+  const std::string kMulti2 = std::string(DATADIR) + "/kmz/multikml-doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
   ASSERT_TRUE(kmz_file_->ReadKmlAndGetPath(&kml_data, &kml_path));
   ASSERT_EQ(std::string("z/c.kml"), kml_path);
   // nokml.kmz is a valid zip archive, but does not contain any KML files
-  const std::string kBadKmz = kDataDir + "/kmz/nokml.kmz";
+  const std::string kBadKmz = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kBadKmz.c_str()));
   kml_path.clear();
   ASSERT_FALSE(kmz_file_->ReadKmlAndGetPath(&kml_data, &kml_path));
@@ -191,7 +194,7 @@ TEST_F(KmzTest, TestReadKmlAndGetPath) {
 
 TEST_F(KmzTest, TestReadFile) {
   // nokml.kmz has a file called foo.txt in a folder called foo.
-  const std::string kNokml = kDataDir + "/kmz/nokml.kmz";
+  const std::string kNokml = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNokml.c_str()));
   ASSERT_TRUE(kmz_file_);
   std::string file_data;
@@ -209,14 +212,14 @@ TEST_F(KmzTest, TestReadFile) {
 
 TEST_F(KmzTest, TestIsKmz) {
   // Verify that a valid KMZ archive passes IsKmz().
-  const std::string kGoodKmz= kDataDir + "/kmz/doc.kmz";
+  const std::string kGoodKmz= std::string(DATADIR) + "/kmz/doc.kmz";
   std::string kmz_data;
   File::ReadFileToString(kGoodKmz, &kmz_data);
   ASSERT_FALSE(kmz_data.empty());
   ASSERT_TRUE(KmzFile::IsKmz(kmz_data));
 
   // Verify that an invalid KMZ archive fails IsKmz().
-  const std::string kBadKmz= kDataDir + "/kmz/bad.kmz";
+  const std::string kBadKmz= std::string(DATADIR) + "/kmz/bad.kmz";
   kmz_data.clear();
   File::ReadFileToString(kBadKmz, &kmz_data);
   ASSERT_FALSE(kmz_data.empty());
@@ -228,7 +231,7 @@ TEST_F(KmzTest, TestList) {
   // - z/c.kml
   // - b.kml
   // - a/a.kml
-  const std::string kMulti1 = kDataDir + "/kmz/multikml-nodoc.kmz";
+  const std::string kMulti1 = std::string(DATADIR) + "/kmz/multikml-nodoc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti1.c_str()));
   ASSERT_TRUE(kmz_file_);
   std::vector<std::string> list;
@@ -266,7 +269,7 @@ TEST_F(KmzTest, TestWriteKmz) {
 
 // This verifies that a const KmzFile compiles and runs with read methods.
 TEST_F(KmzTest, TestConstKmzFile) {
-  const std::string kDoc = kDataDir + "/kmz/doc.kmz";
+  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   const KmzFile* kmz_file = KmzFile::OpenFromFile(kDoc.c_str());
   std::string kml_data;
   ASSERT_TRUE(kmz_file->ReadKml(&kml_data));

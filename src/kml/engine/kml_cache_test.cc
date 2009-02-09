@@ -34,6 +34,11 @@
 #include "kml/dom.h"
 #include "kml/engine/location_util.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
 #ifndef DATADIR
 #error *** DATADIR must be defined! ***
 #endif
@@ -110,7 +115,7 @@ TEST_F(KmlCacheTest, TestBasicFetchKml) {
 // Verify basic usage of the FetchData() method.
 TEST_F(KmlCacheTest, TestBasicFetchData) {
   // Fetch the KML from the previous test, but just as raw data.
-  const std::string kPath("style/weather/point-sarnen.kml");
+  const std::string kPath("/style/weather/point-sarnen.kml");
   const std::string kUrl(std::string("http://host.com/" + kPath));
   std::string got_content;
   ASSERT_TRUE(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));

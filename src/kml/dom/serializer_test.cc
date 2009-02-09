@@ -82,9 +82,9 @@ class MaximalSerializer : public Serializer {
   virtual void Indent() {}
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
   virtual void BeginElementArray(int type_id, size_t element_count) {}
-  virtual void EndElementArray(int type_id, size_t element_count) {}
+  virtual void EndElementArray(int type_id) {}
   virtual void BeginElementGroupArray(int group_id, size_t element_count) {}
-  virtual void EndElementGroupArray(int group_id, size_t element_count) {}
+  virtual void EndElementGroupArray(int group_id) {}
 };
 
 typedef std::vector<KmlDomType> TypeIdVector;
