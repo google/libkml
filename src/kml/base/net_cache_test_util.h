@@ -36,8 +36,7 @@
 
 // The following define is a convenience for testing inside Google.
 #ifdef GOOGLE_INTERNAL
-#include "testing/base/public/googletest.h"
-#define DATADIR FLAGS_test_srcdir + "/google3/third_party/libkml/testdata"
+#include "kml/base/google_internal_test.h"
 #endif
 
 #ifndef DATADIR
