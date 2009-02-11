@@ -149,6 +149,26 @@ SWIG_INTRUSIVE_PTR_DERIVED(TimeStamp, kmldom::TimePrimitive, kmldom::TimeStamp)
 SWIG_INTRUSIVE_PTR_DERIVED(ViewVolume, kmldom::Object, kmldom::ViewVolume)
 SWIG_INTRUSIVE_PTR_DERIVED(Update, kmldom::Element, kmldom::Update)
 
+SWIG_INTRUSIVE_PTR_DERIVED(GxTourPrimitive, kmldom::Object,
+                           kmldom::GxTourPrimitive)
+SWIG_INTRUSIVE_PTR_DERIVED(GxAnimatedUpdate, kmldom::GxTourPrimitive,
+                           kmldom::GxAnimatedUpdate)
+SWIG_INTRUSIVE_PTR_DERIVED(GxFlyTo, kmldom::GxTourPrimitive,
+                           kmldom::GxFlyTo)
+SWIG_INTRUSIVE_PTR_DERIVED(GxLatLonQuad, kmldom::Object,
+                           kmldom::GxLatLonQuad)
+SWIG_INTRUSIVE_PTR_DERIVED(GxPlaylist, kmldom::Object, kmldom::GxPlaylist)
+SWIG_INTRUSIVE_PTR_DERIVED(GxSoundCue, kmldom::GxTourPrimitive,
+                           kmldom::GxSoundCue)
+SWIG_INTRUSIVE_PTR_DERIVED(GxTimeSpan, kmldom::TimeSpan, kmldom::GxTimeSpan)
+SWIG_INTRUSIVE_PTR_DERIVED(GxTimeStamp, kmldom::TimeStamp,
+                           kmldom::GxTimeStamp)
+SWIG_INTRUSIVE_PTR_DERIVED(GxTour, kmldom::Feature, kmldom::GxTour)
+SWIG_INTRUSIVE_PTR_DERIVED(GxTourControl, kmldom::GxTourPrimitive,
+                           kmldom::GxTourControl)
+SWIG_INTRUSIVE_PTR_DERIVED(GxWait, kmldom::GxTourPrimitive,
+                           kmldom::GxWait)
+
 // Tell SWIG about C++ Standard Library std::string.
 %include "std_string.i"
 
@@ -307,6 +327,17 @@ public:
   TimeStampPtr CreateTimeStamp() const;
   ViewVolumePtr CreateViewVolume() const;
   UpdatePtr CreateUpdate() const;
+
+  GxAnimatedUpdatePtr CreateGxAnimatedUpdate() const;
+  GxFlyToPtr CreateGxFlyTo() const;
+  GxLatLonQuadPtr CreateGxLatLonQuad() const;
+  GxPlaylistPtr CreateGxPlaylist() const;
+  GxSoundCuePtr CreateGxSoundCue() const;
+  GxTimeSpanPtr CreateGxTimeSpan() const;
+  GxTimeStampPtr CreateGxTimeStamp() const;
+  GxTourPtr CreateGxTour() const;
+  GxTourControlPtr CreateGxTourControl() const;
+  GxWaitPtr CreateGxWait() const;
 };
 
 // Parse KML from memory buffer to Element hierarchy.
