@@ -127,9 +127,9 @@ GxAnimatedUpdate::~GxAnimatedUpdate() {}
 void GxAnimatedUpdate::AddElement(const ElementPtr& element) {
   if (UpdatePtr update = AsUpdate(element)) {
     set_update(update);
-  } else {
-    Element::AddElement(element);
+    return;
   }
+  GxTourPrimitiveCommon::AddElement(element);
 }
 
 void GxAnimatedUpdate::Serialize(Serializer& serializer) const {
