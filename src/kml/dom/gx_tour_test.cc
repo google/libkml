@@ -222,23 +222,36 @@ TEST_F(GxAnimatedUpdateTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(GxAnimatedUpdateTest, TestDefaults) {
-  // TODO:
+  ASSERT_FALSE(gx_animatedupdate_->has_gx_duration());
+  ASSERT_DOUBLE_EQ(0.0, gx_animatedupdate_->get_gx_duration());
+  ASSERT_FALSE(gx_animatedupdate_->has_update());
+  ASSERT_TRUE(NULL == gx_animatedupdate_->get_update());
 }
 
 // Verify setting default makes has_xxx() true:
 TEST_F(GxAnimatedUpdateTest, TestSetToDefaultValues) {
-  // TODO:
+  gx_animatedupdate_->set_gx_duration(gx_animatedupdate_->get_gx_duration());
+  ASSERT_TRUE(gx_animatedupdate_->has_gx_duration());
+  gx_animatedupdate_->set_update(gx_animatedupdate_->get_update());
+  ASSERT_TRUE(NULL == gx_animatedupdate_->get_update());
 }
 
 // Verify set, get, has, clear:
 TEST_F(GxAnimatedUpdateTest, TestSetGetHasClear) {
-  // TODO:
+  const double kDuration = 1.2;
+  const UpdatePtr kUpdate = KmlFactory::GetFactory()->CreateUpdate();
+  gx_animatedupdate_->set_gx_duration(kDuration);
+  gx_animatedupdate_->set_update(kUpdate);
+  ASSERT_TRUE(gx_animatedupdate_->has_gx_duration());
+  ASSERT_DOUBLE_EQ(kDuration, gx_animatedupdate_->get_gx_duration());
+  ASSERT_TRUE(gx_animatedupdate_->has_update());
+  ASSERT_EQ(kUpdate, gx_animatedupdate_->get_update());
 }
 
 TEST_F(GxAnimatedUpdateTest, TestParse) {
-  // TODO:
   const std::string kGxAnimatedUpdate =
     "<gx:AnimatedUpdate>"
+    "<gx:duration>1.1</gx:duration>"
     "<Update/>"
     "</gx:AnimatedUpdate>";
   std::string errors;
@@ -246,12 +259,24 @@ TEST_F(GxAnimatedUpdateTest, TestParse) {
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
   const GxAnimatedUpdatePtr animatedupdate = AsGxAnimatedUpdate(root);
+  ASSERT_TRUE(animatedupdate->has_gx_duration());
+  ASSERT_DOUBLE_EQ(1.1, animatedupdate->get_gx_duration());
   ASSERT_TRUE(animatedupdate);
   ASSERT_TRUE(animatedupdate->has_update());
+  ASSERT_EQ(kGxAnimatedUpdate, SerializeRaw(Parse(kGxAnimatedUpdate, NULL)));
 }
 
 TEST_F(GxAnimatedUpdateTest, TestSerialize) {
-  // TODO:
+  const double kDuration = 1.2;
+  const UpdatePtr kUpdate = KmlFactory::GetFactory()->CreateUpdate();
+  gx_animatedupdate_->set_gx_duration(kDuration);
+  gx_animatedupdate_->set_update(kUpdate);
+  const std::string kExpected =
+    "<gx:AnimatedUpdate>"
+    "<gx:duration>1.2</gx:duration>"
+    "<Update/>"
+    "</gx:AnimatedUpdate>";
+  ASSERT_EQ(kExpected, SerializeRaw(gx_animatedupdate_));
 }
 
 class GxFlyToTest : public testing::Test {
