@@ -50,6 +50,7 @@
 #include "kml/engine/shared_style_parser_observer.h"
 #include "kml/engine/style_merger.h"
 #include "kml/engine/style_resolver.h"
+#include "kml/engine/style_splitter.h"
 #include "kml/engine/update.h"
 
 #endif  // KML_ENGINE_H__
