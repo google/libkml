@@ -32,6 +32,7 @@ libkmlengine_la_SOURCES = \
 	parse_old_schema.cc \
 	style_merger.cc \
 	style_resolver.cc \
+	style_splitter.cc \
 	update.cc
 
 libkmlengine_la_LIBADD = \
@@ -68,6 +69,7 @@ libkmlengineinclude_HEADERS = \
 	shared_style_parser_observer.h \
 	style_merger.h \
 	style_resolver.h \
+	style_splitter.h \
 	update.h
 
 DATA_DIR = $(top_srcdir)/testdata
@@ -96,6 +98,7 @@ TESTS = bbox_test \
 	shared_style_parser_observer_test \
 	style_merger_test \
 	style_resolver_test \
+	style_splitter_test \
 	update_test
 
 check_PROGRAMS = $(TESTS)
@@ -277,6 +280,14 @@ style_merger_test_LDADD= libkmlengine.la \
 style_resolver_test_SOURCES = style_resolver_test.cc
 style_resolver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 style_resolver_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la \
+	$(top_builddir)/third_party/libgtest.la
+
+style_splitter_test_SOURCES = style_splitter_test.cc
+style_splitter_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+style_splitter_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/liburiparser.la \
