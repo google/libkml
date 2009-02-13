@@ -8,7 +8,7 @@ endif
 
 noinst_PROGRAMS = \
 	balloonwalker change clone csv2kml import kmlfile kmzchecklinks \
-	oldschema parsebig printstyle streamkml
+	oldschema parsebig printstyle splitstyles streamkml
 
 balloonwalker_SOURCES = balloonwalker.cc
 balloonwalker_LDADD = \
@@ -68,6 +68,13 @@ printstyle_LDADD = \
 
 change_SOURCES = change.cc
 change_LDADD = \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+splitstyles_SOURCES = splitstyles.cc
+splitstyles_LDADD = \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
