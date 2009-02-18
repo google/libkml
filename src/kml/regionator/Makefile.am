@@ -5,8 +5,8 @@ AM_CPPFLAGS= -I$(top_srcdir)/src \
 
 
 if GCC
-AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
-AM_TEST_CXXFLAGS = -Wall -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
+AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-rtti
+AM_TEST_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
 endif
 
 lib_LTLIBRARIES = libkmlregionator.la

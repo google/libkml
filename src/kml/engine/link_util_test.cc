@@ -180,7 +180,7 @@ TEST_F(LinkUtilTest, TestFetchLink) {
   KmlFilePtr base_kml_file = kml_cache_->FetchKmlAbsolute(kBase);
   ASSERT_TRUE(base_kml_file);
   ElementVector networklink_vector;
-  GetElementsById(base_kml_file->root(), kmldom::Type_NetworkLink,
+  GetElementsById(base_kml_file->get_root(), kmldom::Type_NetworkLink,
                   &networklink_vector);
   // The default KML file in radar-animation.kmz has 1 NetworkLink.
   ASSERT_EQ(static_cast<size_t>(1), networklink_vector.size());
@@ -188,7 +188,7 @@ TEST_F(LinkUtilTest, TestFetchLink) {
                                          AsNetworkLink(networklink_vector[0]));
   ASSERT_TRUE(target_kml_file);
   kmldom::DocumentPtr document =
-      AsDocument(GetRootFeature(target_kml_file->root()));
+      AsDocument(GetRootFeature(target_kml_file->get_root()));
   ASSERT_TRUE(document);
   // This is kmz/radar-animation.kmz/level00/0.kml.
   ASSERT_EQ(std::string("0130_256_-1"), document->get_name());
@@ -199,7 +199,7 @@ TEST_F(LinkUtilTest, TestFetchIcon) {
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kBase);
   ASSERT_TRUE(kml_file);
   ElementVector groundoverlay_vector;
-  GetElementsById(kml_file->root(), kmldom::Type_GroundOverlay,
+  GetElementsById(kml_file->get_root(), kmldom::Type_GroundOverlay,
                   &groundoverlay_vector);
   // The default KML file in lc01.kmz has 2 GroundOverlays.
   ASSERT_EQ(static_cast<size_t>(2), groundoverlay_vector.size());
