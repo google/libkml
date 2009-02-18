@@ -40,8 +40,12 @@ using kmldom::PlacemarkPtr;
 using kmldom::SerializePretty;
 using kmldom::SnippetPtr;
 using kmldom::StylePtr;
+using kmlengine::CreateBalloonText;
+using kmlengine::FeatureVisitor;
+using kmlengine::GetRootFeature;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
+using kmlengine::VisitFeatureHierarchy;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -49,7 +53,7 @@ using std::endl;
 // The FeatureVisitor class implements the mechanism to walk a Feature
 // hierarchy. This subclass calls CreateBalloonText on each Feature and prints
 // the composited text to stdout.
-class FeatureBalloonPrinter : public kmlengine::FeatureVisitor {
+class FeatureBalloonPrinter : public FeatureVisitor {
  public:
   FeatureBalloonPrinter(const KmlFilePtr& kml_file) :
     kml_file_(kml_file) {}
@@ -57,7 +61,7 @@ class FeatureBalloonPrinter : public kmlengine::FeatureVisitor {
   virtual void VisitFeature(const kmldom::FeaturePtr& f) {
     std::string fname = f->has_name() ? f->get_name() : "Unnamed feature";
     cout << "Feature balloon text for " << fname << endl;
-    cout << kmlengine::CreateBalloonText(kml_file_, f) << endl << endl;
+    cout << CreateBalloonText(kml_file_, f) << endl << endl;
   }
  private:
   const KmlFilePtr kml_file_;
@@ -65,8 +69,8 @@ class FeatureBalloonPrinter : public kmlengine::FeatureVisitor {
 
 void VisitFeatureBalloons(const KmlFilePtr& kml_file) {
   FeatureBalloonPrinter feature_balloon_printer(kml_file);
-  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file->root()),
-                                   feature_balloon_printer);
+  VisitFeatureHierarchy(GetRootFeature(kml_file->get_root()),
+                        feature_balloon_printer);
 }
 
 int HandleFile(const char* filename) {
