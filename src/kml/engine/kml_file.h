@@ -74,24 +74,17 @@ class KmlFile : public kmlbase::XmlFile {
                                           const std::string& url,
                                           KmlCache* kml_cache);
 
-  // This creates a KmlFile from the given element hierarchy.
+  // This creates a KmlFile from the given element hierarchy.  This variant of
+  // CreateFromImport fails on id duplicates.
   static KmlFile* CreateFromImport(kmldom::ElementPtr element);
 
-  // This permits use creation of an empty KmlFile.
-  // TODO: this is used only in unit tests, make this private and friend the
-  // tests or change the tests.
-  static KmlFile* Create() {
-    return new KmlFile;
-  }
+  // This creates a KmlFile from the given element hierarchy.  This variant of
+  // CreateFromImport employs a "last one wins" strategy for id duplicates.
+  static KmlFile* CreateFromImportLax(kmldom::ElementPtr element);
 
- public:
   // This returns the root element of this KML file.
   const kmldom::ElementPtr get_root() const {
     return kmldom::AsElement(XmlFile::get_root());
-  }
-  // TODO: deprecated.  use get_root()
-  const kmldom::ElementPtr root() const {
-    return get_root();
   }
 
   // This serializes the KML from the root.  The xmlns() value is added to
@@ -125,6 +118,10 @@ class KmlFile : public kmlbase::XmlFile {
   // selector in the KML file.
   kmldom::StyleSelectorPtr GetSharedStyleById(std::string id) const;
 
+  const SharedStyleMap& get_shared_style_map() const {
+    return shared_style_map_;
+  }
+
   // Indicate that this KmlFile has elements in the given XML namespace such
   // that serialization writes out xmlns:PREFIX=NAMESPACE.  This returns true
   // if the given id has a known prefix and xml namespace in which case this
@@ -138,7 +135,7 @@ class KmlFile : public kmlbase::XmlFile {
     return link_parent_vector_;
   }
 
-  // This is the KmlCache which created this KmlFile.  This may NULL if this
+  // This is the KmlCache which created this KmlFile.  This may be NULL if this
   // KmlFile was not created using CreateFromStringWithUrl().
   KmlCache* get_kml_cache() const {
     return kml_cache_;
@@ -156,6 +153,11 @@ class KmlFile : public kmlbase::XmlFile {
  private:
   // Constructor is private.  Use static Create methods.
   KmlFile();
+
+  // This is an internal helper function for the public CreateFromImport*()
+  // methods.
+  static KmlFile* CreateFromImportInternal(kmldom::ElementPtr element,
+                                           bool disallow_duplicate_ids);
 
   // This is an internal method used in the static Create methods.
   bool ParseFromString(const std::string& kml, std::string* errors);

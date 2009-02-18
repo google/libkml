@@ -43,10 +43,12 @@
 #endif
 
 using kmldom::ElementPtr;
+using kmldom::FolderPtr;
 using kmldom::KmlFactory;
 using kmldom::KmlPtr;
 using kmldom::ObjectPtr;
 using kmldom::PlacemarkPtr;
+using kmldom::StyleMapPtr;
 using kmldom::StyleSelectorPtr;
 
 namespace kmlengine {
@@ -62,7 +64,8 @@ class KmlFileTest : public testing::Test {
 
 // Verify the encoding appears properly in the xml header.
 TEST_F(KmlFileTest, TestEncoding) {
-  kml_file_ = KmlFile::Create();
+  kml_file_ = KmlFile::CreateFromParse("<kml/>", NULL);
+  ASSERT_TRUE(kml_file_);
   ASSERT_EQ(std::string("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"),
             kml_file_->CreateXmlHeader());
 
@@ -198,7 +201,7 @@ TEST_F(KmlFileTest, TestCreateFromParseOfKml) {
   std::string errors;
   kml_file_ = KmlFile::CreateFromParse(kKml, &errors);
   ASSERT_TRUE(errors.empty());
-  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
+  VerifyIsPlacemarkWithName(kml_file_->get_root(), kName);
 }
 
 // Verify the CreateFromParse() static method on junk input.
@@ -229,7 +232,7 @@ TEST_F(KmlFileTest, TestCreateFromParseOfKmz) {
   std::string errors;
   kml_file_ = KmlFile::CreateFromParse(kmz_data, &errors);
   ASSERT_TRUE(errors.empty());
-  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
+  VerifyIsPlacemarkWithName(kml_file_->get_root(), kName);
 }
 
 // Verify that GetParentLinkParserObservers finds all kinds of parents of
@@ -261,7 +264,8 @@ TEST_F(KmlFileTest, TestGetLinkParents) {
 
 // Verify const behavior.
 TEST_F(KmlFileTest, TestConstNull) {
-  const KmlFilePtr kml_file = KmlFile::Create();
+  const KmlFilePtr kml_file = KmlFile::CreateFromParse("<kml/>", NULL);
+  ASSERT_TRUE(kml_file);
   ASSERT_FALSE(kml_file->GetObjectById("blah"));
   ASSERT_FALSE(kml_file->GetSharedStyleById("blah"));
 }
@@ -285,7 +289,7 @@ TEST_F(KmlFileTest, TestBasicCreateFromStringWithUrl) {
   kml_file_ = KmlFile::CreateFromStringWithUrl(kPlacemark, kUrl, NULL);
   ASSERT_TRUE(kml_file_);
   ASSERT_EQ(kUrl, kml_file_->get_url());
-  PlacemarkPtr placemark = AsPlacemark(kml_file_->root());
+  PlacemarkPtr placemark = AsPlacemark(kml_file_->get_root());
   ASSERT_TRUE(placemark);
   ASSERT_EQ(kName, placemark->get_name());
   ASSERT_FALSE(kml_file_->get_kml_cache());
@@ -335,7 +339,7 @@ TEST_F(KmlFileTest, TestCreateFromImport) {
   kml->set_feature(placemark);
   KmlFilePtr kml_file = KmlFile::CreateFromImport(kml);
   ASSERT_TRUE(kml_file);
-  ElementPtr root = kml_file->root();
+  ElementPtr root = kml_file->get_root();
   ASSERT_TRUE(root);
   ASSERT_TRUE(kmldom::AsKml(root));
   ASSERT_EQ(kName, kmldom::AsKml(root)->get_feature()->get_name());
@@ -385,8 +389,42 @@ TEST_F(KmlFileTest, TestCreateFromImportAndGetById) {
   ASSERT_FALSE(kml_file_->GetSharedStyleById("no-shared-style-with-this-id"));
 }
 
+// Verify KmlFile::CreateFromImportLax()
+TEST_F(KmlFileTest, TestCreateFromImportLax) {
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  FolderPtr folder = kml_factory->CreateFolder();
+  PlacemarkPtr placemark = kml_factory->CreatePlacemark();
+  const std::string kId("some-id-to-duplicate");
+  const std::string kFirstName("first name");
+  placemark->set_id(kId);
+  placemark->set_name(kFirstName);
+  folder->add_feature(placemark);
+  placemark = kml_factory->CreatePlacemark();
+  const std::string kLastName("last name");
+  placemark->set_id(kId);
+  placemark->set_name(kLastName);
+  folder->add_feature(placemark);
+  // Plain CreateFromImport() is strict about duplicate ids.
+  ASSERT_FALSE(KmlFile::CreateFromImport(folder));
+  // CreateFromImportLax() permits duplicate ids...
+  KmlFilePtr kml_file = KmlFile::CreateFromImportLax(folder);
+  ASSERT_TRUE(kml_file);
+  // ...and the id mapping hits the last object with that id...
+  placemark = AsPlacemark(kml_file->GetObjectById(kId));
+  ASSERT_TRUE(placemark);
+  ASSERT_EQ(kLastName, placemark->get_name());
+  // ...and the first one is the first feature in the folder
+  folder = AsFolder(kml_file->get_root());
+  ASSERT_TRUE(folder);
+  ASSERT_EQ(static_cast<size_t>(2), folder->get_feature_array_size());
+  placemark = AsPlacemark(folder->get_feature_array_at(0));
+  ASSERT_TRUE(placemark);
+  ASSERT_EQ(kFirstName, placemark->get_name());
+  ASSERT_EQ(kId, placemark->get_id());
+}
+
 TEST_F(KmlFileTest, TestAddXmlNamespaceById) {
-  kml_file_ = KmlFile::CreateFromString("<kml/>");
+  kml_file_ = KmlFile::CreateFromParse("<kml/>", NULL);
   // The default serialization behavior adds the XML declaration and the OGC
   // KML 2.2 namespace.
   const std::string kExpected =

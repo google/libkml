@@ -129,25 +129,31 @@ bool KmlFile::ParseFromString(const std::string& kml, std::string* errors) {
 }
 
 // static
-// TODO: add a bool strict arg and decide on dup handling strategy in MapIds
-// in the case of lax import.  At present the import is strict and fails
-// completely if there are any dups.
-KmlFile* KmlFile::CreateFromImport(kmldom::ElementPtr element) {
+KmlFile* KmlFile::CreateFromImportInternal(kmldom::ElementPtr element,
+                                           bool strict) {
   if (!element) {
     return NULL;
   }
   KmlFile* kml_file = new KmlFile;
   ElementVector dup_id_elements;
   MapIds(element, &kml_file->object_id_map_, &dup_id_elements);
-  if (dup_id_elements.empty()) {
-    // TODO: look for shared styles in object_id_map_ and add to
-    // shared_style_map_
-    // TODO check/set all elements under elements to be in this file.
-    kml_file->set_root(element);
-    return kml_file;
+  if (strict && !dup_id_elements.empty()) {
+    delete kml_file;
+    return NULL;
   }
-  delete kml_file;
-  return NULL;
+  // TODO: look for shared styles in object_id_map_ and add to
+  // shared_style_map_
+  // TODO check/set all elements under elements to be in this file.
+  kml_file->set_root(element);
+  return kml_file;
+}
+
+KmlFile* KmlFile::CreateFromImport(kmldom::ElementPtr element) {
+  return CreateFromImportInternal(element, true);
+}
+
+KmlFile* KmlFile::CreateFromImportLax(kmldom::ElementPtr element) {
+  return CreateFromImportInternal(element, false);
 }
 
 // TODO: CreateFromParse,Import should really discover what namespaces are
