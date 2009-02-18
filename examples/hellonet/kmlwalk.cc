@@ -44,6 +44,8 @@ using kmldom::StylePtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
 using kmlengine::KmlCache;
+using kmlengine::GetRootFeature;
+using kmlengine::VisitFeatureHierarchy;
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -121,8 +123,7 @@ static void HandleFile(const KmlFilePtr& kml_file) {
   cout << kml_file->get_url() << endl;
   ++file_count;
   FeatureCounter feature_counter(kml_file);
-  kmlengine::VisitFeatureHierarchy(kmlengine::GetRootFeature(kml_file->root()),
-                                   feature_counter);
+  VisitFeatureHierarchy(GetRootFeature(kml_file->get_root()), feature_counter);
 }
 
 static void WalkNetworkLinks(const KmlFilePtr& kml_file) {
