@@ -3,8 +3,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/googletest-r108/include
 
 if GCC
-AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
-AM_TEST_CXXFLAGS = -Wall -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
+AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-rtti
+AM_TEST_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
 endif
 
 lib_LTLIBRARIES = libkmlxsd.la

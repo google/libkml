@@ -106,7 +106,7 @@ TEST_F(EntitiesTest, TestGetEntityFields) {
   ASSERT_TRUE(kml_file_);
   ASSERT_TRUE(errs.empty());
 
-  DocumentPtr doc = kmldom::AsDocument(kml_file_->root());
+  DocumentPtr doc = kmldom::AsDocument(kml_file_->get_root());
   PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   kmlbase::StringMap entity_map;
@@ -164,7 +164,7 @@ const static struct {
 
 TEST_F(EntitiesTest, TestCreateExpandedEntities) {
   kml_file_ = KmlFile::CreateFromParse(kEntityKml, NULL);
-  DocumentPtr doc = kmldom::AsDocument(kml_file_->root());
+  DocumentPtr doc = kmldom::AsDocument(kml_file_->get_root());
   PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
 
   kmlbase::StringMap entity_map;

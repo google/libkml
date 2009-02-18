@@ -49,7 +49,7 @@ class StyleMergerTest : public testing::Test {
   virtual void SetUp() {
     kml_file_net_cache_.reset(new KmlFileNetCache(&test_data_net_fetcher_,
                                                   kKmlNetCacheCacheSize));
-    kml_file_ = KmlFile::Create();
+    kml_file_ = KmlFile::CreateFromString("<kml/>");
     style_merger_normal_.reset(
         new StyleMerger(kml_file_, kmldom::STYLESTATE_NORMAL));
     style_merger_highlight_.reset(

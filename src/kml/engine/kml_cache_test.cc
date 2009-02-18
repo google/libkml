@@ -184,6 +184,7 @@ static struct {
     "http://host.com/kmz/screenoverlay-continents.kmz/doc.kml",
     "pngs/no-such-file-anywhere.png",
     0,
+    false
   },
   {  // This KMZ has nothing but the KML.
     "http://host.com/kmz/rumsey/kml/lc01.kmz/"

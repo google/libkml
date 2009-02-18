@@ -229,7 +229,7 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
 
   // Find the one Model we know is there.
   ElementVector all_models;
-  GetElementsById(kml_file->root(), kmldom::Type_Model, &all_models);
+  GetElementsById(kml_file->get_root(), kmldom::Type_Model, &all_models);
   ASSERT_EQ(static_cast<size_t>(1), all_models.size());
   const kmldom::ModelPtr& model = AsModel(all_models[0]);
   // Find the Model's ResourceMap

@@ -125,7 +125,7 @@ void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
   ASSERT_TRUE(status);
   kml_file_ = KmlFile::CreateFromParse(kml_data, NULL);
   ASSERT_TRUE(kml_file_) << filename;
-  ASSERT_TRUE(kml_file_->root());
+  ASSERT_TRUE(kml_file_->get_root());
 }
 
 // This is a utility function to compare the given element to the KML in the
