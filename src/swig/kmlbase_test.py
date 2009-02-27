@@ -35,6 +35,15 @@ import kmlbase
 # These VerySimple tests really only verify that the function/class exists.
 # Based on kml/base/color32_test.cc.
 
+class BasicAttributesTestCase(unittest.TestCase):
+  def runTest(self):
+    attributes = kmlbase.Attributes()
+    assert 0 == attributes.GetSize()
+    found,value = attributes.FindValue("key")
+    assert not found
+    found,key = attributes.FindKey("value")
+    assert not found
+
 class BasicColor32TestCase(unittest.TestCase):
   """Verify very simple Color32 usage """
   def runTest(self):
@@ -108,10 +117,39 @@ class BasicColor32TestCase(unittest.TestCase):
     assert red == red
     assert green != red
 
+class BasicDateTimeTestCase(unittest.TestCase):
+  def runTest(self):
+    kWhen = "2008-10-03T09:25:42Z"
+    datetime = kmlbase.DateTime_Create(kWhen)
+    assert datetime
+    assert 1223025942 == datetime.GetTimeT()
+    assert "09:25:42" == datetime.GetXsdTime()
+    assert "2008-10-03" == datetime.GetXsdDate()
+    assert kWhen == datetime.GetXsdDateTime()
+
+class BasicVec3TestCase(unittest.TestCase):
+  def runTest(self):
+    kLatitude = 38.12345
+    kLongitude = -121.123123
+    kAltitude = 9876.5432
+    vec3 = kmlbase.Vec3(kLongitude, kLatitude, kAltitude)
+    assert vec3
+    assert kLatitude == vec3.get_latitude()
+    assert kLongitude == vec3.get_longitude()
+    assert vec3.has_altitude()
+    assert kAltitude == vec3.get_altitude()
+    vec3 = kmlbase.Vec3(kLongitude, kLatitude)
+    assert vec3
+    assert kLatitude == vec3.get_latitude()
+    assert kLongitude == vec3.get_longitude()
+    assert not vec3.has_altitude()
 
 def suite():
   suite = unittest.TestSuite()
+  suite.addTest(BasicAttributesTestCase())
   suite.addTest(BasicColor32TestCase())
+  suite.addTest(BasicDateTimeTestCase())
+  suite.addTest(BasicVec3TestCase())
   return suite
 
 runner = unittest.TextTestRunner()

@@ -124,6 +124,13 @@ class BasicKmlFileCreateFromParseTestCase(unittest.TestCase):
     assert placemark.has_id()
     assert id == placemark.get_id()
 
+class KmlFileCreateFromParseOfBasicElementTestCase(unittest.TestCase):
+  def runTest(self):
+    kmlfile,errors = kmlengine.KmlFile.CreateFromParse('<kml/>')
+    assert kmlfile
+    root = kmlfile.get_root()
+    assert kmldom.Type_kml == root.Type()
+
 class BasicKmlFileCreateFromImportTestCase(unittest.TestCase):
   def runTest(self):
     factory = kmldom.KmlFactory_GetFactory()
@@ -134,6 +141,7 @@ class BasicKmlFileCreateFromImportTestCase(unittest.TestCase):
     placemark.set_name(name)
     folder = factory.CreateFolder()
     folder.add_feature(placemark)
+    print 'importing folder'
     kmlfile = kmlengine.KmlFile.CreateFromImport(folder)
     assert kmlfile
     object = kmlfile.GetObjectById(id)
@@ -145,6 +153,61 @@ class BasicKmlFileCreateFromImportTestCase(unittest.TestCase):
     assert placemark.has_name()
     assert name == placemark.get_name()
 
+class KmlFileCreateFromImportOfBasicElementTestCase(unittest.TestCase):
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    # TODO: This crashes CreateFromImport as do all non-Object complex elements
+    # kml = factory.CreateKml()
+    # This returns an ElementPtr for the given element and works fine in
+    # CreateFromImport:
+    kml_as_element = factory.CreateElementById(kmldom.Type_kml)
+    kml = kmldom.AsKml(kml_as_element)
+    kml.set_feature(factory.CreatePlacemark())
+    kmlfile = kmlengine.KmlFile.CreateFromImport(kml_as_element)
+    assert kmlfile
+    root = kmlfile.get_root()
+    assert root
+    kml = kmldom.AsKml(root)
+    assert kml
+    assert kml.has_feature()
+    placemark = kmldom.AsPlacemark(kml.get_feature())
+    assert placemark
+
+class BasicKmlFileSerializeToStringTestCase(unittest.TestCase):
+  def runTest(self):
+    factory = kmldom.KmlFactory_GetFactory()
+    kml = factory.CreateElementById(kmldom.Type_kml)
+    assert kml
+    kmlfile = kmlengine.KmlFile.CreateFromImport(kml)
+    assert kmlfile
+    (ok, xml) = kmlfile.SerializeToString()
+    assert ok
+    kExpectedXml = '<?xml version="1.0" encoding="utf-8"?>\n' \
+        '<kml xmlns="http://www.opengis.net/kml/2.2"/>\n'
+    assert kExpectedXml == xml
+
+class BasicKmzFileTestCase(unittest.TestCase):
+  def runTest(self):
+    kmz_filepath = '../../testdata/kmz/model-macky.kmz'
+    kmzfile = kmlengine.KmzFile.OpenFromFile(kmz_filepath)
+    assert kmzfile
+    (ok, kml) = kmzfile.ReadKml()
+    assert ok
+    (kmlfile,errors) = kmlengine.KmlFile.CreateFromParse(kml)
+    assert kmlfile
+    root = kmldom.AsKml(kmlfile.get_root())
+    assert root
+    placemark = kmldom.AsPlacemark(root.get_feature())
+    assert placemark
+    assert 'SketchUp Model of Macky Auditorium' == placemark.get_name()
+    assert placemark.has_geometry()
+    model = kmldom.AsModel(placemark.get_geometry())
+    assert model
+    assert 'model_4' == model.get_id()
+    (ok, dae) = kmzfile.ReadFile('geometry/CU-Macky.dae')
+    assert ok
+    assert 268477 == len(dae)
+
 def suite():
   suite = unittest.TestSuite()
   suite.addTest(VerySimpleKmlDomTestCase())
@@ -154,8 +217,12 @@ def suite():
   suite.addTest(VerySimpleGetFeatureLatLonTestCase())
   suite.addTest(VerySimpleKmzSplitTestCase())
   suite.addTest(VerySimpleSplitUriTestCase())
+  suite.addTest(KmlFileCreateFromParseOfBasicElementTestCase())
   suite.addTest(BasicKmlFileCreateFromParseTestCase())
   suite.addTest(BasicKmlFileCreateFromImportTestCase())
+  suite.addTest(KmlFileCreateFromImportOfBasicElementTestCase())
+  suite.addTest(BasicKmlFileSerializeToStringTestCase())
+  suite.addTest(BasicKmzFileTestCase())
   return suite
 
 
