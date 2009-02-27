@@ -48,13 +48,13 @@
 
 // Classes for abstract elements and internal convenience classes.
 SWIG_INTRUSIVE_PTR(Referent, kmlbase::Referent)
-SWIG_INTRUSIVE_PTR_DERIVED(Element, kmlbase::Referent, kmldom::Element)
+SWIG_INTRUSIVE_PTR_DERIVED(XmlElement, kmlbase::Referent, kmlbase::XmlElement)
+SWIG_INTRUSIVE_PTR_DERIVED(Element, kmlbase::XmlElement, kmldom::Element)
 SWIG_INTRUSIVE_PTR_DERIVED(AbstractLatLonBox, kmldom::Object,
                            kmldom::AbstractLatLonBox)
 SWIG_INTRUSIVE_PTR_DERIVED(AbstractView, kmldom::Object, kmldom::AbstractView)
 SWIG_INTRUSIVE_PTR_DERIVED(BasicLink, kmldom::Object, kmldom::BasicLink)
 SWIG_INTRUSIVE_PTR_DERIVED(Container, kmldom::Feature, kmldom::Container)
-SWIG_INTRUSIVE_PTR_DERIVED(Coordinates, kmldom::Element, kmldom::Coordinates)
 SWIG_INTRUSIVE_PTR_DERIVED(ColorStyle, kmldom::SubStyle, kmldom::ColorStyle)
 SWIG_INTRUSIVE_PTR_DERIVED(Feature, kmldom::Object, kmldom::Feature)
 SWIG_INTRUSIVE_PTR_DERIVED(Geometry, kmldom::Object, kmldom::Geometry)
@@ -184,19 +184,10 @@ namespace kmlbase {
 class Referent {
 };
 
-%nodefaultctor Color32;
-class Color32 {
-};
-
-class Vec3 {
-public:
-  void set(int i, double val);
-  double get_longitude();
-  double get_latitude();
-  bool has_altitude();
-  double get_altitude();
-  void set_altitude(double altitude);
-  void clear_altitude();
+%nodefaultctor XmlElement;
+class XmlElement {
+ public:
+  // TODO: XmlnsId get_xmlns() const;
 };
 
 }  // end namespace kmlbase
@@ -209,7 +200,7 @@ namespace kmldom {
 // in the underlying class since only the factory creates an element instance.
 
 %nodefaultctor Element;
-class Element : public kmlbase::Referent{
+class Element : public kmlbase::XmlElement {
 public:
   virtual KmlDomType Type();
   virtual bool IsA(KmlDomType type_id);
@@ -261,7 +252,10 @@ class KmlFactory {
 public:
   static KmlFactory* GetFactory();
 
-  // Factory functions to create all KML complex elements.
+  // This method creates any complex element in Element type.
+  ElementPtr CreateElementById(KmlDomType id) const;
+
+  // Factory functions to create all KML complex elements in their native type.
   AliasPtr CreateAlias() const;
   AtomAuthorPtr CreateAtomAuthor() const;
   AtomLinkPtr CreateAtomLink() const;
