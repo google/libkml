@@ -33,9 +33,45 @@ using kmlbase::UriParser;
 
 namespace kmlengine {
 
+KmlUri::KmlUri(const std::string& base, const std::string& target)
+  : is_kmz_(false),
+    base_(base),
+    target_(target),
+    target_uri_(kmlbase::UriParser::CreateFromParse(target.c_str())) {
+}
+
+// This is required to keep the point of instatiation of the scoped_ptr
+// template arg where the full class definition (of UriParser) is known.
+KmlUri::~KmlUri() {
+}
+
+// static
+KmlUri* KmlUri::CreateRelative(const std::string& base,
+                               const std::string& target) {
+  KmlUri* kml_uri = new KmlUri(base, target);
+  // To create a valid KmlUri the base must be absolute, the target must be
+  // valid and the resolution must succeed.  If any of these are false then
+  // NULL is returned.  The returned KmlUri object must be managed by the
+  // caller; boost::scoped_ptr is recommended.
+  // TODO: streamline UriParser::CreateFromParse, ResolveUri, GetFetchableUri,
+  // and KmzSplit, possibly push all of KmlUri into kmlbase::UriParser.
+  std::string fetchable_url;
+  if (kml_uri->target_uri_.get() &&
+      ResolveUri(base, target, &kml_uri->url_) &&
+      GetFetchableUri(kml_uri->url_, &fetchable_url)) {
+    kml_uri->is_kmz_ = KmzSplit(fetchable_url,
+                                &kml_uri->kmz_url_,
+                                &kml_uri->path_in_kmz_);
+    return kml_uri;
+  }
+  // KmlCache NULL or base or target invalid.
+  delete kml_uri;
+  return NULL;
+}
+
+
 // Note that this is implemented in terms of the 3rd party uriparser library
 // which is fully encapsulated here.
-// TODO: provide KML-specific (KMZ mostly) URI resolution using this.
 bool ResolveUri(const std::string& base, const std::string& relative,
                 std::string* result) {
   boost::scoped_ptr<UriParser> uri_parser(

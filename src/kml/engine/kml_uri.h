@@ -29,10 +29,13 @@
 #ifndef KML_ENGINE_KML_URI_H__
 #define KML_ENGINE_KML_URI_H__
 
-#include <iostream>
-
 #include <string>
-#include "kml/base/uri_parser.h"
+#include "boost/scoped_ptr.hpp"
+
+// Forward declare to avoid including uri_parser.h in app code.
+namespace kmlbase {
+class UriParser;
+}
 
 namespace kmlengine {
 
@@ -146,27 +149,9 @@ class KmlUri {
   // <a href="...">, or <img href="..."> within the KmlFile.  However, there
   // is no specific knowlege of any KML or HTML element within this class.
   static KmlUri* CreateRelative(const std::string& base,
-                                const std::string& target) {
-    KmlUri* kml_uri = new KmlUri(base, target);
-    // To create a valid KmlUri the base must be absolute, the target must be
-    // valid and the resolution must succeed.  If any of these are false then
-    // NULL is returned.  The returned KmlUri object must be managed by the
-    // caller; boost::scoped_ptr is recommended.
-    // TODO: streamline UriParser::CreateFromParse, ResolveUri, GetFetchableUri,
-    // and KmzSplit, possibly push all of KmlUri into kmlbase::UriParser.
-    std::string fetchable_url;
-    if (kml_uri->target_uri_.get() &&
-        ResolveUri(base, target, &kml_uri->url_) &&
-        GetFetchableUri(kml_uri->url_, &fetchable_url)) {
-      kml_uri->is_kmz_ = KmzSplit(fetchable_url,
-                                  &kml_uri->kmz_url_,
-                                  &kml_uri->path_in_kmz_);
-      return kml_uri;
-    }
-    // KmlCache NULL or base or target invalid.
-    delete kml_uri;
-    return NULL;
-  }
+                                const std::string& target);
+
+  ~KmlUri();
 
   bool is_kmz() const {
     return is_kmz_;
@@ -198,12 +183,7 @@ class KmlUri {
  private:
   // Private constructor.  Use static Create() method.
   // TODO streamline this with the Create method.
-  KmlUri(const std::string& base, const std::string& target)
-    : is_kmz_(false),
-      base_(base),
-      target_(target),
-      target_uri_(kmlbase::UriParser::CreateFromParse(target.c_str())) {
-  }
+  KmlUri(const std::string& base, const std::string& target);
 
   bool is_kmz_;  // TODO should this be is_relative_kmz_?
   const std::string base_;
