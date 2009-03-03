@@ -1,6 +1,5 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
-	      -I$(top_srcdir)/third_party/boost_1_34_1 \
-	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
+	      -I$(top_srcdir)/third_party/boost_1_34_1
 
 if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
@@ -28,7 +27,6 @@ csv2kml_LDADD = \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
-
 
 import_SOURCES = import.cc
 import_LDADD = \
