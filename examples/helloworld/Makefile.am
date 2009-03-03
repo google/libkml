@@ -1,7 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/examples/helloworld \
-	      -I$(top_srcdir)/third_party/boost_1_34_1 \
-	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
+	      -I$(top_srcdir)/third_party/boost_1_34_1
 
 
 if GCC
