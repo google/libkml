@@ -28,12 +28,9 @@
 #include "kml/engine/kml_cache.h"
 #include <string>
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/uri_parser.h"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kml_uri.h"
 #include "kml/engine/kmz_cache.h"
-
-using kmlbase::UriParser;
 
 namespace kmlengine {
 
