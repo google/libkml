@@ -26,61 +26,36 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # This program demonstrates use of the KML DOM Python SWIG bindings 
-# for walking the feature hierarchy of a KML file.
+# for determining the location and bounding box of a feature and/or feature
+# hierarchy using kmlengine.GetFeatureLatLon(), kmlengine.GetFeatureBounds(),
+# and kmlengine.Bbox() methods.
 
 import sys
 import kmldom
 import kmlengine
-
-argc = len(sys.argv)
-if argc != 2:
-  print 'usage: %s input.kml' % sys.argv[0]
-  sys.exit(1)
-
-inputkml = sys.argv[1]
 
 def ReadFile(filename):
   f = open(filename, 'r')
   data = f.read()
   return data
 
-def Indent(depth):
-  while depth:
-    print '  ',
-    depth -= 1
-
-def PrFeatureType(type):
-  if type == kmldom.Type_Placemark:
-    print 'Placemark',
-  else:
-    print 'some other Feature',
-
-# This visits a feature.  The type of feature is printed.  If the feature
-# is a container such is visited recursively.
-def VisitFeature(feature, depth):
-  Indent(depth)
-  PrFeatureType(feature.Type())
-  print 'id=',feature.get_id()
-  container = kmldom.AsContainer(feature)
-  if container:
-    WalkContainer(container, depth+1)
-
-# This visits each feature in the given container (<Document> or <Folder>).
-def WalkContainer(container, depth):
-  for i in range(container.get_feature_array_size()):
-    VisitFeature(container.get_feature_array_at(i), depth)
-
 # Program main: read the file to memory, parse it, get and visit
 # the root feature if such exists.
-def main():
+def main(inputkml):
   feature = kmlengine.GetRootFeature(kmldom.ParseKml(ReadFile(inputkml)))
-  if feature:
-    VisitFeature(feature, 0)
-    # Python deletes the feature and all of its descendant elements in turn.
-  else:
-    # The file is a KML fragment.
-    print 'No root feature in %s' % inputkml
+  (status, lat, lon) = kmlengine.GetFeatureLatLon(feature)
+  if status:
+    print 'center',lat,lon
+  bbox = kmlengine.Bbox()
+  status = kmlengine.GetFeatureBounds(feature, bbox)
+  if status:
+    print 'north',bbox.get_north()
+    print 'south',bbox.get_south()
+    print 'east',bbox.get_east()
+    print 'west',bbox.get_west()
 
 if __name__ == '__main__':
-  main()
-
+  if len(sys.argv) != 2:
+    print 'usage: %s input.kml' % sys.argv[0]
+    sys.exit(1)
+  main(sys.argv[1])
