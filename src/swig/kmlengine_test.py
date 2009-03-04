@@ -50,6 +50,41 @@ class VerySimpleBboxTestCase(unittest.TestCase):
     bbox = kmlengine.Bbox(38, 36, -120, -122)
     assert bbox.Contains(37, -121)
 
+class AllMethodsBboxTestCase(unittest.TestCase):
+  """ Verify basic usage of each method of kmlengine.Bbox """
+  def runTest(self):
+    bbox = kmlengine.Bbox()
+    assert -180.0 == bbox.get_north()
+    assert 180.0 == bbox.get_south()
+    assert -180.0 == bbox.get_east()
+    assert 180.0 == bbox.get_west()
+
+    bbox_a = kmlengine.Bbox(10.1, -11.2, 99.99, -88.88)
+    bbox.ExpandFromBbox(bbox_a)
+    assert 10.1 == bbox.get_north()
+    assert -11.2 == bbox.get_south()
+    assert 99.99 == bbox.get_east()
+    assert -88.88 == bbox.get_west()
+
+    bbox.ExpandLatitude(20.2)
+    assert 20.2 == bbox.get_north()
+    assert -11.2 == bbox.get_south()
+    bbox.ExpandLatitude(-20.2)
+    assert 20.2 == bbox.get_north()
+    assert -20.2 == bbox.get_south()
+    bbox.ExpandLongitude(101.101)
+    assert 101.101 == bbox.get_east()
+    assert -88.88 == bbox.get_west()
+    bbox.ExpandLongitude(-101.101)
+    assert 101.101 == bbox.get_east()
+    assert -101.101 == bbox.get_west()
+
+    bbox.ExpandLatLon(30.3, -111.222);
+    assert 30.3 == bbox.get_north()
+    assert -20.2 == bbox.get_south()
+    assert 101.101 == bbox.get_east()
+    assert -111.222 == bbox.get_west()
+
 class VerySimpleCloneTestCase(unittest.TestCase):
   """ Verify very simple usage of Clone() """
   def runTest(self):
@@ -81,6 +116,23 @@ class VerySimpleGetFeatureLatLonTestCase(unittest.TestCase):
     assert True == status
     assert 1 == lon
     assert 2 == lat
+
+class VerySimpleGetFeatureBoundsTestCase(unittest.TestCase):
+  def runTest(self):
+    kml = '<Placemark>' \
+            '<LineString><coordinates>1,2 -1,-2</coordinates></LineString>' \
+          '</Placemark>'
+    element = kmldom.ParseKml(kml)
+    assert element
+    feature = kmldom.AsFeature(element)
+    assert feature
+    bbox = kmlengine.Bbox()
+    status = kmlengine.GetFeatureBounds(feature, bbox)
+    assert status
+    assert 2 == bbox.get_north()
+    assert -2 == bbox.get_south()
+    assert 1 == bbox.get_east()
+    assert -1 == bbox.get_west()
 
 class VerySimpleGetRootFeatureTestCase(unittest.TestCase):
   """ Verify very simple usage of GetRootFeature() """
@@ -141,7 +193,6 @@ class BasicKmlFileCreateFromImportTestCase(unittest.TestCase):
     placemark.set_name(name)
     folder = factory.CreateFolder()
     folder.add_feature(placemark)
-    print 'importing folder'
     kmlfile = kmlengine.KmlFile.CreateFromImport(folder)
     assert kmlfile
     object = kmlfile.GetObjectById(id)
@@ -212,9 +263,11 @@ def suite():
   suite = unittest.TestSuite()
   suite.addTest(VerySimpleKmlDomTestCase())
   suite.addTest(VerySimpleBboxTestCase())
+  suite.addTest(AllMethodsBboxTestCase())
   suite.addTest(VerySimpleCloneTestCase())
   suite.addTest(VerySimpleGetRootFeatureTestCase())
   suite.addTest(VerySimpleGetFeatureLatLonTestCase())
+  suite.addTest(VerySimpleGetFeatureBoundsTestCase())
   suite.addTest(VerySimpleKmzSplitTestCase())
   suite.addTest(VerySimpleSplitUriTestCase())
   suite.addTest(KmlFileCreateFromParseOfBasicElementTestCase())
