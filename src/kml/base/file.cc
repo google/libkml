@@ -83,4 +83,22 @@ std::string File::JoinPaths(const std::string& p1, const std::string& p2) {
   }
 }
 
+void File::SplitFilePath(const std::string& filepath,
+                         std::string* base_directory,
+                         std::string* filename) {
+  size_t found = filepath.find_last_of("/\\");
+  if (base_directory) {
+    if (found == std::string::npos) {
+      *base_directory = ".";
+    } else if (found == 0) {
+      *base_directory = filepath.substr(0, found + 1);
+    } else {
+      *base_directory = filepath.substr(0, found);
+    }
+  }
+  if (filename) {
+    *filename = filepath.substr(found+1);
+  }
+}
+
 }  // end namespace kmlbase
