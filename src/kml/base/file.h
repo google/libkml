@@ -61,6 +61,13 @@ class File {
   // returned unmodified. This should NOT be used with URL paths, which are
   // not platform-specific.
   static std::string JoinPaths(const std::string& p1, const std::string& p2);
+
+  // Splits a path to a filename into its base directory and filename
+  // components. E.g. /tom/dick/harry.txt is "/tom/dick" and "harry.txt".
+  // Either of the string pointers may be NULL.
+  static void SplitFilePath(const std::string& filepath,
+                            std::string* base_directory,
+                            std::string* filename);
 };
 
 }  // end namespace kmlbase

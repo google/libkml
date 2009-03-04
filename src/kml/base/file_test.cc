@@ -110,12 +110,52 @@ TEST_F(FileTest, TestJoinPaths) {
 #else
   ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1NoSep, kPath2));
   ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1Sep, kPath2));
+
+  const std::string kBaseDir("../../../../testdata/kmz/");
+  const std::string kFilename("kmzfiles/dummy.kml");
+  const std::string kExpected("../../../../testdata/kmz/kmzfiles/dummy.kml");
+  ASSERT_EQ(kExpected, File::JoinPaths(kBaseDir, kFilename));
+
 #endif
   // Pathological cases.
   // Joining with an empty string does not modify anything.
   ASSERT_EQ(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
   ASSERT_EQ(kPath2, File::JoinPaths("", kPath2));
   ASSERT_EQ(std::string(""), File::JoinPaths("", ""));
+}
+
+const static struct {
+  std::string filepath;
+  std::string basedir;
+  std::string filename;
+} kFilePathTests[] = {
+  {"/tom/dick/harry.txt", "/tom/dick", "harry.txt" },
+  {"\\tom\\dick\\harry.txt", "\\tom\\dick", "harry.txt"},
+  {"/harry.txt", "/", "harry.txt" },
+  {"harry.txt", ".", "harry.txt" },
+  {"", ".", "" }
+};
+
+TEST_F(FileTest, TestSplitFilePath) {
+  // Test NULL handling.
+  File::SplitFilePath(kFilePathTests[0].filepath, NULL, NULL);
+  std::string basedir;
+  File::SplitFilePath(kFilePathTests[0].filepath, &basedir, NULL);
+  ASSERT_EQ(kFilePathTests[0].basedir, basedir);
+  std::string filename;
+  File::SplitFilePath(kFilePathTests[0].filepath, &basedir, &filename);
+  ASSERT_EQ(kFilePathTests[0].basedir, basedir);
+  ASSERT_EQ(kFilePathTests[0].filename, filename);
+
+  // Test specific cases.
+  const size_t kSize = sizeof(kFilePathTests)/sizeof(kFilePathTests[0]);
+  for (size_t i = 0; i < kSize; ++i) {
+    std::string basedir;
+    std::string filename;
+    File::SplitFilePath(kFilePathTests[i].filepath, &basedir, &filename);
+    ASSERT_EQ(kFilePathTests[i].basedir, basedir);
+    ASSERT_EQ(kFilePathTests[i].filename, filename);
+  }
 }
 
 }  // end namespace kmlbase
