@@ -47,11 +47,19 @@ class Bbox {
   Bbox();
   Bbox(double north, double south, double east, double west);
   bool Contains(double latitude, double longitude) const;
+  void ExpandFromBbox(const Bbox& bbox);
   void ExpandLatitude(double latitude);
   void ExpandLongitude(double longitude);
+  void ExpandLatLon(double latitude, double longitude);
+  double get_north() const;
+  double get_south() const;
+  double get_east() const;
+  double get_west() const;
 };
 
 kmldom::ElementPtr Clone(const kmldom::ElementPtr& element);
+
+bool GetFeatureBounds(const kmldom::FeaturePtr& feature, Bbox* bbox);
 
 %apply double* OUTPUT { double* lat };
 %apply double* OUTPUT { double* lon };
