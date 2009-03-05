@@ -79,6 +79,44 @@ bool ResolveUri(const std::string& base, const std::string& relative,
   return uri_parser.get() && uri_parser->ToString(result);
 }
 
+bool NormalizeUri(const std::string& uri, std::string* result) {
+  boost::scoped_ptr<UriParser> uri_parser(
+      UriParser::CreateFromParse(uri.c_str()));
+  return uri_parser.get() && uri_parser->Normalize() &&
+         uri_parser->ToString(result);
+}
+
+bool NormalizeHref(const std::string& href, std::string* result) {
+  if (!result) {
+    return false;
+  }
+  // Convert to URI.
+  std::string uri;
+  if (!FilenameToUri(href, &uri)) {
+    return false;
+  }
+  // Normalize.
+  std::string normalized_uri;
+  if (!NormalizeUri(uri, &normalized_uri)) {
+    return false;
+  }
+  // Then convert back to href.
+  std::string normalized_href;
+  if (!UriToFilename(normalized_uri, &normalized_href)) {
+    return false;
+  }
+  *result = normalized_href;
+  return true;
+}
+
+bool UriToFilename(const std::string& uri, std::string* output) {
+  return UriParser::UriToFilename(uri, output);
+}
+
+bool FilenameToUri(const std::string& filename, std::string* output) {
+  return UriParser::FilenameToUri(filename, output);
+}
+
 // TODO: provide a query splitter.
 // Note that RFC 3986 does not define the structure of a query.  However,
 // the uriparser library does implement a name-value pair splitter and

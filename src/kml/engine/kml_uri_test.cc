@@ -270,6 +270,61 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
   }
 }
 
+TEST_F(KmlUriTest, TestNormalizeUri) {
+  const std::string kUri("this/../is/a/relative/../uri.x");
+  const std::string kNormalized("is/a/uri.x");
+  std::string result;
+  ASSERT_TRUE(NormalizeUri(kUri, &result));
+  ASSERT_EQ(kNormalized, result);
+}
+
+TEST_F(KmlUriTest, TestNormalizeHref) {
+  std::string href;
+  std::string normalized;
+#ifdef WIN32
+  href = "this\\..\\a\\relative\\url.kmz\\..\\file.kml#id";
+  normalized = "a\\relative\\file.kml#id";
+#else
+  href = "this/../a/relative/url.kmz/../file.kml#id";
+  normalized = "a/relative/file.kml#id";
+#endif
+  std::string result;
+  ASSERT_TRUE(NormalizeHref(href, &result));
+  ASSERT_EQ(normalized, result);
+}
+
+TEST_F(KmlUriTest, TestUriToFilename) {
+  // This simply tests that the call down to UriParser works as expected.
+  std::string uri;
+  std::string expected_filename;
+#ifdef WIN32
+  uri = "file:///C:/home/libkml/foo.bar";
+  expected_filename = "C:\\home\\libkml\\foo.bar";
+#else
+  uri = "file:///home/libkml/foo.bar";
+  expected_filename = "/home/libkml/foo.bar";
+#endif
+  std::string filename;
+  ASSERT_TRUE(UriToFilename(uri, &filename));
+  ASSERT_EQ(expected_filename, filename);
+}
+
+TEST_F(KmlUriTest, TestFilenameToUri) {
+  // This simply tests that the call down to UriParser works as expected.
+  std::string filename;
+  std::string expected_uri;
+#ifdef WIN32
+  filename = "C:\\home\\libkml\\foo.bar";
+  expected_uri = "file:///C:/home/libkml/foo.bar";
+#else
+  filename = "/home/libkml/foo.bar";
+  expected_uri = "file:///home/libkml/foo.bar";
+#endif
+  std::string uri;
+  ASSERT_TRUE(FilenameToUri(filename, &uri));
+  ASSERT_EQ(expected_uri, uri);
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
