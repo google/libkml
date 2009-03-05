@@ -32,6 +32,7 @@
 // TODO ;flyTo ,etc
 
 #include "kml/base/uri_parser.h"
+#include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
 namespace kmlbase {
@@ -206,7 +207,7 @@ TEST_F(UriParserTest, TestBasicGetComponents) {
 // standard).
 // TODO: This table does NOT contain some special KMZ handling performed by GE
 //       (which may potentially be left out of libkml).
-const struct {
+static const struct {
   const char* base;
   const char* relative;
   const char* result;
@@ -349,6 +350,94 @@ TEST_F(UriParserTest, TestBasicUriResolutionTestCases) {
                              kUriTestCases[i].relative,
                              kUriTestCases[i].result);
   }
+}
+
+static const struct {
+  const char* unix_filename;
+  const char* unix_uri;
+  const char* windows_filename;
+  const char* windows_uri;
+} kUriFilenameCases[] = {
+  {
+  "/home/libkml/foo.bar",
+  "file:///home/libkml/foo.bar",
+  "C:\\home\\libkml\\foo.bar",
+  "file:///C:/home/libkml/foo.bar"
+  },
+  {
+  "/this/path has/some spaces in/it",
+  "file:///this/path%20has/some%20spaces%20in/it",
+  "C:\\this\\path has\\some spaces in\\it",
+  "file:///C:/this/path%20has/some%20spaces%20in/it"
+  },
+  {
+  "some/relative path/to a.file",
+  "some/relative%20path/to%20a.file",
+  "some\\relative path\\to a.file",
+  "some/relative%20path/to%20a.file"
+  }
+};
+
+TEST_F(UriParserTest, TestUriFilenameConversions) {
+  const size_t size = sizeof(kUriFilenameCases)/sizeof(kUriFilenameCases[0]);
+  for (size_t i = 0; i < size; ++i) {
+    // Unix filename to URI.
+    std::string unix_uri;
+    ASSERT_TRUE(
+        UriParser::UnixFilenameToUri(kUriFilenameCases[i].unix_filename,
+                                     &unix_uri));
+    ASSERT_EQ(std::string(kUriFilenameCases[i].unix_uri), unix_uri);
+    // Windows filename to URI.
+    std::string windows_uri;
+    ASSERT_TRUE(
+        UriParser::WindowsFilenameToUri(kUriFilenameCases[i].windows_filename,
+                                        &windows_uri));
+    ASSERT_EQ(std::string(kUriFilenameCases[i].windows_uri), windows_uri);
+    // URI to unix filename.
+    std::string unix_filename;
+    ASSERT_TRUE(UriParser::UriToUnixFilename(kUriFilenameCases[i].unix_uri,
+                                             &unix_filename));
+    ASSERT_EQ(std::string(kUriFilenameCases[i].unix_filename), unix_filename);
+    // URI to windows filename.
+    std::string windows_filename;
+    ASSERT_TRUE(
+        UriParser::UriToWindowsFilename(kUriFilenameCases[i].windows_uri,
+                                        &windows_filename));
+    ASSERT_EQ(std::string(kUriFilenameCases[i].windows_filename),
+              windows_filename);
+  }
+}
+
+TEST_F(UriParserTest, TestUriToFilename) {
+  // This simply tests that the ifdef works as expected.
+  std::string uri;
+  std::string expected_filename;
+#ifdef WIN32
+  uri = "file:///C:/home/libkml/foo.bar";
+  expected_filename = "C:\\home\\libkml\\foo.bar";
+#else
+  uri = "file:///home/libkml/foo.bar";
+  expected_filename = "/home/libkml/foo.bar";
+#endif
+  std::string filename;
+  ASSERT_TRUE(UriParser::UriToFilename(uri, &filename));
+  ASSERT_EQ(expected_filename, filename);
+}
+
+TEST_F(UriParserTest, TestFilenameToUri) {
+  // This simply tests that the ifdef works as expected.
+  std::string filename;
+  std::string expected_uri;
+#ifdef WIN32
+  filename = "C:\\home\\libkml\\foo.bar";
+  expected_uri = "file:///C:/home/libkml/foo.bar";
+#else
+  filename = "/home/libkml/foo.bar";
+  expected_uri = "file:///home/libkml/foo.bar";
+#endif
+  std::string uri;
+  ASSERT_TRUE(UriParser::FilenameToUri(filename, &uri));
+  ASSERT_EQ(expected_uri, uri);
 }
 
 }  // end namespace kmlbase

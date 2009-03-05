@@ -23,6 +23,7 @@ libkmlbase_la_SOURCES = \
 	referent.cc \
 	string_util.cc \
 	time_util.cc \
+	uri_parser.cc \
 	xml_namespaces.cc
 
 # These header files will be installed in $(includedir)/kml/base

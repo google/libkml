@@ -31,7 +31,6 @@
 
 #include <string>
 #include "boost/scoped_ptr.hpp"
-
 // Forward declare to avoid including uri_parser.h in app code.
 namespace kmlbase {
 class UriParser;
@@ -43,7 +42,7 @@ namespace kmlengine {
 // In the context of KML the base URI is typically that of the KML file
 // (see KmlFile::get_url()), and "relative" is typically the contents of an
 // <href> (such as in <NetworkLink>'s <Link> or any Overlay's <Icon>),
-// <styleURl> or schemaUrl=.  The result string is the resolved URI to fetch.
+// <styleUrl> or schemaUrl=.  The result string is the resolved URI to fetch.
 // No network fetching is performed with this function.  This merely
 // computes the URI resolution.
 
@@ -87,6 +86,24 @@ namespace kmlengine {
 // either a file within another KMZ or a single file.
 bool ResolveUri(const std::string& base, const std::string& relative,
                 std::string* result);
+
+// Performs a syntax-based normalization of uri as per RFC 3986 6.2.2. False is
+// returned if result is NULL or upon any internal error.
+bool NormalizeUri(const std::string& uri, std::string* result);
+
+// Performs a syntax-based normalization of href as per RFC 3986 6.2.2. False
+// is returned if result is NULL or upon any internal error.
+bool NormalizeHref(const std::string& href, std::string* result);
+
+// Converts a URI to its corresponding filename. The implementation
+// is platform-specific. Returns false if output is NULL or on any internal
+// error in converting the uri.
+bool UriToFilename(const std::string& uri, std::string* output);
+
+// Converts a filename to its corresponding URI. The implementation is
+// platform-specific. Returns false if output is NULL or on any internal
+// error in converting the uri.
+bool FilenameToUri(const std::string& filename, std::string* output);
 
 // This function splits out the various components of a URI:
 // uri = scheme://host:port/path?query#fragment
