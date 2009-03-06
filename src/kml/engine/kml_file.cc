@@ -129,7 +129,7 @@ bool KmlFile::ParseFromString(const std::string& kml, std::string* errors) {
 }
 
 // static
-KmlFile* KmlFile::CreateFromImportInternal(kmldom::ElementPtr element,
+KmlFile* KmlFile::CreateFromImportInternal(const kmldom::ElementPtr& element,
                                            bool strict) {
   if (!element) {
     return NULL;
@@ -148,11 +148,11 @@ KmlFile* KmlFile::CreateFromImportInternal(kmldom::ElementPtr element,
   return kml_file;
 }
 
-KmlFile* KmlFile::CreateFromImport(kmldom::ElementPtr element) {
+KmlFile* KmlFile::CreateFromImport(const kmldom::ElementPtr& element) {
   return CreateFromImportInternal(element, true);
 }
 
-KmlFile* KmlFile::CreateFromImportLax(kmldom::ElementPtr element) {
+KmlFile* KmlFile::CreateFromImportLax(const kmldom::ElementPtr& element) {
   return CreateFromImportInternal(element, false);
 }
 
