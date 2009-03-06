@@ -37,6 +37,7 @@ namespace kmlbase {
 
 typedef std::map<std::string, std::string> StringMap;
 typedef std::map<std::string, std::string>::value_type StringPair;
+typedef std::vector<std::string> StringVector;
 
 // Binary-to-ASCII hex conversion.
 void b2a_hex(uint32_t i, char* out);

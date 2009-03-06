@@ -81,8 +81,13 @@ class GetLinksParserObserver : public kmldom::ParserObserver {
 };
 
 // This function saves to the vector all href's found in the given KML.
-// This returns false if the vector is NULL or on any parse error.
+// This returns false if the vector is NULL or on any parse error. This does
+// not search the balloon text for links.
 bool GetLinks(const std::string& kml, href_vector_t* href_vector);
+
+// As GetLinks, but considers only those href's that are relative (local) to
+// the given KML. This does not search the balloon text for links.
+bool GetRelativeLinks(const std::string& kml, href_vector_t* href_vector);
 
 }  // end namespace kmlengine
 
