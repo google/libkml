@@ -64,6 +64,13 @@ class Bbox {
            east_ >= longitude && west_ <= longitude;
   }
 
+  void ExpandFromBbox(const Bbox& bbox) {
+    ExpandLatitude(bbox.get_north());
+    ExpandLatitude(bbox.get_south());
+    ExpandLongitude(bbox.get_east());
+    ExpandLongitude(bbox.get_west());
+  }
+
   // This expands the bounding box to include the given latitude.
   void ExpandLatitude(double latitude) {
     if (latitude > north_) {

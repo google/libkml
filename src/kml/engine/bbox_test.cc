@@ -178,6 +178,17 @@ TEST_F(BboxTest, TestMultiple) {
                kWestExpected);
 }
 
+TEST_F(BboxTest, TestExpandFromBbox) {
+  const double kNorth = 89.123;
+  const double kSouth = -2.222;
+  const double kEast = -88.888;
+  const double kWest = -154.6789;
+  Bbox bbox(kNorth, kSouth, kEast, kWest);
+  Bbox another_bbox;
+  another_bbox.ExpandFromBbox(bbox);
+  VerifyBounds(another_bbox, kNorth, kSouth, kEast, kWest);
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
