@@ -39,7 +39,6 @@
 #include "kml/dom.h"
 #include "kml/engine/engine_types.h"
 #include "kml/engine/get_link_parents.h"
-#include "kml/engine/kmz_file.h"
 #include "kml/engine/object_id_parser_observer.h"
 #include "kml/engine/shared_style_parser_observer.h"
 
@@ -176,7 +175,6 @@ class KmlFile : public kmlbase::XmlFile {
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;
   ElementVector link_parent_vector_;
-  KmzFilePtr kmz_file_;
   KmlCache* kml_cache_;
   bool strict_parse_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlFile);

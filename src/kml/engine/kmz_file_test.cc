@@ -30,6 +30,7 @@
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
+#include "kml/engine/get_links.h"
 #include "gtest/gtest.h"
 
 // The following define is a convenience for testing inside Google.
@@ -259,6 +260,7 @@ TEST_F(KmzTest, TestWriteKmz) {
   ASSERT_FALSE(foo.empty());
   // Open the file into our KmzFile instance and assert the KML was written
   // correctly.
+  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
   kmz_file_.reset(KmzFile::OpenFromFile(tempfile->name().c_str()));
   ASSERT_TRUE(kmz_file_);
   std::string kml_data;
@@ -277,9 +279,180 @@ TEST_F(KmzTest, TestConstKmzFile) {
   delete kmz_file;
 }
 
+TEST_F(KmzTest, TestCreate) {
+  // Verify that a file cannot be created from an unwritable path.
+  boost::scoped_ptr<KmzFile> kmz(KmzFile::Create("/nosuchpath/here.kmz"));
+  ASSERT_TRUE(NULL == kmz);
+  // A file is created against a writable path.
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  kmz.reset(KmzFile::Create(tempfile->name().c_str()));
+  ASSERT_TRUE(kmz);
+}
+
+TEST_F(KmzTest, TestAddFile) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  {
+    // Create an empty KmzFile.
+    KmzFilePtr kmz = KmzFile::Create(tempfile->name().c_str());
+    ASSERT_TRUE(kmz);
+    // Add three files to the archive.
+    const std::string kNewKml = "<Placemark><name/></Placemark>";
+    ASSERT_TRUE(kmz->AddFile(kNewKml, "doc.kml"));
+    ASSERT_TRUE(kmz->AddFile(kNewKml, "files/new.kml"));
+    ASSERT_TRUE(kmz->AddFile(kNewKml, "other/blah.kml"));
+    // Fails because it points above the archive.
+    ASSERT_FALSE(kmz->AddFile(kNewKml, "../invalid.kml"));
+    // Fails because the path is absolute.
+    ASSERT_FALSE(kmz->AddFile(kNewKml, "/also/invalid.kml"));
+  }
+  // KmzFile's destructor closes the file handle and cleans up.
+  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+
+  // Verify that the archive we created contains the files in order.
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(3), list.size());
+  ASSERT_EQ(std::string("doc.kml"), list[0]);
+  ASSERT_EQ(std::string("files/new.kml"), list[1]);
+  ASSERT_EQ(std::string("other/blah.kml"), list[2]);
+}
+
+TEST_F(KmzTest, TestAddFileList) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  size_t errs = 0;
+  ASSERT_TRUE(tempfile != NULL);
+  {
+    // Create an empty KmzFile.
+    KmzFilePtr kmz_file = KmzFile::Create(tempfile->name().c_str());
+    ASSERT_TRUE(kmz_file);
+
+    // Create a KmlFile from the testdata file.
+    const std::string kBaseDir = File::JoinPaths(std::string(DATADIR), "kmz");
+    const std::string kTestKml = File::JoinPaths(kBaseDir, "doc.kml");
+    std::string kml_data;
+    ASSERT_TRUE(File::ReadFileToString(kTestKml, &kml_data));
+
+    // Gather the local resources used in the KML.
+    kmlbase::StringVector file_paths;
+    ASSERT_TRUE(GetRelativeLinks(kml_data, &file_paths));
+
+    // We know there are four resources in the file.
+    ASSERT_EQ(static_cast<size_t>(5), file_paths.size());
+
+    // Add its resources.
+    errs = kmz_file->AddFileList(kBaseDir, file_paths);
+  }
+  // KmzFile's destructor closes the file handle and cleans up.
+  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+
+  // Although doc.kml has 5 href fields, two of them are outright
+  // duplicates, another resolves to the same path as the dupes, and one is
+  // invalid. Verify that only two resources were added by AddFileList.
+  ASSERT_EQ(static_cast<size_t>(1), errs);
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(2), list.size());
+  ASSERT_EQ(std::string("dummy.png"), list[0]);
+  ASSERT_EQ(std::string("kmzfiles/dummy.kml"), list[1]);
+}
+
+TEST_F(KmzTest, TestCreateFromElement) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  const std::string kBaseDir = File::JoinPaths(std::string(DATADIR), "kmz");
+  const std::string kTestKml = File::JoinPaths(kBaseDir, "doc.kml");
+  std::string kml_data;
+  ASSERT_TRUE(File::ReadFileToString(kTestKml, &kml_data));
+  KmlFilePtr kml_file =
+    KmlFile::CreateFromStringWithUrl(kml_data, kBaseDir, NULL);
+  {
+  ASSERT_TRUE(KmzFile::CreateFromElement(
+        kml_file->get_root(), kml_file->get_url(), tempfile->name()));
+  }
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(3), list.size());
+  ASSERT_EQ(std::string("doc.kml"), list[0]);
+  ASSERT_EQ(std::string("dummy.png"), list[1]);
+  ASSERT_EQ(std::string("kmzfiles/dummy.kml"), list[2]);
+}
+
+TEST_F(KmzTest, TestCreateFromKmlFilePath) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  const std::string kBaseDir = File::JoinPaths(std::string(DATADIR), "kmz");
+  const std::string kTestKml = File::JoinPaths(kBaseDir, "doc.kml");
+  {
+  ASSERT_TRUE(KmzFile::CreateFromKmlFilepath(kTestKml, tempfile->name()));
+  }
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(3), list.size());
+  ASSERT_EQ(std::string("doc.kml"), list[0]);
+  ASSERT_EQ(std::string("dummy.png"), list[1]);
+  ASSERT_EQ(std::string("kmzfiles/dummy.kml"), list[2]);
+}
+
+TEST_F(KmzTest, TestCreateFromKmlFile) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  const std::string kBaseDir = File::JoinPaths(std::string(DATADIR), "kmz");
+  const std::string kTestKml = File::JoinPaths(kBaseDir, "doc.kml");
+  std::string kml_data;
+  ASSERT_TRUE(File::ReadFileToString(kTestKml, &kml_data));
+  KmlFilePtr kml_file =
+    KmlFile::CreateFromStringWithUrl(kml_data, kBaseDir, NULL);
+  {
+  ASSERT_TRUE(KmzFile::CreateFromKmlFilepath(kTestKml, tempfile->name()));
+  }
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(3), list.size());
+  ASSERT_EQ(std::string("doc.kml"), list[0]);
+  ASSERT_EQ(std::string("dummy.png"), list[1]);
+  ASSERT_EQ(std::string("kmzfiles/dummy.kml"), list[2]);
+}
+
+TEST_F(KmzTest, TestCreateFromGoogleEarthFile) {
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  const std::string kBaseDir = File::JoinPaths(std::string(DATADIR), "kmz");
+  const std::string kTestKml = File::JoinPaths(kBaseDir, "camels.kml");
+  std::string kml_data;
+  ASSERT_TRUE(File::ReadFileToString(kTestKml, &kml_data));
+  KmlFilePtr kml_file =
+    KmlFile::CreateFromStringWithUrl(kml_data, kBaseDir, NULL);
+  {
+  ASSERT_TRUE(KmzFile::CreateFromKmlFilepath(kTestKml, tempfile->name()));
+  }
+  KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
+  ASSERT_TRUE(created);
+  std::vector<std::string> list;
+  created->List(&list);
+  ASSERT_EQ(static_cast<size_t>(5), list.size());
+  ASSERT_EQ(std::string("doc.kml"), list[0]);
+  ASSERT_EQ(std::string("files/camelbrown200.png"), list[1]);
+  ASSERT_EQ(std::string("files/camelblack200.png"), list[2]);
+  ASSERT_EQ(std::string("files/camera_mode.png"), list[3]);
+  ASSERT_EQ(std::string("files/camelcolor200.png"), list[4]);
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
+

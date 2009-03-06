@@ -30,11 +30,11 @@
 
 #include <string>
 #include <vector>
-
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/referent.h"
 #include "kml/base/tempfile.h"
 #include "kml/base/util.h"
+#include "kml/engine/kml_file.h"
 
 namespace kmlengine {
 
@@ -85,16 +85,69 @@ class KmzFile : public kmlbase::Referent {
   // The output string is not cleared before being written to.
   bool ReadFile(const char* subfile, std::string* output) const;
 
-  // Fills a vector of strings of the files contained in the KMZ archive.
+  // Fills a vector of strings of the files contained in the opened KMZ archive.
   // The vector is not cleared, only appended to. The string is the full path
   // name of the KML file from the archive root, with '/' as the separator.
   // Returns false upon error.
   bool List(std::vector<std::string>* subfiles);
 
+  // These are for the creation of KMZ files:
+
+  // Creates an empty KmzFile at kmz_filepath on which AddFile may be called.
+  // Returns NULL if the file could not be created for writing.
+  static KmzFile* Create(const char* kmz_filepath);
+
+  // Writes data to path_in_kmz. The path must be relative to the root of the
+  // archive. e.g. AddFile(data, "somedir/file.png"). If not, false is returned.
+  // False is also returned on any interal zipfile error.
+  bool AddFile(const std::string& data, const std::string& path_in_kmz);
+
+  // Adds a StringVector of hrefs to the KMZ file, resolved against a base
+  // URL. The base URL is usually from kmz_file->get_url() and the hrefs
+  // are most easily generated from GetRelativeLinks. All paths are normalized
+  // prior to writing.
+  // Returns the number of errors encountered during processing.
+  // Errors may result from failure to normalize an href, an href that points
+  // above the base url, or failure to read the resolved file prior to writing.
+  // Duplicate entries are ignored and not considered errors.
+  size_t AddFileList(const std::string& base_url,
+                     const kmlbase::StringVector& file_paths);
+
   // Creates a KMZ file from a string of KML data. Returns true if
   // kmz_filepath could be successfully created and written.
   // TODO: Permit adding resources (images, models, etc.) to the KMZ archive.
   static bool WriteKmz(const char* kmz_filepath, const std::string& kml);
+
+  // Creates a KMZ file at kmz_filepath from a string of KML. Any local
+  // references in the file are written to the KMZ as archived resources
+  // according to the rules explained in CreateFromElement.
+  // TODO: handle <Model> references.
+  // TODO: handle references in <description>.
+  static bool CreateFromKmlFilepath(const std::string& kml_filepath,
+                                    const std::string& kmz_filepath);
+
+  // Creates a KMZ file at kmz_filepath from an ElementPtr and a base url. Any
+  // local references in the file are written to the KMZ as archived resources
+  // if and only if the resource URI is relative to and below the base_url.
+  // i.e. <href>/etc/passwd</href> is not valid because it is absolute, and
+  // from a base url of "/home/libkml/" <href>../../etc/passwd</href> is
+  // invalid because it does not point below /home/libkml.
+  // TODO: handle <Model> references.
+  // TODO: handle references in <description>.
+  static bool CreateFromElement(const kmldom::ElementPtr& element,
+                                const std::string& base_url,
+                                const std::string& kmz_filepath);
+
+  // Creates a KMZ file at kmz_filepath from a KmlFile. Any local
+  // references in the file are written to the KMZ as archived resources
+  // according to the rules laid out above for CreateFromElement.
+  // The KmlFile _must_ have been created with its base URL set to the
+  // local path where the KML file can be found, i.e.
+  // KmlPtr kml_file = KmlFile::CreateFromStringWithUrl(...).
+  // TODO: handle <Model> references.
+  // TODO: handle references in <description>.
+  static bool CreateFromKmlFile(const KmlFilePtr& kml_file,
+                                const std::string& kmz_filepath);
 
  private:
   // Class can only be created from static methods.
