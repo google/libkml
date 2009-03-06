@@ -26,6 +26,9 @@ libkmlbase_la_SOURCES = \
 	uri_parser.cc \
 	xml_namespaces.cc
 
+libkmlbase_la_LIBADD = \
+	$(top_builddir)/third_party/liburiparser.la
+
 # These header files will be installed in $(includedir)/kml/base
 libkmlbaseincludedir = $(includedir)/kml/base
 libkmlbaseinclude_HEADERS = \
