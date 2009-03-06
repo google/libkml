@@ -76,11 +76,11 @@ class KmlFile : public kmlbase::XmlFile {
 
   // This creates a KmlFile from the given element hierarchy.  This variant of
   // CreateFromImport fails on id duplicates.
-  static KmlFile* CreateFromImport(kmldom::ElementPtr element);
+  static KmlFile* CreateFromImport(const kmldom::ElementPtr& element);
 
   // This creates a KmlFile from the given element hierarchy.  This variant of
   // CreateFromImport employs a "last one wins" strategy for id duplicates.
-  static KmlFile* CreateFromImportLax(kmldom::ElementPtr element);
+  static KmlFile* CreateFromImportLax(const kmldom::ElementPtr& element);
 
   // This returns the root element of this KML file.
   const kmldom::ElementPtr get_root() const {
@@ -156,7 +156,7 @@ class KmlFile : public kmlbase::XmlFile {
 
   // This is an internal helper function for the public CreateFromImport*()
   // methods.
-  static KmlFile* CreateFromImportInternal(kmldom::ElementPtr element,
+  static KmlFile* CreateFromImportInternal(const kmldom::ElementPtr& element,
                                            bool disallow_duplicate_ids);
 
   // This is an internal method used in the static Create methods.
