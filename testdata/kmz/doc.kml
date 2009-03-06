@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+This file is used in the KMZ creation test.
+
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+
+    <GroundOverlay>
+      <Icon>
+        <href>dummy.png</href>
+      </Icon>
+    </GroundOverlay>
+
+    <PhotoOverlay>
+      <Icon>
+        <!-- This is the same resource as the above GroundOverlay. It should
+        not be added twice to a KMZ archive created from this file. -->
+        <href>dummy.png</href>
+      </Icon>
+    </PhotoOverlay>
+
+    <Placemark>
+      <styleUrl>kmzfiles/dummy.kml#nosuchid</styleUrl>
+    </Placemark>
+
+    <Placemark>
+      <Style>
+        <IconStyle>
+          <Icon>
+            <!-- This path resolves to the same file as used in the
+            Overlays above. -->
+            <href>a/b1/../b2/../../dummy.png</href>
+          </Icon>
+        </IconStyle>
+      </Style>
+    </Placemark>
+
+    <PhotoOverlay>
+      <Icon>
+        <!-- This is an invalid relative href and will not resolve -->
+        <href>../kml/kmlsamples.kml</href>
+      </Icon>
+    </PhotoOverlay>
+
+  </Document>
+</kml>
