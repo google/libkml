@@ -32,6 +32,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "kml/base/util.h"
 
 namespace kmlbase {
 
