@@ -176,6 +176,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\math_util.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\referent.cc"
 				>
 			</File>
@@ -197,6 +201,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\time_util.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\uri_parser.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\xml_namespaces.cc"
 				>
 			</File>
 		</Filter>
@@ -231,6 +243,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\google_internal_test.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\math_util.h"
 				>
 			</File>
 			<File
@@ -291,6 +311,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\xml_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\xml_namespaces.h"
 				>
 			</File>
 			<File

@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\dom\gx_tour.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\dom\hotspot.cc"
 				>
 			</File>
@@ -399,6 +403,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\dom\geometry.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\gx_timeprimitive.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\gx_tour.h"
 				>
 			</File>
 			<File

@@ -248,6 +248,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\style_splitter.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\update.cc"
 				>
 			</File>
@@ -367,6 +371,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\style_resolver.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\style_splitter.h"
 				>
 			</File>
 			<File
