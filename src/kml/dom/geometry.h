@@ -102,7 +102,7 @@ class Coordinates : public BasicElement<Type_coordinates> {
     coordinates_array_.push_back(vec3);
   }
 
-  const size_t get_coordinates_array_size() const {
+  size_t get_coordinates_array_size() const {
     return coordinates_array_.size();
   }
 
@@ -420,7 +420,7 @@ class Polygon : public ExtrudeGeometryCommon {
     AddComplexChild(innerboundaryis, &innerboundaryis_array_);
   }
 
-  const size_t get_innerboundaryis_array_size() const {
+  size_t get_innerboundaryis_array_size() const {
     return innerboundaryis_array_.size();
   }
 
@@ -457,7 +457,7 @@ class MultiGeometry : public Geometry {
   // The main KML-specific API
   void add_geometry(const GeometryPtr& geometry);
 
-  const size_t get_geometry_array_size() const {
+  size_t get_geometry_array_size() const {
     return geometry_array_.size();
   }
 

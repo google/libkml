@@ -114,7 +114,7 @@ class SchemaData : public Object {
     AddComplexChild(simpledata, &simpledata_array_);
   }
 
-  const size_t get_simpledata_array_size() const {
+  size_t get_simpledata_array_size() const {
     return simpledata_array_.size();
   }
 
@@ -213,7 +213,7 @@ class ExtendedData : public BasicElement<Type_ExtendedData> {
     AddComplexChild(data, &data_array_);
   }
 
-  const size_t get_data_array_size() const {
+  size_t get_data_array_size() const {
     return data_array_.size();
   }
 
@@ -226,7 +226,7 @@ class ExtendedData : public BasicElement<Type_ExtendedData> {
     AddComplexChild(schemadata, &schemadata_array_);
   }
 
-  const size_t get_schemadata_array_size() const {
+  size_t get_schemadata_array_size() const {
     return schemadata_array_.size();
   }
 

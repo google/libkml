@@ -116,7 +116,7 @@ class Element : public kmlbase::XmlElement {
   void SerializeUnknown(Serializer& serializer) const;
 
   // Returns the unknown elements.
-  const size_t get_unknown_elements_array_size() const {
+  size_t get_unknown_elements_array_size() const {
     return unknown_elements_array_.size();
   }
   const std::string& get_unknown_elements_array_at(size_t i) const {
@@ -124,7 +124,7 @@ class Element : public kmlbase::XmlElement {
   }
 
   // Returns the unknown legal (misplaced) elements.
-  const size_t get_misplaced_elements_array_size() const {
+  size_t get_misplaced_elements_array_size() const {
     return unknown_legal_elements_array_.size();
   }
   const ElementPtr& get_misplaced_elements_array_at(size_t i) const {

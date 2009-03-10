@@ -68,7 +68,7 @@ class Create : public UpdateOperation {
     AddComplexChild(container, &container_array_);
   }
 
-  const size_t get_container_array_size() const {
+  size_t get_container_array_size() const {
     return container_array_.size();
   }
 
@@ -100,7 +100,7 @@ class Delete : public UpdateOperation {
     AddComplexChild(feature, &feature_array_);
   }
 
-  const size_t get_feature_array_size() const {
+  size_t get_feature_array_size() const {
     return feature_array_.size();
   }
 
@@ -132,7 +132,7 @@ class Change : public UpdateOperation {
     AddComplexChild(object, &object_array_);
   }
 
-  const size_t get_object_array_size() const {
+  size_t get_object_array_size() const {
     return object_array_.size();
   }
 
@@ -173,7 +173,7 @@ class Update : public BasicElement<Type_Update> {
     AddComplexChild(updateoperation, &updateoperation_array_);
   }
 
-  const size_t get_updateoperation_array_size() const {
+  size_t get_updateoperation_array_size() const {
     return updateoperation_array_.size();
   }
 

@@ -47,7 +47,7 @@ class Container : public Feature {
 
   void add_feature(const FeaturePtr& feature);
 
-  const size_t get_feature_array_size() const {
+  size_t get_feature_array_size() const {
     return feature_array_.size();
   }
 
