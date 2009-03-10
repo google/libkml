@@ -37,6 +37,10 @@
 #define KML_BASE_MATH_UTIL_H__
 
 #include <math.h>
+// At least one variant of MSVC does not define M_PI.
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 #include <utility>
 #include "kml/base/vec3.h"
 
