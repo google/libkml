@@ -72,7 +72,7 @@ void GxPlaylist::add_gx_tourprimitive(
   gx_tourprimitive_array_.push_back(gx_tourprimitive);
 }
 
-const size_t GxPlaylist::get_gx_tourprimitive_array_size() const {
+size_t GxPlaylist::get_gx_tourprimitive_array_size() const {
   return gx_tourprimitive_array_.size();
 }
 

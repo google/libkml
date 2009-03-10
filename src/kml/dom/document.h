@@ -48,7 +48,7 @@ class Document : public Container {
     AddComplexChild(schema, &schema_array_);
   }
 
-  const size_t get_schema_array_size() const {
+  size_t get_schema_array_size() const {
     return schema_array_.size();
   }
 
@@ -61,7 +61,7 @@ class Document : public Container {
     AddComplexChild(styleselector, &styleselector_array_);
   }
 
-  const size_t get_styleselector_array_size() const {
+  size_t get_styleselector_array_size() const {
     return styleselector_array_.size();
   }
 

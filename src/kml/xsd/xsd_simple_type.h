@@ -87,7 +87,7 @@ class XsdSimpleType : public XsdType {
   }
 
   // Return the number of <xs:enumeration value="..."/>'s.
-  const size_t get_enumeration_size() const {
+  size_t get_enumeration_size() const {
     return enumeration_.empty() ? 0 : enumeration_.size();
   }
 

@@ -156,7 +156,7 @@ class AtomLink : public BasicElement<Type_AtomLink> {
   }
 
   // length=, RFC 4287 4.2.7.6
-  const int get_length() const { return length_; }
+  int get_length() const { return length_; }
   bool has_length() const { return has_length_; }
   void set_length(const int value) {
     length_ = value;

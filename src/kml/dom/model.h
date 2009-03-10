@@ -324,7 +324,7 @@ class ResourceMap : public Object {
 
   void add_alias(const AliasPtr& alias);
 
-  const size_t get_alias_array_size() const {
+  size_t get_alias_array_size() const {
     return alias_array_.size();
   }
 

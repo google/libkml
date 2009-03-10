@@ -120,7 +120,7 @@ class Schema : public Object {
     AddComplexChild(simplefield, &simplefield_array_);
   }
 
-  const size_t get_simplefield_array_size() const {
+  size_t get_simplefield_array_size() const {
     return simplefield_array_.size();
   }
 

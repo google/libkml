@@ -118,7 +118,7 @@ class StyleMap : public StyleSelector {
     AddComplexChild(pair, &pair_array_);
   }
 
-  const size_t get_pair_array_size() const {
+  size_t get_pair_array_size() const {
     return pair_array_.size();
   }
 

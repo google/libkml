@@ -61,10 +61,10 @@ class ItemIcon : public Object {
   //
   // State enumerations must be space-delimited. New lines, tabs, etc. are not
   // supported. This is consistent with the use of xsd:list in the KML schema.
-  const int get_state_array_at(size_t index) const {
+  int get_state_array_at(size_t index) const {
     return state_array_[index];
   }
-  const size_t get_state_array_size() const {
+  size_t get_state_array_size() const {
     return state_array_.size();
   }
   bool has_state() const {
@@ -157,7 +157,7 @@ class ListStyle : public SubStyle {
     AddComplexChild(itemicon, &itemicon_array_);
   }
 
-  const size_t get_itemicon_array_size() const {
+  size_t get_itemicon_array_size() const {
     return itemicon_array_.size();
   }
 

@@ -91,7 +91,7 @@ class GxPlaylist : public Object {
 
   // GxTourPrimitive...
   void add_gx_tourprimitive(const GxTourPrimitivePtr& tourprimitive);
-  const size_t get_gx_tourprimitive_array_size() const;
+  size_t get_gx_tourprimitive_array_size() const;
   const GxTourPrimitivePtr& get_gx_tourprimitive_array_at(size_t index) const;
 
  private:

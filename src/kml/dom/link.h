@@ -80,7 +80,7 @@ class AbstractLink : public BasicLink {
   virtual ~AbstractLink();
 
   // <refreshMode>
-  const int get_refreshmode() const {
+  int get_refreshmode() const {
     return refreshmode_;
   }
   bool has_refreshmode() const {
@@ -96,7 +96,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <refreshInterval>
-  const double get_refreshinterval() const {
+  double get_refreshinterval() const {
     return refreshinterval_;
   }
   bool has_refreshinterval() const {
@@ -112,7 +112,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewRefreshMode>
-  const int get_viewrefreshmode() const {
+  int get_viewrefreshmode() const {
     return viewrefreshmode_;
   }
   bool has_viewrefreshmode() const {
@@ -128,7 +128,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewRefreshTime>
-  const double get_viewrefreshtime() const {
+  double get_viewrefreshtime() const {
     return viewrefreshtime_;
   }
   bool has_viewrefreshtime() const {
@@ -144,7 +144,7 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewBoundScale>
-  const double get_viewboundscale() const {
+  double get_viewboundscale() const {
     return viewboundscale_;
   }
   bool has_viewboundscale() const {

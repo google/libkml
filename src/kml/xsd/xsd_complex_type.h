@@ -102,7 +102,7 @@ class XsdComplexType : public XsdType {
   }
 
   // Return the number of elements in the <xs:sequence>.
-  const size_t get_sequence_size() const {
+  size_t get_sequence_size() const {
     return sequence_.size();
   }
   // Return the index'th element in the <xs:sequence>.
