@@ -51,8 +51,15 @@ class IdMapper : public kmldom::Serializer {
   ElementVector* dup_id_vector_;
 };
 
+// This function creates a map of all Objects with ids in the given element
+// hierarchy.  If an element_vector is supplied it will be given all elements
+// with duplicate ids.
 void MapIds(const kmldom::ElementPtr& root, ObjectIdMap* object_id_map,
             ElementVector* element_vector);
+
+// This function clears the id= attribute of every Object with an id in the
+// given element hierarchy.
+const kmldom::ElementPtr& ClearIds(const kmldom::ElementPtr& root);
 
 }  // end namespace kmlengine
 

@@ -66,4 +66,14 @@ void MapIds(const ElementPtr& root, ObjectIdMap* object_id_map,
   }
 }
 
+const ElementPtr& ClearIds(const ElementPtr& root) {
+  ObjectIdMap object_id_map;
+  MapIds(root, &object_id_map, NULL);
+  ObjectIdMap::const_iterator iter = object_id_map.begin();
+  for (; iter != object_id_map.end(); ++iter) {
+    iter->second->clear_id();
+  }
+  return root;
+}
+
 }  // end namespace kmlengine
