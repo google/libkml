@@ -35,6 +35,7 @@
 #include "kml/engine/engine_types.h"
 
 using kmlbase::Attributes;
+using kmldom::CoordinatesPtr;
 using kmldom::ElementPtr;
 using kmldom::KmlDomType;
 using kmldom::KmlFactory;
@@ -63,12 +64,27 @@ class FieldMerger : public Serializer {
     target_->SerializeAttributes(&target_attributes);
     target_attributes.MergeAttributes(attributes);
     target_->ParseAttributes(target_attributes.Clone());
+    // Merge on <coordinates> is consistent with setting any other simple
+    // element: replace the content.  Since <coordinates> is not implemented
+    // as a simple element and since the only "set" operations on <coordinates>
+    // are add (append) we must first clear the <coordinates>.
+    if (CoordinatesPtr coordinates = AsCoordinates(target_)) {
+      coordinates->Clear();
+    }
   }
 
   // The default implementation recurses on complex children.  FieldMerger is
   // only interested in the immediate simple children of the serialized element
   // so its implementation is empty to prevent recursing on complex children.
   virtual void SaveElement(const ElementPtr& element) {
+  }
+
+  // Save a lon,lat,alt tuple as appears within <coordinates>.
+  virtual void SaveLonLatAlt(double longitude, double latitude,
+                             double altitude) {
+    if (CoordinatesPtr coordinates = AsCoordinates(target_)) {
+      coordinates->add_latlngalt(latitude, longitude, altitude);
+    }
   }
 
   // This sets the given field in the target.
@@ -83,7 +99,6 @@ class FieldMerger : public Serializer {
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {
     SaveFieldById(type_id, color.to_string_abgr());
   }
-
 
  private:
   ElementPtr target_;
