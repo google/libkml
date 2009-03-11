@@ -27,9 +27,10 @@
 
 #include "kml/engine/style_merger.h"
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/net_cache_test_util.h"
 #include "gtest/gtest.h"
+#include "kml/base/net_cache_test_util.h"
 #include "kml/dom.h"
+#include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 
 using kmldom::FeaturePtr;
@@ -51,9 +52,10 @@ class StyleMergerTest : public testing::Test {
                                                   kKmlNetCacheCacheSize));
     kml_file_ = KmlFile::CreateFromString("<kml/>");
     style_merger_normal_.reset(
-        new StyleMerger(kml_file_, kmldom::STYLESTATE_NORMAL));
+        StyleMerger::CreateFromKmlFile(*kml_file_, kmldom::STYLESTATE_NORMAL));
     style_merger_highlight_.reset(
-        new StyleMerger(kml_file_, kmldom::STYLESTATE_HIGHLIGHT));
+        StyleMerger::CreateFromKmlFile(*kml_file_,
+                                       kmldom::STYLESTATE_HIGHLIGHT));
     factory_ = KmlFactory::GetFactory();
     style_ = factory_->CreateStyle();
     stylemap_ = factory_->CreateStyleMap();
@@ -139,6 +141,20 @@ StylePtr StyleMergerTest::CreateStyleLineStyle(const std::string& id,
 // Verify a freshly constructed StyleMerger's GetResolvedStyle() returns an
 // empty Style.
 TEST_F(StyleMergerTest, TestConstructor) {
+  // Test style_merger_normal_, style_merger_highlight_ created in SetUp()
+  // which uses CreateFromKmlFile().
+  VerifyStyleMergersEmpty();
+  // Test use of the StyleMerge ctor.
+  style_merger_normal_.reset(
+      new StyleMerger(kml_file_->get_shared_style_map(),
+                      kml_file_->get_kml_cache(),
+                      kml_file_->get_url(),
+                      kmldom::STYLESTATE_NORMAL));
+  style_merger_highlight_.reset(
+      new StyleMerger(kml_file_->get_shared_style_map(),
+                      kml_file_->get_kml_cache(),
+                      kml_file_->get_url(),
+                      kmldom::STYLESTATE_HIGHLIGHT));
   VerifyStyleMergersEmpty();
 }
 
