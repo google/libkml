@@ -388,9 +388,8 @@ void MergeTest::VerifyPointPlacemark(PlacemarkPtr placemark,
   ASSERT_EQ(static_cast<size_t>(1),
                        coordinates->get_coordinates_array_size());
   Vec3 vec3 = coordinates->get_coordinates_array_at(0);
-  // TODO: Merge <coordinates> is special...
-  // ASSERT_EQ(lat, vec3.get_latitude());
-  // ASSERT_EQ(lon, vec3.get_longitude());
+  ASSERT_EQ(lat, vec3.get_latitude());
+  ASSERT_EQ(lon, vec3.get_longitude());
 }
 
 // This verifies the merge of a Placemark Point element hierarchy.
