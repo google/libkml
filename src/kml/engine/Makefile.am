@@ -29,6 +29,7 @@ libkmlengine_la_SOURCES = \
 	location_util.cc \
 	merge.cc \
 	parse_old_schema.cc \
+	style_inliner.cc \
 	style_merger.cc \
 	style_resolver.cc \
 	style_splitter.cc \
@@ -94,6 +95,7 @@ TESTS = bbox_test \
 	parse_old_schema_test \
 	schema_parser_observer_test \
 	shared_style_parser_observer_test \
+	style_inliner_test \
 	style_merger_test \
 	style_resolver_test \
 	style_splitter_test \
@@ -261,6 +263,14 @@ shared_style_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 shared_style_parser_observer_test_LDADD= \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+style_inliner_test_SOURCES = style_inliner_test.cc
+style_inliner_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+style_inliner_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/liburiparser.la \
 	$(top_builddir)/third_party/libgtest.la
 
 style_merger_test_SOURCES = style_merger_test.cc
