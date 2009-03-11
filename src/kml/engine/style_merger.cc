@@ -43,9 +43,14 @@ using kmldom::StyleStateEnum;
 
 namespace kmlengine {
 
-StyleMerger::StyleMerger(const KmlFilePtr& kml_file,
+StyleMerger::StyleMerger(const SharedStyleMap& shared_style_map,
+                         KmlCache* kml_cache,
+                         const std::string& base_url,
                          StyleStateEnum style_state)
-    : kml_file_(kml_file), style_state_(style_state) {
+    : shared_style_map_(shared_style_map),
+      kml_cache_(kml_cache),
+      base_url_(base_url),
+      style_state_(style_state) {
   resolved_style_ = KmlFactory::GetFactory()->CreateStyle();
 }
 
@@ -59,21 +64,22 @@ void StyleMerger::MergeStyleUrl(const std::string& styleurl) {
   }
   // If there's no path this is a StyleSelector within this file.
   if (path.empty()) {
-    MergeStyleSelector(kml_file_->GetSharedStyleById(style_id));
+    SharedStyleMap::const_iterator found = shared_style_map_.find(style_id);
+    if (found != shared_style_map_.end()) {
+      MergeStyleSelector(found->second);
+    }
     return;
   }
 
   // No KmlCache provided for this KmlFile? Just return.
-  if (!kml_file_->get_kml_cache()) {
+  if (!kml_cache_) {
     return;
   }
 
   // This fetches the given style KML from/into the KmlCache.
   // Note that KmlCache::FetchKml() understands any KML URL including those to
   // and into a KMZ (style.kmz#styld_id, style.kmz/style.kml#style_id).
-  const KmlFilePtr kml_file =
-      kml_file_->get_kml_cache()->FetchKmlRelative(kml_file_->get_url(),
-                                                   styleurl);
+  const KmlFilePtr kml_file = kml_cache_->FetchKmlRelative(base_url_, styleurl);
   if (!kml_file) {
     return;  // Fetch (and parse) failures are quietly ignored.
   }
