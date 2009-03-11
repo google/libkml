@@ -45,7 +45,10 @@
 
 using kmldom::ElementPtr;
 using kmldom::FeaturePtr;
+using kmldom::PairPtr;
 using kmldom::StylePtr;
+using kmldom::StyleMapPtr;
+using kmldom::StyleSelectorPtr;
 
 namespace kmlengine {
 
@@ -176,6 +179,7 @@ TEST_F(StyleResolverTest, TestBasicCreateNetworkResolvedStyle) {
   StylePtr style = CreateResolvedStyle(feature, kml_file,
                                               style_state);
   ASSERT_TRUE(style);
+  ASSERT_TRUE(style->has_id());
   ASSERT_EQ(std::string("i27"), style->get_id());
   ASSERT_TRUE(style->has_iconstyle());
   ASSERT_TRUE(style->get_iconstyle()->has_icon());
@@ -301,8 +305,67 @@ TEST_F(StyleResolverTest, TestRemoteFiles) {
     ASSERT_TRUE(style);
 
     // A text comparison is used as that detects issues with unknown elements.
-    ASSERT_FALSE(ComparePretty(style, kRemoteTestCases[i].check_file_));
+    ASSERT_FALSE(ComparePretty(style, kRemoteTestCases[i].check_file_))
+      << kRemoteTestCases[i].check_file_;
   }
+}
+
+// Verify basic typical usage of StyleResolver::CreateResolvedStyleSelector.
+TEST_F(StyleResolverTest, BasicCreateResolvedStyleSelectorTest) {
+  const std::string kKml(
+    "<kml>"
+      "<Document>"
+        "<Style id=\"style0\">"
+          "<IconStyle/>"
+        "</Style>"
+        "<Style id=\"style1\">"
+          "<LabelStyle/>"
+        "</Style>"
+        "<StyleMap id=\"stylemap0\">"
+          "<Pair>"
+            "<key>normal</key>"
+            "<styleUrl>#style0</styleUrl>"
+          "</Pair>"
+          "<Pair>"
+            "<key>highlight</key>"
+            "<styleUrl>#style1</styleUrl>"
+          "</Pair>"
+          "<Placemark>"
+            "<styleUrl>#stylemap0</styleUrl>"
+          "</Placemark>"
+        "</StyleMap>"
+      "</Document>"
+    "</kml>");
+  kml_file_ = KmlFile::CreateFromString(kKml);
+  ASSERT_TRUE(kml_file_);
+  const SharedStyleMap& shared_styles = kml_file_->get_shared_style_map();
+  ASSERT_EQ(static_cast<size_t>(3), shared_styles.size());
+  StyleSelectorPtr styleselector =
+      StyleResolver::CreateResolvedStyleSelector("#stylemap0", shared_styles);
+  ASSERT_TRUE(styleselector);
+  StyleMapPtr stylemap = AsStyleMap(styleselector);
+  ASSERT_TRUE(stylemap);
+  ASSERT_EQ(static_cast<size_t>(2), stylemap->get_pair_array_size());
+
+  PairPtr pair = stylemap->get_pair_array_at(0);
+  ASSERT_TRUE(pair->has_key());
+  ASSERT_EQ(kmldom::STYLESTATE_NORMAL, pair->get_key());
+  ASSERT_FALSE(pair->has_styleurl());
+  ASSERT_TRUE(pair->has_styleselector());
+  StylePtr style = AsStyle(pair->get_styleselector());
+  ASSERT_TRUE(style);
+  ASSERT_TRUE(style->has_iconstyle());
+  ASSERT_FALSE(style->has_labelstyle());
+
+  pair = stylemap->get_pair_array_at(1);
+  ASSERT_TRUE(pair->has_key());
+  ASSERT_EQ(kmldom::STYLESTATE_HIGHLIGHT, pair->get_key());
+  ASSERT_FALSE(pair->has_styleurl());
+  ASSERT_TRUE(pair->has_styleselector());
+  style = AsStyle(pair->get_styleselector());
+  ASSERT_TRUE(style);
+  ASSERT_FALSE(style->has_iconstyle());
+  ASSERT_TRUE(style->has_labelstyle());
 }
 
 }  // end namespace kmlengine
