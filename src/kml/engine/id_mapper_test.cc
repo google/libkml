@@ -176,7 +176,9 @@ TEST_F(IdMapperTest, TestSomeIds) {
 TEST_F(IdMapperTest, TestAllObjects) {
   std::string kml;
   ASSERT_TRUE(File::ReadFileToString(
-      File::JoinPaths(DATADIR, "kml/all-unknown-attrs-input.kml"), &kml));
+      File::JoinPaths(DATADIR, File::JoinPaths("kml",
+                                               "all-unknown-attrs-input.kml")),
+      &kml));
   ElementPtr root = kmldom::Parse(kml, NULL);
   MapIds(root, &object_id_map_, &dup_id_vector_);
   ASSERT_TRUE(dup_id_vector_.empty());
@@ -201,6 +203,38 @@ TEST_F(IdMapperTest, TestDupeDetection) {
   // Call the method under test.
   MapIds(folder0_, &object_id_map_, &dup_id_vector_);
   ASSERT_EQ(static_cast<size_t>(1), dup_id_vector_.size());
+}
+
+TEST_F(IdMapperTest, TestClearIds) {
+  placemark0_->set_id("placemark123");
+  const std::string kFolderName("folder name");
+  folder0_->set_id("folder123");
+  folder0_->set_name(kFolderName);
+  folder0_->add_feature(placemark0_);
+  FolderPtr folder = AsFolder(ClearIds(folder0_));
+  ASSERT_TRUE(folder);
+  ASSERT_TRUE(folder->has_name());
+  ASSERT_EQ(kFolderName, folder->get_name());
+  ASSERT_EQ(static_cast<size_t>(1), folder->get_feature_array_size());
+  ASSERT_FALSE(placemark0_->has_id());
+  ASSERT_FALSE(folder0_->has_id());
+}
+
+TEST_F(IdMapperTest, TestClearManyIds) {
+  std::string kml;
+  ASSERT_TRUE(File::ReadFileToString(
+      File::JoinPaths(DATADIR, File::JoinPaths("kml",
+                                               "all-unknown-attrs-input.kml")),
+      &kml));
+  ElementPtr root = kmldom::Parse(kml, NULL);
+  MapIds(root, &object_id_map_, NULL);
+  ASSERT_EQ(static_cast<size_t>(44), object_id_map_.size());
+
+  // Call the method under test.
+  ClearIds(root);
+  object_id_map_.clear();
+  MapIds(root, &object_id_map_, NULL);
+  ASSERT_TRUE(object_id_map_.empty());
 }
 
 }  // end namespace kmlengine
