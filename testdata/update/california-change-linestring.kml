@@ -1,0 +1,14 @@
+<Update>
+  <Change>
+    <Placemark targetId="placemark-l">
+      <name>NEW A-B</name>
+      <LineString id="linestring">
+        <tessellate>true</tessellate>
+        <coordinates>
+          -124,42
+          -117,32
+        </coordinates>
+      </LineString>
+    </Placemark>
+  </Change>
+</Update>

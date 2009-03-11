@@ -1,5 +1,7 @@
 EXTRA_DIST = \
 	california.kml \
+	california-change-linestring.kml \
+	california-change-linestring-check.kml \
 	california-delete-ad.kml \
 	california-delete-ad-check.kml \
 	change-california-a.kml \
