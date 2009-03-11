@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
 	      -I$(top_srcdir)/third_party/googletest-r108 \
 	      -I$(top_srcdir)/third_party/googletest-r108/include
 
-lib_LTLIBRARIES = libminizip.la liburiparser.la libgtest.la libgtest_main.la
+lib_LTLIBRARIES = libminizip.la liburiparser.la libgtest.la
 
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
@@ -111,12 +111,6 @@ libgtestinclude_HEADERS = \
 	$(googletest)/include/gtest/internal/gtest-string.h \
 	$(googletest)/include/gtest/internal/gtest-type-util.h
 
-libgtest_main_la_SOURCES = \
-	$(googletest)/src/gtest_main.cc
-
-libgtest_main_la_LIBADD = \
-	$(top_builddir)/third_party/libgtest.la
-
 EXTRA_DIST = \
 	expat.win32/expat.h \
 	expat.win32/expat_external.h \
@@ -196,6 +190,3 @@ EXTRA_DIST = \
 	zlib-1.2.3.win32/lib/zdll.lib \
 	zlib-1.2.3.win32/lib/zlib.lib
 
-# Disable parallel builds in this file to avoid automake trying to build
-# libgtest_main while libgtest is still compiling:
-.NOTPARALLEL:
