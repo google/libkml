@@ -27,6 +27,7 @@
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
 #include "kml/base/string_util.h"
+#include "kml/base/vec3.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_file.h"
 
@@ -40,12 +41,17 @@
 #endif
 
 using kmlbase::File;
+using kmlbase::Vec3;
+using kmldom::ChangePtr;
 using kmldom::ContainerPtr;
+using kmldom::CoordinatesPtr;
 using kmldom::DeletePtr;
 using kmldom::FeaturePtr;
 using kmldom::FolderPtr;
 using kmldom::KmlFactory;
+using kmldom::LineStringPtr;
 using kmldom::PlacemarkPtr;
+using kmldom::PointPtr;
 using kmldom::UpdatePtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
@@ -256,6 +262,61 @@ TEST(UpdateTest, TestManyDeletes) {
   }
 }
 
+// Update/Change on <coordinates> replaces the contents in the target from the
+// source.
+TEST(UpdateTest, TestChangeCoordinates) {
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+
+  // Create our target KML file.
+  CoordinatesPtr coordinates = kml_factory->CreateCoordinates();
+  const double kOrigLat(38.38);
+  const double kOrigLon(-122.122);
+  coordinates->add_latlng(kOrigLat, kOrigLon);
+  PointPtr point = kml_factory->CreatePoint();
+  point->set_coordinates(coordinates);
+  PlacemarkPtr placemark = kml_factory->CreatePlacemark();
+  const std::string kId("placemark123");
+  const std::string kName("placemark name");
+  placemark->set_id(kId);
+  placemark->set_name(kName);
+  placemark->set_geometry(point);
+  KmlFilePtr kml_file = KmlFile::CreateFromImport(placemark);
+  ASSERT_TRUE(kml_file);
+
+  // Create the <Update> KML.
+  coordinates = kml_factory->CreateCoordinates();
+  const double kNewLat(-38.38);
+  const double kNewLon(122.122);
+  coordinates->add_latlng(kNewLat, kNewLon);
+  point = kml_factory->CreatePoint();
+  point->set_coordinates(coordinates);
+  placemark = kml_factory->CreatePlacemark();
+  placemark->set_targetid(kId);
+  placemark->set_geometry(point);
+  ChangePtr change = kml_factory->CreateChange();
+  change->add_object(placemark);
+  UpdatePtr update = kml_factory->CreateUpdate();
+  update->add_updateoperation(change);
+
+  // Call the function under test.
+  ProcessUpdate(update, kml_file);
+  // Verify the KML file's contents have changed.
+  ASSERT_TRUE(kml_file);
+  placemark = AsPlacemark(kml_file->get_root());
+  ASSERT_TRUE(placemark);
+  ASSERT_EQ(kId, placemark->get_id());
+  ASSERT_EQ(kName, placemark->get_name());
+  ASSERT_TRUE(placemark->has_geometry());
+  point = AsPoint(placemark->get_geometry());
+  ASSERT_TRUE(point);
+  ASSERT_TRUE(point->has_coordinates());
+  coordinates = point->get_coordinates();
+  ASSERT_EQ(static_cast<size_t>(1), coordinates->get_coordinates_array_size());
+  const Vec3& vec3 = coordinates->get_coordinates_array_at(0);
+  ASSERT_EQ(kNewLat, vec3.get_latitude());
+  ASSERT_EQ(kNewLon, vec3.get_longitude());
+}
+
 static const struct {
   const char* target_file_;  // Any valid KML file.
   const char* source_file_;  // <Update> is root element.
@@ -280,6 +341,10 @@ static const struct {
   {
     "/update/california.kml", "/update/california-delete-ad.kml",
     "/update/california-delete-ad-check.kml"
+  },
+  {
+    "/update/california.kml", "/update/california-change-linestring.kml",
+    "/update/california-change-linestring-check.kml"
   },
   {
     "/kml/kmlsamples.kml", "/update/kmlsamples-delete-many.kml",
