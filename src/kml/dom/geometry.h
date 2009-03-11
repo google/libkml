@@ -115,6 +115,11 @@ class Coordinates : public BasicElement<Type_coordinates> {
   void Parse(const std::string& char_data);
   static bool ParseVec3(const char* coords, char** nextp, kmlbase::Vec3* vec);
 
+  // This clears the internal coordinates array.
+  void Clear() {
+    coordinates_array_.clear();
+  }
+
  private:
   friend class KmlFactory;
   Coordinates();

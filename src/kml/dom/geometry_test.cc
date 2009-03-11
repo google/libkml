@@ -253,6 +253,25 @@ TEST_F(CoordinatesTest, TestParseBadSeparator) {
                    coordinates_->get_coordinates_array_at(0).get_altitude());
 }
 
+TEST_F(CoordinatesTest, TestClear) {
+  // Clearing nothing results in nothing.
+  coordinates_->Clear();
+  ASSERT_EQ(static_cast<size_t>(0), coordinates_->get_coordinates_array_size());
+  // Clearing one thing results in nothing.
+  coordinates_->add_latlng(1,2);
+  ASSERT_EQ(static_cast<size_t>(1), coordinates_->get_coordinates_array_size());
+  coordinates_->Clear();
+  ASSERT_EQ(static_cast<size_t>(0), coordinates_->get_coordinates_array_size());
+  // Clearing many things results in nothing.
+  const size_t kCount(1001);
+  for (size_t i = 0; i < kCount; ++i) {
+    coordinates_->add_latlngalt(i,i,i);
+  }
+  ASSERT_EQ(kCount, coordinates_->get_coordinates_array_size());
+  coordinates_->Clear();
+  ASSERT_EQ(static_cast<size_t>(0), coordinates_->get_coordinates_array_size());
+}
+
 // Test Point.
 class PointTest : public testing::Test {
  protected:
