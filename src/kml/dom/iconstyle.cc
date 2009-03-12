@@ -48,6 +48,9 @@ IconStyle::IconStyle() :
 IconStyle::~IconStyle() {}
 
 void IconStyle::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_scale:
       has_scale_ = element->SetDouble(&scale_);

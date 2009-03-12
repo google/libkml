@@ -24,8 +24,9 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/kml22.h"
+#include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_ptr.h"
 #include "kml/dom/xsd.h"
-#include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
 namespace kmldom {
@@ -33,10 +34,10 @@ namespace kmldom {
 class Kml22Test : public testing::Test {
  protected:
   virtual void SetUp() {
-    xsd_.reset(Xsd::GetSchema());
+    xsd_ = Xsd::GetSchema();
   }
 
-  boost::scoped_ptr<Xsd> xsd_;
+  Xsd* xsd_;
 };
 
 // Verify proper enum defaults:
@@ -67,6 +68,26 @@ TEST_F(Kml22Test, TestEnumDefaults) {
             xsd_->EnumValue(Type_GxFlyToMode, GX_FLYTOMODE_BOUNCE));
   ASSERT_EQ(std::string("pause"),
             xsd_->EnumValue(Type_GxPlayMode, GX_PLAYMODE_PAUSE));
+}
+
+// Test NULL arg on AddElement(), ParseAttributes(), and SerializeAttributes()
+// on all complex elements.  These are all methods that take pointer arguments.
+TEST_F(Kml22Test, TestElementNull) {
+  int complex_count = 0;
+  int element_type_id = static_cast<int>(Type_Unknown) + 1;
+  const int end_id = static_cast<int>(Type_Invalid);
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  for (; element_type_id != end_id; ++element_type_id) {
+    // Only complex elements return non-NULL.
+    if (ElementPtr element = kml_factory->CreateElementById(
+            static_cast<KmlDomType>(element_type_id))) {
+      element->AddElement(NULL);
+      element->ParseAttributes(NULL);
+      element->SerializeAttributes(NULL);
+      ++complex_count;
+    }
+  }
+  ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
 }
 
 }  // end namespace kmldom

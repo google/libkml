@@ -41,6 +41,9 @@ PolyStyle::~PolyStyle() {
 }
 
 void PolyStyle::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_fill:
       has_fill_ = element->SetBool(&fill_);

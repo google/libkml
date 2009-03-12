@@ -44,6 +44,9 @@ GxTour::GxTour() {
 GxTour::~GxTour() {}
 
 void GxTour::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   if (element->Type() == Type_GxPlaylist) {
     set_gx_playlist(AsGxPlaylist(element));
   } else {
