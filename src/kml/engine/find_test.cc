@@ -115,6 +115,48 @@ TEST_F(ElementFinderTest, TestBasicGetElementsById) {
   ElementVector no_documents;
   GetElementsById(folder0_, kmldom::Type_Document, &no_documents);
   ASSERT_TRUE(no_documents.empty());
+
+  // As for all Overlays.
+  ElementVector overlays;
+  GetElementsById(folder0_, kmldom::Type_Overlay, &overlays);
+  ASSERT_EQ(static_cast<size_t>(1), overlays.size());
+  GroundOverlayPtr groundoverlay = AsGroundOverlay(overlays[0]);
+
+  // As for all Features.
+  ElementVector features;
+  GetElementsById(folder0_, kmldom::Type_Feature, &features);
+  ASSERT_EQ(static_cast<size_t>(5), features.size());
+
+  // As for all Objects.
+  ElementVector objects;
+  GetElementsById(folder0_, kmldom::Type_Object, &objects);
+  ASSERT_EQ(static_cast<size_t>(7), objects.size());
+}
+
+// Verify a normal usage of GetChildElements().
+TEST_F(ElementFinderTest, TestBasicGetChildElements) {
+  // Put a variety of elements in a hierarchy.
+  const std::string kId0("id0");
+  const std::string kId1("id1");
+  point0_->set_coordinates(coordinates_);
+  placemark0_->set_geometry(point0_);
+  placemark0_->set_id(kId0);
+  placemark1_->set_id(kId1);
+  placemark1_->set_geometry(point1_);
+  folder0_->add_feature(placemark0_);
+  folder1_->add_feature(placemark2_);
+  folder0_->add_feature(folder1_);
+  folder0_->add_feature(placemark1_);
+  folder0_->add_feature(groundoverlay_);
+
+  ElementVector all_elements;
+  ASSERT_EQ(8, GetChildElements(folder0_, true, &all_elements));
+  ASSERT_EQ(static_cast<size_t>(8), all_elements.size());
+  ASSERT_EQ(8, GetChildElements(folder0_, true, NULL));
+
+  ElementVector folder0_children;
+  GetChildElements(folder0_, false, &folder0_children);
+  ASSERT_EQ(static_cast<size_t>(4), folder0_children.size());
 }
 
 }  // end namespace kmlengine
