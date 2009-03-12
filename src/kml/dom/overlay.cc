@@ -87,6 +87,9 @@ LatLonBox::~LatLonBox() {
 }
 
 void LatLonBox::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_rotation:
       has_rotation_ = element->SetDouble(&rotation_);
@@ -138,6 +141,9 @@ GroundOverlay::~GroundOverlay() {
 }
 
 void GroundOverlay::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_altitude:
       has_altitude_ = element->SetDouble(&altitude_);
@@ -196,6 +202,9 @@ ViewVolume::ViewVolume()
 ViewVolume::~ViewVolume() {}
 
 void ViewVolume::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_leftFov:
       has_leftfov_ = element->SetDouble(&leftfov_);
@@ -252,6 +261,9 @@ ImagePyramid::ImagePyramid()
 ImagePyramid::~ImagePyramid() {}
 
 void ImagePyramid::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_tileSize:
       has_tilesize_ = element->SetInt(&tilesize_);
@@ -299,6 +311,9 @@ PhotoOverlay::~PhotoOverlay() {
 }
 
 void PhotoOverlay::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_rotation:
       has_rotation_ = element->SetDouble(&rotation_);
@@ -366,6 +381,9 @@ ScreenOverlay::~ScreenOverlay() {
 }
 
 void ScreenOverlay::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_overlayXY:
       set_overlayxy(AsOverlayXY(element));

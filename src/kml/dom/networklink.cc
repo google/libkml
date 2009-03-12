@@ -42,6 +42,9 @@ NetworkLink::NetworkLink()
 NetworkLink::~NetworkLink() {}
 
 void NetworkLink::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_refreshVisibility:
       has_refreshvisibility_ = element->SetBool(&refreshvisibility_);

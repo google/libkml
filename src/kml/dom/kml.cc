@@ -54,6 +54,9 @@ void Kml::SerializeAttributes(Attributes* attributes) const {
 }
 
 void Kml::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   if (element->IsA(Type_Feature)) {
     set_feature(AsFeature(element));
   } else if (element->Type() == Type_NetworkLinkControl) {

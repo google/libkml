@@ -47,6 +47,9 @@ LatLonAltBox::LatLonAltBox()
 LatLonAltBox::~LatLonAltBox() {}
 
 void LatLonAltBox::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_minAltitude:
       has_minaltitude_ = element->SetDouble(&minaltitude_);
@@ -93,6 +96,9 @@ Lod::Lod()
 Lod::~Lod() {}
 
 void Lod::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_minLodPixels:
       has_minlodpixels_ = element->SetDouble(&minlodpixels_);
@@ -136,6 +142,9 @@ Region::~Region() {
 }
 
 void Region::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_LatLonAltBox:
       set_latlonaltbox(AsLatLonAltBox(element));

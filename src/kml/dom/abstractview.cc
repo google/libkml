@@ -71,6 +71,9 @@ AbstractViewCommon::AbstractViewCommon()
 }
 
 void AbstractViewCommon::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   switch (element->Type()) {
     case Type_longitude:
       has_longitude_ = element->SetDouble(&longitude_);
