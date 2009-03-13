@@ -27,7 +27,7 @@
 
 #include "kml/engine/kmz_cache.h"
 #include "kml/base/time_util.h"
-#include "kml/engine/kml_uri.h"
+#include "kml/engine/kml_uri_internal.h"
 
 using kmlbase::MemoryFilePtr;
 

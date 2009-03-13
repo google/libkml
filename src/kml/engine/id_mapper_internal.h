@@ -23,19 +23,37 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the Clone() function.
+// This file contains the declaration of the internal IdMapper class.
+// Do not use this class in application code.  See id_mapper.h for the public
+// functions.
 
-#ifndef KML_ENGINE_CLONE_H__
-#define KML_ENGINE_CLONE_H__
+#ifndef KML_ENGINE_ID_MAPPER_INTERNAL_H__
+#define KML_ENGINE_ID_MAPPER_INTERNAL_H__
 
+#include "kml/base/string_util.h"
 #include "kml/dom.h"
+#include "kml/engine/engine_types.h"
 
 namespace kmlengine {
 
-// This returns a "deep" clone of the given element.  All child elements and
-// fields are copied.
-kmldom::ElementPtr Clone(const kmldom::ElementPtr& element);
+// This class walks the element hierarchy and assigns any Object with an id
+// to the given required ObjectIdMap.  Objects with duplicate ids are appended
+// to the given ElementVector if one is supplied.
+class IdMapper : public kmldom::Serializer {
+ public:
+  IdMapper(ObjectIdMap* object_id_map, ElementVector* dup_id_vector)
+    : object_id_map_(object_id_map),
+      dup_id_vector_(dup_id_vector) {
+  }
+
+  // This is the Serializer method used to recurse on each child element.
+  virtual void SaveElement(const kmldom::ElementPtr& element);
+
+ private:
+  ObjectIdMap* object_id_map_;
+  ElementVector* dup_id_vector_;
+};
 
 }  // end namespace kmlengine
 
-#endif  // KML_ENGINE_CLONE_H__
+#endif  // KML_ENGINE_ID_MAPPER_INTERNAL_H__

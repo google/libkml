@@ -23,9 +23,11 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the implementation of the StyleSplitter class.
+// This file contains the implementation of the StyleSplitter class and the
+// SplitStyles function.
 
 #include "kml/engine/style_splitter.h"
+#include "kml/engine/style_splitter_internal.h"
 #include <map>
 #include <string>
 #include "kml/base/string_util.h"

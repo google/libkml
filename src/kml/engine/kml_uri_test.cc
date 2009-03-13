@@ -29,6 +29,7 @@
 // focus on the API behavior of the kml_uri.h functions themselves.
 
 #include "kml/engine/kml_uri.h"
+#include "kml/engine/kml_uri_internal.h"
 #include "kml/base/net_cache_test_util.h"
 #include "kml/dom.h"
 #include "kml/engine/find.h"

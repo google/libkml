@@ -26,6 +26,7 @@
 // This file contains the unit tests for the StyleInliner class.
 
 #include "kml/engine/style_inliner.h"
+#include "kml/engine/style_inliner_internal.h"
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
 

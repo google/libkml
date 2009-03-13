@@ -73,7 +73,6 @@ libkmlengineinclude_HEADERS = \
 	style_merger.h \
 	style_resolver.h \
 	style_splitter.h \
-	update_processor.h \
 	update.h
 
 # These header files are added to the distribution such that it can be built,
@@ -82,7 +81,8 @@ EXTRA_DIST = \
 	id_mapper_internal.h \
 	kml_uri_internal.h \
 	style_inliner_internal.h \
-	style_splitter_internal.h
+	style_splitter_internal.h \
+	update_processor.h
 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = bbox_test \

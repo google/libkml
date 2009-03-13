@@ -23,7 +23,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the StyleSplitter class.
+// This file contains the declaration of the SplitStyles function.
 
 #ifndef KML_ENGINE_STYLE_SPLITTER_H__
 #define KML_ENGINE_STYLE_SPLITTER_H__
@@ -47,64 +47,6 @@ namespace kmlengine {
 // 4) the internally generated xml id must exist elsewhere in the KML
 kmldom::ElementPtr SplitStyles(const std::string& input_kml,
                                std::string* errors);
-
-// This class splits _most_ inline StyleSelectors to shared style
-// NOTE: Direct use of this class in production code is not recommended.
-// Use the SplitStyles function declared above.
-class StyleSplitter : public kmldom::ParserObserver {
- public:
-  // A SharedStyleMap must be supplied.
-  StyleSplitter(kmlengine::SharedStyleMap* shared_style_map)
-    : shared_style_map_(shared_style_map),
-      id_counter_(0),
-      in_update_(false) {}
-
-  virtual ~StyleSplitter() {}
-
-  // ParserObserver::NewElement()
-  virtual bool NewElement(const kmldom::ElementPtr& element);
-
-  // Like AsFeature(), but not if the feature is a <Document>.
-  static kmldom::FeaturePtr AsNonDocumentFeature(
-      const kmldom::ElementPtr& element);
-
-  // A convenience routine to create a <Style> or <StyleMap>.
-  static kmldom::StyleSelectorPtr CreateStyleSelector(
-      kmldom::KmlDomType type_id);
-
-  // The default implementation simply uses the internal sequential id counter
-  // as the xml id for the shared style.  A derived class can override this
-  // method and use its own naming scheme, however if the id created is not
-  // unique the given style will not be split from the feature.
-  virtual std::string CreateUniqueId(const SharedStyleMap& shared_style_map,
-                                     unsigned int id_counter) {
-    // xml:id cannot begin with a digit.
-    return std::string("_")  + kmlbase::ToString(id_counter);
-  }
-
-  // ParserObserver::EndElement()
-  virtual bool EndElement(const kmldom::ElementPtr& parent,
-                          const kmldom::ElementPtr& child);
-
-  // Mostly for debugging, but no reason to hide these.
-  unsigned int get_id_counter() const {
-    return id_counter_;
-  }
-
-  const kmldom::DocumentPtr& get_document() const {
-    return document_;
-  }
-
-  bool get_in_update() const {
-    return in_update_;
-  }
-
- private:
-  kmlengine::SharedStyleMap* shared_style_map_;
-  unsigned int id_counter_;
-  kmldom::DocumentPtr document_;
-  bool in_update_;
-};
 
 }  // end namespace kmlengine
 
