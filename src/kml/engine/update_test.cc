@@ -71,6 +71,10 @@ static const char source_change[] =
 static const char target_change[] = 
     "<Placemark id=\"p\"><name>hi</name></Placemark>";
 
+TEST(UpdateTest, TestProcessUpdateNull) {
+  ProcessUpdate(NULL, NULL);
+}
+
 TEST(UpdateTest, TestSingleSimpleChange) {
   KmlFilePtr target_file = KmlFile::CreateFromParse(target_change, NULL);
   ASSERT_TRUE(target_file);
@@ -388,6 +392,38 @@ TEST(UpdateTest, TestFiles) {
                                &expected));
     ASSERT_EQ(expected, actual);
   }
+}
+
+TEST(UpdateTest, TestProcessUpdateWithIdMapNull) {
+  ProcessUpdateWithIdMap(NULL, NULL, NULL);
+}
+
+TEST(UpdateTest, TestProcessUpdateWithIdMapBasic) {
+  KmlFilePtr kml_file(KmlFile::CreateFromString(
+      "<Placemark id=\"inner\"><name>old name</name></Placemark>"));
+  ASSERT_TRUE(kml_file);
+
+  kmldom::UpdatePtr update = kmldom::AsUpdate(kmldom::ParseKml(
+      "<Update>"
+      "  <Change>"
+      "    <Placemark targetId=\"outer\">"
+      "      <name>new name</name>"
+      "    </Placemark>"
+      "  </Change>"
+      "</Update>"));
+  ASSERT_TRUE(update);
+
+  kmlbase::StringMap id_map;
+  id_map["outer"] = "inner";
+
+  ProcessUpdateWithIdMap(update, &id_map, kml_file);
+
+  PlacemarkPtr placemark = AsPlacemark(kml_file->get_root());
+  ASSERT_TRUE(placemark);
+  ASSERT_TRUE(placemark->has_name());
+  ASSERT_EQ(std::string("new name"), placemark->get_name());
+  ASSERT_TRUE(placemark->has_id());
+  ASSERT_EQ(std::string("inner"), placemark->get_id());
 }
 
 }  // end namespace kmlengine
