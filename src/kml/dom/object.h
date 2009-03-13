@@ -46,7 +46,7 @@ class Object : public Element {
   virtual ~Object();
   KmlDomType Type() const { return Type_Object; }
   bool IsA(KmlDomType type) const {
-    return type == Type_Object || Element::IsA(type);
+    return type == Type_Object;
   }
 
   const std::string& get_id() const { return id_; }
