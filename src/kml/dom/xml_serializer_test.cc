@@ -249,6 +249,12 @@ TEST_F(XmlSerializerTest, TestSerializeUnknowns) {
             SerializeRaw(placemark_));
 }
 
+TEST_F(XmlSerializerTest, TestSerializeNull) {
+  const std::string empty;
+  ASSERT_EQ(empty, SerializePretty(NULL));
+  ASSERT_EQ(empty, SerializeRaw(NULL));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
