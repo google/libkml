@@ -28,6 +28,7 @@
 #ifndef KML_ENGINE_ID_MAPPER_H__
 #define KML_ENGINE_ID_MAPPER_H__
 
+#include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/engine/engine_types.h"
 
@@ -58,8 +59,18 @@ void MapIds(const kmldom::ElementPtr& root, ObjectIdMap* object_id_map,
             ElementVector* element_vector);
 
 // This function clears the id= attribute of every Object with an id in the
-// given element hierarchy.
+// given element hierarchy.  This function should be used with caution!
 const kmldom::ElementPtr& ClearIds(const kmldom::ElementPtr& root);
+
+// This function changes ALL id='s in the given ObjectIdMap.  If the
+// Object's id= is not found in the given id_map that object's id= is cleared.
+// If the Object's id= _is_ found in the id_map then that Object's id= is
+// changed to the map'ed id.  If an output_object_id_map is supplied each
+// remapped object is added to that map.  This returns the number of objects
+// whose ids were cleared.  This function should be used with caution!
+int RemapIds(const ObjectIdMap& input_object_id_map,
+             const kmlbase::StringMap& id_map,
+             ObjectIdMap* output_object_id_map);
 
 }  // end namespace kmlengine
 
