@@ -45,6 +45,9 @@ namespace kmldom {
 // This function is in the public API for converting the given Element
 // hierarchy to "pretty" xml.
 std::string SerializePretty(const ElementPtr& root) {
+  if (!root) {
+    return std::string("");
+  }
   XmlSerializer serializer("\n", "  ");
   root->Serialize(serializer);
   std::string xml;
@@ -56,6 +59,9 @@ std::string SerializePretty(const ElementPtr& root) {
 // hierarchy to xml with no additional whitespace for newlines or
 // indentation.
 std::string SerializeRaw(const ElementPtr& root) {
+  if (!root) {
+    return std::string("");
+  }
   XmlSerializer serializer("", "");
   root->Serialize(serializer);
   std::string xml;
