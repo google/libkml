@@ -31,30 +31,26 @@
 
 namespace kmlengine {
 
-// In-place (destructive) processing of the given update against the given
-// KmlFile.  In the case of NetworkLinkControl it is presumed the caller has
-// checked Update's targetHref against KmlFile's url.
+// This provides in-place (destructive) processing of the given update against
+// the given KmlFile.  In the case of NetworkLinkControl it is presumed the
+// caller has checked Update's targetHref against KmlFile's url.
 void ProcessUpdate(const kmldom::UpdatePtr& update, KmlFilePtr kml_file);
 
-// Process the <Change> into the KmlFile.
-void ProcessUpdateChange(const kmldom::ChangePtr& change, KmlFilePtr kml_file);
-
-// Process the <Create> into the KmlFile.
-void ProcessUpdateCreate(const kmldom::CreatePtr& create, KmlFilePtr kml_file);
+// This is the same as ProcessUpdate() except the caller provided StringMap is
+// used to map the targetId='s in the Update before they are applied to the
+// id='s in the KmlFile.  If a StringMap is supplied and a given targetId= does
+// not have a mapping to an id= or if an Object with this id= does not exist in
+// the KmlFile that particular Update target is quietly ignored.  While the
+// target'ed Object's contents are Update'ed the id is not whether the
+// targetId= is mapped or not.  If a NULL pointer is passed for the StringMap
+// then no mapping are performed and this operates like ProcessUpdate().
+void ProcessUpdateWithIdMap(const kmldom::UpdatePtr& update,
+                            const kmlbase::StringMap* id_map,
+                            KmlFilePtr kml_file);
 
 // Clone each Feature in the source_container and append to the target.
-// TODO: This belongs with Container.
 void CopyFeatures(const kmldom::ContainerPtr& source_container,
                   kmldom::ContainerPtr target_container);
-
-// Process the <Delete> into the KmlFile.
-void ProcessUpdateDelete(const kmldom::DeletePtr& deleet, KmlFilePtr kml_file);
-
-// Delete the id'ed Feature from the KmlFile.
-// TODO: This belongs in KmlFile.
-kmldom::FeaturePtr DeleteFeatureById(const std::string& id,
-                                     KmlFilePtr kml_file);
-
 
 }  // namespace kmlengine
 

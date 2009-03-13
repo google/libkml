@@ -33,12 +33,15 @@ libkmlengine_la_SOURCES = \
 	style_merger.cc \
 	style_resolver.cc \
 	style_splitter.cc \
+	update_processor.cc \
 	update.cc
 
 libkmlengine_la_LIBADD = \
 	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
+# These header files will be installed in $(includedir)/kml/engine for use in
+# application code.
 libkmlengineincludedir = $(includedir)/kml/engine
 libkmlengineinclude_HEADERS = \
 	bbox.h \
@@ -66,10 +69,20 @@ libkmlengineinclude_HEADERS = \
 	parse_old_schema.h \
 	schema_parser_observer.h \
 	shared_style_parser_observer.h \
+	style_inliner.h \
 	style_merger.h \
 	style_resolver.h \
 	style_splitter.h \
+	update_processor.h \
 	update.h
+
+# These header files are added to the distribution such that it can be built,
+# but these header files should not be used in application code.
+EXTRA_DIST = \
+	id_mapper_internal.h \
+	kml_uri_internal.h \
+	style_inliner_internal.h \
+	style_splitter_internal.h
 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = bbox_test \
@@ -99,6 +112,7 @@ TESTS = bbox_test \
 	style_merger_test \
 	style_resolver_test \
 	style_splitter_test \
+	update_processor_test \
 	update_test
 
 check_PROGRAMS = $(TESTS)
@@ -290,6 +304,13 @@ style_resolver_test_LDADD= libkmlengine.la \
 style_splitter_test_SOURCES = style_splitter_test.cc
 style_splitter_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 style_splitter_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+update_processor_test_SOURCES = update_processor_test.cc
+update_processor_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+update_processor_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
