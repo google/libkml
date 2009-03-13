@@ -26,7 +26,10 @@
 // This file contains the implementation of the internal StyleInliner.
 
 #include "kml/engine/style_inliner.h"
+#include "kml/engine/style_inliner_internal.h"
 #include "kml/engine/id_mapper.h"
+#include "kml/engine/kml_uri.h"
+#include "kml/engine/style_resolver.h"
 
 namespace kmlengine {
 

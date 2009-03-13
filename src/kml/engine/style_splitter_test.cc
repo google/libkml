@@ -26,6 +26,7 @@
 // This file contains the unit tests for the StyleSplitter class.
 
 #include "kml/engine/style_splitter.h"
+#include "kml/engine/style_splitter_internal.h"
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/base/net_cache_test_util.h"

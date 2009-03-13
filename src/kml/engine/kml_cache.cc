@@ -29,7 +29,7 @@
 #include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/engine/kml_file.h"
-#include "kml/engine/kml_uri.h"
+#include "kml/engine/kml_uri_internal.h"
 #include "kml/engine/kmz_cache.h"
 
 namespace kmlengine {

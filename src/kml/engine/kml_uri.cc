@@ -26,6 +26,7 @@
 // This file contains the implementation of the KML URI resolution functions.
 
 #include "kml/engine/kml_uri.h"
+#include "kml/engine/kml_uri_internal.h"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/uri_parser.h"
 
