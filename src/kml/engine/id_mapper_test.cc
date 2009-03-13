@@ -29,13 +29,14 @@
 #include "kml/engine/id_mapper.h"
 #include <string>
 #include "boost/scoped_ptr.hpp"
+#include "gtest/gtest.h"
 #include "kml/base/file.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/xsd.h"
-#include "gtest/gtest.h"
+#include "kml/engine/find.h"
 
 // The following define is a convenience for testing inside Google.
 #ifdef GOOGLE_INTERNAL
@@ -235,6 +236,110 @@ TEST_F(IdMapperTest, TestClearManyIds) {
   object_id_map_.clear();
   MapIds(root, &object_id_map_, NULL);
   ASSERT_TRUE(object_id_map_.empty());
+}
+
+// Verify well defined behavior on NULL/empty inputs.
+TEST_F(IdMapperTest, TestRemapIdsNull) {
+  kmlbase::StringMap id_map;
+  ASSERT_EQ(0, RemapIds(object_id_map_, id_map, NULL));
+}
+
+// Verify remapping for a simple case.
+TEST_F(IdMapperTest, TestRemapIdsSimple) {
+  const std::string kId0("id0");
+  const std::string kName0("name0");
+  placemark0_->set_id(kId0);
+  placemark0_->set_name(kName0);
+  const std::string kId1("id1");
+  const std::string kName1("name1");
+  placemark1_->set_id(kId1);
+  placemark1_->set_name(kName1);
+  folder0_->add_feature(placemark0_);
+  folder0_->add_feature(placemark1_);
+  MapIds(folder0_, &object_id_map_, NULL);
+
+  kmlbase::StringMap id_map;
+  id_map[kId0] = "newid0";
+  id_map[kId1] = "newid1";
+  ASSERT_EQ(0, RemapIds(object_id_map_, id_map, NULL));
+  ASSERT_TRUE(placemark0_->has_id());
+  ASSERT_EQ(id_map[kId0], placemark0_->get_id());
+  ASSERT_TRUE(placemark1_->has_id());
+  ASSERT_EQ(id_map[kId1], placemark1_->get_id());
+}
+
+// Verify remapping for a simple case with output object_id_map.
+TEST_F(IdMapperTest, TestRemapIdsSimpleWithOutput) {
+  const std::string kId0("id0");
+  const std::string kName0("name0");
+  placemark0_->set_id(kId0);
+  placemark0_->set_name(kName0);
+  const std::string kId1("id1");
+  const std::string kName1("name1");
+  placemark1_->set_id(kId1);
+  placemark1_->set_name(kName1);
+  const std::string kFolderId("folder-id");
+  folder0_->set_id(kFolderId);
+  folder0_->add_feature(placemark0_);
+  folder0_->add_feature(placemark1_);
+  MapIds(folder0_, &object_id_map_, NULL);
+
+  // This map has mappings for 2 of the ids and one extra.
+  kmlbase::StringMap id_map;
+  id_map[kId0] = "newid0";
+  id_map[kId1] = "newid1";
+  id_map["no-such-id"] = "still-no-such-id";
+  ObjectIdMap output_object_id_map;
+  // One Object's id was cleared...
+  ASSERT_EQ(1, RemapIds(object_id_map_, id_map, &output_object_id_map));
+  // Two were re-mapped.
+  ASSERT_EQ(static_cast<size_t>(2), output_object_id_map.size());
+  ASSERT_TRUE(placemark0_->has_id());
+  ASSERT_EQ(id_map[kId0], placemark0_->get_id());
+  ASSERT_TRUE(placemark1_->has_id());
+  ASSERT_EQ(id_map[kId0], output_object_id_map[id_map[kId0]]->get_id());
+  ASSERT_EQ(id_map[kId1], output_object_id_map[id_map[kId1]]->get_id());
+  // Any Object w/o an id mapping is cleared.
+  ASSERT_FALSE(folder0_->has_id());
+}
+
+TEST_F(IdMapperTest, TestRemapManyIds) {
+  std::string kml;
+  ASSERT_TRUE(File::ReadFileToString(
+      File::JoinPaths(DATADIR, File::JoinPaths("kml",
+                                               "all-unknown-attrs-input.kml")),
+      &kml));
+  ElementPtr root = kmldom::Parse(kml, NULL);
+  MapIds(root, &object_id_map_, NULL);
+  ASSERT_EQ(static_cast<size_t>(44), object_id_map_.size());
+
+  // Create a "newid-OLDID" for half the objects in the file.
+  const std::string kNewIdBase("newid-");
+  kmlbase::StringMap id_map;
+  ObjectIdMap::const_iterator iter = object_id_map_.begin();
+  for (; iter != object_id_map_.end(); ++iter, ++iter) {
+    id_map[iter->first] = kNewIdBase + iter->first;
+  }
+
+  ObjectIdMap output_object_id_map;
+  ASSERT_EQ(22, RemapIds(object_id_map_, id_map, &output_object_id_map));
+  ASSERT_EQ(static_cast<size_t>(22), output_object_id_map.size());
+
+  ElementVector all_objects;
+  GetElementsById(root, kmldom::Type_Object, &all_objects);
+  ASSERT_EQ(static_cast<size_t>(110), all_objects.size());
+  ElementVector::const_iterator element_iter = all_objects.begin();
+  int clear_id_count = 0;
+  for (; element_iter != all_objects.end(); ++element_iter) {
+    const kmldom::ObjectPtr& object = AsObject(*element_iter);
+    if (object->has_id()) {
+
+      ASSERT_EQ(kNewIdBase, object->get_id().substr(0, kNewIdBase.size()));
+    } else {
+      ++clear_id_count;
+    }
+  }
+  ASSERT_EQ(88, clear_id_count);
 }
 
 }  // end namespace kmlengine

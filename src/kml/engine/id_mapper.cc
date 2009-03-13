@@ -29,6 +29,7 @@
 #include "kml/dom/serializer.h"
 #include "kml/engine/engine_types.h"
 
+using kmlbase::StringMap;
 using kmldom::ElementPtr;
 using kmldom::ObjectPtr;
 using kmldom::Serializer;
@@ -67,13 +68,39 @@ void MapIds(const ElementPtr& root, ObjectIdMap* object_id_map,
 }
 
 const ElementPtr& ClearIds(const ElementPtr& root) {
+  // Get all objects with an id.
   ObjectIdMap object_id_map;
   MapIds(root, &object_id_map, NULL);
+  // Iterate through them all and clear the id.
   ObjectIdMap::const_iterator iter = object_id_map.begin();
   for (; iter != object_id_map.end(); ++iter) {
     iter->second->clear_id();
   }
   return root;
+}
+
+int RemapIds(const ObjectIdMap& input_object_id_map, const StringMap& id_map,
+             ObjectIdMap* output_object_id_map) {
+  int clear_count = 0;
+  ObjectIdMap::const_iterator iter = input_object_id_map.begin();
+  for (; iter != input_object_id_map.end(); ++iter) {
+    kmldom::ObjectPtr object = iter->second;
+    if (object->has_id()) {
+      kmlbase::StringMap::const_iterator find = id_map.find(object->get_id());
+      if (find == id_map.end()) {
+        // No mapping so clear the id.
+        object->clear_id();
+        ++clear_count;
+      } else {
+        // Change the id to the given mapping.
+        object->set_id(find->second);
+        if (output_object_id_map) {
+          (*output_object_id_map)[find->second] = object;
+        }
+      }
+    }
+  }
+  return clear_count;
 }
 
 }  // end namespace kmlengine
