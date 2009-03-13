@@ -38,7 +38,8 @@ using kmlbase::XmlElement;
 
 namespace kmldom {
 
-Element::Element() {
+Element::Element()
+ : type_id_(Type_Unknown) {
 }
 
 Element::Element(KmlDomType type_id)

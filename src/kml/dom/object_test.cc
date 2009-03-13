@@ -46,6 +46,7 @@ class ObjectTest : public testing::Test {
 
 TEST_F(ObjectTest, TestType) {
   ASSERT_TRUE(object_->IsA(Type_Object));
+  ASSERT_FALSE(object_->IsA(Type_Unknown));
 }
 
 // Verify proper defaults:

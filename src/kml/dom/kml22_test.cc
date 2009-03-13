@@ -81,6 +81,29 @@ TEST_F(Kml22Test, TestElementNull) {
     // Only complex elements return non-NULL.
     if (ElementPtr element = kml_factory->CreateElementById(
             static_cast<KmlDomType>(element_type_id))) {
+      // All KmlFactory-created elements are known.
+      ASSERT_FALSE(element->IsA(kmldom::Type_Unknown));
+      // Verify the element's abstract base types.
+      if (element->IsA(kmldom::Type_ColorStyle)) {
+        ASSERT_TRUE(element->IsA(kmldom::Type_SubStyle));
+      }
+      if (element->IsA(kmldom::Type_Container)) {
+        ASSERT_TRUE(element->IsA(kmldom::Type_Feature));
+      }
+      if (element->IsA(kmldom::Type_Overlay)) {
+        ASSERT_TRUE(element->IsA(kmldom::Type_Feature));
+      }
+      if (element->IsA(kmldom::Type_AbstractLatLonBox) ||
+          element->IsA(kmldom::Type_AbstractView) ||
+          element->IsA(kmldom::Type_BasicLink) ||
+          element->IsA(kmldom::Type_Feature) ||
+          element->IsA(kmldom::Type_Geometry) ||
+          element->IsA(kmldom::Type_StyleSelector) ||
+          element->IsA(kmldom::Type_SubStyle) ||
+          element->IsA(kmldom::Type_TimePrimitive)) {
+        ASSERT_TRUE(element->IsA(kmldom::Type_Object));
+      }
+      // Verify NULL pointers do no harm.
       element->AddElement(NULL);
       element->ParseAttributes(NULL);
       element->SerializeAttributes(NULL);

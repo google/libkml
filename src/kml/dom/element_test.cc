@@ -31,7 +31,6 @@
 #include "kml/base/attributes.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
-#include "kml/dom/kml_ptr.h"
 #include "kml/dom/stats_serializer.h"
 
 using kmlbase::Attributes;
@@ -134,6 +133,14 @@ class ElementTest : public testing::Test {
   TestElementPtr element_;
   ComplexChildPtr child1_, child2_, child3_;
 };
+
+// The test Elements here do not set their type and are hence Type_Unknown.
+TEST_F(ElementTest, TestTypeUnknown) {
+  ASSERT_EQ(kmldom::Type_Unknown, element_->Type());
+  ASSERT_TRUE(element_->IsA(kmldom::Type_Unknown));
+  ASSERT_EQ(kmldom::Type_Unknown, child1_->Type());
+  ASSERT_TRUE(child1_->IsA(kmldom::Type_Unknown));
+}
 
 TEST_F(ElementTest, TestDefaultXmlns) {
   ASSERT_TRUE(element_->get_default_xmlns().empty());

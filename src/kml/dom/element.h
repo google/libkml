@@ -59,7 +59,7 @@ class Element : public kmlbase::XmlElement {
   virtual ~Element();
   virtual KmlDomType Type() const { return type_id_; }
   virtual bool IsA(KmlDomType type) const {
-    return type == Type_Unknown;
+    return type == type_id_;
   }
 
   // This returns the element of which this is a child (if any).
