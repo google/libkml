@@ -27,6 +27,7 @@
 // and the IdMapper class.
 
 #include "kml/engine/id_mapper.h"
+#include "kml/engine/id_mapper_internal.h"
 #include <string>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"

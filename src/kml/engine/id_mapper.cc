@@ -26,6 +26,7 @@
 // This file contains the implementation of the MapIds function.
 
 #include "kml/engine/id_mapper.h"
+#include "kml/engine/id_mapper_internal.h"
 #include "kml/dom/serializer.h"
 #include "kml/engine/engine_types.h"
 
