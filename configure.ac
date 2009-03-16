@@ -13,10 +13,6 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 
-AC_CHECK_HEADERS([expat.h])
-AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h])
-AC_CHECK_FUNCS([floor memset strstr])
-
 AC_C_CONST
 AC_C_INLINE
 AC_FUNC_MALLOC
@@ -44,6 +40,14 @@ esac
 AC_SUBST(PLATFORM)
 AC_SUBST(SHLIBSUFFIX)
 
+dnl Where can we find the Expat headers and library?
+AC_ARG_WITH(expat-include-dir,
+	    [--with-expat-include-dir=DIR look in DIR for expat headers],
+	    [CFLAGS="$CFLAGS -I$withval" CPPFLAGS="$CPPFLAGS -I$withval"])
+AC_ARG_WITH(expat-lib-dir,
+	    [--with-expat-lib-dir=DIR look in DIR for expat libraries],
+	    [LDFLAGS="$LDFLAGS -L$withval"])
+
 dnl Where can we find the Java headers and libs?
 AC_ARG_WITH(java-include-dir,
 	    [--with-java-include-dir=DIR look in DIR for Java headers],
@@ -63,6 +67,18 @@ AC_ARG_WITH(python-lib-dir,
 	    [--with-python-lib-dir=DIR look in DIR for Python libraries],
 	    [PYTHON_LIB_DIR=$withval],)
 AC_SUBST(PYTHON_LIB_DIR)
+
+
+AC_CHECK_HEADERS(expat.h, [expat_h_found="yes"], [expat_h_found="no"])
+if test $expat_h_found = "no"
+then
+	AC_MSG_ERROR("Unable to locate expat.h. Use configure --help to see how to specify the search path")
+fi
+AC_CHECK_LIB(expat, XML_ParserCreate, [],
+	AC_MSG_ERROR("Expat library not found. Use configure --help to see how to specify the search path"))
+
+AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h])
+AC_CHECK_FUNCS([floor memset strstr])
 
 dnl If SWIG is available we will try to generate bindings.
 AC_ARG_ENABLE(swig,
