@@ -146,6 +146,12 @@ static void CallSerializer(const ElementPtr& element, Serializer* serializer) {
   element->Serialize(*serializer);
 }
 
+// Assert the basic SaveElement is well-behaved when passed a NULL element.
+TEST_F(SerializerTest, TestSerializeOfNullElement) {
+  Serializer serializer;
+  serializer.SaveElement(NULL);
+}
+
 // Verify that the default Serializer properly does nothing.
 TEST_F(SerializerTest, TestNullSerializer) {
   Serializer serializer;
