@@ -63,6 +63,9 @@ void Serializer::SaveEnum(int type_id, int enum_value) {
 // This emits the given Element.  This is a method of Serialize such that
 // an Element's Serialize method need only friend class Serialize.
 void Serializer::SaveElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
   element->Serialize(*this);
 }
 
