@@ -6,8 +6,9 @@ AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
 noinst_PROGRAMS = \
-	balloonwalker change clone csv2kml import kmlfile kml2kmz \
-	kmzchecklinks oldschema parsebig printstyle splitstyles streamkml
+	balloonwalker change clone csv2kml import inlinestyles kmlfile \
+	kml2kmz kmzchecklinks oldschema parsebig printstyle splitstyles \
+	streamkml
 
 balloonwalker_SOURCES = balloonwalker.cc
 balloonwalker_LDADD = \
@@ -30,6 +31,12 @@ csv2kml_LDADD = \
 
 import_SOURCES = import.cc
 import_LDADD = \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+inlinestyles_SOURCES = inlinestyles.cc
+inlinestyles_LDADD = \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
