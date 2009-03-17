@@ -24,24 +24,29 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/convenience/convenience.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/base/date_time.h"
 #include "kml/base/math_util.h"
-#include "kml/base/vec3.h"
-#include "kml/dom.h"
+#include "kml/engine/bbox.h"
+#include "kml/engine/clone.h"
+#include "kml/engine/feature_view.h"
+#include "kml/engine/location_util.h"
 
 using kmlbase::Attributes;
 using kmlbase::DateTime;
 using kmlbase::Vec3;
+using kmldom::AbstractViewPtr;
+using kmldom::CameraPtr;
 using kmldom::CoordinatesPtr;
-using kmldom::ExtendedDataPtr;
 using kmldom::DataPtr;
+using kmldom::ExtendedDataPtr;
 using kmldom::FeaturePtr;
+using kmldom::GxFlyToPtr;
 using kmldom::KmlFactory;
 using kmldom::LatLonAltBoxPtr;
 using kmldom::LodPtr;
+using kmldom::LookAtPtr;
 using kmldom::OuterBoundaryIsPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
@@ -74,6 +79,20 @@ PlacemarkPtr CreateBasicPolygonPlacemark(
   return placemark;
 }
 
+CameraPtr CreateCamera(double latitude, double longitude, double altitude,
+                       double heading, double tilt, double roll,
+                       int altitudemode) {
+  CameraPtr camera = KmlFactory::GetFactory()->CreateCamera();
+  camera->set_longitude(longitude);
+  camera->set_latitude(latitude);
+  camera->set_altitude(altitude);
+  camera->set_heading(heading);
+  camera->set_tilt(tilt);
+  camera->set_roll(roll);
+  camera->set_altitudemode(altitudemode);
+  return camera;
+}
+
 CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
                                        double radius, size_t segments) {
   CoordinatesPtr coords = KmlFactory::GetFactory()->CreateCoordinates();
@@ -88,6 +107,20 @@ DataPtr CreateDataNameValue(const std::string& name, const std::string& value) {
   data->set_name(name);
   data->set_value(value);
   return data;
+}
+
+LookAtPtr CreateLookAt(double latitude, double longitude, double altitude,
+                       double heading, double tilt, double range,
+                       int altitudemode) {
+  LookAtPtr lookat = KmlFactory::GetFactory()->CreateLookAt();
+  lookat->set_longitude(longitude);
+  lookat->set_latitude(latitude);
+  lookat->set_altitude(altitude);
+  lookat->set_heading(heading);
+  lookat->set_tilt(tilt);
+  lookat->set_range(range);
+  lookat->set_altitudemode(altitudemode);
+  return lookat;
 }
 
 PointPtr CreatePointFromLatLonAtts(const char** atts) {
@@ -151,6 +184,28 @@ RegionPtr CreateRegion2d(double north, double south, double east, double west,
   region->set_latlonaltbox(latlonaltbox);
   region->set_lod(lod);
   return region;
+}
+
+GxFlyToPtr CreateFlyTo(const AbstractViewPtr& abstractview, double duration) {
+  GxFlyToPtr flyto = KmlFactory::GetFactory()->CreateGxFlyTo();
+  flyto->set_gx_duration(duration);
+  AbstractViewPtr av = kmldom::AsAbstractView(kmlengine::Clone(abstractview));
+  flyto->set_abstractview(av);
+  return flyto;
+}
+
+GxFlyToPtr CreateFlyToForFeature(const FeaturePtr& feature, double duration) {
+  if (!feature) {
+    return NULL;
+  }
+  if (feature->has_abstractview()) {
+    return CreateFlyTo(feature->get_abstractview(), duration);
+  }
+  LookAtPtr lookat = kmlengine::ComputeFeatureLookAt(feature);
+  if (!lookat) {
+    return NULL;
+  }
+  return CreateFlyTo(lookat, duration);
 }
 
 bool GetExtendedDataValue(const FeaturePtr& feature,

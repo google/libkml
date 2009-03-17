@@ -26,18 +26,19 @@
 // This file contains the unit tests for the KML convenience functions.
 
 #include "kml/convenience/convenience.h"
-#include "boost/scoped_ptr.hpp"
-#include "kml/dom/kml_factory.h"
 #include "kml/base/date_time.h"
 #include "gtest/gtest.h"
-#include "kml/base/vec3.h"
 
 using kmlbase::DateTime;
 using kmlbase::Vec3;
+using kmldom::CameraPtr;
 using kmldom::CoordinatesPtr;
 using kmldom::DataPtr;
+using kmldom::GxFlyToPtr;
 using kmldom::KmlFactory;
+using kmldom::LineStringPtr;
 using kmldom::LinearRingPtr;
+using kmldom::LookAtPtr;
 using kmldom::OuterBoundaryIsPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
@@ -76,6 +77,33 @@ TEST(ConvenienceTest, TestCreateBasicPolygonPlacemark) {
   ASSERT_TRUE(AsLinearRing(ob->get_linearring()));
 }
 
+// This tests the CreateCamera() function.
+TEST(ConvenienceTest, TestCreateCamera) {
+  const double kLatitude = 37.0;
+  const double kLongitude = -122.0;
+  const double kAltitude = 12.3;
+  const double kHeading = 180.0;
+  const double kTilt = 32.1;
+  const double kRoll = 0.0;
+  const kmldom::AltitudeModeEnum kAltitudeMode = kmldom::ALTITUDEMODE_ABSOLUTE;
+  CameraPtr camera = CreateCamera(kLatitude, kLongitude, kAltitude,
+                                  kHeading, kTilt, kRoll, kAltitudeMode);
+  ASSERT_TRUE(camera->has_longitude());
+  ASSERT_TRUE(camera->has_latitude());
+  ASSERT_TRUE(camera->has_altitude());
+  ASSERT_TRUE(camera->has_heading());
+  ASSERT_TRUE(camera->has_tilt());
+  ASSERT_TRUE(camera->has_roll());
+  ASSERT_TRUE(camera->has_altitudemode());
+  ASSERT_EQ(kLatitude, camera->get_latitude());
+  ASSERT_EQ(kLongitude, camera->get_longitude());
+  ASSERT_EQ(kAltitude, camera->get_altitude());
+  ASSERT_EQ(kHeading, camera->get_heading());
+  ASSERT_EQ(kTilt, camera->get_tilt());
+  ASSERT_EQ(kRoll, camera->get_roll());
+  ASSERT_EQ(kAltitudeMode, camera->get_altitudemode());
+}
+
 // This tests the CreateCoordinatesCircle() functio.
 TEST(ConvenienceTest, TestCreateCoordinatesCircle) {
   const double kLat = 0.0;
@@ -95,6 +123,92 @@ TEST(ConvenienceTest, TestCreateDataNameValue) {
   ASSERT_TRUE(data);
   ASSERT_EQ(kName, data->get_name());
   ASSERT_EQ(kValue, data->get_value());
+}
+
+// This tests the CreateFlyToFromAbstractView function.
+TEST(ConvenienceTest, TestCreateFlyTo) {
+  const double kLat = 37.1;
+  const double kLng = 122.2;
+  const double kAlt = 123.4;
+  const double kHeading = -32.1;
+  const double kTilt = 89.9;
+  const double kRange = 3456.7;
+  const int kAltitudeMode = kmldom::ALTITUDEMODE_ABSOLUTE;
+  const LookAtPtr lookat = CreateLookAt(kLat, kLng, kAlt, kHeading, kTilt,
+                                        kRange, kAltitudeMode);
+  const double duration = 38.3;
+  const GxFlyToPtr flyto = CreateFlyTo(lookat, duration);
+
+  ASSERT_TRUE(flyto);
+  ASSERT_TRUE(flyto->has_abstractview());
+  ASSERT_EQ(kmldom::Type_LookAt, flyto->get_abstractview()->Type());
+  LookAtPtr flyto_lookat = kmldom::AsLookAt(flyto->get_abstractview());
+  ASSERT_EQ(kLat, flyto_lookat->get_latitude());
+  ASSERT_EQ(kLng, flyto_lookat->get_longitude());
+  ASSERT_EQ(kAlt, flyto_lookat->get_altitude());
+  ASSERT_EQ(kHeading, flyto_lookat->get_heading());
+  ASSERT_EQ(kTilt, flyto_lookat->get_tilt());
+  ASSERT_EQ(kRange, flyto_lookat->get_range());
+  ASSERT_EQ(kAltitudeMode, flyto_lookat->get_altitudemode());
+  ASSERT_TRUE(flyto->has_gx_duration());
+  ASSERT_DOUBLE_EQ(duration, flyto->get_gx_duration());
+}
+
+// This tests the CreateFlyToForFeature function.
+TEST(ConvenienceTest, TestCreateFlyToForFeature) {
+  ASSERT_FALSE(CreateFlyToForFeature(NULL, 0));
+  const double kLat = 37.0;
+  const double kLng = -122.0;
+  const CoordinatesPtr coords =
+    CreateCoordinatesCircle(kLat, kLng, 50000, 360);
+  ASSERT_TRUE(coords);
+  LineStringPtr linestring = KmlFactory::GetFactory()->CreateLineString();
+  linestring->set_coordinates(coords);
+  PlacemarkPtr line_placemark = KmlFactory::GetFactory()->CreatePlacemark();
+  line_placemark->set_geometry(linestring);
+  const double kDuration = 34.2;
+  const GxFlyToPtr flyto = CreateFlyToForFeature(line_placemark, kDuration);
+
+  ASSERT_TRUE(flyto);
+  ASSERT_TRUE(flyto->has_abstractview());
+  ASSERT_EQ(kmldom::Type_LookAt, flyto->get_abstractview()->Type());
+  LookAtPtr l = kmldom::AsLookAt(flyto->get_abstractview());
+  ASSERT_DOUBLE_EQ(kLat, l->get_latitude());
+  ASSERT_DOUBLE_EQ(kLng, l->get_longitude());
+  ASSERT_DOUBLE_EQ(0.0, l->get_altitude());
+  ASSERT_DOUBLE_EQ(0.0, l->get_heading());
+  ASSERT_DOUBLE_EQ(0.0, l->get_tilt());
+  ASSERT_NEAR(134721.0512, l->get_range(), 0.0001);
+  ASSERT_EQ(kmldom::ALTITUDEMODE_RELATIVETOGROUND, l->get_altitudemode());
+  ASSERT_TRUE(flyto->has_gx_duration());
+  ASSERT_DOUBLE_EQ(kDuration, flyto->get_gx_duration());
+}
+
+// This tests the CreateLookAt() function.
+TEST(ConvenienceTest, TestCreateLookAt) {
+  const double kLatitude = 37.0;
+  const double kLongitude = -122.0;
+  const double kAltitude = 12.3;
+  const double kHeading = 180.0;
+  const double kTilt = 32.1;
+  const double kRange = 1000.3;
+  const kmldom::AltitudeModeEnum kAltitudeMode = kmldom::ALTITUDEMODE_ABSOLUTE;
+  LookAtPtr lookat = CreateLookAt(kLatitude, kLongitude, kAltitude,
+                                  kHeading, kTilt, kRange, kAltitudeMode);
+  ASSERT_TRUE(lookat->has_longitude());
+  ASSERT_TRUE(lookat->has_latitude());
+  ASSERT_TRUE(lookat->has_altitude());
+  ASSERT_TRUE(lookat->has_heading());
+  ASSERT_TRUE(lookat->has_tilt());
+  ASSERT_TRUE(lookat->has_range());
+  ASSERT_TRUE(lookat->has_altitudemode());
+  ASSERT_EQ(kLatitude, lookat->get_latitude());
+  ASSERT_EQ(kLongitude, lookat->get_longitude());
+  ASSERT_EQ(kAltitude, lookat->get_altitude());
+  ASSERT_EQ(kHeading, lookat->get_heading());
+  ASSERT_EQ(kTilt, lookat->get_tilt());
+  ASSERT_EQ(kRange, lookat->get_range());
+  ASSERT_EQ(kAltitudeMode, lookat->get_altitudemode());
 }
 
 // This tests the CreatePointFromLatLonAtts() function.

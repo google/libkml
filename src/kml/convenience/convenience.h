@@ -52,6 +52,11 @@ void AddExtendedDataValue(const std::string& name, const std::string& value,
 kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
     const kmldom::LinearRingPtr& lr);
 
+// Creates a <Camera> element with the specified fields.
+kmldom::CameraPtr CreateCamera(double latitude, double longitude,
+                               double altitude, double heading, double tilt,
+                               double roll, int altitudemode);
+
 // Creates a <coordinates> element filled with the lng, lat[, alt] tuples
 // describing a great circle of radius around a point lat, lng. The
 // antemeridian is not considered here.
@@ -62,6 +67,11 @@ kmldom::CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
 // <Data name="NAME><value>VALUE</value></Data>
 kmldom::DataPtr CreateDataNameValue(const std::string& name,
                                     const std::string& value);
+
+// Creates a <LookAt> element from the specified fields.
+kmldom::LookAtPtr CreateLookAt(double latitude, double longitude,
+                               double altitude, double heading, double tilt,
+                               double range, int altitudemode);
 
 // If the atts contains both a double "lat" and double "lon" then create
 // a KML <Point> with <coordinates> set from these attributes.
@@ -90,6 +100,23 @@ kmldom::PlacemarkPtr CreatePointPlacemarkWithTimeStamp(
 kmldom::RegionPtr CreateRegion2d(double north, double south,
                                  double east, double west,
                                  double minlodpixels, double maxlodpixels);
+
+
+// Creates a <gx:FlyTo> element which has the specified <gx:duration> and the
+// specified AbstractView.
+kmldom::GxFlyToPtr CreateFlyTo(const kmldom::AbstractViewPtr& abstractview,
+                               double duration);
+
+// Creates a <gx:FlyTo> element which has the specified <gx:duration> and a
+// an AbstractView. If the feature has a existing AbstractView it is used,
+// otherwise a <LookAt> is computed from the spatial extents of the feature. The
+// LookAt's altitude, heading and tilt are set to 0.0 and the altitudeMode is
+// set to relativeToGroud. Returns NULL if the feature has no specified
+// AbstractView and none can be computed.
+// See kmlengine::ComputeFeatureLookAt for details of how the LookAt is
+// generated.
+kmldom::GxFlyToPtr CreateFlyToForFeature(const kmldom::FeaturePtr& feature,
+                                         double duration);
 
 // This gets the value of the given name from the ExtendedData/Data as
 // described above.  If there is no ExtendedData or no Data element with
