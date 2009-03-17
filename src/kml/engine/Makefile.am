@@ -13,6 +13,7 @@ libkmlengine_la_SOURCES = \
 	clone.cc \
 	entity_mapper.cc \
 	feature_balloon.cc \
+	feature_view.cc \
 	feature_visitor.cc \
 	find.cc \
 	get_link_parents.cc \
@@ -49,6 +50,7 @@ libkmlengineinclude_HEADERS = \
 	engine_types.h \
 	entity_mapper.h \
 	feature_balloon.h \
+	feature_view.h \
 	feature_visitor.h \
 	find.h \
 	get_link_parents.h \
@@ -90,6 +92,7 @@ TESTS = bbox_test \
 	entity_mapper_test \
 	feature_balloon_test \
 	feature_visitor_test \
+	feature_view_test\
 	find_test \
 	get_link_parents_test \
 	get_links_test \
@@ -142,6 +145,13 @@ entity_mapper_test_LDADD= libkmlengine.la \
 feature_balloon_test_SOURCES = feature_balloon_test.cc
 feature_balloon_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 feature_balloon_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+feature_view_test_SOURCES = feature_view_test.cc
+feature_view_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+feature_view_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
