@@ -34,6 +34,7 @@
 #include "kml/engine/engine_types.h"
 #include "kml/engine/entity_mapper.h"
 #include "kml/engine/feature_balloon.h"
+#include "kml/engine/feature_view.h"
 #include "kml/engine/feature_visitor.h"
 #include "kml/engine/find.h"
 #include "kml/engine/get_links.h"
