@@ -118,6 +118,9 @@ kmldom::GxFlyToPtr CreateFlyTo(const kmldom::AbstractViewPtr& abstractview,
 kmldom::GxFlyToPtr CreateFlyToForFeature(const kmldom::FeaturePtr& feature,
                                          double duration);
 
+// Creates a <gx:Wait> with a <gx:duration> of the specified value.
+kmldom::GxWaitPtr CreateWait(double duration);
+
 // This gets the value of the given name from the ExtendedData/Data as
 // described above.  If there is no ExtendedData or no Data element with
 // the given name false is returned.

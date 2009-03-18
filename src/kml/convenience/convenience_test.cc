@@ -35,6 +35,7 @@ using kmldom::CameraPtr;
 using kmldom::CoordinatesPtr;
 using kmldom::DataPtr;
 using kmldom::GxFlyToPtr;
+using kmldom::GxWaitPtr;
 using kmldom::KmlFactory;
 using kmldom::LineStringPtr;
 using kmldom::LinearRingPtr;
@@ -320,6 +321,14 @@ TEST(ConvenienceTest, TestCreateRegion2d) {
   ASSERT_EQ(kMaxlodpixels, region->get_lod()->get_maxlodpixels());
   ASSERT_FALSE(region->get_lod()->has_minfadeextent());
   ASSERT_FALSE(region->get_lod()->has_maxfadeextent());
+}
+
+TEST(ConvenienceTest, TestCreateWait) {
+  const double kWait(12.3);
+  GxWaitPtr wait = CreateWait(kWait);
+  ASSERT_TRUE(wait);
+  ASSERT_TRUE(wait->has_gx_duration());
+  ASSERT_DOUBLE_EQ(kWait, wait->get_gx_duration());
 }
 
 // This tests the GetExtendedDataValue() function.
