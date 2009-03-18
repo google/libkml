@@ -80,6 +80,7 @@ libkmlengineinclude_HEADERS = \
 # These header files are added to the distribution such that it can be built,
 # but these header files should not be used in application code.
 EXTRA_DIST = \
+	engine_constants.h \
 	id_mapper_internal.h \
 	kml_uri_internal.h \
 	style_inliner_internal.h \

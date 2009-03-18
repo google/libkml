@@ -99,7 +99,7 @@ static const struct {
     "/style/shared-stylemap-pm0-normal-check.kml" },
   { "/style/allstyles.kml", "f0", kmldom::STYLESTATE_NORMAL,
     "/style/allstyles-f0-normal-check.kml" },
-#if 0 // TODO
+#if 0  // TODO
   { "/style/allstyles.kml", "f0", kmldom::STYLESTATE_HIGHLIGHT,
     "/style/allstyles-f0-highlight-check.kml" },
 #endif
@@ -110,7 +110,15 @@ static const struct {
   { "/style/dup-id.kml", "line", kmldom::STYLESTATE_NORMAL,
     "/style/dup-id-normal-check.kml" },
   { "/style/dup-id.kml", "point", kmldom::STYLESTATE_NORMAL,
-    "/style/dup-id-normal-check.kml" }
+    "/style/dup-id-normal-check.kml" },
+  { "/style/nesting.kml", "p0", kmldom::STYLESTATE_NORMAL,
+    "/style/empty-style-check.kml" },
+  { "/style/nesting.kml", "p0", kmldom::STYLESTATE_HIGHLIGHT,
+    "/style/empty-style-check.kml" },
+  { "/style/nesting.kml", "p1", kmldom::STYLESTATE_NORMAL,
+    "/style/empty-style-check.kml" },
+  { "/style/nesting.kml", "p1", kmldom::STYLESTATE_HIGHLIGHT,
+    "/style/empty-style-check.kml" }
 };
 
 // This is a utility function to read a file relative to the testdata directory.
@@ -148,7 +156,8 @@ TEST_F(StyleResolverTest, TestFiles) {
     ParseFromDataDirFile(kTestCases[i].source_file_);
     FeaturePtr feature = kmldom::AsFeature(
         kml_file_->GetObjectById(kTestCases[i].feature_id_));
-    ASSERT_TRUE(feature);  // This is internal to the test.
+    // This is internal to the test.
+    ASSERT_TRUE(feature) << "no such feature " << kTestCases[i].feature_id_;
 
     // This is the function under test.
     StylePtr style = CreateResolvedStyle(feature, kml_file_,

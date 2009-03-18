@@ -28,6 +28,7 @@
 
 #include "kml/engine/style_merger.h"
 #include "kml/dom.h"
+#include "kml/engine/engine_constants.h"
 #include "kml/engine/kml_cache.h"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kml_uri.h"
@@ -43,6 +44,7 @@ using kmldom::StyleStateEnum;
 
 namespace kmlengine {
 
+// TODO: verify unsigned int to int init of nesting_depth_ ok on MSVC
 StyleMerger::StyleMerger(const SharedStyleMap& shared_style_map,
                          KmlCache* kml_cache,
                          const std::string& base_url,
@@ -50,11 +52,38 @@ StyleMerger::StyleMerger(const SharedStyleMap& shared_style_map,
     : shared_style_map_(shared_style_map),
       kml_cache_(kml_cache),
       base_url_(base_url),
-      style_state_(style_state) {
-  resolved_style_ = KmlFactory::GetFactory()->CreateStyle();
+      style_state_(style_state),
+      resolved_style_(KmlFactory::GetFactory()->CreateStyle()),
+      nesting_depth_(kDefaultMaxNestedStyleUrls) {
+}
+
+// TODO: verify unsigned int to int init of nesting_depth_ ok on MSVC
+StyleMerger::StyleMerger(const SharedStyleMap& shared_style_map,
+                         KmlCache* kml_cache,
+                         const std::string& base_url,
+                         StyleStateEnum style_state,
+                         unsigned int nesting_depth)
+    : shared_style_map_(shared_style_map),
+      kml_cache_(kml_cache),
+      base_url_(base_url),
+      style_state_(style_state),
+      resolved_style_(KmlFactory::GetFactory()->CreateStyle()),
+      nesting_depth_(nesting_depth) {
+}
+
+// static
+StyleMerger* StyleMerger::CreateFromKmlFile(
+    const KmlFile& kml_file, kmldom::StyleStateEnum style_state) {
+  return new StyleMerger(kml_file.get_shared_style_map(),
+                         kml_file.get_kml_cache(),
+                         kml_file.get_url(),
+                         style_state);
 }
 
 void StyleMerger::MergeStyleUrl(const std::string& styleurl) {
+  if (--nesting_depth_ < 0) {
+    return;
+  }
   std::string path;
   std::string style_id;  // fragment
   if (styleurl.empty() ||
