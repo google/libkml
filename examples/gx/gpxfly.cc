@@ -120,13 +120,6 @@ static GxAnimatedUpdatePtr CreateAnimatedUpdate(const std::string& target_id,
   return animated_update;
 }
 
-// TODO: move to convenience
-static GxWaitPtr CreateWait(double duration) {
-  GxWaitPtr wait = KmlFactory::GetFactory()->CreateGxWait();
-  wait->set_gx_duration(duration);
-  return wait;
-}
-
 // This specialization of the GpxTrkPtHandler converts each GPX <trkpt> to
 // a KML <gx:AnimatedUpdate> + <gx:FlyTo>.
 class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
@@ -178,7 +171,7 @@ class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
             CreateGxFlyTo(where.get_latitude(), where.get_longitude(),
                           heading, duration, speed));
         // Wait 0 to create smooth animated update...
-        playlist_->add_gx_tourprimitive(CreateWait(0));
+        playlist_->add_gx_tourprimitive(kmlconvenience::CreateWait(0));
       }
     }
     previous_when_ = when_timet;
