@@ -38,6 +38,7 @@ namespace kmlengine {
 // shared StyleSelector(s) of the given Feature within the given KmlFile for
 // the given style state (<key>).  All SubStyle simple and complex children
 // set in inline/shared StyleSelectors are also set in the created Style.
+// This folows an internal maximum number of nested styleUrls.
 kmldom::StylePtr CreateResolvedStyle(const kmldom::FeaturePtr& feature,
                                      const KmlFilePtr& kml_file,
                                      kmldom::StyleStateEnum style_state);

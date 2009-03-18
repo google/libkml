@@ -64,6 +64,8 @@ StylePtr StyleResolver::CreateResolvedStyle(
     kmldom::StyleStateEnum style_state) {
   StyleMerger style_merger(shared_style_map, kml_cache, base_url, style_state);
   style_merger.MergeStyle(styleurl, styleselector);
+  // This always returns the thus-far resolved <Style> even if the nesting
+  // level was reached.
   return style_merger.GetResolvedStyle();
 }
 

@@ -322,6 +322,43 @@ TEST_F(StyleMergerTest, TestMergeStyleSelector) {
   VerifyStyleMergersEmpty();
 }
 
+// Verify the nesting depth detection.
+TEST_F(StyleMergerTest, TestNestingDepthDetection) {
+  SharedStyleMap shared_style_map;
+  // <Style><LineStyle>...
+  const std::string kStyleId("style0");
+  style_->set_linestyle(factory_->CreateLineStyle());
+  shared_style_map[kStyleId] = style_;
+  // <StyleMap><Pair><key>normal><Style><IconStyle>...
+  const std::string kStyleMapId("stylemap0");
+  PairPtr pair = factory_->CreatePair();
+  pair->set_key(kmldom::STYLESTATE_NORMAL);
+  StylePtr style = factory_->CreateStyle();
+  style->set_iconstyle(factory_->CreateIconStyle());
+  pair->set_styleselector(style);
+  stylemap_->add_pair(pair);
+  shared_style_map[kStyleMapId] = stylemap_;
+  style_merger_normal_.reset(new StyleMerger(shared_style_map, NULL, "",
+                                             kmldom::STYLESTATE_NORMAL,
+                                             1));
+  ASSERT_EQ(1, style_merger_normal_->get_nesting_depth());
+  // Resolve a styleUrl and the count decrements.
+  style_merger_normal_->MergeStyleUrl(std::string("#") + kStyleId);
+  ASSERT_EQ(0, style_merger_normal_->get_nesting_depth());
+  // The resolved style is the one with a <LineStyle>
+  StylePtr resolved_style = style_merger_normal_->GetResolvedStyle();
+  ASSERT_TRUE(resolved_style);
+  ASSERT_TRUE(resolved_style->has_linestyle());
+  ASSERT_FALSE(resolved_style->has_iconstyle());
+  // Now try to resolve against another styleUrl to another StyleSelector.
+  style_merger_normal_->MergeStyleUrl(std::string("#") + kStyleMapId);
+  ASSERT_EQ(-1, style_merger_normal_->get_nesting_depth());
+  // Verify that no further merging happened.
+  ASSERT_TRUE(resolved_style);
+  ASSERT_TRUE(resolved_style->has_linestyle());
+  ASSERT_FALSE(resolved_style->has_iconstyle());
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
