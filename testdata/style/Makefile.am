@@ -14,6 +14,7 @@ EXTRA_DIST = \
 	inline-stylemap-pm0-normal-check.kml \
 	inline-stylemap.kml \
 	kmlsamples-inline-style-check.kml \
+	nesting.kml \
 	remote-styleurl-document-check.kml \
 	remote-styleurl-folder-check.kml \
 	remote-styleurl-groundoverlay-check.kml \

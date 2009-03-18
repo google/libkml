@@ -1,0 +1,46 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+
+    <StyleMap id="loop">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#loop</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#loop</styleUrl>
+      </Pair>
+    </StyleMap>
+
+    <StyleMap id="loop2">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#loop3</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#loop3</styleUrl>
+      </Pair>
+    </StyleMap>
+
+    <StyleMap id="loop3">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#loop2</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#loop2</styleUrl>
+      </Pair>
+    </StyleMap>
+
+    <Placemark id="p0">
+      <styleUrl>#loop</styleUrl>
+    </Placemark>
+
+    <Placemark id="p1">
+      <styleUrl>#loop2</styleUrl>
+    </Placemark>
+
+  </Document>
+</kml>
