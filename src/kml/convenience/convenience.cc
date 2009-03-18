@@ -43,6 +43,7 @@ using kmldom::DataPtr;
 using kmldom::ExtendedDataPtr;
 using kmldom::FeaturePtr;
 using kmldom::GxFlyToPtr;
+using kmldom::GxWaitPtr;
 using kmldom::KmlFactory;
 using kmldom::LatLonAltBoxPtr;
 using kmldom::LodPtr;
@@ -206,6 +207,12 @@ GxFlyToPtr CreateFlyToForFeature(const FeaturePtr& feature, double duration) {
     return NULL;
   }
   return CreateFlyTo(lookat, duration);
+}
+
+GxWaitPtr CreateWait(double duration) {
+  GxWaitPtr wait = KmlFactory::GetFactory()->CreateGxWait();
+  wait->set_gx_duration(duration);
+  return wait;
 }
 
 bool GetExtendedDataValue(const FeaturePtr& feature,
