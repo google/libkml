@@ -107,8 +107,8 @@
 				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.1\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
-				UsePrecompiledHeader="2"
-				PrecompiledHeaderThrough="stdafx.h"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderThrough=""
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
@@ -161,6 +161,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\feature_balloon.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\feature_view.cc"
 				>
 			</File>
 			<File
@@ -255,6 +259,10 @@
 				RelativePath="..\src\kml\engine\update.cc"
 				>
 			</File>
+			<File
+				RelativePath="..\src\kml\engine\update_processor.cc"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -270,6 +278,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\engine_constants.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\engine_types.h"
 				>
 			</File>
@@ -279,6 +291,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\feature_balloon.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\feature_view.h"
 				>
 			</File>
 			<File
@@ -379,6 +395,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\update.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\update_processor.h"
 				>
 			</File>
 		</Filter>
