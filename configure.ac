@@ -219,6 +219,8 @@ AC_CONFIG_FILES([
 	testdata/gx/Makefile
 	testdata/kml/Makefile
 	testdata/kmz/Makefile
+        testdata/kmz/files/Makefile
+        testdata/kmz/kmzfiles/Makefile
 	testdata/kmz/rumsey/Makefile
 	testdata/kmz/rumsey/kml/Makefile
 	testdata/kmz/rumsey/imagery/Makefile
