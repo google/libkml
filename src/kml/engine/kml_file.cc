@@ -27,6 +27,7 @@
 
 #include "kml/engine/kml_file.h"
 #include "kml/base/xml_namespaces.h"
+#include "kml/engine/find_xml_namespaces.h"
 #include "kml/engine/id_mapper.h"
 #include "kml/engine/kmz_file.h"
 #include "kml/dom.h"
@@ -177,12 +178,17 @@ bool KmlFile::SerializeToString(std::string* xml_output) const {
   if (!xml_output || !get_root()) {
     return false;
   }
+  // Find xml namespaces into this local Attributes.  Can't write on xmlns_
+  // due to this being a const method.
+  kmlbase::Attributes xmlns_attributes;
+  FindXmlNamespaces(get_root(), &xmlns_attributes);
   xml_output->append(CreateXmlHeader());
   std::string default_xmlns;
   if (xmlns_.GetValue("xmlns", &default_xmlns)) {
     get_root()->set_default_xmlns(default_xmlns);
   }
   get_root()->MergeXmlns(xmlns_);
+  get_root()->MergeXmlns(xmlns_attributes);
   xml_output->append(kmldom::SerializePretty(get_root()));
   return true;
 }

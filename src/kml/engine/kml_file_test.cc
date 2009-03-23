@@ -444,6 +444,24 @@ TEST_F(KmlFileTest, TestAddXmlNamespaceById) {
   ASSERT_EQ(kExpected1, xml);
 }
 
+TEST_F(KmlFileTest, TestForSerializeWithNamespaces) {
+  kml_file_ = KmlFile::CreateFromString(
+      "<Document><gx:Tour><atom:author/></gx:Tour></Document>");
+  ASSERT_TRUE(kml_file_);
+  std::string xml;
+  ASSERT_TRUE(kml_file_->SerializeToString(&xml));
+  const std::string kExpected =
+      "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+      "<Document xmlns=\"http://www.opengis.net/kml/2.2\" "
+      "xmlns:atom=\"http://www.w3.org/2005/Atom\" "
+      "xmlns:gx=\"http://www.google.com/kml/ext/2.2\">\n"
+      "  <gx:Tour>\n"
+      "    <atom:author/>\n"
+      "  </gx:Tour>\n"
+      "</Document>\n";
+  ASSERT_EQ(kExpected, xml);
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
