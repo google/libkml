@@ -71,7 +71,7 @@ class XalAddressDetails : public BasicElement<Type_XalAddressDetails> {
   void clear_country() { set_country(NULL); }
 
  private:
-  XalAddressDetails() {}
+  XalAddressDetails();
   XalCountryPtr country_;
   friend class KmlFactory;
   friend class KmlHandler;
@@ -123,9 +123,7 @@ class XalAdministrativeArea : public BasicElement<Type_XalAdministrativeArea> {
   void clear_subadministrativearea() { set_subadministrativearea(NULL); }
 
  private:
-  XalAdministrativeArea()
-    : has_administrativeareaname_(false) {
-  }
+  XalAdministrativeArea();
   bool has_administrativeareaname_;
   std::string administrativeareaname_;
   XalLocalityPtr locality_;
@@ -166,10 +164,7 @@ class XalCountry : public BasicElement<Type_XalCountry> {
   void clear_administrativearea() { set_administrativearea(NULL); }
 
  private:
-  XalCountry()
-    : has_countrynamecode_(false) {
-  }
-
+  XalCountry();
   bool has_countrynamecode_;
   std::string countrynamecode_;
   XalAdministrativeAreaPtr administrativearea_;
@@ -219,9 +214,7 @@ class XalLocality : public BasicElement<Type_XalLocality> {
   void clear_postalcode() { set_postalcode(NULL); }
 
  private:
-  XalLocality()
-    : has_localityname_(false) {
-  }
+  XalLocality();
   bool has_localityname_;
   std::string localityname_;
   XalThoroughfarePtr thoroughfare_;
@@ -255,9 +248,7 @@ class XalPostalCode : public BasicElement<Type_XalPostalCode> {
   }
 
  private:
-  XalPostalCode()
-    : has_postalcodenumber_(false) {
-  }
+  XalPostalCode();
   bool has_postalcodenumber_;
   std::string postalcodenumber_;
   friend class KmlFactory;
@@ -298,9 +289,7 @@ class XalSubAdministrativeArea :
   void clear_locality() { set_locality(NULL); }
 
  private:
-  XalSubAdministrativeArea()
-    : has_subadministrativeareaname_(false) {
-  }
+  XalSubAdministrativeArea();
   bool has_subadministrativeareaname_;
   std::string subadministrativeareaname_;
   XalLocalityPtr locality_;
@@ -349,10 +338,7 @@ class XalThoroughfare : public BasicElement<Type_XalThoroughfare> {
   }
 
  private:
-  XalThoroughfare()
-    : has_thoroughfarename_(false),
-      has_thoroughfarenumber_(false) {
-  }
+  XalThoroughfare();
   bool has_thoroughfarename_;
   std::string thoroughfarename_;
   bool has_thoroughfarenumber_;

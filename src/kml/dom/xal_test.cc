@@ -63,6 +63,7 @@ TEST_F(XalAddressDetailsTest, TestType) {
 TEST_F(XalAddressDetailsTest, TestDefault) {
   ASSERT_FALSE(xaladdressdetails_->has_country());
   ASSERT_FALSE(xaladdressdetails_->get_country());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, xaladdressdetails_->get_xmlns());
 }
 
 TEST_F(XalAddressDetailsTest, TestSetGetHasClear) {
@@ -160,6 +161,7 @@ TEST_F(XalAdministrativeAreaTest, TestDefault) {
   ASSERT_FALSE(xaladministrativearea_->get_locality());
   ASSERT_FALSE(xaladministrativearea_->has_subadministrativearea());
   ASSERT_FALSE(xaladministrativearea_->get_subadministrativearea());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, xaladministrativearea_->get_xmlns());
 }
 
 // <xal:Country>
@@ -182,6 +184,7 @@ TEST_F(XalCountryTest, TestDefault) {
   ASSERT_FALSE(xalcountry_->has_administrativearea());
   ASSERT_TRUE(xalcountry_->get_countrynamecode().empty());
   ASSERT_FALSE(xalcountry_->get_administrativearea());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, xalcountry_->get_xmlns());
 }
 
 TEST_F(XalCountryTest, TestSetGetHasClear) {
@@ -234,6 +237,7 @@ TEST_F(XalLocalityTest, TestDefault) {
   ASSERT_FALSE(locality_->get_thoroughfare());
   ASSERT_FALSE(locality_->has_postalcode());
   ASSERT_FALSE(locality_->get_postalcode());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, locality_->get_xmlns());
 }
 
 // <xal:PostalCode>
@@ -253,6 +257,7 @@ TEST_F(XalPostalCodeTest, TestType) {
 
 TEST_F(XalPostalCodeTest, TestDefault) {
   ASSERT_FALSE(postalcode_->has_postalcodenumber());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, postalcode_->get_xmlns());
 }
 
 // <xal:SubAdministrativeArea>
@@ -277,6 +282,7 @@ TEST_F(XalSubAdministrativeAreaTest, TestDefault) {
       xalsubadministrativearea_->get_subadministrativeareaname().empty());
   ASSERT_FALSE(xalsubadministrativearea_->has_locality());
   ASSERT_FALSE(xalsubadministrativearea_->get_locality());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, xalsubadministrativearea_->get_xmlns());
 }
 
 // <xal:Thoroughfare>
@@ -299,6 +305,7 @@ TEST_F(XalThoroughfareTest, TestDefault) {
   ASSERT_TRUE(thoroughfare_->get_thoroughfarename().empty());
   ASSERT_FALSE(thoroughfare_->has_thoroughfarenumber());
   ASSERT_TRUE(thoroughfare_->get_thoroughfarenumber().empty());
+  ASSERT_EQ(kmlbase::XMLNS_XAL, thoroughfare_->get_xmlns());
 }
 
 }  // namespace kmldom
