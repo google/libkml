@@ -16,6 +16,7 @@ libkmlengine_la_SOURCES = \
 	feature_view.cc \
 	feature_visitor.cc \
 	find.cc \
+	find_xml_namespaces.cc \
 	get_link_parents.cc \
 	get_links.cc \
 	href.cc \
@@ -53,6 +54,7 @@ libkmlengineinclude_HEADERS = \
 	feature_view.h \
 	feature_visitor.h \
 	find.h \
+	find_xml_namespaces.h \
 	get_link_parents.h \
 	get_links.h \
 	href.h \
@@ -95,6 +97,7 @@ TESTS = bbox_test \
 	feature_visitor_test \
 	feature_view_test\
 	find_test \
+	find_xml_namespaces_test \
 	get_link_parents_test \
 	get_links_test \
 	href_test \
@@ -329,6 +332,13 @@ update_processor_test_LDADD= libkmlengine.la \
 update_test_SOURCES = update_test.cc
 update_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 update_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+find_xml_namespaces_test_SOURCES = find_xml_namespaces_test.cc
+find_xml_namespaces_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+find_xml_namespaces_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
