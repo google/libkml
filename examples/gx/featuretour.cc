@@ -106,8 +106,6 @@ static bool WriteTour(const GxTourPtr& tour, const char* outfile) {
     cerr << "Error: could not create KmlFile from tour" << endl;
     return false;
   }
-  // TODO: CreateFromImport doesn't grok namespaces yet.
-  kmlfile->AddXmlNamespaceById(kmlbase::XMLNS_GX22);
 
   std::string kml_data;
   kmlfile->SerializeToString(&kml_data);

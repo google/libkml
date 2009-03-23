@@ -63,6 +63,8 @@ using kmldom::UpdatePtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
 
+static const double kThreshold = 60.0;  // seconds
+
 // Return a <gx:FlyTo> with <Camera> as specified by the lat, lon and heading
 // and with a range scaled by speed.  The duration is used as the <gx:duration>
 // of the <gx:FlyTo>.
@@ -127,8 +129,15 @@ class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
   TourTrkPtHandler(ContainerPtr container)
     : placemark_id_("moving-placemark"),
       previous_when_(0),
-      container_(container),
-      playlist_(KmlFactory::GetFactory()->CreateGxPlaylist()) {
+      container_(container) {
+  }
+
+  void NewTour() {
+    GxTourPtr tour(KmlFactory::GetFactory()->CreateGxTour());
+    tour->set_name("Play me!");
+    playlist_ = KmlFactory::GetFactory()->CreateGxPlaylist();
+    tour->set_gx_playlist(playlist_);
+    container_->add_feature(tour);
   }
 
   // This is called for each <trkpt>.
@@ -145,10 +154,7 @@ class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
       placemark->set_geometry(CreatePointLatLon(where.get_latitude(),
                                                 where.get_longitude()));
       container_->add_feature(placemark);
-      GxTourPtr tour(KmlFactory::GetFactory()->CreateGxTour());
-      tour->set_name("Play me!");
-      tour->set_gx_playlist(playlist_);
-      container_->add_feature(tour);
+      NewTour();
     } else {
       // Convert the GPX <trkpt> to a <gx:AnimatedUpdate> + <gx:FlyTo>.
       // Note, it's quite important that the AnimatedUpdate appear _before_
@@ -157,6 +163,8 @@ class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
       const double duration = when_timet - previous_when_;
       if (duration < 0) {
         std::cerr << "Ignoring point out of time order." << std::endl;
+      } else if (duration > kThreshold) {
+        NewTour();
       } else {
         playlist_->add_gx_tourprimitive(
             CreateAnimatedUpdate(placemark_id_, where.get_latitude(),
@@ -213,8 +221,6 @@ static bool CreateGpxTour(const char* gpx_pathname, const char* kml_pathname) {
   KmlPtr kml = kml_factory->CreateKml();
   kml->set_feature(document);
   KmlFilePtr kml_file = KmlFile::CreateFromImport(kml);
-  // TODO: get rid of this once CreateFromImport discovers namespaces.
-  kml_file->AddXmlNamespaceById(kmlbase::XMLNS_GX22);
   std::string kml_data;
   kml_file->SerializeToString(&kml_data);
 
