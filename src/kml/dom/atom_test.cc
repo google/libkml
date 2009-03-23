@@ -27,6 +27,7 @@
 // elements.
 
 #include "kml/dom/atom.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_factory.h"
 #include "gtest/gtest.h"
 
@@ -43,7 +44,31 @@ class AtomAuthorTest : public testing::Test {
 
 TEST_F(AtomAuthorTest, TestType) {
   ASSERT_EQ(Type_AtomAuthor, atomauthor_->Type());
+  ASSERT_FALSE(atomauthor_->IsA(Type_Object));
   ASSERT_TRUE(atomauthor_->IsA(Type_AtomAuthor));
+}
+
+TEST_F(AtomAuthorTest, TestXmlNamespace) {
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, atomauthor_->get_xmlns());
+}
+
+class AtomLinkTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    atomlink_ = KmlFactory::GetFactory()->CreateAtomLink();
+  }
+
+  AtomLinkPtr atomlink_;
+};
+
+TEST_F(AtomLinkTest, TestType) {
+  ASSERT_EQ(Type_AtomLink, atomlink_->Type());
+  ASSERT_FALSE(atomlink_->IsA(Type_Object));
+  ASSERT_TRUE(atomlink_->IsA(Type_AtomLink));
+}
+
+TEST_F(AtomLinkTest, TestXmlNamespace) {
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, atomlink_->get_xmlns());
 }
 
 }  // namespace kmldom

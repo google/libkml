@@ -38,6 +38,7 @@ AtomAuthor::AtomAuthor()
   : has_name_(false),
     has_uri_(false),
     has_email_(false) {
+  set_xmlns(kmlbase::XMLNS_ATOM);
 }
 
 AtomAuthor::~AtomAuthor() {}
@@ -86,6 +87,7 @@ AtomLink::AtomLink()
     has_title_(false),
     has_length_(false),
     length_(0) {
+  set_xmlns(kmlbase::XMLNS_ATOM);
 }
 
 AtomLink::~AtomLink() {}
