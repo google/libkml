@@ -31,6 +31,7 @@ namespace kmlbase {
 TEST(XmlNamespacesTest, TestFindXmlNamespaceAndPrefix) {
   std::string prefix;
   std::string xml_namespace;
+  ASSERT_FALSE(FindXmlNamespaceAndPrefix(XMLNS_NONE, NULL, NULL));
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, NULL, NULL));
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, &prefix, NULL));
   ASSERT_TRUE(!prefix.empty());
