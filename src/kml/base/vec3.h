@@ -56,7 +56,11 @@ class Vec3 {
   }
 
   void set(int i, double val) {
-    vec_[i] = val;
+    if (i == 2) {
+      set_altitude(val);
+    } else {
+      vec_[i] = val;
+    }
   }
 
   double get_longitude() const {
