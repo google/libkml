@@ -378,10 +378,8 @@ TEST_F(KmlFileTest, TestCreateFromImportAndGetById) {
   // Import this dom into a KmlFile.
   kml_file_ = KmlFile::CreateFromImport(element);
   ASSERT_TRUE(kml_file_);
-#if 0 // TODO
   ASSERT_EQ(kmldom::Type_Style,
             kml_file_->GetSharedStyleById("allstyles")->Type());
-#endif
   ASSERT_EQ(kmldom::Type_ListStyle,
             kml_file_->GetObjectById("liststyle")->Type());
   ASSERT_EQ(kmldom::Type_Folder, kml_file_->GetObjectById("f0")->Type());
