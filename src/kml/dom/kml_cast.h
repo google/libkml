@@ -139,7 +139,6 @@ const StylePtr AsStyle(const ElementPtr element);
 const StyleMapPtr AsStyleMap(const ElementPtr element);
 const TimeSpanPtr AsTimeSpan(const ElementPtr element);
 const TimeStampPtr AsTimeStamp(const ElementPtr element);
-const TimePrimitivePtr AsTimePrimitive(const ElementPtr element);
 inline const UpdatePtr AsUpdate(const ElementPtr& element) {
   return ElementCast<Update>(element);
 }
