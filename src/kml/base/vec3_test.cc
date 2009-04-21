@@ -71,7 +71,7 @@ TEST(Vec3Test, TestSetClearAltitude) {
   ASSERT_EQ(false, vec3.has_altitude());
 }
 
-TEST(Vec3Test, TestSet) {
+TEST(Vec3Test, TestSet3d) {
   const double k0(0.0);
   const double k1(1.0);
   const double k2(2.0);
@@ -81,7 +81,19 @@ TEST(Vec3Test, TestSet) {
   vec.set(2, k2);
   ASSERT_EQ(k0, vec.get_longitude());
   ASSERT_EQ(k1, vec.get_latitude());
+  ASSERT_TRUE(vec.has_altitude());
   ASSERT_EQ(k2, vec.get_altitude());
+}
+
+TEST(Vec3Test, TestSet2d) {
+  const double k0(0.0);
+  const double k1(1.0);
+  Vec3 vec;
+  vec.set(0, k0);
+  vec.set(1, k1);
+  ASSERT_EQ(k0, vec.get_longitude());
+  ASSERT_EQ(k1, vec.get_latitude());
+  ASSERT_FALSE(vec.has_altitude());
 }
 
 }  // end namespace kmlbase
