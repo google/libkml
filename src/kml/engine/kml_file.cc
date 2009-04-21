@@ -138,13 +138,23 @@ KmlFile* KmlFile::CreateFromImportInternal(const kmldom::ElementPtr& element,
   }
   KmlFile* kml_file = new KmlFile;
   ElementVector dup_id_elements;
-  MapIds(element, &kml_file->object_id_map_, &dup_id_elements);
+  ObjectIdMap* map_ptr = &kml_file->object_id_map_;
+  MapIds(element, map_ptr, &dup_id_elements);
   if (strict && !dup_id_elements.empty()) {
     delete kml_file;
     return NULL;
   }
-  // TODO: look for shared styles in object_id_map_ and add to
-  // shared_style_map_
+  // Add all the shared styles to the style map. A shared style is any style
+  // with an id whose parent is a document (and by defintion anything in
+  // object_id_map_ has an id).
+  ObjectIdMap::const_iterator it;
+  for (it = map_ptr->begin(); it != map_ptr->end(); it++) {
+    if (kmldom::StyleSelectorPtr ss = kmldom::AsStyleSelector(it->second)) {
+      if (kmldom::AsDocument(ss->GetParent())) {
+        (kml_file->shared_style_map_)[ss->get_id()] = ss;
+      }
+    }
+  }
   // TODO check/set all elements under elements to be in this file.
   kml_file->set_root(element);
   return kml_file;
