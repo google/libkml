@@ -82,6 +82,7 @@ TEST_F(CoordinatesTest, TestAddLatLngAlt) {
   Vec3 vec3 = coordinates_->get_coordinates_array_at(0);
   ASSERT_DOUBLE_EQ(kLat, vec3.get_latitude());
   ASSERT_DOUBLE_EQ(kLon, vec3.get_longitude());
+  ASSERT_TRUE(vec3.has_altitude());
   ASSERT_DOUBLE_EQ(kAlt, vec3.get_altitude());
 }
 
@@ -150,10 +151,12 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_TRUE(Coordinates::ParseVec3(basic_3d_line, &endp, &vec));
   ASSERT_DOUBLE_EQ(38.789, vec.get_latitude());
   ASSERT_DOUBLE_EQ(-122.123, vec.get_longitude());
+  ASSERT_TRUE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(1050.0987, vec.get_altitude());
   ASSERT_TRUE(Coordinates::ParseVec3(endp, &endp, &vec));
   ASSERT_DOUBLE_EQ(39.789, vec.get_latitude());
   ASSERT_DOUBLE_EQ(-122.123, vec.get_longitude());
+  ASSERT_TRUE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(1050.098, vec.get_altitude());
 
   const char* basic_2d_point = "10.10,-20.20";
