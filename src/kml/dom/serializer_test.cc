@@ -77,8 +77,7 @@ class MaximalSerializer : public Serializer {
   virtual void SaveElementGroup(const ElementPtr& element, int group_id) {}
   virtual void SaveStringFieldById(int type_id, std::string value) {}
   virtual void SaveContent(const std::string& content, bool maybe_quote) {}
-  virtual void SaveLonLatAlt(double longitude, double latitude,
-                             double altitude) {}
+  virtual void SaveVec3(const kmlbase::Vec3& vec3) {}
   virtual void Indent() {}
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
   virtual void BeginElementArray(int type_id, size_t element_count) {}

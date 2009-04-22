@@ -110,6 +110,9 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
     if (*endp == ',') {
       altitude = strtod(endp+1, &endp);
     }
+    // See comment above about how altitude is always set.
+    // TODO: decide if this should be removed (push it into the conditional
+    // above).
     vec->set(2, altitude);
   }
   if (nextp) {
@@ -141,12 +144,14 @@ void Coordinates::AddElement(const ElementPtr& element) {
 }
 
 void Coordinates::Serialize(Serializer& serializer) const {
-  ElementSerializer element_serializer(*this, serializer);
+  Attributes dummy;
+  serializer.BeginById(Type(), dummy);
+  serializer.BeginElementArray(Type(), coordinates_array_.size());
   for (size_t i = 0; i < coordinates_array_.size(); ++i) {
-    serializer.SaveLonLatAlt(coordinates_array_[i].get_longitude(),
-                             coordinates_array_[i].get_latitude(),
-                             coordinates_array_[i].get_altitude());
+    serializer.SaveVec3(coordinates_array_[i]);
   }
+  serializer.EndElementArray(Type_coordinates);
+  serializer.End();
 }
 
 Geometry::Geometry() {}

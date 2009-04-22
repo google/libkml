@@ -95,11 +95,10 @@ class ElementReplicator : public kmldom::Serializer {
     char_data_.append(content);
   }
 
-  // Serializer::SaveLonLatAlt() is called to save each <coordinates> tuples.
-  virtual void SaveLonLatAlt(double longitude, double latitude,
-                             double altitude) {
+  // Serializer::SaveVec3() is called to save each <coordinates> tuple.
+  virtual void SaveVec3(const kmlbase::Vec3& vec3) {
     if (CoordinatesPtr coordinates = AsCoordinates(clone_stack_.top())) {
-      coordinates->add_latlngalt(latitude, longitude, altitude);
+      coordinates->add_vec3(vec3);
     }  // else something is very wrong.
   }
 
