@@ -28,6 +28,7 @@
 
 #include "kml/dom/serializer.h"
 #include <string>
+#include "kml/base/vec3.h"
 #include "kml/dom/element.h"
 #include "kml/dom/xsd.h"
 
@@ -72,11 +73,12 @@ void Serializer::SaveElement(const ElementPtr& element) {
 // This default implementation turns the tuple into an indented string and
 // emits it as generic content.  This is entirely adequate for any text-based
 // serializer such as XML.
-void Serializer::SaveLonLatAlt(double longitude, double latitude,
-                             double altitude) {
+void Serializer::SaveVec3(const kmlbase::Vec3& vec3) {
   Indent();
-  SaveContent(ToString(longitude) + "," + ToString(latitude) + "," +
-              ToString(altitude) + "\n", false); 
-} 
+  SaveContent(ToString(vec3.get_longitude()) + "," +
+              ToString(vec3.get_latitude()) + "," +
+              ToString(vec3.get_altitude()) + "\n", false); 
+  // TODO: here's where we can use has_altitude() to avoid emitting that.
+}
 
 }  // namespace kmldom

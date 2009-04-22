@@ -81,10 +81,9 @@ class FieldMerger : public Serializer {
   }
 
   // Save a lon,lat,alt tuple as appears within <coordinates>.
-  virtual void SaveLonLatAlt(double longitude, double latitude,
-                             double altitude) {
+  virtual void SaveVec3(const kmlbase::Vec3& vec3) {
     if (CoordinatesPtr coordinates = AsCoordinates(target_)) {
-      coordinates->add_latlngalt(latitude, longitude, altitude);
+      coordinates->add_vec3(vec3);
     }
   }
 

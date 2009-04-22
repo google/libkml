@@ -30,12 +30,13 @@
 
 #include <sstream>
 #include <string>
-#include "kml/base/color32.h"
 #include "kml/base/string_util.h"
 #include "kml/dom/kml_ptr.h"
 
 namespace kmlbase {
 class Attributes;
+class Color32;
+class Vec3;
 }
 
 namespace kmldom {
@@ -81,8 +82,7 @@ class Serializer {
   virtual void SaveContent(const std::string& content, bool maybe_quote) {};
 
   // Save a lon,lat,alt tuple as appears within <coordinates>.
-  virtual void SaveLonLatAlt(double longitude, double latitude,
-                             double altitude);
+  virtual void SaveVec3(const kmlbase::Vec3& vec3);
 
   // Emit indent.
   virtual void Indent() {}
