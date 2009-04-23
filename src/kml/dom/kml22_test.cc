@@ -113,6 +113,62 @@ TEST_F(Kml22Test, TestElementNull) {
   ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
 }
 
+// This Serializer is specifically designed to capture the output of the
+// serialization of any complex element.
+class MockElementSerializer : public Serializer {
+ public:
+  MockElementSerializer()
+    : begin_count_(0),
+      end_count_(0),
+      type_id_(Type_Invalid) {
+  }
+  virtual void BeginById(int type_id, const kmlbase::Attributes& attributes) {
+    ++begin_count_;
+    type_id_ = type_id;
+  }
+  virtual void End() {
+    ++end_count_;
+  }
+  int get_type_id() const {
+    return type_id_;
+  }
+  int get_begin_count() const {
+    return begin_count_;
+  }
+  int get_end_count() const {
+    return end_count_;
+  }
+ private:
+  int begin_count_;
+  int end_count_;
+  int type_id_;
+};
+
+// This calls the Serialize method on every complex element on the
+// MockElementSerializer to verify that Serialize always emits BeginById() with
+// the expected element type id and always emits End() and both exactly once.
+TEST_F(Kml22Test, TestElementSerializerEmpty) {
+  int complex_count = 0;
+  int element_type_id = static_cast<int>(Type_Unknown) + 1;
+  const int end_id = static_cast<int>(Type_Invalid);
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  for (; element_type_id != end_id; ++element_type_id) {
+    // Only complex elements return non-NULL.
+    if (ElementPtr element = kml_factory->CreateElementById(
+            static_cast<KmlDomType>(element_type_id))) {
+      // Every complex element has a Serialize method that further calls
+      // BeginById(type), and End().
+      MockElementSerializer mock;
+      element->Serialize(mock);
+      ASSERT_EQ(element->Type(), mock.get_type_id());
+      ASSERT_EQ(1, mock.get_begin_count());
+      ASSERT_EQ(1, mock.get_end_count());
+      ++complex_count;
+    }
+  }
+  ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
