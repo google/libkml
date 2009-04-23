@@ -98,6 +98,7 @@ TEST_F(CoordinatesTest, TestAddVec3) {
   Vec3 vec3_0 = coordinates_->get_coordinates_array_at(0);
   ASSERT_DOUBLE_EQ(kLat, vec3_0.get_latitude());
   ASSERT_DOUBLE_EQ(kLon, vec3_0.get_longitude());
+  ASSERT_TRUE(vec3_0.has_altitude());
   ASSERT_DOUBLE_EQ(kAlt, vec3_0.get_altitude());
 
   coordinates_->add_vec3(Vec3());
@@ -132,6 +133,7 @@ TEST_F(CoordinatesTest, TestAddLatLngAltMany) {
     Vec3 vec3 = coordinates_->get_coordinates_array_at(i);
     ASSERT_DOUBLE_EQ(static_cast<double>(i % 90), vec3.get_latitude());
     ASSERT_DOUBLE_EQ(static_cast<double>(i % 180), vec3.get_longitude());
+    ASSERT_TRUE(vec3.has_altitude());
     ASSERT_DOUBLE_EQ(static_cast<double>(i), vec3.get_altitude());
   }
 }
@@ -143,6 +145,7 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_TRUE(Coordinates::ParseVec3(basic_3d_point, &endp, &vec));
   ASSERT_DOUBLE_EQ(-2.789, vec.get_latitude());
   ASSERT_DOUBLE_EQ(1.123, vec.get_longitude());
+  ASSERT_TRUE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(3000.5919, vec.get_altitude());
   ASSERT_EQ(basic_3d_point + strlen(basic_3d_point), endp);
 
@@ -229,6 +232,7 @@ TEST_F(CoordinatesTest, TestParsePoint) {
   Vec3 vec = coordinates_->get_coordinates_array_at(0);
   ASSERT_DOUBLE_EQ(-2.2, vec.get_latitude());
   ASSERT_DOUBLE_EQ(1.1, vec.get_longitude());
+  ASSERT_TRUE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(3.3, vec.get_altitude());
 }
 
@@ -240,6 +244,7 @@ TEST_F(CoordinatesTest, TestParseLine) {
                    coordinates_->get_coordinates_array_at(0).get_latitude());
   ASSERT_DOUBLE_EQ(1.1,
                    coordinates_->get_coordinates_array_at(0).get_longitude());
+  ASSERT_TRUE(coordinates_->get_coordinates_array_at(0).has_altitude());
   ASSERT_DOUBLE_EQ(3.3,
                    coordinates_->get_coordinates_array_at(0).get_altitude());
 }
@@ -273,6 +278,92 @@ TEST_F(CoordinatesTest, TestClear) {
   ASSERT_EQ(kCount, coordinates_->get_coordinates_array_size());
   coordinates_->Clear();
   ASSERT_EQ(static_cast<size_t>(0), coordinates_->get_coordinates_array_size());
+}
+
+// This typedef is a convenience for use with the CoordinatesSerializerStub.
+typedef std::vector<kmlbase::Vec3> Vec3Vector;
+
+// This class provides a mock Serializer specifically designed to capture
+// the output of the Coordinates::Serialize() method.  Serialization of
+// <coordinates> follows a pattern no other KML element follows (it's a
+// simple element as far as XML is concerned, but the content does follow a
+// structure with its repeated coordinates tuples.
+class MockCoordinatesSerializer : public Serializer {
+ public:
+  // The MockCoordinatesSerializer appends each Vec3 emitted by the
+  // coordinates serialize method.  It is up to the caller to ensure that the
+  // vector is in the desired state before using this class (empty, for
+  // example).
+  MockCoordinatesSerializer(Vec3Vector* vec3_vector)
+    : vec3_vector_(vec3_vector),
+      element_count_(0) {
+  }
+  // Each tuple in the <coordinates> content is emitted as a kmlbase::Vec3.
+  virtual void SaveVec3(const kmlbase::Vec3& vec3) {
+    vec3_vector_->push_back(vec3);
+  }
+  // This is called once before the Vec3's are emitted.
+  virtual void BeginElementArray(int type_id, size_t element_count) {
+    element_count_ += element_count;
+  }
+  // This is called once after all Vec3's are emitted.
+  virtual void EndElementArray(int type_id) {}
+  int get_element_count() const {
+    return element_count_;
+  }
+ private:
+  Vec3Vector* vec3_vector_;
+  int element_count_;
+};
+
+// Test serialization of <coordinates/>
+TEST_F(CoordinatesTest, TestSerializeNone) {
+  Vec3Vector vec3_vector;
+  MockCoordinatesSerializer mock(&vec3_vector);
+  // This calls Coordinates::Serialize().
+  mock.SaveElement(coordinates_);
+  ASSERT_TRUE(vec3_vector.empty());
+  ASSERT_EQ(0, mock.get_element_count());
+}
+
+// Test serialization of <coordinates>1.1,2.2,3.3</coordinates>.
+TEST_F(CoordinatesTest, TestSerializeOne) {
+  Vec3 vec3(1.1, 2.2, 3.3);
+  coordinates_->add_vec3(vec3);
+  Vec3Vector vec3_vector;
+  MockCoordinatesSerializer mock(&vec3_vector);
+  // This calls Coordinates::Serialize().
+  mock.SaveElement(coordinates_);
+  ASSERT_EQ(static_cast<size_t>(1), vec3_vector.size());
+  ASSERT_EQ(1, mock.get_element_count());
+  ASSERT_EQ(vec3.get_latitude(), vec3_vector[0].get_latitude());
+  ASSERT_EQ(vec3.get_longitude(), vec3_vector[0].get_longitude());
+  ASSERT_EQ(vec3.has_altitude(), vec3_vector[0].has_altitude());
+  ASSERT_EQ(vec3.get_altitude(), vec3_vector[0].get_altitude());
+}
+
+// Test serialization of:
+// <coordinates>0.2,0.1,0.3 1.2,1.1,1.3 2.2,2.1,2.3 ... </coordinates>/
+TEST_F(CoordinatesTest, TestSerializeMany) {
+  const size_t kNumTuples = 47;
+  const double kLatFrac = 0.1;
+  const double kLngFrac = 0.2;
+  const double kAltFrac = 0.3;
+  for (size_t i = 0; i < kNumTuples; ++i) {
+    coordinates_->add_latlngalt(i + kLatFrac, i + kLngFrac, i + kAltFrac);
+  }
+  Vec3Vector vec3_vector;
+  MockCoordinatesSerializer mock(&vec3_vector);
+  // This calls Coordinates::Serialize().
+  mock.SaveElement(coordinates_);
+  ASSERT_EQ(kNumTuples, vec3_vector.size());
+  ASSERT_EQ(static_cast<int>(kNumTuples), mock.get_element_count());
+  for (size_t i = 0; i < kNumTuples; ++i) {
+    ASSERT_EQ(i + kLatFrac, vec3_vector[i].get_latitude());
+    ASSERT_EQ(i + kLngFrac, vec3_vector[i].get_longitude());
+    ASSERT_TRUE(vec3_vector[i].has_altitude());
+    ASSERT_EQ(i + kAltFrac, vec3_vector[i].get_altitude());
+  }
 }
 
 // Test Point.
