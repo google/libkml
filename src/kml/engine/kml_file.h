@@ -121,13 +121,6 @@ class KmlFile : public kmlbase::XmlFile {
     return shared_style_map_;
   }
 
-  // Indicate that this KmlFile has elements in the given XML namespace such
-  // that serialization writes out xmlns:PREFIX=NAMESPACE.  This returns true
-  // if the given id has a known prefix and xml namespace in which case this
-  // is added to the KML file.  If the given xmlns id is unknown false is
-  // returned and nothing is changed in KmlFile.
-  bool AddXmlNamespaceById(kmlbase::XmlnsId xmlns_id);
-
   // This returns the all Elements that may have link children.  See
   // GetLinkParents() for more information.
   const ElementVector& get_link_parent_vector() const {
@@ -170,7 +163,6 @@ class KmlFile : public kmlbase::XmlFile {
                         std::string* errors);
   bool OpenAndParseKmz(const std::string& kmz_data, std::string* errors);
   std::string encoding_;
-  kmlbase::Attributes xmlns_;
   // TODO: use XmlElement's id map.
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;

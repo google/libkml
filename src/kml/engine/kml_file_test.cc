@@ -421,27 +421,6 @@ TEST_F(KmlFileTest, TestCreateFromImportLax) {
   ASSERT_EQ(kId, placemark->get_id());
 }
 
-TEST_F(KmlFileTest, TestAddXmlNamespaceById) {
-  kml_file_ = KmlFile::CreateFromParse("<kml/>", NULL);
-  // The default serialization behavior adds the XML declaration and the OGC
-  // KML 2.2 namespace.
-  const std::string kExpected =
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-    "<kml xmlns=\"http://www.opengis.net/kml/2.2\"/>\n";
-  std::string xml;
-  ASSERT_TRUE(kml_file_->SerializeToString(&xml));
-  ASSERT_EQ(kExpected, xml);
-  // Add the gx: namespace introduced with Google Earth 5.0.
-  kml_file_->AddXmlNamespaceById(kmlbase::XMLNS_GX22); 
-  const std::string kExpected1 =
-    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-    "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
-    "xmlns:gx=\"http://www.google.com/kml/ext/2.2\"/>\n";
-  xml.clear();
-  ASSERT_TRUE(kml_file_->SerializeToString(&xml));
-  ASSERT_EQ(kExpected1, xml);
-}
-
 TEST_F(KmlFileTest, TestForSerializeWithNamespaces) {
   kml_file_ = KmlFile::CreateFromString(
       "<Document><gx:Tour><atom:author/></gx:Tour></Document>");
