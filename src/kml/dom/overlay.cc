@@ -108,7 +108,9 @@ void LatLonBox::Serialize(Serializer& serializer) const {
   }
 }
 
-GxLatLonQuad::GxLatLonQuad() {}
+GxLatLonQuad::GxLatLonQuad() {
+  set_xmlns(kmlbase::XMLNS_GX22);
+}
 
 GxLatLonQuad::~GxLatLonQuad() {}
 

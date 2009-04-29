@@ -27,6 +27,7 @@
 
 #include "kml/dom/schema.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
@@ -39,6 +40,7 @@ SimpleField::SimpleField()
   : has_type_(false),
     has_name_(false),
     has_displayname_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 SimpleField::~SimpleField() {}
@@ -85,7 +87,7 @@ void SimpleField::Serialize(Serializer& serializer) const {
 
 // <Schema>
 Schema::Schema()
-  : has_name_(false) {
+    : has_name_(false) {
 }
 
 Schema::~Schema() {}

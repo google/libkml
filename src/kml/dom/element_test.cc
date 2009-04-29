@@ -23,12 +23,15 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+#include <iostream>
+
 // This file contains the unit tests for the Element and Field classes.
 
 #include "kml/dom/element.h"
 #include "boost/intrusive_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/stats_serializer.h"
@@ -140,14 +143,6 @@ TEST_F(ElementTest, TestTypeUnknown) {
   ASSERT_TRUE(element_->IsA(kmldom::Type_Unknown));
   ASSERT_EQ(kmldom::Type_Unknown, child1_->Type());
   ASSERT_TRUE(child1_->IsA(kmldom::Type_Unknown));
-}
-
-TEST_F(ElementTest, TestDefaultXmlns) {
-  ASSERT_TRUE(element_->get_default_xmlns().empty());
-
-  const std::string kOgcKml22Ns("http://www.opengis.net/kml/2.2");
-  element_->set_default_xmlns(kOgcKml22Ns);
-  ASSERT_EQ(kOgcKml22Ns, element_->get_default_xmlns());
 }
 
 TEST_F(ElementTest, TestAddGetUnknowns) {
@@ -288,31 +283,59 @@ TEST_F(ElementTest, TestGetParent) {
 #endif
 }
 
-// This tests the MergeXmlns method.
-TEST_F(ElementTest, TestMergeXmlns) {
-  ASSERT_TRUE(element_->get_default_xmlns().empty());
-
-  const std::string kOgcKml22Ns("http://www.opengis.net/kml/2.2");
-  element_->set_default_xmlns(kOgcKml22Ns);
-  ASSERT_EQ(kOgcKml22Ns, element_->get_default_xmlns());
-
-  const std::string kFooPrefix("foo");
-  const std::string kFooNamespace("foo:is:foo");
+// This tests the MergeXmlns method on an Element with as yet no xmlns info
+// and adds no prefix/namespace pairs.
+TEST_F(ElementTest, TestMergeXmlnsNull) {
   Attributes xmlns;
-  xmlns.SetValue(kFooPrefix, kFooNamespace);
+  // An Element has no xmlns attributes to start with:
+  ASSERT_FALSE(element_->GetXmlns());
+  // Merging in no xmlns attributes should not crash
   element_->MergeXmlns(xmlns);
+  // Simple calling MergeXmlns _does_ create an xmlns
+  ASSERT_TRUE(element_->GetXmlns());
 
-  Attributes attrs;
-  element_->SerializeAttributes(&attrs);
-  ASSERT_EQ(static_cast<size_t>(2), attrs.GetSize());
+  // ...even though it's empty
+  ASSERT_EQ(static_cast<size_t>(0), element_->GetXmlns()->GetSize());
+}
+
+// This tests the MergeXmls method on an Element with as yet no xmlns info
+// and adds exactly one prefix/namespace pair.
+TEST_F(ElementTest, TestMergeXmlnsOne) {
+  const std::string kPrefix("kmx");
+  const std::string kNamespace("http://example.com/km/x");
+  Attributes xmlns;
+  xmlns.SetValue(kPrefix, kNamespace);
+  element_->MergeXmlns(xmlns);
+  ASSERT_TRUE(element_->GetXmlns());
+  ASSERT_EQ(static_cast<size_t>(1), element_->GetXmlns()->GetSize());
   std::string xml_namespace;
-  ASSERT_TRUE(attrs.FindValue("xmlns", &xml_namespace));
-  ASSERT_EQ(kOgcKml22Ns, xml_namespace);
+  ASSERT_TRUE(element_->GetXmlns()->GetValue(kPrefix, &xml_namespace));
+  ASSERT_EQ(kNamespace, xml_namespace);
+}
 
-  xml_namespace.clear();
-  ASSERT_TRUE(attrs.FindValue(std::string("xmlns:") + kFooPrefix,
-                              &xml_namespace));
-  ASSERT_EQ(kFooNamespace, xml_namespace);
+TEST_F(ElementTest, TestMergeXmlnsMultiple) {
+  // Create an Attributes with several xmlns prefix/namespaces.
+  Attributes xmlns;
+  const kmlbase::XmlnsId kXmlnsIds[] = {
+      kmlbase::XMLNS_ATOM, kmlbase::XMLNS_KML22, kmlbase::XMLNS_GX22,
+      kmlbase::XMLNS_XAL };
+  const size_t xmlnsid_size = sizeof(kXmlnsIds)/sizeof(kmlbase::XmlnsId);
+  for (size_t i = 0; i < xmlnsid_size; ++i) {
+    std::string prefix;
+    std::string xml_namespace;
+    ASSERT_TRUE(FindXmlNamespaceAndPrefix(kXmlnsIds[i], &prefix,
+                                          &xml_namespace)) << kXmlnsIds[i];
+    xmlns.SetValue(prefix, xml_namespace);
+    ASSERT_EQ(static_cast<size_t>(i+1), xmlns.GetSize());
+    // Merge in the whole set each time, and...
+    element_->MergeXmlns(xmlns);
+    // ...verify that it only grows by one item each time, and...
+    ASSERT_EQ(static_cast<size_t>(i+1), element_->GetXmlns()->GetSize());
+    // ...verify that that item is in the element's xmlns.
+    std::string got_namespace;
+    ASSERT_TRUE(element_->GetXmlns()->GetValue(prefix, &got_namespace));
+    ASSERT_EQ(xml_namespace, got_namespace);
+  }
 }
 
 class ElementSerializerTest : public testing::Test {

@@ -32,6 +32,7 @@
 #include <stdlib.h>
 #include <string>
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_cast.h"
@@ -43,7 +44,9 @@ using kmlbase::Vec3;
 
 namespace kmldom {
 
-Coordinates::Coordinates() {}
+Coordinates::Coordinates() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Coordinates::~Coordinates() {}
 

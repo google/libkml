@@ -28,6 +28,7 @@
 
 #include "kml/dom/extendeddata.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/serializer.h"
@@ -41,6 +42,7 @@ namespace kmldom {
 SimpleData::SimpleData()
   : has_name_(false),
     has_text_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 SimpleData::~SimpleData() {}
@@ -85,6 +87,7 @@ void SimpleData::Serialize(Serializer& serializer) const {
 // <SchemaData>
 SchemaData::SchemaData()
   : has_schemaurl_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 SchemaData::~SchemaData() {
@@ -128,6 +131,7 @@ Data::Data()
   : has_name_(false),
     has_displayname_(false),
     has_value_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 Data::~Data() {}
@@ -174,7 +178,9 @@ void Data::Serialize(Serializer& serializer) const {
 }
 
 // <ExtendedData>
-ExtendedData::ExtendedData() {}
+ExtendedData::ExtendedData() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 ExtendedData::~ExtendedData() {
   // data_array_'s and schemadata_array_'s destructors call the destructor of
@@ -199,7 +205,12 @@ void ExtendedData::Serialize(Serializer& serializer) const {
 }
 
 // <Metadata>
-Metadata::~Metadata() {}
+Metadata::Metadata() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
+
+Metadata::~Metadata() {
+}
 
 void Metadata::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);

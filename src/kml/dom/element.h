@@ -65,9 +65,6 @@ class Element : public kmlbase::XmlElement {
   // This returns the element of which this is a child (if any).
   ElementPtr GetParent() const;
 
-  void set_default_xmlns(const std::string& xmlns);
-  const std::string get_default_xmlns() const;
-
   // This is the concatenation of all character data found parsing this element.
   const std::string& get_char_data() const {
     return char_data_;

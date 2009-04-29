@@ -30,6 +30,7 @@
 #define KML_DOM_GX_TIMEPRIMITIVE_H__
 
 #include <string>
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/object.h"
 #include "kml/dom/timeprimitive.h"
@@ -52,7 +53,9 @@ class GxTimeSpan : public TimeSpan {
 
  private:
   friend class KmlFactory;
-  GxTimeSpan() {}
+  GxTimeSpan() {
+    set_xmlns(kmlbase::XMLNS_GX22);
+  }
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxTimeSpan);
 };
 
@@ -70,7 +73,9 @@ class GxTimeStamp : public TimeStamp {
 
  private:
   friend class KmlFactory;
-  GxTimeStamp() {}
+  GxTimeStamp() {
+    set_xmlns(kmlbase::XMLNS_GX22);
+  }
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxTimeStamp);
 };
 
