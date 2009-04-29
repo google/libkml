@@ -61,6 +61,7 @@ void FindXmlNamespaces(const ElementPtr& element,
   if (element && xmlns_attributes) {
     XmlnsIdSet xmlns_id_set;
     XmlNamespaceFinder xml_namespace_finder(&xmlns_id_set);
+    xmlns_id_set.insert(element->get_xmlns());
     element->Serialize(xml_namespace_finder);
     XmlnsIdSet::const_iterator iter = xmlns_id_set.begin();
     for (; iter != xmlns_id_set.end(); ++iter) {
@@ -70,6 +71,15 @@ void FindXmlNamespaces(const ElementPtr& element,
         xmlns_attributes->SetValue(prefix, xml_namespace);
       }
     }
+  }
+}
+
+void FindAndInsertXmlNamespaces(ElementPtr element) {
+  if (element) {
+    // No smart pointer because ParseAttributes takes ownership.
+    Attributes* attributes = new Attributes;
+    FindXmlNamespaces(element, attributes);
+    element->ParseAttributes(attributes);
   }
 }
 
