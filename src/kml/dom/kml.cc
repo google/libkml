@@ -25,6 +25,7 @@
 
 #include "kml/dom/kml.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 
@@ -32,7 +33,10 @@ using kmlbase::Attributes;
 
 namespace kmldom {
 
-Kml::Kml() : has_hint_(false) {}
+Kml::Kml()
+  : has_hint_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Kml::~Kml() {}
 

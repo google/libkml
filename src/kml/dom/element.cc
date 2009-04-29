@@ -136,23 +136,10 @@ ElementPtr Element::GetParent() const {
   return AsElement(const_cast<XmlElement*>(XmlElement::GetParent()));
 }
 
-// The default namespace for an element is the xmlns attribute.
-void Element::set_default_xmlns(const std::string& xmlns) {
+void Element::MergeXmlns(const Attributes& xmlns) {
   if (!xmlns_.get()) {
     xmlns_.reset(new Attributes);
   }
-  xmlns_->SetValue("xmlns", xmlns);
-}
-
-const std::string Element::get_default_xmlns() const {
-  std::string default_xmlns;
-  if (xmlns_.get()) {
-    xmlns_->GetValue("xmlns", &default_xmlns);
-  }
-  return default_xmlns;
-}
-
-void Element::MergeXmlns(const Attributes& xmlns) {
   xmlns_->MergeAttributes(xmlns);
 }
 

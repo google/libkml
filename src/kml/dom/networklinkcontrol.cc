@@ -28,6 +28,7 @@
 
 #include "kml/dom/networklinkcontrol.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/abstractview.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
@@ -42,7 +43,9 @@ UpdateOperation::UpdateOperation() {}
 UpdateOperation::~UpdateOperation() {}
 
 // <Create>
-Create::Create() {}
+Create::Create() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Create::~Create() {}
 
@@ -63,7 +66,9 @@ void Create::Serialize(Serializer& serializer) const {
 }
 
 // <Delete>
-Delete::Delete() {}
+Delete::Delete() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Delete::~Delete() {}
 
@@ -84,7 +89,9 @@ void Delete::Serialize(Serializer& serializer) const {
 }
 
 // <Change>
-Change::Change() {}
+Change::Change() {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Change::~Change() {}
 
@@ -106,7 +113,8 @@ void Change::Serialize(Serializer& serializer) const {
 
 // <Update>
 Update::Update()
-  : has_targethref_(false) {
+    : has_targethref_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 Update::~Update() {}
@@ -158,6 +166,7 @@ NetworkLinkControl::NetworkLinkControl()
     has_expires_(false),
     update_(NULL),
     abstractview_(NULL) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 NetworkLinkControl::~NetworkLinkControl() {}

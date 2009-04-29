@@ -25,6 +25,7 @@
 
 #include "kml/dom/snippet.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 #include "kml/dom/serializer.h"
 #include "kml/dom/xsd.h"
 
@@ -36,6 +37,7 @@ SnippetCommon::SnippetCommon()
   : has_text_(false),
     maxlines_(2),
     has_maxlines_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
 }
 
 SnippetCommon::~SnippetCommon() {}

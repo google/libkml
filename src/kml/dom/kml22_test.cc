@@ -38,6 +38,9 @@ class Kml22Test : public testing::Test {
   }
 
   Xsd* xsd_;
+
+  void AssertXmlNamespaceForRange(KmlDomType begin_id, KmlDomType end_id,
+                                  kmlbase::XmlnsId xmlns_id);
 };
 
 // Verify proper enum defaults:
@@ -167,6 +170,34 @@ TEST_F(Kml22Test, TestElementSerializerEmpty) {
     }
   }
   ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
+}
+
+void Kml22Test::AssertXmlNamespaceForRange(KmlDomType begin_dom_type,
+                                           KmlDomType end_dom_type,
+                                           kmlbase::XmlnsId xmlns_id) {
+  // There's obviously an assumption here about the organization of the
+  // KmlDomType enum
+  int element_type_id = static_cast<int>(begin_dom_type);
+  const int end_id = static_cast<int>(end_dom_type) + 1;
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  for (; element_type_id != end_id; ++element_type_id) {
+    ElementPtr element = kml_factory->CreateElementById(
+        static_cast<KmlDomType>(element_type_id));
+    ASSERT_TRUE(element);
+    ASSERT_EQ(xmlns_id, element->get_xmlns())
+        << xsd_->ElementName(element_type_id);
+  }
+}
+
+TEST_F(Kml22Test, TestElementXmlNamespaces) {
+  AssertXmlNamespaceForRange(Type_Alias, Type_ViewVolume,
+                             kmlbase::XMLNS_KML22);
+  AssertXmlNamespaceForRange(Type_AtomAuthor, Type_AtomLink,
+                             kmlbase::XMLNS_ATOM);
+  AssertXmlNamespaceForRange(Type_XalAddressDetails, Type_XalThoroughfare,
+                             kmlbase::XMLNS_XAL);
+  AssertXmlNamespaceForRange(Type_GxAnimatedUpdate, Type_GxWait,
+                             kmlbase::XMLNS_GX22);
 }
 
 }  // end namespace kmldom

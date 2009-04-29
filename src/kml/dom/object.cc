@@ -25,13 +25,17 @@
 
 #include "kml/dom/object.h"
 #include "kml/base/attributes.h"
+#include "kml/base/xml_namespaces.h"
 
 using kmlbase::Attributes;
 
 namespace kmldom {
 
 Object::Object()
-  : has_id_(false), has_targetid_(false) {}
+  : has_id_(false),
+     has_targetid_(false) {
+  set_xmlns(kmlbase::XMLNS_KML22);
+}
 
 Object::~Object() {}
 

@@ -254,6 +254,8 @@ class Metadata : public BasicElement<Type_Metadata> {
   virtual ~Metadata();
 
  private:
+  friend class KmlFactory;
+  Metadata();
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
 };
