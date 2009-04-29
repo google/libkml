@@ -76,10 +76,15 @@ void FindXmlNamespaces(const ElementPtr& element,
 
 void FindAndInsertXmlNamespaces(ElementPtr element) {
   if (element) {
-    // No smart pointer because ParseAttributes takes ownership.
-    Attributes* attributes = new Attributes;
-    FindXmlNamespaces(element, attributes);
-    element->ParseAttributes(attributes);
+    Attributes xmlns;
+    FindXmlNamespaces(element, &xmlns);
+    // We (kmlengine in libkml) never prefix KML 2.2 elements.
+    std::string kml_namespace;
+    if (xmlns.CutValue("kml", &kml_namespace)) {
+      // This makes KML the default namespace
+      xmlns.SetValue("xmlns", kml_namespace);
+    }
+    element->MergeXmlns(xmlns);
   }
 }
 
