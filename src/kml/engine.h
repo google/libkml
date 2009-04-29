@@ -37,6 +37,7 @@
 #include "kml/engine/feature_view.h"
 #include "kml/engine/feature_visitor.h"
 #include "kml/engine/find.h"
+#include "kml/engine/find_xml_namespaces.h"
 #include "kml/engine/get_links.h"
 #include "kml/engine/href.h"
 #include "kml/engine/id_mapper.h"
