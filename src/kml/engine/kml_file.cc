@@ -95,7 +95,6 @@ KmlFile::KmlFile()
   : encoding_(kDefaultEncoding),
     kml_cache_(NULL),
     strict_parse_(false) {
-  xmlns_.SetValue("xmlns", kDefaultXmlns);
 }
 
 // private
@@ -168,18 +167,6 @@ KmlFile* KmlFile::CreateFromImportLax(const kmldom::ElementPtr& element) {
   return CreateFromImportInternal(element, false);
 }
 
-// TODO: CreateFromParse,Import should really discover what namespaces are
-// actually found within the KML file.
-bool KmlFile::AddXmlNamespaceById(XmlnsId xmlns_id) {
-  std::string prefix;
-  std::string xml_namespace;
-  if (FindXmlNamespaceAndPrefix(xmlns_id, &prefix, &xml_namespace)) {
-    xmlns_.SetValue(prefix, xml_namespace);
-    return true;
-  }
-  return false;
-}
-
 const std::string KmlFile::CreateXmlHeader() const {
   return std::string("<?xml version=\"1.0\" encoding=\"" + encoding_ + "\"?>\n");
 }
@@ -188,17 +175,15 @@ bool KmlFile::SerializeToString(std::string* xml_output) const {
   if (!xml_output || !get_root()) {
     return false;
   }
-  // Find xml namespaces into this local Attributes.  Can't write on xmlns_
-  // due to this being a const method.
-  kmlbase::Attributes xmlns_attributes;
-  FindXmlNamespaces(get_root(), &xmlns_attributes);
   xml_output->append(CreateXmlHeader());
-  std::string default_xmlns;
-  if (xmlns_.GetValue("xmlns", &default_xmlns)) {
-    get_root()->set_default_xmlns(default_xmlns);
-  }
-  get_root()->MergeXmlns(xmlns_);
-  get_root()->MergeXmlns(xmlns_attributes);
+
+  // Find all xml namespaces known to libkml used by all elements descending
+  // from the root and insert the appropriate xmlns attributes to the root
+  // element.  See kmlengine::FindAndInsertXmlNamespaces() for more info on
+  // how KML vs other namespaces are treated.
+  FindAndInsertXmlNamespaces(get_root());
+  
+  // Append the serialization to the XML header.
   xml_output->append(kmldom::SerializePretty(get_root()));
   return true;
 }
@@ -212,6 +197,5 @@ kmldom::StyleSelectorPtr KmlFile::GetSharedStyleById(std::string id) const {
   SharedStyleMap::const_iterator find = shared_style_map_.find(id);
   return find != shared_style_map_.end() ? find->second : NULL;
 }
-
 
 }  // end namespace kmlengine
