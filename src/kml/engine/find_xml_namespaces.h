@@ -44,6 +44,13 @@ namespace kmlengine {
 void FindXmlNamespaces(const kmldom::ElementPtr& element,
                        kmlbase::Attributes* xmlns_attributes);
 
+// This calls FindXmlNamespaces() and inserts the resulting xmlns
+// prefix/namespace pairs.  The KML namespace is special cased as the default
+// namespace (xmlns="...") if any KML elements are present.  All other
+// namespaces are prefixed with the libkml-standard prefixes (see
+// kmlbase::FindXmlNamespaceAndPrefix().
+void FindAndInsertXmlNamespaces(kmldom::ElementPtr element);
+
 }  // end namespace kmlengine
 
 #endif  // KML_ENGINE_FIND_XML_NAMESPACES_H__

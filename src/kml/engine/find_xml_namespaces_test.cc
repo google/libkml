@@ -38,6 +38,7 @@
 
 using kmlbase::Attributes;
 using kmldom::DocumentPtr;
+using kmldom::GxTourPtr;
 using kmldom::KmlFactory;
 
 namespace kmlengine {
@@ -55,7 +56,7 @@ TEST(FindXmlNamepacesTest, TestNoNamespaces) {
   kmldom::DocumentPtr document = KmlFactory::GetFactory()->CreateDocument();
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
-  ASSERT_EQ(static_cast<size_t>(0), xmlns_attributes.GetSize());
+  ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
 }
 
 TEST(FindXmlNamepacesTest, TestOneGx) {
@@ -64,7 +65,7 @@ TEST(FindXmlNamepacesTest, TestOneGx) {
   document->add_feature(factory->CreateGxTour());
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
-  ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
+  ASSERT_EQ(static_cast<size_t>(2), xmlns_attributes.GetSize());
   std::string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
 }
@@ -76,7 +77,7 @@ TEST(FindXmlNamepacesTest, TestOneGxAndOneAtom) {
   document->set_atomauthor(factory->CreateAtomAuthor());
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
-  ASSERT_EQ(static_cast<size_t>(2), xmlns_attributes.GetSize());
+  ASSERT_EQ(static_cast<size_t>(3), xmlns_attributes.GetSize());
   std::string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("atom", &xml_namespace));
@@ -90,12 +91,46 @@ TEST(FindXmlNamepacesTest, TestOneGxAndOneAtomAndOneXal) {
   document->set_xaladdressdetails(factory->CreateXalAddressDetails());
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
-  ASSERT_EQ(static_cast<size_t>(3), xmlns_attributes.GetSize());
+  ASSERT_EQ(static_cast<size_t>(4), xmlns_attributes.GetSize());
   std::string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("atom", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("xal", &xml_namespace));
 }
+
+TEST(FindXmlNamepacesTest, TestRootGx) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  GxTourPtr tour = factory->CreateGxTour();
+  Attributes xmlns_attributes;
+  FindXmlNamespaces(tour, &xmlns_attributes);
+  ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
+  std::string xml_namespace;
+  ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
+}
+
+TEST(FindXmlNamepacesTest, TestBasicFindAndInsertXmlNamespaces) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  GxTourPtr tour = factory->CreateGxTour();
+  FindAndInsertXmlNamespaces(tour);
+  Attributes xmlns_attributes;
+  AsElement(tour)->SerializeAttributes(&xmlns_attributes);
+  ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
+}
+
+// TODO: every KML 2.2 element should do set_xmlns(XMLNS_KML22) which should
+// really be an arg to the Element ctor...
+#if 0
+TEST(FindXmlNamepacesTest, TestBasicFindAndInsertXmlNamespaces) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  DocumentPtr document = factory->CreateDocument();
+  FindAndInsertXmlNamespaces(docment);
+  Attributes xmlns_attributes;
+  AsElement(document)->SerializeAttributes(&xmlns_attributes);
+  // TODO: this fails at present due to Document not setting its namespace.
+  // We could consider XMLNS_NONE == XMLNS_KML22, but that's hacky...
+  ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
+}
+#endif
 
 }  // end namespace kmlengine
 
