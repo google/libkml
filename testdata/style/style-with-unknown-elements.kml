@@ -1,0 +1,151 @@
+<kml xmlns="http://earth.google.com/kml/2.0">
+<!-- This is extracted from a real world KML file -->
+<Document>
+	<Style id="hist1_b">
+		<IconStyle id="khIconStyle671">
+	      <color>ff00f6ff</color>
+	      <scale>.7</scale>
+	      <Icon>
+	        <href>root://icons/palette-4.png</href>
+	        <x>64</x>
+	        <y>128</y>
+	        <w>32</w>
+	        <h>32</h>
+	      </Icon>
+	    </IconStyle>
+		<LabelStyle id="khLabelStyle673">
+		</LabelStyle>
+		<LineStyle id="khLineStyle674">
+			<width>0.4000000059604645</width>
+		</LineStyle>
+		<PolyStyle id="khPolyStyle675">
+		</PolyStyle>
+   		 <BalloonStyle>
+   		 	<textColor>ffffffff</textColor>
+   			<color>FFAF835A</color>
+   			<bgColor>FFAF835A</bgColor>
+   			<text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+   		</BalloonStyle>		
+	</Style>
+	<Style id="hist1_p">
+	    <IconStyle id="khIconStyle641">
+		<color>ff00f6ff</color>
+		<Icon>
+			<href>root://icons/palette-4.png</href>
+			<y>128</y>
+			<w>32</w>
+			<h>32</h>
+		</Icon>
+   		</IconStyle>
+		 <BalloonStyle>
+		 	<textColor>ffffffff</textColor>
+   			<color>FFAF835A</color>
+   			<bgColor>FFAF835A</bgColor>
+   			<text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+   		</BalloonStyle>		
+	</Style>
+	<Style id="hist2_b">
+	   <IconStyle id="khIconStyle671">
+	      <color>ff00f6ff</color>
+	      <scale>.7</scale>
+	      <Icon>
+	        <href>root://icons/palette-4.png</href>
+	        <x>64</x>
+	        <y>128</y>
+	        <w>32</w>
+	        <h>32</h>
+	      </Icon>
+	    </IconStyle>
+		<LabelStyle id="khLabelStyle673">
+		</LabelStyle>
+		<LineStyle id="khLineStyle674">
+			<width>0.4000000059604645</width>
+		</LineStyle>
+		<PolyStyle id="khPolyStyle675">
+		</PolyStyle>
+		 <BalloonStyle>
+		 	<textColor>ffffffff</textColor>
+   			<color>FFAF835A</color>
+   			<bgColor>FFAF835A</bgColor>
+   			<text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+   		</BalloonStyle>		
+	</Style>
+	<Style id="hist2_p">
+	    <IconStyle id="khIconStyle641">
+		<color>ff0000ff</color>
+		<Icon>
+			<href>root://icons/palette-4.png</href>
+			<y>128</y>
+			<w>32</w>
+			<h>32</h>
+		</Icon>
+   		</IconStyle>
+		 <BalloonStyle>
+		 	<textColor>ffffffff</textColor>
+   			<color>FFAF835A</color>
+   			<bgColor>FFAF835A</bgColor>
+   			<text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+   		</BalloonStyle>		
+	</Style>
+	<Style id="current">
+	    <IconStyle id="khIconStyle639">
+	      <color>ff0000ff</color>
+	      <Icon>
+	        <href>root://icons/palette-3.png</href>
+       		<x>128</x>
+     		<y>32</y>
+     		<w>32</w>
+     		<h>32</h>
+	      </Icon>
+	    </IconStyle>
+	    <LabelStyle id="khLabelStyle641">
+	    </LabelStyle>
+	    <BalloonStyle id="khBalloonStyle644">
+	    </BalloonStyle>
+	    <LineStyle id="khLineStyle642">
+	    </LineStyle>
+	    <PolyStyle id="khPolyStyle643">
+	    </PolyStyle>	
+		<BalloonStyle>
+			<textColor>ffffffff</textColor>
+   			<color>FFAF835A</color>
+   			<bgColor>FFAF835A</bgColor>
+   			<text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+   		</BalloonStyle>		
+	</Style>
+	<Style id="khStyle650">
+	    <IconStyle id="khIconStyle651">
+	      <Icon>
+	        <href>root://icons/palette-3.png</href>
+	        <y>96</y>
+	        <w>32</w>
+	        <h>32</h>
+	      </Icon>
+	    </IconStyle>
+	</Style>
+<Placemark>
+<styleUrl>#current</styleUrl>
+<Point>
+<coordinates>-77.0533,26.5467,0</coordinates>
+</Point>
+</Placemark>
+
+<Placemark id="jb">
+<styleUrl>#hist2_b</styleUrl>
+<Point>
+<coordinates>-77.0533,26.5467,0</coordinates>
+</Point>
+</Placemark>
+
+</Document>
+</kml>
