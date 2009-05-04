@@ -1,0 +1,26 @@
+<Style id="hist2_b">
+  <IconStyle id="khIconStyle671">
+    <color>ff00f6ff</color>
+    <scale>0.7</scale>
+    <Icon>
+      <href>root://icons/palette-4.png</href>
+      <x>64</x>
+      <y>128</y>
+      <w>32</w>
+      <h>32</h>
+    </Icon>
+  </IconStyle>
+  <LabelStyle id="khLabelStyle673"/>
+  <LineStyle id="khLineStyle674">
+    <width>0.400000005960464</width>
+  </LineStyle>
+  <PolyStyle id="khPolyStyle675"/>
+  <BalloonStyle>
+    <bgColor>ffaf835a</bgColor>
+    <textColor>ffffffff</textColor>
+    <text><![CDATA[<b><font size=+2>Charlie & Marty's Voyage on Pegasus</font></b><br>
+   			$[description]<br/></br>powered by www.sailblogs.com
+   			</body>]]></text>
+    <color>FFAF835A</color>
+  </BalloonStyle>
+</Style>

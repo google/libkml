@@ -28,4 +28,6 @@ EXTRA_DIST = \
 	shared-stylemap.kml \
 	simple-pm0-check.kml \
 	simple-pm0-style.kml \
-	simple.kml
+	simple.kml \
+	style-with-unknown-elements.kml \
+	style-with-unknown-elements-jb-check.kml
