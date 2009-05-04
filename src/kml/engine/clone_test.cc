@@ -246,6 +246,34 @@ TEST_F(CloneTest, TestCloneIconStyle) {
   ASSERT_EQ(kImage, clone->get_icon()->get_href());
 }
 
+TEST_F(CloneTest, TestCloneWithMisplacedChild) {
+  kmldom::IconPtr icon =
+    kmldom::AsIcon(kmldom::Parse("<Icon><x>64</x></Icon>", NULL));
+  ASSERT_TRUE(icon);
+  ASSERT_EQ(static_cast<size_t>(1), icon->get_misplaced_elements_array_size());
+  ASSERT_EQ(static_cast<size_t>(0), icon->get_unknown_elements_array_size());
+  kmldom::IconPtr clone = kmldom::AsIcon(Clone(icon));
+  ASSERT_TRUE(clone);
+  ASSERT_EQ(static_cast<size_t>(1), clone->get_misplaced_elements_array_size());
+  ASSERT_EQ(static_cast<size_t>(0), clone->get_unknown_elements_array_size());
+  ASSERT_FALSE(kmldom::SerializePretty(clone).empty());
+}
+
+TEST_F(CloneTest, TestCloneWithFullyUnknownChild) {
+  // This originally appeared as IconStyle Icon's child, but the bug is
+  // manifested in cloning any element with a fully unknown child.
+  kmldom::IconPtr icon =
+      kmldom::AsIcon(kmldom::Parse("<Icon><w>64</w></Icon>", NULL));
+  ASSERT_TRUE(icon);
+  ASSERT_EQ(static_cast<size_t>(0), icon->get_misplaced_elements_array_size());
+  ASSERT_EQ(static_cast<size_t>(1), icon->get_unknown_elements_array_size());
+  kmldom::IconPtr clone = kmldom::AsIcon(Clone(icon));
+  ASSERT_TRUE(clone);
+  ASSERT_EQ(static_cast<size_t>(0), clone->get_misplaced_elements_array_size());
+  ASSERT_EQ(static_cast<size_t>(1), clone->get_unknown_elements_array_size());
+  ASSERT_FALSE(kmldom::SerializePretty(clone).empty());
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {

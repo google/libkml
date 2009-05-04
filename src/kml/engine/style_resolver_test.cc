@@ -118,7 +118,9 @@ static const struct {
   { "/style/nesting.kml", "p1", kmldom::STYLESTATE_NORMAL,
     "/style/empty-style-check.kml" },
   { "/style/nesting.kml", "p1", kmldom::STYLESTATE_HIGHLIGHT,
-    "/style/empty-style-check.kml" }
+    "/style/empty-style-check.kml" },
+  { "/style/style-with-unknown-elements.kml", "jb", kmldom::STYLESTATE_NORMAL,
+    "/style/style-with-unknown-elements-jb-check.kml" }
 };
 
 // This is a utility function to read a file relative to the testdata directory.
