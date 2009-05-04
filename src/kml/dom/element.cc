@@ -70,10 +70,17 @@ void Element::SerializeUnknown(Serializer& serializer) const {
     unknown_legal_elements_array_[i]->Serialize(serializer);
   }
   // Now serialize unknown elements:
-  for (size_t i = 0; i < unknown_elements_array_.size(); ++i) {
-    serializer.Indent();
-    // This is raw XML do not try to CDATA escape it.
-    serializer.SaveContent(unknown_elements_array_[i], false);
+  // Announce to the Serializer that the next N SaveContent() are each
+  // unparsed xml.
+  size_t unknown_size = unknown_elements_array_.size();
+  if (unknown_size > 0) {
+    serializer.BeginElementArray(Type_Unknown, unknown_size);
+    for (size_t i = 0; i < unknown_size; ++i) {
+      serializer.Indent();
+      // This is raw XML do not try to CDATA escape it.
+      serializer.SaveContent(unknown_elements_array_[i], false);
+    }
+    serializer.EndElementArray(Type_Unknown);
   }
 }
 
