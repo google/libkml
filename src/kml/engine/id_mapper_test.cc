@@ -343,6 +343,41 @@ TEST_F(IdMapperTest, TestRemapManyIds) {
   ASSERT_EQ(88, clear_id_count);
 }
 
+TEST_F(IdMapperTest, TestUnknownElements) {
+  const std::string kStyleId("hist1_b");
+  const std::string kIconStyleId("khIconStyle671");
+  const std::string kKml(std::string("<Style id='") + kStyleId + "'>"
+    "<IconStyle id='" + kIconStyleId + "'>"
+    "<color>ff00f6ff</color>"
+    "<scale>0.7</scale>"
+    "<Icon>"
+    "<href>root://icons/palette-4.png</href>"
+    "<x>64</x>"
+    "<y>128</y>"
+    "<w>32</w>"
+    "<h>32</h>"
+    "</Icon>"
+    "</IconStyle>"
+    "</Style>");
+  ElementPtr root = kmldom::Parse(kKml, NULL);
+  ASSERT_TRUE(root);
+  MapIds(root, &object_id_map_, NULL);
+  ASSERT_EQ(static_cast<size_t>(2), object_id_map_.size());
+
+  ObjectIdMap::const_iterator find = object_id_map_.find(kIconStyleId);
+  ASSERT_FALSE(find == object_id_map_.end());
+  kmldom::IconStylePtr iconstyle =
+      kmldom::AsIconStyle(object_id_map_[kIconStyleId]);
+  ASSERT_TRUE(iconstyle);
+  ASSERT_EQ(kIconStyleId, iconstyle->get_id());
+
+  find = object_id_map_.find(kStyleId);
+  ASSERT_FALSE(find == object_id_map_.end());
+  kmldom::StylePtr style = kmldom::AsStyle(object_id_map_[kStyleId]);
+  ASSERT_TRUE(iconstyle);
+  ASSERT_EQ(kStyleId, style->get_id());
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
