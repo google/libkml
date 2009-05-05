@@ -23,8 +23,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <iostream>
-
 // This file contains the unit tests for the Element and Field classes.
 
 #include "kml/dom/element.h"
@@ -336,6 +334,131 @@ TEST_F(ElementTest, TestMergeXmlnsMultiple) {
     ASSERT_TRUE(element_->GetXmlns()->GetValue(prefix, &got_namespace));
     ASSERT_EQ(xml_namespace, got_namespace);
   }
+}
+
+TEST_F(ElementTest, TestSerializeUnknown) {
+  // This Serializer is special-cased to assert the behavior of Element's
+  // SerializeUnknown() method on fully unknown children.
+  typedef std::vector<std::string> StringVector;
+  class UnknownSerializer : public Serializer {
+   public:
+    UnknownSerializer()
+      : begin_element_array_count_(0),
+        end_element_array_count_(0),
+        element_count_(0),
+        in_unknown_element_array_(false) {
+    }
+
+    virtual void BeginElementArray(int type_id, size_t element_count) {
+      ASSERT_FALSE(in_unknown_element_array_);
+      ASSERT_EQ(Type_Unknown, type_id);
+      ASSERT_EQ(static_cast<size_t>(0), element_count_);
+
+      ++begin_element_array_count_;
+      element_count_ = element_count;
+      in_unknown_element_array_ = true;
+    }
+
+    virtual void EndElementArray(int type_id) {
+      ASSERT_TRUE(in_unknown_element_array_);
+      ASSERT_EQ(Type_Unknown, type_id);
+      ASSERT_EQ(static_cast<size_t>(0), element_count_);
+
+      ++end_element_array_count_;
+    }
+
+    virtual void SaveContent(const std::string& content, bool escape) {
+      ASSERT_TRUE(in_unknown_element_array_);
+      --element_count_;
+      unknown_content_.push_back(content);
+    }
+
+    int get_begin_element_array_count() const {
+      return begin_element_array_count_;
+    }
+    int get_end_element_array_count() const {
+      return end_element_array_count_;
+    }
+    const StringVector& get_unknown_content() const {
+      return unknown_content_;
+    }
+
+   private:
+    int begin_element_array_count_;
+    int end_element_array_count_;
+    size_t element_count_;
+    bool in_unknown_element_array_;
+    std::vector<std::string> unknown_content_;
+  } unknown_serializer;
+
+  element_->SerializeUnknown(unknown_serializer);
+  ASSERT_EQ(0, unknown_serializer.get_begin_element_array_count());
+  ASSERT_TRUE(unknown_serializer.get_unknown_content().empty());
+  ASSERT_EQ(0, unknown_serializer.get_end_element_array_count());
+  ASSERT_TRUE(unknown_serializer.get_unknown_content().empty());
+
+  const std::string kUnknown1("<hi>there</hi>");
+  element_->AddUnknownElement(kUnknown1);
+  const std::string kUnknown2("<how>are</how>");
+  element_->AddUnknownElement(kUnknown2);
+  element_->SerializeUnknown(unknown_serializer);
+  ASSERT_EQ(1, unknown_serializer.get_begin_element_array_count());
+  ASSERT_EQ(static_cast<size_t>(2),
+            unknown_serializer.get_unknown_content().size());
+  ASSERT_EQ(1, unknown_serializer.get_end_element_array_count());
+  ASSERT_EQ(kUnknown1, unknown_serializer.get_unknown_content()[0]);
+  ASSERT_EQ(kUnknown2, unknown_serializer.get_unknown_content()[1]);
+}
+
+// This is a complex element whose only role is to call the most basic
+// Serialize implementation possible: that provided by ElementSerializer.
+class ComplexChildWithSerializer : public Element {
+ public:
+  ComplexChildWithSerializer(int id)
+     : Element(static_cast<KmlDomType>(id)) {
+  }
+  virtual void Serialize(Serializer& serializer) const {
+    // Calls BeginById(), End()
+    ElementSerializer element_serializer(*this, serializer);
+  }
+};
+
+TEST_F(ElementTest, TestSerializeMisplaced) {
+  // This Serializer is special-cased to assert the behavior of Element's
+  // SerializeUnknown() method on misplaced children.
+  typedef std::vector<int> IntVector;
+  class MisplacedSerializer : public Serializer {
+   public:
+    virtual void BeginById(int type_id,
+                           const kmlbase::Attributes& attributes) {
+      id_vector_.push_back(type_id);
+    };
+
+    const IntVector& get_id_vector() const {
+      return id_vector_;
+    }
+
+   private:
+    IntVector id_vector_;
+  } misplaced_serializer;
+
+  // Nothing in, nothing out.
+  element_->SerializeUnknown(misplaced_serializer);
+  ASSERT_TRUE(misplaced_serializer.get_id_vector().empty());
+
+  // 3 things in, 3 things out.
+  // AddElement on Element adds the Element to the misplaced elements array.
+  element_->AddElement(new ComplexChildWithSerializer(3));
+  element_->AddElement(new ComplexChildWithSerializer(2));
+  element_->AddElement(new ComplexChildWithSerializer(1));
+  // Call the method under test.
+  element_->SerializeUnknown(misplaced_serializer);
+  // Verify all is as expected.
+  ASSERT_EQ(static_cast<size_t>(3),
+            misplaced_serializer.get_id_vector().size());
+  ASSERT_EQ(3, misplaced_serializer.get_id_vector()[0]);
+  ASSERT_EQ(2, misplaced_serializer.get_id_vector()[1]);
+  ASSERT_EQ(1, misplaced_serializer.get_id_vector()[2]);
 }
 
 class ElementSerializerTest : public testing::Test {
