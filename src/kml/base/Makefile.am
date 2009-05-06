@@ -46,8 +46,6 @@ libkmlbaseinclude_HEADERS = \
 	string_util.h \
 	tempfile.h \
 	time_util.h \
-	unit_test.h \
-	uri_parser.h \
 	util.h \
 	vec3.h \
 	xml_element.h \
@@ -57,7 +55,9 @@ libkmlbaseinclude_HEADERS = \
 
 EXTRA_DIST = \
 	file_win32.cc \
-	net_cache_test_util.h
+	net_cache_test_util.h \
+	unit_test.h \
+	uri_parser.h
 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = \
