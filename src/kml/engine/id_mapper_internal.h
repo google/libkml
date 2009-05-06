@@ -32,6 +32,7 @@
 
 #include "kml/base/string_util.h"
 #include "kml/dom.h"
+#include "kml/dom/serializer.h"
 #include "kml/engine/engine_types.h"
 
 namespace kmlengine {
