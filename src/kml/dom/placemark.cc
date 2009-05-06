@@ -27,6 +27,7 @@
 #include "kml/base/attributes.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/element.h"
+#include "kml/dom/serializer.h"
 
 using kmlbase::Attributes;
 
