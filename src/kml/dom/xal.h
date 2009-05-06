@@ -53,7 +53,6 @@
 
 #include "kml/dom/element.h"
 #include "kml/base/attributes.h"
-#include "kml/dom/serializer.h"
 
 namespace kmldom {
 

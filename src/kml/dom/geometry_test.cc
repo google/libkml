@@ -32,6 +32,7 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/kml_funcs.h"
+#include "kml/dom/serializer.h"
 #include "gtest/gtest.h"
 
 using kmlbase::Vec3;

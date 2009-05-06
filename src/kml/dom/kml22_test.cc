@@ -27,6 +27,7 @@
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/xsd.h"
+#include "kml/dom/serializer.h"
 #include "gtest/gtest.h"
 
 namespace kmldom {
