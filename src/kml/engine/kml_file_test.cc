@@ -82,6 +82,8 @@ TEST_F(KmlFileTest, TestBasicParseFromString) {
   kml_file_ = KmlFile::CreateFromParse("<kml/>", NULL);
   ASSERT_TRUE(kml_file_);
   ElementPtr root = kml_file_->get_root();
+  // Verify old API exists and functions.
+  ASSERT_EQ(root, kml_file_->root());
   ASSERT_TRUE(root);
   ASSERT_EQ(kmldom::Type_kml, root->Type());
 
@@ -100,6 +102,8 @@ TEST_F(KmlFileTest, TestRoot) {
   // Verify that any complex element can be used as root.
   kml_file_ = KmlFile::CreateFromParse("<Placemark/>", NULL);
   ASSERT_EQ(kmldom::Type_Placemark, kml_file_->get_root()->Type());
+  // Verify old API exists and functions.
+  ASSERT_EQ(kmldom::Type_Placemark, kml_file_->root()->Type());
 }
 
 TEST_F(KmlFileTest, TestBasicObjectIdParse) {
@@ -202,6 +206,7 @@ TEST_F(KmlFileTest, TestCreateFromParseOfKml) {
   kml_file_ = KmlFile::CreateFromParse(kKml, &errors);
   ASSERT_TRUE(errors.empty());
   VerifyIsPlacemarkWithName(kml_file_->get_root(), kName);
+  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
 }
 
 // Verify the CreateFromParse() static method on junk input.
@@ -233,6 +238,7 @@ TEST_F(KmlFileTest, TestCreateFromParseOfKmz) {
   kml_file_ = KmlFile::CreateFromParse(kmz_data, &errors);
   ASSERT_TRUE(errors.empty());
   VerifyIsPlacemarkWithName(kml_file_->get_root(), kName);
+  VerifyIsPlacemarkWithName(kml_file_->root(), kName);
 }
 
 // Verify that GetParentLinkParserObservers finds all kinds of parents of
@@ -290,6 +296,7 @@ TEST_F(KmlFileTest, TestBasicCreateFromStringWithUrl) {
   ASSERT_TRUE(kml_file_);
   ASSERT_EQ(kUrl, kml_file_->get_url());
   PlacemarkPtr placemark = AsPlacemark(kml_file_->get_root());
+  ASSERT_EQ(placemark, AsPlacemark(kml_file_->root()));
   ASSERT_TRUE(placemark);
   ASSERT_EQ(kName, placemark->get_name());
   ASSERT_FALSE(kml_file_->get_kml_cache());
@@ -340,6 +347,7 @@ TEST_F(KmlFileTest, TestCreateFromImport) {
   KmlFilePtr kml_file = KmlFile::CreateFromImport(kml);
   ASSERT_TRUE(kml_file);
   ElementPtr root = kml_file->get_root();
+  ASSERT_EQ(root, kml_file->root());
   ASSERT_TRUE(root);
   ASSERT_TRUE(kmldom::AsKml(root));
   ASSERT_EQ(kName, kmldom::AsKml(root)->get_feature()->get_name());
@@ -413,6 +421,7 @@ TEST_F(KmlFileTest, TestCreateFromImportLax) {
   ASSERT_EQ(kLastName, placemark->get_name());
   // ...and the first one is the first feature in the folder
   folder = AsFolder(kml_file->get_root());
+  ASSERT_EQ(folder, AsFolder(kml_file->root()));
   ASSERT_TRUE(folder);
   ASSERT_EQ(static_cast<size_t>(2), folder->get_feature_array_size());
   placemark = AsPlacemark(folder->get_feature_array_at(0));

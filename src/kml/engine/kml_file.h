@@ -86,6 +86,11 @@ class KmlFile : public kmlbase::XmlFile {
     return kmldom::AsElement(XmlFile::get_root());
   }
 
+  // Deprecated.  Use get_root().
+  const kmldom::ElementPtr root() const {
+    return get_root();
+  }
+
   // This serializes the KML from the root.  The xmlns() value is added to
   // the root element, the set of namespace prefixes to namespaces is added,
   // and the encoding is set in a prepended XML header:
