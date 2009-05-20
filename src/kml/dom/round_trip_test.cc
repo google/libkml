@@ -54,7 +54,8 @@ static struct {
   { "kml", "all-itemicon-states-input.kml", "all-itemicon-states-golden.kml" },
   { "kml", "all-arrays.kml", "all-arrays-golden.kml" },
   { "kml", "all-altitudemodes.kml", "all-altitudemodes-golden.kml" },
-  { "gx", "all-gx-altitudemodes.kml", "all-gx-altitudemodes-golden.kml" }
+  { "gx", "all-gx-altitudemodes.kml", "all-gx-altitudemodes-golden.kml" },
+  { "gx", "all-gx.kml", "all-gx-golden.kml" }
 };
 
 static std::string ReadTestCase(const char *subdir, const char* filename) {
@@ -75,7 +76,9 @@ TEST(RoundTripTest, RunTestCases) {
     const char* input_kml = kTestCases[i].input_kml;
     const char* golden_kml = kTestCases[i].golden_kml;
     std::string actual_kml = ParseSerialize(ReadTestCase(subdir, input_kml));
+    EXPECT_FALSE(actual_kml.empty()) << input_kml;
     std::string expected_kml = ReadTestCase(subdir, golden_kml);
+    EXPECT_FALSE(expected_kml.empty()) << golden_kml;
     EXPECT_EQ(expected_kml, actual_kml);
   }
 }
