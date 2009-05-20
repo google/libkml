@@ -1,0 +1,146 @@
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Document>
+    <Style id="style0">
+      <IconStyle id="iconstyle0">
+        <scale>1</scale>
+      </IconStyle>
+    </Style>
+    <Placemark>
+      <LookAt>
+        <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+      </LookAt>
+    </Placemark>
+    <Placemark>
+      <name>gx:altitudeMode Example</name>
+      <LookAt>
+        <longitude>146.806</longitude>
+        <latitude>12.219</latitude>
+        <heading>-60</heading>
+        <tilt>70</tilt>
+        <range>6300</range>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+      </LookAt>
+      <LineString>
+        <extrude>1</extrude>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        <coordinates>
+          146.825,12.233,400
+          146.82,12.222,400
+          146.812,12.212,400
+          146.796,12.209,400
+          146.788,12.205,400
+        </coordinates>
+      </LineString>
+    </Placemark>
+    <Placemark id="placemark-eiffel-tower">
+      <name>Eiffel Tower</name>
+      <description> Located in Paris, France. This description balloon opens when the Placemark is
+        loaded. </description>
+      <gx:balloonVisibility>1</gx:balloonVisibility>
+      <Point>
+        <coordinates>
+          2.294785,48.858093,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:AnimatedUpdate>
+          <gx:duration>42</gx:duration>
+        </gx:AnimatedUpdate>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo>
+          <gx:flyToMode>smooth</gx:flyToMode>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo>
+          <gx:flyToMode>bounce</gx:flyToMode>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:TourControl>
+          <gx:playMode>pause</gx:playMode>
+        </gx:TourControl>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:AnimatedUpdate id="animated-update0">
+          <gx:duration>6.5</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <IconStyle targetId="iconstyle0">
+                <scale>10</scale>
+              </IconStyle>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo id="flyto-camera0">
+          <gx:duration>4.1</gx:duration>
+          <Camera>
+            <longitude>170.157</longitude>
+            <latitude>-43.671</latitude>
+            <altitude>9700</altitude>
+            <heading>-6.333</heading>
+            <tilt>33.5</tilt>
+            <roll>0</roll>
+          </Camera>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist/>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:SoundCue id="sound-cue0">
+          <href>cntowerfacts.mp3</href>
+        </gx:SoundCue>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour/>
+    <Document>
+      <LookAt>
+        <gx:TimeSpan id="lookat-timespan">
+          <begin>2000-07-08T17:52:02Z</begin>
+          <end>2018-07-09T02:01:57Z</end>
+        </gx:TimeSpan>
+        <longitude>-122</longitude>
+        <latitude>37</latitude>
+      </LookAt>
+    </Document>
+    <Placemark>
+      <Camera>
+        <gx:TimeStamp id="camera-timestamp">
+          <when>1990-08-04</when>
+        </gx:TimeStamp>
+      </Camera>
+    </Placemark>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:TourControl/>
+      </gx:Playlist>
+    </gx:Tour>
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:Wait/>
+      </gx:Playlist>
+    </gx:Tour>
+    <GroundOverlay>
+      <gx:LatLonQuad/>
+    </GroundOverlay>
+  </Document>
+</kml>
