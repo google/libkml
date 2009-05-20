@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file uses each gx element and enum at least once.  There is a section
+  for each gx element brought up to Feature level.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+  <Document>
+
+    <Style id="style0">
+      <IconStyle id="iconstyle0">
+        <scale>1.0</scale>
+      </IconStyle>
+    </Style>
+
+    <!-- <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode> -->
+    <Placemark>
+      <LookAt>
+        <gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>
+      </LookAt>
+    </Placemark>
+
+    <!-- <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode> -->
+    <Placemark>
+      <name>gx:altitudeMode Example</name>
+      <LookAt>
+        <longitude>146.806</longitude>
+        <latitude>12.219</latitude>
+        <heading>-60</heading>
+        <tilt>70</tilt>
+        <range>6300</range>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+      </LookAt>
+      <LineString>
+        <extrude>1</extrude>
+        <gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+        <coordinates> 146.825,12.233,400 146.820,12.222,400 146.812,12.212,400 146.796,12.209,400
+          146.788,12.205,400 </coordinates>
+      </LineString>
+    </Placemark>
+
+    <!-- <gx:balloonVisibility> -->
+    <Placemark id="placemark-eiffel-tower">
+      <name>Eiffel Tower</name>
+      <description> Located in Paris, France. This description balloon opens when the Placemark is
+        loaded. </description>
+      <gx:balloonVisibility>1</gx:balloonVisibility>
+      <Point>
+        <coordinates>2.294785,48.858093,0</coordinates>
+      </Point>
+    </Placemark>
+
+    <!-- <gx:duration> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:AnimatedUpdate>
+          <gx:duration>42</gx:duration>
+        </gx:AnimatedUpdate>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:flyToMode>smooth</gx:flyToMode> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo>
+          <gx:flyToMode>smooth</gx:flyToMode>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:flyToMode>bounce</gx:flyToMode> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo>
+          <gx:flyToMode>bounce</gx:flyToMode>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:playMode> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:TourControl>
+          <gx:playMode>pause</gx:playMode>
+        </gx:TourControl>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:AnimatedUpdate> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:AnimatedUpdate id="animated-update0">
+          <gx:duration>6.5</gx:duration>
+          <Update>
+            <targetHref/>
+            <Change>
+              <IconStyle targetId="iconstyle0">
+                <scale>10.0</scale>
+              </IconStyle>
+            </Change>
+          </Update>
+        </gx:AnimatedUpdate>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:FlyTo> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:FlyTo id="flyto-camera0">
+          <gx:duration>4.1</gx:duration>
+          <Camera>
+            <longitude>170.157</longitude>
+            <latitude>-43.671</latitude>
+            <altitude>9700</altitude>
+            <heading>-6.333</heading>
+            <tilt>33.5</tilt>
+            <roll>0</roll>
+          </Camera>
+        </gx:FlyTo>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:Playlist> -->
+    <gx:Tour>
+      <gx:Playlist> </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:SoundCue> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:SoundCue id="sound-cue0">
+          <href>cntowerfacts.mp3</href>
+        </gx:SoundCue>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:Tour> -->
+    <gx:Tour> </gx:Tour>
+
+    <!-- <gx:TimeStamp> -->
+    <Document>
+      <!-- This flies to the given range in space-time.
+        The time slider UI is initialized to the given range,
+        thus all Features with TimeStamps/TimeSpans within
+        this range (and view) are visible.
+      -->
+      <LookAt>
+        <gx:TimeSpan id="lookat-timespan">
+          <begin>2000-07-08T17:52:02Z</begin>
+          <end>2018-07-09T02:01:57Z</end>
+        </gx:TimeSpan>
+        <longitude>-122</longitude>
+        <latitude>37</latitude>
+      </LookAt>
+    </Document>
+
+    <!-- <gx:TimeSpan> -->
+    <Placemark>
+      <!-- This flies to a given _instant_ in time -->
+      <Camera>
+        <gx:TimeStamp id="camera-timestamp">
+          <when>1990-08-04</when>
+        </gx:TimeStamp>
+      </Camera>
+    </Placemark>
+
+    <!-- <gx:TourControl> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:TourControl> </gx:TourControl>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:Wait> -->
+    <gx:Tour>
+      <gx:Playlist>
+        <gx:Wait> </gx:Wait>
+      </gx:Playlist>
+    </gx:Tour>
+
+    <!-- <gx:LatLonQuad> -->
+    <GroundOverlay>
+      <gx:LatLonQuad> </gx:LatLonQuad>
+    </GroundOverlay>
+
+    <!--
+    <junk/>
+      -->
+
+  </Document>
+</kml>
