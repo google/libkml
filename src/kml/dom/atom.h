@@ -23,8 +23,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the declaration of the <atom:author> and <atom:link>
-// elements.  See: http://atompub.org/rfc4287.html.
+// This file contains the declaration of Atom elements used in KML.
+// See: http://atompub.org/rfc4287.html.
 
 #ifndef KML_DOM_ATOM_H__
 #define KML_DOM_ATOM_H__
@@ -88,6 +88,186 @@ class AtomAuthor : public BasicElement<Type_AtomAuthor> {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomAuthor);
+};
+
+// Elements common to <atom:feed> and <atom:entry>.
+class AtomCommon : public Element {
+ public:
+  // <atom:id>
+  const std::string& get_id() const { return id_; }
+  bool has_id() const { return has_id_; }
+  void set_id(const std::string& value) {
+    id_ = value;
+    has_id_ = true;
+  }
+  void clear_id() {
+    id_.clear();
+    has_id_ = false;
+  }
+
+  // <atom:title>
+  const std::string& get_title() const { return title_; }
+  bool has_title() const { return has_title_; }
+  void set_title(const std::string& value) {
+    title_ = value;
+    has_title_ = true;
+  }
+  void clear_title() {
+    title_.clear();
+    has_title_ = false;
+  }
+
+  // <atom:updated>
+  const std::string& get_updated() const { return updated_; }
+  bool has_updated() const { return has_updated_; }
+  void set_updated(const std::string& value) {
+    updated_ = value;
+    has_updated_ = true;
+  }
+  void clear_updated() {
+    updated_.clear();
+    has_updated_ = false;
+  }
+
+  // <atom:link>...
+  void add_link(const AtomLinkPtr& entry);
+  size_t get_link_array_size() const {
+    return link_array_.size();
+  }
+  const AtomLinkPtr& get_link_array_at(size_t index) const {
+    return link_array_[index];
+  }
+
+ protected:
+  AtomCommon();
+  void AddElement(const ElementPtr& element);
+  virtual void Serialize(Serializer& serializer) const;
+
+ private:
+  friend class KmlFactory;
+  friend class KmlHandler;
+  friend class Serializer;
+  bool has_id_;
+  std::string id_;
+  bool has_title_;
+  std::string title_;
+  bool has_updated_;
+  std::string updated_;
+  std::vector<AtomLinkPtr> link_array_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomCommon);
+};
+
+// <atom:content src="..."  type="...">
+// NOTE: This element is not part of the OGC KML 2.2 standard.
+class AtomContent : public BasicElement<Type_AtomContent> {
+ public:
+  virtual ~AtomContent();
+
+  // source=
+  const std::string& get_source() const { return source_; }
+  bool has_source() const { return has_source_; }
+  void set_source(const std::string& value) {
+    source_ = value;
+    has_source_ = true;
+  }
+  void clear_source() {
+    source_.clear();
+    has_source_ = false;
+  }
+
+  // type=
+  const std::string& get_type() const { return type_; }
+  bool has_type() const { return has_type_; }
+  void set_type(const std::string& value) {
+    type_ = value;
+    has_type_ = true;
+  }
+  void clear_type() {
+    type_.clear();
+    has_type_ = false;
+  }
+
+ private:
+  friend class KmlFactory;
+  AtomContent();
+  friend class KmlHandler;
+  void ParseAttributes(kmlbase::Attributes* attributes);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  bool has_source_;
+  std::string source_;
+  bool has_type_;
+  std::string type_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomContent);
+};
+
+// <atom:entry>
+// NOTE: This element is not part of the OGC KML 2.2 standard.
+class AtomEntry : public AtomCommon {
+ public:
+  virtual ~AtomEntry();
+  virtual KmlDomType Type() const { return Type_AtomEntry; }
+  virtual bool IsA(KmlDomType type) const {
+    return type == Type_AtomEntry;
+  }
+  // This static method makes the class useable with ElementCast.
+  static KmlDomType ElementType() {
+    return static_cast<KmlDomType>(Type_AtomEntry);
+  }
+
+  // <atom:content>
+  const AtomContentPtr& get_content() const { return content_; }
+  bool has_content() const { return content_ != NULL; }
+  void set_content(const AtomContentPtr& content) {
+    SetComplexChild(content, &content_);
+  }
+  void clear_content() {
+    set_content(NULL);
+  }
+
+ private:
+  friend class KmlFactory;
+  AtomEntry();
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  AtomContentPtr content_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomEntry);
+};
+
+// <atom:feed>
+// NOTE: This element is not part of the OGC KML 2.2 standard.
+class AtomFeed : public AtomCommon {
+ public:
+  virtual ~AtomFeed();
+  virtual KmlDomType Type() const { return Type_AtomFeed; }
+  virtual bool IsA(KmlDomType type) const {
+    return type == Type_AtomFeed;
+  }
+  // This static method makes the class useable with ElementCast.
+  static KmlDomType ElementType() {
+    return static_cast<KmlDomType>(Type_AtomFeed);
+  }
+
+  // <atom:entry>...
+  void add_entry(const AtomEntryPtr& entry);
+  size_t get_entry_array_size() const {
+    return entry_array_.size();
+  }
+  const AtomEntryPtr& get_entry_array_at(size_t index) const {
+    return entry_array_[index];
+  }
+
+ private:
+  friend class KmlFactory;
+  AtomFeed();
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  std::vector<AtomEntryPtr> entry_array_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomFeed);
 };
 
 // <atom:link>, RFC 4287 4.2.7

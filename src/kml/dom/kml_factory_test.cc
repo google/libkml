@@ -29,10 +29,7 @@
 
 namespace kmldom {
 
-class KmlFactoryTest : public testing::Test {
-};
-
-TEST_F(KmlFactoryTest, TestFactory) {
+TEST(KmlFactoryTest, TestFactory) {
   KmlFactory* factory(KmlFactory::GetFactory());
 
   // CreateElementById returns an ElementPtr which automatically
@@ -57,6 +54,15 @@ TEST_F(KmlFactoryTest, TestFactory) {
 
   e = factory->CreateAtomAuthor();
   ASSERT_EQ(Type_AtomAuthor, e->Type());
+
+  e = factory->CreateAtomContent();
+  ASSERT_EQ(Type_AtomContent, e->Type());
+
+  e = factory->CreateAtomEntry();
+  ASSERT_EQ(Type_AtomEntry, e->Type());
+
+  e = factory->CreateAtomFeed();
+  ASSERT_EQ(Type_AtomFeed, e->Type());
 
   e = factory->CreateAtomLink();
   ASSERT_EQ(Type_AtomLink, e->Type());

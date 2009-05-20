@@ -207,11 +207,16 @@ static XsdElement kKml22Elements[] = {
 
   // Atom complex elements
   { "atom:author", XSD_COMPLEX_TYPE },
+  { "atom:content", XSD_COMPLEX_TYPE },
+  { "atom:entry", XSD_COMPLEX_TYPE },
+  { "atom:feed", XSD_COMPLEX_TYPE },
   { "atom:link", XSD_COMPLEX_TYPE },
 
   // Atom simple elements
   { "atom:email", XSD_SIMPLE_TYPE },
+  { "atom:id", XSD_SIMPLE_TYPE },
   { "atom:name", XSD_SIMPLE_TYPE },
+  { "atom:title", XSD_SIMPLE_TYPE },
   { "atom:uri", XSD_SIMPLE_TYPE },
 
   // xAL complex elements

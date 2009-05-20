@@ -148,6 +148,15 @@ const ViewVolumePtr AsViewVolume(const ElementPtr element);
 inline const AtomAuthorPtr AsAtomAuthor(const ElementPtr& element) {
   return ElementCast<AtomAuthor>(element);
 }
+inline const AtomContentPtr AsAtomContent(const ElementPtr& element) {
+  return ElementCast<AtomContent>(element);
+}
+inline const AtomEntryPtr AsAtomEntry(const ElementPtr& element) {
+  return ElementCast<AtomEntry>(element);
+}
+inline const AtomFeedPtr AsAtomFeed(const ElementPtr& element) {
+  return ElementCast<AtomFeed>(element);
+}
 inline const AtomLinkPtr AsAtomLink(const ElementPtr& element) {
   return ElementCast<AtomLink>(element);
 }
