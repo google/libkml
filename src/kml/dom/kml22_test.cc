@@ -114,7 +114,7 @@ TEST_F(Kml22Test, TestElementNull) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
 }
 
 // This Serializer is specifically designed to capture the output of the
@@ -170,7 +170,7 @@ TEST_F(Kml22Test, TestElementSerializerEmpty) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(84, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
 }
 
 void Kml22Test::AssertXmlNamespaceForRange(KmlDomType begin_dom_type,
@@ -199,6 +199,22 @@ TEST_F(Kml22Test, TestElementXmlNamespaces) {
                              kmlbase::XMLNS_XAL);
   AssertXmlNamespaceForRange(Type_GxAnimatedUpdate, Type_GxWait,
                              kmlbase::XMLNS_GX22);
+}
+
+// Every complex element preserves unknown children.
+TEST_F(Kml22Test, TestSaveUnknown) {
+  int complex_count = 0;
+  int element_type_id = static_cast<int>(Type_Unknown) + 1;
+  const int end_id = static_cast<int>(Type_Invalid);
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  for (; element_type_id != end_id; ++element_type_id) {
+    // Only complex elements return non-NULL.
+    if (ElementPtr element = kml_factory->CreateElementById(
+        static_cast<KmlDomType>(element_type_id))) {
+      ++complex_count;
+    }
+  }
+  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
 }
 
 }  // end namespace kmldom

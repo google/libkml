@@ -23,10 +23,10 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the implementation of the <atom:author> and <atom:link>
-// elements.
+// This file contains the implementation of the Atom elements.
 
 #include "kml/dom/atom.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/serializer.h"
 #include "kml/base/attributes.h"
 
@@ -34,6 +34,16 @@ using kmlbase::Attributes;
 
 namespace kmldom {
 
+// Attributes.
+static const char kHref[] = "href";
+static const char kHrefLang[] = "hreflang";
+static const char kLength[] = "length";
+static const char kRel[] = "rel";
+static const char kSource[] = "source";
+static const char kTitle[] = "title";
+static const char kType[] = "type";
+
+// <atom:author>
 AtomAuthor::AtomAuthor()
   : has_name_(false),
     has_uri_(false),
@@ -79,6 +89,95 @@ void AtomAuthor::Serialize(Serializer& serializer) const {
   }
 } 
 
+// <atom:content>
+AtomContent::AtomContent()
+  : has_source_(false),
+    has_type_(false) {
+  set_xmlns(kmlbase::XMLNS_ATOM);
+}
+
+AtomContent::~AtomContent() {}
+
+void AtomContent::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_source_ = attributes->CutValue(kSource, &source_);
+  has_type_ = attributes->CutValue(kType, &type_);
+  AddUnknownAttributes(attributes);
+}
+
+
+void AtomContent::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+}
+
+// Common children of <atom:feed> and <atom:entry>.
+AtomCommon::AtomCommon()
+  : has_id_(false),
+    has_title_(false),
+    has_updated_(false) {
+}
+
+void AtomCommon::add_link(const AtomLinkPtr& link) {
+  AddComplexChild(link, &link_array_);
+}
+
+void AtomCommon::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  // TODO: id, title, updated, link
+  Element::AddElement(element);
+}
+
+void AtomCommon::Serialize(Serializer& serializer) const {
+  Element::Serialize(serializer);
+}
+
+// <atom:entry>
+AtomEntry::AtomEntry() {
+  set_xmlns(kmlbase::XMLNS_ATOM);
+}
+
+AtomEntry::~AtomEntry() {}
+
+void AtomEntry::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  // TODO: <atom:content>
+  AtomCommon::AddElement(element);
+}
+
+void AtomEntry::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+}
+
+// <atom:feed>
+AtomFeed::AtomFeed() {
+  set_xmlns(kmlbase::XMLNS_ATOM);
+}
+
+AtomFeed::~AtomFeed() {}
+
+void AtomFeed::add_entry(const AtomEntryPtr& atom_entry) {
+  AddComplexChild(atom_entry, &entry_array_);
+}
+
+void AtomFeed::AddElement(const ElementPtr& element) {
+  if (AtomEntryPtr entry = AsAtomEntry(element)) {
+    add_entry(entry);
+  } else {
+    AtomCommon::AddElement(element);
+  }
+}
+
+void AtomFeed::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+}
+
+// <atom:link>
 AtomLink::AtomLink()
   : has_href_(false),
     has_rel_(false),
@@ -97,13 +196,6 @@ void AtomLink::AddElement(const ElementPtr& element) {
   // in the atom standard.
   Element::AddElement(element);
 }
-
-static const char kHref[] = "href";
-static const char kRel[] = "rel";
-static const char kType[] = "type";
-static const char kHrefLang[] = "hreflang";
-static const char kTitle[] = "title";
-static const char kLength[] = "length";
 
 void AtomLink::ParseAttributes(Attributes* attributes) {
   if (!attributes) {

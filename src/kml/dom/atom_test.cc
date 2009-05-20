@@ -23,12 +23,14 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This file contains the unit tests for the <atom:author> and <atom:link>
-// elements.
+// This file contains the unit tests for the Atom elements.
+// TODO: lots more tests
 
 #include "kml/dom/atom.h"
 #include "kml/base/xml_namespaces.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_funcs.h"
 #include "gtest/gtest.h"
 
 namespace kmldom {
@@ -52,6 +54,162 @@ TEST_F(AtomAuthorTest, TestXmlNamespace) {
   ASSERT_EQ(kmlbase::XMLNS_ATOM, atomauthor_->get_xmlns());
 }
 
+class AtomContentTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    atomcontent_ = KmlFactory::GetFactory()->CreateAtomContent();
+  }
+
+  AtomContentPtr atomcontent_;
+};
+
+TEST_F(AtomContentTest, TestType) {
+  ASSERT_EQ(Type_AtomContent, atomcontent_->Type());
+  ASSERT_FALSE(atomcontent_->IsA(Type_Object));
+  ASSERT_TRUE(atomcontent_->IsA(Type_AtomContent));
+}
+
+TEST_F(AtomContentTest, TestXmlNamespace) {
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, atomcontent_->get_xmlns());
+}
+
+TEST_F(AtomContentTest, TestParseSrc) {
+  const std::string kSource("http://somewhere.com/over/the/rainbow");
+  // ParseKml calls AddElement.
+  atomcontent_ = AsAtomContent(
+      ParseKml(std::string("<atom:content source='") + kSource + "'/>"));
+  ASSERT_TRUE(atomcontent_);
+  ASSERT_TRUE(atomcontent_->has_source());
+  ASSERT_EQ(kSource, atomcontent_->get_source());
+}
+
+TEST_F(AtomContentTest, TestParseType) {
+  const std::string kType("text/blah");
+  // ParseKml calls AddElement.
+  atomcontent_ = AsAtomContent(
+      ParseKml(std::string("<atom:content type='") + kType + "'/>"));
+  ASSERT_TRUE(atomcontent_);
+  ASSERT_TRUE(atomcontent_->has_type());
+  ASSERT_EQ(kType, atomcontent_->get_type());
+}
+
+TEST_F(AtomContentTest, TestParseUnknownContent) {
+  const std::string kContent("<goo:bar>baz<goo:a>foo</goo:a></goo:bar>\n");
+  atomcontent_ = AsAtomContent(
+      ParseKml(std::string("<atom:content>") + kContent + "</atom:content>"));
+  ASSERT_TRUE(atomcontent_);
+  ASSERT_EQ(static_cast<size_t>(1),
+            atomcontent_->get_unknown_elements_array_size());
+  ASSERT_EQ(kContent, atomcontent_->get_unknown_elements_array_at(0));
+}
+
+// This test case is taken from the Atom RFC 4287, section 1.1
+TEST_F(AtomContentTest, TestParseUnknownContentWithUnknownAttributes) {
+  // Note that libkml emits attributes using double quotes and appends
+  // a newline after each unknown item.
+  const std::string kContent(
+       "<div xmlns=\"http://www.w3.org/1999/xhtml\">"
+         "<p><i>[Update: The Atom draft is finished.]</i></p>"
+        "</div>\n");
+  // ParseKml is _not_ namespace aware, hence the atom: prefix.
+  atomcontent_ = AsAtomContent(ParseKml(
+     std::string("<atom:content type='xhtml' xml:lang='en'") +
+                    " xml:base='http://diveintomark.org/'>" + kContent +
+                 "</atom:content>"));
+  ASSERT_TRUE(atomcontent_);
+  ASSERT_EQ(static_cast<size_t>(1),
+            atomcontent_->get_unknown_elements_array_size());
+  ASSERT_EQ(kContent, atomcontent_->get_unknown_elements_array_at(0));
+  const kmlbase::Attributes* unknown_attributes =
+      atomcontent_->GetUnknownAttributes();
+  ASSERT_TRUE(unknown_attributes);
+  ASSERT_EQ(static_cast<size_t>(2), unknown_attributes->GetSize());
+  std::string val;
+  ASSERT_TRUE(unknown_attributes->GetValue("xml:lang", &val));
+  ASSERT_EQ(std::string("en"), val);
+  ASSERT_TRUE(unknown_attributes->GetValue("xml:base", &val));
+  ASSERT_EQ(std::string("http://diveintomark.org/"), val);
+}
+
+// Within libkml <Placemark> and any other kml element is only ever
+// considered misplaced.  The <Placemark> itself _is_ fully parsed and
+// available in dom form on the parents misplaced elements list.  Neat!
+TEST_F(AtomContentTest, TestParseMisplacedContent) {
+  const std::string kName("my name");
+  const std::string kPlacemark(std::string("<Placemark><name>") + kName +
+                               "</name></Placemark>");
+  atomcontent_ = AsAtomContent(
+      ParseKml(std::string("<atom:content>") + kPlacemark + "</atom:content>"));
+  ASSERT_TRUE(atomcontent_);
+  ASSERT_EQ(static_cast<size_t>(0),
+            atomcontent_->get_unknown_elements_array_size());
+  ASSERT_EQ(static_cast<size_t>(1),
+            atomcontent_->get_misplaced_elements_array_size());
+  PlacemarkPtr placemark = AsPlacemark(
+      atomcontent_->get_misplaced_elements_array_at(0));
+  ASSERT_TRUE(placemark);
+  ASSERT_EQ(kName, placemark->get_name());
+}
+
+class AtomCommonTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    entry_ = KmlFactory::GetFactory()->CreateAtomEntry();
+    feed_ = KmlFactory::GetFactory()->CreateAtomFeed();
+  }
+
+  AtomFeedPtr feed_;
+  AtomEntryPtr entry_;
+};
+
+TEST_F(AtomCommonTest, TestDefault) {
+  ASSERT_FALSE(feed_->has_id());
+  ASSERT_FALSE(entry_->has_id());
+  ASSERT_FALSE(feed_->has_title());
+  ASSERT_FALSE(entry_->has_title());
+  ASSERT_FALSE(feed_->has_updated());
+  ASSERT_FALSE(entry_->has_updated());
+  ASSERT_EQ(static_cast<size_t>(0), feed_->get_link_array_size());
+  ASSERT_EQ(static_cast<size_t>(0), entry_->get_link_array_size());
+}
+
+TEST_F(AtomCommonTest, TestSetGetClear) {
+  const std::string kId("very-mostly-highly-unique");
+  const std::string kTitle("Your Lordship");
+  const std::string kUpdated("today!");
+  feed_->set_id(kId);
+  entry_->set_id(kId);
+  feed_->set_title(kTitle);
+  entry_->set_title(kTitle);
+  feed_->set_updated(kUpdated);
+  entry_->set_updated(kUpdated);
+  ASSERT_TRUE(feed_->has_id());
+  ASSERT_TRUE(entry_->has_id());
+  ASSERT_TRUE(feed_->has_title());
+  ASSERT_TRUE(entry_->has_title());
+  ASSERT_TRUE(feed_->has_updated());
+  ASSERT_TRUE(entry_->has_updated());
+  ASSERT_EQ(kId, feed_->get_id());
+  ASSERT_EQ(kId, entry_->get_id());
+  ASSERT_EQ(kTitle, feed_->get_title());
+  ASSERT_EQ(kTitle, entry_->get_title());
+  ASSERT_EQ(kUpdated, feed_->get_updated());
+  ASSERT_EQ(kUpdated, entry_->get_updated());
+  feed_->clear_id();
+  entry_->clear_id();
+  feed_->clear_title();
+  entry_->clear_title();
+  feed_->clear_updated();
+  entry_->clear_updated();
+  ASSERT_FALSE(feed_->has_id());
+  ASSERT_FALSE(entry_->has_id());
+  ASSERT_FALSE(feed_->has_title());
+  ASSERT_FALSE(entry_->has_title());
+  ASSERT_FALSE(feed_->has_updated());
+  ASSERT_FALSE(entry_->has_updated());
+}
+
+
 class AtomLinkTest : public testing::Test {
  protected:
   virtual void SetUp() {
@@ -60,6 +218,60 @@ class AtomLinkTest : public testing::Test {
 
   AtomLinkPtr atomlink_;
 };
+
+class AtomEntryTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    atomentry_ = KmlFactory::GetFactory()->CreateAtomEntry();
+  }
+
+  AtomEntryPtr atomentry_;
+};
+
+TEST_F(AtomEntryTest, TestType) {
+  ASSERT_EQ(Type_AtomEntry, atomentry_->Type());
+  ASSERT_FALSE(atomentry_->IsA(Type_Object));
+  ASSERT_TRUE(atomentry_->IsA(Type_AtomEntry));
+}
+
+TEST_F(AtomEntryTest, TestXmlNamespace) {
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, atomentry_->get_xmlns());
+}
+
+TEST_F(AtomEntryTest, TestSetContent) {
+  atomentry_->set_content(KmlFactory::GetFactory()->CreateAtomContent());
+  ASSERT_TRUE(atomentry_->has_content());
+  ASSERT_TRUE(atomentry_->get_content());
+}
+
+TEST_F(AtomEntryTest, TestAddOneLink) {
+  atomentry_->add_link(KmlFactory::GetFactory()->CreateAtomLink());
+  ASSERT_EQ(static_cast<size_t>(1), atomentry_->get_link_array_size());
+}
+
+class AtomFeedTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    atomfeed_ = KmlFactory::GetFactory()->CreateAtomFeed();
+  }
+
+  AtomFeedPtr atomfeed_;
+};
+
+TEST_F(AtomFeedTest, TestType) {
+  ASSERT_EQ(Type_AtomFeed, atomfeed_->Type());
+  ASSERT_FALSE(atomfeed_->IsA(Type_Object));
+  ASSERT_TRUE(atomfeed_->IsA(Type_AtomFeed));
+}
+
+TEST_F(AtomFeedTest, TestXmlNamespace) {
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, atomfeed_->get_xmlns());
+}
+
+TEST_F(AtomFeedTest, TestAddOneEntry) {
+  atomfeed_->add_entry(KmlFactory::GetFactory()->CreateAtomEntry());
+  ASSERT_EQ(static_cast<size_t>(1), atomfeed_->get_entry_array_size());
+}
 
 TEST_F(AtomLinkTest, TestType) {
   ASSERT_EQ(Type_AtomLink, atomlink_->Type());

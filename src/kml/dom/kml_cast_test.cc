@@ -53,6 +53,9 @@ TEST_F(KmlCastTest, TestCasts) {
   ASSERT_TRUE(AsTimePrimitive(factory->CreateElementById(Type_TimeSpan)));
   ASSERT_TRUE(AsAlias(factory->CreateElementById(Type_Alias)));
   ASSERT_TRUE(AsAtomAuthor(factory->CreateElementById(Type_AtomAuthor)));
+  ASSERT_TRUE(AsAtomContent(factory->CreateElementById(Type_AtomContent)));
+  ASSERT_TRUE(AsAtomEntry(factory->CreateElementById(Type_AtomEntry)));
+  ASSERT_TRUE(AsAtomFeed(factory->CreateElementById(Type_AtomFeed)));
   ASSERT_TRUE(AsAtomLink(factory->CreateElementById(Type_AtomLink)));
   ASSERT_TRUE(AsBalloonStyle(factory->CreateElementById(Type_BalloonStyle)));
   ASSERT_TRUE(AsCamera(factory->CreateElementById(Type_Camera)));

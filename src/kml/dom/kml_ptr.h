@@ -50,6 +50,9 @@ class Vec2;
 
 class Alias;
 class AtomAuthor;
+class AtomContent;
+class AtomEntry;
+class AtomFeed;
 class AtomLink;
 class BalloonStyle;
 class Camera;
@@ -158,6 +161,9 @@ typedef boost::intrusive_ptr<Vec2> Vec2Ptr;
 
 typedef boost::intrusive_ptr<Alias> AliasPtr;
 typedef boost::intrusive_ptr<AtomAuthor> AtomAuthorPtr;
+typedef boost::intrusive_ptr<AtomContent> AtomContentPtr;
+typedef boost::intrusive_ptr<AtomEntry> AtomEntryPtr;
+typedef boost::intrusive_ptr<AtomFeed> AtomFeedPtr;
 typedef boost::intrusive_ptr<AtomLink> AtomLinkPtr;
 typedef boost::intrusive_ptr<BalloonStyle> BalloonStylePtr;
 typedef boost::intrusive_ptr<Camera> CameraPtr;

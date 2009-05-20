@@ -204,10 +204,15 @@ typedef enum {
   Type_z,
 
   Type_AtomAuthor,
+  Type_AtomContent,
+  Type_AtomEntry,
+  Type_AtomFeed,
   Type_AtomLink,
 
   Type_atomEmail,
+  Type_atomId,
   Type_atomName,
+  Type_atomTitle,
   Type_atomUri,
 
   Type_XalAddressDetails,
