@@ -1,0 +1,25 @@
+<!--
+  From: http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingFeatures
+-->
+<atom:entry xmlns='http://www.opengis.net/kml/2.2'
+    xmlns:atom='http://www.w3.org/2005/Atom'>
+   <atom:title type='text'>Faulkner's Birthplace</atom:title>
+   <atom:content type='application/vnd.google-earth.kml+xml'>
+     <Placemark>
+       <name>Faulkner's Birthplace</name>
+       <description>
+         <![CDATA[
+           <p><b>William Faulkner</b> adopted Oxford, Mississippi as his 
+           hometown when his family moved to Oxford from nearby New Albany 
+           when he was three.</p>    
+         ]]>
+       </description>
+       <Point>
+         <coordinates>-89.520753,34.360902,0.0</coordinates>
+       </Point>
+     </Placemark>
+   </atom:content>
+   <atom:author>
+     <atom:name>Tom</atom:name>
+   </atom:author>
+</atom:entry>
