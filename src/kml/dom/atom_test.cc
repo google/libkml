@@ -24,9 +24,10 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains the unit tests for the Atom elements.
-// TODO: lots more tests
+// TODO: a few more tests
 
 #include "kml/dom/atom.h"
+#include "kml/base/string_util.h"
 #include "kml/base/xml_namespaces.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
@@ -74,13 +75,13 @@ TEST_F(AtomContentTest, TestXmlNamespace) {
 }
 
 TEST_F(AtomContentTest, TestParseSrc) {
-  const std::string kSource("http://somewhere.com/over/the/rainbow");
+  const std::string kSrc("http://somewhere.com/over/the/rainbow");
   // ParseKml calls AddElement.
   atomcontent_ = AsAtomContent(
-      ParseKml(std::string("<atom:content source='") + kSource + "'/>"));
+      ParseKml(std::string("<atom:content src='") + kSrc + "'/>"));
   ASSERT_TRUE(atomcontent_);
-  ASSERT_TRUE(atomcontent_->has_source());
-  ASSERT_EQ(kSource, atomcontent_->get_source());
+  ASSERT_TRUE(atomcontent_->has_src());
+  ASSERT_EQ(kSrc, atomcontent_->get_src());
 }
 
 TEST_F(AtomContentTest, TestParseType) {
@@ -151,6 +152,23 @@ TEST_F(AtomContentTest, TestParseMisplacedContent) {
   ASSERT_EQ(kName, placemark->get_name());
 }
 
+TEST_F(AtomContentTest, TestSerializeAttributes) {
+  const std::string kSrc("http://somewhere.com/over/the/rainbow");
+  const std::string kType("text/blah");
+  atomcontent_->set_src(kSrc);
+  atomcontent_->set_type(kType);
+  const std::string kExpected(
+    std::string("<atom:content") +
+                " src=\"" + kSrc + "\""
+                " type=\"" + kType + "\""
+               "/>");
+  ASSERT_EQ(kExpected, SerializeRaw(atomcontent_));
+}
+
+// TOOD: test serialize of <atom:content><arbitrary>mark<up>...
+// TOOD: test serialize of <atom:content><Placemark>mark<up>...
+
+// This tests elements comment to <atom:entry> and <atom:feed>
 class AtomCommonTest : public testing::Test {
  protected:
   virtual void SetUp() {
@@ -209,6 +227,95 @@ TEST_F(AtomCommonTest, TestSetGetClear) {
   ASSERT_FALSE(entry_->has_updated());
 }
 
+TEST_F(AtomCommonTest, TestAddOneLink) {
+  entry_->add_link(KmlFactory::GetFactory()->CreateAtomLink());
+  ASSERT_EQ(static_cast<size_t>(1), entry_->get_link_array_size());
+  feed_->add_link(KmlFactory::GetFactory()->CreateAtomLink());
+  ASSERT_EQ(static_cast<size_t>(1), feed_->get_link_array_size());
+}
+
+TEST_F(AtomCommonTest, TestAddMultipleLinks) {
+  const int kLinkCount(49);
+  AtomLinkPtr link;
+  for (int i = 0; i < kLinkCount; ++i) {
+    link = KmlFactory::GetFactory()->CreateAtomLink();
+    link->set_href(kmlbase::ToString(i));
+    entry_->add_link(link);
+    // Can't give the same element to 2 parents.
+    link = KmlFactory::GetFactory()->CreateAtomLink();
+    link->set_href(kmlbase::ToString(i));
+    feed_->add_link(link);
+  }
+  ASSERT_EQ(static_cast<size_t>(kLinkCount), entry_->get_link_array_size());
+  ASSERT_EQ(static_cast<size_t>(kLinkCount), feed_->get_link_array_size());
+  for (int i = 0; i < kLinkCount; ++i) {
+    ASSERT_EQ(kmlbase::ToString(i), entry_->get_link_array_at(i)->get_href());
+    ASSERT_EQ(kmlbase::ToString(i), feed_->get_link_array_at(i)->get_href());
+  }
+}
+
+// This tests AtomCommon::AddElement()
+TEST_F(AtomCommonTest, TestParse) {
+  const std::string kId("very-mostly-highly-unique");
+  const std::string kTitle("Your Lordship");
+  const std::string kUpdated("today!");
+  const std::string kHrefA("http://a.com");
+  const std::string kHrefB("http://b.net");
+  const std::string kLinks(std::string("<atom:link href='" + kHrefA + "'/>"
+                                       "<atom:link href='" + kHrefB + "'/>"));
+  const std::string kChildren(
+      std::string("<atom:id>") + kId + "</atom:id>"
+      "<atom:title>" + kTitle + "</atom:title>"
+      "<atom:updated>" + kUpdated + "</atom:updated>" +
+      kLinks);
+  entry_ = AsAtomEntry(ParseKml(std::string("<atom:entry>") + kChildren +
+                               "</atom:entry>"));
+  ASSERT_TRUE(entry_.get());
+  ASSERT_TRUE(entry_->has_id());
+  ASSERT_EQ(kId, entry_->get_id());
+  ASSERT_TRUE(entry_->has_title());
+  ASSERT_EQ(kTitle, entry_->get_title());
+  ASSERT_TRUE(entry_->has_updated());
+  ASSERT_EQ(kUpdated, entry_->get_updated());
+  ASSERT_EQ(static_cast<size_t>(2), entry_->get_link_array_size());
+  ASSERT_EQ(kHrefA, entry_->get_link_array_at(0)->get_href());
+  ASSERT_EQ(kHrefB, entry_->get_link_array_at(1)->get_href());
+  feed_ = AsAtomFeed(ParseKml(std::string("<atom:feed>") + kChildren +
+                               "</atom:feed>"));
+  ASSERT_TRUE(feed_.get());
+  ASSERT_TRUE(feed_->has_id());
+  ASSERT_EQ(kId, feed_->get_id());
+  ASSERT_TRUE(feed_->has_title());
+  ASSERT_EQ(kTitle, feed_->get_title());
+  ASSERT_TRUE(feed_->has_updated());
+  ASSERT_EQ(kUpdated, feed_->get_updated());
+  ASSERT_EQ(static_cast<size_t>(2), feed_->get_link_array_size());
+  ASSERT_EQ(kHrefA, feed_->get_link_array_at(0)->get_href());
+  ASSERT_EQ(kHrefB, feed_->get_link_array_at(1)->get_href());
+}
+
+TEST_F(AtomCommonTest, TestSerialize) {
+  const std::string kId("very-mostly-highly-unique");
+  const std::string kTitle("Your Lordship");
+  const std::string kUpdated("today!");
+  const std::string kHrefA("http://a.com");
+  const std::string kHrefB("http://b.net");
+  const std::string kLinks(std::string("<atom:link href=\"" + kHrefA + "\"/>"
+                                       "<atom:link href=\"" + kHrefB + "\"/>"));
+  const std::string kChildren(
+      std::string("<atom:id>") + kId + "</atom:id>"
+      "<atom:title>" + kTitle + "</atom:title>"
+      "<atom:updated>" + kUpdated + "</atom:updated>" +
+      kLinks);
+  entry_ = AsAtomEntry(ParseKml(std::string("<atom:entry>") + kChildren +
+                               "</atom:entry>"));
+  feed_ = AsAtomFeed(ParseKml(std::string("<atom:feed>") + kChildren +
+                               "</atom:feed>"));
+  ASSERT_EQ(std::string("<atom:entry>") + kChildren + "</atom:entry>",
+            SerializeRaw(entry_));
+  ASSERT_EQ(std::string("<atom:feed>") + kChildren + "</atom:feed>",
+            SerializeRaw(feed_));
+}
 
 class AtomLinkTest : public testing::Test {
  protected:
@@ -219,6 +326,8 @@ class AtomLinkTest : public testing::Test {
   AtomLinkPtr atomlink_;
 };
 
+// This tests elements particular to <atom:entry> not common with <atom:feed>.
+// See AtomCommonTest for elements common with <atom:feed>.
 class AtomEntryTest : public testing::Test {
  protected:
   virtual void SetUp() {
@@ -238,17 +347,38 @@ TEST_F(AtomEntryTest, TestXmlNamespace) {
   ASSERT_EQ(kmlbase::XMLNS_ATOM, atomentry_->get_xmlns());
 }
 
+TEST_F(AtomEntryTest, TestSetSummary) {
+  const std::string kSummary("and in summary");
+  atomentry_->set_summary(kSummary);
+  ASSERT_TRUE(atomentry_->has_summary());
+  ASSERT_EQ(kSummary, atomentry_->get_summary());
+}
+
 TEST_F(AtomEntryTest, TestSetContent) {
   atomentry_->set_content(KmlFactory::GetFactory()->CreateAtomContent());
   ASSERT_TRUE(atomentry_->has_content());
   ASSERT_TRUE(atomentry_->get_content());
 }
 
-TEST_F(AtomEntryTest, TestAddOneLink) {
-  atomentry_->add_link(KmlFactory::GetFactory()->CreateAtomLink());
-  ASSERT_EQ(static_cast<size_t>(1), atomentry_->get_link_array_size());
+TEST_F(AtomEntryTest, TestParseSummary) {
+  const std::string kSummary("and in summary");
+  atomentry_ = AsAtomEntry(ParseKml(std::string("<atom:entry><atom:summary>") +
+                                    kSummary + "</atom:summary></atom:entry>"));
+  ASSERT_TRUE(atomentry_.get());
+  ASSERT_TRUE(atomentry_->has_summary());
+  ASSERT_EQ(kSummary, atomentry_->get_summary());
 }
 
+// This tests elements particular to <atom:feed> not common with <atom:entry>.
+TEST_F(AtomEntryTest, TestParseContent) {
+  atomentry_ = AsAtomEntry(ParseKml(
+      "<atom:entry><atom:content/></atom:entry>"));
+  ASSERT_TRUE(atomentry_.get());
+  ASSERT_TRUE(atomentry_->has_content());
+}
+
+// This tests elements particular to <atom:feed> not common with <atom:entry>.
+// See AtomCommonTest for elements common with <atom:entry>.
 class AtomFeedTest : public testing::Test {
  protected:
   virtual void SetUp() {
@@ -271,6 +401,21 @@ TEST_F(AtomFeedTest, TestXmlNamespace) {
 TEST_F(AtomFeedTest, TestAddOneEntry) {
   atomfeed_->add_entry(KmlFactory::GetFactory()->CreateAtomEntry());
   ASSERT_EQ(static_cast<size_t>(1), atomfeed_->get_entry_array_size());
+}
+
+TEST_F(AtomFeedTest, TestAddMultipleEntries) {
+  const int kEntryCount(49);
+  AtomEntryPtr entry;
+  for (int i = 0; i < kEntryCount; ++i) {
+    entry = KmlFactory::GetFactory()->CreateAtomEntry();
+    entry->set_id(kmlbase::ToString(i));
+    atomfeed_->add_entry(entry);
+  }
+  ASSERT_EQ(static_cast<size_t>(kEntryCount),
+            atomfeed_->get_entry_array_size());
+  for (int i = 0; i < kEntryCount; ++i) {
+    ASSERT_EQ(kmlbase::ToString(i), atomfeed_->get_entry_array_at(i)->get_id());
+  }
 }
 
 TEST_F(AtomLinkTest, TestType) {
