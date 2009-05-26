@@ -163,16 +163,16 @@ class AtomContent : public BasicElement<Type_AtomContent> {
  public:
   virtual ~AtomContent();
 
-  // source=
-  const std::string& get_source() const { return source_; }
-  bool has_source() const { return has_source_; }
-  void set_source(const std::string& value) {
-    source_ = value;
-    has_source_ = true;
+  // src=
+  const std::string& get_src() const { return src_; }
+  bool has_src() const { return has_src_; }
+  void set_src(const std::string& value) {
+    src_ = value;
+    has_src_ = true;
   }
-  void clear_source() {
-    source_.clear();
-    has_source_ = false;
+  void clear_src() {
+    src_.clear();
+    has_src_ = false;
   }
 
   // type=
@@ -192,10 +192,11 @@ class AtomContent : public BasicElement<Type_AtomContent> {
   AtomContent();
   friend class KmlHandler;
   void ParseAttributes(kmlbase::Attributes* attributes);
+  void SerializeAttributes(kmlbase::Attributes* attributes) const;
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  bool has_source_;
-  std::string source_;
+  bool has_src_;
+  std::string src_;
   bool has_type_;
   std::string type_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomContent);
@@ -215,6 +216,18 @@ class AtomEntry : public AtomCommon {
     return static_cast<KmlDomType>(Type_AtomEntry);
   }
 
+  // <atom:summary>
+  const std::string& get_summary() const { return summary_; }
+  bool has_summary() const { return has_summary_; }
+  void set_summary(const std::string& value) {
+    summary_ = value;
+    has_summary_ = true;
+  }
+  void clear_summary() {
+    summary_.clear();
+    has_summary_ = false;
+  }
+
   // <atom:content>
   const AtomContentPtr& get_content() const { return content_; }
   bool has_content() const { return content_ != NULL; }
@@ -232,6 +245,8 @@ class AtomEntry : public AtomCommon {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
+  bool has_summary_;
+  std::string summary_;
   AtomContentPtr content_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomEntry);
 };

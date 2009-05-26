@@ -39,7 +39,7 @@ static const char kHref[] = "href";
 static const char kHrefLang[] = "hreflang";
 static const char kLength[] = "length";
 static const char kRel[] = "rel";
-static const char kSource[] = "source";
+static const char kSrc[] = "src";
 static const char kTitle[] = "title";
 static const char kType[] = "type";
 
@@ -91,7 +91,7 @@ void AtomAuthor::Serialize(Serializer& serializer) const {
 
 // <atom:content>
 AtomContent::AtomContent()
-  : has_source_(false),
+  : has_src_(false),
     has_type_(false) {
   set_xmlns(kmlbase::XMLNS_ATOM);
 }
@@ -102,11 +102,20 @@ void AtomContent::ParseAttributes(Attributes* attributes) {
   if (!attributes) {
     return;
   }
-  has_source_ = attributes->CutValue(kSource, &source_);
+  has_src_ = attributes->CutValue(kSrc, &src_);
   has_type_ = attributes->CutValue(kType, &type_);
   AddUnknownAttributes(attributes);
 }
 
+void AtomContent::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
+  if (has_src()) {
+    attributes->SetValue(kSrc, get_src());
+  }
+  if (has_type()) {
+    attributes->SetValue(kType, get_type());
+  }
+}
 
 void AtomContent::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
@@ -127,16 +136,43 @@ void AtomCommon::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  // TODO: id, title, updated, link
-  Element::AddElement(element);
+
+  // Explicit child elements.
+  switch(element->Type()) {
+    case Type_atomId:
+      has_id_ = element->SetString(&id_);
+      break;
+    case Type_atomTitle:
+      has_title_ = element->SetString(&title_);
+      break;
+    case Type_atomUpdated:
+      has_updated_ = element->SetString(&updated_);
+      break;
+    case Type_AtomLink:
+      add_link(AsAtomLink(element));
+      break;
+    default:
+      Element::AddElement(element);
+  }
 }
 
 void AtomCommon::Serialize(Serializer& serializer) const {
   Element::Serialize(serializer);
+  if (has_id()) {
+    serializer.SaveFieldById(Type_atomId, get_id());
+  }
+  if (has_title()) {
+    serializer.SaveFieldById(Type_atomTitle, get_title());
+  }
+  if (has_updated()) {
+    serializer.SaveFieldById(Type_atomUpdated, get_updated());
+  }
+  serializer.SaveElementArray(link_array_);
 }
 
 // <atom:entry>
-AtomEntry::AtomEntry() {
+AtomEntry::AtomEntry()
+  : has_summary_(false) {
   set_xmlns(kmlbase::XMLNS_ATOM);
 }
 
@@ -146,12 +182,27 @@ void AtomEntry::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  // TODO: <atom:content>
-  AtomCommon::AddElement(element);
+  switch(element->Type()) {
+    case Type_atomSummary:
+      has_summary_ = element->SetString(&summary_);
+      break;
+    case Type_AtomContent:
+      set_content(AsAtomContent(element));
+      break;
+    default:
+      AtomCommon::AddElement(element);
+  }
 }
 
 void AtomEntry::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
+  AtomCommon::Serialize(serializer);
+  if (has_summary()) {
+    serializer.SaveFieldById(Type_atomSummary, get_summary());
+  }
+  if (has_content()) {
+    serializer.SaveElement(get_content());
+  }
 }
 
 // <atom:feed>
@@ -175,6 +226,8 @@ void AtomFeed::AddElement(const ElementPtr& element) {
 
 void AtomFeed::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
+  AtomCommon::Serialize(serializer);
+  serializer.SaveElementArray(entry_array_);
 }
 
 // <atom:link>

@@ -216,7 +216,9 @@ static XsdElement kKml22Elements[] = {
   { "atom:email", XSD_SIMPLE_TYPE },
   { "atom:id", XSD_SIMPLE_TYPE },
   { "atom:name", XSD_SIMPLE_TYPE },
+  { "atom:summary", XSD_SIMPLE_TYPE },
   { "atom:title", XSD_SIMPLE_TYPE },
+  { "atom:updated", XSD_SIMPLE_TYPE },
   { "atom:uri", XSD_SIMPLE_TYPE },
 
   // xAL complex elements

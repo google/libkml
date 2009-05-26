@@ -212,7 +212,9 @@ typedef enum {
   Type_atomEmail,
   Type_atomId,
   Type_atomName,
+  Type_atomSummary,
   Type_atomTitle,
+  Type_atomUpdated,
   Type_atomUri,
 
   Type_XalAddressDetails,
