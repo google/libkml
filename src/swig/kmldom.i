@@ -41,9 +41,9 @@
 // TODO: push these changes into a future version of SWIG as there
 //       are no libkml-specific enhancements these intrusive_ptr .i files.
 #ifdef SWIGPYTHON
-%include "python/boost_intrusive_ptr.i"
+%include "python/libkml_boost_intrusive_ptr.i"
 #elif SWIGJAVA
-%include "java/boost_intrusive_ptr.i"
+%include "java/libkml_boost_intrusive_ptr.i"
 #endif
 
 // Classes for abstract elements and internal convenience classes.

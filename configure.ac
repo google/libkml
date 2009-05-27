@@ -88,8 +88,8 @@ if test "x$enable_swig" != xno; then
 	AC_CHECK_PROG(SWIG, swig, swig)
 	if test "x$SWIG" != x; then
 		SWIG_VERSION=`swig -version 2>&1|grep Version|cut -d" " -f3`
-		if test $SWIG_VERSION != 1.3.35; then
-			AC_MSG_WARN([You have SWIG $SWIG_VERSION installed, but libkml requires SWIG 1.3.35. The bindings will not be built.])
+		if test ${SWIG_VERSION:4} -lt 35; then
+			AC_MSG_WARN([You have SWIG $SWIG_VERSION installed, but libkml requires at least SWIG 1.3.35. The bindings will not be built.])
 			SWIG=
 		fi
 	fi

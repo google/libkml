@@ -95,7 +95,7 @@ endif
 endif
 
 EXTRA_DIST = \
-	intrusive_ptr.i \
+	libkml_intrusive_ptr.i \
 	kmlbase.i \
 	kmlbase_test.py \
 	kmldom.i \

@@ -1,2 +1,2 @@
 EXTRA_DIST = \
-	boost_intrusive_ptr.i
+	libkml_boost_intrusive_ptr.i
