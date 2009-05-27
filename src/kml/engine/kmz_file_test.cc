@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains the unit tests for the KmzFile class.
@@ -111,15 +111,15 @@ TEST_F(KmzTest, TestOpenFromString) {
 
 TEST_F(KmzTest, TestReadKml) {
   // doc.kmz has two KML files at the root level, a.kml and doc.kml, which were
-  // added to the archive in that order. Assert that doc.kml is read instead
-  // of a.kml.
+  // added to the archive in that order. Assert that a.kml is read instead
+  // of doc.kml.
   const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kDoc.c_str()));
   ASSERT_TRUE(kmz_file_);
   std::string kml_data;
   ASSERT_TRUE(kmz_file_->ReadKml(&kml_data));
   ASSERT_FALSE(kml_data.empty());
-  ASSERT_TRUE(std::string::npos != kml_data.find("doc.kml"));
+  ASSERT_TRUE(std::string::npos != kml_data.find("a.kml"));
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const std::string kNokml = std::string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNokml.c_str()));
@@ -140,20 +140,6 @@ TEST_F(KmzTest, TestReadKml) {
   ASSERT_TRUE(kmz_file_->ReadKml(&kml_data));
   ASSERT_FALSE(kml_data.empty());
   ASSERT_TRUE(std::string::npos != kml_data.find("c.kml"));
-  // multikml-doc.kmz has four kml files added in the following order:
-  // - z/c.kml
-  // - b.kml
-  // - a/a.kml
-  // - doc/doc.kml
-  // Assert that z/c.kml is read because the default file (doc.kml at root
-  // level) cannot be found.
-  const std::string kMulti2 = std::string(DATADIR) + "/kmz/multikml-doc.kmz";
-  kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
-  ASSERT_TRUE(kmz_file_);
-  kml_data.clear();
-  ASSERT_TRUE(kmz_file_->ReadKml(&kml_data));
-  ASSERT_FALSE(kml_data.empty());
-  ASSERT_TRUE(std::string::npos != kml_data.find("c.kml"));
   // Assert we handle a NULL output string.
   ASSERT_FALSE(kmz_file_->ReadKml(NULL));
 }
@@ -162,14 +148,14 @@ TEST_F(KmzTest, TestReadKml) {
 // of ReadKml() is verified in TestReadKml() above.
 TEST_F(KmzTest, TestReadKmlAndGetPath) {
   // doc.kmz has two KML files at the root level, a.kml and doc.kml, which were
-  // added to the archive in that order. Assert that doc.kml is read instead
-  // of a.kml.
+  // added to the archive in that order. Assert that a.kml is read instead
+  // of doc.kml.
   const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kDoc.c_str()));
   std::string kml_data;
   std::string kml_path;
   ASSERT_TRUE(kmz_file_->ReadKmlAndGetPath(&kml_data, &kml_path));
-  ASSERT_EQ(std::string("doc.kml"), kml_path);
+  ASSERT_EQ(std::string("a.kml"), kml_path);
   // Verify that a NULL output path arg is well behaved.
   ASSERT_TRUE(kmz_file_->ReadKmlAndGetPath(&kml_data, NULL));
   // multikml-doc.kmz has four kml files added in the following order:
@@ -177,8 +163,7 @@ TEST_F(KmzTest, TestReadKmlAndGetPath) {
   // - b.kml
   // - a/a.kml
   // - doc/doc.kml
-  // Assert that z/c.kml is read because the default file (doc.kml at root
-  // level) cannot be found.
+  // Assert that z/c.kml is read because it is the first file in the TOC. 
   const std::string kMulti2 = std::string(DATADIR) + "/kmz/multikml-doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
   ASSERT_TRUE(kmz_file_->ReadKmlAndGetPath(&kml_data, &kml_path));
@@ -455,4 +440,3 @@ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-
