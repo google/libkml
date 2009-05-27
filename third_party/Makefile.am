@@ -3,7 +3,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
 	      -I$(top_srcdir)/third_party/googletest-r108 \
 	      -I$(top_srcdir)/third_party/googletest-r108/include
 
-lib_LTLIBRARIES = libminizip.la liburiparser.la libgtest.la
+lib_LTLIBRARIES = libminizip.la liburiparser.la
+noinst_LTLIBRARIES = libgtest.la
 
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
@@ -93,24 +94,6 @@ libgtest_la_SOURCES = \
 	$(googletest)/src/gtest-test-part.cc \
 	$(googletest)/src/gtest-typed-test.cc
 
-googletestinc = $(includedir)/kml/third_party/$(googletest)/include
-libgtestincludedir = $(googletestinc)
-libgtestinclude_HEADERS = \
-	$(googletest)/include/gtest/gtest.h \
-	$(googletest)/include/gtest/gtest-death-test.h \
-	$(googletest)/include/gtest/gtest-message.h \
-	$(googletest)/include/gtest/gtest-spi.h \
-	$(googletest)/include/gtest/gtest_pred_impl.h \
-	$(googletest)/include/gtest/gtest_prod.h \
-	$(googletest)/include/gtest/gtest-test-part.h \
-	$(googletest)/include/gtest/gtest-typed-test.h \
-	$(googletest)/include/gtest/internal/gtest-death-test-internal.h \
-	$(googletest)/include/gtest/internal/gtest-filepath.h \
-	$(googletest)/include/gtest/internal/gtest-internal.h \
-	$(googletest)/include/gtest/internal/gtest-port.h \
-	$(googletest)/include/gtest/internal/gtest-string.h \
-	$(googletest)/include/gtest/internal/gtest-type-util.h
-
 EXTRA_DIST = \
 	expat.win32/expat.h \
 	expat.win32/expat_external.h \
@@ -169,6 +152,20 @@ EXTRA_DIST = \
 	$(boost)/config/stdlib/vacpp.hpp \
 	$(googletest).win32/debug/gtest.lib \
 	$(googletest).win32/release/gtest.lib \
+	$(googletest)/include/gtest/gtest.h \
+	$(googletest)/include/gtest/gtest-death-test.h \
+	$(googletest)/include/gtest/gtest-message.h \
+	$(googletest)/include/gtest/gtest-spi.h \
+	$(googletest)/include/gtest/gtest_pred_impl.h \
+	$(googletest)/include/gtest/gtest_prod.h \
+	$(googletest)/include/gtest/gtest-test-part.h \
+	$(googletest)/include/gtest/gtest-typed-test.h \
+	$(googletest)/include/gtest/internal/gtest-death-test-internal.h \
+	$(googletest)/include/gtest/internal/gtest-filepath.h \
+	$(googletest)/include/gtest/internal/gtest-internal.h \
+	$(googletest)/include/gtest/internal/gtest-port.h \
+	$(googletest)/include/gtest/internal/gtest-string.h \
+	$(googletest)/include/gtest/internal/gtest-type-util.h \
 	$(uriparser)/COPYING \
 	$(uriparser).win32/debug/uriparser-debug.lib \
 	$(uriparser).win32/release/uriparser-release.lib \
