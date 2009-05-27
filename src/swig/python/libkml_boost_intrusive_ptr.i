@@ -126,7 +126,7 @@
 //
 // [End of swig-1.3.35/LICENSE]
 
-%include <intrusive_ptr.i>
+%include <libkml_intrusive_ptr.i>
 
 %define SWIG_INTRUSIVE_PTR_TYPEMAPS(PROXYCLASS, CONST, TYPE...)
 
