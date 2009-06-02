@@ -28,6 +28,8 @@
 
 %module kmldom
 
+%import "kmlbase.i"
+
 // Include the headers needed to build kmldom_wrap.cc.
 %{
 #include "kml/dom.h"
@@ -45,6 +47,8 @@
 #elif SWIGJAVA
 %include "java/libkml_boost_intrusive_ptr.i"
 #endif
+
+%include "typemaps.i"
 
 // Classes for abstract elements and internal convenience classes.
 SWIG_INTRUSIVE_PTR(Referent, kmlbase::Referent)

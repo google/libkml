@@ -28,6 +28,8 @@
 
 %module kmlengine
 
+%import "kmldom.i"
+
 // Include the headers needed to build kmlengine_wrap.cc.
 %{
 #include "kml/dom.h"
@@ -39,6 +41,8 @@
 
 // Tell SWIG about the KML DOM intrusive_ptr typedefs.
 %include "kml/dom/kml_ptr.h"
+
+%include "typemaps.i"
 
 namespace kmlengine {
 

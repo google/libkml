@@ -4,9 +4,6 @@ AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/boost_1_34_1 \
 	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
 
-
-
-
 COMMONLIBS = $(top_builddir)/src/kml/engine/libkmlengine.la \
              $(top_builddir)/src/kml/dom/libkmldom.la \
 	     $(top_builddir)/src/kml/base/libkmlbase.la
@@ -26,27 +23,16 @@ pkglib_LTLIBRARIES += libkmlengine_swig_python.la
 endif
 endif
 
-libkmldom_swig_java_la_SOURCES = kmldom_java.cc
-libkmldom_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
-libkmldom_swig_java_la_LIBADD = $(COMMONLIBS)
-kmldom_java.cc: kmldom.i
-	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmldom_java.cc \
-	$(top_srcdir)/src/swig/kmldom.i
-
-libkmldom_swig_python_la_SOURCES = kmldom_python.cc kmldom.py
-libkmldom_swig_python_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(PYTHON_INCLUDE_DIR)
-libkmldom_swig_python_la_LIBADD = $(COMMONLIBS)
-libkmldom_swig_python_la_LDFLAGS = -dynamiclib -python -lexpat
-kmldom_python.cc: kmldom.i
-	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmldom_python.cc \
-	$(top_srcdir)/src/swig/kmldom.i
+java_package_dir = com/googlecode/libkml
 
 libkmlbase_swig_java_la_SOURCES = kmlbase_java.cc
 libkmlbase_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
 libkmlbase_swig_java_la_LIBADD = $(COMMONLIBS)
 kmlbase_java.cc: kmlbase.i
+	mkdir -p $(java_package_dir)
 	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmlbase_java.cc \
-	$(top_srcdir)/src/swig/kmlbase.i
+	-package com.googlecode.libkml \
+	-outdir $(java_package_dir) $(top_srcdir)/src/swig/kmlbase.i
 
 libkmlbase_swig_python_la_SOURCES = kmlbase_python.cc kmlbase.py
 libkmlbase_swig_python_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(PYTHON_INCLUDE_DIR)
@@ -56,12 +42,31 @@ kmlbase_python.cc: kmlbase.i
 	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmlbase_python.cc \
 	$(top_srcdir)/src/swig/kmlbase.i
 
+libkmldom_swig_java_la_SOURCES = kmldom_java.cc
+libkmldom_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
+libkmldom_swig_java_la_LIBADD = $(COMMONLIBS)
+kmldom_java.cc: kmldom.i
+	mkdir -p $(java_package_dir)
+	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmldom_java.cc \
+	-package com.googlecode.libkml \
+	-outdir $(java_package_dir) $(top_srcdir)/src/swig/kmldom.i
+
+libkmldom_swig_python_la_SOURCES = kmldom_python.cc kmldom.py
+libkmldom_swig_python_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(PYTHON_INCLUDE_DIR)
+libkmldom_swig_python_la_LIBADD = $(COMMONLIBS)
+libkmldom_swig_python_la_LDFLAGS = -dynamiclib -python -lexpat
+kmldom_python.cc: kmldom.i
+	$(SWIG) -c++ $(AM_CPPFLAGS) -python -o kmldom_python.cc \
+	$(top_srcdir)/src/swig/kmldom.i
+
 libkmlengine_swig_java_la_SOURCES = kmlengine_java.cc
 libkmlengine_swig_java_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(JAVA_INCLUDE_DIR) -I$(JAVA_INCLUDE_DIR)/$(PLATFORM)
 libkmlengine_swig_java_la_LIBADD = $(COMMONLIBS)
 kmlengine_java.cc: kmlengine.i
+	mkdir -p $(java_package_dir)
 	$(SWIG) -c++ $(AM_CPPFLAGS) -java -o kmlengine_java.cc \
-	$(top_srcdir)/src/swig/kmlengine.i
+	-package com.googlecode.libkml \
+	-outdir $(java_package_dir) $(top_srcdir)/src/swig/kmlengine.i
 
 libkmlengine_swig_python_la_SOURCES = kmlengine_python.cc kmlengine.py
 libkmlengine_swig_python_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(PYTHON_INCLUDE_DIR)
@@ -88,10 +93,20 @@ kmlengine.py:
 	cp $(top_srcdir)/src/swig/kmlengine.py kmlengine.py
 
 pythonextdir = $(PYTHON_SITE_PACKAGES_DIR)
-
-clean-local:
-	-rm -f _kmlbase.so _kmldom.so _kmlengine.so
 endif
+if WITH_JAVA
+javadir = $(datadir)/java
+java_DATA = LibKML.jar
+# TODO: shared libs need to be bundled in jar?
+LibKML.jar: kmlbase_java.cc kmldom_java.cc kmlengine_java.cc
+	$(JAVAC) $(java_package_dir)/*.java
+	$(JAR) cf LibKML.jar $(java_package_dir)/*.class
+endif
+clean-local:
+	-rm -f kmlbase_java.cc kmldom_java.cc kmlengine_java.cc \
+	  LibKML.jar $(java_package_dir)/* \
+	  kmlbase_python.cc kmldom_python.cc kmlengine_python.cc \
+	  kmlbase.py kmldom.py kmlengine.py
 endif
 
 EXTRA_DIST = \
@@ -108,4 +123,4 @@ EXTRA_DIST = \
 # above, we accomplish this with a _DATA directive that copies the file. Since
 # there is an inherit dependency, we have to disable parallel builds in this
 # file, otherwise 'make -j3' or similar is likely to hit the race condition.
-.NOTPARALLEL: 
+.NOTPARALLEL:
