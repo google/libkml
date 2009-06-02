@@ -31,7 +31,10 @@
 #include <cstring>
 #include <sstream>
 #include <string>
+#include "kml/base/attributes.h"
 #include "kml/base/expat_parser.h"
+#include "kml/base/expat_handler_ns.h"
+#include "kml/base/xmlns.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_handler.h"
 #include "kml/dom/kml_handler_ns.h"
@@ -68,6 +71,32 @@ ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
   return NULL;
 }
 
+// This is obviously a bit of a special case.  If libkml always used full
+// namespace-aware parsing we'd not need this.
+ElementPtr Parser::ParseAtom(const std::string& atom, std::string* errors) {
+  // Create a garden variety KML parser with "short-hand" namespace prefixes
+  // for Atom.
+  KmlHandler kml_handler(observers_);
+  kmlbase::Attributes attributes;
+  // Create a namespace aware expat handler which converts the Atom namespace
+  // elements to the "short-hand" namespace prefixing used in KmlHandler.
+  // Here's the overall flow:
+  // 1) instance file has <feed xmlns="http://www.w3.org/2005/Atom">...
+  // 2) namespace-enabled expat turns this into:
+  //    <http://www.w3.org/2005/Atom|feed>
+  // 3) ExpatHandlerNns turns this to <atom:feed>
+  // 4) KmlHandler knows that <atom:feed> is kmldom::AtomFeed
+  attributes.SetValue("xmlns", "http://www.opengis.net/kml/2.2");
+  attributes.SetValue("xmlns:atom", "http://www.w3.org/2005/Atom");
+  boost::scoped_ptr<kmlbase::Xmlns> xmlns(kmlbase::Xmlns::Create(attributes));
+  kmlbase::ExpatHandlerNs expat_handler_ns(&kml_handler, xmlns.get());
+  if (kmlbase::ExpatParser::ParseString(atom, &expat_handler_ns, errors,
+                                        true)) {
+    return kml_handler.PopRoot();
+  }
+  return NULL;
+}
+
 // This is the implementation of the public API to parse KML from a memory
 // buffer.
 ElementPtr Parse(const std::string& kml, std::string* errors) {
@@ -85,6 +114,11 @@ ElementPtr ParseNS(const std::string& kml, std::string* errors) {
 // but the error string is unavailable with this function.
 ElementPtr ParseKml(const std::string& kml) {
   return Parse(kml, NULL);
+}
+
+ElementPtr ParseAtom(const std::string& atom, std::string* errors) {
+  Parser parser;
+  return parser.ParseAtom(atom, errors);
 }
 
 } // end namespace kmldom
