@@ -154,6 +154,44 @@ TEST(ParserTest, TestKmlWithUnknownEmptyFields) {
   ASSERT_EQ(kUnknownXml, root->get_unknown_elements_array_at(0));
 }
 
+TEST(ParserTest, TestParseAtomOnJunk) {
+  ASSERT_FALSE(ParseAtom("junk", NULL));
+}
+
+TEST(ParserTest, TestBasicParseAtomError) {
+  std::string errors;
+  ElementPtr root = ParseAtom("<feed xmlns='http://www.w3.org/2005/Atom'>",
+                              &errors);
+  ASSERT_FALSE(root.get());
+  ASSERT_FALSE(errors.empty());
+}
+
+TEST(ParserTest, TestBasicParseAtom) {
+  std::string errors;
+  ElementPtr root = ParseAtom("<feed xmlns='http://www.w3.org/2005/Atom'/>",
+                              &errors);
+  ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(root.get());
+  ASSERT_TRUE(AsAtomFeed(root));
+  ASSERT_EQ(kmlbase::XMLNS_ATOM, root->get_xmlns());
+}
+
+TEST(ParserTest, TestBasicParseAtomWithKml) {
+  ElementPtr root = ParseAtom(
+    "<atom:content xmlns:atom='http://www.w3.org/2005/Atom'>"
+    " xmlns='http://www.opengis.net/kml/2.2'>"
+    "<Placemark id='pm0'/>"
+    "</atom:content>", NULL);
+  ASSERT_TRUE(root.get());
+  kmldom::AtomContentPtr content = kmldom::AsAtomContent(root);
+  ASSERT_TRUE(content.get());
+  ASSERT_EQ(static_cast<size_t>(1),
+            content->get_misplaced_elements_array_size());
+  kmldom::PlacemarkPtr placemark =
+      kmldom::AsPlacemark(content->get_misplaced_elements_array_at(0));
+  ASSERT_EQ(std::string("pm0"), placemark->get_id());
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {

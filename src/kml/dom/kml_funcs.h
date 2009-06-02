@@ -43,6 +43,13 @@ ElementPtr Parse(const std::string& xml, std::string* errors);
 // As Parse(), but invokes the underlying XML parser's namespace-aware mode.
 ElementPtr ParseNS(const std::string& xml, std::string* errors);
 
+// As Parse(), but invokes the underlying XML parser's namespace-aware mode
+// such that both prefixed and non-prefixed Atom is recognized as the root.
+// Use this to parse "<feed xmlns='http://www.w3.org/2005/Atom'>...", or
+// "<atom:feed xmlns:atom='http://www.w3.org/2005/Atom'>...".  The Atom
+// namespace MUST be supplied.
+ElementPtr ParseAtom(const std::string& atom, std::string* errors);
+
 // This is a simplified interface for the benefit of SWIG.
 ElementPtr ParseKml(const std::string& xml);
 
