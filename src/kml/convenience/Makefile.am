@@ -9,6 +9,7 @@ endif
 
 lib_LTLIBRARIES = libkmlconvenience.la
 libkmlconvenience_la_SOURCES = \
+	atom_util.cc \
 	convenience.cc \
 	csv_file.cc \
 	feature_list.cc \
@@ -17,6 +18,7 @@ libkmlconvenience_la_SOURCES = \
 # These header files will be installed in $(includedir)/kml/convenience
 libkmlconvenienceincludedir = $(includedir)/kml/convenience
 libkmlconvenienceinclude_HEADERS = \
+	atom_util.h \
 	convenience.h \
 	csv_file.h \
 	element_counter.h \
@@ -25,7 +27,8 @@ libkmlconvenienceinclude_HEADERS = \
 	kmz_check_links.h
 
 DATA_DIR = $(top_srcdir)/testdata
-TESTS = csv_file_test \
+TESTS = atom_util_test \
+        csv_file_test \
 	convenience_test \
 	element_counter_test \
 	kmz_check_links_test \
@@ -33,6 +36,14 @@ TESTS = csv_file_test \
 	gpx_trk_pt_handler_test
 
 check_PROGRAMS = $(TESTS)
+
+atom_util_test_SOURCES = atom_util_test.cc
+atom_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+atom_util_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
 
 convenience_test_SOURCES = convenience_test.cc
 convenience_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
