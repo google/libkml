@@ -163,6 +163,16 @@ TEST(StringUtilTest, TestToString) {
   ASSERT_EQ(std::string("0"), ToString(false));
 }
 
+TEST(StringUtilTest, TestEndsWith) {
+  ASSERT_TRUE(StringEndsWith("foo", "oo"));
+  ASSERT_FALSE(StringEndsWith("foo", "x"));
+  ASSERT_FALSE(StringEndsWith("foo", "ooooo"));
+  std::string empty;
+  ASSERT_FALSE(StringEndsWith(empty, empty));
+  ASSERT_FALSE(StringEndsWith("foo", empty));
+  ASSERT_FALSE(StringEndsWith(empty, "foo"));
+}
+
 }  // end namespace kmlbase
 
 int main(int argc, char** argv) {

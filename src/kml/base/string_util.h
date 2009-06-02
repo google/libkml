@@ -101,6 +101,10 @@ inline std::string ToString(T value) {
 void SplitStringUsing(const std::string& input, const std::string& split_string,
                       std::vector<std::string>* output);
 
+// Returns true if end appears at the end of str.  Returns false if either of
+// str or end are empty or if end is longer than str.
+bool StringEndsWith(const std::string& str, const std::string& end);
+
 }  // end namespace kmlbase
 
 #endif  // KML_BASE_STRING_UTIL_H__
