@@ -1,4 +1,4 @@
-// Copyright 2008, Google Inc. All rights reserved.
+// Copyright 2009, Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -29,13 +29,15 @@
 // simple elements, and serializing out to XML.
 
 import com.googlecode.libkml.Coordinates;
+import com.googlecode.libkml.Folder;
 import com.googlecode.libkml.Kml;
 import com.googlecode.libkml.KmlFactory;
 import com.googlecode.libkml.Placemark;
+import com.googlecode.libkml.Feature;
 import com.googlecode.libkml.Point;
 import com.googlecode.libkml.kmldom;
 
-public class CreatePlacemark {
+public class CreateFolder {
 
   static {
     try {
@@ -49,30 +51,28 @@ public class CreatePlacemark {
     }
   }
 
-  public static void main(String[] args) {
-    // NOTE: KmlFactory does _not_ use kmldom.
+  public static void main(String[] args) throws InterruptedException {
     KmlFactory factory = KmlFactory.GetFactory();
 
-    // <coordinates>1,2</coordinates>
-    Coordinates coordinates = factory.CreateCoordinates();
-    coordinates.add_latlng(37.0, -122.0);
+    Folder folder = factory.CreateFolder();
+    folder.set_name("foo");
 
-    // <Point id="pt0">...
-    Point point = factory.CreatePoint();
-    point.set_id("pt0");
-    point.set_coordinates(coordinates);
+    Placemark p0 = factory.CreatePlacemark();
+    p0.set_name("placemark 0");
+    p0.set_id("p0");
 
-    // <Placemark id="pm123"><name>my place</name>...
-    Placemark placemark = factory.CreatePlacemark();
-    placemark.set_name("my placemark");
-    placemark.set_id("pm123");
-    placemark.set_geometry(point);
+    folder.add_feature(p0);
 
-    // <kml>...
-    Kml kml = factory.CreateKml();
-    kml.set_feature(placemark);
+    System.out.println("folder size: " + folder.get_feature_array_size());
 
-    // NOTE: this _requires_ kmldom.
-    System.out.print(kmldom.SerializePretty(kml));
+    System.out.println("name: " + folder.get_name());
+
+    Feature f = folder.get_feature_array_at(0);
+
+    Placemark p = kmldom.AsPlacemark(f);
+
+    System.out.println("placemark name: " + p.get_name());
+
+    System.out.print(kmldom.SerializePretty(p));
   }
 }

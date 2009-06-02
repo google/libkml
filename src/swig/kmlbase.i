@@ -43,12 +43,18 @@
 // Tell SWIG about C++ Standard Library std::string.
 %include "std_string.i"
 
+%include "typemaps.i"
+// NOTE: these typemaps are not fully supported in current SWIG. See this doc:
+// http://www.swig.org/Doc1.3/Library.html#Library_nn14 (1.3.39)
+// It happens to work in Python, but Java is stymied. Ideally SWIG evolves to
+// have a std_string.i that can wrap writing to a pointer.
+%apply std::string* OUTPUT { std::string* output_value };
+%apply std::string* OUTPUT { std::string* output_key };
+
 typedef long time_t;
 
 namespace kmlbase {
 
-%apply std::string* OUTPUT { std::string* output_value };
-%apply std::string* OUTPUT { std::string* output_key };
 class Attributes {
  public:
   bool FindValue(const std::string& key, std::string* output_value) const;

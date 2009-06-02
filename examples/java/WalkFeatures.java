@@ -26,15 +26,32 @@
 // This program demonstrates use of the KML DOM Java SWIG bindings
 // for walking the feature hierarchy of a KML file.   KML DOM API
 // aspects shown here include: parsing, element type inspection, arrays,
-// getting attributes and simple elements.
+// getting attributes and simple elements. Also shown is the
+// kmlengine::GetRootFeature function.
+
+import com.googlecode.libkml.Container;
+import com.googlecode.libkml.Coordinates;
+import com.googlecode.libkml.Element;
+import com.googlecode.libkml.Feature;
+import com.googlecode.libkml.Kml;
+import com.googlecode.libkml.KmlDomType;
+import com.googlecode.libkml.KmlFactory;
+import com.googlecode.libkml.Placemark;
+import com.googlecode.libkml.Point;
+import com.googlecode.libkml.kmldom;
+import com.googlecode.libkml.kmlengine;
 
 public class WalkFeatures {
 
   static {
     try {
-      System.loadLibrary("kmldom");
+      System.loadLibrary("kmldom_swig_java");
+      System.loadLibrary("kmlengine_swig_java");
     } catch (UnsatisfiedLinkError e) {
-      System.err.println("Failed to load kmldom. " + e);
+      System.err.println("Failed to load kmldom or kmlengine. " + e);
+      System.err.println("Make sure you have your classpath set correctly " +
+                         "and that LD_LIBRARY_PATH can see " +
+                         "libkmldom_swig_java and friends");
       System.exit(1);
     }
   }
@@ -43,18 +60,6 @@ public class WalkFeatures {
     while (depth-- > 0) {
       System.out.print("  ");
     }
-  }
-
-  public static Feature GetRootFeature(Element element) {
-    Feature feature = kmldom.AsFeature(element);
-    if (feature != null) {
-      return feature;
-    }
-    Kml kml = kmldom.AsKml(element);
-    if (kml != null && kml.has_feature()) {
-      return kml.get_feature();
-    }
-    return null;
   }
 
   public static void VisitFeature(Feature feature, int depth) {
@@ -81,7 +86,7 @@ public class WalkFeatures {
     }
   }
 
-  public static void main(String argv[]) {
+  public static void main(String[] args) {
     Element root = kmldom.ParseKml(
       "<kml>" +
         "<Folder><name>folder</name>" +
@@ -97,7 +102,7 @@ public class WalkFeatures {
         "</Folder>" +
       "</kml>");
 
-    Feature feature = GetRootFeature(root);
+    Feature feature = kmlengine.GetRootFeature(root);
     if (feature != null) {
       VisitFeature(feature, 0);
     }

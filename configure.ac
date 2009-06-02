@@ -112,7 +112,18 @@ if test "x$SWIG" != x; then
 		      [AS_HELP_STRING([--disable-java],
 				      [do not generate Java SWIG bindings])])
 	if test "x$enable_java" != xno; then
-		AC_CHECK_PROG(JAVA, javac, javac)
+		AC_CHECK_PROG(JAVA, java, java, nojava)
+		if test "$JAVA" = "nojava"; then
+		  AC_MSG_ERROR([no java binary in PATH])
+		fi
+		AC_CHECK_PROG(JAVAC, javac, javac, nojavac)
+		if test "$JAVAC" = "nojavac"; then
+		  AC_MSG_ERROR([no javac binary in PATH, bindings will not be built])
+		fi
+		AC_CHECK_PROG(JAR, jar, jar, nojar)
+		if test "$JAR" = "nojar"; then
+		  AC_MSG_ERROR([no jar binary in PATH, bindings will not be built])
+		fi
 		if test "x$JAVA" != x; then
 			current_CPPFLAGS="$CPPFLAGS"
 			if test "$CPPFLAGS" != ""; then
