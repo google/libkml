@@ -7,7 +7,7 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = kmlwalk kmzfetch resolvestyle xsdprint
+noinst_PROGRAMS = kmlwalk kmzfetch listfeed resolvestyle xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -25,6 +25,12 @@ kmzfetch_SOURCES = kmzfetch.cc
 kmzfetch_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+listfeed_SOURCES = listfeed.cc
+listfeed_LDADD = \
+        libcurlfetch.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
