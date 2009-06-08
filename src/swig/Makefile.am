@@ -106,7 +106,8 @@ clean-local:
 	-rm -f kmlbase_java.cc kmldom_java.cc kmlengine_java.cc \
 	  LibKML.jar $(java_package_dir)/* \
 	  kmlbase_python.cc kmldom_python.cc kmlengine_python.cc \
-	  kmlbase.py kmldom.py kmlengine.py
+	  kmlbase.py kmldom.py kmlengine.py \
+	  _kmlbase.so _kmldom.so _kmlengine.so
 endif
 
 EXTRA_DIST = \
