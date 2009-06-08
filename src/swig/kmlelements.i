@@ -716,18 +716,18 @@ public:
 %nodefaultctor ItemIcon;
 class ItemIcon : public Object {
 public:
-  // TODO: <state>
-  //itemIconStatePtr get_state();
-  //void set_state(itemIconStatePtr state);
-  //bool has_state();
-  //void clear_state();
+  // <state>
+  int get_state_array_at(unsigned int index);
+  const size_t get_state_array_size();
+  bool has_state();
+  void add_state(int state);
+  void clear_state();
 
   // <href>
   const std::string& get_href();
   void set_href(const std::string& href);
   bool has_href();
   void clear_href();
-
 };
 
 %nodefaultctor LabelStyle;

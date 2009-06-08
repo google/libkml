@@ -1484,6 +1484,35 @@ class GxExtensionsTestCase(unittest.TestCase):
     assert wait.has_gx_duration()
     assert 3.0 == wait.get_gx_duration()
 
+class ItemIconTestCase(unittest.TestCase):
+  """ This verifies the behavior of ItemIcon and its children """
+
+  def setUp(self):
+    self.factory = kmldom.KmlFactory_GetFactory()
+    self.itemicon = self.factory.CreateItemIcon()
+
+  def testDefaults(self):
+    assert not self.itemicon.has_state()
+    assert 1 == self.itemicon.get_state_array_size()
+    assert kmldom.ITEMICONSTATE_OPEN == self.itemicon.get_state_array_at(0)
+    assert not self.itemicon.has_href()
+    assert "" == self.itemicon.get_href()
+
+  def testState(self):
+    state_open = kmldom.ITEMICONSTATE_OPEN
+    state_error = kmldom.ITEMICONSTATE_ERROR
+    state_fetching0 = kmldom.ITEMICONSTATE_FETCHING0
+
+    self.itemicon.clear_state()
+    assert 0 == self.itemicon.get_state_array_size()
+    self.itemicon.add_state(state_error)
+    assert 1 == self.itemicon.get_state_array_size()
+    assert state_error == self.itemicon.get_state_array_at(0)
+    self.itemicon.add_state(state_fetching0)
+    assert 2 == self.itemicon.get_state_array_size()
+    assert state_fetching0 == self.itemicon.get_state_array_at(1)
+
+
 def suite():
   suite = unittest.TestSuite()
   suite.addTest(VerySimpleParseTestCase())
@@ -1552,6 +1581,8 @@ def suite():
   suite.addTest(GxExtensionsTestCase('testGxSoundCue'))
   suite.addTest(GxExtensionsTestCase('testGxTourControl'))
   suite.addTest(GxExtensionsTestCase('testGxTourParseSerialize'))
+  suite.addTest(ItemIconTestCase('testDefaults'))
+  suite.addTest(ItemIconTestCase('testState'))
   return suite
 
 
