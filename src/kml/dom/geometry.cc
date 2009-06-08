@@ -109,14 +109,10 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
     while (isspace(*endp)) {  // Eat whitespace between double and comma.
       ++endp;
     }
-    double altitude = 0.0;
     if (*endp == ',') {
-      altitude = strtod(endp+1, &endp);
+      // Note that this sets altitude only if an altitude is supplied.
+      vec->set(2, strtod(endp+1, &endp));
     }
-    // See comment above about how altitude is always set.
-    // TODO: decide if this should be removed (push it into the conditional
-    // above).
-    vec->set(2, altitude);
   }
   if (nextp) {
     while (isspace(*endp)) {  // Eat the remaining whitespace before return.

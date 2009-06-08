@@ -139,7 +139,7 @@ TEST_F(CoordinatesTest, TestAddLatLngAltMany) {
   }
 }
 
-TEST_F(CoordinatesTest, TestParseVec3) {
+TEST_F(CoordinatesTest, TestParseVec3WithAltitude) {
   const char* basic_3d_point = "1.123,-2.789,3000.5919";
   char *endp;
   Vec3 vec;
@@ -162,23 +162,30 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_DOUBLE_EQ(-122.123, vec.get_longitude());
   ASSERT_TRUE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(1050.098, vec.get_altitude());
+}
 
+TEST_F(CoordinatesTest, TestParseVec3NoAltitude) {
   const char* basic_2d_point = "10.10,-20.20";
+  char *endp;
+  Vec3 vec;
   ASSERT_TRUE(Coordinates::ParseVec3(basic_2d_point, &endp, &vec));
   ASSERT_DOUBLE_EQ(-20.20, vec.get_latitude());
   ASSERT_DOUBLE_EQ(10.10, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   const char* point2d_with_1space = "15.10, -24.20";
   ASSERT_TRUE(Coordinates::ParseVec3(point2d_with_1space, &endp, &vec));
   ASSERT_DOUBLE_EQ(-24.20, vec.get_latitude());
   ASSERT_DOUBLE_EQ(15.10, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   const char* point2d_with_2spaces = "15.11 , -24.25";
   ASSERT_TRUE(Coordinates::ParseVec3(point2d_with_2spaces, &endp, &vec));
   ASSERT_DOUBLE_EQ(-24.25, vec.get_latitude());
   ASSERT_DOUBLE_EQ(15.11, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   const char* basic_2d_line = "122.123,-38.789 "
@@ -186,10 +193,12 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_TRUE(Coordinates::ParseVec3(basic_2d_line, &endp, &vec));
   ASSERT_DOUBLE_EQ(-38.789, vec.get_latitude());
   ASSERT_DOUBLE_EQ(122.123, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
   ASSERT_TRUE(Coordinates::ParseVec3(endp, &endp, &vec));
   ASSERT_DOUBLE_EQ(-39.789, vec.get_latitude());
   ASSERT_DOUBLE_EQ(122.123, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   // How our own serializer emits <coordinates>
@@ -204,6 +213,7 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_TRUE(Coordinates::ParseVec3(exponential_2d_pt, &endp, &vec));
   ASSERT_DOUBLE_EQ(0.02, vec.get_latitude());
   ASSERT_DOUBLE_EQ(0.01, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   // Ensure junk data is handled gracefully.
@@ -214,12 +224,14 @@ TEST_F(CoordinatesTest, TestParseVec3) {
   ASSERT_TRUE(Coordinates::ParseVec3(junk_coords2, &endp, &vec));
   ASSERT_DOUBLE_EQ(0.0, vec.get_latitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   const char* junk_coords3 = "bar,0";  // Will parse successfully.
   ASSERT_TRUE(Coordinates::ParseVec3(junk_coords3, &endp, &vec));
   ASSERT_DOUBLE_EQ(0.0, vec.get_latitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_longitude());
+  ASSERT_FALSE(vec.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec.get_altitude());
 
   const char* junk_coords4 = "\n";  // Will fail parsing.
