@@ -243,6 +243,18 @@ public:
   bool has_open();
   void clear_open();
 
+  // <atom:author>
+  const AtomAuthorPtr get_atomauthor();
+  bool has_atomauthor();
+  void set_atomauthor(AtomAuthorPtr atomauthor);
+  void clear_atomauthor();
+
+  // <atom:link>
+  const AtomLinkPtr get_atomlink();
+  bool has_atomlink();
+  void set_atomlink(AtomLinkPtr atomlink);
+  void clear_atomlink();
+
   // <address>
   const std::string& get_address();
   void set_address(const std::string& address);

@@ -518,6 +518,25 @@ class SimpleFeatureTestCase(unittest.TestCase):
 
     # Feature methods
     # TODO everything else
+
+    assert not folder.has_atomauthor()
+    atomauthor = factory.CreateAtomAuthor()
+    assert atomauthor
+    atom_name = 'D.F. Wallace'
+    atomauthor.set_name(atom_name)
+    folder.set_atomauthor(atomauthor)
+    got_atomauthor = folder.get_atomauthor()
+    assert atom_name == got_atomauthor.get_name()
+
+    assert not folder.has_atomlink()
+    atomlink = factory.CreateAtomLink()
+    assert atomlink
+    atom_href = 'http://infinitesummer.org'
+    atomlink.set_href(atom_href)
+    folder.set_atomlink(atomlink)
+    got_atomlink = folder.get_atomlink()
+    assert atom_href == got_atomlink.get_href()
+
     assert not folder.has_snippet()
     folder.set_snippet(factory.CreateSnippet())
     assert folder.has_snippet()
@@ -526,6 +545,28 @@ class SimpleFeatureTestCase(unittest.TestCase):
     assert not snippet.has_maxlines()
     folder.clear_snippet()
     assert not folder.has_snippet()
+
+  def testParseAtom(self):
+    kml = ('<Placemark>'
+           '<atom:author>'
+           '<atom:name>D.F. Wallace</atom:name>'
+           '</atom:author>'
+           '<atom:link href="http://infinitesummer.org"></atom:link>'
+           '</Placemark>')
+    root = kmldom.ParseKml(kml)
+    assert root
+    placemark = kmldom.AsPlacemark(root)
+    assert placemark
+    assert placemark.has_atomauthor()
+    author = kmldom.AsAtomAuthor(placemark.get_atomauthor())
+    assert author
+    assert author.has_name();
+    assert "D.F. Wallace" == author.get_name()
+    assert placemark.has_atomlink()
+    link = kmldom.AsAtomLink(placemark.get_atomlink())
+    assert link
+    assert link.has_href()
+    assert "http://infinitesummer.org" == link.get_href()
 
 
 class SimpleRegionTestCase(unittest.TestCase):
@@ -1530,6 +1571,7 @@ def suite():
   suite.addTest(SimpleVec2TestCase())
   suite.addTest(SimpleObjectTestCase())
   suite.addTest(SimpleFeatureTestCase())
+  suite.addTest(SimpleFeatureTestCase('testParseAtom'))
   suite.addTest(SimpleRegionTestCase())
   suite.addTest(SimpleParseTestCase('testBasic'))
   suite.addTest(SimpleSerializePrettyTestCase('testBasic'))
