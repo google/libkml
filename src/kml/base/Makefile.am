@@ -1,6 +1,5 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
               -I$(top_srcdir)/third_party/boost_1_34_1 \
-              -I$(top_srcdir)/third_party/uriparser-0.7.1/include \
               -I$(top_srcdir)/third_party/googletest-r108/include
 
 if GCC
@@ -24,6 +23,7 @@ libkmlbase_la_SOURCES = \
 	string_util.cc \
 	time_util.cc \
 	uri_parser.cc \
+	version.cc \
 	xml_namespaces.cc
 
 libkmlbase_la_LIBADD = \
@@ -48,6 +48,7 @@ libkmlbaseinclude_HEADERS = \
 	time_util.h \
 	util.h \
 	vec3.h \
+	version.h \
 	xml_element.h \
 	xml_file.h \
 	xml_namespaces.h \
@@ -73,9 +74,10 @@ TESTS = \
 	string_util_test \
 	tempfile_test \
 	time_util_test \
-	util_test \
 	uri_parser_test \
+	util_test \
 	vec3_test \
+	version_test \
 	xml_element_test \
 	xml_file_test \
 	xml_namespaces_test \
@@ -129,25 +131,20 @@ referent_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 referent_test_LDADD= libkmlbase.la \
 		     $(top_builddir)/third_party/libgtest.la
 
-tempfile_test_SOURCES = tempfile_test.cc
-tempfile_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
-tempfile_test_LDADD = libkmlbase.la \
-		      $(top_builddir)/third_party/libgtest.la
-
 string_util_test_SOURCES = string_util_test.cc
 string_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 string_util_test_LDADD= libkmlbase.la \
 			$(top_builddir)/third_party/libgtest.la
 
+tempfile_test_SOURCES = tempfile_test.cc
+tempfile_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+tempfile_test_LDADD = libkmlbase.la \
+		      $(top_builddir)/third_party/libgtest.la
+
 time_util_test_SOURCES = time_util_test.cc
 time_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 time_util_test_LDADD= libkmlbase.la \
 		      $(top_builddir)/third_party/libgtest.la
-
-util_test_SOURCES = util_test.cc
-util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
-util_test_LDADD= libkmlbase.la \
-		 $(top_builddir)/third_party/libgtest.la
 
 uri_parser_test_SOURCES = uri_parser_test.cc
 uri_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -155,9 +152,19 @@ uri_parser_test_LDADD= libkmlbase.la \
         $(top_builddir)/third_party/liburiparser.la \
 	$(top_builddir)/third_party/libgtest.la
 
+util_test_SOURCES = util_test.cc
+util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+util_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
+
 vec3_test_SOURCES = vec3_test.cc
 vec3_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 vec3_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
+
+version_test_SOURCES = version_test.cc
+version_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+version_test_LDADD= libkmlbase.la \
 		 $(top_builddir)/third_party/libgtest.la
 
 xml_element_test_SOURCES = xml_element_test.cc
