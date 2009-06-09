@@ -208,6 +208,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\version.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\xml_namespaces.cc"
 				>
 			</File>
@@ -303,6 +307,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\vec3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\version.h"
 				>
 			</File>
 			<File
