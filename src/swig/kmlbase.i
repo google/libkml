@@ -34,6 +34,7 @@
 #include "kml/base/color32.h"
 #include "kml/base/date_time.h"
 #include "kml/base/vec3.h"
+#include "kml/base/version.h"
 #include "kml/base/xml_file.h"
 %}
 
@@ -109,6 +110,12 @@ class Vec3 {
   double get_latitude() const;
   bool has_altitude() const;
   double get_altitude() const;
+};
+
+%nodefaultctor Version;
+class Version {
+ public:
+  static std::string GetString();
 };
 
 %nodefaultctor XmlFile;
