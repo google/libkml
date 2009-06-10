@@ -144,12 +144,17 @@ class BasicVec3TestCase(unittest.TestCase):
     assert kLongitude == vec3.get_longitude()
     assert not vec3.has_altitude()
 
+class BasicVersionTestCase(unittest.TestCase):
+  def runTest(self):
+    assert "1.0.0" == kmlbase.Version_GetString()
+
 def suite():
   suite = unittest.TestSuite()
   suite.addTest(BasicAttributesTestCase())
   suite.addTest(BasicColor32TestCase())
   suite.addTest(BasicDateTimeTestCase())
   suite.addTest(BasicVec3TestCase())
+  suite.addTest(BasicVersionTestCase())
   return suite
 
 runner = unittest.TextTestRunner()
