@@ -25,8 +25,10 @@
 
 // This file defines the id of each element.
 
-// The element names exactly match the KML 2.2 Reference:
-// http://code.google.com/apis/kml/documentation/kml_tags_beta1.html
+// The element names exactly match the OGC KML 2.2 Standard:
+// http://www.opengeospatial.org/standards/kml
+// See also Google's reference especially for the "gx" elements:
+// http://code.google.com/apis/kml/documentation/kmlreference.html
 // Type_${element_name}
 
 #ifndef KML_DOM_KML22_H__
