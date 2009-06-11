@@ -1,6 +1,7 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
               -I$(top_srcdir)/third_party/boost_1_34_1 \
-              -I$(top_srcdir)/third_party/googletest-r108/include
+              -I$(top_srcdir)/third_party/googletest-r108/include \
+              -I$(top_srcdir)/third_party/uriparser-0.7.1/include
 
 if GCC
 AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-rtti
