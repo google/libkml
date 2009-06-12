@@ -5,7 +5,9 @@ EXTRA_DIST = \
 	libkmlbase_color32_test.vcproj \
 	libkmlbase_date_time_test.vcproj \
 	libkmlbase_expat_handler_ns_test.vcproj \
+	libkmlbase_expat_parser_test.vcproj \
 	libkmlbase_file_test.vcproj \
+	libkmlbase_math_util_test.vcproj \
 	libkmlbase_net_cache_test.vcproj \
 	libkmlbase_referent_test.vcproj \
 	libkmlbase_string_util_test.vcproj \
@@ -14,6 +16,9 @@ EXTRA_DIST = \
 	libkmlbase_uri_parser_test.vcproj \
 	libkmlbase_util_test.vcproj \
 	libkmlbase_vec3_test.vcproj \
+	libkmlbase_xml_element_test.vcproj \
+	libkmlbase_xml_file_test.vcproj \
+	libkmlbase_xml_namespaces_test.vcproj \
 	libkmlbase_xmlns_test.vcproj \
 	libkmldom_abstractlatlonbox_test.vcproj \
 	libkmldom_abstractview_test.vcproj \
