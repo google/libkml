@@ -33,7 +33,9 @@ namespace kmlbase {
 // These are libkml-internal ids for well known related XML namespaces.
 typedef enum {
   XMLNS_NONE,
+  XMLNS_APP,
   XMLNS_ATOM,
+  XMLNS_GD,
   XMLNS_GPX,
   XMLNS_GX22,
   XMLNS_KML22,

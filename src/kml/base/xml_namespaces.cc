@@ -27,10 +27,11 @@
 
 namespace kmlbase {
 
-// TODO: how/if to handle http://earth.google.com/kml/2.[12]...
 const XmlNamespace XmlNamespaces[] = {
   { XMLNS_NONE, NULL, NULL },
+  { XMLNS_APP, "app", "http://www.w3.org/2007/app" },
   { XMLNS_ATOM, "atom", "http://www.w3.org/2005/Atom" },
+  { XMLNS_GD, "gd", "http://schemas.google.com/g/2005" },
   { XMLNS_GPX, "gpx", "http://www.topografix.com/GPX/1/0" },
   { XMLNS_GX22, "gx", "http://www.google.com/kml/ext/2.2" },
   { XMLNS_KML22, "kml", "http://www.opengis.net/kml/2.2" },
