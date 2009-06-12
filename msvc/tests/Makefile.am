@@ -32,6 +32,8 @@ EXTRA_DIST = \
 	libkmldom_feature_test.vcproj \
 	libkmldom_folder_test.vcproj \
 	libkmldom_geometry_test.vcproj \
+	libkmldom_gx_timeprimitive_test.vcproj \
+	libkmldom_gx_tour_test.vcproj \
 	libkmldom_hotspot_test.vcproj \
 	libkmldom_iconstyle_test.vcproj \
 	libkmldom_kml22_test.vcproj \
