@@ -38,7 +38,7 @@ namespace kmlbase {
 // used in the configure.ac file's AC_INIT.
 #define LIBKML_MAJOR_VERSION 1
 #define LIBKML_MINOR_VERSION 0
-#define LIBKML_MICRO_VERSION 0
+#define LIBKML_MICRO_VERSION 1
 
 // This API provides the version info this library was compiled with.
 class Version {
