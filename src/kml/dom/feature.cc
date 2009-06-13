@@ -148,6 +148,9 @@ void Feature::SerializeBeforeStyleSelector(Serializer& serializer) const {
   if (has_address()) {
     serializer.SaveFieldById(Type_address, get_address());
   }
+  if (has_phonenumber()) {
+    serializer.SaveFieldById(Type_phoneNumber, get_phonenumber());
+  }
   if (has_xaladdressdetails()) {
     serializer.SaveElement(get_xaladdressdetails());
   }

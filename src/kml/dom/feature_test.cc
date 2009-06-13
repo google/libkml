@@ -278,6 +278,26 @@ TEST_F(FeatureTest, TestSerializeGx) {
   ASSERT_EQ(kExpected, SerializeRaw(placemark));
 }
 
+TEST_F(FeatureTest, TestSerializeFeature) {
+  // TODO: all other Feature children.
+  // Note that this KML has its children in a non-XSD-valid ordering. This is
+  // to test that the elements are serialized and re-ordered correctly.
+  const std::string kFeature(
+      "<Document>"
+      "<phoneNumber>867-5309</phoneNumber>"
+      "<name>Jenny</name>"
+      "</Document>"
+      );
+  const std::string kExpected(
+      "<Document>"
+      "<name>Jenny</name>"
+      "<phoneNumber>867-5309</phoneNumber>"
+      "</Document>"
+      );
+
+  ASSERT_EQ(kExpected, SerializeRaw(kmldom::Parse(kFeature, NULL)));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
