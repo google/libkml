@@ -519,6 +519,12 @@ class SimpleFeatureTestCase(unittest.TestCase):
     # Feature methods
     # TODO everything else
 
+    assert not folder.has_phonenumber()
+    phonenumber = '867-5309'
+    folder.set_phonenumber(phonenumber)
+    assert folder.has_phonenumber()
+    assert phonenumber == folder.get_phonenumber()
+
     assert not folder.has_atomauthor()
     atomauthor = factory.CreateAtomAuthor()
     assert atomauthor
