@@ -103,7 +103,7 @@ LibKML.jar: kmlbase_java.cc kmldom_java.cc kmlengine_java.cc
 	$(JAR) cf LibKML.jar $(java_package_dir)/*.class
 
 # This copies the Java archive file into the tarball when 'make dist' is called:
-dist-hook:
+dist-hook: LibKML.jar
 	cp -p -v $(top_builddir)/src/swig/LibKML.jar $(distdir)/
 
 endif
