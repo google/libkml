@@ -42,6 +42,7 @@
 
 #include <iostream>
 #include <vector>
+#include "kml/base/file.h"
 #include "kml/base/math_util.h"
 #include "kml/convenience/convenience.h"
 #include "kml/dom.h"

@@ -29,6 +29,7 @@
 
 #include <iostream>
 #include "boost/scoped_ptr.hpp"
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
 

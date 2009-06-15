@@ -31,6 +31,7 @@
 
 #include <iostream>
 #include "kml/convenience/convenience.h"
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
 
