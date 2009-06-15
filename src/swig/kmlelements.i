@@ -1401,6 +1401,18 @@ public:
 
 %nodefaultctor SimpleData;
 class SimpleData : public Element {
+public:
+  // name=
+  const std::string& get_name();
+  bool has_name();
+  void set_name(const std::string& value);
+  void clear_name();
+
+  // char data
+  const std::string& get_text();
+  bool has_text();
+  void set_text(const std::string& value);
+  void clear_text();
 };
 
 %nodefaultctor SchemaData;
