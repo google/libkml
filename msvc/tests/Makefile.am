@@ -16,6 +16,7 @@ EXTRA_DIST = \
 	libkmlbase_uri_parser_test.vcproj \
 	libkmlbase_util_test.vcproj \
 	libkmlbase_vec3_test.vcproj \
+	libkmlbase_version_test.vcproj \
 	libkmlbase_xml_element_test.vcproj \
 	libkmlbase_xml_file_test.vcproj \
 	libkmlbase_xml_namespaces_test.vcproj \
