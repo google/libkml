@@ -62,7 +62,7 @@ class Version {
   static int get_micro();
 };
 
-#endif  // KML_BASE_VERSION_H__
-
 }  // end namespace kmlbase
+
+#endif  // KML_BASE_VERSION_H__
 
