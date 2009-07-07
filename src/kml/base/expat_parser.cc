@@ -84,7 +84,7 @@ bool ExpatParser::ParseString(const std::string& xml, ExpatHandler* handler,
 }
 
 void* ExpatParser::GetInternalBuffer(size_t len) {
-  return static_cast<void*>(XML_GetBuffer(parser_, len));
+  return static_cast<void*>(XML_GetBuffer(parser_, static_cast<int>(len)));
 }
 
 bool ExpatParser::ParseBuffer(const std::string& input, std::string* errors,
@@ -102,7 +102,7 @@ bool ExpatParser::ParseBuffer(const std::string& input, std::string* errors,
 
 bool ExpatParser::ParseInternalBuffer(size_t len, std::string* errors,
                                       bool is_final) {
-  XML_Status status = XML_ParseBuffer(parser_, len, is_final);
+  XML_Status status = XML_ParseBuffer(parser_, static_cast<int>(len), is_final);
   // If we have just parsed the final buffer, we need to check if Expat
   // has stopped parsing. Failure here indicates invalid (badly formed)
   // XML content.
