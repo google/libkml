@@ -158,7 +158,7 @@ bool UriParser::UriToUnixFilename(const std::string& uri,
   if (!output) {
     return false;
   }
-  const int chars_required = uri.size() + 1;
+  const int chars_required = static_cast<int>(uri.size()) + 1;
   char* filename = (char*)malloc(chars_required * sizeof(char));
   if (uriUriStringToUnixFilenameA(uri.c_str(), filename) != URI_SUCCESS) {
     free(filename);
@@ -174,7 +174,7 @@ bool UriParser::UriToWindowsFilename(const std::string& uri,
   if (!output) {
     return false;
   }
-  const int chars_required = uri.size() + 1;
+  const int chars_required = static_cast<int>(uri.size()) + 1;
   char* filename = (char*)malloc(chars_required * sizeof(char));
   if (uriUriStringToWindowsFilenameA(uri.c_str(), filename) != URI_SUCCESS) {
     free(filename);
@@ -199,7 +199,7 @@ bool UriParser::UnixFilenameToUri(const std::string& filename,
   if (!output) {
     return false;
   }
-  const int chars_required = 7 + 3 * filename.size() + 1;
+  const int chars_required = 7 + 3 * static_cast<int>(filename.size()) + 1;
   char* uri = (char*)malloc(chars_required * sizeof(char));
   if (uriUnixFilenameToUriStringA(filename.c_str(), uri) != URI_SUCCESS) {
     free(uri);
@@ -215,7 +215,7 @@ bool UriParser::WindowsFilenameToUri(const std::string& filename,
   if (!output) {
     return false;
   }
-  const int chars_required = 8 + 3 * filename.size() + 1;
+  const int chars_required = 8 + 3 * static_cast<int>(filename.size()) + 1;
   char* uri = (char*)malloc(chars_required * sizeof(char));
   if (uriWindowsFilenameToUriStringA(filename.c_str(), uri) != URI_SUCCESS) {
     free(uri);
@@ -276,4 +276,3 @@ bool UriParser::GetPath(std::string* path) const {
 }
 
 }  // end namespace kmlbase
-
