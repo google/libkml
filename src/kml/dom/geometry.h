@@ -106,7 +106,7 @@ class Coordinates : public BasicElement<Type_coordinates> {
     return coordinates_array_.size();
   }
 
-  const kmlbase::Vec3 get_coordinates_array_at(unsigned int index) const {
+  const kmlbase::Vec3 get_coordinates_array_at(size_t index) const {
     return coordinates_array_[index];
   }
 
@@ -429,7 +429,7 @@ class Polygon : public ExtrudeGeometryCommon {
     return innerboundaryis_array_.size();
   }
 
-  const InnerBoundaryIsPtr& get_innerboundaryis_array_at(unsigned int index) {
+  const InnerBoundaryIsPtr& get_innerboundaryis_array_at(size_t index) {
     return innerboundaryis_array_[index];
   }
 
@@ -466,7 +466,7 @@ class MultiGeometry : public Geometry {
     return geometry_array_.size();
   }
 
-  const GeometryPtr& get_geometry_array_at(unsigned int index) const {
+  const GeometryPtr& get_geometry_array_at(size_t index) const {
     return geometry_array_[index];
   }
 

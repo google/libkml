@@ -317,7 +317,7 @@ class MockCoordinatesSerializer : public Serializer {
   }
   // This is called once before the Vec3's are emitted.
   virtual void BeginElementArray(int type_id, size_t element_count) {
-    element_count_ += element_count;
+    element_count_ += static_cast<int>(element_count);
   }
   // This is called once after all Vec3's are emitted.
   virtual void EndElementArray(int type_id) {}

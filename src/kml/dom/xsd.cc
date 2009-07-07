@@ -90,7 +90,7 @@ int Xsd::EnumId(int type_id, std::string enum_value) const {
            ++enum_value_item) {
         if (*enum_value_item == enum_value) {
           // enum id is simple offset into enum_value_list;
-          return enum_value_item - simple->enum_value_list;
+          return static_cast<int>(enum_value_item - simple->enum_value_list);
         }
       }
     }
