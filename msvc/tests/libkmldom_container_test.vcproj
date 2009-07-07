@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="libkmldom_container_test"
-	ProjectGUID="{83A3EA2A-7136-402D-84F3-C27EEEEBB667}"
+	ProjectGUID="{93F3E605-C31C-42DF-B5BD-F2D9350C573A}"
 	RootNamespace="libkmldom_container_test"
 	Keyword="Win32Proj"
 	>

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="libkmlbase_file_test"
-	ProjectGUID="{30A2D480-75D8-4D4F-B662-D95F5846212D}"
+	ProjectGUID="{FDC010D5-4343-4075-8EDD-0E04426C175C}"
 	RootNamespace="libkmlbase_file_test"
 	Keyword="Win32Proj"
 	>
