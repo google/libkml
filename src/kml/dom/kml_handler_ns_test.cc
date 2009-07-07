@@ -126,7 +126,7 @@ TEST_F(KmlHandlerNSTest, TestBasicCharData) {
   const char* kContent = "what is in a name";
 
   kml_handler_ns_->StartElement(kTagName, atts_);
-  kml_handler_ns_->CharData(kContent, strlen(kContent));
+  kml_handler_ns_->CharData(kContent, static_cast<int>(strlen(kContent)));
   kml_handler_ns_->EndElement(kTagName);
 
   ElementPtr root = kml_handler_ns_->PopRoot();

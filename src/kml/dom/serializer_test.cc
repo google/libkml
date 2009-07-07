@@ -289,7 +289,7 @@ class ArraySerializer : public Serializer {
   // is the type of each element.
   virtual void BeginElementArray(int type_id, size_t element_count) {
     int_vector_->push_back(type_id);
-    int_vector_->push_back(element_count);
+    int_vector_->push_back(static_cast<int>(element_count));
   }
 
   // Called after saving each element in an array.  Every element was of
@@ -304,7 +304,7 @@ class ArraySerializer : public Serializer {
   // in KML include Type_Feature, Type_Object, and Type_StyleSelector.
   virtual void BeginElementGroupArray(int group_id, size_t element_count) {
     int_vector_->push_back(group_id);
-    int_vector_->push_back(element_count);
+    int_vector_->push_back(static_cast<int>(element_count));
   }
 
   // Called after saving each group element in an array.  Every element was of

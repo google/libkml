@@ -95,7 +95,7 @@ TEST_F(ContainerTest, TestDeleteFeatureByIdOne) {
 }
 
 // A proper XML id cannot be simply a number.
-static std::string CreateId(int i) {
+static std::string CreateId(size_t i) {
   return std::string("i") + kmlbase::ToString(i);
 }
 
@@ -106,7 +106,7 @@ static const kmldom::KmlDomType kFeatures[] = {
 };
 
 // Create a Feature and give it an id based on i.
-static FeaturePtr CreateFeature(int i) {
+static FeaturePtr CreateFeature(size_t i) {
   int num_features = sizeof(kFeatures)/sizeof(kFeatures[0]);
   KmlFactory* kml_factory = KmlFactory::GetFactory();
   FeaturePtr feature =
