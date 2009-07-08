@@ -30,8 +30,8 @@
 
 #include <string>
 #include <map>
+#include "kml/base/util.h"
 #include "boost/intrusive_ptr.hpp"
-#include "kml/base/time_util.h"
 
 namespace kmlbase {
 
@@ -93,11 +93,12 @@ class NetFetcher {
 // When the NetCache goes out of scope all cached CacheItems are deleted,
 // however use of boost::intrusive_ptr does permit any code to hold a pointer
 // to an item originally from cache beyond the cache's lifetime.
+// NOTE: This class is NOT thread safe!
 template<class CacheItem>
 class NetCache {
  public:
   typedef boost::intrusive_ptr<CacheItem> CacheItemPtr;
-  typedef std::pair<CacheItemPtr, double> CacheEntry;
+  typedef std::pair<CacheItemPtr, uint64_t> CacheEntry;
   typedef std::map<std::string, CacheEntry> CacheMap;
 
   // Construct the NetCache with the given NetFetcher-derived class and
@@ -107,6 +108,7 @@ class NetCache {
   // sizes are expected to be in the 10s to 100s of items.
   NetCache(NetFetcher* net_fetcher, size_t max_size)
       : max_size_(max_size),
+        cache_count_(0),
         net_fetcher_(net_fetcher) {}
 
   // This is the main public method in NetCache.  If the NetFetcher FetchUrl
@@ -161,8 +163,9 @@ class NetCache {
     if (cache_map_.size() == max_size_) {
       RemoveOldest();
     }
-    CacheEntry cache_entry = std::make_pair(cache_item,
-                                            kmlbase::GetMicroTime());
+    // It is not expected cache_count_ ever roll over.  See net_cache_test.cc
+    // for some timing tests and results.
+    CacheEntry cache_entry = std::make_pair(cache_item, cache_count_++);
     cache_map_[url] = cache_entry;
     return true;
   }
@@ -205,8 +208,9 @@ class NetCache {
   }
 
  private:
-  size_t max_size_;
+  const size_t max_size_;
   CacheMap cache_map_;
+  uint64_t cache_count_;
   const NetFetcher* net_fetcher_;
 };
 
