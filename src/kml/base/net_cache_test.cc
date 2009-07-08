@@ -24,6 +24,11 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/base/net_cache.h"
+// Uncomment this #define to enable output of timing results.
+// #define PRINT_TIME_RESULTS
+#ifdef PRINT_TIME_RESULTS
+#include <iostream>
+#endif
 #include "kml/base/memory_file.h"
 #include "kml/base/net_cache_test_util.h"
 #include "kml/base/referent.h"
@@ -263,6 +268,26 @@ TEST_F(NetCacheTest, TestDeleteCache) {
   // End of scope deletes net_cache_ and all CacheItems
   ASSERT_EQ(kSize0, instrumented_cache_item_count);
 }
+
+#ifdef PRINT_TIME_RESULTS
+// This is a simple timing test to estimate when the cache_count_ rolls over.
+// On a near-zero-latency network such as the one faked in UrlDataNetFetcher's
+// FetchUrl (which does no I/O at all) the elapsed time below is 22 seconds on
+// 2.33 Ghz Intel Core 2 Duo on a MacBook Pro.
+TEST_F(NetCacheTest, TimingTest) {
+  time_t start = time(NULL);
+  const int count = 1000000;
+  for (int i = 0; i < count; ++i) {
+    ASSERT_TRUE(url_data_net_cache_->Fetch(ToString(i)));
+  }
+  time_t elapsed = time(NULL) - start;
+  std::cerr << count << " Fetch's in " << elapsed << " seconds" << std::endl;
+  // ISO/IEC 988:1999 7.18.2.1
+#define UINT64_MAX        18446744073709551615ULL
+  std::cerr << "Seconds to roll over " << (UINT64_MAX/count)*elapsed
+            << std::endl;
+}
+#endif
 
 }  // end namespace kmlengine
 
