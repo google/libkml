@@ -176,6 +176,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\find_xml_namespaces.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\get_link_parents.cc"
 				>
 			</File>
@@ -303,6 +307,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\find.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\find_xml_namespaces.h"
 				>
 			</File>
 			<File
