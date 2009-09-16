@@ -163,10 +163,6 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
   if (!IsInToc(path_in_zip)) {
     return false;
   }
-  // We permit output to be NULL.
-  if (!output) {
-    return true;
-  }
   zlib_filefunc_def api;
   voidpf mem_stream = mem_simple_create_file(
       &api, const_cast<void*>(static_cast<const void*>(data_.data())),
@@ -189,6 +185,16 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
     return false;
   }
   int nbytes = finfo.uncompressed_size;
+  if (nbytes == -1) {
+    // This is likely an imcompatibility between the library with which the
+    // file was created and what the underlying minizip library can
+    // uncompress. One such error is in the unit test for this file.
+    return false;
+  }
+  // We permit output to be NULL.
+  if (!output) {
+    return true;
+  }
   char* filedata = new char[nbytes];
   if (unzReadCurrentFile(unzfilehelper->get_unzfile(), filedata,
                          nbytes) == nbytes) {
