@@ -29,6 +29,7 @@
 #include <string>
 #include "kml/base/file.h"
 #include "kml/base/net_cache.h"
+#include "kml/base/tempfile.h"
 #include "gtest/gtest.h"
 #include "kml/dom.h"
 #include "kml/engine/kml_cache.h"
