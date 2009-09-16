@@ -267,6 +267,18 @@ TEST_F(ZipFileTest, TestAddEntryBad) {
   ASSERT_FALSE(zip_file_->AddEntry(kNewKml, "doc.kml"));
 }
 
+TEST_F(ZipFileTest, TestBadPkZipData) {
+  fprintf(stdout, "\n=== TestBadPkZipData\n");
+  // Some ZIP files created with new zip-creation tools can't be uncompressed
+  // by our underlying minizip library. Assert sane behavior.
+  const std::string kBadKmz= std::string(DATADIR) + "/kmz/bad-pk-data.kmz";
+  std::string zip_file_data;
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
+  ASSERT_FALSE(zip_file_data.empty());
+  zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
+  ASSERT_FALSE(zip_file_->GetEntry("doc.kml", NULL));
+}
+
 }  // end namespace kmlbase
 
 int main(int argc, char** argv) {
