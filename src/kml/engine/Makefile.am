@@ -1,6 +1,5 @@
 AM_CPPFLAGS= -I$(top_srcdir)/src \
 	     -I$(top_srcdir)/third_party/boost_1_34_1 \
-	     -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
 	     -I$(top_srcdir)/third_party/googletest-r108/include
 
 if GCC
@@ -39,7 +38,6 @@ libkmlengine_la_SOURCES = \
 	update.cc
 
 libkmlengine_la_LIBADD = \
-	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 # These header files will be installed in $(includedir)/kml/engine for use in

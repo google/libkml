@@ -30,6 +30,7 @@
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
+#include "kml/base/tempfile.h"
 #include "kml/engine/get_links.h"
 #include "gtest/gtest.h"
 
@@ -163,7 +164,7 @@ TEST_F(KmzTest, TestReadKmlAndGetPath) {
   // - b.kml
   // - a/a.kml
   // - doc/doc.kml
-  // Assert that z/c.kml is read because it is the first file in the TOC. 
+  // Assert that z/c.kml is read because it is the first file in the TOC.
   const std::string kMulti2 = std::string(DATADIR) + "/kmz/multikml-doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kMulti2.c_str()));
   ASSERT_TRUE(kmz_file_->ReadKmlAndGetPath(&kml_data, &kml_path));
@@ -340,7 +341,7 @@ TEST_F(KmzTest, TestAddFileList) {
   ASSERT_EQ(static_cast<size_t>(1), errs);
   KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
   ASSERT_TRUE(created);
-  std::vector<std::string> list;
+  kmlbase::StringVector list;
   created->List(&list);
   ASSERT_EQ(static_cast<size_t>(2), list.size());
   ASSERT_EQ(std::string("dummy.png"), list[0]);
@@ -432,6 +433,22 @@ TEST_F(KmzTest, TestCreateFromGoogleEarthFile) {
   ASSERT_EQ(std::string("files/camelblack200.png"), list[2]);
   ASSERT_EQ(std::string("files/camera_mode.png"), list[3]);
   ASSERT_EQ(std::string("files/camelcolor200.png"), list[4]);
+}
+
+TEST_F(KmzTest, TestSaveToString) {
+  const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
+
+  kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
+  ASSERT_TRUE(kmz_file_);
+
+  std::string read_kmz_data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(kGoodKmz, &read_kmz_data));
+  ASSERT_FALSE(read_kmz_data.empty());
+
+  ASSERT_FALSE(kmz_file_->SaveToString(NULL));
+  std::string saved_kmz_data;
+  ASSERT_TRUE(kmz_file_->SaveToString(&saved_kmz_data));
+  ASSERT_EQ(read_kmz_data, saved_kmz_data);
 }
 
 }  // end namespace kmlengine

@@ -1,7 +1,8 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
               -I$(top_srcdir)/third_party/boost_1_34_1 \
               -I$(top_srcdir)/third_party/googletest-r108/include \
-              -I$(top_srcdir)/third_party/uriparser-0.7.1/include
+              -I$(top_srcdir)/third_party/uriparser-0.7.1/include \
+              -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 if GCC
 AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-rtti
@@ -25,9 +26,11 @@ libkmlbase_la_SOURCES = \
 	time_util.cc \
 	uri_parser.cc \
 	version.cc \
-	xml_namespaces.cc
+	xml_namespaces.cc \
+	zip_file.cc
 
 libkmlbase_la_LIBADD = \
+	$(top_builddir)/third_party/libminizip.la \
 	$(top_builddir)/third_party/liburiparser.la
 
 # These header files will be installed in $(includedir)/kml/base
@@ -53,7 +56,8 @@ libkmlbaseinclude_HEADERS = \
 	xml_element.h \
 	xml_file.h \
 	xml_namespaces.h \
-	xmlns.h
+	xmlns.h \
+	zip_file.h
 
 EXTRA_DIST = \
 	file_win32.cc \
@@ -82,7 +86,8 @@ TESTS = \
 	xml_element_test \
 	xml_file_test \
 	xml_namespaces_test \
-	xmlns_test
+	xmlns_test \
+	zip_file_test
 
 check_PROGRAMS = $(TESTS)
 
@@ -187,6 +192,11 @@ xmlns_test_SOURCES = xmlns_test.cc
 xmlns_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xmlns_test_LDADD= libkmlbase.la \
 		  $(top_builddir)/third_party/libgtest.la
+
+zip_file_test_SOURCES = zip_file_test.cc
+zip_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+zip_file_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libgtest.la
 
 CLEANFILES = check_PROGRAMS
 

@@ -9,6 +9,7 @@ noinst_LTLIBRARIES = libgtest.la
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
 	zlib-1.2.3/contrib/minizip/ioapi.c \
+	zlib-1.2.3/contrib/minizip/iomem_simple.c \
 	zlib-1.2.3/contrib/minizip/zip.c
 libminizip_la_LDFLAGS = -lz
 

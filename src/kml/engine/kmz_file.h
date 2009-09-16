@@ -30,17 +30,19 @@
 
 #include <string>
 #include <vector>
+#include "boost/intrusive_ptr.hpp"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/referent.h"
-#include "kml/base/tempfile.h"
 #include "kml/base/util.h"
 #include "kml/engine/kml_file.h"
 
-namespace kmlengine {
+// ZipFile hides the implementation details of the underlying zip library from
+// this interface.
+namespace kmlbase {
+class ZipFile;
+}
 
-// ZlibImpl hides the implementation details of Zlib's Minizip from our
-// interface.
-class ZlibImpl;
+namespace kmlengine {
 
 // The Kmz class represents an instance of a KMZ file. It contains methods
 // for reading and writing KMZ files.
@@ -90,6 +92,9 @@ class KmzFile : public kmlbase::Referent {
   // name of the KML file from the archive root, with '/' as the separator.
   // Returns false upon error.
   bool List(std::vector<std::string>* subfiles);
+
+  // Saves the raw bytes of the in-memory KMZ file.
+  bool SaveToString(std::string* kmz_bytes);
 
   // These are for the creation of KMZ files:
 
@@ -151,14 +156,8 @@ class KmzFile : public kmlbase::Referent {
 
  private:
   // Class can only be created from static methods.
-  KmzFile(ZlibImpl* zlibimpl_, const kmlbase::TempFilePtr& tempfile);
-  ZlibImpl* zlibimpl_;
-  kmlbase::TempFilePtr tempfile_;
-  // Internal helper function to read the file currently pointed to by the
-  // zipfile cursor.
-  bool ReadCurrentFile(std::string* result) const;
-  // Internal helper function to read one named file from an archive.
-  bool ReadOne(const char* subfile, std::string* output) const;
+  KmzFile(kmlbase::ZipFile* zip_file);
+  boost::scoped_ptr<kmlbase::ZipFile> zip_file_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmzFile);
 };
 
