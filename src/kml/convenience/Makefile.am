@@ -13,6 +13,8 @@ libkmlconvenience_la_SOURCES = \
 	convenience.cc \
 	csv_file.cc \
 	feature_list.cc \
+	google_maps_data.cc \
+	http_client.cc \
 	kmz_check_links.cc
 
 # These header files will be installed in $(includedir)/kml/convenience
@@ -23,7 +25,9 @@ libkmlconvenienceinclude_HEADERS = \
 	csv_file.h \
 	element_counter.h \
 	feature_list.h \
+	google_maps_data.h \
 	gpx_trk_pt_handler.h \
+	http_client.h \
 	kmz_check_links.h
 
 DATA_DIR = $(top_srcdir)/testdata
@@ -31,9 +35,11 @@ TESTS = atom_util_test \
         csv_file_test \
 	convenience_test \
 	element_counter_test \
-	kmz_check_links_test \
 	feature_list_test \
-	gpx_trk_pt_handler_test
+	google_maps_data_test \
+	gpx_trk_pt_handler_test \
+	http_client_test \
+	kmz_check_links_test
 
 check_PROGRAMS = $(TESTS)
 
@@ -77,12 +83,26 @@ feature_list_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 
+google_maps_data_test_SOURCES = google_maps_data_test.cc
+google_maps_data_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+google_maps_data_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
 gpx_trk_pt_handler_test_SOURCES = gpx_trk_pt_handler_test.cc
 gpx_trk_pt_handler_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 gpx_trk_pt_handler_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/third_party/libgtest.la
+
+http_client_test_SOURCES = http_client_test.cc
+http_client_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+http_client_test_LDADD = http_client.o \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 
 kmz_check_links_test_SOURCES = kmz_check_links_test.cc
