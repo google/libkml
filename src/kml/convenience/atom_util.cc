@@ -83,13 +83,19 @@ bool AtomUtil::GetContentSrc(const AtomEntryPtr& entry, std::string* src) {
 }
 
 // static
+bool AtomUtil::LinkIsOfRel(const kmldom::AtomLinkPtr& link,
+                           const std::string& rel_type) {
+  return link.get() && !rel_type.empty() &&
+      kmlbase::StringEndsWith(link->get_rel(), rel_type);
+}
+
+// static
 bool AtomUtil::FindRelUrl(const kmldom::AtomCommon& atom_common,
                           const std::string& rel_type, std::string* href) {
   size_t link_size = atom_common.get_link_array_size();
   for (size_t i = 0; i < link_size; ++i) {
     const kmldom::AtomLinkPtr& link = atom_common.get_link_array_at(i);
-    if (link->has_href() && link->has_rel() &&
-        kmlbase::StringEndsWith(link->get_rel(), rel_type)) {
+    if (link->has_href() && LinkIsOfRel(link, rel_type)) {
       if (href) {
         *href = link->get_href();
       }
@@ -100,8 +106,22 @@ bool AtomUtil::FindRelUrl(const kmldom::AtomCommon& atom_common,
 }
 
 // static
+kmldom::AtomLinkPtr AtomUtil::FindLink(const kmldom::AtomCommon& atom_common,
+                                       const std::string& rel_type,
+                                       const std::string& mime_type) {
+  size_t link_size = atom_common.get_link_array_size();
+  for (size_t i = 0; i < link_size; ++i) {
+    const kmldom::AtomLinkPtr& link = atom_common.get_link_array_at(i);
+    if (LinkIsOfRel(link, rel_type) && link->get_type() == mime_type) {
+      return link;
+    }
+  }
+  return NULL;
+}
+
+// static
 FeaturePtr AtomUtil::GetEntryFeature(const AtomEntryPtr& entry) {
-  // Any KML child of <content> will appear as a misplaced element. 
+  // Any KML child of <content> will appear as a misplaced element.
   if (entry.get() && entry->has_content() &&
       entry->get_content()->get_misplaced_elements_array_size() > 0) {
     return kmldom::AsFeature(

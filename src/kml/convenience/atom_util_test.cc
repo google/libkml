@@ -113,10 +113,60 @@ TEST(AtomUtilTest, TestGetFeedFeatures) {
   AtomUtil::GetFeedFeatures(feed, folder);
 }
 
+TEST(AtomUtilTest, TestIsOfLinkRel) {
+  kmldom::AtomLinkPtr link = kmldom::KmlFactory::GetFactory()->CreateAtomLink();
+  // A link with no rel= at all.
+  ASSERT_FALSE(AtomUtil::LinkIsOfRel(link, "post"));
+  link->set_rel("post-is-not-at-the-end");
+  ASSERT_FALSE(AtomUtil::LinkIsOfRel(link, "post"));
+  link->set_rel("http://foo.com/goo/blah#post");
+  ASSERT_TRUE(AtomUtil::LinkIsOfRel(link, "post"));
+  link->set_rel("post");
+  ASSERT_TRUE(AtomUtil::LinkIsOfRel(link, "post"));
+  std::string empty;
+  ASSERT_FALSE(AtomUtil::LinkIsOfRel(NULL, empty));
+}
+
+TEST(AtomUtilTest, TestFindLink) {
+  kmldom::AtomFeedPtr feed = kmldom::KmlFactory::GetFactory()->CreateAtomFeed();
+  const std::string kEmpty;
+  // Empty/NULL everything just returns NULL w/o crashing.
+  ASSERT_FALSE(AtomUtil::FindLink(*feed, kEmpty, kEmpty));
+  const std::string kRel("alternate");
+  const std::string kMimeType("text/html");
+  // NULL AtomFeePtr just returns NULL w/o crashing.
+  ASSERT_FALSE(AtomUtil::FindLink(*feed, kRel, kMimeType));
+  kmldom::AtomLinkPtr link = kmldom::KmlFactory::GetFactory()->CreateAtomLink();
+  feed->add_link(link);
+  link->set_rel(kRel);
+  // Have rel=, but not type=.
+  ASSERT_FALSE(AtomUtil::FindLink(*feed, kRel, kMimeType));
+  link->clear_rel();
+  link->set_type(kMimeType);
+  // Have type=, but not rel=.
+  ASSERT_FALSE(AtomUtil::FindLink(*feed, kRel, kMimeType));
+  link->set_rel(kRel);
+  // Have both rel= and type=.
+  kmldom::AtomLinkPtr got_link = AtomUtil::FindLink(*feed, kRel, kMimeType);
+  ASSERT_TRUE(got_link.get());
+  ASSERT_EQ(kRel, got_link->get_rel());
+  ASSERT_EQ(kMimeType, got_link->get_type());
+  kmldom::AtomEntryPtr entry =
+      kmldom::KmlFactory::GetFactory()->CreateAtomEntry();
+  ASSERT_FALSE(AtomUtil::FindLink(*entry, kRel, kMimeType));
+  link = kmldom::KmlFactory::GetFactory()->CreateAtomLink();
+  entry->add_link(link);
+  link->set_rel(kRel);
+  link->set_type(kMimeType);
+  got_link = AtomUtil::FindLink(*feed, kRel, kMimeType);
+  ASSERT_TRUE(got_link.get());
+  ASSERT_EQ(kRel, got_link->get_rel());
+  ASSERT_EQ(kMimeType, got_link->get_type());
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-
