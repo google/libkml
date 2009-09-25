@@ -58,6 +58,18 @@ class AtomUtil {
   static bool GetContentSrc(const kmldom::AtomEntryPtr& entry,
                             std::string* src);
 
+  // This returns true if the given <atom:link>'s rel= ends with rel_type.
+  static bool LinkIsOfRel(const kmldom::AtomLinkPtr& link,
+                          const std::string& rel_type);
+
+  // This returns the first <atom:link> matching the given link relation
+  // (rel= attribute) and mimetype (type= attribute).  LinkIsOfRel is used
+  // to match the rel_type.  The mime_type is an exact match.  NULL is
+  // returned if no matching <atom:link> is found.
+  static kmldom::AtomLinkPtr FindLink(const kmldom::AtomCommon& atom_common,
+                                      const std::string& rel_type,
+                                      const std::string& mime_type);
+
   // This returns the href= value of the first <atom:link> whose first rel=
   // ends with the given link relation type.  Both AtomFeed (<atom:feed>)
   // and AtomEntry (<atom:entry>) are of the AtomCommon type.
@@ -86,6 +98,6 @@ class AtomUtil {
                               kmldom::ContainerPtr container);
 };
 
-}  // end namespace kmlconvenience 
+}  // end namespace kmlconvenience
 
 #endif  // KML_CONVENIENCE_ATOM_UTIL_H
