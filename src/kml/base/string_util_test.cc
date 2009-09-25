@@ -171,6 +171,7 @@ TEST(StringUtilTest, TestEndsWith) {
   ASSERT_FALSE(StringEndsWith(empty, empty));
   ASSERT_FALSE(StringEndsWith("foo", empty));
   ASSERT_FALSE(StringEndsWith(empty, "foo"));
+  ASSERT_TRUE(StringEndsWith("foo", "foo"));
 }
 
 }  // end namespace kmlbase

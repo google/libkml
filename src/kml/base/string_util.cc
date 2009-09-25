@@ -95,8 +95,13 @@ void FromString(const std::string& str, std::string* out) {
 }
 
 bool StringEndsWith(const std::string& str, const std::string& end) {
-  return !str.empty() && !end.empty() && end.size() < str.size() &&
-         str.substr(str.size() - end.size()) == end;
+  if (str.empty() || end.empty()) {
+    return false;
+  }
+  if (str.size() == end.size()) {
+    return str == end;
+  }
+  return end.size() < str.size() && str.substr(str.size() - end.size()) == end;
 }
 
 }  // end namespace kmlbase
