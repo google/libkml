@@ -268,7 +268,6 @@ TEST_F(ZipFileTest, TestAddEntryBad) {
 }
 
 TEST_F(ZipFileTest, TestBadPkZipData) {
-  fprintf(stdout, "\n=== TestBadPkZipData\n");
   // Some ZIP files created with new zip-creation tools can't be uncompressed
   // by our underlying minizip library. Assert sane behavior.
   const std::string kBadKmz= std::string(DATADIR) + "/kmz/bad-pk-data.kmz";
