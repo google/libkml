@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -104,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
+				AdditionalIncludeDirectories="..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;&quot;..\third_party\uriparser-0.7.1\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -213,6 +213,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\xml_namespaces.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\zip_file.cc"
 				>
 			</File>
 		</Filter>
@@ -327,6 +331,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\xmlns.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\zip_file.h"
 				>
 			</File>
 		</Filter>
