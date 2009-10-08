@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Based on an actual Google Maps Data API "metafeed".  For more info see:
+  http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingMetafeed
+-->
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:gd="http://schemas.google.com/g/2005"
+  gd:etag="W/&quot;DEUFRnk_fSp7ImA9WxNQEU4.&quot;">
+  <id>http://maps.google.com/maps/feeds/maps/201514259179526663268</id>
+  <updated>2009-09-16T21:23:37.745Z</updated>
+  <category scheme="http://schemas.google.com/g/2005#kind"
+    term="http://schemas.google.com/maps/2008#map"/>
+  <title>My maps</title>
+  <link rel="alternate" type="text/html" href="http://maps.google.com/maps/ms?msa=1"/>
+  <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full"/>
+  <link rel="self" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full"/>
+  <link rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/batch"/>
+  <link rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full"/>
+  <author>
+    <name>Bent</name>
+  </author>
+  <entry gd:etag="W/&quot;CUINQHY9eyp7ImA9WxJTF0o.&quot;">
+    <id>http://maps.google.com/maps/feeds/maps/201514259179526663268/0004687a1a3e44d72b6b4</id>
+    <published>2009-04-26T19:19:02.429Z</published>
+    <updated>2009-04-26T19:19:51.863Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-04-26T19:19:51.863Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/maps/2008#map"/>
+    <title>alaska</title>
+    <summary>a public map of alaska created in "my maps"</summary>
+    <content
+      src="http://maps.google.com/maps/feeds/features/201514259179526663268/0004687a1a3e44d72b6b4/full"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004687a1a3e44d72b6b4"/>
+    <link rel="alternate" type="text/html"
+      href="http://maps.google.com/maps/ms?msa=0&amp;msid=201514259179526663268.0004687a1a3e44d72b6b4"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004687a1a3e44d72b6b4"/>
+    <author>
+      <name>Bent</name>
+    </author>
+  </entry>
+  <entry gd:etag="W/&quot;CUYEQ38_fip7ImA9WxJTF0o.&quot;">
+    <id>http://maps.google.com/maps/feeds/maps/201514259179526663268/0004683fb7cc18fd06bec</id>
+    <published>2009-04-23T21:39:42.677Z</published>
+    <updated>2009-04-26T19:11:42.146Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-04-26T19:11:42.146Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/maps/2008#map"/>
+    <title>canada</title>
+    <summary>this is stuff about canada </summary>
+    <content
+      src="http://maps.google.com/maps/feeds/features/201514259179526663268/0004683fb7cc18fd06bec/full"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004683fb7cc18fd06bec"/>
+    <link rel="alternate" type="text/html"
+      href="http://maps.google.com/maps/ms?msa=0&amp;msid=201514259179526663268.0004683fb7cc18fd06bec"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004683fb7cc18fd06bec"/>
+    <author>
+      <name>Bent</name>
+    </author>
+  </entry>
+  <entry gd:etag="W/&quot;CkQAR3c8fCp7ImA9WxJTFkw.&quot;">
+    <id>http://maps.google.com/maps/feeds/maps/201514259179526663268/0004683df567cb63c5f79</id>
+    <published>2009-04-23T19:33:46.356Z</published>
+    <updated>2009-04-24T21:59:06.974Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-04-24T21:59:06.974Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/maps/2008#map"/>
+    <title>this is the title</title>
+    <summary>this is the description</summary>
+    <content
+      src="http://maps.google.com/maps/feeds/features/201514259179526663268/0004683df567cb63c5f79/full"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004683df567cb63c5f79"/>
+    <link rel="alternate" type="text/html"
+      href="http://maps.google.com/maps/ms?msa=0&amp;msid=201514259179526663268.0004683df567cb63c5f79"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/0004683df567cb63c5f79"/>
+    <author>
+      <name>Bent</name>
+    </author>
+  </entry>
+</feed>
