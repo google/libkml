@@ -36,6 +36,7 @@
 class Prompt {
  public:
   static std::string PromptAndInputWithNoEcho(const std::string& prompt) {
+    std::cin.get();
     std::cout << prompt;
     std::cout << std::flush;
     // Get the current state of the input terminal.
@@ -46,7 +47,7 @@ class Prompt {
     tcsetattr(0, TCSANOW, &t);
     // User can now type password safely.
     std::string input;
-    std::cin >> input;
+    std::getline(std::cin, input);
     // Flip ECHO back on.
     t.c_lflag |= ECHO;
     tcsetattr(0, TCSANOW, &t);
@@ -57,11 +58,10 @@ class Prompt {
   static bool PromptAgain(const std::string& prompt) {
     std::cout << prompt;
     std::string again;
-    std::cin >> again;
+    std::getline(std::cin, again);
     return !again.empty() && again[0] == 'y';
   }
   
 };
   
 #endif  // EXAMPLES_HELLONET_PROMPT_H__
-  

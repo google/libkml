@@ -72,7 +72,8 @@ int main(int argc, char** argv) {
 
 again:
   std::cout << "Map title: ";
-  std::cin >> map_title;
+  // Use std::getline here to capture the entire line.
+  std::getline(std::cin, map_title);
 
   const kmldom::AtomEntryPtr& map_entry =
       kmlconvenience::GoogleMapsData::FindEntryByTitle(meta_feed, map_title);
@@ -119,6 +120,7 @@ again:
   kml_file->SerializeToString(&xml);
   kmlbase::File::WriteStringToFile(xml, output.c_str());
 
+  std::cin.get();
   if (Prompt::PromptAgain("Get KML for another map? ")) {
     goto again;
   }
