@@ -56,9 +56,79 @@ static bool DoCurlToString(CURL* curl, const char* url, string* data) {
 
 // Wrapper to manage curl handle.  Very simple stateless implementation.  Less
 // simplistic would be to reuse the CURL* handle between invocations.
+// TODO: implement in terms of CurlHttpRequest and remove FetchToString() and
+// DoCurlToString() above (both static so nothing external knows they exist).
 bool CurlToString(const char* url, string* data) {
   CURL* curl = curl_easy_init();
   bool ret = DoCurlToString(curl, url, data);
   curl_easy_cleanup(curl);
   return ret;
 }
+
+static bool CurlHttpRequest(
+    kmlconvenience::HttpMethodEnum http_method,
+    const std::string& uri,
+    const kmlconvenience::StringPairVector* request_headers,
+    const std::string* data,
+    std::string* response) {
+  CURL* curl = curl_easy_init();
+  curl_easy_setopt(curl, CURLOPT_URL, uri.c_str());
+  curl_easy_setopt(curl, CURLOPT_HEADER, 0);
+  curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+  if (response) {
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, FetchToString);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, response);
+  }
+  if (uri.compare(0, 8, "https://") == 0) {
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+  }
+  if (data) {
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data->data());
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, data->size());
+  }
+  struct curl_slist *curl_headers = NULL;
+  if (request_headers) {
+    for (unsigned int i = 0; i < request_headers->size(); ++i) {
+      curl_headers =
+          curl_slist_append(curl_headers,
+                            kmlconvenience::HttpClient::FormatHeader(
+                                (*request_headers)[i]).c_str());
+    }
+  }
+  if (http_method == kmlconvenience::HTTP_POST) {
+    curl_easy_setopt(curl, CURLOPT_POST, 1);
+  } else if (http_method == kmlconvenience::HTTP_GET) {
+    curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+    curl_headers = curl_slist_append(curl_headers,
+                                     "Content-Type: application/atom+xml");
+  }
+  if (curl_headers) {
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, curl_headers);
+  }
+  CURLcode curl_code = curl_easy_perform(curl);
+  curl_easy_cleanup(curl);
+  return curl_code == CURLE_OK;
+}
+
+CurlHttpClient::CurlHttpClient(const std::string &application_name)
+    : HttpClient(application_name) {
+}
+
+bool CurlHttpClient::SendRequest(
+    kmlconvenience::HttpMethodEnum http_method,
+    const std::string& request_uri,
+    const kmlconvenience::StringPairVector* request_headers,
+    const std::string* data,
+    std::string* response) const {
+  kmlconvenience::StringPairVector headers;
+  // TODO: avoid special-casing HTTP_GET, leave that to CurlHttpRequest().
+  if (http_method == kmlconvenience::HTTP_GET) {
+    kmlconvenience::HttpClient::AppendHeaders(get_headers(), &headers);
+  }
+  if (request_headers) {
+    kmlconvenience::HttpClient::AppendHeaders(*request_headers, &headers);
+  }
+  return CurlHttpRequest(http_method, request_uri, &headers, data, response);
+}
+
