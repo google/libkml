@@ -84,7 +84,7 @@ feature_list_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/third_party/libgtest.la
 
 google_maps_data_test_SOURCES = google_maps_data_test.cc
-google_maps_data_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+google_maps_data_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 google_maps_data_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
