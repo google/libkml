@@ -78,11 +78,47 @@ class GoogleMapsData {
     return scope_;
   }
 
-  // This returns the Map Feed for the authenticated user.  The result is an
-  // Atom <feed>.  See:
-  // http://code.google.com/apis/maps/documentation/mapsdata/
-  //     reference.html#feed_Map
-  bool GetMapFeed(std::string* atom_feed) const;
+  // This returns the "meta feed" for the authenticated user.  The result is an
+  // Atom <feed> containing an <entry> for each of the user's maps.  See:
+  // http://code.google.com/apis/maps/documentation/mapsdata/reference.html#feed_Map
+  bool GetMetaFeedXml(std::string* atom_feed) const;
+
+  // This calls GetMetaFeedXml and returns the parsed result.
+  kmldom::AtomFeedPtr GetMetaFeed() const;
+
+  // This returns the URI of the Feature Feed of the given map.
+  // "A map's feature feed is published in the map's <content> tag within its
+  // src attibute." See:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingMaps
+  static bool GetFeatureFeedUri(const kmldom::AtomEntryPtr& map_entry,
+                                std::string* feature_feed_uri);
+
+  // This fetches the given URI and saves the result in the supplied string.
+  bool GetFeatureFeedXml(const std::string& feature_feed_uri,
+                         std::string* atom_feed) const;
+
+  // This calls GetFeatureFeedXml and returns the parsed result.
+  kmldom::AtomFeedPtr GetFeatureFeedByUri(
+      const std::string& feature_feed_uri) const;
+
+  // Return the <entry> of the first map in the feed with the given title.
+  // This returns NULL if no <entry>'s have this exact <title>.
+  static kmldom::AtomEntryPtr FindEntryByTitle(
+      const kmldom::AtomFeedPtr& meta_feed, const std::string& title);
+
+  // Return the KML Feature child of the Atom <entry>'s <content>.  This
+  // returns NULL if the <entry>'s <content> has no KML Feature.
+  static kmldom::FeaturePtr GetEntryFeature(const kmldom::AtomEntryPtr& entry);
+
+  // This appends the KML Feature in each of the feed's entry's to the
+  // given container.  The number of KML Features appended is returned.
+  // Each Feature added to the Container is a full clone from the feed entry.
+  static int GetMapKml(const kmldom::AtomFeedPtr& feature_feed,
+                       kmldom::ContainerPtr container);
+
+  // Creates a <Document>, sets the <atom:link> and calls GetMapKml.
+  static kmldom::DocumentPtr CreateDocumentOfMapFeatures(
+      const kmldom::AtomFeedPtr& feature_feed);
 
   // TODO: Get/Post Map/Feature Feed and other common/primitive Google Maps
   // Data API operations.
