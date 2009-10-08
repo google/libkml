@@ -1,4 +1,4 @@
-// Copyright 2008, Google Inc. All rights reserved.
+// Copyright 2009, Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions are met:
@@ -23,35 +23,45 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef EXAMPLES_HELLONET_CURLFETCH_H__
-#define EXAMPLES_HELLONET_CURLFETCH_H__
+// This file contains the Prompt class.
 
+#ifndef EXAMPLES_HELLONET_PROMPT_H__
+#define EXAMPLES_HELLONET_PROMPT_H__
+
+#include <termios.h>
+#include <iostream>
 #include <string>
-#include "kml/base/net_cache.h"
-#include "kml/convenience/http_client.h"
 
-bool CurlToString(const char* url, std::string* data);
-
-// This class matches the NetFetcher concept used with kmlbase::NetCache.
-class CurlNetFetcher : public kmlbase::NetFetcher {
+// This class provides some static methods useful for prompting on a terminal.
+class Prompt {
  public:
-  bool FetchUrl(const std::string& url, std::string* data) const {
-    return CurlToString(url.c_str(), data);
+  static std::string PromptAndInputWithNoEcho(const std::string& prompt) {
+    std::cout << prompt;
+    std::cout << std::flush;
+    // Get the current state of the input terminal.
+    struct termios t;
+    tcgetattr(0, &t);
+    // Flip off the ECHO bit.
+    t.c_lflag &= ~ECHO;
+    tcsetattr(0, TCSANOW, &t);
+    // User can now type password safely.
+    std::string input;
+    std::cin >> input;
+    // Flip ECHO back on.
+    t.c_lflag |= ECHO;
+    tcsetattr(0, TCSANOW, &t);
+    std::cout << std::endl;
+    return input;
   }
+  
+  static bool PromptAgain(const std::string& prompt) {
+    std::cout << prompt;
+    std::string again;
+    std::cin >> again;
+    return !again.empty() && again[0] == 'y';
+  }
+  
 };
-
-// This HttpClient uses libcurl to send the request.
-class CurlHttpClient : public kmlconvenience::HttpClient {
- public:
-  CurlHttpClient(const std::string& application_name);
-
-  // HttpClient::SendRequest()
-  virtual bool SendRequest(
-    kmlconvenience::HttpMethodEnum http_method,
-    const std::string& request_uri,
-    const kmlconvenience::StringPairVector* request_headers,
-    const std::string* post_data,
-    std::string* response) const;
-};
-
-#endif  // EXAMPLES_HELLONET_CURLFETCH_H__
+  
+#endif  // EXAMPLES_HELLONET_PROMPT_H__
+  
