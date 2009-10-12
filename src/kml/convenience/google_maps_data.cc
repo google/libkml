@@ -23,8 +23,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <iostream>
-
 // This file contains the implementation of the GoogleMapsData class.
 
 #include "kml/convenience/google_maps_data.h"
@@ -32,6 +30,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "kml/base/mimetypes.h"
 #include "kml/convenience/atom_util.h"
 #include "kml/convenience/http_client.h"
 #include "kml/dom.h"
@@ -169,6 +168,62 @@ kmldom::DocumentPtr GoogleMapsData::CreateDocumentOfMapFeatures(
   // TODO: set <atom:link>
   GetMapKml(feature_feed, document);
   return document;
+}
+
+bool GoogleMapsData::CreateMap(const std::string& title,
+                               const std::string& summary,
+                               std::string* entry) {
+  // Create the <atom:entry> for the new map.
+  kmlengine::KmlFilePtr kml_file = kmlengine::KmlFile::CreateFromImport(
+      AtomUtil::CreateBasicEntry(title, summary));
+  if (!kml_file.get()) {
+    return NULL;
+  }
+
+  // Get the Atom in XML form.
+  std::string post_data;
+  kml_file->SerializeToString(&post_data);
+
+  // Indicate that we're posting XML.
+  StringPairVector headers;
+  HttpClient::PushHeader("Content-Type", kmlbase::kAtomMimeType, &headers);
+
+  // Send off the HTTP POST and save the result to the user supplied buffer.
+  return http_client_->SendRequest(HTTP_POST, scope_ + kMapFeedUri, &headers,
+                                   &post_data, entry);
+}
+
+bool GoogleMapsData::AddFeature(const std::string& feature_feed_post_uri,
+                                const kmldom::FeaturePtr& feature,
+                                std::string* feature_entry_xml) {
+  // Create an <atom:content> to hold the Feature.
+  kmldom::AtomContentPtr content =
+      kmldom::KmlFactory::GetFactory()->CreateAtomContent();
+  content->AddElement(feature);
+  content->set_type(kmlbase::kKmlMimeType);
+
+  // Create an <atom:entry> to hold the <atom:content>.  Set the <atom:title>
+  // from the Feature's <name> and <atom:description> from the Feature's
+  // <description>.
+  kmldom::AtomEntryPtr entry =
+      AtomUtil::CreateBasicEntry(feature->get_name(),
+                                 feature->get_description());
+  entry->set_content(content);
+
+  // Get the Atom in XML form.  Use KmlFile's serializer to get proper xmlns
+  // headers.
+  kmlengine::KmlFilePtr kml_file =
+      kmlengine::KmlFile::CreateFromImport(entry);
+  std::string post_data;
+  kml_file->SerializeToString(&post_data);
+
+  // Indicate that we're posting XML.
+  StringPairVector headers;
+  HttpClient::PushHeader("Content-Type", kmlbase::kAtomMimeType, &headers);
+
+  // Send off the HTTP POST and save the result to the user supplied buffer.
+  return http_client_->SendRequest(HTTP_POST, feature_feed_post_uri,
+                                   &headers, &post_data, feature_entry_xml);
 }
 
 }  // end namespace kmlconvenience

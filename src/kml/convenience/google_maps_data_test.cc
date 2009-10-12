@@ -32,6 +32,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
+#include "kml/convenience/convenience.h"
 #include "kml/convenience/http_client.h"
 #include "kml/engine.h"
 
@@ -51,6 +52,25 @@ class GoogleMapsDataTest : public testing::Test {
   void SetUp() {
   }
   boost::scoped_ptr<GoogleMapsData> google_maps_data_;
+};
+
+// This class simply returns the post_data as the response.
+class EchoHttpClient : public HttpClient {
+ public:
+  EchoHttpClient()
+    : HttpClient("EchoHttpClient") {
+  }
+
+  virtual bool SendRequest(HttpMethodEnum http_method,
+                           const std::string& request_uri,
+                           const StringPairVector* request_headers,
+                           const std::string* post_data,
+                           std::string* response) const {
+    if (post_data && response) {
+      *response = *post_data;
+    }
+    return true;
+  }
 };
 
 // This tests NULL use of the Create method.
@@ -300,6 +320,55 @@ TEST_F(GoogleMapsDataTest, TestGetMapKml) {
   got_placemark = kmldom::AsPlacemark(folder->get_feature_array_at(2));
   ASSERT_TRUE(got_placemark.get());
   ASSERT_EQ(kName2, got_placemark->get_name());
+}
+
+TEST_F(GoogleMapsDataTest, TestCreateMap) {
+  google_maps_data_.reset(GoogleMapsData::Create("", new EchoHttpClient));
+  ASSERT_TRUE(google_maps_data_.get());
+  const std::string kTitle("The Girl With the Dragon Tattoo");
+  const std::string kSummary("Wildly suspenseful... an intelligent thriller");
+  std::string map_entry_xml;
+  ASSERT_TRUE(google_maps_data_->CreateMap(kTitle, kSummary, &map_entry_xml));
+  const kmldom::AtomEntryPtr entry =
+      kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
+  ASSERT_TRUE(entry.get());
+  ASSERT_TRUE(entry->has_title());
+  ASSERT_EQ(kTitle, entry->get_title());
+  ASSERT_TRUE(entry->has_summary());
+  ASSERT_EQ(kSummary, entry->get_summary());
+}
+
+TEST_F(GoogleMapsDataTest, TestAddFeature) {
+  google_maps_data_.reset(GoogleMapsData::Create("", new EchoHttpClient));
+  ASSERT_TRUE(google_maps_data_.get());
+  const std::string kName("Stieg Larsson");
+  const std::string kDescription("At once a murder mystery, love story and...");
+  const double kLat(38.38);
+  const double kLon(101.101);
+  kmldom::PlacemarkPtr placemark =
+      kmlconvenience::CreatePointPlacemark(kName, kLat, kLon);
+  placemark->set_description(kDescription);
+  std::string feature_entry_xml;
+  ASSERT_TRUE(google_maps_data_->AddFeature("", placemark, &feature_entry_xml));
+  const kmldom::AtomEntryPtr entry =
+      kmldom::AsAtomEntry(kmldom::ParseAtom(feature_entry_xml, NULL));
+  ASSERT_TRUE(entry.get());
+  ASSERT_TRUE(entry->has_title());
+  ASSERT_EQ(kName, entry->get_title());
+  ASSERT_TRUE(entry->has_summary());
+  ASSERT_EQ(kDescription, entry->get_summary());
+  const kmldom::AtomContentPtr content = entry->get_content();
+  ASSERT_TRUE(content.get());
+  ASSERT_EQ(static_cast<size_t>(1),
+            content->get_misplaced_elements_array_size());
+  kmldom::PlacemarkPtr got_placemark = kmldom::AsPlacemark(
+      content->get_misplaced_elements_array_at(0));
+  ASSERT_EQ(kName, got_placemark->get_name());
+  ASSERT_EQ(kDescription, got_placemark->get_description());
+  double got_lat, got_lon;
+  kmlengine::GetFeatureLatLon(placemark, &got_lat, &got_lon);
+  ASSERT_EQ(kLat, got_lat);
+  ASSERT_EQ(kLon, got_lon);
 }
 
 }  // end namespace kmlconvenience
