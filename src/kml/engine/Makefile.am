@@ -110,6 +110,7 @@ TESTS = bbox_test \
 	location_util_test \
 	merge_test \
 	object_id_parser_observer_test \
+	old_schema_parser_observer_test \
 	parse_old_schema_test \
 	schema_parser_observer_test \
 	shared_style_parser_observer_test \
@@ -266,6 +267,13 @@ merge_test_LDADD= libkmlengine.la \
 object_id_parser_observer_test_SOURCES = object_id_parser_observer_test.cc
 object_id_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 object_id_parser_observer_test_LDADD= libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+old_schema_parser_observer_test_SOURCES = old_schema_parser_observer_test.cc
+old_schema_parser_observer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+old_schema_parser_observer_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la

@@ -46,7 +46,7 @@ class OldSchemaParserObserverTest : public testing::Test {
     schema1_->set_name(kSchema1Name_);
     schema_no_name_ = factory->CreateSchema();
     schema_parser_observer_.reset(
-        new OldSchemaParserObserver(&schema_name_map_));
+        new OldSchemaParserObserver(schema_name_map_));
   }
 
   kmldom::DocumentPtr document_;
