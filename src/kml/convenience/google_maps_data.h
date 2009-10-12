@@ -43,9 +43,8 @@ namespace kmlconvenience {
 class HttpClient;
 
 // This class provides an API to the Google Maps Data API.
-// See the "Google Maps Data API HTTP Protocol Reference":
-// http://code.google.com/apis/maps/documentation/mapsdata/reference.html
-// Terminology here matches that used in the above.
+// See the "Google Maps Data API HTTP Protocol Guide":
+// http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html
 // Overall usage:
 //   class YourHttpClient : public kmlconvenience::HttpClient {
 //    public:
@@ -80,11 +79,25 @@ class GoogleMapsData {
 
   // This returns the "meta feed" for the authenticated user.  The result is an
   // Atom <feed> containing an <entry> for each of the user's maps.  See:
-  // http://code.google.com/apis/maps/documentation/mapsdata/reference.html#feed_Map
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingMetafeed
   bool GetMetaFeedXml(std::string* atom_feed) const;
 
   // This calls GetMetaFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetMetaFeed() const;
+
+  // This creates a new map with the given title and summary.  This is simply
+  // an HTTP POST to the user's maps meta feed.  On success true is returned.
+  // If a map_entry_xml string is supplied the <atom:entry> for the new map
+  // is saved there.  See:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#CreatingMaps
+  bool CreateMap(const std::string& title, const std::string& summary,
+                 std::string* map_entry_xml);
+
+  // TODO:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingMaps
+
+  // TODO:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#DeletingMaps
 
   // This returns the URI of the Feature Feed of the given map.
   // "A map's feature feed is published in the map's <content> tag within its
@@ -94,6 +107,7 @@ class GoogleMapsData {
                                 std::string* feature_feed_uri);
 
   // This fetches the given URI and saves the result in the supplied string.
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingFeatures
   bool GetFeatureFeedXml(const std::string& feature_feed_uri,
                          std::string* atom_feed) const;
 
@@ -120,8 +134,20 @@ class GoogleMapsData {
   static kmldom::DocumentPtr CreateDocumentOfMapFeatures(
       const kmldom::AtomFeedPtr& feature_feed);
 
-  // TODO: Get/Post Map/Feature Feed and other common/primitive Google Maps
-  // Data API operations.
+  // This adds a new feature to a map.  This is simply an HTTP POST to the
+  // given feature feed URI which can be retrieved from the map entry using
+  // GetFeatureFeedUri.  On success true is returned.  If a feature_entry_xml
+  // string is supplied the <atom:entry> for the new feature is saved there.
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#CreatingFeatures
+  bool AddFeature(const std::string& feature_feed_post_uri,
+                  const kmldom::FeaturePtr& feature,
+                  std::string* feature_entry_xml);
+
+  // TODO:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingFeatures
+
+  // TODO:
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#DeletingFeatures
 
  private:
   // Use static Create().
