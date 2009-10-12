@@ -48,6 +48,11 @@ namespace kmlconvenience {
 void AddExtendedDataValue(const std::string& name, const std::string& value,
                           kmldom::FeaturePtr feature);
 
+// Creates a <gx:AnimatedUpdate> with a <Change> to a Point Placemark of
+// the specified target_id and coordinates as specified by vec3.
+kmldom::GxAnimatedUpdatePtr CreateAnimatedUpdateChangePoint(
+    const std::string& target_id, const kmlbase::Vec3& vec3, double duration);
+
 // Creates a simple Polygon Placemark from a LinearRing.
 kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
     const kmldom::LinearRingPtr& lr);

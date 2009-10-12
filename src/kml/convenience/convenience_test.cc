@@ -32,8 +32,10 @@
 using kmlbase::DateTime;
 using kmlbase::Vec3;
 using kmldom::CameraPtr;
+using kmldom::ChangePtr;
 using kmldom::CoordinatesPtr;
 using kmldom::DataPtr;
+using kmldom::GxAnimatedUpdatePtr;
 using kmldom::GxFlyToPtr;
 using kmldom::GxWaitPtr;
 using kmldom::KmlFactory;
@@ -45,6 +47,7 @@ using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
 using kmldom::PolygonPtr;
 using kmldom::RegionPtr;
+using kmldom::UpdatePtr;
 
 namespace kmlconvenience {
 
@@ -61,6 +64,42 @@ TEST(ConvenienceTest, TestAddExtendedDataValue) {
             placemark->get_extendeddata()->get_data_array_at(0)->get_name());
   ASSERT_EQ(kValue,
             placemark->get_extendeddata()->get_data_array_at(0)->get_value());
+}
+
+// This tests the CreateAnimatedUpdateChangePoint() function.
+TEST(ConvenienceTest, TestCreateAnimatedUpdateChangePoint) {
+  const std::string kTargetId("targetId");
+  const kmlbase::Vec3 kVec3(1.1, 2.2, 3.3);
+  const double kDuration = 12.3;
+  GxAnimatedUpdatePtr animated_update =
+    CreateAnimatedUpdateChangePoint(kTargetId, kVec3, kDuration);
+  ASSERT_TRUE(animated_update);
+  ASSERT_TRUE(animated_update->has_update());
+  UpdatePtr update = animated_update->get_update();
+  ASSERT_TRUE(update);
+  ASSERT_TRUE(update->has_targethref());
+  ASSERT_EQ(std::string(""), update->get_targethref());
+  ASSERT_EQ(static_cast<size_t>(1), update->get_updateoperation_array_size());
+  ASSERT_EQ(kmldom::Type_Change,
+            update->get_updateoperation_array_at(0)->Type());
+  ChangePtr change = kmldom::AsChange(update->get_updateoperation_array_at(0));
+  ASSERT_TRUE(change);
+  ASSERT_EQ(static_cast<size_t>(1), change->get_object_array_size());
+  ASSERT_EQ(kmldom::Type_Placemark, change->get_object_array_at(0)->Type());
+  PlacemarkPtr placemark = kmldom::AsPlacemark(change->get_object_array_at(0));
+  ASSERT_TRUE(placemark);
+  ASSERT_TRUE(placemark->has_targetid());
+  ASSERT_EQ(kTargetId, placemark->get_targetid());
+  ASSERT_TRUE(placemark->has_geometry());
+  ASSERT_EQ(kmldom::Type_Point, placemark->get_geometry()->Type());
+  PointPtr point = kmldom::AsPoint(placemark->get_geometry());
+  ASSERT_TRUE(point);
+  ASSERT_TRUE(point->has_coordinates());
+  const CoordinatesPtr& coordinates = point->get_coordinates();
+  ASSERT_TRUE(coordinates);
+  ASSERT_EQ(static_cast<size_t>(1), coordinates->get_coordinates_array_size());
+  const kmlbase::Vec3& vec = coordinates->get_coordinates_array_at(0);
+  ASSERT_TRUE(kVec3 == vec);
 }
 
 // This tests the CreateBasicPolygonPlacemark() function.
