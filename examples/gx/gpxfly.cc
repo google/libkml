@@ -46,6 +46,7 @@ using kmlbase::ExpatParser;
 using kmlbase::GroundDistanceFromRangeAndElevation;
 using kmlbase::HeightFromRangeAndElevation;
 using kmlbase::Vec3;
+using kmlconvenience::CreateAnimatedUpdateChangePoint;
 using kmlconvenience::CreatePointLatLon;
 using kmldom::CameraPtr;
 using kmldom::ChangePtr;
@@ -104,24 +105,6 @@ static GxFlyToPtr CreateGxFlyTo(double lat, double lon, double heading,
   return flyto;
 }
 
-static GxAnimatedUpdatePtr CreateAnimatedUpdate(const std::string& target_id,
-                                                double lat, double lon,
-                                                double duration) {
-  KmlFactory* kml_factory = KmlFactory::GetFactory();
-  PlacemarkPtr placemark = kml_factory->CreatePlacemark();
-  placemark->set_targetid(target_id);
-  placemark->set_geometry(CreatePointLatLon(lat, lon));
-  ChangePtr change = kml_factory->CreateChange();
-  change->add_object(placemark);
-  UpdatePtr update = kml_factory->CreateUpdate();
-  update->add_updateoperation(change);
-  update->set_targethref("");
-  GxAnimatedUpdatePtr animated_update = kml_factory->CreateGxAnimatedUpdate();
-  animated_update->set_update(update);
-  animated_update->set_gx_duration(duration);
-  return animated_update;
-}
-
 // This specialization of the GpxTrkPtHandler converts each GPX <trkpt> to
 // a KML <gx:AnimatedUpdate> + <gx:FlyTo>.
 class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
@@ -167,8 +150,7 @@ class TourTrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
         NewTour();
       } else {
         playlist_->add_gx_tourprimitive(
-            CreateAnimatedUpdate(placemark_id_, where.get_latitude(),
-                                 where.get_longitude(), duration));
+            CreateAnimatedUpdateChangePoint(placemark_id_, where, duration));
         const double heading = AzimuthBetweenPoints(
             previous_where_.get_latitude(), previous_where_.get_longitude(),
             where.get_latitude(), where.get_longitude());

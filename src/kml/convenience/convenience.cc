@@ -38,10 +38,12 @@ using kmlbase::DateTime;
 using kmlbase::Vec3;
 using kmldom::AbstractViewPtr;
 using kmldom::CameraPtr;
+using kmldom::ChangePtr;
 using kmldom::CoordinatesPtr;
 using kmldom::DataPtr;
 using kmldom::ExtendedDataPtr;
 using kmldom::FeaturePtr;
+using kmldom::GxAnimatedUpdatePtr;
 using kmldom::GxFlyToPtr;
 using kmldom::GxWaitPtr;
 using kmldom::KmlFactory;
@@ -54,6 +56,7 @@ using kmldom::PointPtr;
 using kmldom::PolygonPtr;
 using kmldom::RegionPtr;
 using kmldom::TimeStampPtr;
+using kmldom::UpdatePtr;
 
 namespace kmlconvenience {
 
@@ -66,6 +69,23 @@ void AddExtendedDataValue(const std::string& name, const std::string& value,
     feature->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
   }
   feature->get_extendeddata()->add_data(CreateDataNameValue(name, value));
+}
+
+kmldom::GxAnimatedUpdatePtr CreateAnimatedUpdateChangePoint(
+    const std::string& target_id, const kmlbase::Vec3& vec3, double duration) {
+  KmlFactory* factory = KmlFactory::GetFactory();
+  PlacemarkPtr placemark = factory->CreatePlacemark();
+  placemark->set_targetid(target_id);
+  placemark->set_geometry(CreatePointFromVec3(vec3));
+  ChangePtr change = factory->CreateChange();
+  change->add_object(placemark);
+  UpdatePtr update = factory->CreateUpdate();
+  update->add_updateoperation(change);
+  update->set_targethref("");
+  GxAnimatedUpdatePtr animated_update = factory->CreateGxAnimatedUpdate();
+  animated_update->set_update(update);
+  animated_update->set_gx_duration(duration);
+  return animated_update;
 }
 
 PlacemarkPtr CreateBasicPolygonPlacemark(
