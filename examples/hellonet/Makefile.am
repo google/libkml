@@ -8,7 +8,7 @@ AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
 noinst_PROGRAMS = getgmapkml kmlwalk kmzfetch listfeed listgmaps resolvestyle \
-                  xsdprint
+                  uploadgmap xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -57,6 +57,14 @@ listgmaps_LDADD = \
 
 resolvestyle_SOURCES = resolvestyle.cc
 resolvestyle_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+uploadgmap_SOURCES = uploadgmap.cc
+uploadgmap_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
