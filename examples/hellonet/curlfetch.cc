@@ -122,10 +122,7 @@ bool CurlHttpClient::SendRequest(
     const std::string* data,
     std::string* response) const {
   kmlconvenience::StringPairVector headers;
-  // TODO: avoid special-casing HTTP_GET, leave that to CurlHttpRequest().
-  if (http_method == kmlconvenience::HTTP_GET) {
-    kmlconvenience::HttpClient::AppendHeaders(get_headers(), &headers);
-  }
+  kmlconvenience::HttpClient::AppendHeaders(get_headers(), &headers);
   if (request_headers) {
     kmlconvenience::HttpClient::AppendHeaders(*request_headers, &headers);
   }
