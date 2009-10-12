@@ -96,6 +96,20 @@ TEST(Vec3Test, TestSet2d) {
   ASSERT_FALSE(vec.has_altitude());
 }
 
+TEST(Vec3Test, TestEquivalence) {
+  Vec3 vec0(0.1, 1.2, 2.3);
+  Vec3 vec1(1.1, 1.2, 2.3);
+  Vec3 vec2(1.1, 1.2, 0.0);
+  Vec3 vec3(1.1, 1.2);
+  Vec3 vec4(1.1, 1.2, 0.1);
+  ASSERT_FALSE(vec0 == vec1);
+  ASSERT_TRUE(vec0 == vec0);
+  ASSERT_TRUE(vec1 == vec1);
+  ASSERT_TRUE(vec3 == vec3);
+  ASSERT_TRUE(vec2 == vec3);
+  ASSERT_FALSE(vec3 == vec4);
+}
+
 }  // end namespace kmlbase
 
 int main(int argc, char** argv) {

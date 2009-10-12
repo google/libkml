@@ -85,6 +85,13 @@ class Vec3 {
     has_altitude_ = false;
   }
 
+  // Operator overrides.
+  bool operator==(const Vec3& vec3) const {
+    return vec_[0] == vec3.get_longitude() &&
+           vec_[1] == vec3.get_latitude() &&
+           vec_[2] == vec3.get_altitude();
+  }
+
  private:
   double vec_[3];
   bool has_altitude_;
