@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Aside from this comment this file is the actual output of
+  of an HTTP POST to the metafeed whose response is the
+  Atom entry representing the new map created.
+-->
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:batch="http://schemas.google.com/gdata/batch"
+  xmlns:gd="http://schemas.google.com/g/2005"
+  gd:etag="W/&quot;AkMBQHo6eyp7ImA9WxNXGU8.&quot;">
+  <id>http://maps.google.com/maps/feeds/maps/201514259179526663268/00047559cc90a454dec4e</id>
+  <published>2009-10-07T15:14:11.413Z</published>
+  <updated>2009-10-07T15:14:11.413Z</updated>
+  <app:edited xmlns:app="http://www.w3.org/2007/app">2009-10-07T15:14:11.413Z</app:edited>
+  <category scheme="http://schemas.google.com/g/2005#kind"
+    term="http://schemas.google.com/maps/2008#map"/>
+  <title>farshing</title>
+  <summary>fooshing</summary>
+  <content
+    src="http://maps.google.com/maps/feeds/features/201514259179526663268/00047559cc90a454dec4e/full"/>
+  <link rel="self" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/00047559cc90a454dec4e"/>
+  <link rel="alternate" type="text/html"
+    href="http://maps.google.com/maps/ms?msa=0&amp;msid=201514259179526663268.00047559cc90a454dec4e"/>
+  <link rel="edit" type="application/atom+xml"
+    href="http://maps.google.com/maps/feeds/maps/201514259179526663268/full/00047559cc90a454dec4e"/>
+  <author>
+    <name>Bent</name>
+  </author>
+</entry>

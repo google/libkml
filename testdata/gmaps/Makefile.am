@@ -1,1 +1,1 @@
-EXTRA_DIST = metafeed.xml feature-feed.xml
+EXTRA_DIST = create-map-result.xml metafeed.xml feature-feed.xml
