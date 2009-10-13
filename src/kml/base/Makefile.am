@@ -21,6 +21,7 @@ libkmlbase_la_SOURCES = \
 	file.cc \
 	file_posix.cc \
 	math_util.cc \
+	mimetypes.cc \
 	referent.cc \
 	string_util.cc \
 	time_util.cc \
@@ -45,6 +46,7 @@ libkmlbaseinclude_HEADERS = \
 	file.h \
 	math_util.h \
 	memory_file.h \
+	mimetypes.h \
 	net_cache.h \
 	referent.h \
 	string_util.h \
