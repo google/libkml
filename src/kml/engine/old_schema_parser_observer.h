@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains the definition of the OldSchemaParserObserver class.
+// TODO: This class is still under development.
 
 #ifndef KML_ENGINE_OLD_SCHEMA_PARSER_OBSERVER_H__
 #define KML_ENGINE_OLD_SCHEMA_PARSER_OBSERVER_H__
