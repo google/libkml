@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
   }
 
   boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-    kmlconvenience::GoogleMapsData::Create("", curl_http_client));
+      kmlconvenience::GoogleMapsData::Create(curl_http_client));
 
   std::string map_entry_xml;
   google_maps_data->CreateMap(root_feature->get_name(),
@@ -102,6 +102,7 @@ int main(int argc, char** argv) {
       kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, &errors));
   if (!map_entry.get()) {
     std::cerr << "Parse failed: " << errors << std::endl;
+    std::cerr << "CreateMap response: " << map_entry_xml << std::endl;
     return 1;
   }
 
