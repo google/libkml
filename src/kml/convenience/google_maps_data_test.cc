@@ -75,16 +75,16 @@ class EchoHttpClient : public HttpClient {
 
 // This tests NULL use of the Create method.
 TEST_F(GoogleMapsDataTest, TestNullCreate) {
-  const std::string empty;
   // NULL/empty args?  Null return (no crash, no hang, no exception, etc).
-  ASSERT_FALSE(GoogleMapsData::Create(empty, NULL));
+  ASSERT_FALSE(GoogleMapsData::Create(NULL));
 }
 
 // This tests basic use of the Create method and the get_scope() method.
 TEST_F(GoogleMapsDataTest, TestBasicCreate) {
-  const std::string kScope("http://host.com:123");
+  const std::string kScope = "http://host.com:123";
+  ASSERT_EQ(0, setenv("GOOGLE_MAPS_DATA_SCOPE", kScope.c_str(), 1));
   google_maps_data_.reset(
-      GoogleMapsData::Create(kScope, new HttpClient("TestBasicCreate")));
+      GoogleMapsData::Create(new HttpClient("TestBasicCreate")));
   // An HttpClient was supplied so a GoogleMapsData was created.
   ASSERT_TRUE(google_maps_data_.get());
   ASSERT_EQ(kScope, google_maps_data_->get_scope());
@@ -98,10 +98,9 @@ TEST_F(GoogleMapsDataTest, VerifyGoogleMapsDataDestroysHttpClient) {
 
 // This tests basic normal use of the GetMetaFeedXml() method.
 TEST_F(GoogleMapsDataTest, TestGetMetaFeedXml) {
-  const std::string empty;
   HttpClient* http_client = new HttpClient("TestGetMetaFeedXml");
   http_client->Login("local", "user@gmail.com", "user-password");
-  google_maps_data_.reset(GoogleMapsData::Create(empty, http_client));
+  google_maps_data_.reset(GoogleMapsData::Create(http_client));
   ASSERT_TRUE(google_maps_data_.get());
   std::string map_feed;
   ASSERT_TRUE(google_maps_data_->GetMetaFeedXml(&map_feed));
@@ -119,7 +118,7 @@ TEST_F(GoogleMapsDataTest, TestGetMetaFeed) {
     TestDataHttpClient()
       : HttpClient("MetaFeedHttpClient") {
     }
-  
+
     virtual bool SendRequest(HttpMethodEnum http_method,
                              const std::string& request_uri,
                              const StringPairVector* request_headers,
@@ -129,7 +128,7 @@ TEST_F(GoogleMapsDataTest, TestGetMetaFeed) {
           std::string(DATADIR) + "/gmaps/metafeed.xml", response);
     }
   };
-  google_maps_data_.reset(GoogleMapsData::Create("", new TestDataHttpClient));
+  google_maps_data_.reset(GoogleMapsData::Create(new TestDataHttpClient));
   ASSERT_TRUE(google_maps_data_.get());
   // Call the method under test.
   kmldom::AtomFeedPtr atom_feed = google_maps_data_->GetMetaFeed();
@@ -219,9 +218,8 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
 }
 
 TEST_F(GoogleMapsDataTest, TestGetFeatureFeedXml) {
-  const std::string empty;
   google_maps_data_.reset(
-      GoogleMapsData::Create(empty, new HttpClient("TestHttpClient")));
+      GoogleMapsData::Create(new HttpClient("TestHttpClient")));
   const std::string kFeatureFeedUri = "http://host.com/a/b/c";
   std::string http_response;
   ASSERT_TRUE(google_maps_data_->GetFeatureFeedXml(kFeatureFeedUri,
@@ -259,9 +257,8 @@ TEST_F(GoogleMapsDataTest, TestGetFeatureFeedByUri) {
       return true;
     }
   };
-  const std::string empty;
   google_maps_data_.reset(
-      GoogleMapsData::Create(empty, new FakeAtomFeedHttpClient()));
+      GoogleMapsData::Create(new FakeAtomFeedHttpClient()));
   const std::string kFeatureFeedUri = "http://host.com/a/b/c";
   // Call the method under test.  This is nearly a pure I/O method so we check
   // here that it makes the expected I/O request: an HTTP GET of the URI.
@@ -323,7 +320,7 @@ TEST_F(GoogleMapsDataTest, TestGetMapKml) {
 }
 
 TEST_F(GoogleMapsDataTest, TestCreateMap) {
-  google_maps_data_.reset(GoogleMapsData::Create("", new EchoHttpClient));
+  google_maps_data_.reset(GoogleMapsData::Create(new EchoHttpClient));
   ASSERT_TRUE(google_maps_data_.get());
   const std::string kTitle("The Girl With the Dragon Tattoo");
   const std::string kSummary("Wildly suspenseful... an intelligent thriller");
@@ -339,7 +336,7 @@ TEST_F(GoogleMapsDataTest, TestCreateMap) {
 }
 
 TEST_F(GoogleMapsDataTest, TestAddFeature) {
-  google_maps_data_.reset(GoogleMapsData::Create("", new EchoHttpClient));
+  google_maps_data_.reset(GoogleMapsData::Create(new EchoHttpClient));
   ASSERT_TRUE(google_maps_data_.get());
   const std::string kName("Stieg Larsson");
   const std::string kDescription("At once a murder mystery, love story and...");
@@ -377,4 +374,3 @@ int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
-

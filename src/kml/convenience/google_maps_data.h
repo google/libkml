@@ -54,21 +54,18 @@ class HttpClient;
 //   };
 //   YourHttpClient* your_http_client = new YourHttpClient;
 //   your_http_client->Login("user@gmail.com", "users-password");
-//   GoogleMapsData* maps_data = GoogleMapsData::Create("your-app", "",
-//                                                      &your_http_client);
+//   GoogleMapsData* maps_data = GoogleMapsData::Create(&your_http_client);
 //   std::string map_feed_atom;
 //   maps_data->GetMapFeed(&map_feed_atom);
 //   kmldom::ElementPtr root = kmldom::ParseAtom(map_feed_atom);
 //   kmlconvenience::AtomUtil... for common Atom inspection.
 class GoogleMapsData {
  public:
-  // Create a GoogleMapsData object and login with the given email and password.
-  // The scope is the hostname and port; use an empty string to use the default
-  // of Google's Maps Data API hostname and port.  The GoogleMapsData object
-  // uses the HttpClient class to handle all network communication.  The
-  // HttpClient must be created and logged in before passing it to Create.
-  static GoogleMapsData* Create(const std::string& scope,
-                                HttpClient* http_client);
+  // Create a GoogleMapsData object.  The HttpClient must already be logged
+  // in.  See http_client.h for more information about authentication.
+  // The HttpClient is used for all network communication from inside this
+  // GoogleMapsData instance.
+  static GoogleMapsData* Create(HttpClient* http_client);
   ~GoogleMapsData();
 
   const char* get_map_feed_uri() const;
@@ -151,7 +148,7 @@ class GoogleMapsData {
 
  private:
   // Use static Create().
-  GoogleMapsData(const std::string& maps_data_scope);
+  GoogleMapsData();
   boost::scoped_ptr<HttpClient> http_client_;
   const std::string scope_;
 };
