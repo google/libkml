@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
   }
 
   boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-    kmlconvenience::GoogleMapsData::Create("", curl_http_client));
+    kmlconvenience::GoogleMapsData::Create(curl_http_client));
 
   kmldom::AtomFeedPtr meta_feed = google_maps_data->GetMetaFeed();
   if (!meta_feed.get()) {

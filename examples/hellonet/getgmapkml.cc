@@ -60,7 +60,7 @@ int main(int argc, char** argv) {
   // Create a GoogleMapsData client from the logged in HttpClient and
   // get the user's list of maps.
   boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-    kmlconvenience::GoogleMapsData::Create("", curl_http_client));
+    kmlconvenience::GoogleMapsData::Create(curl_http_client));
   kmldom::AtomFeedPtr meta_feed = google_maps_data->GetMetaFeed();
   if (!meta_feed.get()) {
     std::cerr << "GetMetaFeed failed" << std::endl;
