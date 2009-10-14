@@ -43,9 +43,8 @@ static const char* kScope = "http://maps.google.com";
 static const char* kMapFeedUri = "/maps/feeds/maps/default/full";
 
 // static
-GoogleMapsData* GoogleMapsData::Create(const std::string& scope,
-                                       HttpClient* http_client) {
-  GoogleMapsData* mds = new GoogleMapsData(scope.empty() ? kScope : scope);
+GoogleMapsData* GoogleMapsData::Create(HttpClient* http_client) {
+  GoogleMapsData* mds = new GoogleMapsData;
   // The HttpClient must exist.
   if (http_client) {
     mds->http_client_.reset(http_client);
@@ -56,8 +55,15 @@ GoogleMapsData* GoogleMapsData::Create(const std::string& scope,
   return NULL;
 }
 
-GoogleMapsData::GoogleMapsData(const std::string& scope_)
-  : scope_(scope_) {
+static std::string GetScope() {
+  if (const char* scope = getenv("GOOGLE_MAPS_DATA_SCOPE")) {
+    return scope;
+  }
+  return kScope;
+}
+
+GoogleMapsData::GoogleMapsData()
+  : scope_(GetScope()) {
 }
 
 // Keep POI of scoped_ptr<GoogleHttpClient>'s dtor out of .h
