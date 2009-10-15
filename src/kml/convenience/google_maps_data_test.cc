@@ -32,6 +32,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
+#include "kml/convenience/atom_util.h"
 #include "kml/convenience/convenience.h"
 #include "kml/convenience/http_client.h"
 #include "kml/engine.h"
@@ -71,6 +72,44 @@ class EchoHttpClient : public HttpClient {
     }
     return true;
   }
+};
+
+// This HttpClient logs each request to the supplied vector.
+struct HttpRequest {
+  HttpMethodEnum http_method_;
+  std::string request_uri_;
+  StringPairVector request_headers_;
+  std::string post_data_;
+};
+typedef std::vector<HttpRequest> HttpRequestVector;
+
+class LoggingHttpClient : public HttpClient {
+ public:
+  LoggingHttpClient(HttpRequestVector* request_log)
+    : HttpClient("LoggingHttpClient"),
+      request_log_(request_log) {
+  }
+
+  virtual bool SendRequest(HttpMethodEnum http_method,
+                           const std::string& request_uri,
+                           const StringPairVector* request_headers,
+                           const std::string* post_data,
+                           std::string* response) const {
+    HttpRequest http_request;
+    http_request.http_method_ = http_method;
+    http_request.request_uri_ = request_uri;
+    if (request_headers) {
+      http_request.request_headers_ = *request_headers;
+    }
+    if (post_data) {
+      http_request.post_data_ = *post_data;
+    }
+    request_log_->push_back(http_request);
+    return true;
+  }
+
+ private:
+  HttpRequestVector* request_log_;
 };
 
 // This tests NULL use of the Create method.
@@ -366,6 +405,72 @@ TEST_F(GoogleMapsDataTest, TestAddFeature) {
   kmlengine::GetFeatureLatLon(placemark, &got_lat, &got_lon);
   ASSERT_EQ(kLat, got_lat);
   ASSERT_EQ(kLon, got_lon);
+}
+
+TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnAFolder) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  // PostPlacemarks() ignores things that aren't <Placemarks>
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ASSERT_TRUE(request_log.empty());
+  ASSERT_EQ(0, google_maps_data_->PostPlacemarks(folder, "http://foo.com/"));
+}
+
+TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnOnePlacemark) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  const std::string kFeatureFeedUri("http://host.com/anything/will/do");
+  const std::string kName("Stieg Larsson");
+  const std::string kDescription("At once a murder mystery, love story and...");
+  const double kLat(38.38);
+  const double kLon(101.101);
+  kmldom::PlacemarkPtr placemark =
+      kmlconvenience::CreatePointPlacemark(kName, kLat, kLon);
+  ASSERT_EQ(1, google_maps_data_->PostPlacemarks(placemark, kFeatureFeedUri));
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(HTTP_POST, request_log[0].http_method_);
+  ASSERT_EQ(kFeatureFeedUri, request_log[0].request_uri_);
+}
+
+TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnKmlSamples) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+
+  // Read and parse the kmlsamples.kml file.
+  std::string kml_samples;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(
+      std::string(DATADIR) + "/kml/kmlsamples.kml", &kml_samples));
+  kmlengine::KmlFilePtr kml_file(
+      kmlengine::KmlFile::CreateFromString(kml_samples));
+  kmldom::FeaturePtr root_feature =
+      kmlengine::GetRootFeature(kml_file->get_root());
+
+  // Make up some feature feed uri.
+  const std::string kFeatureFeedUri("http://host.com/anything/will/do");
+
+  // Call the method under test.
+  // There are 20 <Placemark>'s in the file, but one has no Geometry.
+  ASSERT_EQ(19, google_maps_data_->PostPlacemarks(root_feature,
+                                                  kFeatureFeedUri));
+  // Verify there was a request for eqch placemark.
+  ASSERT_EQ(static_cast<size_t>(19), request_log.size());
+  for (size_t i = 0; i < request_log.size(); ++i) {
+    // Every request is a POST...
+    ASSERT_EQ(HTTP_POST, request_log[i].http_method_);
+    // ... to the given uri...
+    ASSERT_EQ(kFeatureFeedUri, request_log[i].request_uri_);
+    // ... of an <atom:entry>...
+    const kmldom::AtomEntryPtr entry =
+        kmldom::AsAtomEntry(kmldom::ParseAtom(request_log[i].post_data_, NULL));
+    ASSERT_TRUE(entry.get());
+    // ... whose content is a <Placemark>.
+    const kmldom::FeaturePtr feature = AtomUtil::GetEntryFeature(entry);
+    ASSERT_TRUE(feature.get());
+    ASSERT_EQ(kmldom::Type_Placemark, feature->Type());
+  }
 }
 
 }  // end namespace kmlconvenience
