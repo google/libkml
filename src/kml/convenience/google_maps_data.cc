@@ -27,7 +27,6 @@
 
 #include "kml/convenience/google_maps_data.h"
 
-#include <iostream>
 #include <string>
 #include <vector>
 #include "kml/base/mimetypes.h"
@@ -230,6 +229,30 @@ bool GoogleMapsData::AddFeature(const std::string& feature_feed_post_uri,
   // Send off the HTTP POST and save the result to the user supplied buffer.
   return http_client_->SendRequest(HTTP_POST, feature_feed_post_uri,
                                    &headers, &post_data, feature_entry_xml);
+}
+
+int GoogleMapsData::PostPlacemarks(const kmldom::FeaturePtr& root_feature,
+                                   const std::string& feature_feed_uri) {
+  // Because GetElementsById looks only _below_ the root feature.
+  if (kmldom::Type_Placemark == root_feature->Type()) {
+    return AddFeature(feature_feed_uri, root_feature, NULL) ? 1 : 0;
+  }
+ 
+  // Dig out all <Placemarks>.  Everything else is ignored, essentially
+  // flattening Container hierarchies.
+  kmlengine::ElementVector placemarks;
+  kmlengine::GetElementsById(root_feature, kmldom::Type_Placemark, &placemarks);
+
+  int placemark_count = 0;
+  for (size_t i = 0; i < placemarks.size(); ++i) {
+    const kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(placemarks[i]);
+    if (placemark->has_geometry()) {
+      if (AddFeature(feature_feed_uri, placemark, NULL)) {
+        ++placemark_count;
+      }
+    }
+  }
+  return placemark_count;
 }
 
 }  // end namespace kmlconvenience

@@ -140,6 +140,13 @@ class GoogleMapsData {
                   const kmldom::FeaturePtr& feature,
                   std::string* feature_entry_xml);
 
+  // This is a convenience utility based on AddFeature.  This calls AddFeature
+  // on each <Placemark> in the given feature hierarchy.  The total count of
+  // <Placemark>s successfully added is returned.  All non-<Placemark> features
+  // are ignored including Containers thus flattening any hierarchy.
+  int PostPlacemarks(const kmldom::FeaturePtr& root_feature,
+                     const std::string& feature_feed_uri);
+
   // TODO:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingFeatures
 
