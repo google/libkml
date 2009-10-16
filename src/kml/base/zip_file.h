@@ -58,6 +58,15 @@ class ZipFile {
 
   ~ZipFile();
 
+  // The default maximum uncompressed file size we permit the underlying
+  // zip reader to handle is 100 MB by default.
+  void set_max_uncompressed_file_size(int i) {
+    max_uncompressed_file_size_ = i;
+  }
+  int get_max_uncompressed_file_size() {
+    return max_uncompressed_file_size_;
+  }
+
   // Returns true if zip_data looks like a PK ZIP archive. This is the only
   // supported ZIP variant.
   static bool IsZipData(const std::string& zip_data);
@@ -105,6 +114,7 @@ class ZipFile {
   boost::scoped_ptr<MinizipFile> minizip_file_;
   std::string data_;
   StringVector zipfile_toc_;
+  unsigned long max_uncompressed_file_size_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ZipFile);
 };
 

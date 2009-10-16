@@ -30,6 +30,7 @@
 #include "kml/base/file.h"
 #include "kml/base/tempfile.h"
 #include "gtest/gtest.h"
+#include "minizip/zip.h"
 
 // The following define is a convenience for testing inside Google.
 #ifdef GOOGLE_INTERNAL
@@ -111,7 +112,6 @@ TEST_F(ZipFileTest, TestCreate) {
   ASSERT_TRUE(tempfile != NULL);
   // Create a KMZ file containing a KML file that is a placemark called
   // 'tmp kml'.
-  const std::string kKml("<Placemark><name>tmp kml</name></Placemark>");
   ASSERT_TRUE(ZipFile::Create(tempfile->name().c_str()));
   // Now read the file, ensuring it was properly written.
   ASSERT_TRUE(File::Exists(tempfile->name()));
@@ -270,12 +270,52 @@ TEST_F(ZipFileTest, TestAddEntryBad) {
 TEST_F(ZipFileTest, TestBadPkZipData) {
   // Some ZIP files created with new zip-creation tools can't be uncompressed
   // by our underlying minizip library. Assert sane behavior.
-  const std::string kBadKmz= std::string(DATADIR) + "/kmz/bad-pk-data.kmz";
+  const std::string kBadKmz = std::string(DATADIR) + "/kmz/bad-pk-data.kmz";
   std::string zip_file_data;
   ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_FALSE(zip_file_->GetEntry("doc.kml", NULL));
+}
+
+TEST_F(ZipFileTest, TestBadTooLarge) {
+  // This file crashes Google Earth and previously crashed libkml.
+  // The file has been manipulated such that it reports its uncompressed
+  // size falsely as 4294967294 bytes.
+  const std::string kBadKmz = std::string(DATADIR) + "/kmz/bad-too-large.kmz";
+  std::string zip_file_data;
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
+  ASSERT_FALSE(zip_file_data.empty());
+  zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
+  ASSERT_FALSE(zip_file_->GetEntry("hello.kml", NULL));
+}
+
+TEST_F(ZipFileTest, TestMaxUncompressedSize) {
+  const int kMaxUncompressedZipSize = 104857600;  // 100 MB.
+
+  kmlbase::TempFilePtr tempfile = kmlbase::TempFile::CreateTempFile();
+  ASSERT_TRUE(tempfile != NULL);
+  zipFile zipfile = zipOpen(tempfile->name().c_str(), 0);
+  ASSERT_TRUE(zipfile);
+  zipOpenNewFileInZip(zipfile, "doc.kml", 0, 0, 0, 0, 0, 0,
+                      Z_DEFLATED, Z_DEFAULT_COMPRESSION);
+  std::string kml;
+  kml.resize(kMaxUncompressedZipSize);
+  // Write one byte beyond the max uncompressed size.
+  zipWriteInFileInZip(zipfile, static_cast<const void*>(kml.data()),
+                      static_cast<unsigned int>(kml.size()+1));
+  zipClose(zipfile, 0);
+
+  std::string zip_file_data;
+  ASSERT_TRUE(File::ReadFileToString(tempfile->name(), &zip_file_data));
+  ASSERT_FALSE(zip_file_data.empty());
+  zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
+  // Assert failure against kMaxUncompressedZipSize.
+  ASSERT_FALSE(zip_file_->GetEntry("doc.kml", NULL));
+
+  // Increase the maximum uncompressed size and assert success.
+  zip_file_->set_max_uncompressed_file_size(kMaxUncompressedZipSize + 1);
+  ASSERT_TRUE(zip_file_->GetEntry("doc.kml", NULL));
 }
 
 }  // end namespace kmlbase
