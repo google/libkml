@@ -32,6 +32,10 @@
 
 namespace kmlbase {
 
+// The maximum uncompressed file size we permit the underlying zip reader
+// to attempt to handle by default.
+static const unsigned long kMaxUncompressedZipSize = 104857600;  // 100 MB.
+
 // This class hides the use of minizip from the interface.
 class MinizipFile {
  public:
@@ -79,7 +83,8 @@ ZipFile* ZipFile::Create(const char* file_path) {
 
 // Private. Class constructed with static methods.
 ZipFile::ZipFile(const std::string& data)
-  : minizip_file_(NULL), data_(data) {
+  : minizip_file_(NULL), data_(data),
+    max_uncompressed_file_size_(kMaxUncompressedZipSize) {
   // Fill the table of contents for this zipfile.
   zlib_filefunc_def api;
   if (voidpf mem_stream = mem_simple_create_file(
@@ -101,7 +106,9 @@ ZipFile::ZipFile(const std::string& data)
 }
 
 // Private. Class constructed with static methods.
-ZipFile::ZipFile(MinizipFile* minizip_file) : minizip_file_(minizip_file) {}
+ZipFile::ZipFile(MinizipFile* minizip_file)
+  : minizip_file_(minizip_file),
+    max_uncompressed_file_size_(kMaxUncompressedZipSize) {}
 
 ZipFile::~ZipFile() {
   // Scoped ptr takes care of minizip_file_.
@@ -184,8 +191,8 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
                             0, 0) != UNZ_OK) {
     return false;
   }
-  int nbytes = finfo.uncompressed_size;
-  if (nbytes == -1) {
+  unsigned long nbytes = finfo.uncompressed_size;
+  if (nbytes == 0 || nbytes > max_uncompressed_file_size_) {
     // This is likely an imcompatibility between the library with which the
     // file was created and what the underlying minizip library can
     // uncompress. One such error is in the unit test for this file.
@@ -197,7 +204,7 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
   }
   char* filedata = new char[nbytes];
   if (unzReadCurrentFile(unzfilehelper->get_unzfile(), filedata,
-                         nbytes) == nbytes) {
+                         nbytes) == static_cast<int>(nbytes)) {
     output->assign(filedata, nbytes);
     delete [] filedata;
     return true;
