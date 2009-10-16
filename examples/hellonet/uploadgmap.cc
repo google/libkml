@@ -25,8 +25,7 @@
 
 // This creates a new Google My Map from the given KML file using the Google
 // Maps Data API.  The URI of feed to the new map is printed on output.
-// The created map has only the Placemarks in the original file.
-// TODO: more of this should be in GoogleMapsData
+// The created map has only the Placemarks from the original file.
 
 #include <termios.h>
 #include <iostream>
@@ -54,27 +53,13 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  std::string errors;
-  kmlengine::KmlFilePtr kml_file = kmlengine::KmlFile::CreateFromParse(
-      kml_data, &errors);
-  if (!kml_file.get()) {
-    std::cerr << "Parse error: " << errors << std::endl;
-    return 1;
-  }
-
+  // Parse the KML and inline all StyleSelectors.
   const kmldom::FeaturePtr root_feature =
-      kmlengine::GetRootFeature(kml_file->get_root());
+      kmlengine::GetRootFeature(kmlengine::InlineStyles(kml_data, NULL));
   if (!root_feature.get()) {
-    std::cerr << "No root Feature?" << std::endl;
-    return 1;
+    std::cerr << "No root feature?" << std::endl;
+    return -1;
   }
-
-  // Dig out all <Placemarks>.  Everything else is ignored, including
-  // Container hierarchies.
-  kmlengine::ElementVector placemarks;
-  kmlengine::GetElementsById(root_feature, kmldom::Type_Placemark, &placemarks);
-
-  std::cout << "Found " << placemarks.size() << " Placemarks" << std::endl;
 
   const std::string service = "local";  // Google Maps service name is "local".
   std::string user;
@@ -92,23 +77,26 @@ int main(int argc, char** argv) {
   }
 
   boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-      kmlconvenience::GoogleMapsData::Create(curl_http_client));
+    kmlconvenience::GoogleMapsData::Create(curl_http_client));
 
   std::string map_entry_xml;
   google_maps_data->CreateMap(root_feature->get_name(),
                               root_feature->get_description(), &map_entry_xml);
 
   kmldom::AtomEntryPtr map_entry =
-      kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, &errors));
+      kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
   if (!map_entry.get()) {
-    std::cerr << "Parse failed: " << errors << std::endl;
-    std::cerr << "CreateMap response: " << map_entry_xml << std::endl;
+    // A parse failure usually means a non-xml error string was returned as
+    // the response.
+    std::cerr << "CreateMap failed: " << map_entry_xml << std::endl;
     return 1;
   }
 
+  // Print the map feed URI now because Google Maps Data API does not show
+  // maps with no features in the list of maps.
+  // TODO: delete the map if no features were added?
   std::string map_feed_uri;
   kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &map_feed_uri);
-
   std::cout << "Map feed URI: " << map_feed_uri << std::endl;
 
   std::string feature_feed_uri;
@@ -118,46 +106,9 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  std::cout << "Feature feed URI: " << feature_feed_uri << std::endl;
-
-  int feature_count = 0;
-  for (size_t i = 0; i < placemarks.size(); ++i) {
-    std::string feature_entry_xml;
-    const kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(placemarks[i]);
-    if (!placemark->has_geometry()) {
-      std::cout << "Skipping Placemark without Geometry" << std::endl;
-      continue;
-    }
-
-    // TODO: CreateResolvedStyle
-
-    if (!google_maps_data->AddFeature(feature_feed_uri, placemark,
-                                      &feature_entry_xml)) {
-      std::cerr << "AddFeature failed on: " << placemark->get_name()
-                << std::endl;
-      continue;
-    }
-
-    std::string errors;
-    kmldom::AtomEntryPtr entry =
-        kmldom::AsAtomEntry(kmldom::ParseAtom(feature_entry_xml, &errors));
-    if (!entry.get()) {
-      std::cerr << "ParseAtom failed: " << errors << std::endl;
-      std::cerr << feature_entry_xml << std::endl;
-      return 1;
-    }
-
-    std::string feature_entry_uri;
-    if (!kmlconvenience::AtomUtil::FindRelUrl(*entry, "self",
-                                              &feature_entry_uri)) {
-      std::cerr << "No rel='self'?" << std::endl;
-    } else {
-      std::cout << feature_entry_uri << std::endl;
-    }
-    ++feature_count;
-  }
-
-  std::cout << "Uploaded " << feature_count << " features." << std::endl;
+  int placemark_count = google_maps_data->PostPlacemarks(root_feature,
+                                                         feature_feed_uri);
+  std::cout << "Uploaded " << placemark_count << " placemarks." << std::endl;
 
   return 0;
 }
