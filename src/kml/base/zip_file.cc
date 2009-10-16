@@ -95,12 +95,12 @@ ZipFile::ZipFile(const std::string& data)
       unz_file_info finfo;
       do {
         static char buf[1024];
-        if (unzGetCurrentFileInfo(zfile, &finfo, buf, sizeof(buf),
+        if (libkml_unzGetCurrentFileInfo(zfile, &finfo, buf, sizeof(buf),
               0, 0, 0, 0) == UNZ_OK) {
           zipfile_toc_.push_back(buf);
         }
-      } while (unzGoToNextFile(zfile) == UNZ_OK);
-      unzClose(zfile);
+      } while (libkml_unzGoToNextFile(zfile) == UNZ_OK);
+      libkml_unzClose(zfile);
     }
   }
 }
@@ -158,7 +158,7 @@ bool ZipFile::IsInToc(const std::string& path_in_zip) const {
 class UnzFileHelper {
  public:
   UnzFileHelper(unzFile unzfile) : unzfile_(unzfile) {}
-  ~UnzFileHelper() { unzClose(unzfile_); }
+  ~UnzFileHelper() { libkml_unzClose(unzfile_); }
   unzFile get_unzfile() { return unzfile_; }
  private:
   unzFile unzfile_;
@@ -184,11 +184,11 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
 
   boost::scoped_ptr<UnzFileHelper> unzfilehelper(new UnzFileHelper(unzfile));
   unz_file_info finfo;
-  if (unzLocateFile(unzfilehelper->get_unzfile(),
+  if (libkml_unzLocateFile(unzfilehelper->get_unzfile(),
                     path_in_zip.c_str(), 0) != UNZ_OK ||
-      unzOpenCurrentFile(unzfilehelper->get_unzfile()) != UNZ_OK ||
-      unzGetCurrentFileInfo(unzfilehelper->get_unzfile(), &finfo, 0, 0, 0, 0,
-                            0, 0) != UNZ_OK) {
+      libkml_unzOpenCurrentFile(unzfilehelper->get_unzfile()) != UNZ_OK ||
+      libkml_unzGetCurrentFileInfo(unzfilehelper->get_unzfile(), &finfo, 0, 0,
+                                   0, 0, 0, 0) != UNZ_OK) {
     return false;
   }
   unsigned long nbytes = finfo.uncompressed_size;
@@ -203,7 +203,7 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
     return true;
   }
   char* filedata = new char[nbytes];
-  if (unzReadCurrentFile(unzfilehelper->get_unzfile(), filedata,
+  if (libkml_unzReadCurrentFile(unzfilehelper->get_unzfile(), filedata,
                          nbytes) == static_cast<int>(nbytes)) {
     output->assign(filedata, nbytes);
     delete [] filedata;
