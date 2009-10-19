@@ -129,10 +129,19 @@ static uLong ZCALLBACK mem_read (opaque, stream, buf, size)
 
    if ( (handle->position + size) > handle->length)
    {
-      size = handle->length - handle->position;
+      /* There is a bug in this original code. It's possible for the position
+       * to exceed the size, which results in memcpy being handed a negative
+       * size. See libkml's src/kml/base/zip_file_test.cc for some overflow
+       * tests that exercise this.
+       * size = handle->length - handle->position;
+      */
+      int size_ = handle->length - handle->position;
+      size = (size_ < 0) ? 0 : (uLong)size_;
    }
+
    memcpy(buf, ((char*)handle->buffer) + handle->position, size);
    handle->position+=size;
+
    return size;
 }
 

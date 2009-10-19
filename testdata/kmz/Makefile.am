@@ -13,6 +13,9 @@ EXTRA_DIST = \
 	multikml-doc.kmz \
 	multikml-nodoc.kmz \
 	nokml.kmz \
+	overflow_corrupted_stack.kmz \
+	overflow_unzOpenCurrentFile.kmz \
+	overflow_unzReadCurrentFile.kmz \
 	radar-animation.kmz \
 	screenoverlay-continents.kmz \
 	zermatt-photo.kmz \
