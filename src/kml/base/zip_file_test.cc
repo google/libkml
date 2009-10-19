@@ -318,6 +318,31 @@ TEST_F(ZipFileTest, TestMaxUncompressedSize) {
   ASSERT_TRUE(zip_file_->GetEntry("doc.kml", NULL));
 }
 
+TEST_F(ZipFileTest, TestMinizipOverflow) {
+  // These files previously crashed libkml due to the underlying minizip
+  // libraries implementation of mem_write which could hand a negative
+  // size to memcpy.
+  const char* kDefaultKml = "kmlsamples.kml";
+
+  const std::string kOverflowStack = std::string(DATADIR) +
+    "/kmz/overflow_corrupted_stack.kmz";
+  zip_file_.reset(ZipFile::OpenFromFile(kOverflowStack.c_str()));
+  ASSERT_TRUE(zip_file_);
+  ASSERT_FALSE(zip_file_->GetEntry(kDefaultKml, NULL));
+
+  const std::string kOverflowOpen = std::string(DATADIR) +
+    "/kmz/overflow_unzOpenCurrentFile.kmz";
+  zip_file_.reset(ZipFile::OpenFromFile(kOverflowOpen.c_str()));
+  ASSERT_TRUE(zip_file_);
+  ASSERT_FALSE(zip_file_->GetEntry(kDefaultKml, NULL));
+
+  const std::string kOverflowRead = std::string(DATADIR) +
+    "/kmz/overflow_unzReadCurrentFile.kmz";
+  zip_file_.reset(ZipFile::OpenFromFile(kOverflowRead.c_str()));
+  ASSERT_TRUE(zip_file_);
+  ASSERT_TRUE(zip_file_->GetEntry(kDefaultKml, NULL));
+}
+
 }  // end namespace kmlbase
 
 int main(int argc, char** argv) {
