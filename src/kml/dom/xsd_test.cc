@@ -131,6 +131,12 @@ TEST_F(XsdTest, TestBadEnum) {
   ASSERT_EQ(-1, Xsd::GetSchema()->EnumId(Type_state, "closed open"));
 }
 
+TEST_F(XsdTest, TestBadEnumValue) {
+  // This crashed libkml because Xsd::EnumValue, if passed a negative enum_id,
+  // would try to initialize a string from a NULL pointer.
+  ASSERT_EQ(std::string(), Xsd::GetSchema()->EnumValue(0, -1));
+}
+
 // Verify that EnumId() is well behaved for an enum value known to be ugly.
 TEST_F(XsdTest, TestUglyEnum) {
   ASSERT_EQ(-1, Xsd::GetSchema()->EnumId(Type_state, ""));

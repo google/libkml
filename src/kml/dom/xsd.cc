@@ -103,6 +103,9 @@ int Xsd::EnumId(int type_id, std::string enum_value) const {
 }
 
 std::string Xsd::EnumValue(int type_id, int enum_id) const {
+  if (enum_id < 0) {
+    return std::string();
+  }
   for (XsdSimpleTypeEnum* simple = kKml22Enums; simple; ++simple) {
     if (simple->type_id == type_id) {
       return simple->enum_value_list[enum_id];
