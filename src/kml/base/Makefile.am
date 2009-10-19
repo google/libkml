@@ -198,6 +198,7 @@ xmlns_test_LDADD= libkmlbase.la \
 zip_file_test_SOURCES = zip_file_test.cc
 zip_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 zip_file_test_LDADD= libkmlbase.la \
+		 $(top_builddir)/third_party/libminizip.la \
 		 $(top_builddir)/third_party/libgtest.la
 
 CLEANFILES = check_PROGRAMS
