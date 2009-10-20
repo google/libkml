@@ -127,6 +127,13 @@ static uLong ZCALLBACK mem_read (opaque, stream, buf, size)
 {
    MEMFILE* handle = (MEMFILE*) stream;
 
+   /* It's possible for this function to be called with an invalid position.
+    */
+   if (handle->position < 0)
+   {
+     return 0;
+   }
+
    if ( (handle->position + size) > handle->length)
    {
       /* There is a bug in this original code. It's possible for the position

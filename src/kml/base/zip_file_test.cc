@@ -320,9 +320,15 @@ TEST_F(ZipFileTest, TestMaxUncompressedSize) {
 
 TEST_F(ZipFileTest, TestMinizipOverflow) {
   // These files previously crashed libkml due to the underlying minizip
-  // libraries implementation of mem_write which could hand a negative
+  // libraries implementation of mem_read which could hand a negative
   // size to memcpy.
   const char* kDefaultKml = "kmlsamples.kml";
+
+  const std::string kOverflowBadOffset = std::string(DATADIR) +
+    "/kmz/overflow_bad_offset.kmz";
+  zip_file_.reset(ZipFile::OpenFromFile(kOverflowBadOffset.c_str()));
+  ASSERT_TRUE(zip_file_);
+  ASSERT_FALSE(zip_file_->GetEntry(kDefaultKml, NULL));
 
   const std::string kOverflowStack = std::string(DATADIR) +
     "/kmz/overflow_corrupted_stack.kmz";
