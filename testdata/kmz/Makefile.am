@@ -13,6 +13,7 @@ EXTRA_DIST = \
 	multikml-doc.kmz \
 	multikml-nodoc.kmz \
 	nokml.kmz \
+	overflow_bad_offset.kmz \
 	overflow_corrupted_stack.kmz \
 	overflow_unzOpenCurrentFile.kmz \
 	overflow_unzReadCurrentFile.kmz \
