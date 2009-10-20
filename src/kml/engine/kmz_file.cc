@@ -72,6 +72,16 @@ bool KmzFile::IsKmz(const std::string& kmz_data) {
   return ZipFile::IsZipData(kmz_data);
 }
 
+
+void KmzFile::set_max_uncompressed_file_size(unsigned int i) {
+  zip_file_->set_max_uncompressed_file_size(i);
+}
+
+unsigned int KmzFile::get_max_uncompressed_file_size() {
+  return zip_file_->get_max_uncompressed_file_size();
+}
+
+
 bool KmzFile::ReadKmlAndGetPath(std::string* output,
                                 std::string* kml_name) const {
   if (!output) {
