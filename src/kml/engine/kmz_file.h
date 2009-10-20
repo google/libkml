@@ -45,7 +45,9 @@ class ZipFile;
 namespace kmlengine {
 
 // The Kmz class represents an instance of a KMZ file. It contains methods
-// for reading and writing KMZ files.
+// for reading and writing KMZ files. By default, there is an upper limit of
+// 100 MB on uncompressed file sizes. If you need to adjust this limit, use
+// the set_max_uncompressed_size method.
 class KmzFile : public kmlbase::Referent {
  public:
   ~KmzFile();
@@ -63,6 +65,16 @@ class KmzFile : public kmlbase::Referent {
   static KmzFile* CreateFromString(const std::string& kmz_data) {
     return OpenFromString(kmz_data);
   }
+
+  // Sets the upper limit for the largest uncompressed file size (in bytes)
+  // for the underlying Zip implementation to handle. By default it is 100 MB.
+  // If this is exceeded, any attempt to read the archived file will return
+  // false.
+  void set_max_uncompressed_file_size(unsigned int i);
+
+  // Returns the maximum uncompressed file size that the underlying Zip
+  // implementation will handle in bytes.
+  unsigned int get_max_uncompressed_file_size();
 
   // Checks to see if kmz_data looks like a PK ZIP file.
   static bool IsKmz(const std::string& kmz_data);

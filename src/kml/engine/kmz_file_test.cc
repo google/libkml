@@ -451,6 +451,28 @@ TEST_F(KmzTest, TestSaveToString) {
   ASSERT_EQ(read_kmz_data, saved_kmz_data);
 }
 
+TEST_F(KmzTest, TestSetGetMaxUncompressedFileSize) {
+  const unsigned int kDefaultSize = 104857600;  // 100 MB.
+  const unsigned int kNewSize = 209715200;  // 200 MB.
+  const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
+  kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
+  ASSERT_TRUE(kmz_file_);
+  ASSERT_EQ(kDefaultSize, kmz_file_->get_max_uncompressed_file_size());
+  kmz_file_->set_max_uncompressed_file_size(kNewSize);
+  ASSERT_EQ(kNewSize, kmz_file_->get_max_uncompressed_file_size());
+}
+
+TEST_F(KmzTest, TestMaxUnCompressedSizeExceeded) {
+  const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
+  kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
+  ASSERT_TRUE(kmz_file_);
+  const unsigned int kMaxSize = 43;
+  kmz_file_->set_max_uncompressed_file_size(kMaxSize);  // 43 bytes.
+  ASSERT_EQ(kMaxSize, kmz_file_->get_max_uncompressed_file_size());
+  // ReadFile fails on a file that is 44 bytes.
+  ASSERT_FALSE(kmz_file_->ReadFile("doc.kml", NULL));
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
