@@ -164,6 +164,19 @@ TEST(AtomUtilTest, TestFindLink) {
   ASSERT_EQ(kMimeType, got_link->get_type());
 }
 
+TEST(AtomUtilTest, TestFindEntryByTitle) {
+  kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
+  kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
+  const std::string kTitle("War and Peace");
+  entry->set_title(kTitle);
+  kmldom::AtomFeedPtr feed = factory->CreateAtomFeed();
+  feed->add_entry(entry);
+  kmldom::AtomEntryPtr got_entry = AtomUtil::FindEntryByTitle(feed, kTitle);
+  ASSERT_TRUE(got_entry.get());
+  ASSERT_EQ(kTitle, got_entry->get_title());
+  ASSERT_FALSE(AtomUtil::FindEntryByTitle(feed, "Peaceful Warring"));
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {

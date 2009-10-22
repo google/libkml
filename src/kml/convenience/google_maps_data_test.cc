@@ -35,6 +35,7 @@
 #include "kml/convenience/atom_util.h"
 #include "kml/convenience/convenience.h"
 #include "kml/convenience/http_client.h"
+#include "kml/convenience/http_client_test_util.h"
 #include "kml/engine.h"
 
 // The following define is a convenience for testing inside Google.
@@ -72,44 +73,6 @@ class EchoHttpClient : public HttpClient {
     }
     return true;
   }
-};
-
-// This HttpClient logs each request to the supplied vector.
-struct HttpRequest {
-  HttpMethodEnum http_method_;
-  std::string request_uri_;
-  StringPairVector request_headers_;
-  std::string post_data_;
-};
-typedef std::vector<HttpRequest> HttpRequestVector;
-
-class LoggingHttpClient : public HttpClient {
- public:
-  LoggingHttpClient(HttpRequestVector* request_log)
-    : HttpClient("LoggingHttpClient"),
-      request_log_(request_log) {
-  }
-
-  virtual bool SendRequest(HttpMethodEnum http_method,
-                           const std::string& request_uri,
-                           const StringPairVector* request_headers,
-                           const std::string* post_data,
-                           std::string* response) const {
-    HttpRequest http_request;
-    http_request.http_method_ = http_method;
-    http_request.request_uri_ = request_uri;
-    if (request_headers) {
-      http_request.request_headers_ = *request_headers;
-    }
-    if (post_data) {
-      http_request.post_data_ = *post_data;
-    }
-    request_log_->push_back(http_request);
-    return true;
-  }
-
- private:
-  HttpRequestVector* request_log_;
 };
 
 // This tests NULL use of the Create method.
@@ -151,23 +114,9 @@ TEST_F(GoogleMapsDataTest, TestGetMetaFeedXml) {
 }
 
 TEST_F(GoogleMapsDataTest, TestGetMetaFeed) {
-  // This HttpClient always "fetches" testdata/gmaps/metafeed.xml.
-  class TestDataHttpClient : public HttpClient {
-   public:
-    TestDataHttpClient()
-      : HttpClient("MetaFeedHttpClient") {
-    }
-
-    virtual bool SendRequest(HttpMethodEnum http_method,
-                             const std::string& request_uri,
-                             const StringPairVector* request_headers,
-                             const std::string* post_data,
-                             std::string* response) const {
-      return kmlbase::File::ReadFileToString(
-          std::string(DATADIR) + "/gmaps/metafeed.xml", response);
-    }
-  };
-  google_maps_data_.reset(GoogleMapsData::Create(new TestDataHttpClient));
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new OneFileHttpClient(
+          std::string(DATADIR) + "/gmaps/metafeed.xml")));
   ASSERT_TRUE(google_maps_data_.get());
   // Call the method under test.
   kmldom::AtomFeedPtr atom_feed = google_maps_data_->GetMetaFeed();
@@ -194,19 +143,6 @@ TEST_F(GoogleMapsDataTest, TestGetFeatureFeedUri) {
   std::string feature_feed_uri;
   ASSERT_TRUE(GoogleMapsData::GetFeatureFeedUri(entry, &feature_feed_uri));
   ASSERT_EQ(kSrc, feature_feed_uri);
-}
-
-TEST_F(GoogleMapsDataTest, TestFindEntryByTitle) {
-  kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
-  kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
-  const std::string kTitle("War and Peace");
-  entry->set_title(kTitle);
-  kmldom::AtomFeedPtr feed = factory->CreateAtomFeed();
-  feed->add_entry(entry);
-  kmldom::AtomEntryPtr got_entry = GoogleMapsData::FindEntryByTitle(feed,
-                                                                    kTitle);
-  ASSERT_TRUE(got_entry.get());
-  ASSERT_EQ(kTitle, got_entry->get_title());
 }
 
 TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {

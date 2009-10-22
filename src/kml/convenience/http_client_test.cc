@@ -32,6 +32,24 @@
 
 namespace kmlconvenience {
 
+TEST(HttpClientTest, FetchSetHeader) {
+  HttpClient http_client("my-app");
+  const std::string kFieldName("Some-Header");
+  const std::string kFieldValue("the value of the header");
+  const size_t size_before = http_client.get_headers().size();
+  http_client.AddHeader(kFieldName, kFieldValue);
+  const StringPairVector& headers = http_client.get_headers();
+  ASSERT_EQ(size_before + 1, headers.size());
+  ASSERT_EQ(kFieldName, headers[size_before].first);
+  ASSERT_EQ(kFieldValue, headers[size_before].second);
+  const std::string kField1Name("Another-Header");
+  const std::string kField1Value("the value of this other header");
+  http_client.AddHeader(kField1Name, kField1Value);
+  ASSERT_EQ(size_before + 2, headers.size());
+  ASSERT_EQ(kField1Name, headers[size_before + 1].first);
+  ASSERT_EQ(kField1Value, headers[size_before + 1].second);
+}
+
 TEST(HttpClientTest, TestFormatHeader) {
   const std::string kHi("hi");
   const std::string kThere("there");
@@ -183,9 +201,8 @@ TEST(HttpClientTest, FetchUrl) {
   std::vector<std::string> response_lines;
   kmlbase::SplitStringUsing(response, "\n", &response_lines);
   // Don't want to complete box ourselves in.  Assert that we expect one
-  // line echoing back the request and at least one other line for the
-  // user-agent using the application name.
-  ASSERT_LT(static_cast<size_t>(3), response_lines.size());
+  // line echoing back the request in addition to the header lines.
+  ASSERT_LT(http_client.get_headers().size() + 1, response_lines.size());
   std::vector<std::string> response_words;
   kmlbase::SplitStringUsing(response_lines[0], " ", &response_words);
   ASSERT_EQ(static_cast<size_t>(2), response_words.size());

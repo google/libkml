@@ -112,11 +112,6 @@ class GoogleMapsData {
   kmldom::AtomFeedPtr GetFeatureFeedByUri(
       const std::string& feature_feed_uri) const;
 
-  // Return the <entry> of the first map in the feed with the given title.
-  // This returns NULL if no <entry>'s have this exact <title>.
-  static kmldom::AtomEntryPtr FindEntryByTitle(
-      const kmldom::AtomFeedPtr& meta_feed, const std::string& title);
-
   // Return the KML Feature child of the Atom <entry>'s <content>.  This
   // returns NULL if the <entry>'s <content> has no KML Feature.
   static kmldom::FeaturePtr GetEntryFeature(const kmldom::AtomEntryPtr& entry);

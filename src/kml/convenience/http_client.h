@@ -77,6 +77,12 @@ class HttpClient : kmlbase::NetFetcher {
   virtual bool Login(const std::string& service_name,
                      const std::string& email, const std::string& password);
 
+  // Adds the given field name and value to the set of headers used in every
+  // request.  This is a simple append.  No provision is made for overwriting
+  // a header field of the same name.
+  void AddHeader(const std::string& field_name,
+                 const std::string& field_value);
+
   // All I/O goes through this method.  See HttpMethodEnum for valid
   // http_method values.  See RFC 2616, Section 5.1.2 Request-URI for
   // request_uri.  See Section 5.3 for request_headers.  Any of

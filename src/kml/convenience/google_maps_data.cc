@@ -46,6 +46,7 @@ GoogleMapsData* GoogleMapsData::Create(HttpClient* http_client) {
   GoogleMapsData* mds = new GoogleMapsData;
   // The HttpClient must exist.
   if (http_client) {
+    http_client->AddHeader("GData-Version", "2.0");
     mds->http_client_.reset(http_client);
     return mds;
   }
@@ -112,18 +113,6 @@ kmldom::AtomFeedPtr GoogleMapsData::GetFeatureFeedByUri(
   std::string feature_feed;
   if (GetFeatureFeedXml(feature_feed_uri, &feature_feed)) {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(feature_feed, NULL));
-  }
-  return NULL;
-}
-
-// static
-kmldom::AtomEntryPtr GoogleMapsData::FindEntryByTitle(
-    const kmldom::AtomFeedPtr& meta_feed, const std::string& title) {
-  for (size_t e = 0; e < meta_feed->get_entry_array_size(); ++e) {
-    const kmldom::AtomEntryPtr& entry = meta_feed->get_entry_array_at(e);
-    if (entry->get_title() == title) {
-      return entry;
-    }
   }
   return NULL;
 }
