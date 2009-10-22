@@ -70,6 +70,11 @@ class AtomUtil {
                                       const std::string& rel_type,
                                       const std::string& mime_type);
 
+  // Return the first <entry> in the feed with the given title.
+  // This returns NULL if no <entry>'s have this exact <title>.
+  static kmldom::AtomEntryPtr FindEntryByTitle(const kmldom::AtomFeedPtr& feed,
+                                               const std::string& title);
+
   // This returns the href= value of the first <atom:link> whose first rel=
   // ends with the given link relation type.  Both AtomFeed (<atom:feed>)
   // and AtomEntry (<atom:entry>) are of the AtomCommon type.

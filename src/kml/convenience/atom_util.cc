@@ -157,4 +157,16 @@ void AtomUtil::GetFeedFeatures(const AtomFeedPtr& feed,
   }
 }
 
+// static
+AtomEntryPtr AtomUtil::FindEntryByTitle(const kmldom::AtomFeedPtr& feed,
+                                        const std::string& title) {
+  for (size_t e = 0; e < feed->get_entry_array_size(); ++e) {
+    const kmldom::AtomEntryPtr& entry = feed->get_entry_array_at(e);
+    if (entry->get_title() == title) {
+      return entry;
+    }
+  }
+  return NULL;
+}
+
 }  // end namespace kmlconvenience

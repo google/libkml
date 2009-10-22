@@ -68,7 +68,11 @@ HttpClient::HttpClient(const std::string &application_name)
   // Standard headers for every request
   PushHeader("User-Agent", application_name_ + " GData-C++/" + kVersion,
              &headers_);
-  PushHeader("GData-Version", "2.0", &headers_);
+}
+
+void HttpClient::AddHeader(const std::string& field_name,
+                           const std::string& field_value) {
+  PushHeader(field_name, field_value, &headers_);
 }
 
 // This is an implementation of this:
