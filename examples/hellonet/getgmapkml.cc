@@ -33,6 +33,7 @@
 #include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
+#include "kml/convenience/atom_util.h"
 #include "kml/convenience/http_client.h"
 #include "kml/convenience/google_maps_data.h"
 
@@ -76,7 +77,7 @@ again:
   std::getline(std::cin, map_title);
 
   const kmldom::AtomEntryPtr& map_entry =
-      kmlconvenience::GoogleMapsData::FindEntryByTitle(meta_feed, map_title);
+      kmlconvenience::AtomUtil::FindEntryByTitle(meta_feed, map_title);
 
   if (!map_entry.get()) {
     std::cout << "No map with title: " << map_title << std::endl;
