@@ -981,7 +981,7 @@ TEST_F(MultiGeometryTest, TestDefaults) {
 }
 
 TEST_F(MultiGeometryTest, TestAddGetGeometries) {
-  // Create some Geometryies and give them to the MultiGeometry
+  // Create some Geometries and give them to the MultiGeometry.
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreatePoint());
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateMultiGeometry());
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreatePolygon());
