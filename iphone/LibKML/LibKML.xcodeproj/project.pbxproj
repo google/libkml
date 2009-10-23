@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C87AF2210881A4000015660 /* mimetypes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3C87AF2010881A4000015660 /* mimetypes.cc */; };
+		3C87AF2310881A4000015660 /* mimetypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C87AF2110881A4000015660 /* mimetypes.h */; };
 		8FEEE9371082BFEF0017FEB8 /* attributes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE7B81082BFEF0017FEB8 /* attributes.cc */; };
 		8FEEE9381082BFEF0017FEB8 /* attributes.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FEEE7B91082BFEF0017FEB8 /* attributes.h */; };
 		8FEEE9391082BFEF0017FEB8 /* attributes_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8FEEE7BA1082BFEF0017FEB8 /* attributes_test.cc */; };
@@ -381,6 +383,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3C87AF2010881A4000015660 /* mimetypes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mimetypes.cc; sourceTree = "<group>"; };
+		3C87AF2110881A4000015660 /* mimetypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mimetypes.h; sourceTree = "<group>"; };
 		8FEEE7B81082BFEF0017FEB8 /* attributes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = attributes.cc; sourceTree = "<group>"; };
 		8FEEE7B91082BFEF0017FEB8 /* attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = attributes.h; sourceTree = "<group>"; };
 		8FEEE7BA1082BFEF0017FEB8 /* attributes_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = attributes_test.cc; sourceTree = "<group>"; };
@@ -837,6 +841,8 @@
 		8FEEE7B71082BFEF0017FEB8 /* base */ = {
 			isa = PBXGroup;
 			children = (
+				3C87AF2010881A4000015660 /* mimetypes.cc */,
+				3C87AF2110881A4000015660 /* mimetypes.h */,
 				8FEEE7B81082BFEF0017FEB8 /* attributes.cc */,
 				8FEEE7B91082BFEF0017FEB8 /* attributes.h */,
 				8FEEE7BA1082BFEF0017FEB8 /* attributes_test.cc */,
@@ -1399,6 +1405,7 @@
 				8FEEEAA31082BFEF0017FEB8 /* xsd_type.h in Headers */,
 				8FEEEAA51082BFEF0017FEB8 /* xsd_util.h in Headers */,
 				8FEEEAA81082BFEF0017FEB8 /* xst_parser.h in Headers */,
+				3C87AF2310881A4000015660 /* mimetypes.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1672,6 +1679,7 @@
 				8FEEEAA61082BFEF0017FEB8 /* xsd_util_test.cc in Sources */,
 				8FEEEAA71082BFEF0017FEB8 /* xst_parser.cc in Sources */,
 				8FEEEAA91082BFEF0017FEB8 /* xst_parser_test.cc in Sources */,
+				3C87AF2210881A4000015660 /* mimetypes.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -114,7 +114,7 @@ expat_handler_ns_test_LDADD = libkmlbase.la \
 			      $(top_builddir)/third_party/libgtest.la
 
 expat_parser_test_SOURCES = expat_parser_test.cc
-expat_parser_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+expat_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 expat_parser_test_LDADD = libkmlbase.la \
 			      $(top_builddir)/third_party/libgtest.la
 

@@ -14,7 +14,6 @@ libkmlconvenience_la_SOURCES = \
 	csv_file.cc \
 	feature_list.cc \
 	google_maps_data.cc \
-	google_spreadsheets.cc \
 	http_client.cc \
 	kmz_check_links.cc
 
@@ -27,15 +26,9 @@ libkmlconvenienceinclude_HEADERS = \
 	element_counter.h \
 	feature_list.h \
 	google_maps_data.h \
-	google_spreadsheets.h \
 	gpx_trk_pt_handler.h \
 	http_client.h \
 	kmz_check_links.h
-
-# These header files are added to the distribution such that it can be built,
-# but these header files should not be used in application code.
-EXTRA_DIST = \
-	http_client_test_util.h
 
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = atom_util_test \
@@ -44,7 +37,6 @@ TESTS = atom_util_test \
 	element_counter_test \
 	feature_list_test \
 	google_maps_data_test \
-	google_spreadsheets_test \
 	gpx_trk_pt_handler_test \
 	http_client_test \
 	kmz_check_links_test
@@ -94,14 +86,6 @@ feature_list_test_LDADD = libkmlconvenience.la \
 google_maps_data_test_SOURCES = google_maps_data_test.cc
 google_maps_data_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 google_maps_data_test_LDADD = libkmlconvenience.la \
-	$(top_builddir)/src/kml/engine/libkmlengine.la \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
-
-google_spreadsheets_test_SOURCES = google_spreadsheets_test.cc
-google_spreadsheets_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
-google_spreadsheets_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \

@@ -129,7 +129,7 @@ static uLong ZCALLBACK mem_read (opaque, stream, buf, size)
 
    /* It's possible for this function to be called with an invalid position.
     */
-   if (handle->position < 0)
+   if (handle->position < 0 || handle->position >= ZIP_MAX_UNCOMPRESSED_SIZE)
    {
      return 0;
    }

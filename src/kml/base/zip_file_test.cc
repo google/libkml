@@ -310,6 +310,7 @@ TEST_F(ZipFileTest, TestMaxUncompressedSize) {
   ASSERT_TRUE(File::ReadFileToString(tempfile->name(), &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
+  zip_file_->set_max_uncompressed_file_size(kMaxUncompressedZipSize);
   // Assert failure against kMaxUncompressedZipSize.
   ASSERT_FALSE(zip_file_->GetEntry("doc.kml", NULL));
 

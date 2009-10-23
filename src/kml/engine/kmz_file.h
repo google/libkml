@@ -46,7 +46,7 @@ namespace kmlengine {
 
 // The Kmz class represents an instance of a KMZ file. It contains methods
 // for reading and writing KMZ files. By default, there is an upper limit of
-// 100 MB on uncompressed file sizes. If you need to adjust this limit, use
+// 2 GB on uncompressed file sizes. If you need to lower this limit, use
 // the set_max_uncompressed_size method.
 class KmzFile : public kmlbase::Referent {
  public:
@@ -67,7 +67,7 @@ class KmzFile : public kmlbase::Referent {
   }
 
   // Sets the upper limit for the largest uncompressed file size (in bytes)
-  // for the underlying Zip implementation to handle. By default it is 100 MB.
+  // for the underlying Zip implementation to handle. By default it is 2 GB.
   // If this is exceeded, any attempt to read the archived file will return
   // false.
   void set_max_uncompressed_file_size(unsigned int i);

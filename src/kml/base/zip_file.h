@@ -59,7 +59,7 @@ class ZipFile {
   ~ZipFile();
 
   // The default maximum uncompressed file size we permit the underlying
-  // zip reader to handle is 100 MB by default.
+  // zip reader to handle is 2 GB by default.
   void set_max_uncompressed_file_size(unsigned int i) {
     max_uncompressed_file_size_ = i;
   }
