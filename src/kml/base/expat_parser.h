@@ -26,6 +26,9 @@
 // This file contains the declaration of the internal ExpatParser class.
 // Direct use of this class in application code is not recommended.  Typical
 // applications should use kmlengine::KmlFile for parsing KML (and KMZ) files.
+// Note that we explicitly do not support parsing files with XML ENTITY
+// declarations. See the unit tests in expat_parser_test.cc for some concrete
+// examples.
 
 #ifndef KML_BASE_EXPAT_PARSER_H__
 #define KML_BASE_EXPAT_PARSER_H__
