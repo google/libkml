@@ -49,6 +49,16 @@
 extern "C" {
 #endif
 
+/* This define is local to libkml and is not a part of the regular zlib
+ * library. It sets a maximum upper limit on the uncompressed size we'll
+ * allow minizip to handle. The PKZIP specification here:
+ * https://users.cs.jmu.edu/buchhofp/forensics/formats/pkzip.html
+ * defines the uncompressed size field to be 4 bytes wide. In unzip.c minizip
+ * uses an unsigned long, but iomem_simple.c uses a signed long. Hence, we
+ * use the maximum size of a 32-bit signed long integer.
+ */
+#define ZIP_MAX_UNCOMPRESSED_SIZE 2147483647
+
 #ifndef _ZLIB_H
 #include "zlib.h"
 #endif

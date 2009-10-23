@@ -33,8 +33,8 @@
 namespace kmlbase {
 
 // The maximum uncompressed file size we permit the underlying zip reader
-// to attempt to handle by default.
-static const unsigned long kMaxUncompressedZipSize = 104857600;  // 100 MB.
+// to attempt to handle by default. (2 GB, as per minizip/unzip.h.)
+static const unsigned long kMaxUncompressedZipSize = ZIP_MAX_UNCOMPRESSED_SIZE;
 
 // This class hides the use of minizip from the interface.
 class MinizipFile {

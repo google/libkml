@@ -452,7 +452,7 @@ TEST_F(KmzTest, TestSaveToString) {
 }
 
 TEST_F(KmzTest, TestSetGetMaxUncompressedFileSize) {
-  const unsigned int kDefaultSize = 104857600;  // 100 MB.
+  const unsigned int kDefaultSize = 2147483647;  // 2 GB.
   const unsigned int kNewSize = 209715200;  // 200 MB.
   const std::string kGoodKmz = std::string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kGoodKmz.c_str()));
