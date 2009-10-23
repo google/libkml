@@ -26,10 +26,20 @@
 // This file contains the unit tests for the ExpatParser class.
 
 #include "kml/base/expat_parser.h"
+#include "kml/base/file.h"
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/dom/kml_handler.h"
 #include "kml/dom/parser_observer.h"
+
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
 
 namespace kmlbase {
 
@@ -160,6 +170,63 @@ TEST_F(ExpatParserTest, TestFailingInternalBuffer) {
   memcpy(buf, k2.data(), k2.size());
   ASSERT_FALSE(parser.ParseInternalBuffer(k2.size(), &errors_, true));
   ASSERT_FALSE(errors_.empty());
+}
+
+TEST_F(ExpatParserTest, TestBillionLaughsAttack) {
+  // Ensure that the "billion laughs" buffer overflow attack is handled.
+  // Previously, this would hang libkml.
+  const std::string kBadXml = std::string(DATADIR) + "/kml/billion.kml";
+  std::string file_data;
+  ASSERT_TRUE(File::ReadFileToString(kBadXml.c_str(), &file_data));
+
+  ASSERT_FALSE(ExpatParser::ParseString(file_data, &handler_, &errors_, false));
+  ASSERT_FALSE(errors_.empty());
+  ASSERT_TRUE(handler_.get_xml().empty());
+}
+
+TEST_F(ExpatParserTest, TestEntitiesStopParser) {
+  // This is malformed XML.
+  const std::string kBadXml(
+    "<Placemark>"
+    "<!DOCTYPE billion ["
+    "<!ELEMENT billion (#PCDATA)>"
+    "<!ENTITY laugh0 \"ha\">"
+    "<!ENTITY laugh1 \"&laugh0;&laugh0;\">"
+    "<!ENTITY laugh2 \"&laugh1;&laugh1;\">"
+    "<!ENTITY laugh3 \"&laugh2;&laugh2;\">"
+    "<!ENTITY laugh4 \"&laugh3;&laugh3;\">"
+    "<!ENTITY laugh5 \"&laugh4;&laugh4;\">"
+    "<!ENTITY laugh6 \"&laugh5;&laugh5;\">"
+    "<!ENTITY laugh7 \"&laugh6;&laugh6;\">"
+    "<!ENTITY laugh8 \"&laugh7;&laugh7;\">"
+    "<!ENTITY laugh9 \"&laugh8;&laugh8;\">"
+    "<!ENTITY laugh10 \"&laugh9;&laugh9;\">"
+    "<!ENTITY laugh11 \"&laugh10;&laugh10;\">"
+    "<!ENTITY laugh12 \"&laugh11;&laugh11;\">"
+    "<!ENTITY laugh13 \"&laugh12;&laugh12;\">"
+    "<!ENTITY laugh14 \"&laugh13;&laugh13;\">"
+    "<!ENTITY laugh15 \"&laugh14;&laugh14;\">"
+    "<!ENTITY laugh16 \"&laugh15;&laugh15;\">"
+    "<!ENTITY laugh17 \"&laugh16;&laugh16;\">"
+    "<!ENTITY laugh18 \"&laugh17;&laugh17;\">"
+    "<!ENTITY laugh19 \"&laugh18;&laugh18;\">"
+    "<!ENTITY laugh20 \"&laugh19;&laugh19;\">"
+    "<!ENTITY laugh21 \"&laugh20;&laugh20;\">"
+    "<!ENTITY laugh22 \"&laugh21;&laugh21;\">"
+    "<!ENTITY laugh23 \"&laugh22;&laugh22;\">"
+    "<!ENTITY laugh24 \"&laugh23;&laugh23;\">"
+    "<!ENTITY laugh25 \"&laugh24;&laugh24;\">"
+    "<!ENTITY laugh26 \"&laugh25;&laugh25;\">"
+    "<!ENTITY laugh27 \"&laugh26;&laugh26;\">"
+    "<!ENTITY laugh28 \"&laugh27;&laugh27;\">"
+    "<!ENTITY laugh29 \"&laugh28;&laugh28;\">"
+    "<!ENTITY laugh30 \"&laugh29;&laugh29;\">"
+    "]>"
+    "<billion>&laugh30;</billion>"
+    "</Placemark>");
+  ASSERT_FALSE(ExpatParser::ParseString(kBadXml, &handler_, &errors_, false));
+  ASSERT_FALSE(errors_.empty());
+  ASSERT_EQ(std::string("<Placemark>"), handler_.get_xml());
 }
 
 }  // end namespace kmlbase

@@ -34,27 +34,37 @@ namespace kmlbase {
 
 static void XMLCALL
 startElement(void *userData, const char *name, const char **atts) {
-  ((ExpatHandler*)userData)->StartElement(name, atts);
+  static_cast<ExpatHandler*>(userData)->StartElement(name, atts);
 }
 
 static void XMLCALL
 endElement(void *userData, const char *name) {
-  ((ExpatHandler*)userData)->EndElement(name);
+  static_cast<ExpatHandler*>(userData)->EndElement(name);
 }
 
 static void XMLCALL
 charData(void *userData, const XML_Char *s, int len) {
-  ((ExpatHandler*)userData)->CharData(s, len);
+  static_cast<ExpatHandler*>(userData)->CharData(s, len);
 }
 
 static void XMLCALL
 startNamespace(void *userData, const XML_Char *prefix, const XML_Char *uri) {
-  ((ExpatHandler*)userData)->StartNamespace(prefix, uri);
+  static_cast<ExpatHandler*>(userData)->StartNamespace(prefix, uri);
 }
 
 static void XMLCALL
 endNamespace(void *userData, const XML_Char *prefix) {
-  ((ExpatHandler*)userData)->EndNamespace(prefix);
+  static_cast<ExpatHandler*>(userData)->EndNamespace(prefix);
+}
+
+static void XMLCALL
+entityDeclHandler(void *userData, const XML_Char *entityName,
+                  int is_parameter_entity, const XML_Char *value,
+                  int value_length, const XML_Char *base,
+                  const XML_Char *systemId, const XML_Char *publicId,
+                  const XML_Char *notationName) {
+  XML_Parser parser = static_cast<ExpatHandler*>(userData)->get_parser();
+  XML_StopParser(parser, XML_FALSE);
 }
 
 ExpatParser::ExpatParser(ExpatHandler* handler, bool namespace_aware)
@@ -66,6 +76,7 @@ ExpatParser::ExpatParser(ExpatHandler* handler, bool namespace_aware)
   XML_SetUserData(parser, expat_handler_);
   XML_SetElementHandler(parser, startElement, endElement);
   XML_SetCharacterDataHandler(parser, charData);
+  XML_SetEntityDeclHandler(parser, entityDeclHandler);
   if (namespace_aware) {
     XML_SetNamespaceDeclHandler(parser, startNamespace, endNamespace);
   }
