@@ -7,6 +7,9 @@ AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-r
 AM_TEST_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
 endif
 
+EXTRA_DIST = \
+	http_client_test_util.h
+
 lib_LTLIBRARIES = libkmlconvenience.la
 libkmlconvenience_la_SOURCES = \
 	atom_util.cc \
