@@ -47,7 +47,7 @@ Xsd::Xsd() {
   }
 }
 
-int Xsd::ElementId(std::string element_name) const {
+int Xsd::ElementId(const std::string& element_name) const {
   tag_id_map_t::const_iterator iter = tag_to_id.find(element_name);
   if (iter == tag_to_id.end()) {
     return Type_Unknown;

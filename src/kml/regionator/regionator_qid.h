@@ -46,7 +46,7 @@ enum quadrant_t {
 class Qid {
 public:
   Qid() {}
-  Qid(std::string qid) : qid_(qid) {}
+  Qid(const std::string& qid) : qid_(qid) {}
   static Qid CreateRoot() {
     return Qid("q0");
   }
