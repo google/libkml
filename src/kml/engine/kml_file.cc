@@ -188,12 +188,13 @@ bool KmlFile::SerializeToString(std::string* xml_output) const {
   return true;
 }
 
-kmldom::ObjectPtr KmlFile::GetObjectById(std::string id) const {
+kmldom::ObjectPtr KmlFile::GetObjectById(const std::string& id) const {
   ObjectIdMap::const_iterator find = object_id_map_.find(id);
   return find != object_id_map_.end() ? kmldom::AsObject(find->second) : NULL;
 }
 
-kmldom::StyleSelectorPtr KmlFile::GetSharedStyleById(std::string id) const {
+kmldom::StyleSelectorPtr KmlFile::GetSharedStyleById(
+    const std::string& id) const {
   SharedStyleMap::const_iterator find = shared_style_map_.find(id);
   return find != shared_style_map_.end() ? find->second : NULL;
 }

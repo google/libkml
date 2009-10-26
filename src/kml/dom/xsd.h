@@ -84,7 +84,7 @@ class Xsd {
   static Xsd* GetSchema();
 
   // Essentially the API to the global <element>'s
-  int ElementId(std::string name) const;
+  int ElementId(const std::string& name) const;
   XsdType ElementType(int id) const;
   std::string ElementName(int id) const;
 
