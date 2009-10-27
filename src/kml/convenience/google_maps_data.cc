@@ -171,7 +171,7 @@ bool GoogleMapsData::CreateMap(const std::string& title,
   kmlengine::KmlFilePtr kml_file = kmlengine::KmlFile::CreateFromImport(
       AtomUtil::CreateBasicEntry(title, summary));
   if (!kml_file.get()) {
-    return NULL;
+    return false;
   }
 
   // Get the Atom in XML form.
