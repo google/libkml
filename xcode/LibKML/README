@@ -1,7 +1,22 @@
-The LibKML Xcode project builds all libraries directly within the Xcode
-environment without use of configure, make, etc. It also builds an OS X
-Framework suitable for binary packaging and distribution.
+This Xcode project builds an OS X Framework directly usable as an embedded
+Framework in other Xcode projects.
 
-For more information on Xcode and Frameworks, see:
-  -  http://developer.apple.com/tools/xcode/
-  -  http://developer.apple.com/documentation/MacOSX/Conceptual/BPFrameworks/Frameworks.html
+The standard installation path for an OS X Framework created in Xcode is:
+$(HOME)/Library/Frameworks
+
+To enable an embeddable Framework, the installation path in this project is
+set to: @executable_path/../Frameworks
+
+For more information on this, see:
+http://developer.apple.com/mac/library/documentation/MacOSX/Conceptual/BPFrameworks/Tasks/CreatingFrameworks.html
+
+A traditional Framework has all its header files in a single Headers
+directory in the Framework bundle. Since libkml has its header files spread
+throughout multiple levels of directory hierarchy, there is some extra
+manipulation necessary in order for all include paths to be satisfied. If you
+want to see the gory details, see the "Run Script" build phase of the LibKML
+target. However, as an end user of the Framework all you need to do is:
+#include <LibKml/LibKml.h>.
+
+The Xcode project was made with Xcode 3.1.3 on OS X 10.5.8
+
