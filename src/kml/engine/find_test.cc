@@ -27,7 +27,6 @@
 // and the ElementFinder class.
 
 #include "kml/engine/find.h"
-#include <string>
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
@@ -77,8 +76,8 @@ TEST_F(ElementFinderTest, TestNullGetElementsById) {
 // Verify a normal usage of GetElementsById().
 TEST_F(ElementFinderTest, TestBasicGetElementsById) {
   // Put a variety of elements in a hierarchy.
-  const std::string kId0("id0");
-  const std::string kId1("id1");
+  const string kId0("id0");
+  const string kId1("id1");
   point0_->set_coordinates(coordinates_);
   placemark0_->set_geometry(point0_);
   placemark0_->set_id(kId0);
@@ -136,8 +135,8 @@ TEST_F(ElementFinderTest, TestBasicGetElementsById) {
 // Verify a normal usage of GetChildElements().
 TEST_F(ElementFinderTest, TestBasicGetChildElements) {
   // Put a variety of elements in a hierarchy.
-  const std::string kId0("id0");
-  const std::string kId1("id1");
+  const string kId0("id0");
+  const string kId1("id1");
   point0_->set_coordinates(coordinates_);
   placemark0_->set_geometry(point0_);
   placemark0_->set_id(kId0);

@@ -27,7 +27,6 @@
 // and IconStyle Icon elements.
 
 #include "kml/dom/link.h"
-#include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_funcs.h"
@@ -58,7 +57,7 @@ TEST_F(LinkTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(LinkTest, TestDefaults) {
-  ASSERT_EQ(std::string(""), link_->get_href());
+  ASSERT_EQ(string(""), link_->get_href());
   ASSERT_FALSE(link_->has_href());
   ASSERT_EQ(REFRESHMODE_ONCHANGE, link_->get_refreshmode());
   ASSERT_FALSE(link_->has_refreshmode());
@@ -100,14 +99,14 @@ TEST_F(LinkTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(LinkTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string href("href");
+  string href("href");
   RefreshModeEnum refreshmode = REFRESHMODE_ONINTERVAL;
   double refreshinterval = 1.0;
   ViewRefreshModeEnum viewrefreshmode = VIEWREFRESHMODE_ONREQUEST;
   double viewrefreshtime = 1.0;
   double viewboundscale = 0.5;
-  std::string viewformat("viewformat");
-  std::string httpquery("httpquery");
+  string viewformat("viewformat");
+  string httpquery("httpquery");
 
   // Set all fields:
   link_->set_href(href);
@@ -151,10 +150,10 @@ TEST_F(LinkTest, TestSetGetHasClear) {
 
 
 TEST_F(LinkTest, TestParse) {
-  const std::string kContent = "foo.kml";
-  const std::string kHref = "<href>" + kContent + "</href>";
-  const std::string kLink = "<Link>" + kHref + "</Link>";
-  std::string errors;
+  const string kContent = "foo.kml";
+  const string kHref = "<href>" + kContent + "</href>";
+  const string kLink = "<Link>" + kHref + "</Link>";
+  string errors;
   ElementPtr root = Parse(kLink, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
@@ -165,11 +164,11 @@ TEST_F(LinkTest, TestParse) {
 }
 
 TEST_F(LinkTest, TestAcceptCdataInHref) {
-  const std::string kContent = "abl?output=kml&ab_cl=erth&fname=p7_8_9.kmz";
-  const std::string kCdata = "<![CDATA[" + kContent + "]]>";
-  const std::string kHref = "<href>" + kCdata + "</href>";
-  const std::string kLink = "<Link>" + kHref + "</Link>";
-  std::string errors;
+  const string kContent = "abl?output=kml&ab_cl=erth&fname=p7_8_9.kmz";
+  const string kCdata = "<![CDATA[" + kContent + "]]>";
+  const string kHref = "<href>" + kCdata + "</href>";
+  const string kLink = "<Link>" + kHref + "</Link>";
+  string errors;
   ElementPtr root = Parse(kLink, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
@@ -209,9 +208,9 @@ TEST_F(UrlTest, TestDefaults) {
   ASSERT_FALSE(url_->has_viewrefreshtime());
   ASSERT_DOUBLE_EQ(1.0, url_->get_viewboundscale());
   ASSERT_FALSE(url_->has_viewboundscale());
-  ASSERT_EQ(std::string(""), url_->get_viewformat());
+  ASSERT_EQ(string(""), url_->get_viewformat());
   ASSERT_FALSE(url_->has_viewformat());
-  ASSERT_EQ(std::string(""), url_->get_httpquery());
+  ASSERT_EQ(string(""), url_->get_httpquery());
   ASSERT_FALSE(url_->has_httpquery());
 }
 
@@ -239,14 +238,14 @@ TEST_F(UrlTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(UrlTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string href("href");
+  string href("href");
   RefreshModeEnum refreshmode = REFRESHMODE_ONINTERVAL;
   double refreshinterval = 1.0;
   ViewRefreshModeEnum viewrefreshmode = VIEWREFRESHMODE_ONREQUEST;
   double viewrefreshtime = 1.0;
   double viewboundscale = 0.5;
-  std::string viewformat("viewformat");
-  std::string httpquery("httpquery");
+  string viewformat("viewformat");
+  string httpquery("httpquery");
 
   // Set all fields:
   url_->set_href(href);
@@ -306,7 +305,7 @@ TEST_F(IconTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(IconTest, TestDefaults) {
-  ASSERT_EQ(std::string(""), icon_->get_href());
+  ASSERT_EQ(string(""), icon_->get_href());
   ASSERT_FALSE(icon_->has_href());
   ASSERT_EQ(REFRESHMODE_ONCHANGE, icon_->get_refreshmode());
   ASSERT_FALSE(icon_->has_refreshmode());
@@ -318,9 +317,9 @@ TEST_F(IconTest, TestDefaults) {
   ASSERT_FALSE(icon_->has_viewrefreshtime());
   ASSERT_DOUBLE_EQ(1.0, icon_->get_viewboundscale());
   ASSERT_FALSE(icon_->has_viewboundscale());
-  ASSERT_EQ(std::string(""), icon_->get_viewformat());
+  ASSERT_EQ(string(""), icon_->get_viewformat());
   ASSERT_FALSE(icon_->has_viewformat());
-  ASSERT_EQ(std::string(""), icon_->get_httpquery());
+  ASSERT_EQ(string(""), icon_->get_httpquery());
   ASSERT_FALSE(icon_->has_httpquery());
 }
 
@@ -348,14 +347,14 @@ TEST_F(IconTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(IconTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string href("href");
+  string href("href");
   RefreshModeEnum refreshmode = REFRESHMODE_ONINTERVAL;
   double refreshinterval = 1.0;
   ViewRefreshModeEnum viewrefreshmode = VIEWREFRESHMODE_ONREQUEST;
   double viewrefreshtime = 1.0;
   double viewboundscale = 0.5;
-  std::string viewformat("viewformat");
-  std::string httpquery("httpquery");
+  string viewformat("viewformat");
+  string httpquery("httpquery");
 
   // Set all fields:
   icon_->set_href(href);
@@ -415,7 +414,7 @@ TEST_F(IconStyleIconTest, TestType) {
 
 // Verify proper defaults:
 TEST_F(IconStyleIconTest, TestDefaults) {
-  ASSERT_EQ(std::string(""), iconstyleicon_->get_href());
+  ASSERT_EQ(string(""), iconstyleicon_->get_href());
   ASSERT_FALSE(iconstyleicon_->has_href());
 }
 
@@ -429,7 +428,7 @@ TEST_F(IconStyleIconTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(IconStyleIconTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string href("href");
+  string href("href");
 
   // Set all fields:
   iconstyleicon_->set_href(href);
@@ -461,7 +460,7 @@ TEST_F(IconStyleIconTest, TestSerialize) {
 TEST_F(IconStyleIconTest, TestXmlSerialize) {
   // This is a special case in KML.
   // Verify that IconStyleIcon is serialized as "<Icon>".
-  std::string xml_output = SerializeRaw(iconstyleicon_);
+  string xml_output = SerializeRaw(iconstyleicon_);
   // The following presumes the serializer does _not_ handle nil elements.
   ASSERT_EQ(0, xml_output.compare("<Icon/>"));
 }
@@ -469,7 +468,7 @@ TEST_F(IconStyleIconTest, TestXmlSerialize) {
 TEST_F(IconStyleIconTest, TestParseSerializeUnknown) {
   // <Icon> here is BasicLink which has no <refreshMode>.  However this should
   // be preserved as unknown xml.
-  const std::string kIcon(
+  const string kIcon(
       "<Icon>"
       "<href>http://example.com/xyz.png</href>"
       "<refreshMode>onExpire</refreshMode>"

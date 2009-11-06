@@ -71,7 +71,7 @@ TEST_F(StyleInlinerTest, CallStyleInlinerMethodsInTypicalUsage) {
   //   </Placemark>
   // </Document>
   // ...to generate this:
-  const std::string kExpectedKml(
+  const string kExpectedKml(
     "<Document>\n"
     "  <Placemark>\n"
     "    <StyleMap>\n"
@@ -100,7 +100,7 @@ TEST_F(StyleInlinerTest, CallStyleInlinerMethodsInTypicalUsage) {
 
   // 2) <Style id="_0">
   StylePtr style = kml_factory_->CreateStyle();
-  const std::string kStyleId("_0");
+  const string kStyleId("_0");
   style->set_id(kStyleId);
   ASSERT_TRUE(style_inliner_->NewElement(style));
 
@@ -113,7 +113,7 @@ TEST_F(StyleInlinerTest, CallStyleInlinerMethodsInTypicalUsage) {
 
   // 5) <styleUrl>#_0</styleUrl>
   FieldPtr styleurl = kml_factory_->CreateFieldById(Type_styleUrl);
-  styleurl->set_char_data(std::string("#") + kStyleId);
+  styleurl->set_char_data(string("#") + kStyleId);
   ASSERT_TRUE(style_inliner_->NewElement(styleurl));
   ASSERT_FALSE(style_inliner_->EndElement(placemark, styleurl));
   // StyleInliner::EndElement() gives the placemark a style selector
@@ -157,7 +157,7 @@ TEST_F(StyleInlinerTest, VerifyNoInliningWithinUpdate) {
   // to the <Document> as normal.
   DocumentPtr document = kml_factory_->CreateDocument();
   StylePtr style = kml_factory_->CreateStyle();
-  const std::string kStyleId("style0");
+  const string kStyleId("style0");
   style->set_id(kStyleId);
   ASSERT_TRUE(style_inliner_->EndElement(document, style));
 
@@ -176,11 +176,11 @@ TEST_F(StyleInlinerTest, VerifyNoInliningWithinUpdate) {
 }
 
 // This is a utility function to read a file relative to the testdata directory.
-static bool ReadDataDirFileToString(const std::string& dir,
-                                    const std::string& filename,
-                                    std::string* content) {
-  const std::string pathname =
-    File::JoinPaths(File::JoinPaths(std::string(DATADIR), dir), filename);
+static bool ReadDataDirFileToString(const string& dir,
+                                    const string& filename,
+                                    string* content) {
+  const string pathname =
+    File::JoinPaths(File::JoinPaths(string(DATADIR), dir), filename);
   return File::ReadFileToString(pathname, content);
 }
 
@@ -199,17 +199,17 @@ static const struct {
 TEST_F(StyleInlinerTest, TestFiles) {
   const size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
-    std::string input;
+    string input;
     ASSERT_TRUE(ReadDataDirFileToString(kTestCases[i].source_subdir_,
                                         kTestCases[i].source_file_, &input))
       << kTestCases[i].source_subdir_ << "/" << kTestCases[i].source_file_;
-    std::string errors;
+    string errors;
 
     // Call the function under test.
     ElementPtr root = InlineStyles(input, &errors);
     ASSERT_TRUE(root);
     ASSERT_TRUE(errors.empty());
-    std::string check;
+    string check;
     ASSERT_TRUE(ReadDataDirFileToString(kTestCases[i].check_subdir_,
                                         kTestCases[i].check_file_, &check))
       << kTestCases[i].check_subdir_ << "/" << kTestCases[i].check_file_;

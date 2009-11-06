@@ -30,7 +30,6 @@
 #ifndef KML_BASE_URI_PARSER_H__
 #define KML_BASE_URI_PARSER_H__
 
-#include <string>
 #include "kml/base/util.h"
 #include "boost/scoped_ptr.hpp"
 
@@ -80,13 +79,13 @@ class UriParser {
   // This method saves the URI in string form into the given string.  This
   // returns false if a NULL string argument is supplied or on any internal
   // errors in saving to this string.  True is returned on success.
-  bool ToString(std::string* output) const;
+  bool ToString(string* output) const;
 
   // Converts a URI to its corresponding filename. The implementation
   // is platform-independent and handles either UNIX- or Windows-style path
   // names transparently. Returns false if output is NULL or on any internal
   // error in converting the uri.
-  static bool UriToFilename(const std::string& uri, std::string* output);
+  static bool UriToFilename(const string& uri, string* output);
 
   // Converts a UNIX URI to its corresponding UNIX filename. Returns false if
   // output is NULL or on any internal error in converting the uri.
@@ -94,7 +93,7 @@ class UriParser {
   // output "/home/libkml/foo.bar".
   // Clients should use UriToFilename in preference to this to have the path
   // name style handled automatically.
-  static bool UriToUnixFilename(const std::string& uri, std::string* output);
+  static bool UriToUnixFilename(const string& uri, string* output);
 
   // Converts a Windows URI to its corresponding Windows filename. Returns
   // false if output is NULL or on any internal error in converting the uri.
@@ -102,13 +101,13 @@ class UriParser {
   // will output "C:\\home\\libkml\\foo.bar".
   // Clients should use UriToFilename in preference to this to have the path
   // name style handled automatically.
-  static bool UriToWindowsFilename(const std::string& uri, std::string* output);
+  static bool UriToWindowsFilename(const string& uri, string* output);
 
   // Converts a filename to its corresponding URI. The implementation is
   // platform-independent and handles either UNIX- or Windows-style path names
   // transparently. Returns false if output is NULL or on any internal
   // error in converting the uri.
-  static bool FilenameToUri(const std::string& filename, std::string* output);
+  static bool FilenameToUri(const string& filename, string* output);
 
   // Converts a UNIX filename to its corresponding URI. Returns false if
   // output is NULL or on any internal error in converting the filename.
@@ -116,8 +115,8 @@ class UriParser {
   // "file:///home/libkml/foo.bar".
   // Clients should use FilenameToUri in preference to this to have the path
   // name style handled automatically.
-  static bool UnixFilenameToUri(const std::string& filename,
-                                std::string* output);
+  static bool UnixFilenameToUri(const string& filename,
+                                string* output);
 
   // Converts a Windows filename to its corresponding URI. Returns false if
   // output is NULL or on any internal error in converting the filename.
@@ -125,30 +124,30 @@ class UriParser {
   // output "file:///C:/home/libkml/foo.bar".
   // Clients should use FilenameToUri in preference to this to have the path
   // name style handled automatically.
-  static bool WindowsFilenameToUri(const std::string& filename,
-                                   std::string* output);
+  static bool WindowsFilenameToUri(const string& filename,
+                                   string* output);
 
   // This returns the scheme of the URI if one exists.
-  bool GetScheme(std::string* scheme) const;
+  bool GetScheme(string* scheme) const;
 
   // This returns the host of the URI if one exists.
-  bool GetHost(std::string* host) const;
+  bool GetHost(string* host) const;
 
   // This returns the port of the URI if one exists.
-  bool GetPort(std::string* port) const;
+  bool GetPort(string* port) const;
 
   // This returns the query of the URI if one exists.
-  bool GetQuery(std::string* query) const;
+  bool GetQuery(string* query) const;
 
   // This method returns the fragment portion of the URI into the given
   // string if such is supplied.  If no string is supplied or if there is no
   // fragment in this URI false is returned.  The fragment returned does not
   // include the '#' found in the corresponding URI.
-  bool GetFragment(std::string* fragment) const;
+  bool GetFragment(string* fragment) const;
 
   // This method returns true if the uri has a path.  If an output string
   // pointer is supplied the path is saved there.
-  bool GetPath(std::string* path) const;
+  bool GetPath(string* path) const;
 
  private:
   // UriParserPrivate hides the internals of the underlying third party

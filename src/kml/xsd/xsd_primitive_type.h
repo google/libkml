@@ -28,7 +28,6 @@
 #ifndef KML_XSD_XSD_PRIMITIVE_TYPE_H__
 #define KML_XSD_XSD_PRIMITIVE_TYPE_H__
 
-#include <string>
 #include "kml/xsd/xsd_type.h"
 
 namespace kmlxsd {
@@ -74,7 +73,7 @@ class XsdPrimitiveType : public XsdType {
   // XsdPrimitiveTypePtr primitive_type = XsdPrimitiveType::Create("boolean");
   // If the type_name is not that of an XSD primitive type then no
   // XsdPrimitiveType is created and NULL is returned.
-  static XsdPrimitiveType* Create(const std::string& type_name) {
+  static XsdPrimitiveType* Create(const string& type_name) {
     TypeId type_id = GetTypeId(type_name);
     if (type_id != XSD_INVALID) {
       return new XsdPrimitiveType(type_id);
@@ -94,24 +93,24 @@ class XsdPrimitiveType : public XsdType {
 
   // The XsdPrimitiveType implementation of this XsdType virtual method returns
   // the name of the type.
-  virtual const std::string get_name() const {
+  virtual const string get_name() const {
     return GetTypeName(type_id_);
   }
 
   // The XsdPrimitiveType implementation of XsdType returns "xsd:primitive".
-  virtual const std::string get_base() const {
+  virtual const string get_base() const {
     return "xsd:primitive";
   }
 
   // This returns the name of the given XSD primitive type.  For example,
   // XSD_DOUBLE returns "double.  An empty string is returned for an invalid
   // type id.
-  static const std::string GetTypeName(TypeId type_id);
+  static const string GetTypeName(TypeId type_id);
 
   // This returns the id of the given XSD primitive type.  For example,
   // "double" returns XSD_DOUBLE.  XSD_INVALID is returned if the name is
   // on that of an XSD primitive type.
-  static XsdPrimitiveType::TypeId GetTypeId(const std::string& type_name);
+  static XsdPrimitiveType::TypeId GetTypeId(const string& type_name);
 
  private:
   // Use the static Create method to create an XsdPrimitiveType.

@@ -41,6 +41,8 @@
 #include "kml/convenience/google_maps_data.h"
 #include "kml/convenience/http_client.h"
 
+using kmlconvenience::GoogleMapsData;
+
 int main(int argc, char** argv) {
   if (argc != 2) {
     std::cout << "usage: " << argv[0] << " file.kml" << std::endl;
@@ -61,7 +63,6 @@ int main(int argc, char** argv) {
     return -1;
   }
 
-  const std::string service = "local";  // Google Maps service name is "local".
   std::string user;
   std::string password;
 
@@ -71,13 +72,14 @@ int main(int argc, char** argv) {
 
   CurlHttpClient* curl_http_client =
       new CurlHttpClient("libkml:examples:hellonet::uploadgmap");
-  if (!curl_http_client->Login("local", user, password)) {
+  if (!curl_http_client->Login(GoogleMapsData::get_service_name(), user,
+                               password)) {
     std::cerr << "Login failed" << std::endl;
     return 1;
   }
 
-  boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-    kmlconvenience::GoogleMapsData::Create(curl_http_client));
+  boost::scoped_ptr<GoogleMapsData> google_maps_data(
+      GoogleMapsData::Create(curl_http_client));
 
   std::string map_entry_xml;
   google_maps_data->CreateMap(root_feature->get_name(),
@@ -100,8 +102,7 @@ int main(int argc, char** argv) {
   std::cout << "Map feed URI: " << map_feed_uri << std::endl;
 
   std::string feature_feed_uri;
-  if (!kmlconvenience::GoogleMapsData::GetFeatureFeedUri(map_entry,
-                                                         &feature_feed_uri)) {
+  if (!GoogleMapsData::GetFeatureFeedUri(map_entry, &feature_feed_uri)) {
     std::cerr << "No Feature feed URI?" << std::endl;
     return 1;
   }

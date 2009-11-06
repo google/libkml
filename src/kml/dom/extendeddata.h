@@ -29,7 +29,6 @@
 #ifndef KML_DOM_EXTENDEDDATA_H__
 #define KML_DOM_EXTENDEDDATA_H__
 
-#include <string>
 #include <vector>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
@@ -49,9 +48,9 @@ class SimpleData : public BasicElement<Type_SimpleData> {
   virtual ~SimpleData();
 
   // name=
-  const std::string& get_name() const { return name_; }
+  const string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
-  void set_name(const std::string& value) {
+  void set_name(const string& value) {
     name_ = value;
     has_name_ = true;
   }
@@ -61,9 +60,9 @@ class SimpleData : public BasicElement<Type_SimpleData> {
   }
 
   // char data
-  const std::string& get_text() const { return text_; }
+  const string& get_text() const { return text_; }
   bool has_text() const { return has_text_; }
-  void set_text(const std::string& value) {
+  void set_text(const string& value) {
     text_ = value;
     has_text_ = true;
   }
@@ -81,9 +80,9 @@ class SimpleData : public BasicElement<Type_SimpleData> {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
-  std::string name_;
+  string name_;
   bool has_name_;
-  std::string text_;
+  string text_;
   bool has_text_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleData);
 };
@@ -99,9 +98,9 @@ class SchemaData : public Object {
   static KmlDomType ElementType() { return Type_SchemaData; }
 
   // schemaUrl=
-  const std::string& get_schemaurl() const { return schemaurl_; }
+  const string& get_schemaurl() const { return schemaurl_; }
   bool has_schemaurl() const { return has_schemaurl_; }
-  void set_schemaurl(const std::string& value) {
+  void set_schemaurl(const string& value) {
     schemaurl_ = value;
     has_schemaurl_ = true;
   }
@@ -132,7 +131,7 @@ class SchemaData : public Object {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
-  std::string schemaurl_;
+  string schemaurl_;
   bool has_schemaurl_;
   std::vector<SimpleDataPtr> simpledata_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SchemaData);
@@ -149,9 +148,9 @@ class Data : public Object {
   static KmlDomType ElementType() { return Type_Data; }
 
   // name=
-  const std::string& get_name() const { return name_; }
+  const string& get_name() const { return name_; }
   bool has_name() const { return has_name_; }
-  void set_name(const std::string& value) {
+  void set_name(const string& value) {
     name_ = value;
     has_name_ = true;
   }
@@ -161,9 +160,9 @@ class Data : public Object {
   }
 
   // <displayname>
-  const std::string& get_displayname() const { return displayname_; }
+  const string& get_displayname() const { return displayname_; }
   bool has_displayname() const { return has_displayname_; }
-  void set_displayname(const std::string& value) {
+  void set_displayname(const string& value) {
     displayname_ = value;
     has_displayname_ = true;
   }
@@ -173,9 +172,9 @@ class Data : public Object {
   }
 
   // <value>
-  const std::string& get_value() const { return value_; }
+  const string& get_value() const { return value_; }
   bool has_value() const { return has_value_; }
-  void set_value(const std::string& value) {
+  void set_value(const string& value) {
     value_ = value;
     has_value_ = true;
   }
@@ -194,11 +193,11 @@ class Data : public Object {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
-  std::string name_;
+  string name_;
   bool has_name_;
-  std::string displayname_;
+  string displayname_;
   bool has_displayname_;
-  std::string value_;
+  string value_;
   bool has_value_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Data);
 };

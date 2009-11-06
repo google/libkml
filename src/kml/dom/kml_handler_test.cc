@@ -44,17 +44,13 @@ typedef std::vector<ElementPtr> element_vector_t;
 class KmlHandlerTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    // Emulate expat's xmlparse.c:startAtts().
-    // 16 == xmlparse.c's INIT_ATTS_SIZE
-    atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
     kml_handler_.reset(new KmlHandler(observers_));
   }
 
   virtual void TearDown() {
-    free(atts_);
   }
 
-  const char** atts_;
+  kmlbase::StringVector atts_;
   parser_observer_vector_t observers_;
   boost::scoped_ptr<KmlHandler> kml_handler_;
   void VerifyFolderParse(const ElementPtr& root) const;
@@ -105,7 +101,7 @@ TEST_F(KmlHandlerTest, TestBasicCharData) {
   const char* kContent = "what is in a name";
 
   kml_handler_->StartElement(kTagName, atts_);
-  kml_handler_->CharData(kContent, strlen(kContent));
+  kml_handler_->CharData(kContent);
   kml_handler_->EndElement(kTagName);
 
   ElementPtr root = kml_handler_->PopRoot();
@@ -135,10 +131,10 @@ TEST_F(KmlHandlerTest, TestEndComplexElement) {
 // This is a test of StartElement() for a known complex element with known
 // attributes.
 TEST_F(KmlHandlerTest, TestStartComplexElementWithAtts) {
-  const char* kAttrName = "id";
-  const char* kAttrVal = "foo";
-  atts_[0] = kAttrName;
-  atts_[1] = kAttrVal;
+  const string kAttrName("id");
+  const string kAttrVal("foo");
+  atts_.push_back(kAttrName);
+  atts_.push_back(kAttrVal);
   kml_handler_->StartElement("Placemark", atts_);
   ElementPtr root = kml_handler_->PopRoot();
   ASSERT_EQ(root->Type(), Type_Placemark);
@@ -283,7 +279,7 @@ TEST_F(KmlHandlerTest, NewElementObserverTerminationTest) {
   // This specifies to stop parsing after 2 elements.
   SimpleNewElementObserver simple_new_element_observer(&element_vector, 2);
   parser.AddObserver(&simple_new_element_observer);
-  std::string errors;
+  string errors;
   ElementPtr root = parser.Parse(kKmlFolder, &errors);
 
   // Verify that the parse was terminated.
@@ -330,7 +326,7 @@ TEST_F(KmlHandlerTest, AddChildObserverTerminationTest) {
                                                    &child_vector,
                                                    4);
   parser.AddObserver(&simple_add_child_observer);
-  std::string errors;
+  string errors;
   ElementPtr root = parser.Parse(kKmlFolder, &errors);
 
   // Verify that the parse was terminated.
@@ -365,7 +361,7 @@ void KmlHandlerTest::MultipleObserverTestCommon(size_t max_elements,
   parser.AddObserver(&null_observer);
   parser.AddObserver(&simple_new_element_observer);
   parser.AddObserver(&simple_parent_child_observer);
-  std::string errors;
+  string errors;
   ElementPtr root = parser.Parse(kKmlFolder, &errors);
 
   if (expected_element_count >= kNumElements) {

@@ -49,4 +49,11 @@ typedef unsigned __int32 uint32_t;
 typedef unsigned __int64 uint64_t;
 #endif  // _MSC_VER
 
+#include <string>
+
+// A convenience for the internal build system at Google.
+#ifndef HAS_GLOBAL_STRING
+using std::string;
+#endif
+
 #endif  // KML_BASE_UTIL_H__

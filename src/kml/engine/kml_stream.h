@@ -29,7 +29,6 @@
 #define KML_ENGINE_KML_STREAM_H__
 
 #include <istream>
-#include <string>
 #include "kml/dom.h"
 #include "kml/base/util.h"
 #include "kml/base/xml_file.h"
@@ -50,7 +49,7 @@ class KmlStream : public kmlbase::XmlFile {
   // input is consumed.  On any parse or I/O failure NULL is returned and an
   // error message is set to the given error string if one is supplied.
   // If a ParserObserver is supplied it is used during parse.
-  static KmlStream* ParseFromIstream(std::istream* input, std::string* errors,
+  static KmlStream* ParseFromIstream(std::istream* input, string* errors,
                                      kmldom::ParserObserver* observer);
 
   // This returns the root element of this KML stream.

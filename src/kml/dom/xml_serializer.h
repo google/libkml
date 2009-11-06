@@ -29,7 +29,6 @@
 #define KML_DOM_XML_SERIALIZER_H__
 
 #include <stack>
-#include <string>
 #include <vector>
 #include "kml/dom/serializer.h"
 #include "kml/dom.h"
@@ -60,10 +59,10 @@ class XmlSerializer : public Serializer {
 
   // Emit the XML for the field of the given type with the given content
   // as its character data.  If value is empty a nil element is emitted.
-  virtual void SaveStringFieldById(int type_id, std::string value);
+  virtual void SaveStringFieldById(int type_id, string value);
 
   // Save out character data.
-  virtual void SaveContent(const std::string& content, bool maybe_quote);
+  virtual void SaveContent(const string& content, bool maybe_quote);
 
   // Save a Color32 value as its AABBGGRR representation.
   virtual void SaveColor(int type_id, const kmlbase::Color32& color);
@@ -72,13 +71,13 @@ class XmlSerializer : public Serializer {
   virtual void Indent();
 
   // Write the state of this serializer to the given string.
-  void WriteString(std::string* output);
+  void WriteString(string* output);
 
  private:
   const char* newline_;
   const char* indent_;
-  std::vector<std::string> xml_;
-  std::stack<std::string> tag_stack_;
+  std::vector<string> xml_;
+  std::stack<string> tag_stack_;
 };
 
 }  // end namespace kmldom

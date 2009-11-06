@@ -213,7 +213,7 @@ TEST_F(RegionatorUtilTest, TestCreateChildRegion) {
 
 // This tests the CreateLineStringBox() function.
 TEST_F(RegionatorUtilTest, TestCreateLineStringBox) {
-  const std::string name("my linestring box");
+  const string name("my linestring box");
   kmldom::RegionPtr region = factory_->CreateRegion();
   kmldom::PlacemarkPtr placemark = CreateLineStringBox(name, region);
 }
@@ -226,7 +226,7 @@ TEST_F(RegionatorUtilTest, TestCreateRegionNetworkLink) {
   double west(-.9898981234);
   double minlodpixels(256);
   double maxlodpixels(-1);
-  std::string href("child.kml");
+  string href("child.kml");
   kmldom::NetworkLinkPtr networklink = CreateRegionNetworkLink(
       kmlconvenience::CreateRegion2d(north, south, east, west, minlodpixels,
                                      maxlodpixels),href);

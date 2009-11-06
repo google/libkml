@@ -26,7 +26,6 @@
 // This file contains the unit tests for the KmlCache class.
 
 #include "kml/engine/kml_cache.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/file.h"
 #include "kml/base/net_cache_test_util.h"
@@ -59,14 +58,14 @@ class KmlCacheTest : public testing::Test {
 
 // Verify the FetchKml() and FetchData() with null/bad arguments.
 TEST_F(KmlCacheTest, TestNullBadFetch) {
-  const std::string kEmpty;
-  std::string data;
+  const string kEmpty;
+  string data;
   ASSERT_FALSE(kml_cache_->FetchKmlAbsolute(kEmpty));
   ASSERT_FALSE(kml_cache_->FetchKmlRelative(kEmpty, kEmpty));
   ASSERT_FALSE(kml_cache_->FetchDataRelative(kEmpty, kEmpty, NULL));
   ASSERT_FALSE(kml_cache_->FetchDataRelative(kEmpty, kEmpty, &data));
   ASSERT_TRUE(data.empty());
-  const std::string kGarbage("this is not a url");
+  const string kGarbage("this is not a url");
   ASSERT_FALSE(kml_cache_->FetchKmlAbsolute(kGarbage));
   ASSERT_FALSE(kml_cache_->FetchKmlRelative(kGarbage, kGarbage));
   ASSERT_FALSE(kml_cache_->FetchDataRelative(kGarbage, kGarbage, &data));
@@ -77,12 +76,12 @@ TEST_F(KmlCacheTest, TestNullBadFetch) {
 TEST_F(KmlCacheTest, TestBasicFetchKml) {
   // Fetch point-sarnen.kml as it if is a relative NetworkLink from
   // some mythic.kml in the same directory on the same server.
-  const std::string kHost("http://www.example.com/");
-  const std::string kDir("style/weather");
-  const std::string kBaseKml("mythic.kml");
-  const std::string kTargetHref("point-sarnen.kml");
-  const std::string kBaseUrl(kHost + kDir + "/" + kBaseKml);
-  const std::string kTargetUrl(kHost + kDir + "/" + kTargetHref);
+  const string kHost("http://www.example.com/");
+  const string kDir("style/weather");
+  const string kBaseKml("mythic.kml");
+  const string kTargetHref("point-sarnen.kml");
+  const string kBaseUrl(kHost + kDir + "/" + kBaseKml);
+  const string kTargetUrl(kHost + kDir + "/" + kTargetHref);
   KmlFilePtr kml_file = kml_cache_->FetchKmlRelative(kBaseUrl, kTargetHref);
   // Verify that this file fetches, parses, has the right url, has a Placemark
   // with the given id and is at the given lat,lon.
@@ -115,13 +114,13 @@ TEST_F(KmlCacheTest, TestBasicFetchKml) {
 // Verify basic usage of the FetchData() method.
 TEST_F(KmlCacheTest, TestBasicFetchData) {
   // Fetch the KML from the previous test, but just as raw data.
-  const std::string kPath("/style/weather/point-sarnen.kml");
-  const std::string kUrl(std::string("http://host.com/" + kPath));
-  std::string got_content;
+  const string kPath("/style/weather/point-sarnen.kml");
+  const string kUrl(string("http://host.com/" + kPath));
+  string got_content;
   ASSERT_TRUE(kml_cache_->FetchDataRelative(kUrl, kUrl, &got_content));
 
   // Read this out of the file system to compare.
-  std::string want_content;
+  string want_content;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(
       kmlbase::File::JoinPaths(DATADIR, kPath), &want_content));
 
@@ -136,16 +135,16 @@ TEST_F(KmlCacheTest, TestBasicFetchData) {
 // Verify that the URL of the KmlFile created for a fetch of a KMZ for
 // the default KML file is as expected.
 TEST_F(KmlCacheTest, TestBasicFetchKmz) {
-  const std::string kKmzPath("kmz/radar-animation.kmz");
-  const std::string kKmzUrl(std::string("http://host.com/" + kKmzPath));
+  const string kKmzPath("kmz/radar-animation.kmz");
+  const string kKmzUrl(string("http://host.com/" + kKmzPath));
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kKmzUrl);
   // The KML file in this KMZ archive is known to be doc.kml
-  ASSERT_EQ(std::string(kKmzUrl + "/doc.kml"), kml_file->get_url());
+  ASSERT_EQ(string(kKmzUrl + "/doc.kml"), kml_file->get_url());
 
   // Verify that the URL set for the KmlFile for an explicit KML reference
   // into a KMZ is exactly the same as the fetch URL.
-  const std::string kLevel03131Path("level03/0131.kml");
-  const std::string kLevel03131Url(kKmzUrl + "/" + kLevel03131Path);
+  const string kLevel03131Path("level03/0131.kml");
+  const string kLevel03131Url(kKmzUrl + "/" + kLevel03131Path);
   kml_file = kml_cache_->FetchKmlAbsolute(kLevel03131Url);
   ASSERT_EQ(kLevel03131Url, kml_file->get_url());
 }
@@ -219,7 +218,7 @@ static struct {
 TEST_F(KmlCacheTest, TestFetchDataRelativeTestCases) {
   size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
-    std::string data;
+    string data;
     bool status = kml_cache_->FetchDataRelative(kTestCases[i].base_url,
                                                 kTestCases[i].target_href,
                                                 &data);

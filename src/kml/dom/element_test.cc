@@ -100,7 +100,7 @@ class TestElement : public Element {
   bool has_ego() const {
     return has_ego_;
   }
-  std::string get_ego() const {
+  string get_ego() const {
     return ego_;
   }
 
@@ -114,7 +114,7 @@ class TestElement : public Element {
   // the reference to each underlying element.
   std::vector<ComplexChildPtr> child_array_;
   // This element keeps the value of any "ego" attribute here.
-  std::string ego_;
+  string ego_;
   bool has_ego_;
 };
 
@@ -145,8 +145,8 @@ TEST_F(ElementTest, TestTypeUnknown) {
 
 TEST_F(ElementTest, TestAddGetUnknowns) {
   // Unrecognised elements:
-  const std::string unknown1("<unknown>zzz<Foo/></unknown>");
-  const std::string unknown2("<unknownBar/>");
+  const string unknown1("<unknown>zzz<Foo/></unknown>");
+  const string unknown2("<unknownBar/>");
   element_->AddUnknownElement(unknown1);
   element_->AddUnknownElement(unknown2);
   ASSERT_EQ(static_cast<size_t>(2),
@@ -208,7 +208,7 @@ TEST_F(ElementTest, TestParseAttributes) {
   ASSERT_FALSE(element_->has_ego());
   Attributes attributes;
   element_->SerializeAttributes(&attributes);
-  std::string val;
+  string val;
   ASSERT_FALSE(attributes.GetValue("ego", &val));
   ASSERT_FALSE(attributes.GetValue("id", &val));
 
@@ -217,7 +217,7 @@ TEST_F(ElementTest, TestParseAttributes) {
   element_->ParseAttributes(Attributes::Create(kAttrs));
   // Verify that TestElement grabbed the ego= attr
   ASSERT_TRUE(element_->has_ego());
-  ASSERT_EQ(std::string(kAttrs[1]), element_->get_ego());
+  ASSERT_EQ(string(kAttrs[1]), element_->get_ego());
   // Verify serialization picked up both attributes.
   element_->SerializeAttributes(&attributes);
   ASSERT_TRUE(attributes.GetValue("ego", &val));
@@ -235,25 +235,25 @@ TEST_F(ElementTest, TestParseAttributes) {
 
 // This tests GetXmlns() and xmlns handling of SerializeAttributes().
 TEST_F(ElementTest, TestXmlns) {
-  std::map<std::string, std::string> source_map;
-  const std::string kXmlns("xmlns");
-  const std::string kGx("gx");
-  const std::string kXx("xx");
+  std::map<string, string> source_map;
+  const string kXmlns("xmlns");
+  const string kGx("gx");
+  const string kXx("xx");
   source_map[kXmlns] = "default-namespace";
   source_map[kGx] = "extension-namespace";
   source_map[kXx] = "yet-another-namespace";
   // Create and parse xmlns attributes.
   Attributes* attributes = new Attributes();  // Element takes ownership.
   attributes->SetValue("xmlns", source_map[kXmlns]);
-  attributes->SetValue(std::string("xmlns:") + kGx, source_map[kGx]);
-  attributes->SetValue(std::string("xmlns:") + kXx, source_map[kXx]);
+  attributes->SetValue(string("xmlns:") + kGx, source_map[kGx]);
+  attributes->SetValue(string("xmlns:") + kXx, source_map[kXx]);
   element_->ParseAttributes(attributes);
 
   // Verify the xmlns Attributes returned from GetXmlns().
   const Attributes* xmlns = element_->GetXmlns();
   ASSERT_TRUE(xmlns);
   // STL set does not permit dupes.
-  std::set<std::string> found_keys;
+  std::set<string> found_keys;
   kmlbase::StringMapIterator iter = xmlns->CreateIterator();
   for (; !iter.AtEnd(); iter.Advance()) {
     found_keys.insert(iter.Data().first);
@@ -299,14 +299,14 @@ TEST_F(ElementTest, TestMergeXmlnsNull) {
 // This tests the MergeXmls method on an Element with as yet no xmlns info
 // and adds exactly one prefix/namespace pair.
 TEST_F(ElementTest, TestMergeXmlnsOne) {
-  const std::string kPrefix("kmx");
-  const std::string kNamespace("http://example.com/km/x");
+  const string kPrefix("kmx");
+  const string kNamespace("http://example.com/km/x");
   Attributes xmlns;
   xmlns.SetValue(kPrefix, kNamespace);
   element_->MergeXmlns(xmlns);
   ASSERT_TRUE(element_->GetXmlns());
   ASSERT_EQ(static_cast<size_t>(1), element_->GetXmlns()->GetSize());
-  std::string xml_namespace;
+  string xml_namespace;
   ASSERT_TRUE(element_->GetXmlns()->GetValue(kPrefix, &xml_namespace));
   ASSERT_EQ(kNamespace, xml_namespace);
 }
@@ -319,8 +319,8 @@ TEST_F(ElementTest, TestMergeXmlnsMultiple) {
       kmlbase::XMLNS_XAL };
   const size_t xmlnsid_size = sizeof(kXmlnsIds)/sizeof(kmlbase::XmlnsId);
   for (size_t i = 0; i < xmlnsid_size; ++i) {
-    std::string prefix;
-    std::string xml_namespace;
+    string prefix;
+    string xml_namespace;
     ASSERT_TRUE(FindXmlNamespaceAndPrefix(kXmlnsIds[i], &prefix,
                                           &xml_namespace)) << kXmlnsIds[i];
     xmlns.SetValue(prefix, xml_namespace);
@@ -330,7 +330,7 @@ TEST_F(ElementTest, TestMergeXmlnsMultiple) {
     // ...verify that it only grows by one item each time, and...
     ASSERT_EQ(static_cast<size_t>(i+1), element_->GetXmlns()->GetSize());
     // ...verify that that item is in the element's xmlns.
-    std::string got_namespace;
+    string got_namespace;
     ASSERT_TRUE(element_->GetXmlns()->GetValue(prefix, &got_namespace));
     ASSERT_EQ(xml_namespace, got_namespace);
   }
@@ -339,7 +339,7 @@ TEST_F(ElementTest, TestMergeXmlnsMultiple) {
 TEST_F(ElementTest, TestSerializeUnknown) {
   // This Serializer is special-cased to assert the behavior of Element's
   // SerializeUnknown() method on fully unknown children.
-  typedef std::vector<std::string> StringVector;
+  typedef std::vector<string> StringVector;
   class UnknownSerializer : public Serializer {
    public:
     UnknownSerializer()
@@ -367,7 +367,7 @@ TEST_F(ElementTest, TestSerializeUnknown) {
       ++end_element_array_count_;
     }
 
-    virtual void SaveContent(const std::string& content, bool escape) {
+    virtual void SaveContent(const string& content, bool escape) {
       ASSERT_TRUE(in_unknown_element_array_);
       --element_count_;
       unknown_content_.push_back(content);
@@ -388,7 +388,7 @@ TEST_F(ElementTest, TestSerializeUnknown) {
     int end_element_array_count_;
     size_t element_count_;
     bool in_unknown_element_array_;
-    std::vector<std::string> unknown_content_;
+    std::vector<string> unknown_content_;
   } unknown_serializer;
 
   element_->SerializeUnknown(unknown_serializer);
@@ -397,9 +397,9 @@ TEST_F(ElementTest, TestSerializeUnknown) {
   ASSERT_EQ(0, unknown_serializer.get_end_element_array_count());
   ASSERT_TRUE(unknown_serializer.get_unknown_content().empty());
 
-  const std::string kUnknown1("<hi>there</hi>");
+  const string kUnknown1("<hi>there</hi>");
   element_->AddUnknownElement(kUnknown1);
-  const std::string kUnknown2("<how>are</how>");
+  const string kUnknown2("<how>are</how>");
   element_->AddUnknownElement(kUnknown2);
   element_->SerializeUnknown(unknown_serializer);
   ASSERT_EQ(1, unknown_serializer.get_begin_element_array_count());
@@ -633,28 +633,28 @@ TEST(FieldTest, TestSetString) {
   // Note: SetString always deletes field.
   ASSERT_EQ(false, field->SetString(NULL));
 
-  std::string name;
+  string name;
 
   // <name>my name</name>
   field = factory->CreateFieldById(Type_name);
   const char* kMyName = "my name";
   field->set_char_data(kMyName);
   ASSERT_EQ(true, field->SetString(&name));
-  ASSERT_EQ(std::string(kMyName), name);
+  ASSERT_EQ(string(kMyName), name);
 }
 
 // This tests Field's Serialize() method.
 TEST(FieldTest, TestSerialize) {
-  const std::string kContent("stuff in little snippet");
+  const string kContent("stuff in little snippet");
   KmlFactory* factory = KmlFactory::GetFactory();
   FieldPtr field = factory->CreateFieldById(Type_snippet);
   // Test empty field is serialized as nil element.
-  ASSERT_EQ(std::string("<snippet/>"), SerializeRaw(field));
+  ASSERT_EQ(string("<snippet/>"), SerializeRaw(field));
 
   // Give it content and verify serializing of content-full field.
   field->set_char_data(kContent);
-  const std::string kExpectedXml(
-      std::string("<snippet>") + kContent + "</snippet>");
+  const string kExpectedXml(
+      string("<snippet>") + kContent + "</snippet>");
   ASSERT_EQ(kExpectedXml, SerializeRaw(field));
 }
 

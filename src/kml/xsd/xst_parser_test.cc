@@ -26,7 +26,6 @@
 // This file contains the unit tests for the XstParser class.
 
 #include "kml/xsd/xst_parser.h"
-#include <string>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
@@ -48,15 +47,15 @@ class XstParserTest : public testing::Test {
 
 // Verify the ParseXstAlias() method.
 TEST_F(XstParserTest, TestParseXstAlias) {
-  const std::string kRealName("real-name");
-  const std::string kAlias("better-name");
-  std::vector<std::string> alias;
+  const string kRealName("real-name");
+  const string kAlias("better-name");
+  std::vector<string> alias;
   alias.push_back("alias");
   alias.push_back(kRealName);
   alias.push_back(kAlias);
 
   // Verify the XsdFile does not have this alias.
-  ASSERT_EQ(std::string(""), xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(string(""), xsd_file_->get_alias(kRealName));
 
   // Call the method under test.
   xst_parser_->ParseXstAlias(alias);
@@ -67,13 +66,13 @@ TEST_F(XstParserTest, TestParseXstAlias) {
 
 // Verify the ParseXst() method.
 TEST_F(XstParserTest, TestParseXst) {
-  const std::string kRealName("real-name");
-  const std::string kAlias("better-name");
-  const std::string kXstData(
-      std::string("alias") + " " + kRealName + " " + kAlias);
+  const string kRealName("real-name");
+  const string kAlias("better-name");
+  const string kXstData(
+      string("alias") + " " + kRealName + " " + kAlias);
 
   // Verify the XsdFile does not have this alias.
-  ASSERT_EQ(std::string(""), xsd_file_->get_alias(kRealName));
+  ASSERT_EQ(string(""), xsd_file_->get_alias(kRealName));
 
   // Call the method under test.
   xst_parser_->ParseXst(kXstData);

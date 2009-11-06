@@ -31,7 +31,6 @@
 #define KML_ENGINE_STYLE_SPLITTER_INTERNAL_H__
 
 #include <map>
-#include <string>
 #include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/dom/parser_observer.h"
@@ -68,10 +67,10 @@ class StyleSplitter : public kmldom::ParserObserver {
   // as the xml id for the shared style.  A derived class can override this
   // method and use its own naming scheme, however if the id created is not
   // unique the given style will not be split from the feature.
-  virtual std::string CreateUniqueId(const SharedStyleMap& shared_style_map,
+  virtual string CreateUniqueId(const SharedStyleMap& shared_style_map,
                                      unsigned int id_counter) {
     // xml:id cannot begin with a digit.
-    return std::string("_")  + kmlbase::ToString(id_counter);
+    return string("_")  + kmlbase::ToString(id_counter);
   }
 
   // ParserObserver::EndElement()

@@ -34,16 +34,16 @@ namespace kmlconvenience {
 
 TEST(HttpClientTest, FetchSetHeader) {
   HttpClient http_client("my-app");
-  const std::string kFieldName("Some-Header");
-  const std::string kFieldValue("the value of the header");
+  const string kFieldName("Some-Header");
+  const string kFieldValue("the value of the header");
   const size_t size_before = http_client.get_headers().size();
   http_client.AddHeader(kFieldName, kFieldValue);
   const StringPairVector& headers = http_client.get_headers();
   ASSERT_EQ(size_before + 1, headers.size());
   ASSERT_EQ(kFieldName, headers[size_before].first);
   ASSERT_EQ(kFieldValue, headers[size_before].second);
-  const std::string kField1Name("Another-Header");
-  const std::string kField1Value("the value of this other header");
+  const string kField1Name("Another-Header");
+  const string kField1Value("the value of this other header");
   http_client.AddHeader(kField1Name, kField1Value);
   ASSERT_EQ(size_before + 2, headers.size());
   ASSERT_EQ(kField1Name, headers[size_before + 1].first);
@@ -51,10 +51,10 @@ TEST(HttpClientTest, FetchSetHeader) {
 }
 
 TEST(HttpClientTest, TestFormatHeader) {
-  const std::string kHi("hi");
-  const std::string kThere("there");
+  const string kHi("hi");
+  const string kThere("there");
   const StringPair header = std::make_pair(kHi, kThere);
-  std::string header_line = HttpClient::FormatHeader(header);
+  string header_line = HttpClient::FormatHeader(header);
   ASSERT_EQ(static_cast<size_t>(0), header_line.find(kHi));
   const size_t there_offset = header_line.find(kThere);
   ASSERT_EQ(header_line.size(), there_offset + kThere.size());
@@ -62,10 +62,10 @@ TEST(HttpClientTest, TestFormatHeader) {
 }
 
 TEST(HttpClientTest, PushFindHeader) {
-  const std::string kFieldName0("Content-Length");
-  const std::string kFieldValue0("42");
-  const std::string kFieldName1("Content-Type");
-  const std::string kFieldValue1("application/atom+xml");
+  const string kFieldName0("Content-Length");
+  const string kFieldValue0("42");
+  const string kFieldName1("Content-Type");
+  const string kFieldValue1("application/atom+xml");
   StringPairVector headers;
   HttpClient::PushHeader(kFieldName0, kFieldValue0, &headers);
   HttpClient::PushHeader(kFieldName1, kFieldValue1, &headers);
@@ -74,7 +74,7 @@ TEST(HttpClientTest, PushFindHeader) {
   ASSERT_EQ(kFieldValue0, headers[0].second);
   ASSERT_EQ(kFieldName1, headers[1].first);
   ASSERT_EQ(kFieldValue1, headers[1].second);
-  std::string val;
+  string val;
   ASSERT_TRUE(HttpClient::FindHeader(kFieldName0, headers, &val));
   ASSERT_TRUE(HttpClient::FindHeader(kFieldName0, headers, NULL));
   ASSERT_EQ(kFieldValue0, val);
@@ -88,10 +88,10 @@ TEST(HttpClientTest, PushFindHeader) {
 }
 
 TEST(HttpClientTest, AppendHeaders) {
-  const std::string kKey0("k0");
-  const std::string kVal0("v0");
-  const std::string kKey1("k1");
-  const std::string kVal1("v1");
+  const string kKey0("k0");
+  const string kVal0("v0");
+  const string kKey1("k1");
+  const string kVal1("v1");
   StringPairVector src;
   src.push_back(std::make_pair(kKey0, kVal0));
   src.push_back(std::make_pair(kKey1, kVal1));
@@ -105,22 +105,22 @@ TEST(HttpClientTest, AppendHeaders) {
 }
 
 TEST(HttpClientTest, InitHeader) {
-  const std::string kAppName("client-app-name");
+  const string kAppName("client-app-name");
   HttpClient http_client(kAppName);
   // Verify that the initial state of the request headers includes the
   // 2nd ctor arg to HttpClient as the User-Agent.
   const StringPairVector& headers = http_client.get_headers();
   ASSERT_LT(static_cast<size_t>(0), headers.size());
-  std::string user_agent;
+  string user_agent;
   ASSERT_TRUE(HttpClient::FindHeader("User-Agent", headers, &user_agent));
   ASSERT_EQ(kAppName, user_agent.substr(0, kAppName.size()));
 }
 
 TEST(HttpClientTest, Login) {
-  const std::string kAppName("client-app-name");
-  const std::string kServiceName("service-name");
-  const std::string kEmail("user@gmail.com");
-  const std::string kPasswd("big-secret");
+  const string kAppName("client-app-name");
+  const string kServiceName("service-name");
+  const string kEmail("user@gmail.com");
+  const string kPasswd("big-secret");
   HttpClient http_client(kAppName);
   // The default implementation of SendRequest does not return an Auth= token
   ASSERT_FALSE(http_client.Login(kServiceName, kEmail, kPasswd));
@@ -132,7 +132,7 @@ TEST(HttpClientTest, LoginWithAuth) {
   //     AuthForInstalledApps.html#Response
   class AuthHttpClient: public HttpClient {
    public:
-    AuthHttpClient(const std::string& app) 
+    AuthHttpClient(const string& app) 
       : HttpClient(app) {
     }
     // The default Login() calls SendRequest with something like this as the
@@ -142,12 +142,12 @@ TEST(HttpClientTest, LoginWithAuth) {
     // The default Login() expects to find an "Auth=" somewhere in the response
     // data.
     virtual bool SendRequest(HttpMethodEnum http_method,
-                             const std::string& request_uri,
+                             const string& request_uri,
                              const StringPairVector* request_headers,
-                             const std::string* data,
-                             std::string* response) const {
+                             const string* data,
+                             string* response) const {
       if (http_method == HTTP_POST && data && response) {
-        *response = std::string("SID=DQAAAGgA...7Zg8CTN") + "\n" +
+        *response = string("SID=DQAAAGgA...7Zg8CTN") + "\n" +
                                 "LSID=DQAAAGsA...lk8BBbG" + "\n" +
                                 "Auth=" + *data + "\n";
         return true;
@@ -155,66 +155,66 @@ TEST(HttpClientTest, LoginWithAuth) {
       return false;
     }
   };
-  const std::string kAppName("app-name");
-  const std::string kServiceName("service-name");
-  const std::string kEmailValue("user@gmail.com");
-  const std::string kPasswdValue("big-secret");
+  const string kAppName("app-name");
+  const string kServiceName("service-name");
+  const string kEmailValue("user@gmail.com");
+  const string kPasswdValue("big-secret");
   AuthHttpClient http_client(kAppName);
 
   // Login() returns true if the SendRequest response has an Auth=.
   ASSERT_TRUE(http_client.Login(kServiceName, kEmailValue, kPasswdValue));
 
   // The authorization token is saved within HttpClient.
-  const std::string& auth_token = http_client.get_auth_token();
+  const string& auth_token = http_client.get_auth_token();
 
-  const std::string kEmail("Email=");
+  const string kEmail("Email=");
   size_t email_offset = auth_token.find(kEmail);
-  ASSERT_NE(std::string::npos, email_offset);
+  ASSERT_NE(string::npos, email_offset);
   ASSERT_EQ(kEmailValue, auth_token.substr(email_offset + kEmail.size(),
                                            kEmailValue.size()));
 
-  const std::string kPasswd("Passwd=");
+  const string kPasswd("Passwd=");
   const size_t passwd_offset = auth_token.find(kPasswd);
-  ASSERT_NE(std::string::npos, passwd_offset);
+  ASSERT_NE(string::npos, passwd_offset);
   ASSERT_EQ(kPasswdValue, auth_token.substr(passwd_offset + kPasswd.size(),
                                            kPasswdValue.size()));
 
-  ASSERT_NE(std::string::npos, passwd_offset);
+  ASSERT_NE(string::npos, passwd_offset);
 
   // The "Authorization" header is set and the value is "GoogleLogin auth=" +
   // the authorization token (same as that returned by get_auth_token()).
   const StringPairVector& headers = http_client.get_headers();
-  std::string authorization;
+  string authorization;
   ASSERT_TRUE(HttpClient::FindHeader("Authorization", headers, &authorization));
-  const std::string kGoogleLoginAuth("GoogleLogin auth=");
+  const string kGoogleLoginAuth("GoogleLogin auth=");
   ASSERT_EQ(kGoogleLoginAuth, authorization.substr(0, kGoogleLoginAuth.size()));
   ASSERT_EQ(auth_token, authorization.substr(kGoogleLoginAuth.size()));
 }
 
 TEST(HttpClientTest, FetchUrl) {
-  const std::string kServiceName("service-name");
-  const std::string kApplicationName("application-name");
+  const string kServiceName("service-name");
+  const string kApplicationName("application-name");
   HttpClient http_client(kApplicationName);
-  std::string response;
-  const std::string kUrl("http://dummy.com/foo");
+  string response;
+  const string kUrl("http://dummy.com/foo");
   ASSERT_TRUE(http_client.FetchUrl(kUrl, &response));
-  std::vector<std::string> response_lines;
+  std::vector<string> response_lines;
   kmlbase::SplitStringUsing(response, "\n", &response_lines);
   // Don't want to complete box ourselves in.  Assert that we expect one
   // line echoing back the request in addition to the header lines.
   ASSERT_LT(http_client.get_headers().size() + 1, response_lines.size());
-  std::vector<std::string> response_words;
+  std::vector<string> response_words;
   kmlbase::SplitStringUsing(response_lines[0], " ", &response_words);
   ASSERT_EQ(static_cast<size_t>(2), response_words.size());
   // First line of the response is "GET $url"
-  ASSERT_EQ(std::string("GET"), response_words[0]);
+  ASSERT_EQ(string("GET"), response_words[0]);
   ASSERT_EQ(kUrl, response_words[1]);
   // Look for the User-Agent line and our application name.
   bool found_user_agent = false;
   for (size_t i = 1; i < response_lines.size(); ++i) {
     response_words.clear();
     kmlbase::SplitStringUsing(response_lines[i], " ", &response_words);
-    if (response_words[0] == std::string("User-Agent:")) {
+    if (response_words[0] == string("User-Agent:")) {
       ASSERT_LT(static_cast<size_t>(2), response_words.size());
       found_user_agent = true;
       ASSERT_EQ(kApplicationName, response_words[1]);

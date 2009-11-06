@@ -52,10 +52,10 @@ class StyleResolver {
   // typically from a KmlFile.  This method is well behaved with any or all
   // arguments NULL or empty.
   static kmldom::StylePtr CreateResolvedStyle(
-      const std::string& styleurl,
+      const string& styleurl,
       const kmldom::StyleSelectorPtr& styleselector,
       const SharedStyleMap& shared_style_map,
-      const std::string& base_url,
+      const string& base_url,
       KmlCache* kml_cache,
       kmldom::StyleStateEnum style_state); 
 
@@ -63,7 +63,7 @@ class StyleResolver {
   // it references a style selector in the given SharedStyleMap.  The resulting
   // StyleSelector has all id= attributes cleared.
   static kmldom::StyleSelectorPtr CreateResolvedStyleSelector(
-      const std::string& styleurl, const SharedStyleMap& shared_style_map);
+      const string& styleurl, const SharedStyleMap& shared_style_map);
 };
 
 }  // end namespace kmlengine

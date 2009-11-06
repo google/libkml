@@ -50,7 +50,7 @@ TEST_F(HotSpotTest, TestType) {
 }
 
 TEST_F(HotSpotTest, TestParse) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<hotSpot x=\"32\" y=\"1\" xunits=\"pixels\" yunits=\"pixels\"/>",
     &errors);
@@ -71,7 +71,7 @@ TEST_F(HotSpotTest, TestSerialize) {
   hotspot_->set_y(1);
   hotspot_->set_xunits(UNITS_PIXELS);
   hotspot_->set_yunits(UNITS_PIXELS);
-  std::string expected =
+  string expected =
     "<hotSpot x=\"32\" xunits=\"pixels\" y=\"1\" yunits=\"pixels\"/>";
   ASSERT_EQ(expected, SerializeRaw(hotspot_));
 }

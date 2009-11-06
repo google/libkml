@@ -28,7 +28,6 @@
 #ifndef KML_XSD_XSD_SCHEMA_H__
 #define KML_XSD_XSD_SCHEMA_H__
 
-#include <string>
 #include "boost/intrusive_ptr.hpp"
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
@@ -53,13 +52,13 @@ public:
   }
 
   // Return the value of the targetNamespace= attribute.
-  const std::string& get_target_namespace() const {
+  const string& get_target_namespace() const {
     return target_namespace_;
   }
 
   // Return the xmlns prefix whose value is the targetNamespace.  For example,
   // if targetNamespace="a:b:c" and xmlns:foo="a:b:c" this returns "foo".
-  const std::string& get_target_namespace_prefix() const {
+  const string& get_target_namespace_prefix() const {
     return target_namespace_prefix_;
   }
 
@@ -67,7 +66,7 @@ public:
   // namespace prefix then return true and save the local portion to ncname.
   // For example, if ns_name is "kml:LookAt" and the target namespace prefix
   // is "kml" then name is set to "LookAt" and true is returned.
-  bool SplitNsName(const std::string& ns_name, std::string* name) const {
+  bool SplitNsName(const string& ns_name, string* name) const {
     size_t prefix_size = target_namespace_prefix_.size();
     if (ns_name.size() > prefix_size + 1 &&
         ns_name.compare(0, prefix_size + 1,
@@ -101,8 +100,8 @@ public:
     return !target_namespace_.empty() && !target_namespace_prefix_.empty();
   }
   boost::scoped_ptr<kmlbase::Xmlns> xmlns_;
-  std::string target_namespace_;
-  std::string target_namespace_prefix_;
+  string target_namespace_;
+  string target_namespace_prefix_;
 };
 
 typedef boost::intrusive_ptr<XsdSchema> XsdSchemaPtr;

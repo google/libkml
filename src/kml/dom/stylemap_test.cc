@@ -50,7 +50,7 @@ TEST_F(PairTest, TestDefaults) {
   ASSERT_FALSE(pair_->has_key());
   ASSERT_EQ(STYLESTATE_NORMAL, pair_->get_key());
   ASSERT_FALSE(pair_->has_styleurl());
-  ASSERT_EQ(std::string(""), pair_->get_styleurl());
+  ASSERT_EQ(string(""), pair_->get_styleurl());
   ASSERT_FALSE(pair_->has_styleselector());
   ASSERT_TRUE(NULL == pair_->get_styleselector());
 }
@@ -69,7 +69,7 @@ TEST_F(PairTest, TestSetToDefaultValues) {
 TEST_F(PairTest, TestSetGetHasClear) {
   // Non-default values:
   StyleStateEnum key = STYLESTATE_HIGHLIGHT;
-  std::string styleurl("#url");
+  string styleurl("#url");
   StylePtr styleselector(KmlFactory::GetFactory()->CreateStyle());
 
   // Set all fields:

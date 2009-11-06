@@ -28,7 +28,6 @@
 #ifndef KML_DOM_STYLEMAP_H__
 #define KML_DOM_STYLEMAP_H__
 
-#include <string>
 #include <vector>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
@@ -65,13 +64,13 @@ class Pair : public Object {
   }
 
   // <styleUrl>
-  std::string get_styleurl() const {
+  const string& get_styleurl() const {
     return styleurl_;
   }
   bool has_styleurl() const {
     return has_styleurl_;
   }
-  void set_styleurl(const std::string& styleurl) {
+  void set_styleurl(const string& styleurl) {
     styleurl_ = styleurl;
     has_styleurl_ = true;
   }
@@ -99,7 +98,7 @@ class Pair : public Object {
   virtual void Serialize(Serializer& serializer) const;
   int key_;
   bool has_key_;
-  std::string styleurl_;
+  string styleurl_;
   bool has_styleurl_;
   StyleSelectorPtr styleselector_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Pair);

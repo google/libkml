@@ -38,12 +38,12 @@ class DateTimeTest : public testing::Test {
 
 TEST_F(DateTimeTest, TestCreate) {
   // Call the method under test.
-  const std::string kDateTime("2008-10-03T09:25:42Z");
+  const string kDateTime("2008-10-03T09:25:42Z");
   date_time_.reset(DateTime::Create(kDateTime));
   ASSERT_TRUE(date_time_.get());
   ASSERT_EQ(static_cast<time_t>(1223025942), date_time_->GetTimeT());
-  ASSERT_EQ(std::string("09:25:42"), date_time_->GetXsdTime());
-  ASSERT_EQ(std::string("2008-10-03"), date_time_->GetXsdDate());
+  ASSERT_EQ(string("09:25:42"), date_time_->GetXsdTime());
+  ASSERT_EQ(string("2008-10-03"), date_time_->GetXsdDate());
   ASSERT_EQ(kDateTime, date_time_->GetXsdDateTime());
 }
 

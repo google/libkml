@@ -78,6 +78,23 @@ void Overlay::Serialize(Serializer& serializer) const {
   }
 }
 
+// >> Visitor Api Start [Overlay] >>
+Visitor::Status Overlay::StartVisit(Visitor* v) {
+  return v->VisitOverlay(OverlayPtr(this));
+}
+
+void Overlay::EndVisit(Visitor* v) {
+  v->VisitOverlayEnd(OverlayPtr(this));
+}
+
+void Overlay::AcceptChildren(Visitor* v) {
+  Feature::AcceptChildren(v);
+  if (has_icon() && !get_icon()->Accept(v)) {
+    clear_icon();
+  }
+}
+// << Visitor Api End [Overlay] <<
+
 LatLonBox::LatLonBox()
   : rotation_(0.0),
     has_rotation_(false) {
@@ -187,6 +204,26 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
     serializer.SaveElement(get_gx_latlonquad());
   }
 }
+
+// >> Visitor Api Start [GroundOverlay] >>
+Visitor::Status GroundOverlay::StartVisit(Visitor* v) {
+  return v->VisitGroundOverlay(GroundOverlayPtr(this));
+}
+
+void GroundOverlay::EndVisit(Visitor* v) {
+  v->VisitGroundOverlayEnd(GroundOverlayPtr(this));
+}
+
+void GroundOverlay::AcceptChildren(Visitor* v) {
+  Overlay::AcceptChildren(v);
+  if (has_latlonbox() && !get_latlonbox()->Accept(v)) {
+    clear_latlonbox();
+  }
+  if (has_gx_latlonquad() && !get_gx_latlonquad()->Accept(v)) {
+    clear_gx_latlonquad();
+  }
+}
+// << Visitor Api End [GroundOverlay] <<
 
 ViewVolume::ViewVolume()
   : leftfov_(0.0),
@@ -358,6 +395,29 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
   }
 }
 
+// >> Visitor Api Start [PhotoOverlay] >>
+Visitor::Status PhotoOverlay::StartVisit(Visitor* v) {
+  return v->VisitPhotoOverlay(PhotoOverlayPtr(this));
+}
+
+void PhotoOverlay::EndVisit(Visitor* v) {
+  v->VisitPhotoOverlayEnd(PhotoOverlayPtr(this));
+}
+
+void PhotoOverlay::AcceptChildren(Visitor* v) {
+  Overlay::AcceptChildren(v);
+  if (has_viewvolume() && !get_viewvolume()->Accept(v)) {
+    clear_viewvolume();
+  }
+  if (has_imagepyramid() && !get_imagepyramid()->Accept(v)) {
+    clear_imagepyramid();
+  }
+  if (has_point() && !get_point()->Accept(v)) {
+    clear_point();
+  }
+}
+// << Visitor Api End [PhotoOverlay] <<
+
 OverlayXY::OverlayXY() {}
 
 OverlayXY::~OverlayXY() {}
@@ -427,5 +487,31 @@ void ScreenOverlay::Serialize(Serializer& serializer) const {
     serializer.SaveFieldById(Type_rotation, get_rotation());
   }
 }
+
+// >> Visitor Api Start [ScreenOverlay] >>
+Visitor::Status ScreenOverlay::StartVisit(Visitor* v) {
+  return v->VisitScreenOverlay(ScreenOverlayPtr(this));
+}
+
+void ScreenOverlay::EndVisit(Visitor* v) {
+  v->VisitScreenOverlayEnd(ScreenOverlayPtr(this));
+}
+
+void ScreenOverlay::AcceptChildren(Visitor* v) {
+  Overlay::AcceptChildren(v);
+  if (has_overlayxy() && !get_overlayxy()->Accept(v)) {
+    clear_overlayxy();
+  }
+  if (has_screenxy() && !get_screenxy()->Accept(v)) {
+    clear_screenxy();
+  }
+  if (has_rotationxy() && !get_rotationxy()->Accept(v)) {
+    clear_rotationxy();
+  }
+  if (has_size() && !get_size()->Accept(v)) {
+    clear_size();
+  }
+}
+// << Visitor Api End [ScreenOverlay] <<
 
 }  // end namespace kmldom

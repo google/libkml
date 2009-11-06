@@ -42,7 +42,7 @@ class XsdSimpleTypeTest : public testing::Test {
 
 TEST_F(XsdSimpleTypeTest, TestBasicCreate) {
   // <xs:simpleType name="anglepos90Type">
-  const std::string kTypeName("anglepos90Type");
+  const string kTypeName("anglepos90Type");
   attributes_.SetString(kName, kTypeName);
 
   xsd_simple_type_ = XsdSimpleType::Create(attributes_);
@@ -60,9 +60,9 @@ TEST_F(XsdSimpleTypeTest, TestEnumeration) {
   ASSERT_EQ(static_cast<size_t>(0),
                        xsd_simple_type_->get_enumeration_size());
 
-  const std::string kClampToGround("clampToGround");
-  const std::string kRelativeToGround("relativeToGround");
-  const std::string kAbsolute("absolute");
+  const string kClampToGround("clampToGround");
+  const string kRelativeToGround("relativeToGround");
+  const string kAbsolute("absolute");
   xsd_simple_type_->add_enumeration(kClampToGround);
   xsd_simple_type_->add_enumeration(kRelativeToGround);
   xsd_simple_type_->add_enumeration(kAbsolute);
@@ -96,7 +96,7 @@ TEST_F(XsdSimpleTypeTest, TestEqualsOperator) {
   ASSERT_TRUE(altitude_mode_type_ == altitude_mode_type_);
 
   // <xs:simpleType name="anglepos90Type">
-  const std::string kTypeName("anglepos90Type");
+  const string kTypeName("anglepos90Type");
   attributes_.SetString(kName, kTypeName);
   angle_pos90_type_ = XsdSimpleType::Create(attributes_);
   ASSERT_TRUE(angle_pos90_type_);

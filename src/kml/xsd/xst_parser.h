@@ -28,8 +28,8 @@
 #ifndef KML_XSD_XST_PARSER_H__
 #define KML_XSD_XST_PARSER_H__
 
-#include <string>
 #include <vector>
+#include "kml/base/util.h"
 
 namespace kmlxsd {
 
@@ -41,7 +41,7 @@ class XsdFile;
 // Overall usage is as follows:
 //   XsdFile* xsd_file = XsdFile::CreateFromParse(...);
 //   XstParser xst_parser(&xsd_file);
-//   std::string xst_data = read_xst_file();
+//   string xst_data = read_xst_file();
 //   xst_parser.ParseXst(&xst_data);
 class XstParser {
  public:
@@ -51,11 +51,11 @@ class XstParser {
   }
 
   // Parse the contents of the XST data into the XsdFile.
-  void ParseXst(const std::string& xst_data);
+  void ParseXst(const string& xst_data);
 
   // Parse the "alias" line into the XsdFile.  An alias line takes this form:
   //   "alias real_name alias_name"
-  void ParseXstAlias(const std::vector<std::string>& alias_line);
+  void ParseXstAlias(const std::vector<string>& alias_line);
 
  private:
   XsdFile* xsd_file_;

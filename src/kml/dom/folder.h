@@ -28,6 +28,7 @@
 
 #include "kml/dom/container.h"
 #include "kml/dom/kml22.h"
+#include "kml/dom/visitor.h"
 
 namespace kmldom {
 
@@ -42,6 +43,12 @@ class Folder : public Container {
     return type == Type_Folder || Container::IsA(type);
   }
 
+  // >> Visitor Api Start [Folder] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  // << Visitor Api End [Folder] <<
  private:
   friend class KmlFactory;
   Folder();

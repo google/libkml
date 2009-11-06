@@ -56,7 +56,7 @@ TEST_F(XsdFileTest, TestConstructor) {
 // Verify CreateFromParse().
 TEST_F(XsdFileTest, TestCreateFromParse) {
   // Verify known bad XSD returns NULL.
-  std::string errors;
+  string errors;
   ASSERT_FALSE(XsdFile::CreateFromParse("not xsd", &errors));
   ASSERT_FALSE(errors.empty());
 
@@ -65,8 +65,8 @@ TEST_F(XsdFileTest, TestCreateFromParse) {
 
 // Verify set_schema(),
 TEST_F(XsdFileTest, TestSetSchema) {
-  const std::string kPrefix("myml");
-  const std::string kNamespace("my:own:namespace");
+  const string kPrefix("myml");
+  const string kNamespace("my:own:namespace");
   const XsdSchemaPtr xsd_schema = CreateXsdSchema(kPrefix, kNamespace);
 
   // Call the method under test
@@ -80,13 +80,13 @@ TEST_F(XsdFileTest, TestSetSchema) {
 // Verify add_type(), FindElement(), and FindElementType().
 TEST_F(XsdFileTest, TestFindElementTypeByName) {
   // Create the <xs:schema ... >
-  const std::string kPrefix("myml");
-  const std::string kNamespace("my:own:namespace");
+  const string kPrefix("myml");
+  const string kNamespace("my:own:namespace");
   xsd_file_->set_schema(CreateXsdSchema(kPrefix, kNamespace));
   // Create an <xs:complexType name="MyCoolType"/>
-  const std::string kMyType("MyCoolType");
+  const string kMyType("MyCoolType");
   xsd_file_->add_type(CreateXsdComplexType(kMyType));
-  const std::string kMyElement("MyCoolness");
+  const string kMyElement("MyCoolness");
   // <xs:element name="MyCoolness" type="myml:MyCoolType"/>
   xsd_file_->add_element(CreateXsdElement(kMyElement, kPrefix + ":" + kMyType));
 
@@ -116,11 +116,11 @@ TEST_F(XsdFileTest, TestAddComplexType) {
   // </xs:complexType">
   const std:: string kMyElement("MyCoolness");
   const std:: string kMyType("MyCoolType");
-  const std::string kLon("lon");
-  const std::string kLat("lat");
+  const string kLon("lon");
+  const string kLat("lat");
   // Create the <xs:schema ... >
-  const std::string kPrefix("myml");
-  const std::string kNamespace("my:own:namespace");
+  const string kPrefix("myml");
+  const string kNamespace("my:own:namespace");
   xsd_file_->set_schema(CreateXsdSchema(kPrefix, kNamespace));
   XsdComplexTypePtr xsd_complex_type = CreateXsdComplexType(kMyType);
   xsd_complex_type->add_element(CreateXsdElement(kLon, "double"));
@@ -139,9 +139,9 @@ TEST_F(XsdFileTest, TestAddComplexType) {
 
 // Verify ResolveRef.
 TEST_F(XsdFileTest, TestResolveRef) {
-  const std::string kPrefix("myml");
-  const std::string kNamespace("my:own:namespace");
-  const std::string kMyElement("MyCoolness");
+  const string kPrefix("myml");
+  const string kNamespace("my:own:namespace");
+  const string kMyElement("MyCoolness");
 
   // Verify failure if no XsdSchema set for this XsdFile.
   ASSERT_FALSE(xsd_file_->ResolveRef(kPrefix + ":" + kMyElement));
@@ -247,8 +247,8 @@ TEST_F(XsdFileTest, TestGetTypeHierarchy) {
   ASSERT_TRUE(complex_type);
   ASSERT_TRUE(xsd_file_->GetTypeHierarchy(complex_type, &hier));
   ASSERT_EQ(static_cast<size_t>(2), hier.size());
-  ASSERT_EQ(std::string("FeatureType"), hier[0]->get_name());
-  ASSERT_EQ(std::string("ObjectType"), hier[1]->get_name());
+  ASSERT_EQ(string("FeatureType"), hier[0]->get_name());
+  ASSERT_EQ(string("ObjectType"), hier[1]->get_name());
 }
 
 // XXX Verify FindElementType().  ByName() we do above...
@@ -257,9 +257,9 @@ TEST_F(XsdFileTest, TestFindElementType) {
   SetTestSchema();
   AddTestComplexTypes();
   AddTestElements();
-  ASSERT_EQ(std::string("PlacemarkType"),
+  ASSERT_EQ(string("PlacemarkType"),
                        xsd_file_->FindElementTypeByName("Placemark"));
-  ASSERT_EQ(std::string("PointType"),
+  ASSERT_EQ(string("PointType"),
                        xsd_file_->FindElementTypeByName("Point"));
 #endif
 }
@@ -275,9 +275,9 @@ TEST_F(XsdFileTest, TestGetAbstractElements) {
   AddTestElements();
   xsd_file_->GetAbstractElements(&elements);
   ASSERT_EQ(static_cast<size_t>(3), elements.size());
-  ASSERT_EQ(std::string("FeatureGroup"), elements[0]->get_name());
-  ASSERT_EQ(std::string("GeometryGroup"), elements[1]->get_name());
-  ASSERT_EQ(std::string("ObjectGroup"), elements[2]->get_name());
+  ASSERT_EQ(string("FeatureGroup"), elements[0]->get_name());
+  ASSERT_EQ(string("GeometryGroup"), elements[1]->get_name());
+  ASSERT_EQ(string("ObjectGroup"), elements[2]->get_name());
 
 }
 
@@ -292,9 +292,9 @@ TEST_F(XsdFileTest, TestGetComplexElements) {
   InitTestXsd();
   xsd_file_->GetComplexElements(&element_names);
   ASSERT_EQ(static_cast<size_t>(3), element_names.size());
-  ASSERT_EQ(std::string("LineString"), element_names[0]->get_name());
-  ASSERT_EQ(std::string("Placemark"), element_names[1]->get_name());
-  ASSERT_EQ(std::string("Point"), element_names[2]->get_name());
+  ASSERT_EQ(string("LineString"), element_names[0]->get_name());
+  ASSERT_EQ(string("Placemark"), element_names[1]->get_name());
+  ASSERT_EQ(string("Point"), element_names[2]->get_name());
 }
 
 // Verify GetSimpleElements().
@@ -312,13 +312,13 @@ TEST_F(XsdFileTest, TestGetSimpleElements) {
 
 // Verify TestSetGetAlias();
 TEST_F(XsdFileTest, TestSetGetAlias) {
-  const std::string kFeature("Feature");
-  const std::string kAbstractFeatureGroup("AbstractFeatureGroup");
-  const std::string kGeometry("Geometry");
-  const std::string kAbstractGeometryGroup("AbstractGeometryGroup");
+  const string kFeature("Feature");
+  const string kAbstractFeatureGroup("AbstractFeatureGroup");
+  const string kGeometry("Geometry");
+  const string kAbstractGeometryGroup("AbstractGeometryGroup");
 
   // An empty XsdFile has no aliases:
-  ASSERT_EQ(std::string(""),
+  ASSERT_EQ(string(""),
                        xsd_file_->get_alias(kAbstractFeatureGroup));
 
   // Add aliases using set_alias().
@@ -356,7 +356,7 @@ TEST_F(XsdFileTest, TestFindChildElements) {
   ASSERT_TRUE(children.empty());
 
   // Look for the given type.
-  const std::string kPlacemarkType("PlacemarkType");
+  const string kPlacemarkType("PlacemarkType");
   complex_type = XsdComplexType::AsComplexType(
       xsd_file_->FindType(kPlacemarkType));
   ASSERT_TRUE(complex_type);
@@ -367,9 +367,9 @@ TEST_F(XsdFileTest, TestFindChildElements) {
   ASSERT_TRUE(children.empty());
 
   // Give it some children.
-  const std::string kLatitude("latitude");
-  const std::string kLongitude("longitude");
-  const std::string kDouble("double");
+  const string kLatitude("latitude");
+  const string kLongitude("longitude");
+  const string kDouble("double");
   complex_type->add_element(CreateXsdElement(kLatitude, kDouble));
   complex_type->add_element(CreateXsdElement(kLongitude, kDouble));
   
@@ -405,9 +405,9 @@ TEST_F(XsdFileTest, TestGetElementsOfType) {
   XsdElementVector geometry_elements;
   xsd_file_->GetElementsOfType(geometry_type, &geometry_elements);
   ASSERT_EQ(static_cast<size_t>(3), geometry_elements.size());
-  ASSERT_EQ(std::string("GeometryGroup"), geometry_elements[0]->get_name());
-  ASSERT_EQ(std::string("LineString"), geometry_elements[1]->get_name());
-  ASSERT_EQ(std::string("Point"), geometry_elements[2]->get_name());
+  ASSERT_EQ(string("GeometryGroup"), geometry_elements[0]->get_name());
+  ASSERT_EQ(string("LineString"), geometry_elements[1]->get_name());
+  ASSERT_EQ(string("Point"), geometry_elements[2]->get_name());
 
   // Verify NULL element vector does not crash.
   xsd_file_->GetElementsOfType(geometry_type, NULL);
@@ -419,12 +419,12 @@ TEST_F(XsdFileTest, TestGetElementsOfTypeByName) {
   XsdElementVector object_elements;
   xsd_file_->GetElementsOfTypeByName("ObjectType", &object_elements);
   ASSERT_EQ(static_cast<size_t>(6), object_elements.size());
-  ASSERT_EQ(std::string("FeatureGroup"), object_elements[0]->get_name());
-  ASSERT_EQ(std::string("GeometryGroup"), object_elements[1]->get_name());
-  ASSERT_EQ(std::string("LineString"), object_elements[2]->get_name());
-  ASSERT_EQ(std::string("ObjectGroup"), object_elements[3]->get_name());
-  ASSERT_EQ(std::string("Placemark"), object_elements[4]->get_name());
-  ASSERT_EQ(std::string("Point"), object_elements[5]->get_name());
+  ASSERT_EQ(string("FeatureGroup"), object_elements[0]->get_name());
+  ASSERT_EQ(string("GeometryGroup"), object_elements[1]->get_name());
+  ASSERT_EQ(string("LineString"), object_elements[2]->get_name());
+  ASSERT_EQ(string("ObjectGroup"), object_elements[3]->get_name());
+  ASSERT_EQ(string("Placemark"), object_elements[4]->get_name());
+  ASSERT_EQ(string("Point"), object_elements[5]->get_name());
 
   object_elements.clear();
   xsd_file_->GetElementsOfTypeByName("NoSuchType", &object_elements);

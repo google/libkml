@@ -74,7 +74,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInTypicalUsage) {
   //   </Placemark>  <!-- 5 -->
   // </Document>     <!-- 6 -->
   // ...to create this:
-  const std::string kExpectedKml(
+  const string kExpectedKml(
     "<Document id=\"d\">\n"
     "  <Style id=\"_0\"/>\n"
     "  <Placemark>\n"
@@ -84,7 +84,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInTypicalUsage) {
 
   // 1) On "<Document>" the parser creates a Document and calls NewElement().
   DocumentPtr document = kml_factory_->CreateDocument();
-  const std::string kDocId("d");
+  const string kDocId("d");
   document->set_id(kDocId);
   ASSERT_TRUE(style_splitter_->NewElement(document));
   ASSERT_TRUE(style_splitter_->get_document());
@@ -105,7 +105,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInTypicalUsage) {
   // This is exactly the situation StyleSplitter handles.  Verify that the
   // Document now has a shared style and that the map has a pointer to it
   // as well.
-  const std::string kId0("_0");
+  const string kId0("_0");
   ASSERT_EQ(static_cast<size_t>(1), shared_style_map_.size());
   ASSERT_TRUE(shared_style_map_[kId0]);
   ASSERT_EQ(kId0, shared_style_map_[kId0]->get_id());
@@ -114,7 +114,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInTypicalUsage) {
 
   // Verify that the placemark instead got a styleUrl
   ASSERT_TRUE(placemark->has_styleurl());
-  ASSERT_EQ(std::string("#") + kId0, placemark->get_styleurl());
+  ASSERT_EQ(string("#") + kId0, placemark->get_styleurl());
 
   // 5) On "</Placemark>" the parser calls EndElement() to ask if placemark
   // should be made a child of document.  Verify the answer is true.
@@ -150,7 +150,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInComplexTypicalUsage) {
   //   </Placemark>
   // </Document>                   <!-- 7 -->
   // ...to create this:
-  const std::string kExpectedKml(
+  const string kExpectedKml(
     "<Document>\n"
     "  <StyleMap id=\"stylemap0\"/>\n"
     "  <Style id=\"_0\"/>\n"
@@ -171,7 +171,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInComplexTypicalUsage) {
   ASSERT_TRUE(style_splitter_->NewElement(document));
 
   // 2a) On "<StyleMap>" the parser creates a Style and calls NewElement().
-  const std::string kStyleMap0("stylemap0");
+  const string kStyleMap0("stylemap0");
   StyleMapPtr stylemap = kml_factory_->CreateStyleMap();
   stylemap->set_id(kStyleMap0);
   ASSERT_TRUE(style_splitter_->NewElement(stylemap));
@@ -201,8 +201,8 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInComplexTypicalUsage) {
   // Act like the parser and do NOT add this style, but verify that
   // StyleSplitter created the expected styleUrl.
   ASSERT_TRUE(placemark1->has_styleurl());
-  const std::string k0("_0");
-  ASSERT_EQ(std::string("#") + k0, placemark1->get_styleurl());
+  const string k0("_0");
+  ASSERT_EQ(string("#") + k0, placemark1->get_styleurl());
   // Verify the Style was moved to the Document and to the shared style map.
   ASSERT_EQ(static_cast<size_t>(2), document->get_styleselector_array_size());
   ASSERT_EQ(static_cast<size_t>(2), shared_style_map_.size());
@@ -214,7 +214,7 @@ TEST_F(StyleSplitterTest, CallStyleSplitterMethodsInComplexTypicalUsage) {
 
 // Verify that lack of <Document> is overall essentially a NOP.
 TEST_F(StyleSplitterTest, TestNoDocument) {
-  const std::string kNoStyleFolder(
+  const string kNoStyleFolder(
     "<Folder>\n"
     "  <name>f</name>\n"
     "  <Placemark>\n"
@@ -223,7 +223,7 @@ TEST_F(StyleSplitterTest, TestNoDocument) {
     "    </Style>\n"
     "  </Placemark>\n"
     "</Folder>\n");
-  std::string errors;
+  string errors;
   ElementPtr root = style_splitting_parser_->Parse(kNoStyleFolder, &errors);
   // Verify that this still parses just fine.
   FolderPtr folder = AsFolder(root);
@@ -239,8 +239,8 @@ TEST_F(StyleSplitterTest, TestNoDocument) {
 }
 
 TEST_F(StyleSplitterTest, TestBasicPlacemark) {
-  std::string errors;
-  const std::string kInlineStyle(
+  string errors;
+  const string kInlineStyle(
     "<Document>"
     "  <Placemark>"
     "    <name>split me</name>"
@@ -260,18 +260,18 @@ TEST_F(StyleSplitterTest, TestBasicPlacemark) {
   ASSERT_TRUE(placemark->has_name());
   ASSERT_FALSE(placemark->has_description());
   ASSERT_TRUE(placemark->has_styleurl());
-  ASSERT_EQ(std::string("#_0"), placemark->get_styleurl());
+  ASSERT_EQ(string("#_0"), placemark->get_styleurl());
   ASSERT_FALSE(placemark->has_styleselector());
   ASSERT_EQ(static_cast<size_t>(1), shared_style_map_.size());
   ASSERT_EQ(static_cast<size_t>(1), document->get_styleselector_array_size());
   StylePtr style = AsStyle(document->get_styleselector_array_at(0));
   ASSERT_TRUE(style);
   ASSERT_TRUE(style->has_id());
-  ASSERT_EQ(std::string("_0"), style->get_id());
+  ASSERT_EQ(string("_0"), style->get_id());
   ASSERT_TRUE(style->has_linestyle());
   ASSERT_TRUE(style->get_linestyle()->has_color());
   ASSERT_FALSE(style->get_linestyle()->has_width());
-  const std::string kExpectedKml(
+  const string kExpectedKml(
     "<Document>\n"
     "  <Style id=\"_0\">\n"
     "    <LineStyle>\n"
@@ -290,11 +290,11 @@ TEST_F(StyleSplitterTest, TestBasicPlacemark) {
 }
 
 TEST_F(StyleSplitterTest, TestIdCollision) {
-  const std::string kId("_0");
+  const string kId("_0");
   StylePtr style = kml_factory_->CreateStyle();
   style->set_id(kId);
   shared_style_map_[kId] = style;
-  const std::string kKml(
+  const string kKml(
       "<Document>\n"
       "  <Placemark>\n"
       "    <Style/>\n"
@@ -325,7 +325,7 @@ TEST_F(StyleSplitterTest, TestMultipleFeatures) {
     placemark->set_styleselector(style);
     document->add_feature(placemark);
   }
-  const std::string kDocument(SerializePretty(document));
+  const string kDocument(SerializePretty(document));
   document = AsDocument(style_splitting_parser_->Parse(kDocument, NULL));
   ASSERT_TRUE(document);
   ASSERT_EQ(kCount, document->get_styleselector_array_size());
@@ -336,8 +336,8 @@ TEST_F(StyleSplitterTest, TestMultipleFeatures) {
     ASSERT_EQ(ToString(i), placemark->get_name());
     ASSERT_FALSE(placemark->has_styleselector());
     ASSERT_TRUE(placemark->has_styleurl());
-    const std::string kExpectedStyleId("_" + ToString(i));
-    ASSERT_EQ(std::string("#") + kExpectedStyleId, placemark->get_styleurl());
+    const string kExpectedStyleId("_" + ToString(i));
+    ASSERT_EQ(string("#") + kExpectedStyleId, placemark->get_styleurl());
     StylePtr style = AsStyle(document->get_styleselector_array_at(i));
     ASSERT_TRUE(style);
     ASSERT_EQ(kExpectedStyleId, style->get_id());

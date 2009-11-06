@@ -28,7 +28,6 @@
 #ifndef KML_CONVENIENCE_CONVENIENCE_H__
 #define KML_CONVENIENCE_CONVENIENCE_H__
 
-#include <string>
 #include <vector>
 #include "kml/base/vec3.h"
 #include "kml/dom.h"
@@ -45,13 +44,13 @@ namespace kmlconvenience {
 // This creates a Data element with the given name and value and appends
 // this to the Feature's ExtendedData.  An ExtendedData is created in the
 // Feature if one does not already exist.
-void AddExtendedDataValue(const std::string& name, const std::string& value,
+void AddExtendedDataValue(const string& name, const string& value,
                           kmldom::FeaturePtr feature);
 
 // Creates a <gx:AnimatedUpdate> with a <Change> to a Point Placemark of
 // the specified target_id and coordinates as specified by vec3.
 kmldom::GxAnimatedUpdatePtr CreateAnimatedUpdateChangePoint(
-    const std::string& target_id, const kmlbase::Vec3& vec3, double duration);
+    const string& target_id, const kmlbase::Vec3& vec3, double duration);
 
 // Creates a simple Polygon Placemark from a LinearRing.
 kmldom::PlacemarkPtr CreateBasicPolygonPlacemark(
@@ -70,8 +69,8 @@ kmldom::CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
 
 // This creates a Data element with the name and value specified:
 // <Data name="NAME><value>VALUE</value></Data>
-kmldom::DataPtr CreateDataNameValue(const std::string& name,
-                                    const std::string& value);
+kmldom::DataPtr CreateDataNameValue(const string& name,
+                                    const string& value);
 
 // Creates a <LookAt> element from the specified fields.
 kmldom::LookAtPtr CreateLookAt(double latitude, double longitude,
@@ -89,7 +88,7 @@ kmldom::PointPtr CreatePointFromVec3(const kmlbase::Vec3& vec);
 kmldom::PointPtr CreatePointLatLon(double lat, double lon);
 
 // This is a convenience function to create a Point Placemark.
-kmldom::PlacemarkPtr CreatePointPlacemark(const std::string& name,
+kmldom::PlacemarkPtr CreatePointPlacemark(const string& name,
                                           double lat, double lon);
 
 // Create a <Placemark> with the given <Point>, DateTime and <styleUrl>.
@@ -130,13 +129,13 @@ kmldom::GxWaitPtr CreateWait(double duration);
 // described above.  If there is no ExtendedData or no Data element with
 // the given name false is returned.
 bool GetExtendedDataValue(const kmldom::FeaturePtr& feature,
-                          const std::string& name,
-                          std::string* value);
+                          const string& name,
+                          string* value);
 
 // This sets the ExtendedData element of the feature to hold the given name
 // value as a Data element as described above.  NOTE: Any previous ExtendedData
 // is delete from this feature.
-void SetExtendedDataValue(const std::string& name, const std::string& value,
+void SetExtendedDataValue(const string& name, const string& value,
                           kmldom::FeaturePtr feature);
 
 // Returns a simplification of coordinates elements. merge_tolerance specifies

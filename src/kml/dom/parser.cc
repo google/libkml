@@ -30,7 +30,6 @@
 #include "kml/dom/kml_funcs.h"
 #include <cstring>
 #include <sstream>
-#include <string>
 #include "kml/base/attributes.h"
 #include "kml/base/expat_parser.h"
 #include "kml/base/expat_handler_ns.h"
@@ -51,7 +50,7 @@ void Parser::AddObserver(ParserObserver* parser_observer) {
 
 // This is the internal API to the parser.  TODO: determine how/if to make
 // public and SWIG.
-ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
+ElementPtr Parser::Parse(const string& kml, string* errors) {
   KmlHandler kml_handler(observers_);
   kmlbase::ExpatParser parser(&kml_handler, false);
   if (kmlbase::ExpatParser::ParseString(kml, &kml_handler, errors, false)) {
@@ -63,7 +62,7 @@ ElementPtr Parser::Parse(const std::string& kml, std::string* errors) {
 
 // As Parser::Parse(), but invokes the underlying XML parser's namespace-aware
 // mode.
-ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
+ElementPtr Parser::ParseNS(const string& kml, string* errors) {
   KmlHandlerNS kml_handler(observers_);
   if (kmlbase::ExpatParser::ParseString(kml, &kml_handler, errors, true)) {
     return kml_handler.PopRoot();
@@ -73,7 +72,7 @@ ElementPtr Parser::ParseNS(const std::string& kml, std::string* errors) {
 
 // This is obviously a bit of a special case.  If libkml always used full
 // namespace-aware parsing we'd not need this.
-ElementPtr Parser::ParseAtom(const std::string& atom, std::string* errors) {
+ElementPtr Parser::ParseAtom(const string& atom, string* errors) {
   // Create a garden variety KML parser with "short-hand" namespace prefixes
   // for Atom.
   KmlHandler kml_handler(observers_);
@@ -99,24 +98,24 @@ ElementPtr Parser::ParseAtom(const std::string& atom, std::string* errors) {
 
 // This is the implementation of the public API to parse KML from a memory
 // buffer.
-ElementPtr Parse(const std::string& kml, std::string* errors) {
+ElementPtr Parse(const string& kml, string* errors) {
   Parser parser;
   return parser.Parse(kml, errors);
 }
 
 // As Parse(), but invokes the underlying XML parser's namespace-aware mode.
-ElementPtr ParseNS(const std::string& kml, std::string* errors) {
+ElementPtr ParseNS(const string& kml, string* errors) {
   Parser parser;
   return parser.ParseNS(kml, errors);
 }
 
 // Parse the KML in the given string.  NULL is returned on any parse errors,
 // but the error string is unavailable with this function.
-ElementPtr ParseKml(const std::string& kml) {
+ElementPtr ParseKml(const string& kml) {
   return Parse(kml, NULL);
 }
 
-ElementPtr ParseAtom(const std::string& atom, std::string* errors) {
+ElementPtr ParseAtom(const string& atom, string* errors) {
   Parser parser;
   return parser.ParseAtom(atom, errors);
 }

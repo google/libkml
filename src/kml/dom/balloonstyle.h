@@ -75,13 +75,13 @@ class BalloonStyle : public SubStyle {
   }
 
   // <text>
-  std::string get_text() const {
+  const string& get_text() const {
     return text_;
   }
   bool has_text() const {
     return has_text_;
   }
-  void set_text(const std::string& text) {
+  void set_text(const string& text) {
     text_ = text;
     has_text_ = true;
   }
@@ -117,7 +117,7 @@ class BalloonStyle : public SubStyle {
   bool has_bgcolor_;
   kmlbase::Color32 textcolor_;
   bool has_textcolor_;
-  std::string text_;
+  string text_;
   bool has_text_;
   int displaymode_;
   bool has_displaymode_;

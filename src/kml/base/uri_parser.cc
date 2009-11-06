@@ -54,7 +54,7 @@ class UriParserPrivate {
   // converts it to a string if one is supplied.  If this component does not
   // exist false is returned.  If the component does exist true is returned.
   bool GetUriComponent(const UriTextRangeA& text_range,
-                       std::string* output) const {
+                       string* output) const {
     if (!text_range.first || !text_range.afterLast) {
       return false;
     }
@@ -120,7 +120,7 @@ bool UriParser::Resolve(const UriParser& base, const UriParser& relative) {
                         base.uri_parser_private_->get_uri()) == URI_SUCCESS;
 }
 
-bool UriParser::ToString(std::string* output) const {
+bool UriParser::ToString(string* output) const {
   if (!output) {
     return false;
   }
@@ -144,8 +144,8 @@ bool UriParser::ToString(std::string* output) const {
   return true;
 }
 
-bool UriParser::UriToFilename(const std::string& uri,
-                              std::string* output) {
+bool UriParser::UriToFilename(const string& uri,
+                              string* output) {
 #ifdef WIN32
   return UriToWindowsFilename(uri, output);
 #else
@@ -153,8 +153,8 @@ bool UriParser::UriToFilename(const std::string& uri,
 #endif
 }
 
-bool UriParser::UriToUnixFilename(const std::string& uri,
-                                  std::string* output) {
+bool UriParser::UriToUnixFilename(const string& uri,
+                                  string* output) {
   if (!output) {
     return false;
   }
@@ -169,8 +169,8 @@ bool UriParser::UriToUnixFilename(const std::string& uri,
   return true;
 }
 
-bool UriParser::UriToWindowsFilename(const std::string& uri,
-                                     std::string* output) {
+bool UriParser::UriToWindowsFilename(const string& uri,
+                                     string* output) {
   if (!output) {
     return false;
   }
@@ -185,8 +185,8 @@ bool UriParser::UriToWindowsFilename(const std::string& uri,
   return true;
 }
 
-bool UriParser::FilenameToUri(const std::string& filename,
-                              std::string* output) {
+bool UriParser::FilenameToUri(const string& filename,
+                              string* output) {
 #ifdef WIN32
   return WindowsFilenameToUri(filename, output);
 #else
@@ -194,8 +194,8 @@ bool UriParser::FilenameToUri(const std::string& filename,
 #endif
 }
 
-bool UriParser::UnixFilenameToUri(const std::string& filename,
-                                  std::string* output) {
+bool UriParser::UnixFilenameToUri(const string& filename,
+                                  string* output) {
   if (!output) {
     return false;
   }
@@ -210,8 +210,8 @@ bool UriParser::UnixFilenameToUri(const std::string& filename,
   return true;
 }
 
-bool UriParser::WindowsFilenameToUri(const std::string& filename,
-                                     std::string* output) {
+bool UriParser::WindowsFilenameToUri(const string& filename,
+                                     string* output) {
   if (!output) {
     return false;
   }
@@ -226,32 +226,32 @@ bool UriParser::WindowsFilenameToUri(const std::string& filename,
   return true;
 }
 
-bool UriParser::GetScheme(std::string* scheme) const {
+bool UriParser::GetScheme(string* scheme) const {
   return uri_parser_private_->GetUriComponent(
       uri_parser_private_->get_uri()->scheme, scheme);
 }
 
-bool UriParser::GetHost(std::string* host) const {
+bool UriParser::GetHost(string* host) const {
   return uri_parser_private_->GetUriComponent(
       uri_parser_private_->get_uri()->hostText, host);
 }
 
-bool UriParser::GetPort(std::string* port) const {
+bool UriParser::GetPort(string* port) const {
   return uri_parser_private_->GetUriComponent(
       uri_parser_private_->get_uri()->portText, port);
 }
 
-bool UriParser::GetQuery(std::string* query) const {
+bool UriParser::GetQuery(string* query) const {
   return uri_parser_private_->GetUriComponent(
       uri_parser_private_->get_uri()->query, query);
 }
 
-bool UriParser::GetFragment(std::string* fragment) const {
+bool UriParser::GetFragment(string* fragment) const {
   return uri_parser_private_->GetUriComponent(
       uri_parser_private_->get_uri()->fragment, fragment);
 }
 
-bool UriParser::GetPath(std::string* path) const {
+bool UriParser::GetPath(string* path) const {
   if (!uri_parser_private_->get_uri()->pathHead ||
       !uri_parser_private_->get_uri()->pathTail) {
     return false;

@@ -56,12 +56,12 @@ class SharedStyleParserObserverTest : public testing::Test {
 
   kmldom::DocumentPtr document_;
   kmldom::FolderPtr folder_;
-  std::string kStyle0Id_;
+  string kStyle0Id_;
   kmldom::StylePtr style0_;
-  std::string kStyle1Id_;
+  string kStyle1Id_;
   kmldom::StylePtr style1_;
   kmldom::StylePtr style_no_id_;
-  std::string kStyleMap0Id_;
+  string kStyleMap0Id_;
   kmldom::StyleMapPtr stylemap0_;
   SharedStyleMap shared_style_map_;
   boost::scoped_ptr<SharedStyleParserObserver> shared_style_parser_observer_;

@@ -305,7 +305,7 @@ TEST_F(GroundOverlayTest, TestSerialize) {
   groundoverlay_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   groundoverlay_->set_latlonbox(KmlFactory::GetFactory()->CreateLatLonBox()) ;
 
-  const std::string expected =
+  const string expected =
       "<GroundOverlay>"
       "<altitude>123.456</altitude>"
       "<altitudeMode>absolute</altitudeMode>"
@@ -319,7 +319,7 @@ TEST_F(GroundOverlayTest, TestSerializeGxAltitudeMode) {
   groundoverlay_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
   groundoverlay_->set_latlonbox(KmlFactory::GetFactory()->CreateLatLonBox()) ;
 
-  const std::string expected =
+  const string expected =
       "<GroundOverlay>"
       "<altitude>123.456</altitude>"
       "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
@@ -334,7 +334,7 @@ TEST_F(GroundOverlayTest, TestSerializeGxLatLonQuad) {
   groundoverlay_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   groundoverlay_->set_gx_latlonquad(KmlFactory::GetFactory()->CreateGxLatLonQuad());
 
-  const std::string expected =
+  const string expected =
       "<GroundOverlay>"
       "<altitude>123.456</altitude>"
       "<altitudeMode>absolute</altitudeMode>"
@@ -360,7 +360,7 @@ TEST_F(OverlayXYTest, TestType) {
 }
 
 TEST_F(OverlayXYTest, TestParse) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<overlayXY x=\"0.5\" y=\"123\" xunits=\"fraction\" yunits=\"pixels\"/>",
     &errors);
@@ -379,7 +379,7 @@ TEST_F(OverlayXYTest, TestSerialize) {
   overlayxy_->set_y(256);
   overlayxy_->set_xunits(UNITS_FRACTION);
   overlayxy_->set_yunits(UNITS_PIXELS);
-  std::string expected =
+  string expected =
     "<overlayXY x=\"0.66\" xunits=\"fraction\" y=\"256\" yunits=\"pixels\"/>";
   ASSERT_EQ(expected, SerializeRaw(overlayxy_));
 }
@@ -401,7 +401,7 @@ TEST_F(ScreenXYTest, TestType) {
 }
 
 TEST_F(ScreenXYTest, TestParse) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<screenXY x=\"0.5\" y=\"123\" xunits=\"fraction\" "
       "yunits=\"insetPixels\"/>",
@@ -423,7 +423,7 @@ TEST_F(ScreenXYTest, TestSerialize) {
   screenxy_->set_y(256);
   screenxy_->set_xunits(UNITS_FRACTION);
   screenxy_->set_yunits(UNITS_INSETPIXELS);
-  std::string expected =
+  string expected =
     "<screenXY x=\"0.66\" xunits=\"fraction\" y=\"256\" "
       "yunits=\"insetPixels\"/>";
   ASSERT_EQ(expected, SerializeRaw(screenxy_));
@@ -446,7 +446,7 @@ TEST_F(RotationXYTest, TestType) {
 }
 
 TEST_F(RotationXYTest, TestParse) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<rotationXY x=\"512\" y=\"0.7\" xunits=\"pixels\" yunits=\"fraction\"/>",
     &errors);
@@ -467,7 +467,7 @@ TEST_F(RotationXYTest, TestSerialize) {
   rotationxy_->set_y(.77);
   rotationxy_->set_xunits(UNITS_FRACTION);
   rotationxy_->set_yunits(UNITS_FRACTION);
-  std::string expected =
+  string expected =
     "<rotationXY x=\"0.66\" xunits=\"fraction\" y=\"0.77\" "
     "yunits=\"fraction\"/>";
   ASSERT_EQ(expected, SerializeRaw(rotationxy_));
@@ -490,7 +490,7 @@ TEST_F(SizeTest, TestType) {
 }
 
 TEST_F(SizeTest, TestParse) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<size x=\"512\" y=\"0.7\" xunits=\"pixels\" yunits=\"fraction\"/>",
     &errors);
@@ -509,7 +509,7 @@ TEST_F(SizeTest, TestSerialize) {
   size_->set_y(.5);
   size_->set_xunits(UNITS_PIXELS);
   size_->set_yunits(UNITS_FRACTION);
-  std::string expected =
+  string expected =
     "<size x=\"66\" xunits=\"pixels\" y=\"0.5\" yunits=\"fraction\"/>";
   ASSERT_EQ(expected, SerializeRaw(size_));
 }
@@ -844,7 +844,7 @@ TEST_F(PhotoOverlayTest, TestSetGetHasClear) {
 }
 
 TEST_F(PhotoOverlayTest, TestParseSerialize) {
-  const std::string kPhotoOverlay(
+  const string kPhotoOverlay(
       "<PhotoOverlay>"
       "<name>hi</name>"
       "<Icon><href>pretty.jpg</href></Icon>"

@@ -80,8 +80,8 @@ bool StyleInliner::EndElement(const kmldom::ElementPtr& parent,
     if (child->Type() == kmldom::Type_styleUrl) {
       // If it's a local reference and we've captured this shared style
       // give a copy of that to the Feature instead of this styleUrl.
-      std::string fragment;
-      std::string path;
+      string fragment;
+      string path;
       if (SplitUri(child->get_char_data(), NULL, NULL, NULL, &path, NULL,
                    &fragment) && path.empty()) {
         SharedStyleMap::const_iterator iter = shared_styles_.find(fragment);
@@ -108,8 +108,8 @@ bool StyleInliner::AddChild(const kmldom::ElementPtr& parent,
   return true;  // Always continue parsing.
 }
 
-kmldom::ElementPtr InlineStyles(const std::string& input_kml,
-                               std::string* errors) {
+kmldom::ElementPtr InlineStyles(const string& input_kml,
+                               string* errors) {
   StyleInliner style_inliner;
   kmldom::Parser parser;
   parser.AddObserver(&style_inliner);

@@ -191,4 +191,45 @@ void Feature::Serialize(Serializer& serializer) const {
   Feature::SerializeAfterStyleSelector(serializer);
 }
 
+// >> Visitor Api Start [Feature] >>
+Visitor::Status Feature::StartVisit(Visitor* v) {
+  return v->VisitFeature(FeaturePtr(this));
+}
+
+void Feature::EndVisit(Visitor* v) {
+  v->VisitFeatureEnd(FeaturePtr(this));
+}
+
+void Feature::AcceptChildren(Visitor* v) {
+  Object::AcceptChildren(v);
+  if (has_atomauthor() && !get_atomauthor()->Accept(v)) {
+    clear_atomauthor();
+  }
+  if (has_atomlink() && !get_atomlink()->Accept(v)) {
+    clear_atomlink();
+  }
+  if (has_xaladdressdetails() && !get_xaladdressdetails()->Accept(v)) {
+    clear_xaladdressdetails();
+  }
+  if (has_snippet() && !get_snippet()->Accept(v)) {
+    clear_snippet();
+  }
+  if (has_abstractview() && !get_abstractview()->Accept(v)) {
+    clear_abstractview();
+  }
+  if (has_timeprimitive() && !get_timeprimitive()->Accept(v)) {
+    clear_timeprimitive();
+  }
+  if (has_styleselector() && !get_styleselector()->Accept(v)) {
+    clear_styleselector();
+  }
+  if (has_region() && !get_region()->Accept(v)) {
+    clear_region();
+  }
+  if (has_extendeddata() && !get_extendeddata()->Accept(v)) {
+    clear_extendeddata();
+  }
+}
+// << Visitor Api End [Feature] <<
+
 }  // namespace kmldom

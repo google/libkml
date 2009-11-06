@@ -42,7 +42,7 @@ class XsdElementTest : public testing::Test {
 
 TEST_F(XsdElementTest, TestBasicCreate) {
   // <xs:element name="sjokolade"/>
-  const std::string kSjokolade("sjokolade");
+  const string kSjokolade("sjokolade");
   attributes_.SetString(kName, kSjokolade);
   xsd_element_.reset(XsdElement::Create(attributes_));
   ASSERT_TRUE(xsd_element_.get());
@@ -52,8 +52,8 @@ TEST_F(XsdElementTest, TestBasicCreate) {
 
 TEST_F(XsdElementTest, TestCreateNameType) {
   // <element name="address" type="string"/>, for example.
-  const std::string kAddress("address");
-  const std::string kString("string");
+  const string kAddress("address");
+  const string kString("string");
   attributes_.SetString(kName, kAddress);
   attributes_.SetString(kType, kString);
   xsd_element_.reset(XsdElement::Create(attributes_));
@@ -65,9 +65,9 @@ TEST_F(XsdElementTest, TestCreateNameType) {
 
 TEST_F(XsdElementTest, TestCreateNameTypeDefault) {
   // <element name="altitude" type="double" default="0.0"/>
-  const std::string kAltitude("altitude");
-  const std::string kDouble("double");
-  const std::string kZZ("0.0");
+  const string kAltitude("altitude");
+  const string kDouble("double");
+  const string kZZ("0.0");
   attributes_.SetString(kName, kAltitude);
   attributes_.SetString(kType, kDouble);
   attributes_.SetString(kDefault, kZZ);
@@ -83,7 +83,7 @@ TEST_F(XsdElementTest, TestCreateNameTypeDefault) {
 
 TEST_F(XsdElementTest, TestCreateNameAbstract) {
   // <element name="altitudeModeGroup" abstract="true"/>
-  const std::string kAltitudeModeGroup("altitudeModeGroup");
+  const string kAltitudeModeGroup("altitudeModeGroup");
   attributes_.SetString(kName, kAltitudeModeGroup);
   attributes_.SetString(kAbstract, "true");
 
@@ -98,10 +98,10 @@ TEST_F(XsdElementTest, TestCreateNameAbstract) {
 TEST_F(XsdElementTest, TestCreateNameTypeDefaultSubstitutionGroup) {
   // <element name="altitudeMode" type="kml:altitudeModeEnumType"
   //  default="clampToGround" substitutionGroup="kml:altitudeModeGroup"/>
-  const std::string kAltitudeMode("altitudeMode");
-  const std::string kAltitudeEnum("kml:altitudeModeEnumType");
-  const std::string kClampToGround("clampToGround");
-  const std::string kAltitudeModeGroup("kml:altitudeModeGroup");
+  const string kAltitudeMode("altitudeMode");
+  const string kAltitudeEnum("kml:altitudeModeEnumType");
+  const string kClampToGround("clampToGround");
+  const string kAltitudeModeGroup("kml:altitudeModeGroup");
   attributes_.SetString(kName, kAltitudeMode);
   attributes_.SetString(kType, kAltitudeEnum);
   attributes_.SetString(kDefault, kClampToGround);

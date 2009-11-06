@@ -27,7 +27,6 @@
 
 #include "kml/base/attributes.h"
 #include <algorithm>
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
@@ -60,16 +59,16 @@ TEST_F(AttributesTest, TestCreate) {
   // Call the method under test.
   attributes_.reset(Attributes::Create(atts));
   ASSERT_TRUE(attributes_.get());
-  std::string got_val;
+  string got_val;
   ASSERT_TRUE(attributes_->GetValue(atts[0], &got_val));
-  ASSERT_EQ(std::string(atts[1]), got_val);
+  ASSERT_EQ(string(atts[1]), got_val);
   ASSERT_TRUE(attributes_->GetValue(atts[2], &got_val));
-  ASSERT_EQ(std::string(atts[3]), got_val);
+  ASSERT_EQ(string(atts[3]), got_val);
   ASSERT_TRUE(attributes_->GetValue(atts[4], &got_val));
-  ASSERT_EQ(std::string(atts[5]), got_val);
+  ASSERT_EQ(string(atts[5]), got_val);
   ASSERT_FALSE(attributes_->GetValue("no-such-attr", &got_val));
   // Verify null output is well behaved.
-  std::string* p = NULL;
+  string* p = NULL;
   ASSERT_TRUE(attributes_->GetValue(atts[0], p));
   ASSERT_FALSE(attributes_->GetValue("no-such_attr", p));
 }
@@ -80,29 +79,29 @@ TEST_F(AttributesTest, TestCreateOdd) {
   // Call the method under test.
   attributes_.reset(Attributes::Create(atts));
   ASSERT_TRUE(attributes_.get());
-  std::string got_val;
+  string got_val;
   ASSERT_TRUE(attributes_->GetValue(atts[0], &got_val));
-  ASSERT_EQ(std::string(atts[1]), got_val);
+  ASSERT_EQ(string(atts[1]), got_val);
   ASSERT_FALSE(attributes_->GetValue(atts[2], &got_val));
 }
 
 TEST_F(AttributesTest, TestGetStringDesctructive) {
   const char* atts[] = { "id", "placemark-123", "unknown", "somevalue", 0 };
   attributes_.reset(Attributes::Create(atts));
-  std::string got_val;
+  string got_val;
   ASSERT_TRUE(attributes_->GetValue(atts[0], &got_val));
-  std::string got_val_again;
-  const std::string kAtt0(atts[0]);
+  string got_val_again;
+  const string kAtt0(atts[0]);
   ASSERT_TRUE(attributes_->CutValue(kAtt0, &got_val_again));
   ASSERT_FALSE(attributes_->GetValue(atts[0], &got_val_again));
 }
 
 TEST_F(AttributesTest, TestSetGetString) {
-  const std::string kVal0 = "val0";
-  const std::string kVal1 = "val1";
+  const string kVal0 = "val0";
+  const string kVal1 = "val1";
   attributes_->SetValue(kAttr0, kVal0);
   attributes_->SetValue(kAttr1, kVal1);
-  std::string got_val;
+  string got_val;
   ASSERT_TRUE(attributes_->GetValue(kAttr0, &got_val));
   ASSERT_EQ(kVal0, got_val);
   ASSERT_TRUE(attributes_->GetValue(kAttr1, &got_val));
@@ -140,12 +139,12 @@ TEST_F(AttributesTest, TestSetGetInt) {
 }
 
 TEST_F(AttributesTest, TestClone) {
-  const std::string kVal0 = "val0";
+  const string kVal0 = "val0";
   const double kVal1 = 123.456789;
   attributes_->SetValue(kAttr0, kVal0);
   attributes_->SetValue(kAttr1, kVal1);
   Attributes* clone = attributes_->Clone();
-  std::string got_string;
+  string got_string;
   ASSERT_TRUE(clone->GetValue(kAttr0, &got_string));
   ASSERT_EQ(kVal0, got_string);
   double got_double;
@@ -155,17 +154,17 @@ TEST_F(AttributesTest, TestClone) {
 }
 
 TEST_F(AttributesTest, TestMerge) {
-  const std::string kVal0 = "val0";
+  const string kVal0 = "val0";
   const double kVal1a = 123.456789;
   const double kVal1b = 78.90123;
-  const std::string kVal2 = "fraction";
+  const string kVal2 = "fraction";
   attributes_->SetValue(kAttr0, kVal0);
   attributes_->SetValue(kAttr1, kVal1a);
   Attributes attributes;
   attributes.SetValue(kAttr1, kVal1b);
   attributes.SetValue(kAttr2, kVal2);
   attributes_->MergeAttributes(attributes);
-  std::string got_string;
+  string got_string;
   ASSERT_TRUE(attributes_->GetValue(kAttr0, &got_string));
   ASSERT_EQ(kVal0, got_string);
   double got_double;
@@ -176,14 +175,14 @@ TEST_F(AttributesTest, TestMerge) {
 }
 
 TEST_F(AttributesTest, TestSerialize) {
-  const std::string kVal0 = "val0";
+  const string kVal0 = "val0";
   const double kVal1 = 123.456789;
   attributes_->SetValue(kAttr0, kVal0);
   attributes_->SetValue(kAttr1, kVal1);
-  std::string serialized;
+  string serialized;
   attributes_->Serialize(&serialized);
-  const std::string expecting = " " + std::string(kAttr1) + "=\"123.456789\" "
-    + std::string(kAttr0) + "=\"" + kVal0 + "\"";
+  const string expecting = " " + string(kAttr1) + "=\"123.456789\" "
+    + string(kAttr0) + "=\"" + kVal0 + "\"";
   ASSERT_EQ(expecting, serialized);
 }
 
@@ -202,9 +201,9 @@ TEST_F(AttributesTest, TestSplit) {
   boost::scoped_ptr<Attributes> xmlns_(attributes_->SplitByPrefix("xmlns"));
   ASSERT_TRUE(xmlns_.get());
   ASSERT_EQ(static_cast<size_t>(1), xmlns_->GetSize());
-  std::string val;
+  string val;
   ASSERT_TRUE(xmlns_->GetValue("ex", &val));
-  ASSERT_EQ(std::string(atts[3]), val);
+  ASSERT_EQ(string(atts[3]), val);
 }
 
 TEST_F(AttributesTest, TestMatchNoDefault) {
@@ -219,11 +218,11 @@ TEST_F(AttributesTest, TestMatchNoDefault) {
   boost::scoped_ptr<Attributes> xmlns_(attributes_->SplitByPrefix("xmlns"));
   ASSERT_TRUE(xmlns_.get());
   ASSERT_EQ(static_cast<size_t>(2), xmlns_->GetSize());
-  std::string val;
+  string val;
   ASSERT_TRUE(xmlns_->GetValue("kml", &val));
-  ASSERT_EQ(std::string(atts[1]), val);
+  ASSERT_EQ(string(atts[1]), val);
   ASSERT_TRUE(xmlns_->GetValue("ex", &val));
-  ASSERT_EQ(std::string(atts[3]), val);
+  ASSERT_EQ(string(atts[3]), val);
 }
 
 TEST_F(AttributesTest, TestGetAttrNames) {
@@ -238,7 +237,7 @@ TEST_F(AttributesTest, TestGetAttrNames) {
     NULL
   };
   attributes_.reset(Attributes::Create(atts));
-  std::vector<std::string> attr_names;
+  std::vector<string> attr_names;
   attributes_->GetAttrNames(&attr_names);
   ASSERT_EQ(static_cast<size_t>(3), attr_names.size());
   ASSERT_FALSE(attr_names.end() ==
@@ -256,16 +255,16 @@ TEST_F(AttributesTest, TestIterator) {
   attributes_.reset(Attributes::Create(atts));
   ASSERT_TRUE(attributes_.get());
   StringMapIterator iter = attributes_->CreateIterator();
-  ASSERT_EQ(std::string(atts[0]), iter.Data().first);
-  ASSERT_EQ(std::string(atts[1]), iter.Data().second);
+  ASSERT_EQ(string(atts[0]), iter.Data().first);
+  ASSERT_EQ(string(atts[1]), iter.Data().second);
   iter.Advance();
   ASSERT_FALSE(iter.AtEnd());
-  ASSERT_EQ(std::string(atts[2]), iter.Data().first);
-  ASSERT_EQ(std::string(atts[3]), iter.Data().second);
+  ASSERT_EQ(string(atts[2]), iter.Data().first);
+  ASSERT_EQ(string(atts[3]), iter.Data().second);
   iter.Advance();
   ASSERT_FALSE(iter.AtEnd());
-  ASSERT_EQ(std::string(atts[4]), iter.Data().first);
-  ASSERT_EQ(std::string(atts[5]), iter.Data().second);
+  ASSERT_EQ(string(atts[4]), iter.Data().first);
+  ASSERT_EQ(string(atts[5]), iter.Data().second);
   iter.Advance();
   ASSERT_TRUE(iter.AtEnd());
 }

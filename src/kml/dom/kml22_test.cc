@@ -46,31 +46,31 @@ class Kml22Test : public testing::Test {
 
 // Verify proper enum defaults:
 TEST_F(Kml22Test, TestEnumDefaults) {
-  ASSERT_EQ(std::string("clampToGround"),
+  ASSERT_EQ(string("clampToGround"),
             xsd_->EnumValue(Type_altitudeMode, ALTITUDEMODE_CLAMPTOGROUND));
-  ASSERT_EQ(std::string("normal"),
+  ASSERT_EQ(string("normal"),
             xsd_->EnumValue(Type_colorMode, COLORMODE_NORMAL));
-  ASSERT_EQ(std::string("default"),
+  ASSERT_EQ(string("default"),
             xsd_->EnumValue(Type_displayMode, DISPLAYMODE_DEFAULT));
-  ASSERT_EQ(std::string("lowerLeft"),
+  ASSERT_EQ(string("lowerLeft"),
             xsd_->EnumValue(Type_gridOrigin, GRIDORIGIN_LOWERLEFT));
-  ASSERT_EQ(std::string("open"),
+  ASSERT_EQ(string("open"),
             xsd_->EnumValue(Type_state, ITEMICONSTATE_OPEN));
-  ASSERT_EQ(std::string("check"),
+  ASSERT_EQ(string("check"),
             xsd_->EnumValue(Type_listItemType, LISTITEMTYPE_CHECK));
-  ASSERT_EQ(std::string("onChange"),
+  ASSERT_EQ(string("onChange"),
             xsd_->EnumValue(Type_refreshMode, REFRESHMODE_ONCHANGE));
-  ASSERT_EQ(std::string("rectangle"),
+  ASSERT_EQ(string("rectangle"),
             xsd_->EnumValue(Type_shape, SHAPE_RECTANGLE));
-  ASSERT_EQ(std::string("normal"),
+  ASSERT_EQ(string("normal"),
             xsd_->EnumValue(Type_key, STYLESTATE_NORMAL));
-  ASSERT_EQ(std::string("fraction"),
+  ASSERT_EQ(string("fraction"),
             xsd_->EnumValue(Type_units, UNITS_FRACTION));
-  ASSERT_EQ(std::string("never"),
+  ASSERT_EQ(string("never"),
             xsd_->EnumValue(Type_viewRefreshMode, VIEWREFRESHMODE_NEVER));
-  ASSERT_EQ(std::string("bounce"),
+  ASSERT_EQ(string("bounce"),
             xsd_->EnumValue(Type_GxFlyToMode, GX_FLYTOMODE_BOUNCE));
-  ASSERT_EQ(std::string("pause"),
+  ASSERT_EQ(string("pause"),
             xsd_->EnumValue(Type_GxPlayMode, GX_PLAYMODE_PAUSE));
 }
 

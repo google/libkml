@@ -29,7 +29,6 @@
 #define KML_CONVENIENCE_GPX_TRK_PT_HANDLER_H__
 
 #include <cstring>  // strcmp
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/base/expat_handler.h"
@@ -50,8 +49,9 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
  public:
 
   // ExpatHandler::StartElement()
-  virtual void StartElement(const char *name, const char **atts) {
-    if (strcmp("trkpt", name) == 0) {
+  virtual void StartElement(const string& name,
+                            const std::vector <string>& atts) {
+    if (name.compare("trkpt") == 0) {
       // <trkpt lat="-33.911973070" lon="18.422974152">
       // If both lat and lon exist and are sane doubles create a Vec3 for
       // the point.
@@ -66,8 +66,8 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
         }
       }
       time_.clear();
-    } else if (strcmp("time", name) == 0  ||
-               strcmp("ele", name) == 0) {
+    } else if (name.compare("time") == 0  ||
+               name.compare("ele") == 0) {
       // <time>2008-10-11T14:55:41Z</time>
       // <ele>4.943848</ele>
       gather_char_data_ = true;
@@ -76,17 +76,17 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
   }
 
   // ExpatHandler::EndElement()
-  virtual void EndElement(const char *name) {
-    if (strcmp("trkpt", name) == 0) {
+  virtual void EndElement(const string& name) {
+    if (name.compare("trkpt") == 0) {
       // </trkpt>
       // If a Vec3 was created for this element call the handler.
       if (vec3_.get()) {
         HandlePoint(*vec3_, time_);
       }
-    } else if (strcmp("time", name) == 0) {
+    } else if (name.compare("time") == 0) {
       // <time>2008-10-11T14:55:41Z</time>
       time_ = char_data_;
-    } else if (strcmp("ele", name) == 0) {
+    } else if (name.compare("ele") == 0) {
       // <ele>4.943848</ele>
       if (vec3_.get()) {
         vec3_->set_altitude(strtod(char_data_.c_str(), NULL));
@@ -95,23 +95,23 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
   }
 
   // ExpatHandler::CharData()
-  virtual void CharData(const XML_Char* str, int len) {
+  virtual void CharData(const string& str) {
     if (gather_char_data_) {
-      char_data_.append(str, len);
+      char_data_.append(str);
     }
   }
 
   // This is called for each <trkpt>.  This default implemenation does nothing.
   virtual void HandlePoint(const kmlbase::Vec3& where,
-                           const std::string& when) {
+                           const string& when) {
   };
 
  private:
   // A fresh Vec3 is created for each <trkpt>.
   boost::scoped_ptr<kmlbase::Vec3> vec3_;
-  std::string time_;
+  string time_;
   bool gather_char_data_;
-  std::string char_data_;
+  string char_data_;
 };
 
 }  // end namespace kmlconvenience

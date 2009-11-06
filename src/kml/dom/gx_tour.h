@@ -272,13 +272,13 @@ class GxSoundCue : public GxTourPrimitive {
   }
 
   // <href>
-  const std::string& get_href() const {
+  const string& get_href() const {
     return href_;
   }
   bool has_href() const {
     return has_href_;
   }
-  void set_href(const std::string& href) {
+  void set_href(const string& href) {
     href_ = href;
     has_href_ = true;
   }
@@ -288,7 +288,7 @@ class GxSoundCue : public GxTourPrimitive {
   }
 
  private:
-  std::string href_;
+  string href_;
   bool has_href_;
   friend class KmlFactory;
   GxSoundCue();

@@ -64,17 +64,17 @@ TEST_F(FolderTest, TestParse) {
     "<Placemark/>"
     "<ScreenOverlay/>"
     "</Folder>";
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(kFolder, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
   const FolderPtr folder = AsFolder(root);
   ASSERT_TRUE(folder);
   // Verify the Object-ness of Folder.
-  ASSERT_EQ(std::string("folder123"), folder->get_id());
+  ASSERT_EQ(string("folder123"), folder->get_id());
   ASSERT_FALSE(folder->has_targetid());
   // Verify the Feature-ness of Folder.
-  ASSERT_EQ(std::string("My Favorite Folder"), folder->get_name());
+  ASSERT_EQ(string("My Favorite Folder"), folder->get_name());
   ASSERT_FALSE(folder->has_description());
   ASSERT_TRUE(folder->has_styleselector());
   ASSERT_EQ(Type_Style, folder->get_styleselector()->Type());
@@ -108,7 +108,7 @@ TEST_F(FolderTest, TestBasicSerialize) {
   folder_->set_id("f789");
   folder_->set_name("some folder");
   folder_->set_region(factory->CreateRegion());
-  const std::string kExpected =
+  const string kExpected =
     "<Folder id=\"f789\">"
     "<name>some folder</name>"
     "<Region/>"
@@ -121,9 +121,9 @@ TEST_F(FolderTest, TestBasicSerialize) {
 
 // Test that an empty folder with no children serializes to a nil element.
 TEST_F(FolderTest, TestNilSerialize) {
-  ASSERT_EQ(std::string("<Folder/>"), SerializeRaw(folder_));
+  ASSERT_EQ(string("<Folder/>"), SerializeRaw(folder_));
   folder_->set_id("xyz");
-  ASSERT_EQ(std::string("<Folder id=\"xyz\"/>"),
+  ASSERT_EQ(string("<Folder id=\"xyz\"/>"),
                        SerializeRaw(folder_));
 }
 
@@ -135,7 +135,7 @@ TEST_F(FolderTest, TestSerializePretty) {
   folder_->set_id("f789");
   folder_->set_name("some folder");
   folder_->set_region(factory->CreateRegion());
-  const std::string kExpected =
+  const string kExpected =
     "<Folder id=\"f789\">\n"
     "  <name>some folder</name>\n"
     "  <Region/>\n"
@@ -183,7 +183,7 @@ TEST_F(FolderTest, TestAddFeatureToTwoContainers) {
 
 // Verify serialization follows XSD order.
 TEST_F(FolderTest, TestParseSerialize) {
-  const std::string kFolder(
+  const string kFolder(
       "<Folder>"
       "<name>hi</name>"
       "<description>hello</description>"

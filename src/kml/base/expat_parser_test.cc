@@ -46,30 +46,31 @@ namespace kmlbase {
 // A basic ExpatParser handler that simply reconstructs parsed XML in a string.
 class TestXmlHandler : public ExpatHandler {
  public:
-  virtual void StartElement(const char* name, const char** atts) {
-    xml_.append("<" + std::string(name) + ">");
+  virtual void StartElement(const string& name,
+                            const StringVector& atts) {
+    xml_.append("<" + name + ">");
   }
-  virtual void EndElement(const char* name) {
-    xml_.append("</" + std::string(name) + ">");
+  virtual void EndElement(const string& name) {
+    xml_.append("</" + string(name) + ">");
   }
-  virtual void CharData(const char* data, int len) {
-    xml_.append(data, len);
+  virtual void CharData(const string& data) {
+    xml_.append(data);
   }
-  const std::string& get_xml() const { return xml_; }
+  const string& get_xml() const { return xml_; }
 
  private:
-  std::string xml_;
+  string xml_;
 };
 
 class ExpatParserTest : public testing::Test {
  protected:
-  std::string errors_;
+  string errors_;
   TestXmlHandler handler_;
 };
 
 // Verify basic usage of the static ParseString method.
 TEST_F(ExpatParserTest, TestPassingParseString) {
-  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
+  const string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
   ASSERT_TRUE(ExpatParser::ParseString(kXml, &handler_, &errors_, false));
   ASSERT_TRUE(errors_.empty());
   ASSERT_EQ(kXml, handler_.get_xml());
@@ -78,7 +79,7 @@ TEST_F(ExpatParserTest, TestPassingParseString) {
 // Verify failure of ParseString on badly formed XML content.
 TEST_F(ExpatParserTest, TestFailingParseString) {
   // kXml is not well-formed.
-  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
+  const string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
   ASSERT_FALSE(ExpatParser::ParseString(kXml, &handler_, &errors_, false));
   ASSERT_FALSE(errors_.empty());
   ASSERT_EQ(kXml, handler_.get_xml());
@@ -86,7 +87,7 @@ TEST_F(ExpatParserTest, TestFailingParseString) {
 
 // Verify basic usage of the ParseBuffer method.
 TEST_F(ExpatParserTest, TestPassingParseBuffer) {
-  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
+  const string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
   ExpatParser parser(&handler_, false);
 
   // Parse the string one character at a time.
@@ -100,7 +101,7 @@ TEST_F(ExpatParserTest, TestPassingParseBuffer) {
 // Verify failure of ParseBuffer on badly formed XML content.
 TEST_F(ExpatParserTest, TestFailingParseBuffer) {
   // kXml is not well-formed.
-  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
+  const string kXml("<Tom><dick>foo</dick><harry>bar</harry>");
   ExpatParser parser(&handler_, false);
 
   // Parse the string one character at a time.
@@ -120,9 +121,9 @@ TEST_F(ExpatParserTest, TestFailingParseBuffer) {
 
 // Assert that we detect a mid-stream parsing failure.
 TEST_F(ExpatParserTest, TestMidstreamFailingParseBuffer) {
-  const std::string k0("<A><B><C><D>");
-  const std::string k1("</D>");  // This is fine.
-  const std::string k2("</B>");  // XML is badly formed here, missing </C>.
+  const string k0("<A><B><C><D>");
+  const string k1("</D>");  // This is fine.
+  const string k2("</B>");  // XML is badly formed here, missing </C>.
   ExpatParser parser(&handler_, false);
 
   ASSERT_TRUE(parser.ParseBuffer(k0, &errors_, false));
@@ -137,7 +138,7 @@ TEST_F(ExpatParserTest, TestMidstreamFailingParseBuffer) {
 
 // Verify basic usage of the GetInternalBuffer and ParseInternalBuffer methods.
 TEST_F(ExpatParserTest, TestPassingParseInternalBuffer) {
-  const std::string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
+  const string kXml("<Tom><dick>foo</dick><harry>bar</harry></Tom>");
   ExpatParser parser(&handler_, false);
 
   // Parse the string one character at a time.
@@ -151,9 +152,9 @@ TEST_F(ExpatParserTest, TestPassingParseInternalBuffer) {
 }
 
 TEST_F(ExpatParserTest, TestFailingInternalBuffer) {
-  const std::string k0("<A><B><C><D>");
-  const std::string k1("</D>");  // This is fine.
-  const std::string k2("</B>");  // XML is badly formed here, missing </C>.
+  const string k0("<A><B><C><D>");
+  const string k1("</D>");  // This is fine.
+  const string k2("</B>");  // XML is badly formed here, missing </C>.
   ExpatParser parser(&handler_, false);
 
   void* buf = parser.GetInternalBuffer(k0.size());
@@ -175,8 +176,8 @@ TEST_F(ExpatParserTest, TestFailingInternalBuffer) {
 TEST_F(ExpatParserTest, TestBillionLaughsAttack) {
   // Ensure that the "billion laughs" buffer overflow attack is handled.
   // Previously, this would hang libkml.
-  const std::string kBadXml = std::string(DATADIR) + "/kml/billion.kml";
-  std::string file_data;
+  const string kBadXml = string(DATADIR) + "/kml/billion.kml";
+  string file_data;
   ASSERT_TRUE(File::ReadFileToString(kBadXml.c_str(), &file_data));
 
   ASSERT_FALSE(ExpatParser::ParseString(file_data, &handler_, &errors_, false));
@@ -186,7 +187,7 @@ TEST_F(ExpatParserTest, TestBillionLaughsAttack) {
 
 TEST_F(ExpatParserTest, TestEntitiesStopParser) {
   // This is malformed XML.
-  const std::string kBadXml(
+  const string kBadXml(
     "<Placemark>"
     "<!DOCTYPE billion ["
     "<!ELEMENT billion (#PCDATA)>"
@@ -226,7 +227,51 @@ TEST_F(ExpatParserTest, TestEntitiesStopParser) {
     "</Placemark>");
   ASSERT_FALSE(ExpatParser::ParseString(kBadXml, &handler_, &errors_, false));
   ASSERT_FALSE(errors_.empty());
-  ASSERT_EQ(std::string("<Placemark>"), handler_.get_xml());
+  ASSERT_EQ(string("<Placemark>"), handler_.get_xml());
+}
+
+TEST_F(ExpatParserTest, TestXmlUnicodeHandlers) {
+  // The contrived-looking array approach here is so we're safe with either
+  // sane build options or XML_UNICODE.
+  const XML_Char kXMLChar[] = {'<', 'A', '>', '<', 'B', '>', 0 };
+  const XML_Char kXMLChar2[] = {'<', 'C', '>', '<', 'D', '>', 0 };
+  const XML_Char kEmptyString[] = { 0 };
+  string s1;
+  s1 = xml_char_to_string(kXMLChar);
+  // Ensure roundrip is OK.  If this fails, suspect XML_UNICODE mismatches
+  // in linked expat lib and this source.
+  ASSERT_EQ(kXMLChar, xml_char_to_string(kXMLChar));
+
+  // Check null inputs.
+  s1 = xml_char_to_string(NULL);
+  ASSERT_TRUE(s1.empty());
+
+  // Check empty inputs.
+  s1 = xml_char_to_string(kEmptyString);
+  ASSERT_TRUE(s1.empty());
+
+  // Exercise xml_char_to_string_n.
+  s1 = xml_char_to_string_n(kXMLChar, 0);
+  ASSERT_TRUE(s1.empty());
+  s1 = xml_char_to_string_n(kXMLChar, 3);
+  ASSERT_EQ(s1, "<A>");
+
+  // Now the array version.
+  std::vector <string> a;
+  xml_char_to_string_vec(NULL, &a);
+  ASSERT_EQ(a.size(), static_cast<size_t>(0));
+
+  // Check empty array.
+  const XML_Char* kXMLEmptyArray[] = {NULL};
+  xml_char_to_string_vec(kXMLEmptyArray, &a);
+  ASSERT_EQ(a.size(), static_cast<size_t>(0));
+
+  // Check common case.
+  const XML_Char* kXMLArray[] = {kXMLChar, kXMLChar2, NULL};
+  xml_char_to_string_vec(kXMLArray, &a);
+  ASSERT_EQ(a.size(), static_cast<size_t>(2));
+  ASSERT_EQ(a.at(0), "<A><B>");
+  ASSERT_EQ(a.at(1), "<C><D>");
 }
 
 }  // end namespace kmlbase

@@ -81,7 +81,7 @@ TEST_F(DocumentTest, TestStyleSelectors) {
 
 // Verify serialization follows XSD order.
 TEST_F(DocumentTest, TestParseSerialize) {
-  const std::string kDocument(
+  const string kDocument(
       "<Document>"
       "<name>hi</name>"
       "<description>hello</description>"

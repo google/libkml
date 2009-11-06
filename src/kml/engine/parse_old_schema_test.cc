@@ -41,7 +41,7 @@ class ParseOldSchemaTest : public testing::Test {
 };
 
 void ParseOldSchemaTest::InitSchemaNameMap() {
-  const std::string kSchemaName("S_park_boundaries_S");
+  const string kSchemaName("S_park_boundaries_S");
   SchemaPtr schema = KmlFactory::GetFactory()->CreateSchema();
   schema->set_name(kSchemaName);
   schema_name_map_[kSchemaName] = schema;
@@ -50,14 +50,14 @@ void ParseOldSchemaTest::InitSchemaNameMap() {
 // Test ConvertOldSchema().
 TEST_F(ParseOldSchemaTest, TestConvertOldSchema) {
   InitSchemaNameMap();
-  const std::string kXml(
+  const string kXml(
       "<S_park_boundaries_S>"
       "<name>Yosemite</name>"
       "<Polygon/>"
       "</S_park_boundaries_S>");
-  std::string output_xml;
+  string output_xml;
   ASSERT_TRUE(ConvertOldSchema(kXml, schema_name_map_, &output_xml));
-  const std::string kExpected(
+  const string kExpected(
       "<Placemark>"
       "<name>Yosemite</name>"
       "<Polygon/>"
@@ -68,8 +68,8 @@ TEST_F(ParseOldSchemaTest, TestConvertOldSchema) {
 // Test ParseOldSchema().
 TEST_F(ParseOldSchemaTest, TestParseOldSchema) {
   InitSchemaNameMap();
-  const std::string kName("Arches NP");
-  const std::string kXml(
+  const string kName("Arches NP");
+  const string kXml(
       "<S_park_boundaries_S>"
       "<name>" + kName + "</name>"
       "<Polygon/>"

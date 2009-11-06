@@ -26,7 +26,6 @@
 #ifndef KML_DOM_SNIPPET_H__
 #define KML_DOM_SNIPPET_H__
 
-#include <string>
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
 #include "kml/base/util.h"
@@ -49,9 +48,9 @@ class SnippetCommon : public Element {
   }
 
   // This is the character data content of <Snippet>
-  const std::string& get_text() const { return text_; }
+  const string& get_text() const { return text_; }
   bool has_text() const { return has_text_; }
-  void set_text(const std::string& value) {
+  void set_text(const string& value) {
     text_ = value;
     has_text_ = true;
   }
@@ -80,7 +79,7 @@ class SnippetCommon : public Element {
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
 
  private:
-  std::string text_;
+  string text_;
   bool has_text_;
   int maxlines_;
   bool has_maxlines_;

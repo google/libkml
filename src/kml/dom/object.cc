@@ -71,4 +71,15 @@ void Object::SerializeAttributes(Attributes* attributes) const {
   }
 }
 
+// >> Visitor Api Start [Object] >>
+Visitor::Status Object::StartVisit(Visitor* v) {
+  return v->VisitObject(ObjectPtr(this));
+}
+
+void Object::EndVisit(Visitor* v) {
+  v->VisitObjectEnd(ObjectPtr(this));
+}
+
+// << Visitor Api End [Object] <<
+
 }  // namespace kmldom

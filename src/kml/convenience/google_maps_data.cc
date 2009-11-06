@@ -27,7 +27,6 @@
 
 #include "kml/convenience/google_maps_data.h"
 
-#include <string>
 #include <vector>
 #include "kml/base/mimetypes.h"
 #include "kml/convenience/atom_util.h"
@@ -37,9 +36,11 @@
 
 namespace kmlconvenience {
 
+static const char* kServiceName = "local";
+
 static const char* kScope = "http://maps.google.com";
 
-static const char* kMapFeedUri = "/maps/feeds/maps/default/full";
+static const char* kMetaFeedUri = "/maps/feeds/maps/default/full";
 
 // static
 GoogleMapsData* GoogleMapsData::Create(HttpClient* http_client) {
@@ -55,7 +56,7 @@ GoogleMapsData* GoogleMapsData::Create(HttpClient* http_client) {
   return NULL;
 }
 
-static std::string GetScope() {
+static string GetScope() {
   if (const char* scope = getenv("GOOGLE_MAPS_DATA_SCOPE")) {
     return scope;
   }
@@ -70,17 +71,27 @@ GoogleMapsData::GoogleMapsData()
 GoogleMapsData::~GoogleMapsData() {
 }
 
-const char* GoogleMapsData::get_map_feed_uri() const {
-  return kMapFeedUri;
+// static
+const char* GoogleMapsData::get_service_name() {
+  return kServiceName;
 }
 
-bool GoogleMapsData::GetMetaFeedXml(std::string* atom_feed) const {
-  return http_client_->SendRequest(HTTP_GET, scope_ + kMapFeedUri, NULL, NULL,
+// static
+const char* GoogleMapsData::get_metafeed_uri() {
+  return kMetaFeedUri;
+}
+
+const string& GoogleMapsData::get_scope() const {
+  return scope_;
+}
+
+bool GoogleMapsData::GetMetaFeedXml(string* atom_feed) const {
+  return http_client_->SendRequest(HTTP_GET, scope_ + kMetaFeedUri, NULL, NULL,
                                    atom_feed);
 }
 
 kmldom::AtomFeedPtr GoogleMapsData::GetMetaFeed() const {
-  std::string meta_feed;
+  string meta_feed;
   if (GetMetaFeedXml(&meta_feed)) {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(meta_feed, NULL));
   }
@@ -89,7 +100,7 @@ kmldom::AtomFeedPtr GoogleMapsData::GetMetaFeed() const {
 
 // static
 bool GoogleMapsData::GetFeatureFeedUri(const kmldom::AtomEntryPtr& map_entry,
-                                       std::string* feature_feed_uri) {
+                                       string* feature_feed_uri) {
   if (map_entry.get() && map_entry->has_content()) {
     const kmldom::AtomContentPtr& content = map_entry->get_content();
     if (content->has_src()) {
@@ -102,15 +113,15 @@ bool GoogleMapsData::GetFeatureFeedUri(const kmldom::AtomEntryPtr& map_entry,
   return false;
 }
 
-bool GoogleMapsData::GetFeatureFeedXml(const std::string& feature_feed_uri,
-                                       std::string* atom_feed) const {
+bool GoogleMapsData::GetFeatureFeedXml(const string& feature_feed_uri,
+                                       string* atom_feed) const {
   return http_client_->SendRequest(HTTP_GET, feature_feed_uri, NULL, NULL,
                                    atom_feed);
 }
 
 kmldom::AtomFeedPtr GoogleMapsData::GetFeatureFeedByUri(
-    const std::string& feature_feed_uri) const {
-  std::string feature_feed;
+    const string& feature_feed_uri) const {
+  string feature_feed;
   if (GetFeatureFeedXml(feature_feed_uri, &feature_feed)) {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(feature_feed, NULL));
   }
@@ -164,9 +175,9 @@ kmldom::DocumentPtr GoogleMapsData::CreateDocumentOfMapFeatures(
   return document;
 }
 
-bool GoogleMapsData::CreateMap(const std::string& title,
-                               const std::string& summary,
-                               std::string* entry) {
+bool GoogleMapsData::CreateMap(const string& title,
+                               const string& summary,
+                               string* entry) {
   // Create the <atom:entry> for the new map.
   kmlengine::KmlFilePtr kml_file = kmlengine::KmlFile::CreateFromImport(
       AtomUtil::CreateBasicEntry(title, summary));
@@ -175,7 +186,7 @@ bool GoogleMapsData::CreateMap(const std::string& title,
   }
 
   // Get the Atom in XML form.
-  std::string post_data;
+  string post_data;
   kml_file->SerializeToString(&post_data);
 
   // Indicate that we're posting XML.
@@ -183,13 +194,13 @@ bool GoogleMapsData::CreateMap(const std::string& title,
   HttpClient::PushHeader("Content-Type", kmlbase::kAtomMimeType, &headers);
 
   // Send off the HTTP POST and save the result to the user supplied buffer.
-  return http_client_->SendRequest(HTTP_POST, scope_ + kMapFeedUri, &headers,
+  return http_client_->SendRequest(HTTP_POST, scope_ + kMetaFeedUri, &headers,
                                    &post_data, entry);
 }
 
-bool GoogleMapsData::AddFeature(const std::string& feature_feed_post_uri,
+bool GoogleMapsData::AddFeature(const string& feature_feed_post_uri,
                                 const kmldom::FeaturePtr& feature,
-                                std::string* feature_entry_xml) {
+                                string* feature_entry_xml) {
   // Create an <atom:content> to hold the Feature.
   kmldom::AtomContentPtr content =
       kmldom::KmlFactory::GetFactory()->CreateAtomContent();
@@ -208,7 +219,7 @@ bool GoogleMapsData::AddFeature(const std::string& feature_feed_post_uri,
   // headers.
   kmlengine::KmlFilePtr kml_file =
       kmlengine::KmlFile::CreateFromImport(entry);
-  std::string post_data;
+  string post_data;
   kml_file->SerializeToString(&post_data);
 
   // Indicate that we're posting XML.
@@ -221,7 +232,7 @@ bool GoogleMapsData::AddFeature(const std::string& feature_feed_post_uri,
 }
 
 int GoogleMapsData::PostPlacemarks(const kmldom::FeaturePtr& root_feature,
-                                   const std::string& feature_feed_uri) {
+                                   const string& feature_feed_uri) {
   // Because GetElementsById looks only _below_ the root feature.
   if (kmldom::Type_Placemark == root_feature->Type()) {
     return AddFeature(feature_feed_uri, root_feature, NULL) ? 1 : 0;
@@ -236,7 +247,8 @@ int GoogleMapsData::PostPlacemarks(const kmldom::FeaturePtr& root_feature,
   for (size_t i = 0; i < placemarks.size(); ++i) {
     const kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(placemarks[i]);
     if (placemark->has_geometry()) {
-      if (AddFeature(feature_feed_uri, placemark, NULL)) {
+      string dummy;
+      if (AddFeature(feature_feed_uri, placemark, &dummy)) {
         ++placemark_count;
       }
     }

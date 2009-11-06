@@ -43,7 +43,7 @@ class RegionatorQidTest : public testing::Test {
 // This tests the CreateRoot(), depth(), and str() methods of class Qid.
 TEST_F(RegionatorQidTest, TestRoot) {
   ASSERT_EQ(static_cast<size_t>(1), root_.depth());
-  ASSERT_EQ(std::string("q0"), root_.str());
+  ASSERT_EQ(string("q0"), root_.str());
 }
 
 // This tests the CreateChild() method of class Qid.
@@ -52,10 +52,10 @@ TEST_F(RegionatorQidTest, TestCreateChild) {
   Qid ne = root_.CreateChild(NE);
   Qid sw = root_.CreateChild(SW);
   Qid se = root_.CreateChild(SE);
-  ASSERT_EQ(std::string("q00"), nw.str());
-  ASSERT_EQ(std::string("q01"), ne.str());
-  ASSERT_EQ(std::string("q02"), sw.str());
-  ASSERT_EQ(std::string("q03"), se.str());
+  ASSERT_EQ(string("q00"), nw.str());
+  ASSERT_EQ(string("q01"), ne.str());
+  ASSERT_EQ(string("q02"), sw.str());
+  ASSERT_EQ(string("q03"), se.str());
   ASSERT_EQ(static_cast<size_t>(2), nw.depth());
   ASSERT_EQ(static_cast<size_t>(2), ne.depth());
   ASSERT_EQ(static_cast<size_t>(2), sw.depth());
@@ -66,12 +66,12 @@ TEST_F(RegionatorQidTest, TestCreateChild) {
 TEST_F(RegionatorQidTest, TestCreateChildVarious) {
   Qid q0123("q0123");
   Qid q0123_nw = q0123.CreateChild(NW);
-  ASSERT_EQ(std::string("q01230"), q0123_nw.str());
+  ASSERT_EQ(string("q01230"), q0123_nw.str());
   ASSERT_EQ(static_cast<size_t>(5), q0123_nw.depth());
 
   Qid deep("q01233211231231231231");
   Qid deep_ne = deep.CreateChild(NE);
-  ASSERT_EQ(std::string("q012332112312312312311"), deep_ne.str());
+  ASSERT_EQ(string("q012332112312312312311"), deep_ne.str());
   ASSERT_EQ(static_cast<size_t>(21), deep_ne.depth());
 }
 

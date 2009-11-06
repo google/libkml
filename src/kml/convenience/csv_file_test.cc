@@ -102,15 +102,15 @@ void CsvFileTest::ComparePlacemark(const PlacemarkPtr& placemark,
   ASSERT_EQ(csv_test_line.lat, lat);
   ASSERT_EQ(csv_test_line.lon, lon);
   if (csv_test_line.name) {
-    ASSERT_EQ(std::string(csv_test_line.name),
+    ASSERT_EQ(string(csv_test_line.name),
                          placemark->get_name());
   }
   if (csv_test_line.description) {
-    ASSERT_EQ(std::string(csv_test_line.description),
+    ASSERT_EQ(string(csv_test_line.description),
                          placemark->get_description());
   }
   if (csv_test_line.styleurl) {
-    ASSERT_EQ(std::string(csv_test_line.styleurl),
+    ASSERT_EQ(string(csv_test_line.styleurl),
                          placemark->get_styleurl());
   }
 }
@@ -137,8 +137,8 @@ TEST_F(CsvFileTest, TestParseCsvFile) {
   FeatureList feature_list;
   CsvFile csv_file(&feature_list);
   const size_t kTestCsvLines(101);
-  const std::string kTestCsv(std::string(DATADIR) +
-                             std::string("/csv/test.csv"));
+  const string kTestCsv(string(DATADIR) +
+                             string("/csv/test.csv"));
   csv_file.ParseCsvFile(kTestCsv.c_str());
   FolderPtr folder = KmlFactory::GetFactory()->CreateFolder();
   feature_list.Save(folder);

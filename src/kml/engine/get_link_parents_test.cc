@@ -46,7 +46,7 @@ class GetLinkParentsTest : public testing::Test {
 
 // Verify that GetLinks() returns false if given no output vector or bad kml.
 TEST_F(GetLinkParentsTest, TestNull) {
-  const std::string nothing;
+  const string nothing;
   ASSERT_FALSE(GetLinkParents(nothing, NULL));
   ElementVector will_remain_empty;
   ASSERT_FALSE(GetLinkParents("parse will fail", &will_remain_empty));
@@ -55,8 +55,8 @@ TEST_F(GetLinkParentsTest, TestNull) {
 
 // Verify that GetParentLinks finds all kinds of parents of links in a KML file.
 TEST_F(GetLinkParentsTest, TestAll) {
-  const std::string kAllLinks = std::string(DATADIR) + "/links/alllinks.kml";
-  std::string kml;
+  const string kAllLinks = string(DATADIR) + "/links/alllinks.kml";
+  string kml;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(kAllLinks, &kml));
   ElementVector link_parents;
   ASSERT_TRUE(GetLinkParents(kml, &link_parents));
@@ -71,8 +71,8 @@ TEST_F(GetLinkParentsTest, TestAll) {
   ASSERT_EQ(kmldom::Type_Model, link_parents[6]->Type());
 #if 0
   // TODO: handle styleUrl(?) and SchemaData
-  ASSERT_EQ(std::string("style.kml#style"), href_vector[6]->Type());
-  ASSERT_EQ(std::string("#myschema"), href_vector[7]);
+  ASSERT_EQ(string("style.kml#style"), href_vector[6]->Type());
+  ASSERT_EQ(string("#myschema"), href_vector[7]);
 #endif
 }
 

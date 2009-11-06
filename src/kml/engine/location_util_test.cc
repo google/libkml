@@ -137,11 +137,11 @@ TEST(LocationUtilTest, TestGetPointLatLon) {
 }
 
 // This internal utility function parses the testcase file to a KmlFile.
-static KmlFilePtr ParseFromDataDirFile(const std::string& subdir,
-                                       const std::string& filename) {
-  std::string kml_data;
-  const std::string kml_file =
-    File::JoinPaths(File::JoinPaths(std::string(DATADIR), subdir), filename);
+static KmlFilePtr ParseFromDataDirFile(const string& subdir,
+                                       const string& filename) {
+  string kml_data;
+  const string kml_file =
+    File::JoinPaths(File::JoinPaths(string(DATADIR), subdir), filename);
   return File::ReadFileToString(kml_file, &kml_data) ?
       KmlFile::CreateFromParse(kml_data, NULL) : NULL;
 }

@@ -42,8 +42,8 @@ const XmlNamespace XmlNamespaces[] = {
 };
 
 bool FindXmlNamespaceAndPrefix(XmlnsId xmlns_id,
-                               std::string* prefix,
-                               std::string* xml_namespace) {
+                               string* prefix,
+                               string* xml_namespace) {
   if (xmlns_id == XMLNS_NONE) {
     return false;
   }

@@ -30,7 +30,6 @@
 #include "kml/dom/geometry.h"
 #include <ctype.h>
 #include <stdlib.h>
-#include <string>
 #include "kml/base/attributes.h"
 #include "kml/base/xml_namespaces.h"
 #include "kml/dom/element.h"
@@ -125,7 +124,7 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
 
 // The char_data is everything between <coordinates> elements including
 // leading and trailing whitespace.
-void Coordinates::Parse(const std::string& char_data) {
+void Coordinates::Parse(const string& char_data) {
   const char* cstr = char_data.c_str();
   const char* endp = cstr + char_data.size();
   char* next = const_cast<char*>(cstr);

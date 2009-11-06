@@ -35,29 +35,29 @@ namespace kmlconvenience {
 // This HttpClient always "fetches" the given file.
 class OneFileHttpClient : public HttpClient {
  public:
-  OneFileHttpClient(const std::string& fetch_me)
+  OneFileHttpClient(const string& fetch_me)
     : HttpClient("OneFileHttpClient"),
       fetch_me_(fetch_me) {
   }
 
   virtual bool SendRequest(HttpMethodEnum http_method,
-                           const std::string& request_uri,
+                           const string& request_uri,
                            const StringPairVector* request_headers,
-                           const std::string* post_data,
-                           std::string* response) const {
+                           const string* post_data,
+                           string* response) const {
     return kmlbase::File::ReadFileToString(fetch_me_.c_str(), response);
   }
 
  private:
-  const std::string fetch_me_;
+  const string fetch_me_;
 };
 
 // This HttpClient logs each request to the supplied vector.
 struct HttpRequest {
   HttpMethodEnum http_method_;
-  std::string request_uri_;
+  string request_uri_;
   StringPairVector request_headers_;
-  std::string post_data_;
+  string post_data_;
 };
 typedef std::vector<HttpRequest> HttpRequestVector;
 
@@ -69,10 +69,10 @@ class LoggingHttpClient : public HttpClient {
   }
 
   virtual bool SendRequest(HttpMethodEnum http_method,
-                           const std::string& request_uri,
+                           const string& request_uri,
                            const StringPairVector* request_headers,
-                           const std::string* post_data,
-                           std::string* response) const {
+                           const string* post_data,
+                           string* response) const {
     HttpRequest http_request;
     http_request.http_method_ = http_method;
     http_request.request_uri_ = request_uri;

@@ -28,7 +28,6 @@
 
 #include "kml/regionator/regionator.h"
 #include <map>
-#include <string>
 #include "kml/convenience/convenience.h"
 #include "kml/dom.h"
 #include "kml/engine/location_util.h"
@@ -47,7 +46,7 @@ using kmldom::NetworkLinkPtr;
 using kmldom::RegionPtr;
 
 // This map is basically used as a mini in-core filesystem.
-typedef std::map<std::string, KmlPtr> kml_file_map_t;
+typedef std::map<string, KmlPtr> kml_file_map_t;
 
 // This is a simple RegionHandler used in the unit tests in this file.
 // Create the output map, create a PointRegionHandler pointing to the map,
@@ -85,7 +84,7 @@ public:
   }
 
   // The generated KML is saved off to the map supplied in the constructor.
-  void SaveKml(const KmlPtr& kml, const std::string& filename) {
+  void SaveKml(const KmlPtr& kml, const string& filename) {
     (*kml_file_map_)[filename] = kml;
   }
 
@@ -123,15 +122,15 @@ TEST_F(RegionatorTest, TwoLevelPointRegionatorTest) {
 
   // Each KML file has a Document whose name is the region qid.
   // This is essentially a test of Regionator::_Recurse().
-  ASSERT_EQ(std::string("q0"),
+  ASSERT_EQ(string("q0"),
                        kml_file_map_["1.kml"]->get_feature()->get_name());
-  ASSERT_EQ(std::string("q00"),
+  ASSERT_EQ(string("q00"),
                        kml_file_map_["2.kml"]->get_feature()->get_name());
-  ASSERT_EQ(std::string("q01"),
+  ASSERT_EQ(string("q01"),
                        kml_file_map_["3.kml"]->get_feature()->get_name());
-  ASSERT_EQ(std::string("q02"),
+  ASSERT_EQ(string("q02"),
                        kml_file_map_["4.kml"]->get_feature()->get_name());
-  ASSERT_EQ(std::string("q03"),
+  ASSERT_EQ(string("q03"),
                        kml_file_map_["5.kml"]->get_feature()->get_name());
 
   // The Document in the root KML has 5 features.
@@ -145,10 +144,10 @@ TEST_F(RegionatorTest, TwoLevelPointRegionatorTest) {
   NetworkLinkPtr ne = kmldom::AsNetworkLink(document1->get_feature_array_at(1));
   NetworkLinkPtr sw = kmldom::AsNetworkLink(document1->get_feature_array_at(2));
   NetworkLinkPtr se = kmldom::AsNetworkLink(document1->get_feature_array_at(3));
-  ASSERT_EQ(std::string("2.kml"), nw->get_link()->get_href());
-  ASSERT_EQ(std::string("3.kml"), ne->get_link()->get_href());
-  ASSERT_EQ(std::string("4.kml"), sw->get_link()->get_href());
-  //ASSERT_EQ(std::string("5.kml"), se->get_link()->get_href());
+  ASSERT_EQ(string("2.kml"), nw->get_link()->get_href());
+  ASSERT_EQ(string("3.kml"), ne->get_link()->get_href());
+  ASSERT_EQ(string("4.kml"), sw->get_link()->get_href());
+  //ASSERT_EQ(string("5.kml"), se->get_link()->get_href());
   ASSERT_EQ(kmldom::Type_Folder,
             document1->get_feature_array_at(4)->Type());
 }

@@ -73,7 +73,7 @@ TEST_F(ElementCounterTest, TestBasicParse) {
 }
 
 TEST_F(ElementCounterTest, TestMultipleElements) {
-  const std::string kKml("<Folder><Placemark/><Placemark/></Folder>");
+  const string kKml("<Folder><Placemark/><Placemark/></Folder>");
   ElementPtr root = parser_->Parse(kKml, NULL);
   ASSERT_TRUE(root);
   ASSERT_EQ(static_cast<size_t>(2), element_count_map_.size());
@@ -82,7 +82,7 @@ TEST_F(ElementCounterTest, TestMultipleElements) {
 }
 
 TEST_F(ElementCounterTest, TestRepeatedParse) {
-  const std::string kXml("<Placemark/>");
+  const string kXml("<Placemark/>");
   ElementPtr root = parser_->Parse(kXml, NULL);
   ASSERT_TRUE(root);
   ASSERT_EQ(static_cast<size_t>(1), element_count_map_.size());
@@ -102,7 +102,7 @@ TEST_F(ElementCounterTest, TestEachComplex) {
         type_id == kmldom::Type_Metadata) {
       continue;
     }
-    const std::string kXml(std::string("<") + xsd_->ElementName(i) + "/>");
+    const string kXml(string("<") + xsd_->ElementName(i) + "/>");
     ElementPtr root = parser_->Parse(kXml, NULL);
     ASSERT_TRUE(root);
     ASSERT_EQ(type_id, root->Type());

@@ -42,7 +42,7 @@ namespace kmlengine {
 void IdMapper::SaveElement(const ElementPtr& element) {
   if (ObjectPtr object = AsObject(element)) {
     if (object->has_id()) {
-      const std::string& id = object->get_id();
+      const string& id = object->get_id();
       ObjectIdMap::const_iterator iter = object_id_map_->find(id);
       if (iter != object_id_map_->end()) {
         // Save this as a dupe if a vector was supplied.

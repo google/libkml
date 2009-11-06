@@ -37,7 +37,7 @@ namespace kmldom {
 // Verify that parsing bad data is well behaved: no crash, NULL return,
 // error message.
 TEST(UnknownTest, TestNotXml) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse("this is not even xml", &errors);
   ASSERT_TRUE(NULL == root);
   ASSERT_FALSE(errors.empty());
@@ -45,7 +45,7 @@ TEST(UnknownTest, TestNotXml) {
 
 // Verify that a fully unknown element round-trips fine.
 TEST(UnknownTest, TestUnknownElement) {
-  std::string errors;
+  string errors;
   // <unknown> is not known to be KML element, but its content is preserved.
   ElementPtr root = Parse(
     "<Placemark>"
@@ -67,7 +67,7 @@ TEST(UnknownTest, TestUnknownElement) {
   // is preserved including child elements, character data, and attributes.
   // The relative order of unknown elements is preserved and all appear
   // after the known and valid elements and after the misplaced elements.
-  std::string expected =
+  string expected =
     "<Placemark>"
       "<name>placemark</name>"
       "<visibility>0</visibility>"
@@ -82,7 +82,7 @@ TEST(UnknownTest, TestUnknownElement) {
 
 // Verify that a misplaced element round-trips fine.
 TEST(UnknownTest, TestMisplaced) {
-  std::string errors;
+  string errors;
   // <Folder> is a known KML element, but not a valid child of <Placemark>.
   ElementPtr root = Parse(
     "<Placemark>"
@@ -93,11 +93,11 @@ TEST(UnknownTest, TestMisplaced) {
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
   const PlacemarkPtr placemark = AsPlacemark(root);
-  ASSERT_EQ(std::string("placemark"), placemark->get_name());
+  ASSERT_EQ(string("placemark"), placemark->get_name());
   // TODO: add test to find Folder via the unknown element api
 
   // Serialized output puts unknown/misplaced elements after known elements.
-  std::string expected =
+  string expected =
     "<Placemark>"
       "<name>placemark</name>"
       "<Folder><name>folder</name></Folder>"
@@ -107,7 +107,7 @@ TEST(UnknownTest, TestMisplaced) {
 
 // Verify that unknown attributes on known elements round trip fine.
 TEST(UnknownTest, TestUnknownAttribute) {
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(
     "<GroundOverlay unknown=\"who knows\" abc=\"zzz\" >"
       "<name>groundoverlay</name>"
@@ -119,9 +119,9 @@ TEST(UnknownTest, TestUnknownAttribute) {
   // The root is a GroundOverlay.
   const GroundOverlayPtr groundoverlay = AsGroundOverlay(root);
   // Unknown attributes don't interefere with known children.
-  ASSERT_EQ(std::string("groundoverlay"), groundoverlay->get_name());
+  ASSERT_EQ(string("groundoverlay"), groundoverlay->get_name());
   // Serializer perserves unknown attributes, but not their order.
-  std::string expected =
+  string expected =
     "<GroundOverlay abc=\"zzz\" unknown=\"who knows\">"
       "<name>groundoverlay</name>"
     "</GroundOverlay>";
@@ -136,9 +136,9 @@ TEST(UnknownTest, TestSaveUnknown) {
   const int end_id = static_cast<int>(Type_Invalid);
   KmlFactory* kml_factory = KmlFactory::GetFactory();
   // This presumes "<unknown>" is a fully unknown element within libkml.
-  const std::string kUnknownSimple("<unknown>unknown content</unknown>\n");
+  const string kUnknownSimple("<unknown>unknown content</unknown>\n");
   // This presumes "<Unknown>" is a fully unknown element within libkml.
-  const std::string kUnknownComplex("<Unknown>a<b><c>d</c>z</b></Unknown>\n");
+  const string kUnknownComplex("<Unknown>a<b><c>d</c>z</b></Unknown>\n");
   // This presumse "<kml>" is never the child of any other element.
   for (; element_type_id != end_id; ++element_type_id) {
     // Only complex elements return non-NULL.
@@ -150,8 +150,8 @@ TEST(UnknownTest, TestSaveUnknown) {
           element->Type() == Type_linkSnippet) {
         continue;
       }
-      const std::string kTagName(xsd_->ElementName(element_type_id));
-      element = ParseKml(std::string("<") + kTagName + ">" +
+      const string kTagName(xsd_->ElementName(element_type_id));
+      element = ParseKml(string("<") + kTagName + ">" +
                          kUnknownSimple + "<kml/>" +
                          kUnknownComplex + "<kml/>" +
                          "</" + kTagName + ">");

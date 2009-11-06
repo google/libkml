@@ -34,18 +34,18 @@ using std::vector;
 
 namespace kmlxsd {
 
-void XstParser::ParseXstAlias(const vector<std::string>& alias_line) {
+void XstParser::ParseXstAlias(const vector<string>& alias_line) {
   if (alias_line.size() != 3) {
     return;
   }
   xsd_file_->set_alias(alias_line[1], alias_line[2]);
 }
 
-void XstParser::ParseXst(const std::string& xst_data) {
-  vector<std::string> xst_lines;
+void XstParser::ParseXst(const string& xst_data) {
+  vector<string> xst_lines;
   SplitStringUsing(xst_data, "\n", &xst_lines);
   for (size_t i = 0; i < xst_lines.size(); ++i) {
-    vector<std::string> line;
+    vector<string> line;
     SplitStringUsing(xst_lines[i], " ", &line);
     if (line.empty()) {
       continue;

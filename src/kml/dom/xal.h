@@ -85,13 +85,13 @@ class XalAdministrativeArea : public BasicElement<Type_XalAdministrativeArea> {
   virtual ~XalAdministrativeArea() {}
 
   // <xal:AdministrativeAreaName>
-  const std::string& get_administrativeareaname() const {
+  const string& get_administrativeareaname() const {
     return administrativeareaname_;
   }
   bool has_administrativeareaname() const {
     return has_administrativeareaname_;
   }
-  void set_administrativeareaname(const std::string& value) {
+  void set_administrativeareaname(const string& value) {
     administrativeareaname_ = value;
     has_administrativeareaname_ = true;
   }
@@ -124,7 +124,7 @@ class XalAdministrativeArea : public BasicElement<Type_XalAdministrativeArea> {
  private:
   XalAdministrativeArea();
   bool has_administrativeareaname_;
-  std::string administrativeareaname_;
+  string administrativeareaname_;
   XalLocalityPtr locality_;
   XalSubAdministrativeAreaPtr subadministrativearea_;
   friend class KmlFactory;
@@ -140,9 +140,9 @@ class XalCountry : public BasicElement<Type_XalCountry> {
   virtual ~XalCountry() {}
 
   // <xal:CountryNameCode>, ISO 3166-1
-  const std::string& get_countrynamecode() const { return countrynamecode_; }
+  const string& get_countrynamecode() const { return countrynamecode_; }
   bool has_countrynamecode() const { return has_countrynamecode_; }
-  void set_countrynamecode(const std::string& value) {
+  void set_countrynamecode(const string& value) {
     countrynamecode_ = value;
     has_countrynamecode_ = true;
   }
@@ -165,7 +165,7 @@ class XalCountry : public BasicElement<Type_XalCountry> {
  private:
   XalCountry();
   bool has_countrynamecode_;
-  std::string countrynamecode_;
+  string countrynamecode_;
   XalAdministrativeAreaPtr administrativearea_;
   friend class KmlFactory;
   friend class KmlHandler;
@@ -181,13 +181,13 @@ class XalLocality : public BasicElement<Type_XalLocality> {
   virtual ~XalLocality() {}
 
   // <xal:LocalityName>
-  const std::string& get_localityname() const {
+  const string& get_localityname() const {
     return localityname_;
   }
   bool has_localityname() const {
     return has_localityname_;
   }
-  void set_localityname(const std::string& value) {
+  void set_localityname(const string& value) {
     localityname_ = value;
     has_localityname_ = true;
   }
@@ -215,7 +215,7 @@ class XalLocality : public BasicElement<Type_XalLocality> {
  private:
   XalLocality();
   bool has_localityname_;
-  std::string localityname_;
+  string localityname_;
   XalThoroughfarePtr thoroughfare_;
   XalPostalCodePtr postalcode_;
   friend class KmlFactory;
@@ -231,13 +231,13 @@ class XalPostalCode : public BasicElement<Type_XalPostalCode> {
   virtual ~XalPostalCode() {}
 
   // <xal:PostalCodeNumber>
-  const std::string& get_postalcodenumber() const {
+  const string& get_postalcodenumber() const {
     return postalcodenumber_;
   }
   bool has_postalcodenumber() const {
     return has_postalcodenumber_;
   }
-  void set_postalcodenumber(const std::string& value) {
+  void set_postalcodenumber(const string& value) {
     postalcodenumber_ = value;
     has_postalcodenumber_ = true;
   }
@@ -249,7 +249,7 @@ class XalPostalCode : public BasicElement<Type_XalPostalCode> {
  private:
   XalPostalCode();
   bool has_postalcodenumber_;
-  std::string postalcodenumber_;
+  string postalcodenumber_;
   friend class KmlFactory;
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
@@ -264,13 +264,13 @@ class XalSubAdministrativeArea :
   virtual ~XalSubAdministrativeArea() {}
 
   // <xal:SubAdministrativeAreaName>
-  const std::string& get_subadministrativeareaname() const {
+  const string& get_subadministrativeareaname() const {
     return subadministrativeareaname_;
   }
   bool has_subadministrativeareaname() const {
     return has_subadministrativeareaname_;
   }
-  void set_subadministrativeareaname(const std::string& value) {
+  void set_subadministrativeareaname(const string& value) {
     subadministrativeareaname_ = value;
     has_subadministrativeareaname_ = true;
   }
@@ -290,7 +290,7 @@ class XalSubAdministrativeArea :
  private:
   XalSubAdministrativeArea();
   bool has_subadministrativeareaname_;
-  std::string subadministrativeareaname_;
+  string subadministrativeareaname_;
   XalLocalityPtr locality_;
   friend class KmlFactory;
   friend class KmlHandler;
@@ -305,13 +305,13 @@ class XalThoroughfare : public BasicElement<Type_XalThoroughfare> {
   virtual ~XalThoroughfare() {}
 
   // <xal:ThoroughfareName>
-  const std::string& get_thoroughfarename() const {
+  const string& get_thoroughfarename() const {
     return thoroughfarename_;
   }
   bool has_thoroughfarename() const {
     return has_thoroughfarename_;
   }
-  void set_thoroughfarename(const std::string& value) {
+  void set_thoroughfarename(const string& value) {
     thoroughfarename_ = value;
     has_thoroughfarename_ = true;
   }
@@ -321,13 +321,13 @@ class XalThoroughfare : public BasicElement<Type_XalThoroughfare> {
   }
 
   // <xal:ThoroughfareNumber>
-  const std::string& get_thoroughfarenumber() const {
+  const string& get_thoroughfarenumber() const {
     return thoroughfarenumber_;
   }
   bool has_thoroughfarenumber() const {
     return has_thoroughfarenumber_;
   }
-  void set_thoroughfarenumber(const std::string& value) {
+  void set_thoroughfarenumber(const string& value) {
     thoroughfarenumber_ = value;
     has_thoroughfarenumber_ = true;
   }
@@ -339,9 +339,9 @@ class XalThoroughfare : public BasicElement<Type_XalThoroughfare> {
  private:
   XalThoroughfare();
   bool has_thoroughfarename_;
-  std::string thoroughfarename_;
+  string thoroughfarename_;
   bool has_thoroughfarenumber_;
-  std::string thoroughfarenumber_;
+  string thoroughfarenumber_;
   friend class KmlFactory;
   friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);

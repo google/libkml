@@ -26,9 +26,9 @@
 #ifndef KML_XSD_XSD_TYPE_H__
 #define KML_XSD_XSD_TYPE_H__
 
-#include <string>
 #include "boost/intrusive_ptr.hpp"
 #include "kml/base/referent.h"
+#include "kml/base/util.h"
 
 namespace kmlxsd {
 
@@ -52,11 +52,11 @@ class XsdType : public kmlbase::Referent {
   // This returns the name attribute of an <xs:simpleType> or <xs:complexType>
   // and the XSD name for a primitive type, for example "string", "boolean"
   // or "double".
-  virtual const std::string get_name() const = 0;
+  virtual const string get_name() const = 0;
 
   // This returns the extension base for a <xs:complexType>, the restriction
   // base for a <xs:simpleType> and "xsd:primitive" for a primitive type.
-  virtual const std::string get_base() const = 0;
+  virtual const string get_base() const = 0;
 
   // Two XsdType's are equal if their names are the same.
   bool operator==(const XsdType& xsd_type) const {

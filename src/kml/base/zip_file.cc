@@ -52,7 +52,7 @@ class MinizipFile {
 };
 
 // Static.
-ZipFile* ZipFile::OpenFromString(const std::string& zip_data) {
+ZipFile* ZipFile::OpenFromString(const string& zip_data) {
   return IsZipData(zip_data) ? new ZipFile(zip_data) : NULL;
 }
 
@@ -61,7 +61,7 @@ ZipFile* ZipFile::OpenFromFile(const char* file_path) {
   if (!File::Exists(file_path)) {
     return NULL;
   }
-  std::string data;
+  string data;
   if (!File::ReadFileToString(file_path, &data)) {
     return NULL;
   }
@@ -82,7 +82,7 @@ ZipFile* ZipFile::Create(const char* file_path) {
 }
 
 // Private. Class constructed with static methods.
-ZipFile::ZipFile(const std::string& data)
+ZipFile::ZipFile(const string& data)
   : minizip_file_(NULL), data_(data),
     max_uncompressed_file_size_(kMaxUncompressedZipSize) {
   // Fill the table of contents for this zipfile.
@@ -115,12 +115,12 @@ ZipFile::~ZipFile() {
 }
 
 // Static.
-bool ZipFile::IsZipData(const std::string& zip_data) {
+bool ZipFile::IsZipData(const string& zip_data) {
   return zip_data.substr(0, 4) == "PK\003\004" ? true : false;
 }
 
-bool ZipFile::FindFirstOf(const std::string& file_extension,
-                          std::string* path_in_zip) const {
+bool ZipFile::FindFirstOf(const string& file_extension,
+                          string* path_in_zip) const {
   if (!path_in_zip) {
     return false;
   }
@@ -143,7 +143,7 @@ bool ZipFile::GetToc(kmlbase::StringVector* subfiles) const {
 }
 
 // Is the requested path in the Zip file's table of contents?
-bool ZipFile::IsInToc(const std::string& path_in_zip) const {
+bool ZipFile::IsInToc(const string& path_in_zip) const {
   kmlbase::StringVector::const_iterator itr = zipfile_toc_.begin();
   for(; itr != zipfile_toc_.end(); ++itr) {
     if (*itr == path_in_zip) {
@@ -164,8 +164,8 @@ class UnzFileHelper {
   unzFile unzfile_;
 };
 
-bool ZipFile::GetEntry(const std::string& path_in_zip,
-                       std::string* output) const {
+bool ZipFile::GetEntry(const string& path_in_zip,
+                       string* output) const {
   // Check the TOC first.
   if (!IsInToc(path_in_zip)) {
     return false;
@@ -213,10 +213,10 @@ bool ZipFile::GetEntry(const std::string& path_in_zip,
   return false;
 }
 
-bool ZipFile::AddEntry(const std::string& data,
-                       const std::string& path_in_zip) {
+bool ZipFile::AddEntry(const string& data,
+                       const string& path_in_zip) {
   // The path must be relative to and below the archive.
-  if (path_in_zip.substr(0, 1).find_first_of("/\\") != std::string::npos ||
+  if (path_in_zip.substr(0, 1).find_first_of("/\\") != string::npos ||
       path_in_zip.substr(0, 2) == "..") {
     return false;
   }

@@ -26,7 +26,6 @@
 // This file contains the unit tests for the KmzCheckLinks() function.
 
 #include "kml/convenience/kmz_check_links.h"
-#include <string>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/engine/kmz_file.h"
@@ -54,7 +53,7 @@ class KmzCheckLinksTest : public testing::Test {
 // Verify that KmzCheckLinks() is not confused by no links in the KML.
 TEST_F(KmzCheckLinksTest, TestNoLinks) {
   // doc.kmz has no links.
-  const std::string kNoLinks = std::string(DATADIR) + "/kmz/doc.kmz";
+  const string kNoLinks = string(DATADIR) + "/kmz/doc.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNoLinks.c_str()));
   ASSERT_TRUE(kmz_file_);
   ASSERT_TRUE(KmzCheckLinks(*kmz_file_, NULL));
@@ -63,13 +62,13 @@ TEST_F(KmzCheckLinksTest, TestNoLinks) {
 // Verify that KmzCheckLinks() properly verifies an overlay KMZ made in GE.
 TEST_F(KmzCheckLinksTest, TestOverlay) {
   // This is a known good KMZ with two links.
-  const std::string kPhotoLink = std::string(DATADIR) +
+  const string kPhotoLink = string(DATADIR) +
                                  "/kmz/zermatt-photo.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kPhotoLink.c_str()));
   // The KML parses fine.
   ASSERT_TRUE(kmz_file_);
   // And all expected files are within the KMZ.
-  vector<std::string> missing_links;
+  vector<string> missing_links;
   ASSERT_TRUE(KmzCheckLinks(*kmz_file_, &missing_links));
   ASSERT_EQ(static_cast<size_t>(0), missing_links.size());
 }
@@ -77,22 +76,22 @@ TEST_F(KmzCheckLinksTest, TestOverlay) {
 // Verify that KmzCheckLinks() properly flags a sabotaged KMZ.
 TEST_F(KmzCheckLinksTest, TestBadOverlay) {
   // This is the same as zermatt-photo.kmz but w/o the overlay image.
-  const std::string kNoPhotoLink = std::string(DATADIR) +
+  const string kNoPhotoLink = string(DATADIR) +
                                    "/kmz/zermatt-photo-bad.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNoPhotoLink.c_str()));
   // The KML parses file.
   ASSERT_TRUE(kmz_file_);
   // But there's a dangling link.
-  vector<std::string> missing_links;
+  vector<string> missing_links;
   ASSERT_FALSE(KmzCheckLinks(*kmz_file_, &missing_links));
   ASSERT_EQ(static_cast<size_t>(1), missing_links.size());
-  ASSERT_EQ(std::string("files/zermatt.jpg"), missing_links[0]);
+  ASSERT_EQ(string("files/zermatt.jpg"), missing_links[0]);
 }
 
 // Verify that KmzCheckLinks() returns false on a KMZ w/o a KML file.
 TEST_F(KmzCheckLinksTest, TestNull) {
   // There is no KML file in this KMZ file.
-  const std::string kNoKml = std::string(DATADIR) + "/kmz/nokml.kmz";
+  const string kNoKml = string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_.reset(KmzFile::OpenFromFile(kNoKml.c_str()));
   ASSERT_TRUE(kmz_file_);
   ASSERT_FALSE(KmzCheckLinks(*kmz_file_, NULL));

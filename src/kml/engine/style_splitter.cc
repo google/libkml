@@ -29,7 +29,6 @@
 #include "kml/engine/style_splitter.h"
 #include "kml/engine/style_splitter_internal.h"
 #include <map>
-#include <string>
 #include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/dom/parser_observer.h"
@@ -79,7 +78,7 @@ bool StyleSplitter::EndElement(const kmldom::ElementPtr& parent,
     if (kmldom::FeaturePtr feature = AsNonDocumentFeature(parent)) {
       // ...and the feature does _not_ have a <styleUrl>...
       if (!feature->has_styleurl()) {
-        const std::string style_id(
+        const string style_id(
             CreateUniqueId(*shared_style_map_, id_counter_));
         // ...and this id does not collide:
         if (shared_style_map_->find(style_id) == shared_style_map_->end()) {
@@ -94,7 +93,7 @@ bool StyleSplitter::EndElement(const kmldom::ElementPtr& parent,
           document_->add_styleselector(shared);
           (*shared_style_map_)[shared->get_id()] = shared;
           // Set the feature's <styleUrl> to this new shared style.
-          feature->set_styleurl(std::string("#") + style_id);
+          feature->set_styleurl(string("#") + style_id);
           return false;  // Do _not_ add this child to this parent.
         }
       }
@@ -109,8 +108,8 @@ bool StyleSplitter::EndElement(const kmldom::ElementPtr& parent,
   return true;  // Proceed to add this child to this parent.
 }
 
-kmldom::ElementPtr SplitStyles(const std::string& input_kml,
-                               std::string* errors) {
+kmldom::ElementPtr SplitStyles(const string& input_kml,
+                               string* errors) {
   SharedStyleMap shared_style_map;
   StyleSplitter style_splitter(&shared_style_map);
   kmldom::Parser parser;

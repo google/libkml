@@ -37,16 +37,16 @@ void b2a_hex(uint32_t i, char* out) {
   out[1] = map[(i) & 0xf];
 }
 
-std::string CreateExpandedStrings(const std::string& in,
+string CreateExpandedStrings(const string& in,
                                   const StringMap& string_map,
-                                  const std::string& start,
-                                  const std::string& end) {
-  std::string out(in);
+                                  const string& start,
+                                  const string& end) {
+  string out(in);
   StringMap::const_iterator itr = string_map.begin();
   for (itr = string_map.begin(); itr != string_map.end(); ++itr)  {
-    std::string candidate(start + itr->first + end);
+    string candidate(start + itr->first + end);
     size_t start_pos = out.find(candidate);
-    while (start_pos != std::string::npos) {
+    while (start_pos != string::npos) {
       out.replace(start_pos, candidate.size(), itr->second);
       start_pos = out.find(candidate, start_pos + candidate.size());
     }
@@ -54,11 +54,11 @@ std::string CreateExpandedStrings(const std::string& in,
   return out;
 }
 
-void SplitStringUsing(const std::string& input, const std::string& split_string,
-                      std::vector<std::string>* output) {
-  std::string iter = input;
+void SplitStringUsing(const string& input, const string& split_string,
+                      std::vector<string>* output) {
+  string iter = input;
   size_t separator;
-  while ((separator = iter.find(split_string)) != std::string::npos) {
+  while ((separator = iter.find(split_string)) != string::npos) {
     output->push_back(iter.substr(0, separator));
     iter = iter.substr(separator+1);
   }
@@ -66,7 +66,7 @@ void SplitStringUsing(const std::string& input, const std::string& split_string,
 }
 
 template<>
-void FromString(const std::string& str, bool* out) {
+void FromString(const string& str, bool* out) {
   if (out) {
     *out = str == "true" || str == "1";
   }
@@ -74,27 +74,27 @@ void FromString(const std::string& str, bool* out) {
 
 
 template<>
-void FromString(const std::string& str, double* out) {
+void FromString(const string& str, double* out) {
   if (out) {
     *out = strtod(str.c_str(), NULL);
   }
 }
 
 template<>
-void FromString(const std::string& str, int* out) {
+void FromString(const string& str, int* out) {
   if (out) {
     *out = atoi(str.c_str());
   }
 }
 
 template<>
-void FromString(const std::string& str, std::string* out) {
+void FromString(const string& str, string* out) {
   if (out) {
     *out = str;
   }
 }
 
-bool StringEndsWith(const std::string& str, const std::string& end) {
+bool StringEndsWith(const string& str, const string& end) {
   if (str.empty() || end.empty()) {
     return false;
   }

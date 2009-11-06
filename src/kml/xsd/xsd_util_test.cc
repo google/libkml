@@ -37,15 +37,15 @@ class XsdUtilTest : public testing::Test {
 };
 
 TEST_F(XsdUtilTest, TestCreateXsdComplexType) {
-  const std::string kTypeName("PlacemarkType");
+  const string kTypeName("PlacemarkType");
   XsdComplexTypePtr complex_type = CreateXsdComplexType(kTypeName);
   ASSERT_TRUE(complex_type);
   ASSERT_EQ(kTypeName, complex_type->get_name());
 }
 
 TEST_F(XsdUtilTest, TestCreateXsdElement) {
-  const std::string kName("Placemark");
-  const std::string kType("PlacemarkType");
+  const string kName("Placemark");
+  const string kType("PlacemarkType");
   XsdElementPtr element = CreateXsdElement(kName, kType);
   ASSERT_TRUE(element);
   ASSERT_EQ(kName, element->get_name());
@@ -53,8 +53,8 @@ TEST_F(XsdUtilTest, TestCreateXsdElement) {
 }
 
 TEST_F(XsdUtilTest, TestCreateXsdSchema) {
-  const std::string kPrefix("fooml");
-  const std::string kTargetNamespace("http://foo.com/ml");
+  const string kPrefix("fooml");
+  const string kTargetNamespace("http://foo.com/ml");
   XsdSchemaPtr schema = CreateXsdSchema(kPrefix, kTargetNamespace);
   ASSERT_TRUE(schema);
   ASSERT_EQ(kPrefix, schema->get_target_namespace_prefix());

@@ -34,7 +34,7 @@ namespace kmlengine {
 KmlFilePtr FetchLink(const KmlFilePtr& kml_file,
                      const kmldom::NetworkLinkPtr& networklink) {
   if (KmlCache* kml_cache = kml_file->get_kml_cache()) {
-    std::string href;
+    string href;
     if (kmlengine::GetLinkParentHref(networklink, &href)) {
       return kml_cache->FetchKmlRelative(kml_file->get_url(), href);
     }
@@ -44,9 +44,9 @@ KmlFilePtr FetchLink(const KmlFilePtr& kml_file,
 
 bool FetchIcon(const KmlFilePtr& kml_file,
                const kmldom::OverlayPtr& overlay,
-               std::string* data) {
+               string* data) {
   if (KmlCache* kml_cache = kml_file->get_kml_cache()) {
-    std::string href;
+    string href;
     if (kmlengine::GetIconParentHref(overlay, &href)) {
       return kml_cache->FetchDataRelative(kml_file->get_url(), href, data);
     }

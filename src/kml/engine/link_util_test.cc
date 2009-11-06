@@ -124,9 +124,9 @@ class LinkUtilTest : public testing::Test {
 
 template<typename HP>
 static void VerifyGetHref(const HP& href_parent, const char* want_href) {
-  std::string got_href;
+  string got_href;
   ASSERT_TRUE(GetHref(href_parent, &got_href));
-  ASSERT_EQ(std::string(want_href), got_href);
+  ASSERT_EQ(string(want_href), got_href);
 }
 
 // This tests the GetHref() function template.
@@ -139,9 +139,9 @@ TEST_F(LinkUtilTest, TestGetHref) {
 template<typename HP>
 static void VerifyGetIconParentHref(const HP& icon_parent,
                                     const char* want_href) {
-  std::string got_href;
+  string got_href;
   ASSERT_TRUE(GetIconParentHref(icon_parent, &got_href));
-  ASSERT_EQ(std::string(want_href), got_href);
+  ASSERT_EQ(string(want_href), got_href);
 }
 
 // This tests the GetIconParentHref() function template.
@@ -155,14 +155,14 @@ TEST_F(LinkUtilTest, TestGetIconParentHref) {
 template<typename LP>
 static void VerifyGetLinkParentHref(const LP& link_parent,
                                     const char* want_href) {
-  std::string got_href;
+  string got_href;
   ASSERT_TRUE(GetLinkParentHref(link_parent, &got_href));
-  ASSERT_EQ(std::string(want_href), got_href);
+  ASSERT_EQ(string(want_href), got_href);
 }
 
 template<typename LP>
 static void SetLinkHref(const LP& link_parent, LinkPtr link,
-                        const std::string& href) {
+                        const string& href) {
   link->set_href(href);
   link_parent->set_link(link);
 }
@@ -176,7 +176,7 @@ TEST_F(LinkUtilTest, TestGetLinkParentHref) {
 }
 
 TEST_F(LinkUtilTest, TestFetchLink) {
-  const std::string kBase("http://host.com/kmz/radar-animation.kmz");
+  const string kBase("http://host.com/kmz/radar-animation.kmz");
   KmlFilePtr base_kml_file = kml_cache_->FetchKmlAbsolute(kBase);
   ASSERT_TRUE(base_kml_file);
   ElementVector networklink_vector;
@@ -191,11 +191,11 @@ TEST_F(LinkUtilTest, TestFetchLink) {
       AsDocument(GetRootFeature(target_kml_file->get_root()));
   ASSERT_TRUE(document);
   // This is kmz/radar-animation.kmz/level00/0.kml.
-  ASSERT_EQ(std::string("0130_256_-1"), document->get_name());
+  ASSERT_EQ(string("0130_256_-1"), document->get_name());
 }
 
 TEST_F(LinkUtilTest, TestFetchIcon) {
-  const std::string kBase("http://host.com/kmz/rumsey/kml/lc01.kmz");
+  const string kBase("http://host.com/kmz/rumsey/kml/lc01.kmz");
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kBase);
   ASSERT_TRUE(kml_file);
   ElementVector groundoverlay_vector;
@@ -203,7 +203,7 @@ TEST_F(LinkUtilTest, TestFetchIcon) {
                   &groundoverlay_vector);
   // The default KML file in lc01.kmz has 2 GroundOverlays.
   ASSERT_EQ(static_cast<size_t>(2), groundoverlay_vector.size());
-  std::string data;
+  string data;
   ASSERT_TRUE(FetchIcon(kml_file, AsGroundOverlay(groundoverlay_vector[0]),
                            &data));
   // This is kmz/rumsey/imagery/01_4.png

@@ -49,9 +49,9 @@ class SchemaParserObserverTest : public testing::Test {
   }
 
   kmldom::DocumentPtr document_;
-  std::string kSchema0Name_;
+  string kSchema0Name_;
   kmldom::SchemaPtr schema0_;
-  std::string kSchema1Name_;
+  string kSchema1Name_;
   kmldom::SchemaPtr schema1_;
   kmldom::SchemaPtr schema_no_name_;
   SchemaNameMap schema_name_map_;

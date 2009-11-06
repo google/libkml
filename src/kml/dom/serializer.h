@@ -29,7 +29,6 @@
 #define KML_DOM_SERIALIZER_H__
 
 #include <sstream>
-#include <string>
 #include "kml/base/string_util.h"
 #include "kml/dom/kml_ptr.h"
 
@@ -74,12 +73,12 @@ class Serializer {
   }
 
   // Emit a simple element.
-  virtual void SaveStringFieldById(int type_id, std::string value) {}
+  virtual void SaveStringFieldById(int type_id, string value) {}
 
   // Save out raw text.  If maybe_quote is true the content is examined
   // for non-XML-valid characters and if so the content is CDATA escaped.
   // If maybe_quote is false the content is emitted directly.
-  virtual void SaveContent(const std::string& content, bool maybe_quote) {};
+  virtual void SaveContent(const string& content, bool maybe_quote) {};
 
   // Save a lon,lat,alt tuple as appears within <coordinates>.
   virtual void SaveVec3(const kmlbase::Vec3& vec3);
@@ -92,7 +91,7 @@ class Serializer {
 
   // If value contains any non-XML valid characters a CDATA-escaped
   // string is returned, else the original string is returned.
-  const std::string MaybeQuoteString(const std::string& value);
+  const string MaybeQuoteString(const string& value);
 
   // Save the given value out as the enum element identified by type_id.
   void SaveEnum(int type_id, int enum_value);

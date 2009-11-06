@@ -34,7 +34,7 @@ using kmldom::Parser;
 
 namespace kmlengine {
 
-bool GetLinks(const std::string& kml, href_vector_t* href_vector) {
+bool GetLinks(const string& kml, href_vector_t* href_vector) {
   if (!href_vector) {
     return false;
   }
@@ -44,7 +44,7 @@ bool GetLinks(const std::string& kml, href_vector_t* href_vector) {
   return parser.Parse(kml, NULL) != NULL;
 }
 
-bool GetRelativeLinks(const std::string& kml, href_vector_t* href_vector) {
+bool GetRelativeLinks(const string& kml, href_vector_t* href_vector) {
   if (!href_vector) {
     return false;
   }

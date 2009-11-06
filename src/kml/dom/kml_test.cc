@@ -71,14 +71,14 @@ TEST_F(KmlTest, TestSetGetHasClear) {
 // Verify hint= attr:
 TEST_F(KmlTest, TestHint) {
   ASSERT_FALSE(kml_->has_hint());
-  ASSERT_EQ(std::string(""), kml_->get_hint());
-  std::string hint("target=sky");
+  ASSERT_EQ(string(""), kml_->get_hint());
+  string hint("target=sky");
   kml_->set_hint(hint);
   ASSERT_TRUE(kml_->has_hint());
   ASSERT_EQ(hint, kml_->get_hint());
   kml_->clear_hint();
   ASSERT_FALSE(kml_->has_hint());
-  ASSERT_EQ(std::string(""), kml_->get_hint());
+  ASSERT_EQ(string(""), kml_->get_hint());
 }
 
 }  // end namespace kmldom

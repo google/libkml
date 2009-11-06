@@ -60,7 +60,7 @@ TEST_F(ColorStyleTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(ColorStyleTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string color("00112233");
+  string color("00112233");
   ColorModeEnum colormode = COLORMODE_RANDOM;
 
   // Set all fields:

@@ -90,15 +90,15 @@ TEST_F(PlacemarkTest, TestSetGetHasClear) {
 }
 
 TEST_F(PlacemarkTest, TestParse) {
-  std::string kName = "My Favorite Place";
-  std::string kSnippet = "Left panel stuff about my favorite place...";
-  std::string kPlacemark =
+  string kName = "My Favorite Place";
+  string kSnippet = "Left panel stuff about my favorite place...";
+  string kPlacemark =
     "<Placemark>"
     "<name>" + kName + "</name>"
     "<Snippet>" + kSnippet + "</Snippet>"
     "<Point><coordinates>1.1,2.2,3.3</coordinates></Point>"
     "</Placemark>";
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(kPlacemark, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
@@ -136,7 +136,7 @@ TEST_F(PlacemarkTest, TestSerialize) {
   placemark_->set_region(KmlFactory::GetFactory()->CreateRegion());
   placemark_->set_geometry(KmlFactory::GetFactory()->CreatePoint());
 
-  std::string expected(
+  string expected(
     "<Placemark>"
     "<name>name</name>"
     "<visibility>1</visibility>"

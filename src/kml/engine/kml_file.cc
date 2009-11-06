@@ -41,8 +41,8 @@ static const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
 static const char kDefaultEncoding[] = "utf-8";
 
 // static
-KmlFile* KmlFile::CreateFromParse(const std::string& kml_or_kmz_data,
-                                  std::string* errors) {
+KmlFile* KmlFile::CreateFromParse(const string& kml_or_kmz_data,
+                                  string* errors) {
   // Here our focus is on managing the KmlFile storage.  If _CreateFromParse()
   // fails we release the storage else we return a pointer to it.
   KmlFile* kml_file = new KmlFile;
@@ -54,8 +54,8 @@ KmlFile* KmlFile::CreateFromParse(const std::string& kml_or_kmz_data,
 }
 
 // static
-KmlFile* KmlFile::CreateFromStringWithUrl(const std::string& kml_data,
-                                          const std::string& url,
+KmlFile* KmlFile::CreateFromStringWithUrl(const string& kml_data,
+                                          const string& url,
                                           KmlCache* kml_cache) {
   if (KmlFile* kml_file = CreateFromString(kml_data)) {
     kml_file->set_url(url);
@@ -67,8 +67,8 @@ KmlFile* KmlFile::CreateFromStringWithUrl(const std::string& kml_data,
 
 // private
 // This is an internal helper function used in CreateFromParse().
-bool KmlFile::_CreateFromParse(const std::string& kml_or_kmz_data,
-                               std::string* errors) {
+bool KmlFile::_CreateFromParse(const string& kml_or_kmz_data,
+                               string* errors) {
   // Here our focus is on deciding KML vs KMZ.
   if (kmlengine::KmzFile::IsKmz(kml_or_kmz_data)) {
     return OpenAndParseKmz(kml_or_kmz_data, errors);
@@ -79,9 +79,9 @@ bool KmlFile::_CreateFromParse(const std::string& kml_or_kmz_data,
 // private
 // The caller is expected to have called KmzFile::IsKmz on this, thus the return
 // status represents file handling errors.
-bool KmlFile::OpenAndParseKmz(const std::string& kmz_data,
-                              std::string* errors) {
-  std::string kml_data;
+bool KmlFile::OpenAndParseKmz(const string& kmz_data,
+                              string* errors) {
+  string kml_data;
   KmzFilePtr kmz_file = kmlengine::KmzFile::OpenFromString(kmz_data);
   if (!kmz_file || !kmz_file->ReadKml(&kml_data)) {
       return false;
@@ -98,7 +98,7 @@ KmlFile::KmlFile()
 }
 
 // private
-bool KmlFile::ParseFromString(const std::string& kml, std::string* errors) {
+bool KmlFile::ParseFromString(const string& kml, string* errors) {
   // Create a parser object.
   kmldom::Parser parser;
 
@@ -167,11 +167,11 @@ KmlFile* KmlFile::CreateFromImportLax(const kmldom::ElementPtr& element) {
   return CreateFromImportInternal(element, false);
 }
 
-const std::string KmlFile::CreateXmlHeader() const {
-  return std::string("<?xml version=\"1.0\" encoding=\"" + encoding_ + "\"?>\n");
+const string KmlFile::CreateXmlHeader() const {
+  return string("<?xml version=\"1.0\" encoding=\"" + encoding_ + "\"?>\n");
 }
 
-bool KmlFile::SerializeToString(std::string* xml_output) const {
+bool KmlFile::SerializeToString(string* xml_output) const {
   if (!xml_output || !get_root()) {
     return false;
   }
@@ -188,13 +188,13 @@ bool KmlFile::SerializeToString(std::string* xml_output) const {
   return true;
 }
 
-kmldom::ObjectPtr KmlFile::GetObjectById(const std::string& id) const {
+kmldom::ObjectPtr KmlFile::GetObjectById(const string& id) const {
   ObjectIdMap::const_iterator find = object_id_map_.find(id);
   return find != object_id_map_.end() ? kmldom::AsObject(find->second) : NULL;
 }
 
 kmldom::StyleSelectorPtr KmlFile::GetSharedStyleById(
-    const std::string& id) const {
+    const string& id) const {
   SharedStyleMap::const_iterator find = shared_style_map_.find(id);
   return find != shared_style_map_.end() ? find->second : NULL;
 }

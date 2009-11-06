@@ -33,8 +33,6 @@
 #ifndef KML_CONVENIENCE_GOOGLE_MAPS_DATA_H_
 #define KML_CONVENIENCE_GOOGLE_MAPS_DATA_H_
 
-#include <string>
-#include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 
@@ -55,7 +53,7 @@ class HttpClient;
 //   YourHttpClient* your_http_client = new YourHttpClient;
 //   your_http_client->Login("user@gmail.com", "users-password");
 //   GoogleMapsData* maps_data = GoogleMapsData::Create(&your_http_client);
-//   std::string map_feed_atom;
+//   string map_feed_atom;
 //   maps_data->GetMapFeed(&map_feed_atom);
 //   kmldom::ElementPtr root = kmldom::ParseAtom(map_feed_atom);
 //   kmlconvenience::AtomUtil... for common Atom inspection.
@@ -68,16 +66,16 @@ class GoogleMapsData {
   static GoogleMapsData* Create(HttpClient* http_client);
   ~GoogleMapsData();
 
-  const char* get_map_feed_uri() const;
+  static const char* get_service_name();
 
-  const std::string& get_scope() const {
-    return scope_;
-  }
+  static const char* get_metafeed_uri();
+
+  const string& get_scope() const;
 
   // This returns the "meta feed" for the authenticated user.  The result is an
   // Atom <feed> containing an <entry> for each of the user's maps.  See:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingMetafeed
-  bool GetMetaFeedXml(std::string* atom_feed) const;
+  bool GetMetaFeedXml(string* atom_feed) const;
 
   // This calls GetMetaFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetMetaFeed() const;
@@ -87,8 +85,8 @@ class GoogleMapsData {
   // If a map_entry_xml string is supplied the <atom:entry> for the new map
   // is saved there.  See:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#CreatingMaps
-  bool CreateMap(const std::string& title, const std::string& summary,
-                 std::string* map_entry_xml);
+  bool CreateMap(const string& title, const string& summary,
+                 string* map_entry_xml);
 
   // TODO:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingMaps
@@ -101,16 +99,16 @@ class GoogleMapsData {
   // src attibute." See:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingMaps
   static bool GetFeatureFeedUri(const kmldom::AtomEntryPtr& map_entry,
-                                std::string* feature_feed_uri);
+                                string* feature_feed_uri);
 
   // This fetches the given URI and saves the result in the supplied string.
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#RetrievingFeatures
-  bool GetFeatureFeedXml(const std::string& feature_feed_uri,
-                         std::string* atom_feed) const;
+  bool GetFeatureFeedXml(const string& feature_feed_uri,
+                         string* atom_feed) const;
 
   // This calls GetFeatureFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetFeatureFeedByUri(
-      const std::string& feature_feed_uri) const;
+      const string& feature_feed_uri) const;
 
   // Return the KML Feature child of the Atom <entry>'s <content>.  This
   // returns NULL if the <entry>'s <content> has no KML Feature.
@@ -131,16 +129,16 @@ class GoogleMapsData {
   // GetFeatureFeedUri.  On success true is returned.  If a feature_entry_xml
   // string is supplied the <atom:entry> for the new feature is saved there.
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#CreatingFeatures
-  bool AddFeature(const std::string& feature_feed_post_uri,
+  bool AddFeature(const string& feature_feed_post_uri,
                   const kmldom::FeaturePtr& feature,
-                  std::string* feature_entry_xml);
+                  string* feature_entry_xml);
 
   // This is a convenience utility based on AddFeature.  This calls AddFeature
   // on each <Placemark> in the given feature hierarchy.  The total count of
   // <Placemark>s successfully added is returned.  All non-<Placemark> features
   // are ignored including Containers thus flattening any hierarchy.
   int PostPlacemarks(const kmldom::FeaturePtr& root_feature,
-                     const std::string& feature_feed_uri);
+                     const string& feature_feed_uri);
 
   // TODO:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#UpdatingFeatures
@@ -152,7 +150,7 @@ class GoogleMapsData {
   // Use static Create().
   GoogleMapsData();
   boost::scoped_ptr<HttpClient> http_client_;
-  const std::string scope_;
+  const string scope_;
 };
 
 }  // end namespace kmlconvenience

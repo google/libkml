@@ -26,7 +26,6 @@
 // This file contains the unit tests for the Xsd class.
 
 #include "kml/dom/xsd.h"
-#include <string>
 #include "kml/dom/kml22.h"
 #include "gtest/gtest.h"
 
@@ -41,53 +40,53 @@ TEST_F(XsdTest, TestGoodElement) {
             Xsd::GetSchema()->ElementId("Placemark"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_Placemark));
-  ASSERT_EQ(std::string("Placemark"),
+  ASSERT_EQ(string("Placemark"),
             Xsd::GetSchema()->ElementName(Type_Placemark));
 
   ASSERT_EQ(static_cast<int>(Type_Snippet),
             Xsd::GetSchema()->ElementId("Snippet"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_Snippet));
-  ASSERT_EQ(std::string("Snippet"),
+  ASSERT_EQ(string("Snippet"),
             Xsd::GetSchema()->ElementName(Type_Snippet));
 
   ASSERT_EQ(static_cast<int>(Type_z), Xsd::GetSchema()->ElementId("z"));
   ASSERT_EQ(XSD_SIMPLE_TYPE, Xsd::GetSchema()->ElementType(Type_z));
-  ASSERT_EQ(std::string("z"), Xsd::GetSchema()->ElementName(Type_z));
+  ASSERT_EQ(string("z"), Xsd::GetSchema()->ElementName(Type_z));
 
   ASSERT_EQ(static_cast<int>(Type_XalAddressDetails),
             Xsd::GetSchema()->ElementId("xal:AddressDetails"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_XalAddressDetails));
-  ASSERT_EQ(std::string("xal:AddressDetails"),
+  ASSERT_EQ(string("xal:AddressDetails"),
             Xsd::GetSchema()->ElementName(Type_XalAddressDetails));
 
   ASSERT_EQ(static_cast<int>(Type_XalPostalCode),
             Xsd::GetSchema()->ElementId("xal:PostalCode"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_XalPostalCode));
-  ASSERT_EQ(std::string("xal:PostalCode"),
+  ASSERT_EQ(string("xal:PostalCode"),
             Xsd::GetSchema()->ElementName(Type_XalPostalCode));
 
   ASSERT_EQ(static_cast<int>(Type_XalAdministrativeArea),
             Xsd::GetSchema()->ElementId("xal:AdministrativeArea"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_XalAdministrativeArea));
-  ASSERT_EQ(std::string("xal:AdministrativeArea"),
+  ASSERT_EQ(string("xal:AdministrativeArea"),
             Xsd::GetSchema()->ElementName(Type_XalAdministrativeArea));
 
   ASSERT_EQ(static_cast<int>(Type_XalSubAdministrativeArea),
             Xsd::GetSchema()->ElementId("xal:SubAdministrativeArea"));
   ASSERT_EQ(XSD_COMPLEX_TYPE,
             Xsd::GetSchema()->ElementType(Type_XalSubAdministrativeArea));
-  ASSERT_EQ(std::string("xal:SubAdministrativeArea"),
+  ASSERT_EQ(string("xal:SubAdministrativeArea"),
             Xsd::GetSchema()->ElementName(Type_XalSubAdministrativeArea));
 
   ASSERT_EQ(static_cast<int>(Type_xalThoroughfareName),
             Xsd::GetSchema()->ElementId("xal:ThoroughfareName"));
   ASSERT_EQ(XSD_SIMPLE_TYPE,
             Xsd::GetSchema()->ElementType(Type_xalThoroughfareName));
-  ASSERT_EQ(std::string("xal:ThoroughfareName"),
+  ASSERT_EQ(string("xal:ThoroughfareName"),
             Xsd::GetSchema()->ElementName(Type_xalThoroughfareName));
 
   // <gx:playMode> is known to be the last element.
@@ -95,7 +94,7 @@ TEST_F(XsdTest, TestGoodElement) {
             Xsd::GetSchema()->ElementId("gx:playMode"));
   ASSERT_EQ(XSD_SIMPLE_TYPE,
             Xsd::GetSchema()->ElementType(Type_GxPlayMode));
-  ASSERT_EQ(std::string("gx:playMode"),
+  ASSERT_EQ(string("gx:playMode"),
             Xsd::GetSchema()->ElementName(Type_GxPlayMode));
 }
 
@@ -105,7 +104,7 @@ TEST_F(XsdTest, TestBadElement) {
   ASSERT_EQ((int)Type_Unknown, Xsd::GetSchema()->ElementId("unknown"));
   // Type_Invalid + 1 is known to be a bad value for a type id.
   ASSERT_EQ(XSD_UNKNOWN, Xsd::GetSchema()->ElementType(Type_Invalid + 1));
-  ASSERT_EQ(std::string(""), Xsd::GetSchema()->ElementName(Type_Invalid + 1));
+  ASSERT_EQ(string(""), Xsd::GetSchema()->ElementName(Type_Invalid + 1));
 }
 
 // Verify that ElementId(), ElementType() and ElementName() are well
@@ -113,7 +112,7 @@ TEST_F(XsdTest, TestBadElement) {
 TEST_F(XsdTest, TestUglyElement) {
   ASSERT_EQ((int)Type_Unknown, Xsd::GetSchema()->ElementId(""));
   ASSERT_EQ(XSD_UNKNOWN, Xsd::GetSchema()->ElementType(0));
-  ASSERT_EQ(std::string(""), Xsd::GetSchema()->ElementName(0));
+  ASSERT_EQ(string(""), Xsd::GetSchema()->ElementName(0));
 }
 
 // Verify that a known enum val has the proper id and vice versa.
@@ -121,7 +120,7 @@ TEST_F(XsdTest, TestUglyElement) {
 TEST_F(XsdTest, TestGoodEnum) {
   ASSERT_EQ((int)ALTITUDEMODE_CLAMPTOGROUND,
     Xsd::GetSchema()->EnumId(Type_altitudeMode, "clampToGround"));
-  ASSERT_EQ(std::string("clampToGround"),
+  ASSERT_EQ(string("clampToGround"),
     Xsd::GetSchema()->EnumValue(Type_altitudeMode, ALTITUDEMODE_CLAMPTOGROUND));
 }
 
@@ -134,7 +133,7 @@ TEST_F(XsdTest, TestBadEnum) {
 TEST_F(XsdTest, TestBadEnumValue) {
   // This crashed libkml because Xsd::EnumValue, if passed a negative enum_id,
   // would try to initialize a string from a NULL pointer.
-  ASSERT_EQ(std::string(), Xsd::GetSchema()->EnumValue(0, -1));
+  ASSERT_EQ(string(), Xsd::GetSchema()->EnumValue(0, -1));
 }
 
 // Verify that EnumId() is well behaved for an enum value known to be ugly.

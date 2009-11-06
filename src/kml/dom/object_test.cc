@@ -52,9 +52,9 @@ TEST_F(ObjectTest, TestType) {
 // Verify proper defaults:
 TEST_F(ObjectTest, TestDefaults) {
   ASSERT_FALSE(object_->has_id());
-  ASSERT_EQ(std::string(""), object_->get_id());
+  ASSERT_EQ(string(""), object_->get_id());
   ASSERT_FALSE(object_->has_targetid());
-  ASSERT_EQ(std::string(""), object_->get_targetid());
+  ASSERT_EQ(string(""), object_->get_targetid());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -68,8 +68,8 @@ TEST_F(ObjectTest, TestSetToDefaultValues) {
 // Verify set, get, has, clear:
 TEST_F(ObjectTest, TestSetGetHasClear) {
   // Non-default values:
-  std::string id("id");
-  std::string targetid("targetid");
+  string id("id");
+  string targetid("targetid");
 
   // Set all fields:
   object_->set_id(id);
@@ -85,11 +85,11 @@ TEST_F(ObjectTest, TestSetGetHasClear) {
 }
 
 TEST_F(ObjectTest, TestParse) {
-  const std::string kId("foo");
-  const std::string kTargetId("bar");
-  const std::string kKml(
+  const string kId("foo");
+  const string kTargetId("bar");
+  const string kKml(
       "<Placemark id=\"" + kId + "\" targetId=\"" + kTargetId + "\" />");
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(kKml, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());

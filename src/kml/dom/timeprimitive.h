@@ -29,7 +29,6 @@
 #ifndef KML_DOM_TIMEPRIMITIVE_H__
 #define KML_DOM_TIMEPRIMITIVE_H__
 
-#include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/object.h"
 
@@ -68,9 +67,9 @@ class TimeSpan : public TimePrimitive {
   }
 
   // <begin>
-  const std::string& get_begin() const { return begin_; }
+  const string& get_begin() const { return begin_; }
   bool has_begin() const { return has_begin_; }
-  void set_begin(const std::string& value) {
+  void set_begin(const string& value) {
     begin_ = value;
     has_begin_ = true;
   }
@@ -80,9 +79,9 @@ class TimeSpan : public TimePrimitive {
   }
 
   // <end>
-  const std::string& get_end() const { return end_; }
+  const string& get_end() const { return end_; }
   bool has_end() const { return has_end_; }
-  void set_end(const std::string& value) {
+  void set_end(const string& value) {
     end_ = value;
     has_end_ = true;
   }
@@ -100,9 +99,9 @@ class TimeSpan : public TimePrimitive {
   friend class KmlFactory;
   friend class KmlHandler;
   friend class Serializer;
-  std::string begin_;
+  string begin_;
   bool has_begin_;
-  std::string end_;
+  string end_;
   bool has_end_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimeSpan);
 };
@@ -117,9 +116,9 @@ class TimeStamp : public TimePrimitive {
   }
 
   // <when>
-  const std::string& get_when() const { return when_; }
+  const string& get_when() const { return when_; }
   bool has_when() const { return has_when_; }
-  void set_when(const std::string& value) {
+  void set_when(const string& value) {
     when_ = value;
     has_when_ = true;
   }
@@ -137,7 +136,7 @@ class TimeStamp : public TimePrimitive {
   friend class KmlFactory;
   friend class KmlHandler;
   friend class Serializer;
-  std::string when_;
+  string when_;
   bool has_when_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TimeStamp);
 };

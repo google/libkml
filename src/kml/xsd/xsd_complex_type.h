@@ -26,7 +26,6 @@
 #ifndef KML_XSD_XSD_COMPLEX_TYPE_H__
 #define KML_XSD_XSD_COMPLEX_TYPE_H__
 
-#include <string>
 #include <vector>
 #include "boost/intrusive_ptr.hpp"
 #include "kml/base/attributes.h"
@@ -49,7 +48,7 @@ class XsdComplexType : public XsdType {
   // must exist for this to succeed.  On success a pointer is returned which
   // may be managed with intrusive_ptr using the recommended typedef above.
   static XsdComplexType* Create(const kmlbase::Attributes& attributes) {
-    std::string name;
+    string name;
     if (attributes.GetString("name", &name)) {
       return new XsdComplexType(name);
     }
@@ -74,21 +73,21 @@ class XsdComplexType : public XsdType {
   }
 
   // Get the value of the name attribute.
-  virtual const std::string get_name() const {
+  virtual const string get_name() const {
     return name_;
   }
 
-  virtual const std::string get_base() const {
+  virtual const string get_base() const {
     return extension_base_;
   }
 
   // Set the value of the "base" attribute of the complexType's
   // <xs:extension> element.
-  void set_extension_base(const std::string& extension_base) {
+  void set_extension_base(const string& extension_base) {
     extension_base_ = extension_base;
   }
   // Get the <xs:extension base=".."> value.
-  const std::string& get_extension_base() const {
+  const string& get_extension_base() const {
     return extension_base_;
   }
   // Return true IFF this complexType has an <xs:extension base="..."/>.
@@ -112,12 +111,12 @@ class XsdComplexType : public XsdType {
 
  private:
   bool ParseAttributes(const kmlbase::Attributes& attributes);
-  XsdComplexType(const std::string& name)
+  XsdComplexType(const string& name)
     : name_(name) {
   }
 
-  std::string name_;
-  std::string extension_base_;  // <xs:extension base="xx">
+  string name_;
+  string extension_base_;  // <xs:extension base="xx">
   std::vector<XsdElementPtr> sequence_;  // <xs:sequence> of <xs:element>'s.
 };
 

@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef KML_DOM_KML_H__
@@ -31,6 +31,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/networklinkcontrol.h"
+#include "kml/dom/visitor.h"
 
 namespace kmlbase {
 class Attributes;
@@ -45,9 +46,9 @@ class Kml : public BasicElement<Type_kml> {
  public:
   virtual ~Kml();
 
-  const std::string& get_hint() { return hint_; }
+  const string& get_hint() { return hint_; }
   bool has_hint() const { return has_hint_; }
-  void set_hint(const std::string& hint) {
+  void set_hint(const string& hint) {
     hint_ = hint;
     has_hint_ = true;
   }
@@ -76,6 +77,13 @@ class Kml : public BasicElement<Type_kml> {
     set_feature(NULL);
   }
 
+  // >> Visitor Api Start [Kml] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  virtual void AcceptChildren(Visitor* v);
+  // << Visitor Api End [Kml] <<
  private:
   friend class KmlFactory;
   Kml();
@@ -85,7 +93,7 @@ class Kml : public BasicElement<Type_kml> {
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
-  std::string hint_;
+  string hint_;
   bool has_hint_;
   NetworkLinkControlPtr networklinkcontrol_;
   FeaturePtr feature_;

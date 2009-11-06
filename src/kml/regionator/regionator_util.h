@@ -31,7 +31,7 @@
 #ifndef KML_REGIONATOR_REGIONATOR_UTIL_H__
 #define KML_REGIONATOR_REGIONATOR_UTIL_H__
 
-#include <string>
+#include "kml/base/util.h"
 #include "kml/dom.h"
 #include "kml/regionator/regionator_qid.h"
 
@@ -52,13 +52,13 @@ kmldom::RegionPtr CreateChildRegion(const kmldom::RegionPtr& parent,
                                     quadrant_t quadrant);
 
 // Create a Placemark with LineString based on the LatLonAltBox in the Region.
-kmldom::PlacemarkPtr CreateLineStringBox(const std::string& name,
+kmldom::PlacemarkPtr CreateLineStringBox(const string& name,
                                          const kmldom::RegionPtr& region);
 
 // Create a NetworkLink to the given URL with a Region cloned from the
 // given Region.
 kmldom::NetworkLinkPtr CreateRegionNetworkLink(const kmldom::RegionPtr& region,
-                                               const std::string& href);
+                                               const string& href);
 
 // Create a Document with a Region cloned from the given Region.
 kmldom::DocumentPtr CreateRegionDocument(const kmldom::RegionPtr& region);

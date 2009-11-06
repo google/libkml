@@ -49,46 +49,46 @@ class UriParserTest : public testing::Test {
 TEST_F(UriParserTest, TestBasicCreateFromParse) {
   // Note: since UriParse does not actually generate any networking traffic
   // the hostnames and TLDs used here generally do not conform to RFC 2606.
-  const std::string kUrl("http://host.com/path/to/some.kml#id");
+  const string kUrl("http://host.com/path/to/some.kml#id");
   uri_parser_.reset(UriParser::CreateFromParse(kUrl.c_str()));
   ASSERT_TRUE(uri_parser_.get());
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kUrl, url);
 }
 
 // Verify basic usage of the CreateResolvedUri() static method.
 TEST_F(UriParserTest, TestBasicCreateResolvedUri) {
-  const std::string kHost("http://hi.there.com/");
-  const std::string kPath("blah.kml");
-  const std::string kBase = kHost + kPath;
-  const std::string kRelative("images/pretty.jpg");
+  const string kHost("http://hi.there.com/");
+  const string kPath("blah.kml");
+  const string kBase = kHost + kPath;
+  const string kRelative("images/pretty.jpg");
   uri_parser_.reset(UriParser::CreateResolvedUri(kBase.c_str(),
                                                  kRelative.c_str()));
   ASSERT_TRUE(uri_parser_.get());
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kHost + kRelative, url);
 }
 
 // Verify basic usage of the Parse() method.
 TEST_F(UriParserTest, TestBasicParse) {
-  const std::string kUrl("this/is/a/relative/url.kmz/some/file.kml#id");
+  const string kUrl("this/is/a/relative/url.kmz/some/file.kml#id");
   uri_parser_.reset(new UriParser);
   ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kUrl, url);
 }
 
 // Verify basic usage of the Normalize() method.
 TEST_F(UriParserTest, TestBasicNormalize) {
-  const std::string kUrl("this/../a/relative/url.kmz/../file.kml#id");
-  const std::string kNormalized("a/relative/file.kml#id");
+  const string kUrl("this/../a/relative/url.kmz/../file.kml#id");
+  const string kNormalized("a/relative/file.kml#id");
   uri_parser_.reset(new UriParser);
   // Parse() does not normalize.
   ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kUrl, url);
   // Normalize() normalizes.
@@ -99,16 +99,16 @@ TEST_F(UriParserTest, TestBasicNormalize) {
 
 // Verify basic usage of the Resolve() method.
 TEST_F(UriParserTest, TestBasicResolve) {
-  const std::string kBase("http://foo.com/hello/");
-  const std::string kRelative("../hi");
-  const std::string kResult("http://foo.com/hi");
+  const string kBase("http://foo.com/hello/");
+  const string kRelative("../hi");
+  const string kResult("http://foo.com/hi");
   boost::scoped_ptr<UriParser> base_uri(
       UriParser::CreateFromParse(kBase.c_str()));
   boost::scoped_ptr<UriParser> relative_uri(
       UriParser::CreateFromParse(kRelative.c_str()));
   uri_parser_.reset(new UriParser);
   ASSERT_TRUE(uri_parser_->Resolve(*base_uri.get(), *relative_uri.get()));
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kResult, url);
 }
@@ -117,9 +117,9 @@ TEST_F(UriParserTest, TestBasicResolve) {
 TEST_F(UriParserTest, TestBasicToString) {
   uri_parser_.reset(new UriParser);
   ASSERT_FALSE(uri_parser_->ToString(NULL));
-  const std::string kUrl("a/b/c/d");
+  const string kUrl("a/b/c/d");
   ASSERT_TRUE(uri_parser_->Parse(kUrl.c_str()));
-  std::string url;
+  string url;
   ASSERT_TRUE(uri_parser_->ToString(&url));
   ASSERT_EQ(kUrl, url);
 }
@@ -136,7 +136,7 @@ TEST_F(UriParserTest, TestBasicGetComponents) {
   ASSERT_FALSE(uri_parser_->GetQuery(NULL));
   ASSERT_FALSE(uri_parser_->GetFragment(NULL));
   // Verify initial state returns false with non-NULL string output arg.
-  std::string output;
+  string output;
   ASSERT_FALSE(uri_parser_->GetScheme(&output));
   ASSERT_TRUE(output.empty());
   ASSERT_FALSE(uri_parser_->GetHost(&output));
@@ -151,11 +151,11 @@ TEST_F(UriParserTest, TestBasicGetComponents) {
   ASSERT_TRUE(output.empty());
 
   // Verify a typical URI. 
-  const std::string kScheme("http");
-  const std::string kHost("www.somehost.com");
-  const std::string kPath("path/to/some.kml");
-  const std::string kUrlNoFragment(kScheme + "://" + kHost + "/" + kPath);
-  const std::string kFragment("id");
+  const string kScheme("http");
+  const string kHost("www.somehost.com");
+  const string kPath("path/to/some.kml");
+  const string kUrlNoFragment(kScheme + "://" + kHost + "/" + kPath);
+  const string kFragment("id");
   uri_parser_.reset(UriParser::CreateFromParse(kUrlNoFragment.c_str()));
   // Verify NULL output string returns proper status of component's existence.
   ASSERT_TRUE(uri_parser_->GetScheme(NULL));
@@ -176,7 +176,7 @@ TEST_F(UriParserTest, TestBasicGetComponents) {
   ASSERT_TRUE(output.empty());
 
   // Verify a URI with fragment.
-  const std::string kUrlWithFragment(kUrlNoFragment + "#" + kFragment);
+  const string kUrlWithFragment(kUrlNoFragment + "#" + kFragment);
   uri_parser_.reset(UriParser::CreateFromParse(kUrlWithFragment.c_str()));
   // Verify NULL output string returns proper status of component's existence.
   ASSERT_TRUE(uri_parser_->GetScheme(NULL));
@@ -332,14 +332,14 @@ static const struct {
 // to resolve and verify a given test case.
 void UriParserTest::VerifyUriResolution(const char* base, const char* relative,
                                         const char* want_result) {
-  std::string got_result;
+  string got_result;
   if (want_result == NULL) {  // We're expecting resolution to fail.
     ASSERT_FALSE(UriParser::CreateResolvedUri(base, relative));
     return;
   }
   uri_parser_.reset(UriParser::CreateResolvedUri(base, relative));
   uri_parser_->ToString(&got_result);
-  ASSERT_EQ(std::string(want_result), got_result);
+  ASSERT_EQ(string(want_result), got_result);
 }
 
 // Verify all expected URI resolution test cases.
@@ -382,36 +382,36 @@ TEST_F(UriParserTest, TestUriFilenameConversions) {
   const size_t size = sizeof(kUriFilenameCases)/sizeof(kUriFilenameCases[0]);
   for (size_t i = 0; i < size; ++i) {
     // Unix filename to URI.
-    std::string unix_uri;
+    string unix_uri;
     ASSERT_TRUE(
         UriParser::UnixFilenameToUri(kUriFilenameCases[i].unix_filename,
                                      &unix_uri));
-    ASSERT_EQ(std::string(kUriFilenameCases[i].unix_uri), unix_uri);
+    ASSERT_EQ(string(kUriFilenameCases[i].unix_uri), unix_uri);
     // Windows filename to URI.
-    std::string windows_uri;
+    string windows_uri;
     ASSERT_TRUE(
         UriParser::WindowsFilenameToUri(kUriFilenameCases[i].windows_filename,
                                         &windows_uri));
-    ASSERT_EQ(std::string(kUriFilenameCases[i].windows_uri), windows_uri);
+    ASSERT_EQ(string(kUriFilenameCases[i].windows_uri), windows_uri);
     // URI to unix filename.
-    std::string unix_filename;
+    string unix_filename;
     ASSERT_TRUE(UriParser::UriToUnixFilename(kUriFilenameCases[i].unix_uri,
                                              &unix_filename));
-    ASSERT_EQ(std::string(kUriFilenameCases[i].unix_filename), unix_filename);
+    ASSERT_EQ(string(kUriFilenameCases[i].unix_filename), unix_filename);
     // URI to windows filename.
-    std::string windows_filename;
+    string windows_filename;
     ASSERT_TRUE(
         UriParser::UriToWindowsFilename(kUriFilenameCases[i].windows_uri,
                                         &windows_filename));
-    ASSERT_EQ(std::string(kUriFilenameCases[i].windows_filename),
+    ASSERT_EQ(string(kUriFilenameCases[i].windows_filename),
               windows_filename);
   }
 }
 
 TEST_F(UriParserTest, TestUriToFilename) {
   // This simply tests that the ifdef works as expected.
-  std::string uri;
-  std::string expected_filename;
+  string uri;
+  string expected_filename;
 #ifdef WIN32
   uri = "file:///C:/home/libkml/foo.bar";
   expected_filename = "C:\\home\\libkml\\foo.bar";
@@ -419,15 +419,15 @@ TEST_F(UriParserTest, TestUriToFilename) {
   uri = "file:///home/libkml/foo.bar";
   expected_filename = "/home/libkml/foo.bar";
 #endif
-  std::string filename;
+  string filename;
   ASSERT_TRUE(UriParser::UriToFilename(uri, &filename));
   ASSERT_EQ(expected_filename, filename);
 }
 
 TEST_F(UriParserTest, TestFilenameToUri) {
   // This simply tests that the ifdef works as expected.
-  std::string filename;
-  std::string expected_uri;
+  string filename;
+  string expected_uri;
 #ifdef WIN32
   filename = "C:\\home\\libkml\\foo.bar";
   expected_uri = "file:///C:/home/libkml/foo.bar";
@@ -435,7 +435,7 @@ TEST_F(UriParserTest, TestFilenameToUri) {
   filename = "/home/libkml/foo.bar";
   expected_uri = "file:///home/libkml/foo.bar";
 #endif
-  std::string uri;
+  string uri;
   ASSERT_TRUE(UriParser::FilenameToUri(filename, &uri));
   ASSERT_EQ(expected_uri, uri);
 }

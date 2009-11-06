@@ -54,7 +54,7 @@ TEST_F(BalloonStyleTest, TestDefaults) {
   ASSERT_FALSE(balloonstyle_->has_textcolor());
   ASSERT_TRUE(Color32(0xff000000) == balloonstyle_->get_textcolor());
   ASSERT_FALSE(balloonstyle_->has_text());
-  ASSERT_EQ(std::string(""), balloonstyle_->get_text());
+  ASSERT_EQ(string(""), balloonstyle_->get_text());
   ASSERT_FALSE(balloonstyle_->has_displaymode());
   ASSERT_TRUE(DISPLAYMODE_DEFAULT == balloonstyle_->get_displaymode());
 }
@@ -76,7 +76,7 @@ TEST_F(BalloonStyleTest, TestSetGetHasClear) {
   // Non-default values:
   Color32 bgcolor = Color32(0x00112233);
   Color32 textcolor = Color32(0x33221100);
-  std::string text("amidoinitrite?");
+  string text("amidoinitrite?");
   DisplayModeEnum displaymode = DISPLAYMODE_HIDE;
 
   // Set all fields:

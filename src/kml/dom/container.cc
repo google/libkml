@@ -63,7 +63,7 @@ void Container::Serialize(Serializer& serializer) const {
   SerializeFeatureArray(serializer);
 }
 
-FeaturePtr Container::DeleteFeatureById(const std::string& id) {
+FeaturePtr Container::DeleteFeatureById(const string& id) {
   // TODO: push all this to Element to properly/centrally remove parent.
   std::vector<FeaturePtr>::iterator iter = feature_array_.begin();
   for (; iter != feature_array_.end(); ++iter) {
@@ -75,5 +75,20 @@ FeaturePtr Container::DeleteFeatureById(const std::string& id) {
   }
   return NULL;
 }
+
+// >> Visitor Api Start [Container] >>
+Visitor::Status Container::StartVisit(Visitor* v) {
+  return v->VisitContainer(ContainerPtr(this));
+}
+
+void Container::EndVisit(Visitor* v) {
+  v->VisitContainerEnd(ContainerPtr(this));
+}
+
+void Container::AcceptChildren(Visitor* v) {
+  Feature::AcceptChildren(v);
+  Element::AcceptRepeated<FeaturePtr>(&feature_array_, v);
+}
+// << Visitor Api End [Container] <<
 
 }  // end namespace kmldom

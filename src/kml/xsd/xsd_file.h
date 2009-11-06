@@ -30,7 +30,6 @@
 
 #include <map>
 #include <stack>
-#include <string>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/xmlns.h"
@@ -42,16 +41,16 @@
 
 namespace kmlxsd {
 
-typedef std::map<std::string, std::string> XsdAliasMap;
-typedef std::map<std::string, XsdElementPtr> XsdElementMap;
+typedef std::map<string, string> XsdAliasMap;
+typedef std::map<string, XsdElementPtr> XsdElementMap;
 typedef std::vector<XsdElementPtr> XsdElementVector;
-typedef std::map<std::string, XsdTypePtr> XsdTypeMap;
+typedef std::map<string, XsdTypePtr> XsdTypeMap;
 typedef std::vector<XsdTypePtr> XsdTypeVector;
 
 // This class holds the state of a processed XSD file.  Overall usage:
 //   // Process: fetch and parse.
-//   const std::string xsd_data = fetch_the_xsd_file();
-//   std::string errors;
+//   const string xsd_data = fetch_the_xsd_file();
+//   string errors;
 //   XsdFile* xsd_file = XsdFile::CreateFromParse(xsd_data, &errors);
 //   // Access XSD file info.
 //   xsd_file.GetElementNames(...);
@@ -59,8 +58,8 @@ typedef std::vector<XsdTypePtr> XsdTypeVector;
 //   GetChildElementNames(...);
 class XsdFile {
  public:
-  static XsdFile* CreateFromParse(const std::string& xsd_data,
-                                  std::string* errors);
+  static XsdFile* CreateFromParse(const string& xsd_data,
+                                  string* errors);
 
   XsdFile() {}  // Use static CreateFromParse().
 
@@ -81,23 +80,23 @@ class XsdFile {
     type_map_[xsd_type->get_name()] = xsd_type;
   }
 
-  const std::string& get_target_namespace() const {
+  const string& get_target_namespace() const {
     return xsd_schema_->get_target_namespace();
   }
-  const std::string& get_target_namespace_prefix() const {
+  const string& get_target_namespace_prefix() const {
     return xsd_schema_->get_target_namespace_prefix();
   }
 
   // Create an alias.  For example, "AbstractFeatureGroup" == "Feature".
-  void set_alias(const std::string& real_name,
-                 const std::string& alias_name) {
+  void set_alias(const string& real_name,
+                 const string& alias_name) {
     alias_map_[real_name] = alias_name;
   }
 
   // Returns the alias for this name or NULL if this name has no alias.  For
   // example, if set_alias("AbstractGeometryGroup", "Geometry") was used then
   // get_alias("AbstractGeometryGroup") returns "Geometry".
-  const std::string get_alias(const std::string& real_name) const {
+  const string get_alias(const string& real_name) const {
     XsdAliasMap::const_iterator iter = alias_map_.find(real_name);
     return iter == alias_map_.end() ? "" : iter->second;
   }
@@ -114,24 +113,24 @@ class XsdFile {
   // element.  Each <xs:element ref="..."> is resolved.
   void FindChildElements(const XsdComplexTypePtr& complex_element,
                          XsdElementVector* elements) const;
-  void GetChildElements(const std::string& complex_element_name,
+  void GetChildElements(const string& complex_element_name,
                         XsdElementVector* elements) const;
 
 
   // This looks up the given element by name.
-  const XsdElementPtr FindElement(const std::string& element_name) const;
+  const XsdElementPtr FindElement(const string& element_name) const;
 
   // Return the XsdType for the given element.  If there is no type for this
   // element in the target namespace NULL is returned.
   const XsdTypePtr FindElementType(const XsdElementPtr& element) const;
 
   // This looks up the given type by name.
-  const XsdTypePtr FindType(const std::string& type_name) const;
+  const XsdTypePtr FindType(const string& type_name) const;
 
   // Return the global <xs:element> for the given <xs:element ref="..."/>.
   // For example, element ref of "kml:name" returns the XsdElement describing
   // the <xs:element name="name".../> child of <xs:schema/>.
-  const XsdElementPtr ResolveRef(const std::string& element_ref) const;
+  const XsdElementPtr ResolveRef(const string& element_ref) const;
 
   // Return the XsdComplexType of the complex_type's extension base.  NULL is
   // returned if the complex_type has no extension base or if the extension
@@ -169,7 +168,7 @@ class XsdFile {
                          XsdElementVector* elements) const;
 
   // Return all elements derived from the given complex type name.
-  void GetElementsOfTypeByName(const std::string& type_name,
+  void GetElementsOfTypeByName(const string& type_name,
                                XsdElementVector* elements) const;
 
  private:

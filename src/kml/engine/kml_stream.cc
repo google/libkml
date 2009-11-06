@@ -36,7 +36,7 @@ using kmldom::ParserObserver;
 namespace kmlengine {
 
 KmlStream* KmlStream::ParseFromIstream(
-    std::istream* input, std::string* errors, ParserObserver* observer) {
+    std::istream* input, string* errors, ParserObserver* observer) {
   if (!input) {
     return NULL;
   }

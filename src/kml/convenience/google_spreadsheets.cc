@@ -32,10 +32,11 @@
 
 namespace kmlconvenience {
 
+static const char* kServiceName = "wise";
+
 static const char* kScope = "http://spreadsheets.google.com";
 
-static const char* kSpreadsheetsMetaFeedUri =
-    "/feeds/spreadsheets/private/full";
+static const char* kMetaFeedUri = "/feeds/spreadsheets/private/full";
 
 // static
 GoogleSpreadsheets* GoogleSpreadsheets::Create(
@@ -50,12 +51,7 @@ GoogleSpreadsheets* GoogleSpreadsheets::Create(
   return gs;
 }
 
-// static
-const char* GoogleSpreadsheets::get_metafeed_uri() {
-  return kSpreadsheetsMetaFeedUri;
-}
-
-static std::string GetScope() {
+static string GetScope() {
   if (const char* scope = getenv("GOOGLE_SPREADSHEETS_DATA_SCOPE")) {
     return scope;
   }
@@ -70,17 +66,33 @@ GoogleSpreadsheets::GoogleSpreadsheets()
 GoogleSpreadsheets::~GoogleSpreadsheets() {
 }
 
-bool GoogleSpreadsheets::GetMetaFeedXml(std::string* atom_feed) const {
-  return http_client_->SendRequest(HTTP_GET, scope_ + kSpreadsheetsMetaFeedUri,
+// static
+const char* GoogleSpreadsheets::get_service_name() {
+  return kServiceName;
+}
+
+// static
+const char* GoogleSpreadsheets::get_metafeed_uri() {
+  return kMetaFeedUri;
+}
+
+const string& GoogleSpreadsheets::get_scope() const {
+  return scope_;
+}
+
+bool GoogleSpreadsheets::GetMetaFeedXml(string* atom_feed) const {
+  return http_client_->SendRequest(HTTP_GET, scope_ + kMetaFeedUri,
                                    NULL, NULL, atom_feed);
 }
 
 kmldom::AtomFeedPtr GoogleSpreadsheets::GetMetaFeed() const {
-  std::string meta_feed;
+  string meta_feed;
   if (GetMetaFeedXml(&meta_feed)) {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(meta_feed, NULL));
   }
   return NULL;
+
+
 }
 
 }  // end namespace kmlconvenience

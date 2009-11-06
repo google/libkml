@@ -48,7 +48,7 @@ typedef NetCache<MemoryFile> TestDataNetCache;
 // empty string indicates that no NullCacheItem is to be created.
 class NullCacheItem : public Referent {
  public:
-  static NullCacheItem* CreateFromString(const std::string& data) {
+  static NullCacheItem* CreateFromString(const string& data) {
     return data.empty() ? NULL : new NullCacheItem;
   }
 };
@@ -59,23 +59,23 @@ typedef boost::intrusive_ptr<NullCacheItem> NullCacheItemPtr;
 static size_t instrumented_cache_item_count;
 class InstrumentedCacheItem : public Referent {
  public:
-   static InstrumentedCacheItem* CreateFromString(const std::string& data) {
+   static InstrumentedCacheItem* CreateFromString(const string& data) {
      return new InstrumentedCacheItem(data);
    }
 
-   const std::string& get_content() const {
+   const string& get_content() const {
      return content_;
    }
 
  private:
-  InstrumentedCacheItem(const std::string& content) : content_(content) {
+  InstrumentedCacheItem(const string& content) : content_(content) {
     ++instrumented_cache_item_count;
   }
   ~InstrumentedCacheItem() {
     --instrumented_cache_item_count;
   }
 
-  std::string content_;
+  string content_;
 };
 
 typedef boost::intrusive_ptr<InstrumentedCacheItem> InstrumentedCacheItemPtr;
@@ -89,7 +89,7 @@ typedef NetCache<NullCacheItem> NullNetCache;
 // This NetFetcher simply sets the output data to the url itself.
 class UrlDataNetFetcher : public NetFetcher {
  public:
-  bool FetchUrl(const std::string& url, std::string* data) const {
+  bool FetchUrl(const string& url, string* data) const {
     if (data) {
       *data = url;
       return true;
@@ -129,7 +129,7 @@ TEST_F(NetCacheTest, TestBasicSize) {
 
 // Verify basic usage of the Fetch() method.
 TEST_F(NetCacheTest, TestBasicFetch) {
-  const std::string kUrl("http://host.com/style/simple.kml");
+  const string kUrl("http://host.com/style/simple.kml");
   // Fetch always fails on NullNetCache.
   ASSERT_FALSE(null_net_cache_->Fetch(kUrl));
   ASSERT_EQ(kSize0, null_net_cache_->Size());
@@ -144,7 +144,7 @@ TEST_F(NetCacheTest, TestBasicFetch) {
 
 // Verify basic usage of the LookUp() method.
 TEST_F(NetCacheTest, TestBasicLookUp) {
-  const std::string kUrl("http://host.com/style/simple.kml");
+  const string kUrl("http://host.com/style/simple.kml");
   // Verify that initially all caches return false for a LookUp of this URL.
   ASSERT_FALSE(null_net_cache_->LookUp(kUrl));
   ASSERT_FALSE(testdata_net_cache_->LookUp(kUrl));
@@ -159,8 +159,8 @@ TEST_F(NetCacheTest, TestBasicLookUp) {
 
 // Verify basic usage of the Save() method.
 TEST_F(NetCacheTest, TestBasicSave) {
-  const std::string kUrl("http://host.com/style/simple.kml");
-  const std::string kContent("some random blob of data");
+  const string kUrl("http://host.com/style/simple.kml");
+  const string kContent("some random blob of data");
   MemoryFilePtr test_data_item = MemoryFile::CreateFromString(kContent);
   ASSERT_TRUE(url_data_net_cache_->Save(kUrl, test_data_item));
   ASSERT_EQ(static_cast<size_t>(1), url_data_net_cache_->Size());
@@ -171,7 +171,7 @@ TEST_F(NetCacheTest, TestBasicSave) {
 
 // Verify basic usage of the Delete() method.
 TEST_F(NetCacheTest, TestBasicDelete) {
-  const std::string kUrl("http://host.com/style/simple.kml");
+  const string kUrl("http://host.com/style/simple.kml");
   ASSERT_TRUE(url_data_net_cache_->Fetch(kUrl));
   ASSERT_TRUE(url_data_net_cache_->Delete(kUrl));
   ASSERT_EQ(kSize0, url_data_net_cache_->Size());
@@ -180,7 +180,7 @@ TEST_F(NetCacheTest, TestBasicDelete) {
 
 // Verify basic usage of the RemoveOldest method.
 TEST_F(NetCacheTest, TestBasicRemoveOldest) {
-  const std::string kUrl("http://host.com/style/simple.kml");
+  const string kUrl("http://host.com/style/simple.kml");
   ASSERT_TRUE(url_data_net_cache_->Fetch(kUrl));
   ASSERT_TRUE(url_data_net_cache_->RemoveOldest());
   ASSERT_EQ(kSize0, url_data_net_cache_->Size());
@@ -189,7 +189,7 @@ TEST_F(NetCacheTest, TestBasicRemoveOldest) {
 
 // TODO move to base/string_util.h
 template<typename T>
-inline std::string ToString(T value) {
+inline string ToString(T value) {
   std::stringstream ss;
   ss.precision(15);
   ss << value;
@@ -200,7 +200,7 @@ inline std::string ToString(T value) {
 // that it drains fully.
 TEST_F(NetCacheTest, TestOverflow) {
   for (size_t i = 0; i < kUrlDataNetCacheSize*2; ++i) {
-    const std::string kUrl("http://host.com/" + ToString(i));
+    const string kUrl("http://host.com/" + ToString(i));
     MemoryFilePtr url_data = url_data_net_cache_->Fetch(kUrl);
     ASSERT_TRUE(url_data);  // UrlDataNetFetcher never fails.
     // UrlDataNetFetcher simply uses the url as the content.
@@ -214,7 +214,7 @@ TEST_F(NetCacheTest, TestOverflow) {
   // Cache is full so LookUp will succeed on all URLs in the 2nd half of the
   // the test range.
   for (size_t i = kUrlDataNetCacheSize; i < kUrlDataNetCacheSize*2; ++i) {
-    const std::string kUrl("http://host.com/" + ToString(i));
+    const string kUrl("http://host.com/" + ToString(i));
     ASSERT_TRUE(url_data_net_cache_->LookUp(kUrl));
   }
   // RemoveOldest() removes items one at a time.
@@ -226,7 +226,7 @@ TEST_F(NetCacheTest, TestOverflow) {
 
   // Cache is empty so LookUp will fail on all URLs.
   for (size_t i = 0; i < kUrlDataNetCacheSize*2; ++i) {
-    const std::string kUrl("http://host.com/" + ToString(i));
+    const string kUrl("http://host.com/" + ToString(i));
     ASSERT_FALSE(url_data_net_cache_->LookUp(kUrl));
   }
   
@@ -239,7 +239,7 @@ TEST_F(NetCacheTest, TestOverflow) {
 TEST_F(NetCacheTest, TestDeleteCache) {
   // Verify proper operation of the internal InstrumentedCacheItem class.
   ASSERT_EQ(kSize0, instrumented_cache_item_count);
-  const std::string kContent("some random stuf");
+  const string kContent("some random stuf");
   InstrumentedCacheItemPtr item =
       InstrumentedCacheItem::CreateFromString(kContent);
   ASSERT_EQ(kContent, item->get_content());
@@ -252,7 +252,7 @@ TEST_F(NetCacheTest, TestDeleteCache) {
                                                kUrlDataNetCacheSize);
     ASSERT_EQ(kSize0, instrumented_cache_item_count);
     for (size_t i = 0; i < kUrlDataNetCacheSize*2; ++i) {
-      const std::string kUrl("http://host.com/" + ToString(i));
+      const string kUrl("http://host.com/" + ToString(i));
       InstrumentedCacheItemPtr url_data = net_cache.Fetch(kUrl);
       const size_t want_size =
           i < kUrlDataNetCacheSize ? i + 1 : kUrlDataNetCacheSize;

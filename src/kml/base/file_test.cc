@@ -41,8 +41,8 @@ class FileTest : public testing::Test {
 };
 
 TEST_F(FileTest, TestReadFileToString) {
-  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
-  std::string file_data;
+  const string kDoc = string(DATADIR) + "/kmz/doc.kmz";
+  string file_data;
   ASSERT_TRUE(File::ReadFileToString(kDoc, &file_data));
   ASSERT_FALSE(file_data.empty());
   // doc.kmz is 332 bytes.
@@ -51,14 +51,14 @@ TEST_F(FileTest, TestReadFileToString) {
 
 TEST_F(FileTest, TestWriteStringToFile) {
   // Create a temp file into which we'll write data.
-  std::string tempfile;
+  string tempfile;
   ASSERT_TRUE(File::CreateNewTempFile(&tempfile));
   ASSERT_FALSE(tempfile.empty());
   // Write some data.
-  const std::string kText = "tom dick harry";
+  const string kText = "tom dick harry";
   ASSERT_TRUE(File::WriteStringToFile(kText, tempfile));
   // Read the file back into a different string and assert equality.
-  std::string file_data;
+  string file_data;
   ASSERT_TRUE(File::ReadFileToString(tempfile, &file_data));
   ASSERT_FALSE(file_data.empty());
   ASSERT_EQ(kText, file_data);
@@ -67,15 +67,15 @@ TEST_F(FileTest, TestWriteStringToFile) {
 }
 
 TEST_F(FileTest, TestExists) {
-  const std::string kDoc = std::string(DATADIR) + "/kmz/doc.kmz";
-  const std::string kNoSuchFile = std::string(DATADIR) + "/kmz/nosuchfile";
+  const string kDoc = string(DATADIR) + "/kmz/doc.kmz";
+  const string kNoSuchFile = string(DATADIR) + "/kmz/nosuchfile";
   ASSERT_TRUE(File::Exists(kDoc));
   ASSERT_FALSE(File::Exists(kNoSuchFile));
 }
 
 TEST_F(FileTest, TestDelete) {
   // Create a temp file.
-  std::string tempfile;
+  string tempfile;
   ASSERT_TRUE(File::CreateNewTempFile(&tempfile));
   // Assert it was created.
   ASSERT_FALSE(tempfile.empty());
@@ -87,7 +87,7 @@ TEST_F(FileTest, TestDelete) {
 
 TEST_F(FileTest, TestCreateNewTempFile) {
   ASSERT_TRUE(false == File::CreateNewTempFile(NULL));
-  std::string temp_filename;
+  string temp_filename;
   ASSERT_TRUE(File::CreateNewTempFile(&temp_filename));
   ASSERT_FALSE(temp_filename.empty());
   ASSERT_TRUE(File::Delete(temp_filename));
@@ -95,14 +95,14 @@ TEST_F(FileTest, TestCreateNewTempFile) {
 
 TEST_F(FileTest, TestJoinPaths) {
   // TODO: win32 separators for cross-platform testing.
-  const std::string kPath1NoSep("/tom/dick");
-  const std::string kPath1Sep("/tom/dick/");
-  const std::string kPath2("harry");
-  const std::string kExpected_posix("/tom/dick/harry");
+  const string kPath1NoSep("/tom/dick");
+  const string kPath1Sep("/tom/dick/");
+  const string kPath2("harry");
+  const string kExpected_posix("/tom/dick/harry");
   // The following two strings have no real meaning w.r.t. a windows file
   // system. They merely test correct handling of the underlying code.
-  const std::string kExpected_win32_nosep("/tom/dick\\harry");
-  const std::string kExpected_win32_sep("/tom/dick/\\harry");
+  const string kExpected_win32_nosep("/tom/dick\\harry");
+  const string kExpected_win32_sep("/tom/dick/\\harry");
   // Passing cases.
 #ifdef WIN32
   ASSERT_EQ(kExpected_win32_nosep, File::JoinPaths(kPath1NoSep, kPath2));
@@ -111,9 +111,9 @@ TEST_F(FileTest, TestJoinPaths) {
   ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1NoSep, kPath2));
   ASSERT_EQ(kExpected_posix, File::JoinPaths(kPath1Sep, kPath2));
 
-  const std::string kBaseDir("../../../../testdata/kmz/");
-  const std::string kFilename("kmzfiles/dummy.kml");
-  const std::string kExpected("../../../../testdata/kmz/kmzfiles/dummy.kml");
+  const string kBaseDir("../../../../testdata/kmz/");
+  const string kFilename("kmzfiles/dummy.kml");
+  const string kExpected("../../../../testdata/kmz/kmzfiles/dummy.kml");
   ASSERT_EQ(kExpected, File::JoinPaths(kBaseDir, kFilename));
 
 #endif
@@ -121,13 +121,13 @@ TEST_F(FileTest, TestJoinPaths) {
   // Joining with an empty string does not modify anything.
   ASSERT_EQ(kPath1NoSep, File::JoinPaths(kPath1NoSep, ""));
   ASSERT_EQ(kPath2, File::JoinPaths("", kPath2));
-  ASSERT_EQ(std::string(""), File::JoinPaths("", ""));
+  ASSERT_EQ(string(""), File::JoinPaths("", ""));
 }
 
 const static struct {
-  std::string filepath;
-  std::string basedir;
-  std::string filename;
+  string filepath;
+  string basedir;
+  string filename;
 } kFilePathTests[] = {
   {"/tom/dick/harry.txt", "/tom/dick", "harry.txt" },
   {"\\tom\\dick\\harry.txt", "\\tom\\dick", "harry.txt"},
@@ -139,10 +139,10 @@ const static struct {
 TEST_F(FileTest, TestSplitFilePath) {
   // Test NULL handling.
   File::SplitFilePath(kFilePathTests[0].filepath, NULL, NULL);
-  std::string basedir;
+  string basedir;
   File::SplitFilePath(kFilePathTests[0].filepath, &basedir, NULL);
   ASSERT_EQ(kFilePathTests[0].basedir, basedir);
-  std::string filename;
+  string filename;
   File::SplitFilePath(kFilePathTests[0].filepath, &basedir, &filename);
   ASSERT_EQ(kFilePathTests[0].basedir, basedir);
   ASSERT_EQ(kFilePathTests[0].filename, filename);
@@ -150,8 +150,8 @@ TEST_F(FileTest, TestSplitFilePath) {
   // Test specific cases.
   const size_t kSize = sizeof(kFilePathTests)/sizeof(kFilePathTests[0]);
   for (size_t i = 0; i < kSize; ++i) {
-    std::string basedir;
-    std::string filename;
+    string basedir;
+    string filename;
     File::SplitFilePath(kFilePathTests[i].filepath, &basedir, &filename);
     ASSERT_EQ(kFilePathTests[i].basedir, basedir);
     ASSERT_EQ(kFilePathTests[i].filename, filename);

@@ -29,7 +29,6 @@
 #ifndef KML_DOM_MODEL_H__
 #define KML_DOM_MODEL_H__
 
-#include <string>
 #include <vector>
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
@@ -268,13 +267,13 @@ class Alias : public Object {
   }
 
   // <targetHref>
-  const std::string& get_targethref() const {
+  const string& get_targethref() const {
     return targethref_;
   }
   bool has_targethref() const {
     return has_targethref_;
   }
-  void set_targethref(const std::string& targethref) {
+  void set_targethref(const string& targethref) {
     targethref_ = targethref;
     has_targethref_ = true;
   }
@@ -284,13 +283,13 @@ class Alias : public Object {
   }
 
   // <sourceHref>
-  const std::string& get_sourcehref() const {
+  const string& get_sourcehref() const {
     return sourcehref_;
   }
   bool has_sourcehref() const {
     return has_sourcehref_;
   }
-  void set_sourcehref(const std::string& sourcehref) {
+  void set_sourcehref(const string& sourcehref) {
     sourcehref_ = sourcehref;
     has_sourcehref_ = true;
   }
@@ -306,9 +305,9 @@ class Alias : public Object {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::string targethref_;
+  string targethref_;
   bool has_targethref_;
-  std::string sourcehref_;
+  string sourcehref_;
   bool has_sourcehref_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Alias);
 };

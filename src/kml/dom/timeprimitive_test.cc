@@ -26,7 +26,6 @@
 // This file contains the unit tests for TimeSpan and TimeStamp.
 
 #include "kml/dom/timeprimitive.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_ptr.h"
@@ -85,8 +84,8 @@ TEST_F(TimeSpanTest, TestSetToDefaultValues) {
 
 // Verify set, get, has, clear:
 TEST_F(TimeSpanTest, TestSetGetHasClear) {
-  const std::string begin = "2008-01";
-  const std::string end = "2008-02";
+  const string begin = "2008-01";
+  const string end = "2008-02";
 
   // Set all fields:
   timespan_->set_begin(begin);
@@ -133,7 +132,7 @@ TEST_F(TimeStampTest, TestSetToDefaultValues) {
 
 // Verify set, get, has, clear:
 TEST_F(TimeStampTest, TestSetGetHasClear) {
-  const std::string when = "2008-01-23T18:13:07Z";
+  const string when = "2008-01-23T18:13:07Z";
 
   // Set all fields:
   timestamp_->set_when(when);

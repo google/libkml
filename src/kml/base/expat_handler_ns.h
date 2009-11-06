@@ -28,8 +28,8 @@
 #ifndef KML_BASE_EXPAT_HANDLER_NS_H__
 #define KML_BASE_EXPAT_HANDLER_NS_H__
 
-#include <string>
 #include "kml/base/expat_handler.h"
+#include "kml/base/util.h"
 
 namespace kmlbase {
 
@@ -66,13 +66,14 @@ public:
   virtual ~ExpatHandlerNs() {}
   // This translates an expat-generated namespace qualified name into a
   // name with a prefix known to the Xmlns passed to the constructor.
-  const std::string TranslatePrefixedName(
-      const std::string prefixed_name) const;
-  virtual void StartElement(const char* namespaced_named, const char** atts);
-  virtual void EndElement(const char* namespaced_name);
-  virtual void CharData(const XML_Char* s, int len);
-  virtual void StartNamespace(const XML_Char* prefix, const XML_Char* uri);
-  virtual void EndNamespace(const XML_Char* prefix);
+  const string TranslatePrefixedName(
+      const string prefixed_name) const;
+  virtual void StartElement(const string& namespaced_named,
+                            const StringVector& atts);
+  virtual void EndElement(const string& namespaced_name);
+  virtual void CharData(const string& s);
+  virtual void StartNamespace(const string& prefix, const std::string& uri);
+  virtual void EndNamespace(const string& prefix);
 
 private:
   ExpatHandler* expat_handler_;

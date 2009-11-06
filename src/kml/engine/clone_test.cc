@@ -26,7 +26,6 @@
 // This file contains the unit tests for the Clone() function.
 
 #include "kml/engine/clone.h"
-#include <string>
 #include "kml/dom.h"
 #include "gtest/gtest.h"
 
@@ -78,8 +77,8 @@ TEST_F(CloneTest, TestEmptyClone) {
 
 // Verify that a complex element with some fields clones properly.
 TEST_F(CloneTest, TestCloneFields) {
-  const std::string kName("clone my name");
-  const std::string kId("clone-my-id");
+  const string kName("clone my name");
+  const string kId("clone-my-id");
   const bool kVisibility = false;
 
   // Set the fields.
@@ -104,8 +103,8 @@ TEST_F(CloneTest, TestCloneFields) {
 // Verify that a complex element with both some fields and complex children
 // clones properly.
 TEST_F(CloneTest, TestCloneChildren) {
-  const std::string kDescription("clone my description");
-  const std::string kId("clone-my-id");
+  const string kDescription("clone my description");
+  const string kId("clone-my-id");
   const bool kOpen = false;
 
   // Set some fields.
@@ -221,7 +220,7 @@ TEST_F(CloneTest, TestCloneSnippet) {
                        cloned_snippet->get_maxlines());
   ASSERT_EQ(snippet_->get_text(), cloned_snippet->get_text());
 
-  const std::string kText("some snippet text");
+  const string kText("some snippet text");
   snippet_->set_text(kText);
   cloned_snippet = AsSnippet(Clone(snippet_));
   ASSERT_EQ(kText, cloned_snippet->get_text());
@@ -230,7 +229,7 @@ TEST_F(CloneTest, TestCloneSnippet) {
 // <IconStyle>'s <Icon> uses has_icon(), etc but is Type_IconStyleIcon.
 TEST_F(CloneTest, TestCloneIconStyle) {
   IconStyleIconPtr icon = KmlFactory::GetFactory()->CreateIconStyleIcon();
-  const std::string kImage("icon.png");
+  const string kImage("icon.png");
   icon->set_href(kImage);
   IconStylePtr iconstyle = KmlFactory::GetFactory()->CreateIconStyle();
   iconstyle->set_icon(icon);

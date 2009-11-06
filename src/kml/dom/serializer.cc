@@ -27,7 +27,6 @@
 // functions and the implementation of the Serialize class.
 
 #include "kml/dom/serializer.h"
-#include <string>
 #include "kml/base/vec3.h"
 #include "kml/dom/element.h"
 #include "kml/dom/xsd.h"
@@ -43,9 +42,9 @@ Serializer::Serializer() : xsd_(*Xsd::GetSchema()) {
 // Wrap the whole thing in a CDATA if any found.  Doesn't try to '&amp;'-ify.
 // Avoids CDATA-ing any string that's already a CDATA.
 // Returns a string that's legal for an XML value.
-const std::string Serializer::MaybeQuoteString(const std::string& value) {
+const string Serializer::MaybeQuoteString(const string& value) {
   if ((value.find("<![CDATA[",0) != 0) &&
-      (value.find_first_of("&'<>\"", 0) != std::string::npos))
+      (value.find_first_of("&'<>\"", 0) != string::npos))
     return "<![CDATA[" + value + "]]>";
   else
     return value;
@@ -55,7 +54,7 @@ const std::string Serializer::MaybeQuoteString(const std::string& value) {
 // For example, type_id=Type_altitudeMode, enum_value=ALTITUDEMODE_ABSOLUTE.
 // If enum_value is not valid for the given type_id nothing is emitted.
 void Serializer::SaveEnum(int type_id, int enum_value) {
-  std::string enum_string = xsd_.EnumValue(type_id, enum_value);
+  string enum_string = xsd_.EnumValue(type_id, enum_value);
   if (!enum_string.empty()) {
     SaveFieldById(type_id, enum_string);
   }

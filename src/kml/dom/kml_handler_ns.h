@@ -33,7 +33,6 @@
 #include <stack>
 #include <string>
 #include "kml_handler.h"
-#include "expat.h"  // XML_Char
 #include "kml/base/expat_handler.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_ptr.h"
@@ -50,11 +49,13 @@ class KmlHandlerNS : public KmlHandler {
   ~KmlHandlerNS();
   
   // ExpatHandler methods.
-  virtual void StartElement(const char *name, const char **atts);
-  virtual void EndElement(const char *name);
-  virtual void CharData(const XML_Char *s, int len);
-  virtual void StartNamespace(const XML_Char *prefix, const XML_Char *uri);
-  virtual void EndNamespace(const XML_Char *prefix);
+  virtual void StartElement(const string &name,
+                            const kmlbase::StringVector& atts);
+  virtual void EndElement(const string &name);
+  virtual void CharData(const string &s);
+  virtual void StartNamespace(const string &prefix,
+                              const string &uri);
+  virtual void EndNamespace(const string &prefix);
 
  private:
   // TODO: A map of namespace URIs to their prefixes found during the parse.

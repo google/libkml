@@ -53,7 +53,7 @@ TEST_F(ItemIconTest, TestDefaults) {
   ASSERT_EQ(static_cast<size_t>(1), itemicon_->get_state_array_size());
   ASSERT_EQ(ITEMICONSTATE_OPEN, itemicon_->get_state_array_at(0));
   ASSERT_FALSE(itemicon_->has_href());
-  ASSERT_EQ(std::string(""), itemicon_->get_href());
+  ASSERT_EQ(string(""), itemicon_->get_href());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -68,7 +68,7 @@ TEST_F(ItemIconTest, TestSetToDefaultValues) {
 TEST_F(ItemIconTest, TestSetGetHasClear) {
   // Non-default values:
   ItemIconStateEnum state = ITEMICONSTATE_ERROR;
-  std::string href("http://example.com/foo.jpg");
+  string href("http://example.com/foo.jpg");
 
   // Set all fields:
   itemicon_->clear_state();
