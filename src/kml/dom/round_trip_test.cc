@@ -58,14 +58,14 @@ static struct {
   { "gx", "all-gx.kml", "all-gx-golden.kml" }
 };
 
-static std::string ReadTestCase(const char *subdir, const char* filename) {
-  std::string content;
+static string ReadTestCase(const char *subdir, const char* filename) {
+  string content;
   File::ReadFileToString(
       File::JoinPaths(DATADIR, File::JoinPaths(subdir, filename)), &content);
   return content;
 }
 
-static std::string ParseSerialize(const std::string& kml) {
+static string ParseSerialize(const string& kml) {
   return kmldom::SerializePretty(kmldom::Parse(kml, NULL));
 }
 
@@ -75,9 +75,9 @@ TEST(RoundTripTest, RunTestCases) {
     const char* subdir = kTestCases[i].subdir;
     const char* input_kml = kTestCases[i].input_kml;
     const char* golden_kml = kTestCases[i].golden_kml;
-    std::string actual_kml = ParseSerialize(ReadTestCase(subdir, input_kml));
+    string actual_kml = ParseSerialize(ReadTestCase(subdir, input_kml));
     EXPECT_FALSE(actual_kml.empty()) << input_kml;
-    std::string expected_kml = ReadTestCase(subdir, golden_kml);
+    string expected_kml = ReadTestCase(subdir, golden_kml);
     EXPECT_FALSE(expected_kml.empty()) << golden_kml;
     EXPECT_EQ(expected_kml, actual_kml);
   }

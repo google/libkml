@@ -34,7 +34,7 @@ namespace kmlbase {
 class TestFile : public XmlFile {
  public:
   // Reflect the otherwise protected set_url out to public for unit testing.
-  void set_url(const std::string& url) {
+  void set_url(const string& url) {
     XmlFile::set_url(url);
   }
   bool set_root(const XmlElementPtr& element) {
@@ -61,7 +61,7 @@ TEST(XmlFileTest, TestDefault) {
 }
 
 TEST(XmlFileTest, TestSetGet) {
-  const std::string kUrl("http://example.com");
+  const string kUrl("http://example.com");
   const int kId = 42;
   TestFilePtr xml_file = new TestFile;
   xml_file->set_url(kUrl);

@@ -29,7 +29,6 @@
 #define KML_ENGINE_KMZ_CACHE_H__
 
 #include <map>
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/memory_file.h"
 #include "kml/base/net_cache.h"
@@ -56,7 +55,7 @@ class KmzCache : public kmlbase::NetCache<KmzFile> {
 
   // This is the main KML Engine internal method to perform a KMZ-aware fetch.
   // KmlUri encodes the fetch base and target.
-  bool DoFetch(KmlUri* kml_uri, std::string* content);
+  bool DoFetch(KmlUri* kml_uri, string* content);
 
   // This is basically an internal helper method to perform a simple lookup
   // of a file within a KMZ.  If the KmlUri describes a KMZ file in the cache
@@ -64,7 +63,7 @@ class KmzCache : public kmlbase::NetCache<KmzFile> {
   // the supplied buffer and true is returned.  If the KmlUri is not KMZ
   // related or if the target is not within the KMZ or if no content buffer
   // is supplied false is returned.
-  bool FetchFromCache(KmlUri* kml_uri, std::string* content) const;
+  bool FetchFromCache(KmlUri* kml_uri, string* content) const;
 
  private:
   boost::scoped_ptr<MemoryFileCache> memory_file_cache_;

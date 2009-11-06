@@ -26,8 +26,8 @@
 // This file contains the implementation of the Csv class for parsing CSV
 // files and generating Point Placemark KML.
 
-#include <string>
 #include <vector>
+#include "kml/base/util.h"
 
 namespace kmlconvenience {
 
@@ -45,7 +45,7 @@ class CsvFile {
   CsvFile(kmlconvenience::FeatureList* feature_list)
       : feature_list_(feature_list) {}
 
-  void ParseCsvLine(const std::string& csv_line);
+  void ParseCsvLine(const string& csv_line);
 
   // Create a Point Placemark for each line of the given CSV file.
   void ParseCsvFile(const char* filename);

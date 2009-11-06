@@ -29,20 +29,20 @@
 namespace kmlbase {
 
 TEST(XmlNamespacesTest, TestFindXmlNamespaceAndPrefix) {
-  std::string prefix;
-  std::string xml_namespace;
+  string prefix;
+  string xml_namespace;
   ASSERT_FALSE(FindXmlNamespaceAndPrefix(XMLNS_NONE, NULL, NULL));
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, NULL, NULL));
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, &prefix, NULL));
   ASSERT_TRUE(!prefix.empty());
-  ASSERT_EQ(std::string("kml"), prefix);
+  ASSERT_EQ(string("kml"), prefix);
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, NULL, &xml_namespace));
-  ASSERT_EQ(std::string("http://www.opengis.net/kml/2.2"), xml_namespace);
+  ASSERT_EQ(string("http://www.opengis.net/kml/2.2"), xml_namespace);
   prefix.clear();
   xml_namespace.clear();
   ASSERT_TRUE(FindXmlNamespaceAndPrefix(XMLNS_KML22, &prefix, &xml_namespace));
-  ASSERT_EQ(std::string("kml"), prefix);
-  ASSERT_EQ(std::string("http://www.opengis.net/kml/2.2"), xml_namespace);
+  ASSERT_EQ(string("kml"), prefix);
+  ASSERT_EQ(string("http://www.opengis.net/kml/2.2"), xml_namespace);
   ASSERT_FALSE(FindXmlNamespaceAndPrefix(static_cast<XmlnsId>(1231231), NULL,
                                          NULL));
 }

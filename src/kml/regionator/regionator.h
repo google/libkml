@@ -31,7 +31,6 @@
 #define KML_REGIONATOR_REGIONATOR_H__
 
 #include <map>
-#include <string>
 #include <vector>
 #include "kml/dom.h"
 #include "kml/regionator/region_handler.h"
@@ -69,9 +68,9 @@ private:
   RegionHandler& rhandler_;
   // This returns the relative filename for the given Region.  A parent KML
   // file NetworkLink will look for a child with this name.
-  std::string RegionFilename(const kmldom::RegionPtr& region);
+  string RegionFilename(const kmldom::RegionPtr& region);
   int region_count_;
-  std::map<std::string,int> qid_map_;
+  std::map<string,int> qid_map_;
   char* output_directory_;
 };
 

@@ -82,13 +82,13 @@ class ItemIcon : public Object {
   }
 
   // <href>
-  std::string get_href() const {
+  const string& get_href() const {
     return href_;
   }
   bool has_href() const {
     return has_href_;
   }
-  void set_href(const std::string& href) {
+  void set_href(const string& href) {
     href_ = href;
     has_href_ = true;
   }
@@ -106,7 +106,7 @@ class ItemIcon : public Object {
   virtual void Serialize(Serializer& serialize) const;
   std::vector<int> state_array_;
   bool has_state_;
-  std::string href_;
+  string href_;
   bool has_href_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ItemIcon);
 };

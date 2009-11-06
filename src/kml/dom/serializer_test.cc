@@ -26,7 +26,6 @@
 // This file contains the unit tests for the abstract Serializer base class.
 
 #include "kml/dom/serializer.h"
-#include <string>
 #include "kml/base/attributes.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
@@ -75,8 +74,8 @@ class MaximalSerializer : public Serializer {
   virtual void End() {}
   virtual void SaveElement(const ElementPtr& element) {}
   virtual void SaveElementGroup(const ElementPtr& element, int group_id) {}
-  virtual void SaveStringFieldById(int type_id, std::string value) {}
-  virtual void SaveContent(const std::string& content, bool maybe_quote) {}
+  virtual void SaveStringFieldById(int type_id, string value) {}
+  virtual void SaveContent(const string& content, bool maybe_quote) {}
   virtual void SaveVec3(const kmlbase::Vec3& vec3) {}
   virtual void Indent() {}
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}

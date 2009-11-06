@@ -54,7 +54,8 @@ KmlHandler::~KmlHandler() {
   // the reference and potentially freeing the associated storage.
 }
 
-void KmlHandler::StartElement(const char *name, const char **attrs) {
+void KmlHandler::StartElement(const string& name,
+                              const kmlbase::StringVector& attrs) {
   // 3 possibilities:
   // 1) complex element: create an Element.
   // 2) simple element: create a Field
@@ -73,7 +74,7 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
 
   // Push a string onto the stack we'll use to manage the gathering of
   // character data.
-  std::string element_char_data;
+  string element_char_data;
   char_data_.push(element_char_data);
 
   ElementPtr element;
@@ -93,11 +94,10 @@ void KmlHandler::StartElement(const char *name, const char **attrs) {
     }
 
     // We parse attributes only if StartElement received any.
-    if (attrs && *attrs) {
+    if (!attrs.empty()) {
       // Element::ParseAttributes takes ownership of the created Attributes.
       element->ParseAttributes(Attributes::Create(attrs));
     }
-
   } else if (xsd_type == XSD_SIMPLE_TYPE) {
     element = kml_factory_.CreateFieldById(type_id);
   }
@@ -136,7 +136,7 @@ bool KmlHandler::CallNewElementObservers(
   return true;
 }
 
-void KmlHandler::EndElement(const char *name) {
+void KmlHandler::EndElement(const string& name) {
   if (skip_depth_ > 0) {
     // We're inside an unknown element. Build the closing tag, decrement
     // the skip counter and then check if we're back to known KML.
@@ -162,7 +162,7 @@ void KmlHandler::EndElement(const char *name) {
   // The top of the stack is the begin of the element ending here.
   ElementPtr child = stack_.top();
 
-  std::string child_char_data_ = char_data_.top();
+  string child_char_data_ = char_data_.top();
   char_data_.pop();
 
   child->set_char_data(child_char_data_);
@@ -221,8 +221,8 @@ bool KmlHandler::CallAddChildObservers(
 // <Placemark><Point>foo<coordinates/>bar</Point></Placemark> becomes:
 // <Placemark><Point><coordinates/></Point></Placemark>
 // <X><Point>foo<coordinates/>bar</Point></P> remains as-is.
-void KmlHandler::CharData(const XML_Char *s, int len) {
-  char_data_.top().append(s, len);
+void KmlHandler::CharData(const string& s) {
+  char_data_.top().append(s);
 }
 
 // As with STL pop() methods this is (potentially) destructive.  If the
@@ -240,24 +240,24 @@ ElementPtr KmlHandler::PopRoot() {
 }
 
 // Private.
-void KmlHandler::InsertUnknownStartElement(const char *name,
-                                           const char **atts) {
-  std::string& top = char_data_.top();
+void KmlHandler::InsertUnknownStartElement(const string& name,
+                                       const kmlbase::StringVector& atts) {
+  string& top = char_data_.top();
   top.append("<");
   top.append(name);
-  while (*atts) {
+  for (size_t i = 0; i < atts.size(); i += 2)  {
     top.append(" ");
-    top.append(*atts++);
+    top.append(atts.at(i));
     top.append("=\"");
-    top.append(*atts++);
+    top.append(atts.at(i+1));
     top.append("\"");
   }
   top.append(">");
 }
 
 // Private.
-void KmlHandler::InsertUnknownEndElement(const char *name) {
-  std::string& top = char_data_.top();
+void KmlHandler::InsertUnknownEndElement(const string& name) {
+  string& top = char_data_.top();
   top.append("</");
   top.append(name);
   top.append(">");

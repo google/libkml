@@ -116,7 +116,7 @@ TEST_F(IconStyleTest, TestParse) {
     "<IconStyle>"
     "<Icon><href>image.jpg</href></Icon>"
     "</IconStyle>";
-  std::string errors;
+  string errors;
   ElementPtr root = Parse(kIconStyleIcon, &errors);
   ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
@@ -124,7 +124,7 @@ TEST_F(IconStyleTest, TestParse) {
   ASSERT_TRUE(iconstyle->has_icon());
   // Verify that this is IconStyle's brand of Icon (not Type_Icon).
   ASSERT_EQ(Type_IconStyleIcon, iconstyle->get_icon()->Type());
-  ASSERT_EQ(std::string("image.jpg"), iconstyle->get_icon()->get_href());
+  ASSERT_EQ(string("image.jpg"), iconstyle->get_icon()->get_href());
 }
 
 }  // end namespace kmldom

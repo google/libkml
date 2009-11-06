@@ -28,7 +28,6 @@
 #ifndef KML_ENGINE_KML_FILE_H__
 #define KML_ENGINE_KML_FILE_H__
 
-#include <string>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
@@ -58,19 +57,19 @@ class KmlFile : public kmlbase::XmlFile {
   // KML data from the KMZ archive.  On any parse errors NULL is returned
   // and a human readable error message is saved in the supplied string.
   // The caller is responsible for deleting the KmlFile this creates.
-  static KmlFile* CreateFromParse(const std::string& kml_or_kmz_data,
-                                  std::string *errors);
+  static KmlFile* CreateFromParse(const string& kml_or_kmz_data,
+                                  string *errors);
 
   // This method is for use with NetCache CacheItem.
-  static KmlFile* CreateFromString(const std::string& kml_or_kmz_data) {
+  static KmlFile* CreateFromString(const string& kml_or_kmz_data) {
     // Internal KML fetch/parse (styleUrl, etc) errors are quietly ignored.
     return CreateFromParse(kml_or_kmz_data, NULL);
   }
 
   // This method is for use with KmlCache.  The purpose is to keep set_url()
   // and set_kml_cache() private and at creation-time.
-  static KmlFile* CreateFromStringWithUrl(const std::string& kml_data,
-                                          const std::string& url,
+  static KmlFile* CreateFromStringWithUrl(const string& kml_data,
+                                          const string& url,
                                           KmlCache* kml_cache);
 
   // This creates a KmlFile from the given element hierarchy.  This variant of
@@ -98,29 +97,29 @@ class KmlFile : public kmlbase::XmlFile {
   //    <kml xmlns="XMLNS" xmlns:PREFIX1="XMLNS1" xmlns:PREFIX2="XMLNS2"...>
   //    ...
   //    </kml>
-  bool SerializeToString(std::string* xml_output) const;
+  bool SerializeToString(string* xml_output) const;
 
   // This returns the XML header including the encoding:
   // The default is this: "<?version="1.0" encoding="utf-8"?>
-  const std::string CreateXmlHeader() const;
+  const string CreateXmlHeader() const;
 
   // These methods access the XML encoding of the XML file.
   // TODO: set should be create time only.
-  void set_encoding(const std::string& encoding) {
+  void set_encoding(const string& encoding) {
     encoding_ = encoding;
   }
-  const std::string& get_encoding() const {
+  const string& get_encoding() const {
     return encoding_;
   }
 
   // This returns the Object Element with the given id.  A NULL Object is
   // returned if no Object with this id exists in the KML file.
-  kmldom::ObjectPtr GetObjectById(const std::string& id) const;
+  kmldom::ObjectPtr GetObjectById(const string& id) const;
 
   // This returns the shared StyleSelector Element with the given id.  NULL is
   // returned if no StyleSelector with this id exists as a shared style
   // selector in the KML file.
-  kmldom::StyleSelectorPtr GetSharedStyleById(const std::string& id) const;
+  kmldom::StyleSelectorPtr GetSharedStyleById(const string& id) const;
 
   const SharedStyleMap& get_shared_style_map() const {
     return shared_style_map_;
@@ -157,17 +156,17 @@ class KmlFile : public kmlbase::XmlFile {
                                            bool disallow_duplicate_ids);
 
   // This is an internal method used in the static Create methods.
-  bool ParseFromString(const std::string& kml, std::string* errors);
+  bool ParseFromString(const string& kml, string* errors);
 
   // Only static Create methods can set the KmlCache.
   void set_kml_cache(KmlCache* kml_cache) {
     kml_cache_ = kml_cache;
   }
   // These are helper functions for CreateFromParse().
-  bool _CreateFromParse(const std::string& kml_or_kmz_data,
-                        std::string* errors);
-  bool OpenAndParseKmz(const std::string& kmz_data, std::string* errors);
-  std::string encoding_;
+  bool _CreateFromParse(const string& kml_or_kmz_data,
+                        string* errors);
+  bool OpenAndParseKmz(const string& kmz_data, string* errors);
+  string encoding_;
   // TODO: use XmlElement's id map.
   ObjectIdMap object_id_map_;
   SharedStyleMap shared_style_map_;

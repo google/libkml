@@ -50,9 +50,9 @@ class KmlUriTest : public testing::Test {
 
 // Verify basic normal usage of the KmlUri::CreateRelative() static method.
 TEST_F(KmlUriTest, TestBasicKmlUriCreateRelative) {
-  const std::string kBase("http://host.com/path/file.kml");
-  const std::string kHref("image.jpg");
-  const std::string kExpectedUrl("http://host.com/path/image.jpg");
+  const string kBase("http://host.com/path/file.kml");
+  const string kHref("image.jpg");
+  const string kExpectedUrl("http://host.com/path/image.jpg");
   kml_uri_.reset(KmlUri::CreateRelative(kBase, kHref));
   ASSERT_TRUE(kml_uri_.get());
   ASSERT_EQ(kExpectedUrl, kml_uri_->get_url());
@@ -124,33 +124,33 @@ TEST_F(KmlUriTest, TestKmlUriTestCases) {
     kml_uri_.reset(
         KmlUri::CreateRelative(kTestCases[i].base, kTestCases[i].target));
     if (kTestCases[i].resolved) {
-      ASSERT_EQ(std::string(kTestCases[i].resolved), kml_uri_->get_url());
+      ASSERT_EQ(string(kTestCases[i].resolved), kml_uri_->get_url());
     } else {
       ASSERT_FALSE(kml_uri_.get());
     }
     if (kTestCases[i].kmz_base) {
-      ASSERT_EQ(std::string(kTestCases[i].kmz_base), kml_uri_->get_kmz_url());
+      ASSERT_EQ(string(kTestCases[i].kmz_base), kml_uri_->get_kmz_url());
     }
     if (kTestCases[i].kmz_relative) {
       boost::scoped_ptr<KmlUri> kmz_relative(
           KmlUri::CreateRelative(kml_uri_->get_kmz_url(),
                                  kml_uri_->get_target()));
       ASSERT_TRUE(kmz_relative.get());
-      ASSERT_EQ(std::string(kTestCases[i].kmz_relative),
+      ASSERT_EQ(string(kTestCases[i].kmz_relative),
                 kmz_relative->get_url());
     }
   }
 }
 
 TEST_F(KmlUriTest, TestResolveUri) {
-  const std::string kBase("http://foo.com");
-  const std::string kRelative("file.kml");
+  const string kBase("http://foo.com");
+  const string kRelative("file.kml");
   // NULL args returns false.
   ASSERT_FALSE(ResolveUri("", "", NULL));
   // NULL output arg returns false.
   ASSERT_FALSE(ResolveUri(kBase, kRelative, NULL));
   // Proper resolution of normal input to a given output returns true.
-  std::string uri;
+  string uri;
   ASSERT_TRUE(ResolveUri(kBase, kRelative, &uri));
   ASSERT_EQ(kBase + "/" + kRelative, uri);
 }
@@ -159,18 +159,18 @@ TEST_F(KmlUriTest, TestSplitUri) {
   // Verify behavior of NULL args.
   ASSERT_TRUE(SplitUri("", NULL, NULL, NULL, NULL, NULL, NULL));
   // Verify behavior of a URI with all desired components.
-  const std::string kScheme("http");
-  const std::string kHost("example.com");
-  const std::string kPort("8081");
-  const std::string kPath("x/y/z");
-  const std::string kQuery("name=val");
-  const std::string kFragment("some-fragment");
-  std::string scheme;
-  std::string host;
-  std::string port;
-  std::string path;
-  std::string query;
-  std::string fragment;
+  const string kScheme("http");
+  const string kHost("example.com");
+  const string kPort("8081");
+  const string kPath("x/y/z");
+  const string kQuery("name=val");
+  const string kFragment("some-fragment");
+  string scheme;
+  string host;
+  string port;
+  string path;
+  string query;
+  string fragment;
   ASSERT_TRUE(SplitUri(kScheme + "://" + kHost + ":" + kPort + "/" +
                        kPath + "?" + kQuery + "#" + kFragment,
                        &scheme, &host, &port, &path, &query, &fragment));
@@ -183,11 +183,11 @@ TEST_F(KmlUriTest, TestSplitUri) {
 }
 
 TEST_F(KmlUriTest, TestKmzSplit) {
-  const std::string kFetchUrl("http://host.com/bldgs/model-macky.kmz");
-  const std::string kKmzPath("photos/bh-flowers.jpg");
-  const std::string kUrl(kFetchUrl + "/" + kKmzPath);
-  std::string fetchable_url;
-  std::string path_in_kmz;
+  const string kFetchUrl("http://host.com/bldgs/model-macky.kmz");
+  const string kKmzPath("photos/bh-flowers.jpg");
+  const string kUrl(kFetchUrl + "/" + kKmzPath);
+  string fetchable_url;
+  string path_in_kmz;
   ASSERT_TRUE(KmzSplit(kUrl, &fetchable_url, &path_in_kmz));
   ASSERT_EQ(kFetchUrl, fetchable_url);
   ASSERT_EQ(kKmzPath, path_in_kmz);
@@ -195,11 +195,11 @@ TEST_F(KmlUriTest, TestKmzSplit) {
 
 TEST_F(KmlUriTest, TestBasicResolveModelTargetHref) {
   // Verify behavior for a common case.
-  const std::string kBase("http://host.com/dir/foo.kmz/doc.kml");
-  const std::string kModelHref("dir/bldg.dae");
-  const std::string kTargetHref("../textures/brick.jpg");
-  const std::string kResult("http://host.com/dir/foo.kmz/textures/brick.jpg");
-  std::string result;
+  const string kBase("http://host.com/dir/foo.kmz/doc.kml");
+  const string kModelHref("dir/bldg.dae");
+  const string kTargetHref("../textures/brick.jpg");
+  const string kResult("http://host.com/dir/foo.kmz/textures/brick.jpg");
+  string result;
   ASSERT_TRUE(ResolveModelTargetHref(kBase, kModelHref, kTargetHref, &result));
   ASSERT_EQ(kResult, result);
 
@@ -215,10 +215,10 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
 
   // Make up a reasonable enough URL for the benefit of KmzCache and
   // TestDataNetFetcher.
-  const std::string kMackyUrl("http://host.com/kmz/model-macky.kmz/doc.kml");
+  const string kMackyUrl("http://host.com/kmz/model-macky.kmz/doc.kml");
 
   // Fetch the model-macky.kmz file into the KmzCache.
-  std::string kml_data;
+  string kml_data;
   kml_uri_.reset(KmlUri::CreateRelative(kMackyUrl, kMackyUrl));
   ASSERT_TRUE(kml_uri_.get());
   ASSERT_TRUE(kmz_cache.DoFetch(kml_uri_.get(), &kml_data));
@@ -238,15 +238,15 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
   const kmldom::ResourceMapPtr& resourcemap = model->get_resourcemap();
 
   // Find the value of the Model's Link/href
-  std::string geometry_href;
+  string geometry_href;
   GetLinkParentHref(model, &geometry_href);
 
-  std::string geometry_url;
+  string geometry_url;
   ASSERT_TRUE(ResolveUri(kMackyUrl, geometry_href, &geometry_url));
 
   kml_uri_.reset(KmlUri::CreateRelative(geometry_url, geometry_url));
   ASSERT_TRUE(kml_uri_.get());
-  std::string data;
+  string data;
   ASSERT_TRUE(kmz_cache.DoFetch(kml_uri_.get(), &data));
   ASSERT_FALSE(data.empty());
 
@@ -256,7 +256,7 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
   ASSERT_EQ(static_cast<size_t>(20), alias_array_size);
   for (size_t i = 0; i < alias_array_size; ++i) {
     const kmldom::AliasPtr& alias = resourcemap->get_alias_array_at(i);
-    std::string targethref_url;
+    string targethref_url;
     // This is the method under test.  Assert successful resolution.
     ASSERT_TRUE(ResolveModelTargetHref(kMackyUrl, geometry_href,
                                        alias->get_targethref(),
@@ -272,16 +272,16 @@ TEST_F(KmlUriTest, TestModelTargetHrefOnKmz) {
 }
 
 TEST_F(KmlUriTest, TestNormalizeUri) {
-  const std::string kUri("this/../is/a/relative/../uri.x");
-  const std::string kNormalized("is/a/uri.x");
-  std::string result;
+  const string kUri("this/../is/a/relative/../uri.x");
+  const string kNormalized("is/a/uri.x");
+  string result;
   ASSERT_TRUE(NormalizeUri(kUri, &result));
   ASSERT_EQ(kNormalized, result);
 }
 
 TEST_F(KmlUriTest, TestNormalizeHref) {
-  std::string href;
-  std::string normalized;
+  string href;
+  string normalized;
 #ifdef WIN32
   href = "this\\..\\a\\relative\\url.kmz\\..\\file.kml#id";
   normalized = "a\\relative\\file.kml#id";
@@ -289,15 +289,15 @@ TEST_F(KmlUriTest, TestNormalizeHref) {
   href = "this/../a/relative/url.kmz/../file.kml#id";
   normalized = "a/relative/file.kml#id";
 #endif
-  std::string result;
+  string result;
   ASSERT_TRUE(NormalizeHref(href, &result));
   ASSERT_EQ(normalized, result);
 }
 
 TEST_F(KmlUriTest, TestUriToFilename) {
   // This simply tests that the call down to UriParser works as expected.
-  std::string uri;
-  std::string expected_filename;
+  string uri;
+  string expected_filename;
 #ifdef WIN32
   uri = "file:///C:/home/libkml/foo.bar";
   expected_filename = "C:\\home\\libkml\\foo.bar";
@@ -305,15 +305,15 @@ TEST_F(KmlUriTest, TestUriToFilename) {
   uri = "file:///home/libkml/foo.bar";
   expected_filename = "/home/libkml/foo.bar";
 #endif
-  std::string filename;
+  string filename;
   ASSERT_TRUE(UriToFilename(uri, &filename));
   ASSERT_EQ(expected_filename, filename);
 }
 
 TEST_F(KmlUriTest, TestFilenameToUri) {
   // This simply tests that the call down to UriParser works as expected.
-  std::string filename;
-  std::string expected_uri;
+  string filename;
+  string expected_uri;
 #ifdef WIN32
   filename = "C:\\home\\libkml\\foo.bar";
   expected_uri = "file:///C:/home/libkml/foo.bar";
@@ -321,7 +321,7 @@ TEST_F(KmlUriTest, TestFilenameToUri) {
   filename = "/home/libkml/foo.bar";
   expected_uri = "file:///home/libkml/foo.bar";
 #endif
-  std::string uri;
+  string uri;
   ASSERT_TRUE(FilenameToUri(filename, &uri));
   ASSERT_EQ(expected_uri, uri);
 }

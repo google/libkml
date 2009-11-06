@@ -63,39 +63,39 @@ static const char* kGoogleClientLoginUrl =
     "https://www.google.com/accounts/ClientLogin";
 static const char* kAccountType = "HOSTED_OR_GOOGLE";
 
-HttpClient::HttpClient(const std::string &application_name)
+HttpClient::HttpClient(const string& application_name)
     : application_name_(application_name) {
   // Standard headers for every request
   PushHeader("User-Agent", application_name_ + " GData-C++/" + kVersion,
              &headers_);
 }
 
-void HttpClient::AddHeader(const std::string& field_name,
-                           const std::string& field_value) {
+void HttpClient::AddHeader(const string& field_name,
+                           const string& field_value) {
   PushHeader(field_name, field_value, &headers_);
 }
 
 // This is an implementation of this:
 // http://code.google.com/apis/accounts/docs/AuthForInstalledApps.html
-bool HttpClient::Login(const std::string& service_name,
-                       const std::string& email,
-                       const std::string& password) {
-  const std::string data = std::string("Email=") + email +
+bool HttpClient::Login(const string& service_name,
+                       const string& email,
+                       const string& password) {
+  const string data = string("Email=") + email +
                                        "&Passwd=" + password +
                                        "&accountType=" + kAccountType +
                                        "&source=" + application_name_ +
                                        "&service=" + service_name;
-  std::string response;
+  string response;
   if (!SendRequest(HTTP_POST, kGoogleClientLoginUrl, NULL, &data, &response)) {
     return false;
   }
 
-  const std::string kAuth = "Auth=";  // prefix of the ClientLogin token
+  const string kAuth = "Auth=";  // prefix of the ClientLogin token
   const size_t auth_offset = response.find(kAuth);
-  if (auth_offset == std::string::npos) {
+  if (auth_offset == string::npos) {
     return false;
   }
-  const std::string token = response.substr(auth_offset + kAuth.size());
+  const string token = response.substr(auth_offset + kAuth.size());
 
   auth_token_ = token.substr(0, token.size() - 1);  // remove trailing "\n"
 
@@ -107,10 +107,10 @@ bool HttpClient::Login(const std::string& service_name,
 
 // This default implemention is really only for debugging and unit testing.
 bool HttpClient::SendRequest(const HttpMethodEnum method,
-                             const std::string &uri,
+                             const string& uri,
                              const StringPairVector* headers,
-                             const std::string* data,
-                             std::string* response) const {
+                             const string* data,
+                             string* response) const {
   if (response) {
     response->append(HttpMethod::GetMethodString(method));
     response->append(" ");
@@ -130,13 +130,13 @@ bool HttpClient::SendRequest(const HttpMethodEnum method,
   return true;
 }
 
-bool HttpClient::FetchUrl(const std::string& url, std::string* data) const {
+bool HttpClient::FetchUrl(const string& url, string* data) const {
   return SendRequest(HTTP_GET, url, NULL, NULL, data);
 }
 
 // static
-void HttpClient::PushHeader(const std::string& field_name,
-                            const std::string& field_value,
+void HttpClient::PushHeader(const string& field_name,
+                            const string& field_value,
                             StringPairVector* headers) {
   if (headers) {
     headers->push_back(std::make_pair(field_name, field_value));
@@ -144,9 +144,9 @@ void HttpClient::PushHeader(const std::string& field_name,
 }
 
 // static
-bool HttpClient::FindHeader(const std::string& field_name,
+bool HttpClient::FindHeader(const string& field_name,
                             const StringPairVector& headers,
-                            std::string* field_value) {
+                            string* field_value) {
   for (size_t i = 0; i < headers.size(); ++i) {
     if (field_name == headers[i].first) {
       if (field_value) {
@@ -159,7 +159,7 @@ bool HttpClient::FindHeader(const std::string& field_name,
 }
 
 // static
-std::string HttpClient::FormatHeader(const StringPair& header) {
+string HttpClient::FormatHeader(const StringPair& header) {
   return header.first + ": " + header.second;
 }
 
@@ -174,4 +174,3 @@ void HttpClient::AppendHeaders(const StringPairVector& src,
 }
 
 }  // end namespace kmlconvenience
-

@@ -65,8 +65,8 @@ void FindXmlNamespaces(const ElementPtr& element,
     element->Serialize(xml_namespace_finder);
     XmlnsIdSet::const_iterator iter = xmlns_id_set.begin();
     for (; iter != xmlns_id_set.end(); ++iter) {
-      std::string prefix;
-      std::string xml_namespace;
+      string prefix;
+      string xml_namespace;
       if (kmlbase::FindXmlNamespaceAndPrefix(*iter, &prefix, &xml_namespace)) {
         xmlns_attributes->SetValue(prefix, xml_namespace);
       }
@@ -79,7 +79,7 @@ void FindAndInsertXmlNamespaces(ElementPtr element) {
     Attributes xmlns;
     FindXmlNamespaces(element, &xmlns);
     // We (kmlengine in libkml) never prefix KML 2.2 elements.
-    std::string kml_namespace;
+    string kml_namespace;
     if (xmlns.CutValue("kml", &kml_namespace)) {
       // This makes KML the default namespace
       xmlns.SetValue("xmlns", kml_namespace);

@@ -27,7 +27,6 @@
 // MergeElement() functions and their internal helper classes and functions.
 
 #include "kml/engine/merge.h"
-#include <string>
 #include <vector>
 #include "kml/dom.h"
 #include "kml/dom/serializer.h"
@@ -88,7 +87,7 @@ class FieldMerger : public Serializer {
   }
 
   // This sets the given field in the target.
-  virtual void SaveStringFieldById(int type_id, std::string value) {
+  virtual void SaveStringFieldById(int type_id, string value) {
     KmlDomType id = static_cast<KmlDomType>(type_id);
     ElementPtr field = KmlFactory::GetFactory()->CreateFieldById(id);
     field->set_char_data(value);

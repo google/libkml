@@ -66,7 +66,7 @@ TEST(FindXmlNamepacesTest, TestOneGx) {
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
   ASSERT_EQ(static_cast<size_t>(2), xmlns_attributes.GetSize());
-  std::string xml_namespace;
+  string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
 }
 
@@ -78,7 +78,7 @@ TEST(FindXmlNamepacesTest, TestOneGxAndOneAtom) {
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
   ASSERT_EQ(static_cast<size_t>(3), xmlns_attributes.GetSize());
-  std::string xml_namespace;
+  string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("atom", &xml_namespace));
 }
@@ -92,7 +92,7 @@ TEST(FindXmlNamepacesTest, TestOneGxAndOneAtomAndOneXal) {
   Attributes xmlns_attributes;
   FindXmlNamespaces(document, &xmlns_attributes);
   ASSERT_EQ(static_cast<size_t>(4), xmlns_attributes.GetSize());
-  std::string xml_namespace;
+  string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("atom", &xml_namespace));
   ASSERT_TRUE(xmlns_attributes.GetValue("xal", &xml_namespace));
@@ -104,7 +104,7 @@ TEST(FindXmlNamepacesTest, TestRootGx) {
   Attributes xmlns_attributes;
   FindXmlNamespaces(tour, &xmlns_attributes);
   ASSERT_EQ(static_cast<size_t>(1), xmlns_attributes.GetSize());
-  std::string xml_namespace;
+  string xml_namespace;
   ASSERT_TRUE(xmlns_attributes.GetValue("gx", &xml_namespace));
 }
 

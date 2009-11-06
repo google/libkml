@@ -28,7 +28,6 @@
 #ifndef KML_BASE_COLOR_H__
 #define KML_BASE_COLOR_H__
 
-#include <string>
 #include "kml/base/string_util.h"
 #include "kml/base/util.h"
 
@@ -48,7 +47,7 @@ class Color32 {
   Color32(unsigned char a, unsigned char b, unsigned char g, unsigned char r) {
     set_color_abgr((a << 24) | (b << 16) | (g << 8) | r);
   }
-  Color32(const std::string& value) {
+  Color32(const string& value) {
     set_color_abgr(value);
   }
 
@@ -98,7 +97,7 @@ class Color32 {
   }
 
   // Returns a new string in the AABBGGRR format.
-  std::string to_string_abgr() const {
+  string to_string_abgr() const {
     char out[9];
     b2a_hex(get_red(), out + 6);
     b2a_hex(get_green(), out + 4);
@@ -109,7 +108,7 @@ class Color32 {
   }
 
   // Returns a new string in the AARRGGBB format.
-  std::string to_string_argb() const {
+  string to_string_argb() const {
     char out[9];
     b2a_hex(get_blue(), out + 6);
     b2a_hex(get_green(), out + 4);
@@ -125,7 +124,7 @@ class Color32 {
   }
 
   // Sets the color from a string of AABBGGRR color.
-  void set_color_abgr(const std::string& color_abgr) {
+  void set_color_abgr(const string& color_abgr) {
     uint32_t out = 0;
     for(size_t i = 0; i < color_abgr.size(); ++i) {
       out = out * 16;

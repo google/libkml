@@ -468,7 +468,7 @@ TEST_F(PointTest, TestSerialize) {
   point_->set_id("point-id");
   point_->set_extrude(true);
   point_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<Point id=\"point-id\">"
     "<extrude>1</extrude>"
     "<coordinates/>"
@@ -482,7 +482,7 @@ TEST_F(PointTest, TestSerializeParseAll) {
   point_->set_extrude(false);
   point_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
   point_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<Point id=\"point-id\">"
     "<extrude>0</extrude>"
     "<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>"
@@ -490,14 +490,14 @@ TEST_F(PointTest, TestSerializeParseAll) {
     "</Point>"
   );
   ASSERT_EQ(expected, SerializeRaw(point_));
-  std::string errors;
+  string errors;
   ElementPtr element = Parse(expected, &errors);
   ASSERT_TRUE(element);
   ASSERT_TRUE(errors.empty());
   PointPtr point = AsPoint(element);
   ASSERT_TRUE(point);
   ASSERT_TRUE(point->has_id());
-  ASSERT_EQ(std::string("point-id"), point->get_id());
+  ASSERT_EQ(string("point-id"), point->get_id());
   ASSERT_TRUE(point->has_extrude());
   ASSERT_EQ(0, point->get_extrude());
   ASSERT_FALSE(point->has_altitudemode());
@@ -592,7 +592,7 @@ TEST_F(LineStringTest, TestSerialize) {
   linestring_->set_id("linestring-id");
   linestring_->set_tessellate(true);
   linestring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<LineString id=\"linestring-id\">"
     "<tessellate>1</tessellate>"
     "<coordinates/>"
@@ -607,7 +607,7 @@ TEST_F(LineStringTest, TestSerializeParseAll) {
   linestring_->set_tessellate(true);
   linestring_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
   linestring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<LineString id=\"linestring-id\">"
     "<extrude>1</extrude>"
     "<tessellate>1</tessellate>"
@@ -616,14 +616,14 @@ TEST_F(LineStringTest, TestSerializeParseAll) {
     "</LineString>"
   );
   ASSERT_EQ(expected, SerializeRaw(linestring_));
-  std::string errors;
+  string errors;
   ElementPtr element = Parse(expected, &errors);
   ASSERT_TRUE(element);
   ASSERT_TRUE(errors.empty());
   LineStringPtr linestring = AsLineString(element);
   ASSERT_TRUE(linestring);
   ASSERT_TRUE(linestring->has_id());
-  ASSERT_EQ(std::string("linestring-id"), linestring->get_id());
+  ASSERT_EQ(string("linestring-id"), linestring->get_id());
   ASSERT_TRUE(linestring->has_extrude());
   ASSERT_EQ(1, linestring->get_extrude());
   ASSERT_TRUE(linestring->has_tessellate());
@@ -721,7 +721,7 @@ TEST_F(LinearRingTest, TestSerialize) {
   linearring_->set_id("linearring-id");
   linearring_->set_tessellate(false);
   linearring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<LinearRing id=\"linearring-id\">"
     "<tessellate>0</tessellate>"
     "<coordinates/>"
@@ -736,7 +736,7 @@ TEST_F(LinearRingTest, TestSerializeParseAll) {
   linearring_->set_tessellate(false);
   linearring_->set_gx_altitudemode(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR);
   linearring_->set_coordinates(KmlFactory::GetFactory()->CreateCoordinates());
-  std::string expected(
+  string expected(
     "<LinearRing id=\"linearring-id\">"
     "<extrude>0</extrude>"
     "<tessellate>0</tessellate>"
@@ -745,14 +745,14 @@ TEST_F(LinearRingTest, TestSerializeParseAll) {
     "</LinearRing>"
   );
   ASSERT_EQ(expected, SerializeRaw(linearring_));
-  std::string errors;
+  string errors;
   ElementPtr element = Parse(expected, &errors);
   ASSERT_TRUE(element);
   ASSERT_TRUE(errors.empty());
   LinearRingPtr linearring = AsLinearRing(element);
   ASSERT_TRUE(linearring);
   ASSERT_TRUE(linearring->has_id());
-  ASSERT_EQ(std::string("linearring-id"), linearring->get_id());
+  ASSERT_EQ(string("linearring-id"), linearring->get_id());
   ASSERT_TRUE(linearring->has_extrude());
   ASSERT_EQ(0, linearring->get_extrude());
   ASSERT_TRUE(linearring->has_tessellate());
@@ -913,7 +913,7 @@ TEST_F(PolygonTest, TestSerialize) {
   polygon_->set_altitudemode(ALTITUDEMODE_ABSOLUTE);
   polygon_->set_outerboundaryis(
       KmlFactory::GetFactory()->CreateOuterBoundaryIs());
-  std::string expected(
+  string expected(
     "<Polygon id=\"polygon-id\">"
     "<altitudeMode>absolute</altitudeMode>"
     "<outerBoundaryIs/>"
@@ -929,7 +929,7 @@ TEST_F(PolygonTest, TestSerializeParseAll) {
   polygon_->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
   polygon_->set_outerboundaryis(
       KmlFactory::GetFactory()->CreateOuterBoundaryIs());
-  std::string expected(
+  string expected(
     "<Polygon id=\"polygon-id\">"
     "<extrude>1</extrude>"
     "<tessellate>1</tessellate>"
@@ -938,14 +938,14 @@ TEST_F(PolygonTest, TestSerializeParseAll) {
     "</Polygon>"
   );
   ASSERT_EQ(expected, SerializeRaw(polygon_));
-  std::string errors;
+  string errors;
   ElementPtr element = Parse(expected, &errors);
   ASSERT_TRUE(element);
   ASSERT_TRUE(errors.empty());
   PolygonPtr polygon = AsPolygon(element);
   ASSERT_TRUE(polygon);
   ASSERT_TRUE(polygon->has_id());
-  ASSERT_EQ(std::string("polygon-id"), polygon->get_id());
+  ASSERT_EQ(string("polygon-id"), polygon->get_id());
   ASSERT_TRUE(polygon->has_extrude());
   ASSERT_EQ(1, polygon->get_extrude());
   ASSERT_TRUE(polygon->has_tessellate());
@@ -1008,7 +1008,7 @@ TEST_F(MultiGeometryTest, TestSerialize) {
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreatePolygon());
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateModel());
   multigeometry_->add_geometry(KmlFactory::GetFactory()->CreateMultiGeometry());
-  std::string expected(
+  string expected(
     "<MultiGeometry id=\"multigeometry-id\">"
     "<Point/>"
     "<LineString/>"

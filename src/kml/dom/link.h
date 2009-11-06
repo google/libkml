@@ -29,7 +29,6 @@
 #ifndef KML_DOM_LINK_H__
 #define KML_DOM_LINK_H__
 
-#include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/object.h"
 
@@ -46,13 +45,13 @@ class BasicLink : public Object {
   }
 
   // <href>
-  const std::string& get_href() const {
+  const string& get_href() const {
     return href_;
   }
   bool has_href() const {
     return has_href_;
   }
-  void set_href(const std::string& href) {
+  void set_href(const string& href) {
     href_ = href;
     has_href_ = true;
   }
@@ -68,7 +67,7 @@ class BasicLink : public Object {
   virtual void Serialize(Serializer& serializer) const;
 
  private:
-  std::string href_;
+  string href_;
   bool has_href_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(BasicLink);
 };
@@ -160,13 +159,13 @@ class AbstractLink : public BasicLink {
   }
 
   // <viewFormat>
-  const std::string& get_viewformat() const {
+  const string& get_viewformat() const {
     return viewformat_;
   }
   bool has_viewformat() const {
     return has_viewformat_;
   }
-  void set_viewformat(const std::string& viewformat) {
+  void set_viewformat(const string& viewformat) {
     viewformat_ = viewformat;
     has_viewformat_ = true;
   }
@@ -176,13 +175,13 @@ class AbstractLink : public BasicLink {
   }
 
   // <httpQuery>
-  const std::string& get_httpquery() const {
+  const string& get_httpquery() const {
     return httpquery_;
   }
   bool has_httpquery() const {
     return has_httpquery_;
   }
-  void set_httpquery(const std::string& httpquery) {
+  void set_httpquery(const string& httpquery) {
     httpquery_ = httpquery;
     has_httpquery_ = true;
   }
@@ -209,9 +208,9 @@ class AbstractLink : public BasicLink {
   bool has_viewrefreshtime_;
   double viewboundscale_;
   bool has_viewboundscale_;
-  std::string viewformat_;
+  string viewformat_;
   bool has_viewformat_;
-  std::string httpquery_;
+  string httpquery_;
   bool has_httpquery_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AbstractLink);
 };

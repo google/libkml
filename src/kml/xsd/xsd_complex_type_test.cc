@@ -44,7 +44,7 @@ class XsdComplexTypeTest : public testing::Test {
 
 TEST_F(XsdComplexTypeTest, TestBasicCreate) {
   // <xs:complexType name="chocolateType"/>
-  const std::string kChocolateType("chocolateType");
+  const string kChocolateType("chocolateType");
   xsd_complex_type_ = CreateXsdComplexType(kChocolateType);
   ASSERT_TRUE(xsd_complex_type_);
   ASSERT_EQ(kChocolateType, xsd_complex_type_->get_name());
@@ -52,7 +52,7 @@ TEST_F(XsdComplexTypeTest, TestBasicCreate) {
 
 TEST_F(XsdComplexTypeTest, TestBadCreate) {
   // <xs:complexType notname="chocolateType"/>
-  const std::string kChocolateType("chocolateType");
+  const string kChocolateType("chocolateType");
   attributes_.SetString("notname", kChocolateType);
 
   xsd_complex_type_ = XsdComplexType::Create(attributes_);
@@ -64,28 +64,28 @@ TEST_F(XsdComplexTypeTest, TestBadCreate) {
 // Verify set_extension_base() and get_extension_base().
 TEST_F(XsdComplexTypeTest, TestExtension) {
   // Create the XsdComplexType: <xs:complexType name="chocolateType"/>
-  const std::string kChocolateType("chocolateType");
+  const string kChocolateType("chocolateType");
   xsd_complex_type_ = CreateXsdComplexType(kChocolateType);
   // Set the extension base
   // <xs:extension base="kml:ObjectType">
-  const std::string kExtensionBase("kml:ObjectType");
+  const string kExtensionBase("kml:ObjectType");
   xsd_complex_type_->set_extension_base(kExtensionBase);
   ASSERT_EQ(kExtensionBase, xsd_complex_type_->get_extension_base());
 }
 
 TEST_F(XsdComplexTypeTest, TestAddElement) {
   // Create the XsdComplexType: <xs:complexType name="chocolateType"/>.
-  const std::string kChocolateType("chocolateType");
+  const string kChocolateType("chocolateType");
   xsd_complex_type_ = CreateXsdComplexType(kChocolateType);
   // Add a child XsdElement: // <element name="latitude" type="double"/>.
-  const std::string kLatitude("latitude");
+  const string kLatitude("latitude");
   XsdElementPtr latitude = CreateXsdElement(kLatitude, "double");
   ASSERT_TRUE(latitude);
   xsd_complex_type_->add_element(latitude);
   ASSERT_EQ(static_cast<size_t>(1), xsd_complex_type_->get_sequence_size());
   ASSERT_EQ(kLatitude, xsd_complex_type_->get_sequence_at(0)->get_name());
   // Add another child XsdElement: // <element name="longitude" type="double"/>.
-  const std::string kLongitude("longitude");
+  const string kLongitude("longitude");
   XsdElementPtr longitude = CreateXsdElement(kLongitude, "double");
   ASSERT_TRUE(longitude);
   xsd_complex_type_->add_element(longitude);

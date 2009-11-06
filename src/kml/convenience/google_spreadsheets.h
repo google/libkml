@@ -32,8 +32,6 @@
 #ifndef KML_CONVENIENCE_GOOGLE_SPREADSHEETS_H_
 #define KML_CONVENIENCE_GOOGLE_SPREADSHEETS_H_
 
-#include <string>
-#include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 
@@ -54,7 +52,7 @@ class HttpClient;
 //   YourHttpClient* your_http_client = new YourHttpClient;
 //   your_http_client->Login("user@gmail.com", "users-password");
 //   GoogleSpreadsheets* maps_data = GoogleSpreadsheets::Create(&your_http_client);
-//   std::string spreadsheets_feed;
+//   string spreadsheets_feed;
 //   maps_data->GetMetaFeed(&spreadsheets_feed);
 //   kmldom::ElementPtr root = kmldom::ParseAtom(spreadsheets_feed);
 //   kmlconvenience::AtomUtil... for common Atom inspection.
@@ -70,16 +68,16 @@ class GoogleSpreadsheets {
 
   ~GoogleSpreadsheets();
 
+  static const char* get_service_name();
+
   static const char* get_metafeed_uri();
 
-  const std::string& get_scope() const {
-    return scope_;
-  }
+  const string& get_scope() const;
 
   // This returns the "meta feed" for the authenticated user.  The result is an
   // Atom <feed> containing an <entry> for each of the user's spreadsheets.  See:
   // http://code.google.com/apis/spreadsheets/data/3.0/developers_guide_protocol.html#ListingSpreadsheets
-  bool GetMetaFeedXml(std::string* atom_feed) const;
+  bool GetMetaFeedXml(string* atom_feed) const;
 
   // This calls GetMetaFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetMetaFeed() const;
@@ -88,7 +86,7 @@ class GoogleSpreadsheets {
   // Use static Create().
   GoogleSpreadsheets();
   boost::scoped_ptr<HttpClient> http_client_;
-  const std::string scope_;
+  const string scope_;
 };
 
 }  // end namespace kmlconvenience

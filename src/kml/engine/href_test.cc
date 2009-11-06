@@ -32,14 +32,14 @@ namespace kmlengine {
 
 class HrefTest : public testing::Test {
  protected:
-  void VerifyString(const char* want, const std::string& got);
+  void VerifyString(const char* want, const string& got);
 };
 
 // Verify usage for a basic absolute href.
 TEST_F(HrefTest, TestBasicAbsolute) {
-  const std::string kHttp("http");
-  const std::string kFooCom("foo.com");
-  const std::string kIndexKml("index.kml");
+  const string kHttp("http");
+  const string kFooCom("foo.com");
+  const string kIndexKml("index.kml");
   Href href(kHttp + "://" + kFooCom + "/" + kIndexKml);
   ASSERT_FALSE(href.IsRelative());
   ASSERT_FALSE(href.has_fragment());
@@ -50,7 +50,7 @@ TEST_F(HrefTest, TestBasicAbsolute) {
 
 // Verify basic usage of the get,set,has,clear_scheme methods.
 TEST_F(HrefTest, TestSchemeSetGetHasClear) {
-  const std::string kScheme("http");
+  const string kScheme("http");
   Href href;
   href.set_scheme(kScheme);
   ASSERT_TRUE(href.has_scheme());
@@ -61,7 +61,7 @@ TEST_F(HrefTest, TestSchemeSetGetHasClear) {
 
 // Verify basic usage of the get,set,has,clear_net_loc methods.
 TEST_F(HrefTest, TestNetLocSetGetHasClear) {
-  const std::string kNetLoc("www.google.com");
+  const string kNetLoc("www.google.com");
   Href href;
   href.set_net_loc(kNetLoc);
   ASSERT_TRUE(href.has_net_loc());
@@ -72,7 +72,7 @@ TEST_F(HrefTest, TestNetLocSetGetHasClear) {
 
 // Verify basic usage of the get,set,has,clear_path methods.
 TEST_F(HrefTest, TestPathSetGetHasClear) {
-  const std::string kPath("a/b/c/d/cool.kml");
+  const string kPath("a/b/c/d/cool.kml");
   Href href;
   href.set_path(kPath);
   ASSERT_TRUE(href.has_path());
@@ -83,7 +83,7 @@ TEST_F(HrefTest, TestPathSetGetHasClear) {
 
 // Verify basic usage of the get,set,has,clear_fragment methods.
 TEST_F(HrefTest, TestFragmentSetGetHasClear) {
-  const std::string kFragment("the-fragment");
+  const string kFragment("the-fragment");
   Href href;
   href.set_fragment(kFragment);
   ASSERT_TRUE(href.has_fragment());
@@ -93,7 +93,7 @@ TEST_F(HrefTest, TestFragmentSetGetHasClear) {
 }
 
 TEST_F(HrefTest, TestFragmentSimple) {
-  const std::string kId("hi");
+  const string kId("hi");
   Href href("#" + kId);
   ASSERT_FALSE(href.has_scheme());
   ASSERT_FALSE(href.has_path());
@@ -102,8 +102,8 @@ TEST_F(HrefTest, TestFragmentSimple) {
 }
 
 TEST_F(HrefTest, TestRelativeWithFragment) {
-  const std::string kPath("style.kml");
-  const std::string kId("shared-style");
+  const string kPath("style.kml");
+  const string kId("shared-style");
   Href href(kPath + "#" + kId);
   ASSERT_TRUE(href.IsRelative());
   ASSERT_FALSE(href.has_scheme());
@@ -147,11 +147,11 @@ static struct {
   }
 };
 
-// This is a helper function to convert the want string to a std::string
+// This is a helper function to convert the want string to a string
 // and compare to got.  If want is NULL then got is expected to be empty.
-void HrefTest::VerifyString(const char* want, const std::string& got) {
+void HrefTest::VerifyString(const char* want, const string& got) {
   if (want) {
-    ASSERT_EQ(std::string(want), got);
+    ASSERT_EQ(string(want), got);
   } else {
     ASSERT_TRUE(got.empty());
   }
@@ -171,21 +171,21 @@ TEST_F(HrefTest, TestTestHrefs) {
 }
 
 TEST_F(HrefTest, TestIsFragmentOnly) {
-  const std::string kJustAFragment("#hi-there");
+  const string kJustAFragment("#hi-there");
   Href a(kJustAFragment);
   ASSERT_TRUE(a.IsFragmentOnly());
 
-  const std::string kPathAndFragment("style.kml#shared-style-id");
+  const string kPathAndFragment("style.kml#shared-style-id");
   Href b(kPathAndFragment);
   ASSERT_FALSE(b.IsFragmentOnly());
 }
 
 TEST_F(HrefTest, TestIsRelativePath) {
-  const std::string kJustAFragment("#hi-there");
+  const string kJustAFragment("#hi-there");
   Href a(kJustAFragment);
   ASSERT_FALSE(a.IsRelativePath());
 
-  const std::string kPathAndFragment("style.kml#shared-style-id");
+  const string kPathAndFragment("style.kml#shared-style-id");
   Href b(kPathAndFragment);
   ASSERT_TRUE(b.IsRelativePath());
 }

@@ -24,7 +24,6 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/schema.h"
-#include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
@@ -48,11 +47,11 @@ TEST_F(SimpleFieldTest, TestType) {
 }
 
 TEST_F(SimpleFieldTest, TestDefaults) {
-  ASSERT_EQ(std::string(""), simplefield_->get_type());
+  ASSERT_EQ(string(""), simplefield_->get_type());
   ASSERT_FALSE(simplefield_->has_type());
-  ASSERT_EQ(std::string(""), simplefield_->get_name());
+  ASSERT_EQ(string(""), simplefield_->get_name());
   ASSERT_FALSE(simplefield_->has_name());
-  ASSERT_EQ(std::string(""), simplefield_->get_displayname());
+  ASSERT_EQ(string(""), simplefield_->get_displayname());
   ASSERT_FALSE(simplefield_->has_displayname());
 }
 
@@ -66,19 +65,19 @@ TEST_F(SimpleFieldTest, TestSetToDefaultValues) {
 }
 
 TEST_F(SimpleFieldTest, TestSetGetHasClear) {
-  std::string type("tom");
+  string type("tom");
   simplefield_->set_type(type);
   ASSERT_TRUE(simplefield_->has_type());
   ASSERT_TRUE(type == simplefield_->get_type());
   simplefield_->clear_type();
 
-  std::string name("tom");
+  string name("tom");
   simplefield_->set_name(name);
   ASSERT_TRUE(simplefield_->has_name());
   ASSERT_TRUE(name == simplefield_->get_name());
   simplefield_->clear_name();
 
-  std::string displayname("dick");
+  string displayname("dick");
   simplefield_->set_displayname(displayname);
   ASSERT_TRUE(simplefield_->has_displayname());
   ASSERT_TRUE(displayname == simplefield_->get_displayname());
@@ -103,9 +102,9 @@ TEST_F(SchemaTest, TestType) {
 }
 
 TEST_F(SchemaTest, TestDefaults) {
-  ASSERT_EQ(std::string(""), schema_->get_name());
+  ASSERT_EQ(string(""), schema_->get_name());
   ASSERT_FALSE(schema_->has_name());
-  ASSERT_EQ(std::string(""), schema_->get_id());
+  ASSERT_EQ(string(""), schema_->get_id());
   ASSERT_FALSE(schema_->has_id());
 }
 
@@ -117,13 +116,13 @@ TEST_F(SchemaTest, TestSetToDefaultValues) {
 }
 
 TEST_F(SchemaTest, TestSetGetHasClear) {
-  std::string name("tom");
+  string name("tom");
   schema_->set_name(name);
   ASSERT_TRUE(schema_->has_name());
   ASSERT_TRUE(name == schema_->get_name());
   schema_->clear_name();
 
-  std::string id("dick");
+  string id("dick");
   schema_->set_id(id);
   ASSERT_TRUE(schema_->has_id());
   ASSERT_TRUE(id == schema_->get_id());
@@ -151,7 +150,7 @@ TEST_F(SchemaTest, TestSerialize) {
   schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
   schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
 
-  std::string expected(
+  string expected(
     "<Schema id=\"schema-id\" name=\"schema-name\">"
     "<SimpleField/>"
     "<SimpleField/>"

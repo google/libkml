@@ -46,7 +46,7 @@ TEST(VersionTest, TestVersion) {
                                 LIBKML_MICRO_VERSION+2));
   ASSERT_FALSE(Version::IsCompat(LIBKML_MAJOR_VERSION+1, LIBKML_MINOR_VERSION,
                                 LIBKML_MICRO_VERSION));
-  const std::string kVersion(ToString(LIBKML_MAJOR_VERSION) + "." +
+  const string kVersion(ToString(LIBKML_MAJOR_VERSION) + "." +
                              ToString(LIBKML_MINOR_VERSION) + "." +
                              ToString(LIBKML_MICRO_VERSION));
   ASSERT_EQ(kVersion, Version::GetString());

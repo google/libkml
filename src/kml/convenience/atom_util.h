@@ -31,7 +31,6 @@
 #ifndef KML_CONVENIENCE_ATOM_UTIL_H_
 #define KML_CONVENIENCE_ATOM_UTIL_H_
 
-#include <string>
 #include "kml/dom.h"
 
 namespace kmlconvenience {
@@ -42,8 +41,8 @@ class AtomUtil {
  public:
   // This creates an <atom:entry> with the specified values for <atom:title>
   // and <atom:summary>.
-  static kmldom::AtomEntryPtr CreateBasicEntry(const std::string& title,
-                                               const std::string& summary);
+  static kmldom::AtomEntryPtr CreateBasicEntry(const string& title,
+                                               const string& summary);
 
   // This creates an <atom:entry> from and for the KML Feature.  The
   // <atom:entry>'s <atom:title> is set from the Feature's <name> and the
@@ -56,30 +55,30 @@ class AtomUtil {
   // <atom:content> or if the <atom:content> has no src=.  Passing a NULL
   // src is safe and has no bearing on the return value.
   static bool GetContentSrc(const kmldom::AtomEntryPtr& entry,
-                            std::string* src);
+                            string* src);
 
   // This returns true if the given <atom:link>'s rel= ends with rel_type.
   static bool LinkIsOfRel(const kmldom::AtomLinkPtr& link,
-                          const std::string& rel_type);
+                          const string& rel_type);
 
   // This returns the first <atom:link> matching the given link relation
   // (rel= attribute) and mimetype (type= attribute).  LinkIsOfRel is used
   // to match the rel_type.  The mime_type is an exact match.  NULL is
   // returned if no matching <atom:link> is found.
   static kmldom::AtomLinkPtr FindLink(const kmldom::AtomCommon& atom_common,
-                                      const std::string& rel_type,
-                                      const std::string& mime_type);
+                                      const string& rel_type,
+                                      const string& mime_type);
 
   // Return the first <entry> in the feed with the given title.
   // This returns NULL if no <entry>'s have this exact <title>.
   static kmldom::AtomEntryPtr FindEntryByTitle(const kmldom::AtomFeedPtr& feed,
-                                               const std::string& title);
+                                               const string& title);
 
   // This returns the href= value of the first <atom:link> whose first rel=
   // ends with the given link relation type.  Both AtomFeed (<atom:feed>)
   // and AtomEntry (<atom:entry>) are of the AtomCommon type.
   static bool FindRelUrl(const kmldom::AtomCommon& atom_common,
-                         const std::string& rel_type, std::string* href);
+                         const string& rel_type, string* href);
 
   // This returns a clone of the KML Feature contained in the <atom:entry>.
   // The returned clone Feature's <atom:link> is set to the <atom:entry>'s

@@ -26,7 +26,6 @@
 // This file contains the unit tests for the CreateResolvedStyle() function.
 
 #include "kml/engine/style_resolver.h"
-#include <string>
 #include "kml/dom.h"
 #include "kml/base/file.h"
 #include "kml/base/net_cache_test_util.h"
@@ -61,10 +60,10 @@ class StyleResolverTest : public testing::Test {
   }
 
   // This is an internal utility to read a testdata file.
-  bool ReadDataDirFileToString(const std::string& filename,
-                               std::string* content) const;
+  bool ReadDataDirFileToString(const string& filename,
+                               string* content) const;
   // Parse the given KML file into the test fixture's KmlFile.
-  void ParseFromDataDirFile(const std::string& filename);
+  void ParseFromDataDirFile(const string& filename);
   // This returns 0 if element serializes pretty to exactly the contents of
   // the check file.
   int ComparePretty(const ElementPtr& element, const char* check_file) const;
@@ -124,16 +123,16 @@ static const struct {
 };
 
 // This is a utility function to read a file relative to the testdata directory.
-bool StyleResolverTest::ReadDataDirFileToString(const std::string& filename,
-                                                std::string* content) const {
-  return kmlbase::File::ReadFileToString(std::string(DATADIR) + filename,
+bool StyleResolverTest::ReadDataDirFileToString(const string& filename,
+                                                string* content) const {
+  return kmlbase::File::ReadFileToString(string(DATADIR) + filename,
                                          content);
 }
 
 // This is a utility function to parse the given string of KML data into
 // the test fixture's KmlFile.
-void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
-  std::string kml_data;
+void StyleResolverTest::ParseFromDataDirFile(const string& filename) {
+  string kml_data;
   bool status = ReadDataDirFileToString(filename, &kml_data);
   ASSERT_TRUE(status);
   kml_file_ = KmlFile::CreateFromParse(kml_data, NULL);
@@ -145,7 +144,7 @@ void StyleResolverTest::ParseFromDataDirFile(const std::string& filename) {
 // given file.  The comparison uses "pretty" XML serialization.
 int StyleResolverTest::ComparePretty(const ElementPtr& element,
                                      const char* check_file) const {
-  std::string kml_data;
+  string kml_data;
   ReadDataDirFileToString(check_file, &kml_data);
   return kml_data.compare(kmldom::SerializePretty(element));
 }
@@ -173,25 +172,25 @@ TEST_F(StyleResolverTest, TestFiles) {
 }
 
 TEST_F(StyleResolverTest, TestBasicCreateNetworkResolvedStyle) {
-  const std::string kPath("style/weather/point-sarnen.kml");
-  const std::string kUrl("http://host.com/" + kPath);
+  const string kPath("style/weather/point-sarnen.kml");
+  const string kUrl("http://host.com/" + kPath);
   KmlFilePtr kml_file = kml_cache_->FetchKmlAbsolute(kUrl);
   ASSERT_TRUE(kml_file);
   ASSERT_EQ(kml_cache_.get(), kml_file->get_kml_cache());
-  const std::string kFeatureId("SZXX0026");
+  const string kFeatureId("SZXX0026");
   const FeaturePtr& feature = kmldom::AsFeature(
       kml_file->GetObjectById(kFeatureId));
   ASSERT_TRUE(feature);
   // Verify the feature has a styleUrl to another KML file.
   ASSERT_TRUE(feature->has_styleurl());
-  const std::string kStyleUrl("style.kml#i27");
+  const string kStyleUrl("style.kml#i27");
   ASSERT_EQ(kStyleUrl, feature->get_styleurl());
   const kmldom::StyleStateEnum style_state = kmldom::STYLESTATE_NORMAL;
   StylePtr style = CreateResolvedStyle(feature, kml_file,
                                               style_state);
   ASSERT_TRUE(style);
   ASSERT_TRUE(style->has_id());
-  ASSERT_EQ(std::string("i27"), style->get_id());
+  ASSERT_EQ(string("i27"), style->get_id());
   ASSERT_TRUE(style->has_iconstyle());
   ASSERT_TRUE(style->get_iconstyle()->has_icon());
   ASSERT_TRUE(style->get_iconstyle()->get_icon());
@@ -200,11 +199,11 @@ TEST_F(StyleResolverTest, TestBasicCreateNetworkResolvedStyle) {
   ASSERT_TRUE(style->has_balloonstyle());
 
 #if 0  // TODO: proceed to resolve and fetch IconStyle/Icon/href
-  std::string iconstyle_icon_url;
+  string iconstyle_icon_url;
   ASSERT_TRUE(ResolveUri(kml_file->get_url(),
                             style->get_iconstyle()->get_icon()->get_href(),
                             &iconstyle_icon_url));
-  std::string icon_data;
+  string icon_data;
   ASSERT_TRUE(kmz_cache.FetchUrl(iconstyle_icon_url, &icon_data));
   ASSERT_FALSE(icon_data.empty());
 #endif
@@ -323,7 +322,7 @@ TEST_F(StyleResolverTest, TestRemoteFiles) {
 
 // Verify basic typical usage of StyleResolver::CreateResolvedStyleSelector.
 TEST_F(StyleResolverTest, BasicCreateResolvedStyleSelectorTest) {
-  const std::string kKml(
+  const string kKml(
     "<kml>"
       "<Document>"
         "<Style id=\"style0\">"

@@ -26,7 +26,6 @@
 // This file contains the implementation of the KmlCache class.
 
 #include "kml/engine/kml_cache.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kml_uri_internal.h"
@@ -39,20 +38,20 @@ KmlCache::KmlCache(kmlbase::NetFetcher* net_fetcher, size_t max_size) {
   kmz_file_cache_.reset(new KmzCache(net_fetcher, max_size));
 }
 
-KmlFilePtr KmlCache::FetchKmlRelative(const std::string& base,
-                                      const std::string& target) {
+KmlFilePtr KmlCache::FetchKmlRelative(const string& base,
+                                      const string& target) {
   boost::scoped_ptr<KmlUri> kml_uri(KmlUri::CreateRelative(base, target));
   if (!kml_uri.get()) {
     // Failed to create KmlUri likely due to bad url or href.
     return NULL;
   }
-  const std::string& url = kml_uri->get_url();
+  const string& url = kml_uri->get_url();
   // If there's a KmlFile cached for this URL just return it and we're done.
   if (KmlFilePtr kml_file = kml_file_cache_->LookUp(url)) {
     return kml_file;
   }
   // No KmlFile cached for this URL.  Fetch the KML through the KMZ cache.
-  std::string content;
+  string content;
   if (kmz_file_cache_->DoFetch(kml_uri.get(), &content)) {
     // The KML content was found within in a fetched and/or cached KMZ.
     // Parse it into a KmlFile for it and cache it.
@@ -67,16 +66,16 @@ KmlFilePtr KmlCache::FetchKmlRelative(const std::string& base,
 }
 
 // TODO teach KmlUri about the concept of absolute...
-KmlFilePtr KmlCache::FetchKmlAbsolute(const std::string& kml_uri) {
+KmlFilePtr KmlCache::FetchKmlAbsolute(const string& kml_uri) {
   // The base url must be a valid absolute URL even if the target is
   // absolute.  See the above TODO w.r.t KmlUri and absolute.
   // FetchXxxRelative is the most common use case.
   return FetchKmlRelative(kml_uri, kml_uri);
 }
 
-bool KmlCache::FetchDataRelative(const std::string& base,
-                                 const std::string& target,
-                                 std::string* data) {
+bool KmlCache::FetchDataRelative(const string& base,
+                                 const string& target,
+                                 string* data) {
   boost::scoped_ptr<KmlUri> kml_uri(KmlUri::CreateRelative(base, target));
   // KmzCache::Fetch has NULL pointer check.
   if (kmz_file_cache_->DoFetch(kml_uri.get(), data)) {

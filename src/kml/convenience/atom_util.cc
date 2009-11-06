@@ -27,7 +27,6 @@
 
 #include "kml/convenience/atom_util.h"
 
-#include <string>
 #include "kml/base/string_util.h"
 #include "kml/dom.h"
 #include "kml/engine/clone.h"
@@ -44,8 +43,8 @@ using kmldom::KmlFactory;
 namespace kmlconvenience {
 
 // static
-AtomEntryPtr AtomUtil::CreateBasicEntry(const std::string& title,
-                                        const std::string& summary) {
+AtomEntryPtr AtomUtil::CreateBasicEntry(const string& title,
+                                        const string& summary) {
   AtomEntryPtr entry = KmlFactory::GetFactory()->CreateAtomEntry();
   entry->set_title(title);
   entry->set_summary(summary);
@@ -72,7 +71,7 @@ kmldom::AtomEntryPtr AtomUtil::CreateEntryForFeature(
 }
 
 // static
-bool AtomUtil::GetContentSrc(const AtomEntryPtr& entry, std::string* src) {
+bool AtomUtil::GetContentSrc(const AtomEntryPtr& entry, string* src) {
   if (entry->has_content() && entry->get_content()->has_src()) {
     if (src) {
       *src = entry->get_content()->get_src();
@@ -84,14 +83,14 @@ bool AtomUtil::GetContentSrc(const AtomEntryPtr& entry, std::string* src) {
 
 // static
 bool AtomUtil::LinkIsOfRel(const kmldom::AtomLinkPtr& link,
-                           const std::string& rel_type) {
+                           const string& rel_type) {
   return link.get() && !rel_type.empty() &&
       kmlbase::StringEndsWith(link->get_rel(), rel_type);
 }
 
 // static
 bool AtomUtil::FindRelUrl(const kmldom::AtomCommon& atom_common,
-                          const std::string& rel_type, std::string* href) {
+                          const string& rel_type, string* href) {
   size_t link_size = atom_common.get_link_array_size();
   for (size_t i = 0; i < link_size; ++i) {
     const kmldom::AtomLinkPtr& link = atom_common.get_link_array_at(i);
@@ -107,8 +106,8 @@ bool AtomUtil::FindRelUrl(const kmldom::AtomCommon& atom_common,
 
 // static
 kmldom::AtomLinkPtr AtomUtil::FindLink(const kmldom::AtomCommon& atom_common,
-                                       const std::string& rel_type,
-                                       const std::string& mime_type) {
+                                       const string& rel_type,
+                                       const string& mime_type) {
   size_t link_size = atom_common.get_link_array_size();
   for (size_t i = 0; i < link_size; ++i) {
     const kmldom::AtomLinkPtr& link = atom_common.get_link_array_at(i);
@@ -133,7 +132,7 @@ FeaturePtr AtomUtil::GetEntryFeature(const AtomEntryPtr& entry) {
 // static
 FeaturePtr AtomUtil::CloneEntryFeature(const AtomEntryPtr& entry) {
   if (FeaturePtr feature = GetEntryFeature(entry)) {
-    std::string href;
+    string href;
     if (FindRelUrl(*entry.get(), "self", &href)) {
       AtomLinkPtr link = KmlFactory::GetFactory()->CreateAtomLink();
       link->set_href(href);
@@ -159,7 +158,7 @@ void AtomUtil::GetFeedFeatures(const AtomFeedPtr& feed,
 
 // static
 AtomEntryPtr AtomUtil::FindEntryByTitle(const kmldom::AtomFeedPtr& feed,
-                                        const std::string& title) {
+                                        const string& title) {
   for (size_t e = 0; e < feed->get_entry_array_size(); ++e) {
     const kmldom::AtomEntryPtr& entry = feed->get_entry_array_at(e);
     if (entry->get_title() == title) {

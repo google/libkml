@@ -42,7 +42,7 @@ class AbstractView : public Object {
   }
 
   // From kml:AbstractViewObjectExtensionGroup.
-  const TimePrimitivePtr get_gx_timeprimitive() const {
+  const TimePrimitivePtr& get_gx_timeprimitive() const {
     return gx_timeprimitive_;
   }
   bool has_gx_timeprimitive() const { return gx_timeprimitive_ != NULL; }

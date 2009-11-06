@@ -43,31 +43,33 @@ KmlHandlerNS::KmlHandlerNS(parser_observer_vector_t& observers)
 KmlHandlerNS::~KmlHandlerNS() {
 }
 
-void KmlHandlerNS::StartElement(const char *name, const char **atts) {
+void KmlHandlerNS::StartElement(const string& name,
+                                const kmlbase::StringVector& atts) {
   // Expat guarantees that there will be delimited uri-name string here.
-  const char* start_ = strchr(name, kXmlnsSeparator);
-  // ++start is always a valid character.
-  KmlHandler::StartElement(++start_, atts);
+
+  size_t token = name.find_last_of(kXmlnsSeparator) + 1;
+  KmlHandler::StartElement(name.substr(token), atts);
 }
 
-void KmlHandlerNS::EndElement(const char *name) {
+void KmlHandlerNS::EndElement(const string& name) {
   // Expat guarantees that there will be delimited uri-name string here.
-  const char* end_ = strchr(name, kXmlnsSeparator);
-  // ++end is always a valid character.
-  KmlHandler::EndElement(++end_);
+
+  size_t token = name.find_last_of(kXmlnsSeparator) + 1;
+  KmlHandler::EndElement(name.substr(token));
 }
 
-void KmlHandlerNS::CharData(const XML_Char *s, int len) {
-  KmlHandler::CharData(s, len);
+void KmlHandlerNS::CharData(const string& s) {
+  KmlHandler::CharData(s);
 }
 
-void KmlHandlerNS::StartNamespace(const XML_Char *prefix, const XML_Char *uri) {
+void KmlHandlerNS::StartNamespace(const string& prefix,
+                                  const string& uri) {
   // TODO: save the uri:prefix mappings.
   // TODO: enforce the rule that the ONLY default namespace is KML's?
   // TODO: enforce that there must be a 1:1 uri:prefix mapping per file?
 }
 
-void KmlHandlerNS::EndNamespace(const XML_Char *prefix) {
+void KmlHandlerNS::EndNamespace(const string& prefix) {
 }
 
 }  // end namespace kmldom

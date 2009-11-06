@@ -80,12 +80,12 @@ TEST(UpdateTest, TestSingleSimpleChange) {
   ASSERT_TRUE(target_file);
   PlacemarkPtr target_placemark =
       kmldom::AsPlacemark(target_file->GetObjectById("p"));
-  ASSERT_EQ(std::string("hi"), target_placemark->get_name());
+  ASSERT_EQ(string("hi"), target_placemark->get_name());
   ASSERT_TRUE(target_placemark);
   UpdatePtr update = AsUpdate(kmldom::Parse(source_change, NULL));
   ASSERT_TRUE(update);
   ProcessUpdate(update, target_file);
-  ASSERT_EQ(std::string("NEW NAME"), target_placemark->get_name());
+  ASSERT_EQ(string("NEW NAME"), target_placemark->get_name());
   ASSERT_FALSE(target_placemark->has_targetid());
 }
 
@@ -116,7 +116,7 @@ TEST(UpdateTest, TestSingleSimpleCreate) {
   ASSERT_TRUE(update);
   ProcessUpdate(update, target_file);
   ASSERT_EQ(static_cast<size_t>(1), folder->get_feature_array_size());
-  ASSERT_EQ(std::string("Update-Created Placemark"),
+  ASSERT_EQ(string("Update-Created Placemark"),
             folder->get_feature_array_at(0)->get_name());
 }
 
@@ -151,11 +151,11 @@ static void CheckFeatures(const ContainerPtr& container, size_t offset) {
 }
 
 TEST(UpdateTest, TestCopyFeatures) {
-  const std::string kTargetName("target name");
-  const std::string kTargetFeature0Name("0th feature");
-  const std::string kTargetFeature1Name("1th feature");
-  const std::string kTargetFeature9Name("9th feature");
-  const std::string kSourceName("source name");
+  const string kTargetName("target name");
+  const string kTargetFeature0Name("0th feature");
+  const string kTargetFeature1Name("1th feature");
+  const string kTargetFeature9Name("9th feature");
+  const string kSourceName("source name");
   KmlFactory* kml_factory = KmlFactory::GetFactory();
   ContainerPtr source = kml_factory->CreateDocument();
   source->set_name(kSourceName);
@@ -232,7 +232,7 @@ static FeaturePtr CreateFeature(int i, bool id) {
   KmlFactory* kml_factory = KmlFactory::GetFactory();
   FeaturePtr feature = AsFeature(kml_factory->CreateElementById(
       kFeatures[i % num_features]));
-  const std::string kId(std::string("i") + kmlbase::ToString(i));
+  const string kId(string("i") + kmlbase::ToString(i));
   if (id) {
     feature->set_id(kId);
   } else {
@@ -250,7 +250,7 @@ TEST(UpdateTest, TestManyDeletes) {
   }
   ASSERT_EQ(static_cast<size_t>(kNumFeatures),
             folder->get_feature_array_size());
-  ASSERT_EQ(std::string("i0"), folder->get_feature_array_at(0)->get_id());
+  ASSERT_EQ(string("i0"), folder->get_feature_array_at(0)->get_id());
   ASSERT_EQ(kmldom::Type_Placemark, folder->get_feature_array_at(0)->Type());
   KmlFilePtr kml_file = KmlFile::CreateFromImport(folder);
   ASSERT_TRUE(kml_file);
@@ -279,8 +279,8 @@ TEST(UpdateTest, TestChangeCoordinates) {
   PointPtr point = kml_factory->CreatePoint();
   point->set_coordinates(coordinates);
   PlacemarkPtr placemark = kml_factory->CreatePlacemark();
-  const std::string kId("placemark123");
-  const std::string kName("placemark name");
+  const string kId("placemark123");
+  const string kName("placemark name");
   placemark->set_id(kId);
   placemark->set_name(kName);
   placemark->set_geometry(point);
@@ -365,9 +365,9 @@ static const struct {
 };
 
 // This is a utility function to parse the given string KML file.
-static KmlFilePtr ParseTestCaseFile(const std::string& filename) {
-  std::string kml_data;
-  if (File::ReadFileToString(std::string(DATADIR) + filename, &kml_data)) {
+static KmlFilePtr ParseTestCaseFile(const string& filename) {
+  string kml_data;
+  if (File::ReadFileToString(string(DATADIR) + filename, &kml_data)) {
     return KmlFile::CreateFromParse(kml_data, NULL);
   }
   return NULL;
@@ -384,11 +384,11 @@ TEST(UpdateTest, TestFiles) {
     UpdatePtr update = AsUpdate(source->get_root());
     ASSERT_TRUE(update);
     ProcessUpdate(update, target);
-    std::string actual;
+    string actual;
     ASSERT_TRUE(target->SerializeToString(&actual));
-    std::string expected;
+    string expected;
     ASSERT_TRUE(
-        File::ReadFileToString(std::string(DATADIR) + kTestCases[i].check_file_,
+        File::ReadFileToString(string(DATADIR) + kTestCases[i].check_file_,
                                &expected));
     ASSERT_EQ(expected, actual);
   }
@@ -421,9 +421,9 @@ TEST(UpdateTest, TestProcessUpdateWithIdMapBasic) {
   PlacemarkPtr placemark = AsPlacemark(kml_file->get_root());
   ASSERT_TRUE(placemark);
   ASSERT_TRUE(placemark->has_name());
-  ASSERT_EQ(std::string("new name"), placemark->get_name());
+  ASSERT_EQ(string("new name"), placemark->get_name());
   ASSERT_TRUE(placemark->has_id());
-  ASSERT_EQ(std::string("inner"), placemark->get_id());
+  ASSERT_EQ(string("inner"), placemark->get_id());
 }
 
 }  // end namespace kmlengine

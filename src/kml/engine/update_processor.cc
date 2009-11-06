@@ -74,7 +74,7 @@ void UpdateProcessor::ProcessUpdateChange(const ChangePtr& change) {
   size_t size = change->get_object_array_size();
   for (size_t i = 0; i < size; ++i) {
     const ObjectPtr& source_object = change->get_object_array_at(i);
-    std::string targetid;
+    string targetid;
     if (GetTargetId(source_object, &targetid)) {
       if (ObjectPtr target_object = kml_file_.GetObjectById(targetid)) {
         MergeElements(source_object, target_object);
@@ -94,7 +94,7 @@ void UpdateProcessor::ProcessUpdateCreate(const CreatePtr& create) {
   size_t container_count = create->get_container_array_size();
   for (size_t i = 0; i < container_count; ++i) {
     const ContainerPtr& source_container = create->get_container_array_at(i);
-    std::string targetid;
+    string targetid;
     if (GetTargetId(source_container, &targetid)) {
       if (ContainerPtr target_container =
           AsContainer(kml_file_.GetObjectById(targetid))) {
@@ -108,14 +108,14 @@ void UpdateProcessor::ProcessUpdateDelete(const DeletePtr& deleet) {
   size_t feature_count = deleet->get_feature_array_size();
   for (size_t i = 0; i < feature_count; ++i) {
     const FeaturePtr& source_feature = deleet->get_feature_array_at(i);
-    std::string targetid;
+    string targetid;
     if (GetTargetId(source_feature, &targetid)) {
       DeleteFeatureById(targetid);
     }
   }
 }
 
-FeaturePtr UpdateProcessor::DeleteFeatureById(const std::string& id) {
+FeaturePtr UpdateProcessor::DeleteFeatureById(const string& id) {
   if (FeaturePtr feature = AsFeature(kml_file_.GetObjectById(id))) {
     if (ContainerPtr container = AsContainer(feature->GetParent())) {
       return container->DeleteFeatureById(id);
@@ -131,7 +131,7 @@ FeaturePtr UpdateProcessor::DeleteFeatureById(const std::string& id) {
 // This is a key reason for this class: to remap the targetId against
 // the supplied id map (if one is supplied).
 bool UpdateProcessor::GetTargetId(const kmldom::ObjectPtr& object,
-                 std::string* targetid) const {
+                 string* targetid) const {
   if (!object->has_targetid()) {
     return false;
   }

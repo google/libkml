@@ -57,11 +57,14 @@ TEST_F(GoogleSpreadsheetsTest, TestNullCreate) {
   ASSERT_FALSE(GoogleSpreadsheets::Create(NULL));
 }
 
-TEST_F(GoogleSpreadsheetsTest, TestGetMetafeedUri) {
-  // No user of the GoogleSpreadsheets class should
-  // assume anything of the metafeed URI itself.  But, we
-  // can expect that it exists.
-  ASSERT_TRUE(GoogleSpreadsheets::get_metafeed_uri());
+TEST_F(GoogleSpreadsheetsTest, TestGetConstants) {
+  // Assert merely that the constant getters exist and return something.
+  const char* service_name = GoogleSpreadsheets::get_service_name();
+  ASSERT_TRUE(service_name);
+  ASSERT_TRUE(strlen(service_name));  // It's a null terminated C string.
+  const char* metafeed_uri = GoogleSpreadsheets::get_metafeed_uri();
+  ASSERT_TRUE(metafeed_uri);
+  ASSERT_TRUE(strlen(metafeed_uri));  // It's a null terminated C string.
 }
 
 TEST_F(GoogleSpreadsheetsTest, TestGetScope) {
@@ -79,11 +82,11 @@ TEST_F(GoogleSpreadsheetsTest, TestGetMetaFeedXml) {
   http_client->Login("local", "user@gmail.com", "user-password");
   google_spreadsheets_.reset(GoogleSpreadsheets::Create(http_client));
   ASSERT_TRUE(google_spreadsheets_.get());
-  std::string meta_feed;
+  string meta_feed;
   ASSERT_TRUE(google_spreadsheets_->GetMetaFeedXml(&meta_feed));
   size_t end_of_first_line = meta_feed.find('\n');
-  ASSERT_NE(std::string::npos, end_of_first_line);
-  ASSERT_EQ(std::string("GET ") + google_spreadsheets_->get_scope() +
+  ASSERT_NE(string::npos, end_of_first_line);
+  ASSERT_EQ(string("GET ") + google_spreadsheets_->get_scope() +
                 google_spreadsheets_->get_metafeed_uri(),
             meta_feed.substr(0, end_of_first_line));
 }
@@ -91,18 +94,18 @@ TEST_F(GoogleSpreadsheetsTest, TestGetMetaFeedXml) {
 TEST_F(GoogleSpreadsheetsTest, TestGetMetaFeed) {
   google_spreadsheets_.reset(
       GoogleSpreadsheets::Create(new OneFileHttpClient(
-          std::string(DATADIR) + "/gmaps/gsheet-metafeed.xml")));
+          string(DATADIR) + "/gmaps/gsheet-metafeed.xml")));
   ASSERT_TRUE(google_spreadsheets_.get());
   // Call the method under test.
   kmldom::AtomFeedPtr atom_feed = google_spreadsheets_->GetMetaFeed();
   ASSERT_TRUE(atom_feed.get());
   // Check a few things known to be in metafeed.xml:
-  ASSERT_EQ(std::string("Available Spreadsheets - kml.bent@gmail.com"),
+  ASSERT_EQ(string("Available Spreadsheets - kml.bent@gmail.com"),
             atom_feed->get_title());
   ASSERT_EQ(static_cast<size_t>(3), atom_feed->get_link_array_size());
   ASSERT_EQ(static_cast<size_t>(2), atom_feed->get_entry_array_size());
-  ASSERT_EQ(std::string("oz"), atom_feed->get_entry_array_at(0)->get_title());
-  ASSERT_EQ(std::string("gplex"),
+  ASSERT_EQ(string("oz"), atom_feed->get_entry_array_at(0)->get_title());
+  ASSERT_EQ(string("gplex"),
       atom_feed->get_entry_array_at(1)->get_title());
 }
 

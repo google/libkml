@@ -59,4 +59,20 @@ void Document::Serialize(Serializer& serializer) const {
   Container::SerializeFeatureArray(serializer);
 }
 
+// >> Visitor Api Start [Document] >>
+Visitor::Status Document::StartVisit(Visitor* v) {
+  return v->VisitDocument(DocumentPtr(this));
+}
+
+void Document::EndVisit(Visitor* v) {
+  v->VisitDocumentEnd(DocumentPtr(this));
+}
+
+void Document::AcceptChildren(Visitor* v) {
+  Container::AcceptChildren(v);
+  Element::AcceptRepeated<SchemaPtr>(&schema_array_, v);
+  Element::AcceptRepeated<StyleSelectorPtr>(&styleselector_array_, v);
+}
+// << Visitor Api End [Document] <<
+
 }  // end namespace kmldom

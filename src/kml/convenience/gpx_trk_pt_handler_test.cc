@@ -45,7 +45,7 @@ namespace kmlconvenience {
 class GpxTrkPtHandlerTest : public testing::Test {
 };
 
-typedef std::pair<kmlbase::Vec3, std::string> WhereWhenPair;
+typedef std::pair<kmlbase::Vec3, string> WhereWhenPair;
 typedef std::vector<WhereWhenPair> PointVector;
 
 // This test class implements a GpxTrkPtHandler which simply saves everything
@@ -55,7 +55,7 @@ class TestGpxTrkPtHandler : public GpxTrkPtHandler {
   TestGpxTrkPtHandler(PointVector* point_vector)
     : point_vector_(point_vector) {
   }
-  void HandlePoint(const kmlbase::Vec3& where, const std::string& when) {
+  void HandlePoint(const kmlbase::Vec3& where, const string& when) {
     point_vector_->push_back(std::make_pair(where, when));
   }
  private:
@@ -73,7 +73,11 @@ TEST_F(GpxTrkPtHandlerTest, TestEmpty) {
 TEST_F(GpxTrkPtHandlerTest, TestTrkPt) {
   PointVector point_vector;
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
-  const char* trk_pt_atts[] = { "lat", "-123.456", "lon", "37.37", NULL };
+  kmlbase::StringVector trk_pt_atts;
+  trk_pt_atts.push_back("lat");
+  trk_pt_atts.push_back("-123.456");
+  trk_pt_atts.push_back("lon");
+  trk_pt_atts.push_back("37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trk_pt_atts);
   test_gpx_trk_pt_handler.EndElement("trkpt");
   ASSERT_EQ(static_cast<size_t>(1), point_vector.size());
@@ -89,11 +93,15 @@ TEST_F(GpxTrkPtHandlerTest, TestEle) {
   PointVector point_vector;
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
   // <ele> is only parsed within a <trkpt> with both lat and lon.
-  const char* trk_pt_atts[] = { "lat", "-123.456", "lon", "37.37", NULL };
+  kmlbase::StringVector trk_pt_atts;
+  trk_pt_atts.push_back("lat");
+  trk_pt_atts.push_back("-123.456");
+  trk_pt_atts.push_back("lon");
+  trk_pt_atts.push_back("37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trk_pt_atts);
-  test_gpx_trk_pt_handler.StartElement("ele", NULL);
+  //test_gpx_trk_pt_handler.StartElement("ele", NULL);
   const char* kEle("12356.789");
-  test_gpx_trk_pt_handler.CharData(kEle, strlen(kEle));
+  test_gpx_trk_pt_handler.CharData(kEle);
   test_gpx_trk_pt_handler.EndElement("ele");
   test_gpx_trk_pt_handler.EndElement("trkpt");
   ASSERT_EQ(static_cast<size_t>(1), point_vector.size());
@@ -109,12 +117,16 @@ TEST_F(GpxTrkPtHandlerTest, TestTime) {
   PointVector point_vector;
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
   // <time> is only parsed within a <trkpt> with both lat and lon.
-  const char* trk_pt_atts[] = { "lat", "-123.456", "lon", "37.37", NULL };
+  kmlbase::StringVector trk_pt_atts;
+  trk_pt_atts.push_back("lat");
+  trk_pt_atts.push_back("-123.456");
+  trk_pt_atts.push_back("lon");
+  trk_pt_atts.push_back("37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trk_pt_atts);
   // <time>2008-10-03T11:10:01Z</time>
-  test_gpx_trk_pt_handler.StartElement("time", NULL);
-  const std::string kTime("2008-10-03T11:10:01Z");
-  test_gpx_trk_pt_handler.CharData(kTime.c_str(), kTime.size());
+  test_gpx_trk_pt_handler.StartElement("time", kmlbase::StringVector());
+  const string kTime("2008-10-03T11:10:01Z");
+  test_gpx_trk_pt_handler.CharData(kTime);
   test_gpx_trk_pt_handler.EndElement("time");
   test_gpx_trk_pt_handler.EndElement("trkpt");
   ASSERT_EQ(static_cast<size_t>(1), point_vector.size());
@@ -131,17 +143,25 @@ TEST_F(GpxTrkPtHandlerTest, TestMissingTime) {
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
 
   // Send down one <trkpt> with a <time> child.
-  const char* trkpt0[] = { "lat", "-123.456", "lon", "37.37", NULL };
+  kmlbase::StringVector trkpt0;
+  trkpt0.push_back("lat");
+  trkpt0.push_back("-123.456");
+  trkpt0.push_back("lon");
+  trkpt0.push_back("37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trkpt0);
   // <time>2008-10-03T11:10:01Z</time>
-  test_gpx_trk_pt_handler.StartElement("time", NULL);
-  const std::string kTime("2008-10-03T11:10:01Z");
-  test_gpx_trk_pt_handler.CharData(kTime.c_str(), kTime.size());
+  test_gpx_trk_pt_handler.StartElement("time", kmlbase::StringVector());
+  const string kTime("2008-10-03T11:10:01Z");
+  test_gpx_trk_pt_handler.CharData(kTime);
   test_gpx_trk_pt_handler.EndElement("time");
   test_gpx_trk_pt_handler.EndElement("trkpt");
 
   // Send down another <trkpt> with no <time> child.
-  const char* trkpt1[] = { "lat", "123.456", "lon", "-37.37", NULL };
+  kmlbase::StringVector trkpt1;
+  trkpt1.push_back("lat");
+  trkpt1.push_back("123.456");
+  trkpt1.push_back("lon");
+  trkpt1.push_back("-37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trkpt1);
   test_gpx_trk_pt_handler.EndElement("trkpt");
 
@@ -173,12 +193,12 @@ static const struct {
 // Verify overall usage of GpxTrkPtHandler on a real-world GPX file.
 TEST_F(GpxTrkPtHandlerTest, TestTrkPtFile) {
   // Read the GPX file contents.
-  std::string gpx_data;
+  string gpx_data;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(
-      std::string(DATADIR) + "/gpx/trkpts.gpx", &gpx_data));
+      string(DATADIR) + "/gpx/trkpts.gpx", &gpx_data));
   PointVector point_vector;
   TestGpxTrkPtHandler test_gpx_trk_pt_handler(&point_vector);
-  std::string errors;
+  string errors;
   ASSERT_TRUE(kmlbase::ExpatParser::ParseString(
         gpx_data, &test_gpx_trk_pt_handler, &errors, false));
   ASSERT_TRUE(errors.empty());
@@ -192,7 +212,7 @@ TEST_F(GpxTrkPtHandlerTest, TestTrkPtFile) {
                          point_vector[index].first.get_longitude());
     ASSERT_EQ(kTrkPtsFileData[i].altitude,
                          point_vector[index].first.get_altitude());
-    ASSERT_EQ(std::string(kTrkPtsFileData[i].time),
+    ASSERT_EQ(string(kTrkPtsFileData[i].time),
                          point_vector[index].second);
   }
 }

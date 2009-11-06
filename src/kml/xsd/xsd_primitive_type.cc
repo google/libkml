@@ -55,12 +55,12 @@ static const char* XsdPrimitiveTypeName[] = {
   "int",  // 3.3.17.  Is-a XSD_LONG.
 };
 
-const std::string XsdPrimitiveType::GetTypeName(TypeId type_id) {
+const string XsdPrimitiveType::GetTypeName(TypeId type_id) {
   return XsdPrimitiveTypeName[type_id];
 }
 
 XsdPrimitiveType::TypeId XsdPrimitiveType::GetTypeId(
-    const std::string& type_name) {
+    const string& type_name) {
   // TODO: make a map and save it somewhere...
   size_t size = sizeof(XsdPrimitiveTypeName)/sizeof(XsdPrimitiveTypeName[0]);
   for (size_t i = 1; i < size; ++i) {

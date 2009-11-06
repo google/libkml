@@ -34,8 +34,8 @@
 namespace kmlconvenience {
 
 TEST(AtomUtilTest, TestCreateBasicEntry) {
-  const std::string kTitle("War And Peace");
-  const std::string kSummary("First there was war, then there was peace");
+  const string kTitle("War And Peace");
+  const string kSummary("First there was war, then there was peace");
   const kmldom::AtomEntryPtr entry =
       AtomUtil::CreateBasicEntry(kTitle, kSummary);
   ASSERT_TRUE(entry.get());
@@ -44,8 +44,8 @@ TEST(AtomUtilTest, TestCreateBasicEntry) {
 }
 
 TEST(AtomUtilTest, TestCreateAtomEntryForFeature) {
-  const std::string kName("a place");
-  const std::string kDescription("This is a really great place");
+  const string kName("a place");
+  const string kDescription("This is a really great place");
   const double kLat(12.12);
   const double kLon(-38.38);
   kmldom::PlacemarkPtr placemark = CreatePointPlacemark(kName, kLat, kLon);
@@ -73,26 +73,26 @@ TEST(AtomUtilTest, TestCreateAtomEntryForFeature) {
 TEST(AtomUtilTest, TestBasicGetContentSrc) {
   kmldom::AtomContentPtr content =
       kmldom::KmlFactory::GetFactory()->CreateAtomContent();
-  const std::string kSrc("http://somehost.com/some/path/feed/blah");
+  const string kSrc("http://somehost.com/some/path/feed/blah");
   content->set_src(kSrc);
   kmldom::AtomEntryPtr entry =
       kmldom::KmlFactory::GetFactory()->CreateAtomEntry();
   entry->set_content(content);
-  std::string src;
+  string src;
   ASSERT_TRUE(AtomUtil::GetContentSrc(entry, &src));
   ASSERT_EQ(kSrc, src);
 }
 
 TEST(AtomUtilTest, TestFindRelUrl) {
   kmldom::AtomFeedPtr feed = kmldom::KmlFactory::GetFactory()->CreateAtomFeed();
-  const std::string kRelType("fish");
+  const string kRelType("fish");
   ASSERT_FALSE(AtomUtil::FindRelUrl(*feed.get(), kRelType, NULL));
-  std::string href;
+  string href;
   ASSERT_FALSE(AtomUtil::FindRelUrl(*feed.get(), kRelType, &href));
 }
 
 TEST(AtomUtilTest, TestCloneEntryFeature) {
-  const std::string kName("a place");
+  const string kName("a place");
   const double kLat(12.12);
   const double kLon(-38.38);
   const kmldom::PlacemarkPtr placemark =
@@ -123,17 +123,17 @@ TEST(AtomUtilTest, TestIsOfLinkRel) {
   ASSERT_TRUE(AtomUtil::LinkIsOfRel(link, "post"));
   link->set_rel("post");
   ASSERT_TRUE(AtomUtil::LinkIsOfRel(link, "post"));
-  std::string empty;
+  string empty;
   ASSERT_FALSE(AtomUtil::LinkIsOfRel(NULL, empty));
 }
 
 TEST(AtomUtilTest, TestFindLink) {
   kmldom::AtomFeedPtr feed = kmldom::KmlFactory::GetFactory()->CreateAtomFeed();
-  const std::string kEmpty;
+  const string kEmpty;
   // Empty/NULL everything just returns NULL w/o crashing.
   ASSERT_FALSE(AtomUtil::FindLink(*feed, kEmpty, kEmpty));
-  const std::string kRel("alternate");
-  const std::string kMimeType("text/html");
+  const string kRel("alternate");
+  const string kMimeType("text/html");
   // NULL AtomFeePtr just returns NULL w/o crashing.
   ASSERT_FALSE(AtomUtil::FindLink(*feed, kRel, kMimeType));
   kmldom::AtomLinkPtr link = kmldom::KmlFactory::GetFactory()->CreateAtomLink();
@@ -167,7 +167,7 @@ TEST(AtomUtilTest, TestFindLink) {
 TEST(AtomUtilTest, TestFindEntryByTitle) {
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
-  const std::string kTitle("War and Peace");
+  const string kTitle("War and Peace");
   entry->set_title(kTitle);
   kmldom::AtomFeedPtr feed = factory->CreateAtomFeed();
   feed->add_entry(entry);

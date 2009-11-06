@@ -113,11 +113,11 @@ TEST_F(UpdateProcessorTest, TestProcessUpdateChangeWithMappedId) {
   kmldom::PlacemarkPtr placemark = kmldom::AsPlacemark(kml_file_->get_root());
   ASSERT_TRUE(placemark);
   // The <Placemark>'s id= is _not_ effected.
-  ASSERT_EQ(std::string("internal-id"), placemark->get_id());
+  ASSERT_EQ(string("internal-id"), placemark->get_id());
   // No targetId= is set in the target Object.
   ASSERT_FALSE(placemark->has_targetid());
   // The <Placemark>'s <name> _is_ changed.
-  ASSERT_EQ(std::string("new name"), placemark->get_name());
+  ASSERT_EQ(string("new name"), placemark->get_name());
 }
 
 }  // namespace kmlengine

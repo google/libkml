@@ -60,7 +60,7 @@ KmzFile* KmzFile::OpenFromFile(const char* kmz_filename) {
 }
 
 // Static.
-KmzFile* KmzFile::OpenFromString(const std::string& kmz_data) {
+KmzFile* KmzFile::OpenFromString(const string& kmz_data) {
   if (ZipFile* zipfile = ZipFile::OpenFromString(kmz_data)) {
     return new KmzFile(zipfile);
   }
@@ -68,7 +68,7 @@ KmzFile* KmzFile::OpenFromString(const std::string& kmz_data) {
 }
 
 // Static.
-bool KmzFile::IsKmz(const std::string& kmz_data) {
+bool KmzFile::IsKmz(const string& kmz_data) {
   return ZipFile::IsZipData(kmz_data);
 }
 
@@ -82,12 +82,12 @@ unsigned int KmzFile::get_max_uncompressed_file_size() {
 }
 
 
-bool KmzFile::ReadKmlAndGetPath(std::string* output,
-                                std::string* kml_name) const {
+bool KmzFile::ReadKmlAndGetPath(string* output,
+                                string* kml_name) const {
   if (!output) {
     return false;
   }
-  std::string default_kml;
+  string default_kml;
   if (!zip_file_->FindFirstOf(".kml", &default_kml)) {
     return false;
   }
@@ -100,19 +100,19 @@ bool KmzFile::ReadKmlAndGetPath(std::string* output,
   return true;
 }
 
-bool KmzFile::ReadKml(std::string* output) const {
+bool KmzFile::ReadKml(string* output) const {
   return ReadKmlAndGetPath(output, NULL);
 }
 
-bool KmzFile::ReadFile(const char* path_in_kmz, std::string* output) const {
+bool KmzFile::ReadFile(const char* path_in_kmz, string* output) const {
   return zip_file_->GetEntry(path_in_kmz, output);
 }
 
-bool KmzFile::List(std::vector<std::string>* subfiles) {
+bool KmzFile::List(std::vector<string>* subfiles) {
   return zip_file_->GetToc(subfiles);
 }
 
-bool KmzFile::SaveToString(std::string* kmz_bytes) {
+bool KmzFile::SaveToString(string* kmz_bytes) {
   if (!kmz_bytes) {
     return false;
   }
@@ -129,16 +129,16 @@ KmzFile* KmzFile::Create(const char* kmz_filepath) {
   return new KmzFile(zipfile);
 }
 
-bool KmzFile::AddFile(const std::string& data, const std::string& path_in_kmz) {
+bool KmzFile::AddFile(const string& data, const string& path_in_kmz) {
   return zip_file_->AddEntry(data, path_in_kmz);
 }
 
 // TODO: the implementation of this function really belongs in base/zip_file.
-size_t KmzFile::AddFileList(const std::string& base_url,
+size_t KmzFile::AddFileList(const string& base_url,
                             const StringVector& file_paths) {
   size_t error_count = 0;
   // We remember all stored resources so we can eliminate duplicates.
-  std::set<std::string> stored_hrefs;
+  std::set<string> stored_hrefs;
 
   StringVector::const_iterator itr;
   for (itr = file_paths.begin(); itr != file_paths.end(); ++itr) {
@@ -149,7 +149,7 @@ size_t KmzFile::AddFileList(const std::string& base_url,
     }
 
     // Normalize the href.
-    std::string normalized_href;
+    string normalized_href;
     if (!NormalizeHref(href.get_path(), &normalized_href)) {
       error_count++;
       continue;
@@ -169,8 +169,8 @@ size_t KmzFile::AddFileList(const std::string& base_url,
     stored_hrefs.insert(normalized_href);
 
     // Try to read the file pointed to by base_url and the normalized href.
-    std::string relative_path = File::JoinPaths(base_url, normalized_href);
-    std::string file_data;
+    string relative_path = File::JoinPaths(base_url, normalized_href);
+    string file_data;
     if (!kmlbase::File::ReadFileToString(relative_path, &file_data)) {
       error_count++;
       continue;
@@ -186,7 +186,7 @@ size_t KmzFile::AddFileList(const std::string& base_url,
 }
 
 // Static.
-bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
+bool KmzFile::WriteKmz(const char* kmz_filepath, const string& kml) {
   boost::scoped_ptr<KmzFile> kmz(KmzFile::Create(kmz_filepath));
   if (!kmz.get()) {
     return false;
@@ -198,17 +198,17 @@ bool KmzFile::WriteKmz(const char* kmz_filepath, const std::string& kml) {
 }
 
 // Static.
-bool KmzFile::CreateFromKmlFilepath(const std::string& kml_filepath,
-                                    const std::string& kmz_filepath) {
+bool KmzFile::CreateFromKmlFilepath(const string& kml_filepath,
+                                    const string& kmz_filepath) {
   if (kmz_filepath.empty() || kml_filepath.empty()) {
     return false;
   }
-  std::string kml_data;
+  string kml_data;
   if (!kmlbase::File::ReadFileToString(kml_filepath, &kml_data)) {
     return false;
   }
 
-  std::string base_dir;
+  string base_dir;
   kmlbase::File::SplitFilePath(kml_filepath, &base_dir, NULL);
 
   KmlFilePtr kml_file =
@@ -219,8 +219,8 @@ bool KmzFile::CreateFromKmlFilepath(const std::string& kml_filepath,
 
 // Static.
 bool KmzFile::CreateFromElement(const kmldom::ElementPtr& element,
-                                const std::string& base_url,
-                                const std::string& kmz_filepath) {
+                                const string& base_url,
+                                const string& kmz_filepath) {
   if (kmz_filepath.empty()) {
     return false;
   }
@@ -228,7 +228,7 @@ bool KmzFile::CreateFromElement(const kmldom::ElementPtr& element,
   if (!kmz_file) {
     return false;
   }
-  const std::string kml_data = kmldom::SerializePretty(element);
+  const string kml_data = kmldom::SerializePretty(element);
   // First add the KML file. This is the file opened by default by a client
   // from a KMZ archive.
   kmz_file->AddFile(kml_data, kDefaultKmlFilename);
@@ -244,7 +244,7 @@ bool KmzFile::CreateFromElement(const kmldom::ElementPtr& element,
 
 // Static.
 bool KmzFile::CreateFromKmlFile(const KmlFilePtr& kml_file,
-                                const std::string& kmz_filepath) {
+                                const string& kmz_filepath) {
   return KmzFile::CreateFromElement(
       kml_file->get_root(), kml_file->get_url(), kmz_filepath);
 }

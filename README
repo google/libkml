@@ -16,3 +16,14 @@ The wiki contains documents that describe:
 The main project page has links to the discussion group and the mailing list
 that mirrors the commit and issue logs.
 
+Note on strings in libkml:
+As of r680, we changed all use of "std::string" to just "string". This change
+was motivated by a desire to permit use in codebases that provide their own
+string class. This change was transparent to you because of this change to
+src/kml/base/util.h:
+
+#ifndef HAS_GLOBAL_STRING
+using std::string;
+#endif
+
+All string-using code in libkml was modified to pull in that header.

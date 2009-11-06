@@ -80,11 +80,11 @@ TEST_F(FeatureBalloonTest, TestBasicCreateBalloonText) {
     // Extract the Placemark.
     const PlacemarkPtr placemark = kmldom::AsPlacemark(kml_file_->get_root());
     // Verify that that balloon text has been composited as expected.
-    const std::string kResult(CreateBalloonText(kml_file_, placemark));
+    const string kResult(CreateBalloonText(kml_file_, placemark));
     if (kKml[i].balloontext == NULL) {
       ASSERT_TRUE(kResult.empty());
     } else {
-      ASSERT_EQ(kResult, static_cast<std::string>(kKml[i].balloontext));
+      ASSERT_EQ(kResult, static_cast<string>(kKml[i].balloontext));
     }
   }
 }
@@ -92,7 +92,7 @@ TEST_F(FeatureBalloonTest, TestBasicCreateBalloonText) {
 TEST_F(FeatureBalloonTest, TestComplexCreateBalloonText) {
   // A hunk of KML that requires the ballon to be composited from a
   // BalloonStyle templated on Data and Schema/SchemaData.
-  const std::string kKitchenSinkKml(
+  const string kKitchenSinkKml(
       "<Document>"
       "<Schema name=\"TrailHeadType\" id=\"TrailHeadTypeId\">"
       "<SimpleField type=\"string\" name=\"TrailHeadName\">"
@@ -143,7 +143,7 @@ TEST_F(FeatureBalloonTest, TestComplexCreateBalloonText) {
       "</Document>");
 
   // The resultant balloon text from the above KML.
-  const std::string kKitchenSinkBalloonText(
+  const string kKitchenSinkBalloonText(
       "<b>__NAME__</b><br/><br/>"
       "<i>__DESCRIPTION__<i><br/><br/>"
       "The <b>Trail Head Name</b> is"
@@ -215,10 +215,10 @@ const static struct {
 };
 
 TEST_F(FeatureBalloonTest, TestAllBalloonsFile) {
-  const std::string kBalloonKml = std::string(DATADIR) +
+  const string kBalloonKml = string(DATADIR) +
                                   "/balloon/all-balloons.kml";
-  std::string data;
-  std::string errors;
+  string data;
+  string errors;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(kBalloonKml, &data));
   kml_file_ = KmlFile::CreateFromParse(data, &errors);
   ASSERT_FALSE(data.empty());
@@ -229,12 +229,12 @@ TEST_F(FeatureBalloonTest, TestAllBalloonsFile) {
     const FeaturePtr feature=
         kmldom::AsFeature(kml_file_->GetObjectById(kFeatures[i].featureid));
     // Verify that that balloon text has been composited as expected.
-    const std::string kActual(CreateBalloonText(kml_file_, feature));
+    const string kActual(CreateBalloonText(kml_file_, feature));
     if (kFeatures[i].balloontext == NULL) {
       ASSERT_TRUE(kActual.empty());
-      ASSERT_EQ(std::string(""), kActual);
+      ASSERT_EQ(string(""), kActual);
     } else {
-      ASSERT_EQ(static_cast<std::string>(kFeatures[i].balloontext), kActual);
+      ASSERT_EQ(static_cast<string>(kFeatures[i].balloontext), kActual);
     }
   }
 }

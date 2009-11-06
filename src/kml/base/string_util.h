@@ -30,15 +30,14 @@
 
 #include <map>
 #include <sstream>
-#include <string>
 #include <vector>
 #include "kml/base/util.h"
 
 namespace kmlbase {
 
-typedef std::map<std::string, std::string> StringMap;
-typedef std::map<std::string, std::string>::value_type StringPair;
-typedef std::vector<std::string> StringVector;
+typedef std::map<string, string> StringMap;
+typedef std::map<string, string>::value_type StringPair;
+typedef std::vector<string> StringVector;
 
 // Binary-to-ASCII hex conversion.
 void b2a_hex(uint32_t i, char* out);
@@ -78,18 +77,18 @@ class StringMapIterator {
 // start: "$["
 // end: "]"
 // replaced string: "this is your cooler string"
-std::string CreateExpandedStrings(const std::string& in,
+string CreateExpandedStrings(const string& in,
                                   const StringMap& string_map,
-                                  const std::string& start,
-                                  const std::string& end);
+                                  const string& start,
+                                  const string& end);
 
-// This converts from std::string to any T of int, bool or double.
+// This converts from string to any T of int, bool or double.
 template<typename T>
-void FromString(const std::string& in, T* out);
+void FromString(const string& in, T* out);
 
-// This converts to std::string from any T of int, bool or double.
+// This converts to string from any T of int, bool or double.
 template<typename T>
-inline std::string ToString(T value) {
+inline string ToString(T value) {
   std::stringstream ss;
   ss.precision(15);
   ss << value;
@@ -98,12 +97,12 @@ inline std::string ToString(T value) {
 
 // Split the input string on the split_string saving each string into the
 // output vector.
-void SplitStringUsing(const std::string& input, const std::string& split_string,
-                      std::vector<std::string>* output);
+void SplitStringUsing(const string& input, const string& split_string,
+                      std::vector<string>* output);
 
 // Returns true if end appears at the end of str.  Returns false if either of
 // str or end are empty or if end is longer than str.
-bool StringEndsWith(const std::string& str, const std::string& end);
+bool StringEndsWith(const string& str, const string& end);
 
 }  // end namespace kmlbase
 

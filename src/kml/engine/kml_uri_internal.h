@@ -30,7 +30,6 @@
 #ifndef KML_ENGINE_KML_URI_INTERNAL_H__
 #define KML_ENGINE_KML_URI_INTERNAL_H__
 
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/util.h"
 
@@ -62,8 +61,8 @@ class KmlUri {
   // raw content of any <href>, <styleUrl>, schemaUrl=, <targetHref>,
   // <a href="...">, or <img href="..."> within the KmlFile.  However, there
   // is no specific knowlege of any KML or HTML element within this class.
-  static KmlUri* CreateRelative(const std::string& base,
-                                const std::string& target);
+  static KmlUri* CreateRelative(const string& base,
+                                const string& target);
 
   ~KmlUri();
 
@@ -71,25 +70,25 @@ class KmlUri {
     return is_kmz_;
   }
 
-  const std::string& get_target() const {
+  const string& get_target() const {
     return target_;
   }
 
-  const std::string& get_url() const {
+  const string& get_url() const {
     return url_;
   }
 
-  const std::string& get_kmz_url() const {
+  const string& get_kmz_url() const {
     return kmz_url_;
   }
 
-  const std::string& get_path_in_kmz() const {
+  const string& get_path_in_kmz() const {
     return path_in_kmz_;
   }
 
   // TODO Ideally this class has no non-const methods.  No module should alter
   // a KmlUri.  Instead a new one should be created as needed.
-  void set_path_in_kmz(const std::string path_in_kmz) {
+  void set_path_in_kmz(const string path_in_kmz) {
     path_in_kmz_ = path_in_kmz;
     url_ = kmz_url_ + "/" + path_in_kmz;
   }
@@ -97,20 +96,20 @@ class KmlUri {
  private:
   // Private constructor.  Use static Create() method.
   // TODO streamline this with the Create method.
-  KmlUri(const std::string& base, const std::string& target);
+  KmlUri(const string& base, const string& target);
 
   bool is_kmz_;  // TODO should this be is_relative_kmz_?
-  const std::string base_;
-  const std::string target_;
-  // TODO use UriParser's throughout _or_ std::string, not both.
+  const string base_;
+  const string target_;
+  // TODO use UriParser's throughout _or_ string, not both.
   boost::scoped_ptr<kmlbase::UriParser> target_uri_;
 
-  std::string url_;
+  string url_;
 
   // TODO this is too complex.  Better might be to create a new KmlUri for
   // a new fetch.
-  std::string kmz_url_;
-  std::string path_in_kmz_;
+  string kmz_url_;
+  string path_in_kmz_;
 
   // No copy construction or assignment please.
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlUri);

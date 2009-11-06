@@ -29,7 +29,7 @@
 #ifndef KML_ENGINE_KML_URI_H__
 #define KML_ENGINE_KML_URI_H__
 
-#include <string>
+#include "kml/base/util.h"
 
 namespace kmlengine {
 
@@ -79,26 +79,26 @@ namespace kmlengine {
 // "http://host.com/dir/model.kmz".  Note that it is perfectly valid for a
 // relative reference with a KMZ to refer "up and out" of the KMZ to
 // either a file within another KMZ or a single file.
-bool ResolveUri(const std::string& base, const std::string& relative,
-                std::string* result);
+bool ResolveUri(const string& base, const string& relative,
+                string* result);
 
 // Performs a syntax-based normalization of uri as per RFC 3986 6.2.2. False is
 // returned if result is NULL or upon any internal error.
-bool NormalizeUri(const std::string& uri, std::string* result);
+bool NormalizeUri(const string& uri, string* result);
 
 // Performs a syntax-based normalization of href as per RFC 3986 6.2.2. False
 // is returned if result is NULL or upon any internal error.
-bool NormalizeHref(const std::string& href, std::string* result);
+bool NormalizeHref(const string& href, string* result);
 
 // Converts a URI to its corresponding filename. The implementation
 // is platform-specific. Returns false if output is NULL or on any internal
 // error in converting the uri.
-bool UriToFilename(const std::string& uri, std::string* output);
+bool UriToFilename(const string& uri, string* output);
 
 // Converts a filename to its corresponding URI. The implementation is
 // platform-specific. Returns false if output is NULL or on any internal
 // error in converting the uri.
-bool FilenameToUri(const std::string& filename, std::string* output);
+bool FilenameToUri(const string& filename, string* output);
 
 // This function splits out the various components of a URI:
 // uri = scheme://host:port/path?query#fragment
@@ -106,35 +106,35 @@ bool FilenameToUri(const std::string& filename, std::string* output);
 // The return value reflects the validity of the uri.  Each desired output
 // string should be inspected using empty() to discover if the uri has
 // the particular component.
-bool SplitUri(const std::string& uri, std::string* scheme, std::string* host,
-              std::string* port, std::string* path, std::string* query,
-              std::string* fragment);
+bool SplitUri(const string& uri, string* scheme, string* host,
+              string* port, string* path, string* query,
+              string* fragment);
 
 // This function returns true if the given uri is valid and has a fragment.
 // If it has a fragment and a string pointer is supplied it is saved there
 // (without the #).
-bool SplitUriFragment(const std::string& uri, std::string* fragment);
+bool SplitUriFragment(const string& uri, string* fragment);
 
 // This function returns true if the given uri is valid and has a path.
 // If is has a path and the string pointer is supplied it is saved there.
-bool SplitUriPath(const std::string& uri, std::string* path);
+bool SplitUriPath(const string& uri, string* path);
 
 // This function returns true if the given uri is valid.  If the fetchable_uri
 // output string is supplied a uri w/o the fragment is stored there.
-bool GetFetchableUri(const std::string& uri, std::string* fetchable_uri);
+bool GetFetchableUri(const string& uri, string* fetchable_uri);
 
-bool KmzSplit(const std::string& kml_url, std::string* kmz_url,
-              std::string* kmz_path);
+bool KmzSplit(const string& kml_url, string* kmz_url,
+              string* kmz_path);
 
 // Resolve the URL to the Model's targetHref.  The base is the URL
 // of the KML file holding the Model.  The geometry_href is the value
 // of the Model's Link/href.  The target_href is the value of one of the
 // Model's ResourceMap/Alias/targetHref's.  Note that the result URL may
 // be into a KMZ and hence might be used with KmzSplit.
-bool ResolveModelTargetHref(const std::string& base,
-                            const std::string& geometry_href, 
-                            const std::string& target,
-                            std::string* result);
+bool ResolveModelTargetHref(const string& base,
+                            const string& geometry_href, 
+                            const string& target,
+                            string* result);
 
 }  // end namespace kmlengine
 

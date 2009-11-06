@@ -47,7 +47,7 @@ class ObjectIdParserObserverTest : public testing::Test {
 // Verify the proper operation of NewElement() for an Object with an id.
 TEST_F(ObjectIdParserObserverTest, TestBasicNewElementUsage) {
   // Create an Object with an id.
-  const std::string kPlacemarkId("pm0");
+  const string kPlacemarkId("pm0");
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_id(kPlacemarkId);
@@ -68,7 +68,7 @@ TEST_F(ObjectIdParserObserverTest, TestBasicNewElementUsage) {
 TEST_F(ObjectIdParserObserverTest, TestNewElementPermitsDupeId) {
   // By default strict parsing is not enabled.
   // Create 2 Objects with the same id.
-  const std::string kId("some-id");
+  const string kId("some-id");
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_id(kId);
@@ -95,7 +95,7 @@ TEST_F(ObjectIdParserObserverTest, TestNewElementFailsDupeId) {
   object_id_parser_observer_.reset(
       new ObjectIdParserObserver(&object_id_map_, true));
   // Create 2 Objects with the same id.
-  const std::string kId("some-id");
+  const string kId("some-id");
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_id(kId);
@@ -130,8 +130,8 @@ TEST_F(ObjectIdParserObserverTest, TestAddChild) {
 // Verify that the destructor does not affect the map.
 TEST_F(ObjectIdParserObserverTest, TestDestructor) {
   // Use NewElement() to populate the map.
-  const std::string kPlacemarkId("pm0");
-  const std::string kPointId("pt0");
+  const string kPlacemarkId("pm0");
+  const string kPointId("pt0");
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_id(kPlacemarkId);
@@ -153,7 +153,7 @@ TEST_F(ObjectIdParserObserverTest, TestDestructor) {
 TEST_F(ObjectIdParserObserverTest, TestNonObjectWithId) {
   // The Parse() function in kmldom preserves id of a non object as an
   // unknown attribute.
-  const std::string kId("kml-is-not-an-object");
+  const string kId("kml-is-not-an-object");
   kmldom::ElementPtr root = kmldom::Parse("<kml id=\"" + kId + "\"/>", NULL);
 
   // Verify that the parse succeeded and created a non-Object.

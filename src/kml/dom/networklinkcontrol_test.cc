@@ -23,7 +23,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <string>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/networklinkcontrol.h"
@@ -120,14 +119,14 @@ TEST_F(UpdateTest, TestType) {
 
 TEST_F(UpdateTest, TestTargetHref) {
   ASSERT_FALSE(update_->has_targethref());
-  ASSERT_EQ(std::string(""), update_->get_targethref());
-  std::string targethref("#checkoutthiscrosssection");
+  ASSERT_EQ(string(""), update_->get_targethref());
+  string targethref("#checkoutthiscrosssection");
   update_->set_targethref(targethref);
   ASSERT_TRUE(update_->has_targethref());
   ASSERT_TRUE(targethref == update_->get_targethref());
   update_->clear_targethref();
   ASSERT_FALSE(update_->has_targethref());
-  ASSERT_EQ(std::string(""), update_->get_targethref());
+  ASSERT_EQ(string(""), update_->get_targethref());
 }
 
 TEST_F(UpdateTest, TestLists) {
@@ -187,17 +186,17 @@ TEST_F(NetworkLinkControlTest, TestDefaults) {
   ASSERT_FALSE(nlc_->has_maxsessionlength());
   ASSERT_DOUBLE_EQ(0.0, nlc_->get_maxsessionlength());
   ASSERT_FALSE(nlc_->has_cookie());
-  ASSERT_EQ(std::string(""), nlc_->get_cookie());
+  ASSERT_EQ(string(""), nlc_->get_cookie());
   ASSERT_FALSE(nlc_->has_message());
-  ASSERT_EQ(std::string(""), nlc_->get_message());
+  ASSERT_EQ(string(""), nlc_->get_message());
   ASSERT_FALSE(nlc_->has_linkname());
-  ASSERT_EQ(std::string(""), nlc_->get_linkname());
+  ASSERT_EQ(string(""), nlc_->get_linkname());
   ASSERT_FALSE(nlc_->has_linkdescription());
-  ASSERT_EQ(std::string(""), nlc_->get_linkdescription());
+  ASSERT_EQ(string(""), nlc_->get_linkdescription());
   ASSERT_FALSE(nlc_->has_linksnippet());
   ASSERT_TRUE(NULL == nlc_->get_linksnippet());
   ASSERT_FALSE(nlc_->has_expires());
-  ASSERT_EQ(std::string(""), nlc_->get_expires());
+  ASSERT_EQ(string(""), nlc_->get_expires());
   ASSERT_FALSE(nlc_->has_update());
   ASSERT_TRUE(NULL == nlc_->get_update());
   ASSERT_FALSE(nlc_->has_abstractview());
@@ -233,12 +232,12 @@ TEST_F(NetworkLinkControlTest, TestSetGetHasClear) {
   // Non-default values.
   const double minrefreshperiod = 1.0;
   const double maxsessionlength = 2.0;
-  const std::string cookie("cookie");
-  const std::string message("message");
-  const std::string linkname("linkname");
-  const std::string linkdescription("linkdescription");
+  const string cookie("cookie");
+  const string message("message");
+  const string linkname("linkname");
+  const string linkdescription("linkdescription");
   LinkSnippetPtr linksnippet = KmlFactory::GetFactory()->CreateLinkSnippet();
-  const std::string expires("expires");
+  const string expires("expires");
   UpdatePtr update = KmlFactory::GetFactory()->CreateUpdate();
   CameraPtr camera = KmlFactory::GetFactory()->CreateCamera();
 

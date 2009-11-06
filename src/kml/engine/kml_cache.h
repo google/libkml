@@ -27,7 +27,6 @@
 #define KML_ENGINE_KML_CACHE_H__
 
 #include "kml/base/net_cache.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/engine/kml_file.h"
 #include "kml/engine/kmz_cache.h"
@@ -51,7 +50,7 @@ typedef kmlbase::NetCache<KmlFile> KmlFileNetCache;
 //   KmlFilePtr k3 =
 //        kml_cache.FetchKmlRelative("http://host.com/file.kmz/doc.kml",
 //                                   "link.kml");
-//   std::string data;
+//   string data;
 //   bool status = kml_cache.FetchDataRelative("http://host.com/overlay.kml",
 //                                             "image.jpg", &data);
 //   bool status =
@@ -70,12 +69,12 @@ class KmlCache {
   // is marked with a pointer back to this cache such that other internal
   // KML Engine algorithms can fetch (and cache) shared styles and schemas.
   // The base_url is typically that of the file containing the target_href.
-  KmlFilePtr FetchKmlRelative(const std::string& base_url,
-                              const std::string& target_href);
+  KmlFilePtr FetchKmlRelative(const string& base_url,
+                              const string& target_href);
 
   // This method is used to fetch a remote KML or KMZ file with an absolute URL.
   // If the fetch or parse fails NULL is returned.
-  KmlFilePtr FetchKmlAbsolute(const std::string& kml_url);
+  KmlFilePtr FetchKmlAbsolute(const string& kml_url);
 
   // Any caller expecting to fetch data which _may_ be within a KMZ should use
   // this method.  If the data is within a remote KMZ file that KMZ file is
@@ -85,9 +84,9 @@ class KmlCache {
   // or model textures.  The target_href here typically is the content of an
   // Overlay Icon's href, or Model's Link href.  The base_url is typically that
   // of the file containing the target_href.
-  bool FetchDataRelative(const std::string& base_url,
-                         const std::string& target_href,
-                         std::string* content);
+  bool FetchDataRelative(const string& base_url,
+                         const string& target_href,
+                         string* content);
 
  private:
   boost::scoped_ptr<KmzCache> kmz_file_cache_;

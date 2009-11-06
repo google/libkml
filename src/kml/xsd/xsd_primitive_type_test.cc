@@ -34,10 +34,10 @@ class XsdPrimitiveTypeTest : public testing::Test {
 
 // Verify NULL is returned if no attributes are supplied.
 TEST_F(XsdPrimitiveTypeTest, TestXsdPrimitiveTypeNameId) {
-  const std::string kBoolean("boolean");
-  const std::string kDouble("double");
-  const std::string kInt("int");
-  const std::string kString("string");
+  const string kBoolean("boolean");
+  const string kDouble("double");
+  const string kInt("int");
+  const string kString("string");
 
   ASSERT_EQ(kBoolean,
       XsdPrimitiveType::GetTypeName(XsdPrimitiveType::XSD_BOOLEAN));

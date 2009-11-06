@@ -26,7 +26,6 @@
 // This file contains XSD convenience utilities.
 
 #include "kml/xsd/xsd_util.h"
-#include <string>
 #include "kml/base/attributes.h"
 #include "kml/xsd/xsd_complex_type.h"
 #include "kml/xsd/xsd_schema.h"
@@ -52,23 +51,23 @@ const char kType[] = "type";
 const char kValue[] = "value";
 
 // Test utility to create a <xs:complexType name="type_name">.
-XsdComplexType* CreateXsdComplexType(const std::string& type_name) {
+XsdComplexType* CreateXsdComplexType(const string& type_name) {
   Attributes attributes;
   attributes.SetString(kName, type_name);
   return XsdComplexType::Create(attributes);
 }
 
-XsdElement* CreateXsdElement(const std::string& name, const std::string& type) {
+XsdElement* CreateXsdElement(const string& name, const string& type) {
   Attributes attributes;
   attributes.SetString(kName, name);
   attributes.SetString(kType, type);
   return XsdElement::Create(attributes);
 }
 
-XsdSchema* CreateXsdSchema(const std::string& prefix,
-                           const std::string& target_namespace) {
+XsdSchema* CreateXsdSchema(const string& prefix,
+                           const string& target_namespace) {
   Attributes attributes;
-  attributes.SetString(std::string("xmlns:") + prefix, target_namespace);
+  attributes.SetString(string("xmlns:") + prefix, target_namespace);
   attributes.SetString("targetNamespace", target_namespace);
   return XsdSchema::Create(attributes);
 }

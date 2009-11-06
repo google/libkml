@@ -26,7 +26,6 @@
 // This file contains the unit tests for the Xmlns class.
 
 #include "kml/base/xmlns.h"
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
@@ -64,10 +63,10 @@ TEST_F(XmlnsTest, TestCreate) {
   // This is the method under test.
   xmlns_.reset(Xmlns::Create(*attributes_));
   // The default namespace is the value of the "xmlns" attribute.
-  ASSERT_EQ(std::string(kSchemaAttrs[1]), xmlns_->get_default());
-  ASSERT_EQ(std::string(kSchemaAttrs[3]),
+  ASSERT_EQ(string(kSchemaAttrs[1]), xmlns_->get_default());
+  ASSERT_EQ(string(kSchemaAttrs[3]),
                        xmlns_->GetNamespace("kml"));
-  ASSERT_EQ(std::string(kSchemaAttrs[5]),
+  ASSERT_EQ(string(kSchemaAttrs[5]),
                        xmlns_->GetNamespace("atom"));
 }
 
@@ -81,9 +80,9 @@ TEST_F(XmlnsTest, TestNullCreate) {
 
 TEST_F(XmlnsTest, TestGetKey) {
   attributes_.reset(new Attributes);
-  const std::string kPrefix("mcn");
-  const std::string kNamespace("my:cool:namespace");
-  attributes_->SetString(std::string("xmlns:") + kPrefix, kNamespace);
+  const string kPrefix("mcn");
+  const string kNamespace("my:cool:namespace");
+  attributes_->SetString(string("xmlns:") + kPrefix, kNamespace);
   xmlns_.reset(Xmlns::Create(*attributes_));
   ASSERT_EQ(kPrefix, xmlns_->GetKey(kNamespace));
 }
@@ -94,12 +93,12 @@ TEST_F(XmlnsTest, TestGetPrefixes) {
   ASSERT_TRUE(attributes_.get());
   xmlns_.reset(Xmlns::Create(*attributes_));
   // This is the method under test.
-  std::vector<std::string> prefix_vector;
+  std::vector<string> prefix_vector;
   xmlns_->GetPrefixes(&prefix_vector);
   ASSERT_EQ(static_cast<size_t>(3), prefix_vector.size());
-  ASSERT_EQ(std::string("atom"), prefix_vector[0]);
-  ASSERT_EQ(std::string("kml"), prefix_vector[1]);
-  ASSERT_EQ(std::string("xal"), prefix_vector[2]);
+  ASSERT_EQ(string("atom"), prefix_vector[0]);
+  ASSERT_EQ(string("kml"), prefix_vector[1]);
+  ASSERT_EQ(string("xal"), prefix_vector[2]);
 }
 
 }  // end namespace kmlbase

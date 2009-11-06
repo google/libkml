@@ -30,7 +30,6 @@
 #ifndef KML_CONVENIENCE_HTTP_CLIENT_H_
 #define KML_CONVENIENCE_HTTP_CLIENT_H_
 
-#include <string>
 #include <vector>
 #include <memory>
 #include "kml/base/net_cache.h"
@@ -38,7 +37,7 @@
 namespace kmlconvenience {
 
 // TODO: push these to kml/base/string_util.h
-typedef std::pair<std::string, std::string> StringPair;
+typedef std::pair<string, string> StringPair;
 typedef std::vector<StringPair> StringPairVector;
 
 // RFC 2616, Section 5.1.1 Method: "GET", "POST", "PUT", "DELETE".
@@ -64,7 +63,7 @@ enum HttpMethodEnum {
 class HttpClient : kmlbase::NetFetcher {
  public:
   // The application_name is used in the HTTP User-Agent.
-  HttpClient(const std::string &application_name);
+  HttpClient(const string &application_name);
 
   virtual ~HttpClient() {}
 
@@ -74,14 +73,14 @@ class HttpClient : kmlbase::NetFetcher {
   // http://code.google.com/apis/gdata/auth.html#ClientLogin
   // Derived classes typically are not expected to implement this.  This is
   // virtual primarily for testing.
-  virtual bool Login(const std::string& service_name,
-                     const std::string& email, const std::string& password);
+  virtual bool Login(const string& service_name,
+                     const string& email, const string& password);
 
   // Adds the given field name and value to the set of headers used in every
   // request.  This is a simple append.  No provision is made for overwriting
   // a header field of the same name.
-  void AddHeader(const std::string& field_name,
-                 const std::string& field_value);
+  void AddHeader(const string& field_name,
+                 const string& field_value);
 
   // All I/O goes through this method.  See HttpMethodEnum for valid
   // http_method values.  See RFC 2616, Section 5.1.2 Request-URI for
@@ -93,14 +92,14 @@ class HttpClient : kmlbase::NetFetcher {
   // The default implementation performs no I/O and sets the response to the
   // request constructed from the arguments
   virtual bool SendRequest(HttpMethodEnum http_method,
-                           const std::string& request_uri,
+                           const string& request_uri,
                            const StringPairVector* request_headers,
-                           const std::string* post_data,
-                           std::string* response) const;
+                           const string* post_data,
+                           string* response) const;
 
   // kmlbase::NetFetcher::FetchUrl()
   // The HttpClient implementation of this sends all fetches to SendRequest.
-  virtual bool FetchUrl(const std::string& url, std::string* data) const;
+  virtual bool FetchUrl(const string& url, string* data) const;
 
   // The following static methods are for the convenience of managing headers.
 
@@ -111,20 +110,20 @@ class HttpClient : kmlbase::NetFetcher {
 
   // If the given headers have a field of the given name return true.  If
   // an output field_value string is supplied the value is saved there.
-  static bool FindHeader(const std::string& field_name,
+  static bool FindHeader(const string& field_name,
                          const StringPairVector& headers,
-                         std::string* field_value);
+                         string* field_value);
 
   // This returns the given name-value pair formatted properly for use in an
   // HTTP request.
-  static std::string FormatHeader(const StringPair& header);
+  static string FormatHeader(const StringPair& header);
 
   // RFC 2616, Section 4.2.  No formatting such as ':', ' ' or '\n' should
   // appear in the field_name or field_value.  This function appends the
   // given field_name and field_value to the given headers vector.  If the
   // headers vector is NULL this function does nothing.
-  static void PushHeader(const std::string& field_name,
-                         const std::string& field_value,
+  static void PushHeader(const string& field_name,
+                         const string& field_value,
                          StringPairVector* headers);
 
   // The following methods return internal information about the state of
@@ -132,7 +131,7 @@ class HttpClient : kmlbase::NetFetcher {
 
   // This returns the internal state of the authorization token.  This will be
   // empty unless Login() was called successfully.
-  const std::string& get_auth_token() const {
+  const string& get_auth_token() const {
     return auth_token_;
   }
 
@@ -145,9 +144,9 @@ class HttpClient : kmlbase::NetFetcher {
  private:
   // The key reason for this class is to hold the authorization token from
   // the Login() for use in subsequent SendRequest()'s.
-  std::string auth_token_;
-  const std::string service_name_;
-  const std::string application_name_;
+  string auth_token_;
+  const string service_name_;
+  const string application_name_;
   StringPairVector headers_;
 };
 

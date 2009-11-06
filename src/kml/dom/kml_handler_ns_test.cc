@@ -42,18 +42,14 @@ namespace kmldom {
 class KmlHandlerNSTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    // Emulate expat's xmlparse.c:startAtts().
-    // 16 == xmlparse.c's INIT_ATTS_SIZE
-    atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
     kml_handler_ns_ = new KmlHandlerNS(observers_);
   }
 
   virtual void TearDown() {
-    free(atts_);
     delete kml_handler_ns_;
   }
 
-  const char** atts_;
+  kmlbase::StringVector atts_;
   parser_observer_vector_t observers_;
   KmlHandlerNS* kml_handler_ns_;
 };
@@ -66,12 +62,12 @@ TEST_F(KmlHandlerNSTest, TestInitialState) {
 }
 
 TEST_F(KmlHandlerNSTest, TestStartEndNamespace) {
-  const std::string kDefaultPrefix("");
-  const std::string kKmlXmlns("http://www.opegis.net/kml/2.2");
-  const std::string kAtomPrefix("atom");
-  const std::string kAtomXmlns("http://www.w3.org/2005/Atom");
-  const std::string kGxPrefix("gx");
-  const std::string kGxtXmlns("http://earth.google.com/kml/2.2/ext");
+  const string kDefaultPrefix("");
+  const string kKmlXmlns("http://www.opegis.net/kml/2.2");
+  const string kAtomPrefix("atom");
+  const string kAtomXmlns("http://www.w3.org/2005/Atom");
+  const string kGxPrefix("gx");
+  const string kGxtXmlns("http://earth.google.com/kml/2.2/ext");
   // Given this KML:
   // <kml xmlns="http://www.opengis.net/kml/2.2"
   //      xmlns:atom="http://www.w3.org/2005/Atom"
@@ -79,18 +75,18 @@ TEST_F(KmlHandlerNSTest, TestStartEndNamespace) {
   // StartNamespace will be invoked as follows:
 
   // A NULL prefix means a default namespace begins at this scope.
-  kml_handler_ns_->StartNamespace(NULL, kKmlXmlns.c_str());
+//  kml_handler_ns_->StartNamespace(NULL, kKmlXmlns);
   // The xmlns:atom declaration is passed as follows:
-  kml_handler_ns_->StartNamespace(kAtomPrefix.c_str(), kAtomXmlns.c_str());
+  kml_handler_ns_->StartNamespace(kAtomPrefix, kAtomXmlns);
   // The xmlns:gx declaration is passed as follows:
-  kml_handler_ns_->StartNamespace(kGxPrefix.c_str(), kGxtXmlns.c_str());
+  kml_handler_ns_->StartNamespace(kGxPrefix, kGxtXmlns);
 
   // TODO: Verify that the namespace-prefix map has been populated correctly.
 
   // The namespace declarations will be unwound in EndNamespace as follows:
   kml_handler_ns_->EndNamespace("atom");
   kml_handler_ns_->EndNamespace("gx");
-  kml_handler_ns_->EndNamespace(NULL);
+//  kml_handler_ns_->EndNamespace(NULL);
 }
 
 // This is a test of the StartElement() method for a known simple element.
@@ -126,7 +122,7 @@ TEST_F(KmlHandlerNSTest, TestBasicCharData) {
   const char* kContent = "what is in a name";
 
   kml_handler_ns_->StartElement(kTagName, atts_);
-  kml_handler_ns_->CharData(kContent, static_cast<int>(strlen(kContent)));
+  kml_handler_ns_->CharData(kContent);
   kml_handler_ns_->EndElement(kTagName);
 
   ElementPtr root = kml_handler_ns_->PopRoot();
@@ -160,8 +156,8 @@ TEST_F(KmlHandlerNSTest, TestEndComplexElement) {
 TEST_F(KmlHandlerNSTest, TestStartComplexElementWithAtts) {
   const char* kAttrName = "id";
   const char* kAttrVal = "foo";
-  atts_[0] = kAttrName;
-  atts_[1] = kAttrVal;
+  atts_.push_back(kAttrName);
+  atts_.push_back(kAttrVal);
   kml_handler_ns_->StartElement("http://www.opengis.net/kml/2.2|Placemark",
                                 atts_);
   ElementPtr root = kml_handler_ns_->PopRoot();
@@ -173,7 +169,7 @@ TEST_F(KmlHandlerNSTest, TestStartComplexElementWithAtts) {
 
 // A basic test of namespace-aware parsing.
 TEST_F(KmlHandlerNSTest, TestNamespaceParsing) {
-  const std::string kNamespaceKml =
+  const string kNamespaceKml =
     "<kml xmlns=\"http://www.opengis.net/kml/2.2\""
     "     xmlns:atom=\"http://www.w3.org/2005/Atom\""
     "     xmlns:gx=\"http://earth.google.com/kml/2.2/ext\">"
@@ -185,15 +181,15 @@ TEST_F(KmlHandlerNSTest, TestNamespaceParsing) {
     "</kml>";
 
   Parser parser;
-  std::string errors;
+  string errors;
   ElementPtr root = parser.ParseNS(kNamespaceKml, &errors);
-  ASSERT_TRUE(root);
   ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(root);
 
   // TODO: ultimately the parse is preserved 1:1. Currently the parse will
   // drop the xmlns attrs and the element prefixes so this is a test of an
   // incomplete implementation.
-  const std::string kExpectedSerializedKml =
+  const string kExpectedSerializedKml =
     "<kml>\n"
     "  <Folder>\n"
     "    <name>a KML folder</name>\n"
@@ -201,7 +197,7 @@ TEST_F(KmlHandlerNSTest, TestNamespaceParsing) {
     "    <Tour><name>an extension tour name</name></Tour>\n"
     "  </Folder>\n"
     "</kml>\n";
-  const std::string kSerializedKml = SerializePretty(root);
+  const string kSerializedKml = SerializePretty(root);
   ASSERT_EQ(kExpectedSerializedKml, SerializePretty(root));
 }
 

@@ -33,7 +33,7 @@ class TempFileTest : public testing::Test {
 };
 
 TEST_F(TempFileTest, TestTempFile) {
-  std::string tempfile_name;  // To check successful deletion of tempfile.
+  string tempfile_name;  // To check successful deletion of tempfile.
   {
     TempFilePtr tempfile = TempFile::CreateTempFile();
     // The tempfile was created successfully.
@@ -44,9 +44,9 @@ TEST_F(TempFileTest, TestTempFile) {
     // The tempfile is accessible.
     ASSERT_TRUE(File::Exists(tempfile_name));
     // We can write and read data.
-    const std::string s_written("some data");
+    const string s_written("some data");
     File::WriteStringToFile(s_written, tempfile_name);
-    std::string s_read;
+    string s_read;
     File::ReadFileToString(tempfile_name, &s_read);
     ASSERT_EQ(s_written, s_read);
   }

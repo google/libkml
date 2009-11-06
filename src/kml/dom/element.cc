@@ -57,7 +57,7 @@ void Element::AddElement(const ElementPtr& element) {
 
 // Anything that reaches this level of the hierarchy is an unknown (non-KML)
 // element found during parse.
-void Element::AddUnknownElement(const std::string& s) {
+void Element::AddUnknownElement(const string& s) {
   unknown_elements_array_.push_back(s);
 }
 
@@ -98,7 +98,7 @@ void Element::AddUnknownAttributes(Attributes* attributes) {
       }
     }
     // Split out xmlns= itself.
-    std::string xmlns;
+    string xmlns;
     if (attributes->CutValue("xmlns", &xmlns)) {
       if (!xmlns_.get()) {
         xmlns_.reset(new Attributes);
@@ -131,8 +131,8 @@ void Element::SerializeAttributes(Attributes* attributes) const {
     if (xmlns_.get()) {
       kmlbase::StringMapIterator iter = xmlns_->CreateIterator();
       for (; !iter.AtEnd(); iter.Advance()) {
-        std::string key = iter.Data().first == "xmlns" ? iter.Data().first :
-                          std::string("xmlns:") + iter.Data().first;
+        string key = iter.Data().first == "xmlns" ? iter.Data().first :
+                          string("xmlns:") + iter.Data().first;
         attributes->SetValue(key, iter.Data().second);
       }
     }
@@ -162,6 +162,32 @@ ElementSerializer::~ElementSerializer() {
   element_.SerializeUnknown(serializer_);
   serializer_.End();
 }
+
+// >> Visitor Api Start >>
+Visitor::Status Element::StartVisit(Visitor* v) {
+  return v->VisitElement(ElementPtr(this));
+}
+
+void Element::EndVisit(Visitor* v) {
+  v->VisitElementEnd(ElementPtr(this));
+}
+
+void Element::AcceptChildren(Visitor* v) {
+  /* top level, do nothing */
+}
+
+bool Element::Accept(Visitor* v) {
+  // Because we use StartVisit/EndVisit to do the polymorphic method dispatch
+  // this code is completely generic (in theory it could even be split out
+  // into a driver class, but that's a little harder than it looks).
+  Visitor::Status status = StartVisit(v);
+  if (status == Visitor::CONTINUE) {
+    AcceptChildren(v);
+    EndVisit(v);
+  }
+  return (status != Visitor::REMOVE);
+}
+// << Visitor Api End <<
 
 Field::Field(KmlDomType type_id)
   : Element(type_id), xsd_(*Xsd::GetSchema()) {
@@ -210,7 +236,7 @@ bool Field::SetEnum(int* enum_val) {
   return ret;
 }
 
-bool Field::SetString(std::string* val) {
+bool Field::SetString(string* val) {
   bool ret = false;
   if (val) {
     *val = get_char_data();

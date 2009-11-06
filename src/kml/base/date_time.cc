@@ -45,7 +45,7 @@ char* strptime(const char* buf, const char* format, struct tm* tm) {
 namespace kmlbase {
 
 // static
-DateTime* DateTime::Create(const std::string& str) {
+DateTime* DateTime::Create(const string& str) {
   DateTime* date_time = new DateTime;
   if (date_time->ParseXsdDateTime(str)) {
     return date_time;
@@ -55,7 +55,7 @@ DateTime* DateTime::Create(const std::string& str) {
 }
 
 // static
-time_t DateTime::ToTimeT(const std::string& str) {
+time_t DateTime::ToTimeT(const string& str) {
   boost::scoped_ptr<DateTime> date_time(DateTime::Create(str));
   return date_time.get() ? date_time->GetTimeT() : 0;
 }
@@ -65,21 +65,21 @@ time_t DateTime::GetTimeT() /* const */ {
 }
 
 template<int N>
-std::string DateTime::DoStrftime(const char* format) const {
+string DateTime::DoStrftime(const char* format) const {
   char buf[N];
   strftime(buf, N, format, &tm_);
   return buf;
 }
 
-std::string DateTime::GetXsdTime() const {
+string DateTime::GetXsdTime() const {
   return DoStrftime<9>("%H:%M:%S");
 }
 
-std::string DateTime::GetXsdDate() const {
+string DateTime::GetXsdDate() const {
   return DoStrftime<11>("%Y-%m-%d");
 }
 
-std::string DateTime::GetXsdDateTime() const {
+string DateTime::GetXsdDateTime() const {
   return GetXsdDate() + "T" + GetXsdTime() + "Z";
 }
 
@@ -88,7 +88,7 @@ DateTime::DateTime() {
 }
 
 // private
-bool DateTime::ParseXsdDateTime(const std::string& xsd_date_time) {
+bool DateTime::ParseXsdDateTime(const string& xsd_date_time) {
   // TODO: strptime on win32?
   return strptime(xsd_date_time.c_str(), "%Y-%m-%dT%H:%M:%SZ", &tm_) != NULL;
 }

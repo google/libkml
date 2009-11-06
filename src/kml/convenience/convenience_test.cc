@@ -53,8 +53,8 @@ namespace kmlconvenience {
 
 // This tests the AddExtendedDataValue() function.
 TEST(ConvenienceTest, TestAddExtendedDataValue) {
-  const std::string kName("population");
-  const std::string kValue("42000");
+  const string kName("population");
+  const string kValue("42000");
   PlacemarkPtr placemark = KmlFactory::GetFactory()->CreatePlacemark();
   AddExtendedDataValue(kName, kValue, placemark);
   ASSERT_TRUE(placemark->has_extendeddata());
@@ -68,7 +68,7 @@ TEST(ConvenienceTest, TestAddExtendedDataValue) {
 
 // This tests the CreateAnimatedUpdateChangePoint() function.
 TEST(ConvenienceTest, TestCreateAnimatedUpdateChangePoint) {
-  const std::string kTargetId("targetId");
+  const string kTargetId("targetId");
   const kmlbase::Vec3 kVec3(1.1, 2.2, 3.3);
   const double kDuration = 12.3;
   GxAnimatedUpdatePtr animated_update =
@@ -78,7 +78,7 @@ TEST(ConvenienceTest, TestCreateAnimatedUpdateChangePoint) {
   UpdatePtr update = animated_update->get_update();
   ASSERT_TRUE(update);
   ASSERT_TRUE(update->has_targethref());
-  ASSERT_EQ(std::string(""), update->get_targethref());
+  ASSERT_EQ(string(""), update->get_targethref());
   ASSERT_EQ(static_cast<size_t>(1), update->get_updateoperation_array_size());
   ASSERT_EQ(kmldom::Type_Change,
             update->get_updateoperation_array_at(0)->Type());
@@ -157,8 +157,8 @@ TEST(ConvenienceTest, TestCreateCoordinatesCircle) {
 
 // This tests the CreateDataNameValue() function.
 TEST(ConvenienceTest, TestCreateDataNameValue) {
-  const std::string kName("par");
-  const std::string kValue("5");
+  const string kName("par");
+  const string kValue("5");
   DataPtr data = CreateDataNameValue(kName, kValue);
   ASSERT_TRUE(data);
   ASSERT_EQ(kName, data->get_name());
@@ -304,7 +304,7 @@ TEST(ConvenienceTest, TestCreatePointLatLon) {
 
 // This tests the CreatePointPlacemark() function.
 TEST(ConvenienceTest, TestCreatePointPlacemark) {
-  const std::string kName("my point placemark");
+  const string kName("my point placemark");
   const double kLat = 38.0987123;
   const double kLon = -123.123;
   PlacemarkPtr placemark = CreatePointPlacemark(kName, kLat, kLon);
@@ -323,7 +323,7 @@ TEST(ConvenienceTest, TestCreatePointPlacemark) {
 
 // This tests the PointPlacemarkWithTimeStamp() function.
 TEST(ConvenienceTest, TestCreatePointPlacemarkWithTimeStamp) {
-  const std::string kWhen("2008-10-03T09:25:42Z");
+  const string kWhen("2008-10-03T09:25:42Z");
   PointPtr point = KmlFactory::GetFactory()->CreatePoint();
   boost::scoped_ptr<DateTime> date_time(DateTime::Create(kWhen));
   const char* style_id("my-shared-style");
@@ -372,26 +372,26 @@ TEST(ConvenienceTest, TestCreateWait) {
 
 // This tests the GetExtendedDataValue() function.
 TEST(ConvenienceTest, TestGetExtendedDataValue) {
-  const std::string kName("yardage");
-  const std::string kValue("0");
+  const string kName("yardage");
+  const string kValue("0");
   PlacemarkPtr placemark = CreatePointPlacemark("19", 38, -122);
   AddExtendedDataValue(kName, kValue, placemark);
-  std::string value;
+  string value;
   ASSERT_TRUE(GetExtendedDataValue(placemark, kName, &value));
   ASSERT_EQ(kValue, value);
-  const std::string kNoSuch("no-such-name");
+  const string kNoSuch("no-such-name");
   ASSERT_FALSE(GetExtendedDataValue(placemark, kNoSuch, &value));
 }
 
 // This tests the SetExtendedDataValue() function.
 TEST(ConvenienceTest, TestSetExtendedDataValue) {
-  const std::string kName0("name0");
-  const std::string kValue0("value0");
-  const std::string kName1("name1");
-  const std::string kValue1("value1");
+  const string kName0("name0");
+  const string kValue0("value0");
+  const string kName1("name1");
+  const string kValue1("value1");
   PlacemarkPtr placemark = CreatePointPlacemark("19", 38, -122);
   SetExtendedDataValue(kName0, kValue0, placemark);
-  std::string value;
+  string value;
   ASSERT_TRUE(GetExtendedDataValue(placemark, kName0, &value));
   ASSERT_EQ(kValue0, value);
   SetExtendedDataValue(kName1, kValue1, placemark);

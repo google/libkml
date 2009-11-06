@@ -72,7 +72,6 @@
 #ifndef KML_DOM_GEOMETRY_H__
 #define KML_DOM_GEOMETRY_H__
 
-#include <string>
 #include <vector>
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
@@ -112,7 +111,7 @@ class Coordinates : public BasicElement<Type_coordinates> {
 
   // Internal methods used in parser.  Public for unittest purposes.
   // See .cc for more details.
-  void Parse(const std::string& char_data);
+  void Parse(const string& char_data);
   static bool ParseVec3(const char* coords, char** nextp, kmlbase::Vec3* vec);
 
   // This clears the internal coordinates array.
@@ -231,7 +230,7 @@ class CoordinatesGeometryCommon : public ExtrudeGeometryCommon {
 
  public:
   // <coordinates>
-  const CoordinatesPtr get_coordinates() const { return coordinates_; }
+  const CoordinatesPtr& get_coordinates() const { return coordinates_; }
   bool has_coordinates() const { return coordinates_ != NULL; }
   void set_coordinates(const CoordinatesPtr& coordinates) {
     SetComplexChild(coordinates, &coordinates_);
@@ -336,7 +335,7 @@ class BoundaryCommon : public Element {
   virtual ~BoundaryCommon();
 
  public:
-  const LinearRingPtr get_linearring() const { return linearring_; }
+  const LinearRingPtr& get_linearring() const { return linearring_; }
   bool has_linearring() const { return linearring_ != NULL; }
   void set_linearring(const LinearRingPtr& linearring) {
     SetComplexChild(linearring, &linearring_);
@@ -409,7 +408,7 @@ class Polygon : public ExtrudeGeometryCommon {
   }
 
   // <outerBoundaryIs>
-  const OuterBoundaryIsPtr get_outerboundaryis() const {
+  const OuterBoundaryIsPtr& get_outerboundaryis() const {
     return outerboundaryis_;
   }
   bool has_outerboundaryis() const { return outerboundaryis_ != NULL; }

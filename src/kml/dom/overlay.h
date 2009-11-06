@@ -40,6 +40,7 @@
 #include "kml/dom/link.h"
 #include "kml/dom/object.h"
 #include "kml/dom/vec2.h"
+#include "kml/dom/visitor.h"
 
 namespace kmldom {
 
@@ -97,6 +98,13 @@ class Overlay : public Feature {
     set_icon(NULL);
   }
 
+  // >> Visitor Api Start [Overlay] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  virtual void AcceptChildren(Visitor* v);
+  // << Visitor Api End [Overlay] <<
  protected:
   // Overlay is abstract.
   Overlay();
@@ -163,7 +171,7 @@ class GxLatLonQuad : public Object {
   }
 
   // <coordinates>
-  const CoordinatesPtr get_coordinates() const { return coordinates_; }
+  const CoordinatesPtr& get_coordinates() const { return coordinates_; }
   bool has_coordinates() const { return coordinates_ != NULL; }
   void set_coordinates(const CoordinatesPtr& coordinates) {
     SetComplexChild(coordinates, &coordinates_);
@@ -259,6 +267,14 @@ class GroundOverlay : public Overlay {
   void clear_gx_latlonquad() {
     set_gx_latlonquad(NULL);
   }
+
+  // >> Visitor Api Start [GroundOverlay] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  virtual void AcceptChildren(Visitor* v);
+  // << Visitor Api End [GroundOverlay] <<
 
  private:
   friend class KmlFactory;
@@ -404,6 +420,14 @@ class ScreenOverlay : public Overlay {
     rotation_ = 0.0;
     has_rotation_ = false;
   }
+
+  // >> Visitor Api Start [ScreenOverlay] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  virtual void AcceptChildren(Visitor* v);
+  // << Visitor Api End [ScreenOverlay] <<
 
  private:
   friend class KmlFactory;
@@ -691,6 +715,14 @@ class PhotoOverlay : public Overlay {
     shape_ = SHAPE_RECTANGLE;
     has_shape_ = false;
   }
+
+  // >> Visitor Api Start [PhotoOverlay] >>
+  // This section contains auto-generated code to implement a visitor pattern.
+  // See <some document> for more information.
+  virtual Visitor::Status StartVisit(Visitor* v);
+  virtual void EndVisit(Visitor* v);
+  virtual void AcceptChildren(Visitor* v);
+  // << Visitor Api End [PhotoOverlay] <<
 
  private:
   friend class KmlFactory;

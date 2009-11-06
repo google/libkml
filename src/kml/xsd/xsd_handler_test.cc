@@ -49,19 +49,14 @@ namespace kmlxsd {
 class XsdHandlerTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    // Emulate expat's xmlparse.c:startAtts().
-    // 16 == xmlparse.c's INIT_ATTS_SIZE
-    // Note use of calloc avoids need to null terminate in tests.
-    atts_ = static_cast<const char**>(calloc(16, sizeof(char*)));
     xsd_file_.reset(new XsdFile);
     xsd_handler_.reset(new XsdHandler(xsd_file_.get()));
   }
   virtual void TearDown() {
-    free(atts_);
   }
 
   void ParseKml21Xsd();
-  const char** atts_;
+  kmlbase::StringVector atts_;
   boost::scoped_ptr<XsdFile> xsd_file_;
   boost::scoped_ptr<XsdHandler> xsd_handler_;
 };
@@ -70,7 +65,7 @@ class XsdHandlerTest : public testing::Test {
 TEST_F(XsdHandlerTest, TestBasicBeginDataEnd) {
   const char* kElement = "vanilla";
   xsd_handler_->StartElement(kElement, atts_);  // <vanilla>
-  xsd_handler_->CharData(NULL, 0);  // no content
+//  xsd_handler_->CharData(NULL);  // no content
   xsd_handler_->EndElement(kElement);  // </vanilla>
 }
 
@@ -79,13 +74,13 @@ TEST_F(XsdHandlerTest, TestSchema) {
   // Send down:
   //   <schema xmlns:prefix="my:cool:namespace"
   //           targetNamespace="my:cool:namespace"/>
-  atts_[0] = "xmlns:prefix";
-  atts_[1] = "my:cool:namespace";
-  atts_[2] = "targetNamespace";
-  atts_[3] = atts_[1];
+  atts_.push_back("xmlns:prefix");
+  atts_.push_back("my:cool:namespace");
+  atts_.push_back("targetNamespace");
+  atts_.push_back(atts_[1]);
   xsd_handler_->StartElement(kSchema, atts_);
   xsd_handler_->EndElement(kSchema);
-  ASSERT_EQ(std::string(atts_[1]),
+  ASSERT_EQ(string(atts_[1]),
                        xsd_file_->get_target_namespace());
 } 
 
@@ -103,9 +98,9 @@ TEST_F(XsdHandlerTest, TestElement) {
   xsd_handler_->StartElement(kSchema, atts_);
 
   // <xs:element name="..."/>
-  atts_[0] = kName;
+  atts_.push_back(kName);
   // <xs:element name="vanilla"/>
-  atts_[1] = kVanilla;
+  atts_.push_back(kVanilla);
   xsd_handler_->StartElement(kElement, atts_);
   xsd_handler_->EndElement(kElement);
 
@@ -114,7 +109,7 @@ TEST_F(XsdHandlerTest, TestElement) {
 
   // An <xs:element> of <xs:schema> puts it in the element name list.
   ASSERT_EQ(static_cast<size_t>(1), element_names.size());
-  ASSERT_EQ(std::string(kVanilla), element_names[0]->get_name());
+  ASSERT_EQ(string(kVanilla), element_names[0]->get_name());
 
   // Send down a 2nd
   // <xs:element name="chocolate"/>
@@ -125,15 +120,15 @@ TEST_F(XsdHandlerTest, TestElement) {
   xsd_file_->GetAllElements(&element_names);
   ASSERT_EQ(static_cast<size_t>(2), element_names.size());
   // NOTE: This ordering is due to the internal STL map.
-  ASSERT_EQ(std::string(kChocolate), element_names[0]->get_name());
-  ASSERT_EQ(std::string(kVanilla), element_names[1]->get_name());
+  ASSERT_EQ(string(kChocolate), element_names[0]->get_name());
+  ASSERT_EQ(string(kVanilla), element_names[1]->get_name());
 }
 
 void XsdHandlerTest::ParseKml21Xsd() {
-  const std::string kKml21Xsd(File::JoinPaths(DATADIR,
+  const string kKml21Xsd(File::JoinPaths(DATADIR,
                                               File::JoinPaths("xsd",
                                                               "kml21.xsd")));
-  std::string xsd;
+  string xsd;
   ASSERT_TRUE(File::ReadFileToString(kKml21Xsd, &xsd));
   xsd_file_.reset(XsdFile::CreateFromParse(xsd, NULL));
   ASSERT_TRUE(xsd_file_.get());
@@ -145,9 +140,9 @@ TEST_F(XsdHandlerTest, TestGetKml21ElementNames) {
   XsdElementVector element_names;
   xsd_file_->GetAllElements(&element_names);
   ASSERT_EQ(static_cast<size_t>(40), element_names.size());
-  ASSERT_EQ(std::string("BalloonStyle"), element_names[0]->get_name());
-  ASSERT_EQ(std::string("Document"), element_names[1]->get_name());
-  ASSERT_EQ(std::string("styleUrl"), element_names[39]->get_name());
+  ASSERT_EQ(string("BalloonStyle"), element_names[0]->get_name());
+  ASSERT_EQ(string("Document"), element_names[1]->get_name());
+  ASSERT_EQ(string("styleUrl"), element_names[39]->get_name());
 }
 
 // Verify processing of <xs:element> and <xs:complexType> on a real XSD.
@@ -182,25 +177,25 @@ TEST_F(XsdHandlerTest, TestGetKml21ElementChildren) {
   XsdElementVector feature_children;
   xsd_file_->GetChildElements("Feature", &feature_children);
   ASSERT_EQ(static_cast<size_t>(13), feature_children.size());
-  ASSERT_EQ(std::string("name"), feature_children[0]->get_name());
-  ASSERT_EQ(std::string("visibility"),
+  ASSERT_EQ(string("name"), feature_children[0]->get_name());
+  ASSERT_EQ(string("visibility"),
                        feature_children[1]->get_name());
-  ASSERT_EQ(std::string("open"), feature_children[2]->get_name());
-  ASSERT_EQ(std::string("address"), feature_children[3]->get_name());
-  ASSERT_EQ(std::string("phoneNumber"),
+  ASSERT_EQ(string("open"), feature_children[2]->get_name());
+  ASSERT_EQ(string("address"), feature_children[3]->get_name());
+  ASSERT_EQ(string("phoneNumber"),
                        feature_children[4]->get_name());
-  ASSERT_EQ(std::string("Snippet"), feature_children[5]->get_name());
-  ASSERT_EQ(std::string("description"),
+  ASSERT_EQ(string("Snippet"), feature_children[5]->get_name());
+  ASSERT_EQ(string("description"),
                        feature_children[6]->get_name());
-  ASSERT_EQ(std::string("LookAt"), feature_children[7]->get_name());
-  ASSERT_EQ(std::string("TimePrimitive"),
+  ASSERT_EQ(string("LookAt"), feature_children[7]->get_name());
+  ASSERT_EQ(string("TimePrimitive"),
                        feature_children[8]->get_name());
-  ASSERT_EQ(std::string("styleUrl"),
+  ASSERT_EQ(string("styleUrl"),
                        feature_children[9]->get_name());
-  ASSERT_EQ(std::string("StyleSelector"),
+  ASSERT_EQ(string("StyleSelector"),
                        feature_children[10]->get_name());
-  ASSERT_EQ(std::string("Region"), feature_children[11]->get_name());
-  ASSERT_EQ(std::string("Metadata"),
+  ASSERT_EQ(string("Region"), feature_children[11]->get_name());
+  ASSERT_EQ(string("Metadata"),
                        feature_children[12]->get_name());
 }
 
@@ -216,9 +211,9 @@ TEST_F(XsdHandlerTest, TestGetKml21ExtensionBase) {
   std::vector<XsdComplexTypePtr> type_hier;
   ASSERT_TRUE(xsd_file_->GetTypeHierarchy(groundoverlay, &type_hier));
   ASSERT_EQ(static_cast<size_t>(3), type_hier.size());
-  ASSERT_EQ(std::string("OverlayType"), type_hier[0]->get_name());
-  ASSERT_EQ(std::string("FeatureType"), type_hier[1]->get_name());
-  ASSERT_EQ(std::string("ObjectType"), type_hier[2]->get_name());
+  ASSERT_EQ(string("OverlayType"), type_hier[0]->get_name());
+  ASSERT_EQ(string("FeatureType"), type_hier[1]->get_name());
+  ASSERT_EQ(string("ObjectType"), type_hier[2]->get_name());
 }
 
 // Verify processing of <xs:simpleType>, <xs:restriction base="..."/>,
@@ -229,13 +224,13 @@ TEST_F(XsdHandlerTest, TestGetKml21Enumeration) {
       xsd_file_->FindType("altitudeModeEnum"));
   ASSERT_TRUE(altitude_mode_enum);
   ASSERT_TRUE(altitude_mode_enum->IsEnumeration());
-  ASSERT_EQ(std::string("string"), altitude_mode_enum->get_restriction_base());
+  ASSERT_EQ(string("string"), altitude_mode_enum->get_restriction_base());
   ASSERT_EQ(static_cast<size_t>(3), altitude_mode_enum->get_enumeration_size());
-  ASSERT_EQ(std::string("clampToGround"),
+  ASSERT_EQ(string("clampToGround"),
             altitude_mode_enum->get_enumeration_at(0));
-  ASSERT_EQ(std::string("relativeToGround"),
+  ASSERT_EQ(string("relativeToGround"),
                        altitude_mode_enum->get_enumeration_at(1));
-  ASSERT_EQ(std::string("absolute"), altitude_mode_enum->get_enumeration_at(2));
+  ASSERT_EQ(string("absolute"), altitude_mode_enum->get_enumeration_at(2));
 }
 
 }  // end namespace kmlxsd

@@ -312,7 +312,7 @@ TEST(AbstractViewTest, TestParseSerializeGxAltitudeMode) {
   camera->set_latitude(37.0);
   camera->set_longitude(-122.0);
   camera->set_gx_altitudemode(GX_ALTITUDEMODE_RELATIVETOSEAFLOOR);
-  const std::string kCameraExpected =
+  const string kCameraExpected =
     "<Camera>"
     "<longitude>-122</longitude>"
     "<latitude>37</latitude>"
@@ -326,7 +326,7 @@ TEST(AbstractViewTest, TestParseSerializeGxAltitudeMode) {
   lookat->set_latitude(37.0);
   lookat->set_longitude(-122.0);
   lookat->set_gx_altitudemode(GX_ALTITUDEMODE_CLAMPTOSEAFLOOR);
-  const std::string kLookAtExpected =
+  const string kLookAtExpected =
     "<LookAt>"
     "<longitude>-122</longitude>"
     "<latitude>37</latitude>"
@@ -345,7 +345,7 @@ TEST(AbstractViewTest, TestGxTimePrimitives) {
   camera->set_longitude(-122.0);
   GxTimeSpanPtr gx_timespan = factory->CreateGxTimeSpan();
   camera->set_gx_timeprimitive(gx_timespan);
-  const std::string kCameraExpected =
+  const string kCameraExpected =
     "<Camera>"
     "<gx:TimeSpan/>"
     "<longitude>-122</longitude>"
@@ -360,7 +360,7 @@ TEST(AbstractViewTest, TestGxTimePrimitives) {
   lookat->set_longitude(-122.0);
   GxTimeStampPtr gx_timestamp = factory->CreateGxTimeStamp();
   lookat->set_gx_timeprimitive(gx_timestamp);
-  const std::string kLookAtExpected =
+  const string kLookAtExpected =
     "<LookAt>"
     "<gx:TimeStamp/>"
     "<longitude>-122</longitude>"

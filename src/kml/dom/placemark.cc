@@ -56,4 +56,21 @@ void Placemark::Serialize(Serializer& serializer) const {
   }
 }
 
+// >> Visitor Api Start [Placemark] >>
+Visitor::Status Placemark::StartVisit(Visitor* v) {
+  return v->VisitPlacemark(PlacemarkPtr(this));
+}
+
+void Placemark::EndVisit(Visitor* v) {
+  v->VisitPlacemarkEnd(PlacemarkPtr(this));
+}
+
+void Placemark::AcceptChildren(Visitor* v) {
+  Feature::AcceptChildren(v);
+  if (has_geometry() && !get_geometry()->Accept(v)) {
+    clear_geometry();
+  }
+}
+// << Visitor Api End [Placemark] <<
+
 }  // namespace kmldom

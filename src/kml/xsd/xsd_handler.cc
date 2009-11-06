@@ -56,7 +56,7 @@ void XsdHandler::EndType() {
 void XsdHandler::StartExtension(const Attributes& attributes) {
   if (XsdComplexTypePtr complex_type =
           XsdComplexType::AsComplexType(current_type_)) {
-    std::string base;
+    string base;
     if (attributes.GetString(kBase, &base)) {
       complex_type->set_extension_base(base);
     }
@@ -74,7 +74,7 @@ void XsdHandler::StartSimpleType(const Attributes& attributes) {
 void XsdHandler::StartRestriction(const Attributes& attributes) {
   if (XsdSimpleTypePtr simple_type =
           XsdSimpleType::AsSimpleType(current_type_)) {
-    std::string base;
+    string base;
     if (attributes.GetString(kBase, &base)) {
       simple_type->set_restriction_base(base);
     }
@@ -85,7 +85,7 @@ void XsdHandler::StartRestriction(const Attributes& attributes) {
 void XsdHandler::StartEnumeration(const Attributes& attributes) {
   if (XsdSimpleTypePtr simple_type =
           XsdSimpleType::AsSimpleType(current_type_)) {
-    std::string value;
+    string value;
     if (attributes.GetString(kValue, &value)) {
       simple_type->add_enumeration(value);
     }
@@ -111,21 +111,23 @@ void XsdHandler::StartXsElement(const Attributes& attributes) {
 }
 
 // ExpatHandler::StartElement
-void XsdHandler::StartElement(const char *xs_element_name, const char **atts) {
+void XsdHandler::StartElement(const string& xs_element_name,
+                              const kmlbase::StringVector& atts) {
   boost::scoped_ptr<Attributes> attributes(Attributes::Create(atts));
-  if (strcmp(xs_element_name, kSchema) == 0) {
+
+  if (xs_element_name.compare(kSchema) == 0) {
     xsd_file_->set_schema(XsdSchema::Create(*attributes));
-  } else if (strcmp(xs_element_name, kElement) == 0) {
+  } else if (xs_element_name.compare(kElement) == 0) {
     StartXsElement(*attributes);
-  } else if (strcmp(xs_element_name, kComplexType) == 0) {
+  } else if (xs_element_name.compare(kComplexType) == 0) {
     StartComplexType(*attributes);
-  } else if (strcmp(xs_element_name, kExtension) == 0) {
+  } else if (xs_element_name.compare(kExtension) == 0) {
     StartExtension(*attributes);
-  } else if (strcmp(xs_element_name, kSimpleType) == 0) {
+  } else if (xs_element_name.compare(kSimpleType) == 0) {
     StartSimpleType(*attributes);
-  } else if (strcmp(xs_element_name, kRestriction) == 0) {
+  } else if (xs_element_name.compare(kRestriction) == 0) {
     StartRestriction(*attributes);
-  } else if (strcmp(xs_element_name, kEnumeration) == 0) {
+  } else if (xs_element_name.compare(kEnumeration) == 0) {
     StartEnumeration(*attributes);
   }
 
@@ -134,12 +136,12 @@ void XsdHandler::StartElement(const char *xs_element_name, const char **atts) {
 }
 
 // ExpatHandler::EndElement
-void XsdHandler::EndElement(const char *xs_element_name) {
+void XsdHandler::EndElement(const string& xs_element_name) {
   // Always pop, because we always push in StartElement().
   parse_.pop();
-  if (strcmp(xs_element_name, kComplexType) == 0) {
+  if (xs_element_name.compare(kComplexType) == 0) {
     EndType();
-  } else if (strcmp(xs_element_name, kSimpleType) == 0) {
+  } else if (xs_element_name.compare(kSimpleType) == 0) {
     EndType();
   }
 }

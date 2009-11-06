@@ -28,7 +28,6 @@
 #ifndef KML_BASE_ZIP_FILE_H__
 #define KML_BASE_ZIP_FILE_H__
 
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/string_util.h"
 #include "kml/base/util.h"
@@ -46,7 +45,7 @@ class ZipFile {
  public:
   // Open a ZIP file in-memory suitable for reading. Will return NULL on any
   // internal error.
-  static ZipFile* OpenFromString(const std::string& zip_data);
+  static ZipFile* OpenFromString(const string& zip_data);
 
   // Open a ZIP file at file_path suitable for reading. Will return NULL on any
   // internal error.
@@ -69,14 +68,14 @@ class ZipFile {
 
   // Returns true if zip_data looks like a PK ZIP archive. This is the only
   // supported ZIP variant.
-  static bool IsZipData(const std::string& zip_data);
+  static bool IsZipData(const string& zip_data);
 
   // Finds the first file in the ZIP file that ends with the given file
   // extension and writes the entire path into path_in_zip. Returns false
   // if no file with the given extension exists in the archive or if
   // path_in_zip is NULL.
-  bool FindFirstOf(const std::string& file_extension,
-                   std::string* path_in_zip) const;
+  bool FindFirstOf(const string& file_extension,
+                   string* path_in_zip) const;
 
   // Returns the table of contents for the ZIP file. The StringVector
   // is not cleared before writing. Returns false if the pointer is invalid.
@@ -87,15 +86,15 @@ class ZipFile {
   bool GetToc(StringVector* subfiles) const;
 
   // Is the requested path in the ZIP file's table of contents?
-  bool IsInToc(const std::string& path_in_zip) const;
+  bool IsInToc(const string& path_in_zip) const;
 
   // Returns the contents of path_in_zip in the ZIP file. Returns true
   // if path_in_zip exists in the ZIP file. If output is a valid pointer
   // the data of path_in_zip are read into it.
-  bool GetEntry(const std::string& path_in_zip, std::string* output) const;
+  bool GetEntry(const string& path_in_zip, string* output) const;
 
   // Returns the raw bytes of this ZipFile.
-  const std::string& get_data() const { return data_; }
+  const string& get_data() const { return data_; }
 
   // Writes data to path_in_zip. The path must be relative to the root of the
   // archive. e.g. AddEntry(data, "somedir/file.png"). Specifically, paths that
@@ -104,15 +103,15 @@ class ZipFile {
   // have been created with ZipFile::Create. If it wasn't false is returned.
   // Note that a second call to AddEntry with new data to the same path is
   // essentially a NOP. True will be returned, but the data is unchanged.
-  bool AddEntry(const std::string& data, const std::string& path_in_zip);
+  bool AddEntry(const string& data, const string& path_in_zip);
 
  private:
   // The constructor used to open a ZIP file in-memory, suitable for reading.
-  ZipFile(const std::string& data);
+  ZipFile(const string& data);
   // The constructor used in creation of a ZIP file suitable for writing.
   ZipFile(MinizipFile* minizip_file);
   boost::scoped_ptr<MinizipFile> minizip_file_;
-  std::string data_;
+  string data_;
   StringVector zipfile_toc_;
   unsigned long max_uncompressed_file_size_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(ZipFile);

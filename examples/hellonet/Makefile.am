@@ -7,8 +7,8 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = getgmapkml kmlwalk kmzfetch listfeed listgmaps resolvestyle \
-                  uploadgmap xsdprint
+noinst_PROGRAMS = getgmapkml getgsheetkml kmlwalk kmzfetch listfeed listgmaps \
+		resolvestyle uploadgmap xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -17,6 +17,14 @@ libcurlfetch_la_LIBADD = -lcurl
 
 getgmapkml_SOURCES = getgmapkml.cc
 getgmapkml_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+getgsheetkml_SOURCES = getgsheetkml.cc
+getgsheetkml_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \

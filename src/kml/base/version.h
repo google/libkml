@@ -28,7 +28,7 @@
 #ifndef KML_BASE_VERSION_H__
 #define KML_BASE_VERSION_H__
 
-#include <string>
+#include "kml/base/util.h"
 
 namespace kmlbase {
 
@@ -44,7 +44,7 @@ namespace kmlbase {
 class Version {
  public:
   // This returns the major.minor.micro in string form.
-  static std::string GetString();
+  static string GetString();
 
   // This is an advisory method which provides the given libkml instance the
   // oportunity to guess at its compatibility with the given version info.

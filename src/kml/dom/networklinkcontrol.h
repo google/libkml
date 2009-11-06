@@ -157,9 +157,9 @@ class Update : public BasicElement<Type_Update> {
   virtual ~Update();
 
   // <targetHref>
-  const std::string& get_targethref() const { return targethref_; }
+  const string& get_targethref() const { return targethref_; }
   bool has_targethref() const { return has_targethref_; }
-  void set_targethref(const std::string& targethref) {
+  void set_targethref(const string& targethref) {
     targethref_ = targethref;
     has_targethref_ = true;
   }
@@ -189,7 +189,7 @@ class Update : public BasicElement<Type_Update> {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  std::string targethref_;
+  string targethref_;
   bool has_targethref_;
   std::vector<UpdateOperationPtr> updateoperation_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Update);
@@ -225,9 +225,9 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   }
 
   // <cookie>
-  const std::string& get_cookie() const { return cookie_; }
+  const string& get_cookie() const { return cookie_; }
   bool has_cookie() const { return has_cookie_; }
-  void set_cookie(const std::string& cookie) {
+  void set_cookie(const string& cookie) {
     cookie_ = cookie;
     has_cookie_ = true;
   }
@@ -237,9 +237,9 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   }
 
   // <message>
-  const std::string& get_message() const { return message_; }
+  const string& get_message() const { return message_; }
   bool has_message() const { return has_message_; }
-  void set_message(const std::string& message) {
+  void set_message(const string& message) {
     message_ = message;
     has_message_ = true;
   }
@@ -249,9 +249,9 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   }
 
   // <linkName>
-  const std::string& get_linkname() const { return linkname_; }
+  const string& get_linkname() const { return linkname_; }
   bool has_linkname() const { return has_linkname_; }
-  void set_linkname(const std::string& linkname) {
+  void set_linkname(const string& linkname) {
     linkname_ = linkname;
     has_linkname_ = true;
   }
@@ -261,9 +261,9 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   }
 
   // <linkDescription>
-  const std::string& get_linkdescription() const { return linkdescription_; }
+  const string& get_linkdescription() const { return linkdescription_; }
   bool has_linkdescription() const { return has_linkdescription_; }
-  void set_linkdescription(const std::string& linkdescription) {
+  void set_linkdescription(const string& linkdescription) {
     linkdescription_ = linkdescription;
     has_linkdescription_ = true;
   }
@@ -283,9 +283,9 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   }
 
   // <expires>
-  const std::string& get_expires() const { return expires_; }
+  const string& get_expires() const { return expires_; }
   bool has_expires() const { return has_expires_; }
-  void set_expires(const std::string& expires) {
+  void set_expires(const string& expires) {
     expires_ = expires;
     has_expires_ = true;
   }
@@ -325,16 +325,16 @@ class NetworkLinkControl : public BasicElement<Type_NetworkLinkControl> {
   bool has_minrefreshperiod_;
   double maxsessionlength_;
   bool has_maxsessionlength_;
-  std::string cookie_;
+  string cookie_;
   bool has_cookie_;
-  std::string message_;
+  string message_;
   bool has_message_;
-  std::string linkname_;
+  string linkname_;
   bool has_linkname_;
-  std::string linkdescription_;
+  string linkdescription_;
   bool has_linkdescription_;
   LinkSnippetPtr linksnippet_;
-  std::string expires_;
+  string expires_;
   bool has_expires_;
   UpdatePtr update_;
   AbstractViewPtr abstractview_;

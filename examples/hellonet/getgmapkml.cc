@@ -37,8 +37,9 @@
 #include "kml/convenience/http_client.h"
 #include "kml/convenience/google_maps_data.h"
 
+using kmlconvenience::GoogleMapsData;
+
 int main(int argc, char** argv) {
-  const std::string service = "local";  // Google Maps service name is "local".
   std::string user;
   std::string password;
   std::string map_title;
@@ -51,7 +52,8 @@ int main(int argc, char** argv) {
 
   CurlHttpClient* curl_http_client = new CurlHttpClient(
       "libkml:examples:hellonet:getmapkml");
-  if (!curl_http_client->Login("local", user, password)) {
+  if (!curl_http_client->Login(GoogleMapsData::get_service_name(), user,
+                               password)) {
     std::cerr << "Login failed" << std::endl;
     return 1;
   }
@@ -60,8 +62,8 @@ int main(int argc, char** argv) {
 
   // Create a GoogleMapsData client from the logged in HttpClient and
   // get the user's list of maps.
-  boost::scoped_ptr<kmlconvenience::GoogleMapsData> google_maps_data(
-    kmlconvenience::GoogleMapsData::Create(curl_http_client));
+  boost::scoped_ptr<GoogleMapsData> google_maps_data(
+      GoogleMapsData::Create(curl_http_client));
   kmldom::AtomFeedPtr meta_feed = google_maps_data->GetMetaFeed();
   if (!meta_feed.get()) {
     std::cerr << "GetMetaFeed failed" << std::endl;
@@ -88,8 +90,7 @@ again:
   }
 
   std::string feature_feed_uri;
-  if (!kmlconvenience::GoogleMapsData::GetFeatureFeedUri(map_entry,
-                                                         &feature_feed_uri)) {
+  if (!GoogleMapsData::GetFeatureFeedUri(map_entry, &feature_feed_uri)) {
     std::cout << "No Feature Feed for this map?" << std::endl;
     return 1;
   }
@@ -108,7 +109,7 @@ again:
   // Dig out the KML features in the feed and put them in a <Document>.
   kmldom::KmlPtr kml = kmldom::KmlFactory::GetFactory()->CreateKml();
   kmldom::ContainerPtr container =
-      kmlconvenience::GoogleMapsData::CreateDocumentOfMapFeatures(feature_feed);
+      GoogleMapsData::CreateDocumentOfMapFeatures(feature_feed);
   kml->set_feature(container);
 
   std::cout << "There are " << container->get_feature_array_size()

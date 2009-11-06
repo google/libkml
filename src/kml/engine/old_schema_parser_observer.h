@@ -30,7 +30,6 @@
 #define KML_ENGINE_OLD_SCHEMA_PARSER_OBSERVER_H__
 
 #include <map>
-#include <string>
 #include "kml/dom.h"
 #include "kml/dom/parser_observer.h"
 #include "kml/engine/engine_types.h"
@@ -59,7 +58,7 @@ class OldSchemaParserObserver : public kmldom::ParserObserver {
     if (kmldom::ContainerPtr container = kmldom::AsContainer(child)) {
       size_t size = container->get_unknown_elements_array_size();
       for (size_t i = 0; i < size; ++i) {
-        std::string errors;
+        string errors;
         // TODO: this can fail if the original pass through had CDATA sections
         // in <description>, for example, which were stripped going into the
         // unknown elements array.

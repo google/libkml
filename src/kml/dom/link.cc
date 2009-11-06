@@ -44,12 +44,12 @@ BasicLink::~BasicLink() {
 static const char *kCdataOpen = "<![CDATA[";
 
 static bool SetStringInsideCdata(ElementPtr element,
-                                 const std::string& char_data,
-                                 std::string* val) {
+                                 const string& char_data,
+                                 string* val) {
   if (!element) {
     return false;
   }
-  std::string::size_type offset = strlen(kCdataOpen);
+  string::size_type offset = strlen(kCdataOpen);
   if (char_data.compare(0, offset, kCdataOpen, offset) == 0) {
     *val = char_data.substr(offset, char_data.size() - offset - 3);
     return true;

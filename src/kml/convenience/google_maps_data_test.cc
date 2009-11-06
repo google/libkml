@@ -23,8 +23,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <iostream>
-
 // This file contains the unit test for the GoogleMapsData class.
 
 #include "kml/convenience/google_maps_data.h"
@@ -64,10 +62,10 @@ class EchoHttpClient : public HttpClient {
   }
 
   virtual bool SendRequest(HttpMethodEnum http_method,
-                           const std::string& request_uri,
+                           const string& request_uri,
                            const StringPairVector* request_headers,
-                           const std::string* post_data,
-                           std::string* response) const {
+                           const string* post_data,
+                           string* response) const {
     if (post_data && response) {
       *response = *post_data;
     }
@@ -81,9 +79,19 @@ TEST_F(GoogleMapsDataTest, TestNullCreate) {
   ASSERT_FALSE(GoogleMapsData::Create(NULL));
 }
 
+TEST_F(GoogleMapsDataTest, TestGetConstants) {
+  // Assert merely that the constant getters exist and return something.
+  const char* service_name = GoogleMapsData::get_service_name();
+  ASSERT_TRUE(service_name);
+  ASSERT_TRUE(strlen(service_name));  // It's a null terminated C string.
+  const char* metafeed_uri = GoogleMapsData::get_metafeed_uri();
+  ASSERT_TRUE(metafeed_uri);
+  ASSERT_TRUE(strlen(metafeed_uri));  // It's a null terminated C string.
+}
+
 // This tests basic use of the Create method and the get_scope() method.
 TEST_F(GoogleMapsDataTest, TestBasicCreate) {
-  const std::string kScope = "http://host.com:123";
+  const string kScope = "http://host.com:123";
   ASSERT_EQ(0, setenv("GOOGLE_MAPS_DATA_SCOPE", kScope.c_str(), 1));
   google_maps_data_.reset(
       GoogleMapsData::Create(new HttpClient("TestBasicCreate")));
@@ -104,51 +112,51 @@ TEST_F(GoogleMapsDataTest, TestGetMetaFeedXml) {
   http_client->Login("local", "user@gmail.com", "user-password");
   google_maps_data_.reset(GoogleMapsData::Create(http_client));
   ASSERT_TRUE(google_maps_data_.get());
-  std::string map_feed;
+  string map_feed;
   ASSERT_TRUE(google_maps_data_->GetMetaFeedXml(&map_feed));
   size_t end_of_first_line = map_feed.find('\n');
-  ASSERT_NE(std::string::npos, end_of_first_line);
-  ASSERT_EQ(std::string("GET ") + google_maps_data_->get_scope() +
-                google_maps_data_->get_map_feed_uri(),
+  ASSERT_NE(string::npos, end_of_first_line);
+  ASSERT_EQ(string("GET ") + google_maps_data_->get_scope() +
+                google_maps_data_->get_metafeed_uri(),
             map_feed.substr(0, end_of_first_line));
 }
 
 TEST_F(GoogleMapsDataTest, TestGetMetaFeed) {
   google_maps_data_.reset(
       GoogleMapsData::Create(new OneFileHttpClient(
-          std::string(DATADIR) + "/gmaps/metafeed.xml")));
+          string(DATADIR) + "/gmaps/metafeed.xml")));
   ASSERT_TRUE(google_maps_data_.get());
   // Call the method under test.
   kmldom::AtomFeedPtr atom_feed = google_maps_data_->GetMetaFeed();
   ASSERT_TRUE(atom_feed.get());
   // Check a few things known to be in metafeed.xml:
-  ASSERT_EQ(std::string("My maps"), atom_feed->get_title());
+  ASSERT_EQ(string("My maps"), atom_feed->get_title());
   ASSERT_EQ(static_cast<size_t>(5), atom_feed->get_link_array_size());
   ASSERT_EQ(static_cast<size_t>(3), atom_feed->get_entry_array_size());
-  ASSERT_EQ(std::string("alaska"),
+  ASSERT_EQ(string("alaska"),
             atom_feed->get_entry_array_at(0)->get_title());
-  ASSERT_EQ(std::string("canada"),
+  ASSERT_EQ(string("canada"),
             atom_feed->get_entry_array_at(1)->get_title());
-  ASSERT_EQ(std::string("this is the title"),
+  ASSERT_EQ(string("this is the title"),
             atom_feed->get_entry_array_at(2)->get_title());
 }
 
 TEST_F(GoogleMapsDataTest, TestGetFeatureFeedUri) {
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::AtomContentPtr content = factory->CreateAtomContent();
-  const std::string kSrc("http://hello.com/how/are/you");
+  const string kSrc("http://hello.com/how/are/you");
   content->set_src(kSrc);
   kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
   entry->set_content(content);
-  std::string feature_feed_uri;
+  string feature_feed_uri;
   ASSERT_TRUE(GoogleMapsData::GetFeatureFeedUri(entry, &feature_feed_uri));
   ASSERT_EQ(kSrc, feature_feed_uri);
 }
 
 TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
-  std::string feature_feed_xml;
+  string feature_feed_xml;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(
-      std::string(DATADIR) + "/gmaps/feature-feed.xml", &feature_feed_xml));
+      string(DATADIR) + "/gmaps/feature-feed.xml", &feature_feed_xml));
   const kmldom::AtomFeedPtr feature_feed =
      AsAtomFeed(kmldom::ParseAtom(feature_feed_xml, NULL));
   ASSERT_TRUE(feature_feed.get());
@@ -160,7 +168,7 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
   kmldom::PlacemarkPtr placemark =
       kmldom::AsPlacemark(container->get_feature_array_at(0));
   ASSERT_TRUE(placemark.get());
-  ASSERT_EQ(std::string("Montana"), placemark->get_name());
+  ASSERT_EQ(string("Montana"), placemark->get_name());
   kmldom::PointPtr point = kmldom::AsPoint(placemark->get_geometry());
   ASSERT_TRUE(point.get());
   kmldom::StylePtr style = kmldom::AsStyle(placemark->get_styleselector());
@@ -176,7 +184,7 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
   // entry 2 is LineString Placemark with LineStyle
   placemark = kmldom::AsPlacemark(container->get_feature_array_at(2));
   ASSERT_TRUE(placemark.get());
-  ASSERT_EQ(std::string("I90 from Missoula to Butte"), placemark->get_name());
+  ASSERT_EQ(string("I90 from Missoula to Butte"), placemark->get_name());
   linestring = kmldom::AsLineString(placemark->get_geometry());
   ASSERT_TRUE(linestring.get());
   style = kmldom::AsStyle(placemark->get_styleselector());
@@ -184,7 +192,7 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
   // entry 3 is Polygon Placemark with LineStyle and PolyStyle
   placemark = kmldom::AsPlacemark(container->get_feature_array_at(3));
   ASSERT_TRUE(placemark.get());
-  ASSERT_EQ(std::string("Glacier National Park"), placemark->get_name());
+  ASSERT_EQ(string("Glacier National Park"), placemark->get_name());
   kmldom::PolygonPtr polygon = kmldom::AsPolygon(placemark->get_geometry());
   ASSERT_TRUE(polygon.get());
   style = kmldom::AsStyle(placemark->get_styleselector());
@@ -195,15 +203,15 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
 TEST_F(GoogleMapsDataTest, TestGetFeatureFeedXml) {
   google_maps_data_.reset(
       GoogleMapsData::Create(new HttpClient("TestHttpClient")));
-  const std::string kFeatureFeedUri = "http://host.com/a/b/c";
-  std::string http_response;
+  const string kFeatureFeedUri = "http://host.com/a/b/c";
+  string http_response;
   ASSERT_TRUE(google_maps_data_->GetFeatureFeedXml(kFeatureFeedUri,
                                                    &http_response));
   // This test verifies only that GetFeatureFeedXml makes a call on
   // the installed HttpClient to GET the provided URL.
   kmlbase::StringVector lines;
   kmlbase::SplitStringUsing(http_response, "\n", &lines);
-  ASSERT_EQ(std::string("GET ") + kFeatureFeedUri, lines[0]);
+  ASSERT_EQ(string("GET ") + kFeatureFeedUri, lines[0]);
 }
 
 TEST_F(GoogleMapsDataTest, TestGetFeatureFeedByUri) {
@@ -216,10 +224,10 @@ TEST_F(GoogleMapsDataTest, TestGetFeatureFeedByUri) {
     }
   
     virtual bool SendRequest(HttpMethodEnum http_method,
-                             const std::string& request_uri,
+                             const string& request_uri,
                              const StringPairVector* request_headers,
-                             const std::string* post_data,
-                             std::string* response) const {
+                             const string* post_data,
+                             string* response) const {
       kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
       kmldom::AtomLinkPtr link = factory->CreateAtomLink();
       link->set_href(request_uri);
@@ -234,7 +242,7 @@ TEST_F(GoogleMapsDataTest, TestGetFeatureFeedByUri) {
   };
   google_maps_data_.reset(
       GoogleMapsData::Create(new FakeAtomFeedHttpClient()));
-  const std::string kFeatureFeedUri = "http://host.com/a/b/c";
+  const string kFeatureFeedUri = "http://host.com/a/b/c";
   // Call the method under test.  This is nearly a pure I/O method so we check
   // here that it makes the expected I/O request: an HTTP GET of the URI.
   const kmldom::AtomFeedPtr feed =
@@ -246,7 +254,7 @@ TEST_F(GoogleMapsDataTest, TestGetFeatureFeedByUri) {
   ASSERT_EQ(kFeatureFeedUri, link->get_href());
 }
 
-static kmldom::AtomEntryPtr CreatePlacemarkEntry(const std::string& name) {
+static kmldom::AtomEntryPtr CreatePlacemarkEntry(const string& name) {
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::PlacemarkPtr placemark = factory->CreatePlacemark();
   placemark->set_name(name);
@@ -259,7 +267,7 @@ static kmldom::AtomEntryPtr CreatePlacemarkEntry(const std::string& name) {
 }
 
 TEST_F(GoogleMapsDataTest, TestGetEntryFeature) {
-  const std::string kName("my name");
+  const string kName("my name");
   kmldom::FeaturePtr feature =
     GoogleMapsData::GetEntryFeature(CreatePlacemarkEntry(kName));
   ASSERT_TRUE(feature.get());
@@ -271,11 +279,11 @@ TEST_F(GoogleMapsDataTest, TestGetEntryFeature) {
 TEST_F(GoogleMapsDataTest, TestGetMapKml) {
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::AtomFeedPtr feed = factory->CreateAtomFeed();
-  const std::string kName0("the name of the 0th feature");
+  const string kName0("the name of the 0th feature");
   feed->add_entry(CreatePlacemarkEntry(kName0));
-  const std::string kName1("the name of the 1th feature");
+  const string kName1("the name of the 1th feature");
   feed->add_entry(CreatePlacemarkEntry(kName1));
-  const std::string kName2("the name of the 2th feature");
+  const string kName2("the name of the 2th feature");
   feed->add_entry(CreatePlacemarkEntry(kName2));
   // Create a <Folder> to save to.
   kmldom::FolderPtr folder = factory->CreateFolder();
@@ -297,9 +305,9 @@ TEST_F(GoogleMapsDataTest, TestGetMapKml) {
 TEST_F(GoogleMapsDataTest, TestCreateMap) {
   google_maps_data_.reset(GoogleMapsData::Create(new EchoHttpClient));
   ASSERT_TRUE(google_maps_data_.get());
-  const std::string kTitle("The Girl With the Dragon Tattoo");
-  const std::string kSummary("Wildly suspenseful... an intelligent thriller");
-  std::string map_entry_xml;
+  const string kTitle("The Girl With the Dragon Tattoo");
+  const string kSummary("Wildly suspenseful... an intelligent thriller");
+  string map_entry_xml;
   ASSERT_TRUE(google_maps_data_->CreateMap(kTitle, kSummary, &map_entry_xml));
   const kmldom::AtomEntryPtr entry =
       kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
@@ -313,14 +321,14 @@ TEST_F(GoogleMapsDataTest, TestCreateMap) {
 TEST_F(GoogleMapsDataTest, TestAddFeature) {
   google_maps_data_.reset(GoogleMapsData::Create(new EchoHttpClient));
   ASSERT_TRUE(google_maps_data_.get());
-  const std::string kName("Stieg Larsson");
-  const std::string kDescription("At once a murder mystery, love story and...");
+  const string kName("Stieg Larsson");
+  const string kDescription("At once a murder mystery, love story and...");
   const double kLat(38.38);
   const double kLon(101.101);
   kmldom::PlacemarkPtr placemark =
       kmlconvenience::CreatePointPlacemark(kName, kLat, kLon);
   placemark->set_description(kDescription);
-  std::string feature_entry_xml;
+  string feature_entry_xml;
   ASSERT_TRUE(google_maps_data_->AddFeature("", placemark, &feature_entry_xml));
   const kmldom::AtomEntryPtr entry =
       kmldom::AsAtomEntry(kmldom::ParseAtom(feature_entry_xml, NULL));
@@ -357,9 +365,9 @@ TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnOnePlacemark) {
   HttpRequestVector request_log;
   google_maps_data_.reset(
       GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
-  const std::string kFeatureFeedUri("http://host.com/anything/will/do");
-  const std::string kName("Stieg Larsson");
-  const std::string kDescription("At once a murder mystery, love story and...");
+  const string kFeatureFeedUri("http://host.com/anything/will/do");
+  const string kName("Stieg Larsson");
+  const string kDescription("At once a murder mystery, love story and...");
   const double kLat(38.38);
   const double kLon(101.101);
   kmldom::PlacemarkPtr placemark =
@@ -376,16 +384,16 @@ TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnKmlSamples) {
       GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
 
   // Read and parse the kmlsamples.kml file.
-  std::string kml_samples;
+  string kml_samples;
   ASSERT_TRUE(kmlbase::File::ReadFileToString(
-      std::string(DATADIR) + "/kml/kmlsamples.kml", &kml_samples));
+      string(DATADIR) + "/kml/kmlsamples.kml", &kml_samples));
   kmlengine::KmlFilePtr kml_file(
       kmlengine::KmlFile::CreateFromString(kml_samples));
   kmldom::FeaturePtr root_feature =
       kmlengine::GetRootFeature(kml_file->get_root());
 
   // Make up some feature feed uri.
-  const std::string kFeatureFeedUri("http://host.com/anything/will/do");
+  const string kFeatureFeedUri("http://host.com/anything/will/do");
 
   // Call the method under test.
   // There are 20 <Placemark>'s in the file, but one has no Geometry.

@@ -28,7 +28,6 @@
 #include "kml/engine/kml_stream.h"
 #include <istream>
 #include <sstream>
-#include <string>
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/dom.h"
@@ -47,7 +46,7 @@ using kmldom::PointPtr;
 namespace kmlengine {
 
 TEST(KmlStreamTest, TestBasicParseFromIstream) {
-  const std::string kPlacemark(
+  const string kPlacemark(
     "<Placemark>"
     "<name>hello</name>"
     "<Point>"
@@ -55,7 +54,7 @@ TEST(KmlStreamTest, TestBasicParseFromIstream) {
     "</Point>"
     "</Placemark>");
   std::istringstream string_stream(kPlacemark);
-  std::string errors;
+  string errors;
   boost::scoped_ptr<KmlStream>
       kml_stream(KmlStream::ParseFromIstream(&string_stream, &errors, NULL));
   ASSERT_TRUE(kml_stream.get());
@@ -65,7 +64,7 @@ TEST(KmlStreamTest, TestBasicParseFromIstream) {
   ASSERT_TRUE(root);
   PlacemarkPtr placemark = AsPlacemark(root);
   ASSERT_TRUE(placemark);
-  ASSERT_EQ(std::string("hello"), placemark->get_name());
+  ASSERT_EQ(string("hello"), placemark->get_name());
   ASSERT_TRUE(placemark->has_geometry());
   PointPtr point = AsPoint(placemark->get_geometry());
   ASSERT_TRUE(point);
@@ -75,9 +74,9 @@ TEST(KmlStreamTest, TestBasicParseFromIstream) {
 }
 
 TEST(KmlStreamTest, TestBadParseFromIstream) {
-  const std::string kEmpty;
+  const string kEmpty;
   std::istringstream kNothing(kEmpty);
-  std::string errors;
+  string errors;
   ASSERT_FALSE(KmlStream::ParseFromIstream(&kNothing, &errors, NULL));
   ASSERT_FALSE(errors.empty());
 }

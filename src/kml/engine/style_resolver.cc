@@ -56,10 +56,10 @@ StylePtr CreateResolvedStyle(const FeaturePtr& feature,
 
 // static
 StylePtr StyleResolver::CreateResolvedStyle(
-    const std::string& styleurl,
+    const string& styleurl,
     const StyleSelectorPtr& styleselector,
     const SharedStyleMap& shared_style_map,
-    const std::string& base_url,
+    const string& base_url,
     KmlCache* kml_cache,
     kmldom::StyleStateEnum style_state) {
   StyleMerger style_merger(shared_style_map, kml_cache, base_url, style_state);
@@ -71,8 +71,8 @@ StylePtr StyleResolver::CreateResolvedStyle(
 
 // static
 kmldom::StyleSelectorPtr StyleResolver::CreateResolvedStyleSelector(
-    const std::string& styleurl, const SharedStyleMap& shared_style_map) {
-  const std::string empty;
+    const string& styleurl, const SharedStyleMap& shared_style_map) {
+  const string empty;
   StyleMapPtr stylemap = KmlFactory::GetFactory()->CreateStyleMap();
   PairPtr normal = KmlFactory::GetFactory()->CreatePair();
   normal->set_key(kmldom::STYLESTATE_NORMAL);

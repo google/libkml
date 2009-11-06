@@ -27,7 +27,6 @@
 
 #include "kml/engine/clone.h"
 #include <stack>
-#include <string>
 #include "kml/dom/element.h"
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml_factory.h"
@@ -94,7 +93,7 @@ class ElementReplicator : public kmldom::Serializer {
   }
 
   // Serializer::SaveStringFieldById() is called for each field.
-  virtual void SaveStringFieldById(int type_id, std::string value) {
+  virtual void SaveStringFieldById(int type_id, string value) {
     KmlDomType id = static_cast<KmlDomType>(type_id);
     ElementPtr clone = KmlFactory::GetFactory()->CreateFieldById(id);
     clone->set_char_data(value);
@@ -119,7 +118,7 @@ class ElementReplicator : public kmldom::Serializer {
   }
 
   // Serializer::SaveContent() is called for arbitrary character data.
-  virtual void SaveContent(const std::string& content, bool maybe_quote) {
+  virtual void SaveContent(const string& content, bool maybe_quote) {
     // If this is an item in the unknown elements array do _not_ add it to
     // this element's raw char_data, add it correctly to the unknown element
     // array directly.
@@ -155,7 +154,7 @@ class ElementReplicator : public kmldom::Serializer {
  private:
   // This stack operates akin to the stack in the parser.
   std::stack<ElementPtr> clone_stack_;
-  std::string char_data_;
+  string char_data_;
   // This flag indicates that we're serializing an array of unknown elements.
   // See BeginElementArray(), EndElementArray(), and SaveContent() above.
   bool serializing_unknown_;

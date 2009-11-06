@@ -27,13 +27,21 @@
 
 #include "kml/base/attributes.h"
 #include <map>
-#include <string>
 #include <vector>
 
 namespace kmlbase {
 
 // static
 Attributes* Attributes::Create(const char** attrs) {
+  Attributes* attributes = new Attributes;
+  if (attributes->Parse(attrs)) {
+    return attributes;
+  }
+  delete attributes;
+  return NULL;
+}
+
+Attributes* Attributes::Create(const kmlbase::StringVector& attrs) {
   Attributes* attributes = new Attributes;
   if (attributes->Parse(attrs)) {
     return attributes;
@@ -52,7 +60,18 @@ bool Attributes::Parse(const char** attrs) {
   return true;
 }
 
-void Attributes::Serialize(std::string* output) const {
+bool Attributes::Parse(const kmlbase::StringVector& attrs) {
+  for (unsigned int i = 0; i < attrs.size() ; i += 2) {
+    if (attrs.size() - i < 1)
+      break;
+    string attr_name = attrs.at(i);
+    string attr_val = attrs.at(i+1);
+    attributes_map_[attr_name] = attr_val;
+  }
+  return true;
+}
+
+void Attributes::Serialize(string* output) const {
   if (output) {
     StringMapIterator iter = CreateIterator();
     for (; !iter.AtEnd(); iter.Advance()) {
@@ -78,7 +97,7 @@ void Attributes::MergeAttributes(const Attributes& input) {
   }
 }
 
-bool Attributes::FindValue(const std::string& key, std::string* value) const {
+bool Attributes::FindValue(const string& key, string* value) const {
   StringMap::const_iterator entry = attributes_map_.find(key); 
   if (entry != attributes_map_.end()) {
     if (value) {
@@ -89,7 +108,7 @@ bool Attributes::FindValue(const std::string& key, std::string* value) const {
   return false;
 } 
 
-bool Attributes::FindKey(const std::string& value, std::string* key) const {
+bool Attributes::FindKey(const string& value, string* key) const {
   StringMapIterator iter = CreateIterator();
   for (; !iter.AtEnd(); iter.Advance()) {
     if (value == iter.Data().second) {
@@ -102,7 +121,7 @@ bool Attributes::FindKey(const std::string& value, std::string* key) const {
   return false;
 }
 
-void Attributes::GetAttrNames(std::vector<std::string>* string_vector) const {
+void Attributes::GetAttrNames(std::vector<string>* string_vector) const {
   if (string_vector) {
     StringMapIterator iter = CreateIterator();
     for (; !iter.AtEnd(); iter.Advance()) {
@@ -111,13 +130,13 @@ void Attributes::GetAttrNames(std::vector<std::string>* string_vector) const {
   }
 }
 
-Attributes* Attributes::SplitByPrefix(const std::string& prefix) {
+Attributes* Attributes::SplitByPrefix(const string& prefix) {
   size_t prefix_size = prefix.size() + 1;  // +1 for the ":"
   Attributes* split = new Attributes();
-  std::vector<std::string> keys_to_erase;
+  std::vector<string> keys_to_erase;
   for (StringMapIterator iter = CreateIterator();
        !iter.AtEnd(); iter.Advance()) {
-    const std::string& key = iter.Data().first;
+    const string& key = iter.Data().first;
     if (key.compare(0, prefix_size, prefix + ":") == 0) {
       split->SetValue(key.substr(prefix_size), iter.Data().second);
       // Can't erase() while iterating so save the key.
@@ -137,4 +156,3 @@ Attributes* Attributes::SplitByPrefix(const std::string& prefix) {
 }
 
 }  // end namespace kmlbase
-

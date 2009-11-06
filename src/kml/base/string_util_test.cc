@@ -47,17 +47,17 @@ TEST(StringUtilTest, TestBasicReplacements) {
   StringMap sm;
   sm["old"] = "new";
   sm["one"] = "two";
-  std::string in("old{old}old one{one}one");
+  string in("old{old}old one{one}one");
 
   // Verify that supplying neither start nor end terminators produces a simple
   // key-value replacement.
-  std::string expected("new{new}new two{two}two");
+  string expected("new{new}new two{two}two");
   ASSERT_EQ(expected, CreateExpandedStrings(in, sm, "", ""));
 
   // Verify that specifying either of start or end produces the expected
   // replacement.
-  const std::string kStart("{");
-  const std::string kEnd("}");
+  const string kStart("{");
+  const string kEnd("}");
   expected = "oldnew}old onetwo}one";
   ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, ""));
   expected = "old{newold one{twoone";
@@ -73,13 +73,13 @@ TEST(StringUtilTest, TestBasicReplacements) {
 }
 
 TEST(StringUtilTest, TestSplitStringUsing) {
-  const std::string kHi("hi");
-  const std::string kHow("how");
-  const std::string kAre("are");
-  const std::string kYou("you");
-  const std::string kSep("|");
-  const std::string kCsvLine(kHi + kSep + kHow + kSep + kAre + kSep + kYou);
-  std::vector<std::string> parts;
+  const string kHi("hi");
+  const string kHow("how");
+  const string kAre("are");
+  const string kYou("you");
+  const string kSep("|");
+  const string kCsvLine(kHi + kSep + kHow + kSep + kAre + kSep + kYou);
+  std::vector<string> parts;
 
   // A line with no separator gets one thing.  Special case of the "last" item
   // on a line.
@@ -98,7 +98,7 @@ TEST(StringUtilTest, TestSplitStringUsing) {
 
 class ThingMappingStrings {
  public:
-  void AddMapping(const std::string& key, const std::string& value) {
+  void AddMapping(const string& key, const string& value) {
     map_[key] = value;
   }
 
@@ -112,14 +112,14 @@ class ThingMappingStrings {
 
 // Verity the StringMapIterator class.
 TEST(StringUtiltest, TestStringMapIterator) {
-  std::map<std::string, std::string> map;
+  std::map<string, string> map;
   ThingMappingStrings thing;
-  const std::string k0("a");
-  const std::string v0("b");
-  const std::string k1("c");
-  const std::string v1("d");
-  const std::string k2("z");
-  const std::string v2("q");
+  const string k0("a");
+  const string v0("b");
+  const string k1("c");
+  const string v1("d");
+  const string k2("z");
+  const string v2("q");
   thing.AddMapping(k0, v0);
   map[k0] = v0;
   thing.AddMapping(k1, v1);
@@ -156,18 +156,18 @@ TEST(StringUtilTest, TestFromString) {
 
 // Verify the ToString function template.
 TEST(StringUtilTest, TestToString) {
-  ASSERT_EQ(std::string("3.1415926535"), ToString(3.1415926535));
-  ASSERT_EQ(std::string("1"), ToString(1));
-  ASSERT_EQ(std::string("-42"), ToString(-42));
-  ASSERT_EQ(std::string("1"), ToString(true));
-  ASSERT_EQ(std::string("0"), ToString(false));
+  ASSERT_EQ(string("3.1415926535"), ToString(3.1415926535));
+  ASSERT_EQ(string("1"), ToString(1));
+  ASSERT_EQ(string("-42"), ToString(-42));
+  ASSERT_EQ(string("1"), ToString(true));
+  ASSERT_EQ(string("0"), ToString(false));
 }
 
 TEST(StringUtilTest, TestEndsWith) {
   ASSERT_TRUE(StringEndsWith("foo", "oo"));
   ASSERT_FALSE(StringEndsWith("foo", "x"));
   ASSERT_FALSE(StringEndsWith("foo", "ooooo"));
-  std::string empty;
+  string empty;
   ASSERT_FALSE(StringEndsWith(empty, empty));
   ASSERT_FALSE(StringEndsWith("foo", empty));
   ASSERT_FALSE(StringEndsWith(empty, "foo"));

@@ -74,7 +74,7 @@ namespace kmlengine {
 // resolved: http://example.com/path/file.kmz/a/images/0.jpg
 // OR
 // resolved: http://example.com/images/0.jpg
-bool KmzCache::DoFetch(KmlUri* kml_uri, std::string* content) {
+bool KmzCache::DoFetch(KmlUri* kml_uri, string* content) {
   if (!kml_uri || !content) {
     return false;
   }
@@ -113,7 +113,7 @@ bool KmzCache::DoFetch(KmlUri* kml_uri, std::string* content) {
   return DoFetch(kmz_relative.get(), content);
 }
 
-bool KmzCache::FetchFromCache(KmlUri* kml_uri, std::string* content) const {
+bool KmzCache::FetchFromCache(KmlUri* kml_uri, string* content) const {
   if (!kml_uri || !content) {
     return false;
   }
@@ -130,7 +130,7 @@ bool KmzCache::FetchFromCache(KmlUri* kml_uri, std::string* content) const {
     // NOTE: It is considered a best practice to always use "doc.kml" as the
     // name of "the KML file" within a KMZ, but this is not guaranteed.
     // See ReadKml() in kmz_file.h for a discussion on this subject.
-    std::string kml_path;
+    string kml_path;
     if (kmz_file->ReadKmlAndGetPath(content, &kml_path)) {
       // A default KML file was found and its name was saved to kml_path.
       kml_uri->set_path_in_kmz(kml_path);

@@ -29,20 +29,23 @@
 #define KML_BASE_EXPAT_HANDLER_H__
 
 #include "expat.h" // XML_Char
+#include "string_util.h"  // StringVector
 
 namespace kmlbase {
-
+class Attributes;
 // This declares the pure virtual ExpatHandler interface.
 class ExpatHandler {
 public:
   virtual ~ExpatHandler() {}
-  virtual void StartElement(const char *name, const char **atts) = 0;
-  virtual void EndElement(const char *name) = 0;
-  virtual void CharData(const XML_Char *s, int len) = 0;
+  virtual void StartElement(const string& name,
+                            const StringVector& atts) = 0;
+  virtual void EndElement(const string& name) = 0;
+  virtual void CharData(const string&) = 0;
 
   // Namespace handlers with an empty default implementation.
-  virtual void StartNamespace(const XML_Char *prefix, const XML_Char *uri) {}
-  virtual void EndNamespace(const XML_Char *prefix) {}
+  virtual void StartNamespace(const string& prefix,
+                              const string& uri) {}
+  virtual void EndNamespace(const string& prefix) {}
 
   void set_parser(XML_Parser parser) {
     parser_ = parser;
@@ -56,5 +59,34 @@ private:
 };
 
 }  // end namespace kmlbase
+
+inline string xml_char_to_string(const XML_Char *input) {
+  string output;
+
+  // This is technically wrong, but only for cases uninteresting for KML as
+  // we only ever have single-byte encodings.
+  for (const XML_Char *p = input; input && *p; p++) {
+    output.append((const char *)p, 1);
+  }
+  return output;
+}
+
+inline void xml_char_to_string_vec(const XML_Char **input,
+                                   kmlbase::StringVector *ovec) {
+  if (!ovec)
+    return;
+  while (input && *input) {
+    ovec->push_back(xml_char_to_string(*input++));
+    ovec->push_back(xml_char_to_string(*input++));
+  }
+}
+
+inline string xml_char_to_string_n(const XML_Char *input, size_t length) {
+  string output;
+  while (length--) {
+    output.append((const char *)input++, 1);
+  }
+  return output;
+}
 
 #endif  // KML_BASE_EXPAT_HANDLER_H__

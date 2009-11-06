@@ -65,10 +65,10 @@ class UpdateProcessor {
   // the supplied id map.  If the id_map this class was constructed with was
   // NULL then this simply returns the targetid.
   bool GetTargetId(const kmldom::ObjectPtr& object,
-                   std::string* targetid) const;
+                   string* targetid) const;
 
  private:
-  kmldom::FeaturePtr DeleteFeatureById(const std::string& id);
+  kmldom::FeaturePtr DeleteFeatureById(const string& id);
   const kmlengine::KmlFile& kml_file_;
   const kmlbase::StringMap* id_map_;
 };

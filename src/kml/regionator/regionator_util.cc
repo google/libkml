@@ -28,13 +28,10 @@
 // derived from RegionHandler.
 
 #include "kml/regionator/regionator_util.h"
-#include <string>
-#include "kml/dom.h"
 #include "kml/engine.h"
 
 namespace kmlregionator {
 
-using std::string;
 using kmldom::AbstractLatLonBoxPtr;
 using kmldom::CoordinatesPtr;
 using kmldom::DocumentPtr;
