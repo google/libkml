@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  From a GET on http://docs.google.com/feeds/default/private/full
+  Using GData-Version: 3.0 (note gd:resourceId).
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:docs="http://schemas.google.com/docs/2007"
+  xmlns:batch="http://schemas.google.com/gdata/batch" xmlns:gd="http://schemas.google.com/g/2005"
+  gd:etag="W/&quot;C0YMQnc6eCt7ImA9WxNUEk0.&quot;">
+  <id>http://docs.google.com/feeds/default/private/full</id>
+  <updated>2009-11-02T22:33:03.910Z</updated>
+  <category scheme="http://schemas.google.com/g/2005#kind"
+    term="http://schemas.google.com/docs/2007#item" label="item"/>
+  <title>Available Documents - kml.bent@gmail.com</title>
+  <link rel="alternate" type="text/html" href="http://docs.google.com"/>
+  <link rel="next" type="application/atom+xml"
+    href="http://docs.google.com/feeds/default/private/full?start-key=EAEaFgoSCWCIyb88Y_RAEVcCAAASZhEDEBMiCwlE1rB8pwAAACAG"/>
+  <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+    href="http://docs.google.com/feeds/default/private/full"/>
+  <link rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"
+    href="http://docs.google.com/feeds/default/private/full"/>
+  <link rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"
+    href="http://docs.google.com/feeds/default/private/full/batch"/>
+  <link rel="self" type="application/atom+xml"
+    href="http://docs.google.com/feeds/default/private/full"/>
+  <author>
+    <name>kml.bent</name>
+    <email>kml.bent@gmail.com</email>
+  </author>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <entry gd:etag="&quot;WE8KSEhMRyt7ImBr&quot;">
+    <id>http://docs.google.com/feeds/id/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy</id>
+    <published>2009-11-02T00:46:44.783Z</published>
+    <updated>2009-11-02T00:47:12.693Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-11-02T00:47:12.876Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/docs/2007#document" label="document"/>
+    <category scheme="http://schemas.google.com/g/2005/labels"
+      term="http://schemas.google.com/g/2005/labels#viewed" label="viewed"/>
+    <title>Document Number One</title>
+    <content type="text/html"
+      src="http://docs.google.com/feeds/download/documents/Export?docId=0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy"/>
+    <link rel="alternate" type="text/html"
+      href="http://docs.google.com/Doc?docid=0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy&amp;hl=en"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy"/>
+    <link rel="edit-media" type="text/html"
+      href="http://docs.google.com/feeds/default/media/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy"/>
+    <author>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </author>
+    <gd:resourceId>document:0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy</gd:resourceId>
+    <gd:lastModifiedBy>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </gd:lastModifiedBy>
+    <gd:lastViewed>2009-11-02T00:46:44.982Z</gd:lastViewed>
+    <gd:quotaBytesUsed>0</gd:quotaBytesUsed>
+    <docs:writersCanInvite value="true"/>
+    <gd:feedLink rel="http://schemas.google.com/acl/2007#accessControlList"
+      href="http://docs.google.com/feeds/default/private/full/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy/acl"/>
+    <gd:feedLink rel="http://schemas.google.com/docs/2007/revisions"
+      href="http://docs.google.com/feeds/default/private/full/document%3A0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy/revisions"
+    />
+  </entry>
+  <entry gd:etag="&quot;WVwaVRgKRSt7ImBr&quot;">
+    <id>http://docs.google.com/feeds/id/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c</id>
+    <published>2009-10-19T13:51:58.653Z</published>
+    <updated>2009-10-20T01:15:10.681Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-10-20T01:17:46.466Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005/labels"
+      term="http://schemas.google.com/g/2005/labels#viewed" label="viewed"/>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/docs/2007#spreadsheet" label="spreadsheet"/>
+    <title>oz</title>
+    <content type="text/html"
+      src="http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c"/>
+    <link rel="alternate" type="text/html"
+      href="http://spreadsheets.google.com/ccc?key=0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c&amp;hl=en"/>
+    <link rel="http://schemas.google.com/spreadsheets/2006#worksheetsfeed"
+      type="application/atom+xml"
+      href="http://spreadsheets.google.com/feeds/worksheets/0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c/private/full"/>
+    <link rel="http://schemas.google.com/spreadsheets/2006#tablesfeed" type="application/atom+xml"
+      href="http://spreadsheets.google.com/feeds/0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c/tables"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c"/>
+    <link rel="edit-media" type="text/html"
+      href="http://docs.google.com/feeds/default/media/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c"/>
+    <author>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </author>
+    <gd:resourceId>spreadsheet:0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c</gd:resourceId>
+    <gd:lastModifiedBy>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </gd:lastModifiedBy>
+    <gd:lastViewed>2009-10-20T01:15:01.289Z</gd:lastViewed>
+    <gd:quotaBytesUsed>0</gd:quotaBytesUsed>
+    <docs:writersCanInvite value="true"/>
+    <gd:feedLink rel="http://schemas.google.com/acl/2007#accessControlList"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c/acl"/>
+    <gd:feedLink rel="http://schemas.google.com/docs/2007/revisions"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdFZseDJZXzlQelNfc2JzRUM4LTJvV3c/revisions"
+    />
+  </entry>
+  <entry gd:etag="&quot;WVwaUhdPGCt7ImBr&quot;">
+    <id>http://docs.google.com/feeds/id/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE</id>
+    <published>2009-10-19T13:51:15.031Z</published>
+    <updated>2009-10-19T13:51:16.137Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-10-20T01:15:34.080Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005/labels"
+      term="http://schemas.google.com/g/2005/labels#viewed" label="viewed"/>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/docs/2007#spreadsheet" label="spreadsheet"/>
+    <title>gplex</title>
+    <content type="text/html"
+      src="http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE"/>
+    <link rel="alternate" type="text/html"
+      href="http://spreadsheets.google.com/ccc?key=0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE&amp;hl=en"/>
+    <link rel="http://schemas.google.com/spreadsheets/2006#worksheetsfeed"
+      type="application/atom+xml"
+      href="http://spreadsheets.google.com/feeds/worksheets/0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE/private/full"/>
+    <link rel="http://schemas.google.com/spreadsheets/2006#tablesfeed" type="application/atom+xml"
+      href="http://spreadsheets.google.com/feeds/0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE/tables"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE"/>
+    <link rel="edit-media" type="text/html"
+      href="http://docs.google.com/feeds/default/media/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE"/>
+    <author>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </author>
+    <gd:resourceId>spreadsheet:0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE</gd:resourceId>
+    <gd:lastModifiedBy>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </gd:lastModifiedBy>
+    <gd:lastViewed>2009-10-20T01:15:33.899Z</gd:lastViewed>
+    <gd:quotaBytesUsed>0</gd:quotaBytesUsed>
+    <docs:writersCanInvite value="true"/>
+    <gd:feedLink rel="http://schemas.google.com/acl/2007#accessControlList"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE/acl"/>
+    <gd:feedLink rel="http://schemas.google.com/docs/2007/revisions"
+      href="http://docs.google.com/feeds/default/private/full/spreadsheet%3A0AhX2bBe7ATEpdEp2and4QVRoRkQyU2RfbFhpZmI2RlE/revisions"
+    />
+  </entry>
+  <entry gd:etag="&quot;H01aVUxXDyt7ImBq&quot;">
+    <id>http://docs.google.com/feeds/id/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY</id>
+    <published>2008-07-21T22:51:21.292Z</published>
+    <updated>2008-07-21T22:54:58.829Z</updated>
+    <app:edited xmlns:app="http://www.w3.org/2007/app">2009-06-05T02:22:35.721Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005/labels"
+      term="http://schemas.google.com/g/2005/labels#viewed" label="viewed"/>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/docs/2007#presentation" label="presentation"/>
+    <title>GeoWeb_Workshop_GE_Weather</title>
+    <content type="text/html"
+      src="http://docs.google.com/feeds/download/presentations/Export?docId=0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY"/>
+    <link rel="alternate" type="text/html"
+      href="http://docs.google.com/present/edit?id=0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY&amp;hl=en"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://docs.google.com/feeds/default/private/full/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY"/>
+    <link rel="edit-media" type="text/html"
+      href="http://docs.google.com/feeds/default/media/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY"/>
+    <author>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </author>
+    <gd:resourceId>presentation:0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY</gd:resourceId>
+    <gd:lastModifiedBy>
+      <name>kml.bent</name>
+      <email>kml.bent@gmail.com</email>
+    </gd:lastModifiedBy>
+    <gd:lastViewed>2008-07-28T02:00:35.730Z</gd:lastViewed>
+    <gd:quotaBytesUsed>0</gd:quotaBytesUsed>
+    <docs:writersCanInvite value="true"/>
+    <gd:feedLink rel="http://schemas.google.com/acl/2007#accessControlList"
+      href="http://docs.google.com/feeds/default/private/full/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY/acl"/>
+    <gd:feedLink rel="http://schemas.google.com/docs/2007/revisions"
+      href="http://docs.google.com/feeds/default/private/full/presentation%3A0ARX2bBe7ATEpZHg1a3poY185Y3hqZnAyZjY/revisions"
+    />
+  </entry>
+</feed>
