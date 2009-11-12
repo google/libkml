@@ -1,5 +1,10 @@
-This Xcode project builds an OS X Framework directly usable as an embedded
-Framework in other Xcode projects.
+This Xcode project has two targets:
+  - An OS X Framework directly usable as an embedded Framework in other Xcode
+    projects.
+  - A static library, suitable for programs that cannot link dynamically with
+    libkml (e.g. iPhone projects).
+
+The static library is self-explantory.
 
 The standard installation path for an OS X Framework created in Xcode is:
 $(HOME)/Library/Frameworks
