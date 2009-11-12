@@ -57,6 +57,11 @@ class AtomUtil {
   static bool GetContentSrc(const kmldom::AtomEntryPtr& entry,
                             string* src);
 
+  // This returns the first <atom:category> who's scheme= ends with scheme.
+  // NULL is returned if no matching <atom:category> is found.
+  static kmldom::AtomCategoryPtr FindCategoryByScheme(
+      const kmldom::AtomCommon& atom_common, const string& scheme);
+
   // This returns true if the given <atom:link>'s rel= ends with rel_type.
   static bool LinkIsOfRel(const kmldom::AtomLinkPtr& link,
                           const string& rel_type);

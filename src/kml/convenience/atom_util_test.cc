@@ -28,6 +28,8 @@
 #include "kml/convenience/atom_util.h"
 #include "gtest/gtest.h"
 #include "kml/convenience/convenience.h"
+#include "kml/convenience/http_client.h"
+#include "kml/convenience/http_client_test_util.h"
 #include "kml/dom.h"
 #include "kml/engine/location_util.h"
 
@@ -175,6 +177,21 @@ TEST(AtomUtilTest, TestFindEntryByTitle) {
   ASSERT_TRUE(got_entry.get());
   ASSERT_EQ(kTitle, got_entry->get_title());
   ASSERT_FALSE(AtomUtil::FindEntryByTitle(feed, "Peaceful Warring"));
+}
+
+TEST(AtomUtilTest, TestFindCategoryByScheme) {
+  kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
+  kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
+  kmldom::AtomCategoryPtr category = factory->CreateAtomCategory();
+  const std::string kScheme("http://schemas.google.com/g/2005#kind");
+  category->set_scheme(kScheme);
+  const std::string kLabel("document");
+  category->set_label(kLabel);
+  entry->add_category(category);
+  kmldom::AtomCategoryPtr got_category = AtomUtil::FindCategoryByScheme(
+      *entry, "kind");
+  ASSERT_TRUE(got_category.get());
+  ASSERT_EQ(kLabel, got_category->get_label());
 }
 
 }  // end namespace kmlconvenience
