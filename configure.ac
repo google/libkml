@@ -226,6 +226,7 @@ AC_CONFIG_FILES([
 	testdata/balloon/Makefile
 	testdata/csv/Makefile
 	testdata/deprecated/Makefile
+	testdata/gdata/Makefile
 	testdata/gmaps/Makefile
 	testdata/gpx/Makefile
 	testdata/gx/Makefile
