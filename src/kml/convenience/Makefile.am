@@ -16,6 +16,7 @@ libkmlconvenience_la_SOURCES = \
 	convenience.cc \
 	csv_file.cc \
 	feature_list.cc \
+	google_doc_list.cc \
 	google_maps_data.cc \
 	google_spreadsheets.cc \
 	http_client.cc \
@@ -29,6 +30,7 @@ libkmlconvenienceinclude_HEADERS = \
 	csv_file.h \
 	element_counter.h \
 	feature_list.h \
+	google_doc_list.h \
 	google_maps_data.h \
 	google_spreadsheets.h \
 	gpx_trk_pt_handler.h \
@@ -41,6 +43,7 @@ TESTS = atom_util_test \
 	convenience_test \
 	element_counter_test \
 	feature_list_test \
+	google_doc_list_test \
 	google_maps_data_test \
 	google_spreadsheets_test \
 	gpx_trk_pt_handler_test \
@@ -50,7 +53,7 @@ TESTS = atom_util_test \
 check_PROGRAMS = $(TESTS)
 
 atom_util_test_SOURCES = atom_util_test.cc
-atom_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+atom_util_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 atom_util_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
@@ -84,6 +87,14 @@ element_counter_test_LDADD = libkmlconvenience.la \
 feature_list_test_SOURCES = feature_list_test.cc
 feature_list_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 feature_list_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+google_doc_list_test_SOURCES = google_doc_list_test.cc
+google_doc_list_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+google_doc_list_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
