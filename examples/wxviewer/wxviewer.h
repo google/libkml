@@ -26,10 +26,6 @@
 // This is a simple demo application using the wxWidgets framework to
 // exercise some aspects of libkml.
 //
-// It assumes you have both wxWidgets 2.8.7 and libkml installed under the
-// default /usr/local prefix, and that wxWidgets was configured thusly:
-// ./configure --enable-monolithic (which implies a single shared library).
-//
 // The current implementation simply parses a given KML file into a tree
 // control to visualize the parsed DOM.
 

@@ -14,8 +14,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		69C961FE0DC7D19B00A98182 /* wxviewer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = wxviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		69C962010DC7D19B00A98182 /* wxviewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "wxviewer-Info.plist"; sourceTree = "<group>"; };
+		69C961FE0DC7D19B00A98182 /* wxviewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wxviewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69C962010DC7D19B00A98182 /* wxviewer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wxviewer-Info.plist"; sourceTree = "<group>"; };
 		69C962050DC7D26000A98182 /* wxviewer.cc */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = wxviewer.cc; sourceTree = "<group>"; };
 		69C962060DC7D26000A98182 /* wxviewer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = wxviewer.h; sourceTree = "<group>"; };
 		69C962670DC8F4A800A98182 /* icon_file.xpm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = icon_file.xpm; sourceTree = "<group>"; };
@@ -81,10 +81,12 @@
 		69C961E40DC7D09700A98182 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 69C961E50DC7D09700A98182 /* Build configuration list for PBXProject "wxviewer" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 69C961E20DC7D09700A98182;
 			productRefGroup = 69C961FF0DC7D19B00A98182 /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				69C961FD0DC7D19B00A98182 /* wxviewer */,
 			);
@@ -192,6 +194,7 @@
 					QuickTime,
 					"-lwx_mac-2.8",
 					"-lkmldom",
+					"-lkmlbase",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = wxviewer;
@@ -224,6 +227,7 @@
 					QuickTime,
 					"-lwx_mac-2.8",
 					"-lkmldom",
+					"-lkmlbase",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = wxviewer;

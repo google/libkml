@@ -136,7 +136,7 @@ void ListView::Populate() {
   }
 
   const FeaturePtr root_feature = GetRootFeature(kml_root_);
-  wxString name = std2wx(root_feature->name(), NULL);
+  wxString name = std2wx(root_feature->get_name(), NULL);
 
   int icon = ICON_FILE;
   const ContainerPtr container = kmldom::AsContainer(root_feature);
@@ -164,7 +164,7 @@ void ListView::AppendContainer(const ContainerPtr& container,
 
 void ListView::AppendFeature(const FeaturePtr& feature,
                              wxTreeItemId parent_id) {
-  wxString name = std2wx(feature->name(), NULL);
+  wxString name = std2wx(feature->get_name(), NULL);
   wxTreeItemId appended_id;
   const ContainerPtr container = kmldom::AsContainer(feature);
   if (container) {
