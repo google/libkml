@@ -28,6 +28,7 @@
 #include "kml/convenience/atom_util.h"
 
 #include "kml/base/string_util.h"
+#include "kml/convenience/http_client.h"
 #include "kml/dom.h"
 #include "kml/engine/clone.h"
 
@@ -72,7 +73,7 @@ kmldom::AtomEntryPtr AtomUtil::CreateEntryForFeature(
 
 // static
 bool AtomUtil::GetContentSrc(const AtomEntryPtr& entry, string* src) {
-  if (entry->has_content() && entry->get_content()->has_src()) {
+  if (entry.get() && entry->has_content() && entry->get_content()->has_src()) {
     if (src) {
       *src = entry->get_content()->get_src();
     }
@@ -86,6 +87,21 @@ bool AtomUtil::LinkIsOfRel(const kmldom::AtomLinkPtr& link,
                            const string& rel_type) {
   return link.get() && !rel_type.empty() &&
       kmlbase::StringEndsWith(link->get_rel(), rel_type);
+}
+
+// static
+kmldom::AtomCategoryPtr AtomUtil::FindCategoryByScheme(
+    const kmldom::AtomCommon& atom_common, const std::string& scheme) {
+  size_t category_size = atom_common.get_category_array_size();
+  for (size_t i = 0; i < category_size; ++i) {
+    const kmldom::AtomCategoryPtr& category =
+        atom_common.get_category_array_at(i);
+    if (category->has_scheme() &&
+        kmlbase::StringEndsWith(category->get_scheme(), scheme)) {
+      return category;
+    }
+  }
+  return NULL;
 }
 
 // static
