@@ -55,6 +55,9 @@ TEST(KmlFactoryTest, TestFactory) {
   e = factory->CreateAtomAuthor();
   ASSERT_EQ(Type_AtomAuthor, e->Type());
 
+  e = factory->CreateAtomCategory();
+  ASSERT_EQ(Type_AtomCategory, e->Type());
+
   e = factory->CreateAtomContent();
   ASSERT_EQ(Type_AtomContent, e->Type());
 

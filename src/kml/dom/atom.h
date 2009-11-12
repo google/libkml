@@ -129,6 +129,15 @@ class AtomCommon : public Element {
     has_updated_ = false;
   }
 
+  // <atom:category>...
+  void add_category(const AtomCategoryPtr& entry);
+  size_t get_category_array_size() const {
+    return category_array_.size();
+  }
+  const AtomCategoryPtr& get_category_array_at(size_t index) const {
+    return category_array_[index];
+  }
+
   // <atom:link>...
   void add_link(const AtomLinkPtr& entry);
   size_t get_link_array_size() const {
@@ -153,11 +162,72 @@ class AtomCommon : public Element {
   string title_;
   bool has_updated_;
   string updated_;
+  std::vector<AtomCategoryPtr> category_array_;
   std::vector<AtomLinkPtr> link_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomCommon);
 };
 
-// <atom:content src="..."  type="...">
+// <atom:category scheme="..." term="..." label=..."/>, RFC 4287 4.2.2
+// NOTE: This element is not part of the OGC KML 2.2 standard.
+class AtomCategory : public BasicElement<Type_AtomCategory> {
+ public:
+  virtual ~AtomCategory();
+
+  // term=
+  const std::string& get_term() const { return term_; }
+  bool has_term() const { return has_term_; }
+  void set_term(const std::string& value) {
+    term_ = value;
+    has_term_ = true;
+  }
+  void clear_term() {
+    term_.clear();
+    has_term_ = false;
+  }
+
+  // scheme=
+  const std::string& get_scheme() const { return scheme_; }
+  bool has_scheme() const { return has_scheme_; }
+  void set_scheme(const std::string& value) {
+    scheme_ = value;
+    has_scheme_ = true;
+  }
+  void clear_scheme() {
+    scheme_.clear();
+    has_scheme_ = false;
+  }
+
+  // label=
+  const std::string& get_label() const { return label_; }
+  bool has_label() const { return has_label_; }
+  void set_label(const std::string& value) {
+    label_ = value;
+    has_label_ = true;
+  }
+  void clear_label() {
+    label_.clear();
+    has_label_ = false;
+  }
+
+ private:
+  friend class KmlFactory;
+  AtomCategory();
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
+  bool has_term_;
+  std::string term_;
+  bool has_scheme_;
+  std::string scheme_;
+  bool has_label_;
+  std::string label_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomCategory);
+};
+
+// <atom:content src="..."  type="...">, RFC 4287 4.1.3
 // NOTE: This element is not part of the OGC KML 2.2 standard.
 class AtomContent : public BasicElement<Type_AtomContent> {
  public:
@@ -202,7 +272,7 @@ class AtomContent : public BasicElement<Type_AtomContent> {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomContent);
 };
 
-// <atom:entry>
+// <atom:entry>, RFC 4287 4.1.2
 // NOTE: This element is not part of the OGC KML 2.2 standard.
 class AtomEntry : public AtomCommon {
  public:
@@ -251,7 +321,7 @@ class AtomEntry : public AtomCommon {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomEntry);
 };
 
-// <atom:feed>
+// <atom:feed>, RFC 4287 4.1.1
 // NOTE: This element is not part of the OGC KML 2.2 standard.
 class AtomFeed : public AtomCommon {
  public:

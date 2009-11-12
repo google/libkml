@@ -55,6 +55,51 @@ TEST_F(AtomAuthorTest, TestXmlNamespace) {
   ASSERT_EQ(kmlbase::XMLNS_ATOM, atomauthor_->get_xmlns());
 }
 
+class AtomCategoryTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    atomcategory_ = KmlFactory::GetFactory()->CreateAtomCategory();
+  }
+
+  AtomCategoryPtr atomcategory_;
+};
+
+TEST_F(AtomCategoryTest, TestType) {
+  ASSERT_EQ(Type_AtomCategory, atomcategory_->Type());
+  ASSERT_FALSE(atomcategory_->IsA(Type_Object));
+  ASSERT_TRUE(atomcategory_->IsA(Type_AtomCategory));
+}
+
+TEST_F(AtomCategoryTest, TestParseScheme) {
+  const std::string kScheme("http://schemas.google.com/g/2005#kind");
+  // ParseKml calls AddElement.
+  atomcategory_ = AsAtomCategory(
+      ParseKml(std::string("<atom:category scheme='") + kScheme + "'/>"));
+  ASSERT_TRUE(atomcategory_);
+  ASSERT_TRUE(atomcategory_->has_scheme());
+  ASSERT_EQ(kScheme, atomcategory_->get_scheme());
+}
+
+TEST_F(AtomCategoryTest, TestParseLabel) {
+  const std::string kLabel("document");
+  // ParseKml calls AddElement.
+  atomcategory_ = AsAtomCategory(
+      ParseKml(std::string("<atom:category label='") + kLabel + "'/>"));
+  ASSERT_TRUE(atomcategory_);
+  ASSERT_TRUE(atomcategory_->has_label());
+  ASSERT_EQ(kLabel, atomcategory_->get_label());
+}
+
+TEST_F(AtomCategoryTest, TestParseTerm) {
+  const std::string kTerm("item");
+  // ParseKml calls AddElement.
+  atomcategory_ = AsAtomCategory(
+      ParseKml(std::string("<atom:category term='") + kTerm + "'/>"));
+  ASSERT_TRUE(atomcategory_);
+  ASSERT_TRUE(atomcategory_->has_term());
+  ASSERT_EQ(kTerm, atomcategory_->get_term());
+}
+
 class AtomContentTest : public testing::Test {
  protected:
   virtual void SetUp() {
