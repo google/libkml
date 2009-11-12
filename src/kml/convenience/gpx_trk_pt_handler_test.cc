@@ -43,6 +43,8 @@
 namespace kmlconvenience {
 
 class GpxTrkPtHandlerTest : public testing::Test {
+ protected:
+  kmlbase::StringVector atts_;
 };
 
 typedef std::pair<kmlbase::Vec3, string> WhereWhenPair;
@@ -99,7 +101,7 @@ TEST_F(GpxTrkPtHandlerTest, TestEle) {
   trk_pt_atts.push_back("lon");
   trk_pt_atts.push_back("37.37");
   test_gpx_trk_pt_handler.StartElement("trkpt", trk_pt_atts);
-  //test_gpx_trk_pt_handler.StartElement("ele", NULL);
+  test_gpx_trk_pt_handler.StartElement("ele", atts_);
   const char* kEle("12356.789");
   test_gpx_trk_pt_handler.CharData(kEle);
   test_gpx_trk_pt_handler.EndElement("ele");
