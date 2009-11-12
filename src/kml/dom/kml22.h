@@ -206,6 +206,7 @@ typedef enum {
   Type_z,
 
   Type_AtomAuthor,
+  Type_AtomCategory,
   Type_AtomContent,
   Type_AtomEntry,
   Type_AtomFeed,
@@ -213,8 +214,11 @@ typedef enum {
 
   Type_atomEmail,
   Type_atomId,
+  Type_atomLabel,
   Type_atomName,
+  Type_atomScheme,
   Type_atomSummary,
+  Type_atomTerm,
   Type_atomTitle,
   Type_atomUpdated,
   Type_atomUri,

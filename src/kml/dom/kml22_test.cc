@@ -32,6 +32,9 @@
 
 namespace kmldom {
 
+// Yes, must exactly match kml22.h
+static const int kNumberOfComplexElements = 88;
+
 class Kml22Test : public testing::Test {
  protected:
   virtual void SetUp() {
@@ -114,7 +117,7 @@ TEST_F(Kml22Test, TestElementNull) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(kNumberOfComplexElements, complex_count);
 }
 
 // This Serializer is specifically designed to capture the output of the
@@ -170,7 +173,7 @@ TEST_F(Kml22Test, TestElementSerializerEmpty) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(kNumberOfComplexElements, complex_count);
 }
 
 void Kml22Test::AssertXmlNamespaceForRange(KmlDomType begin_dom_type,
@@ -214,7 +217,7 @@ TEST_F(Kml22Test, TestSaveUnknown) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(kNumberOfComplexElements, complex_count);
 }
 
 }  // end namespace kmldom

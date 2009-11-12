@@ -37,9 +37,12 @@ namespace kmldom {
 // Attributes.
 static const char kHref[] = "href";
 static const char kHrefLang[] = "hreflang";
+static const char kLabel[] = "label";
 static const char kLength[] = "length";
 static const char kRel[] = "rel";
+static const char kScheme[] = "scheme";
 static const char kSrc[] = "src";
+static const char kTerm[] = "term";
 static const char kTitle[] = "title";
 static const char kType[] = "type";
 
@@ -89,6 +92,49 @@ void AtomAuthor::Serialize(Serializer& serializer) const {
   }
 } 
 
+// <atom:category>
+AtomCategory::AtomCategory()
+  : has_term_(false),
+    has_scheme_(false),
+    has_label_(false) {
+  set_xmlns(kmlbase::XMLNS_ATOM);
+}
+
+AtomCategory::~AtomCategory() {}
+
+void AtomCategory::AddElement(const ElementPtr& element) {
+  // Any element passed in here is unknown.
+  Element::AddElement(element);
+}
+
+void AtomCategory::ParseAttributes(Attributes* attributes) {
+  if (!attributes) {
+    return;
+  }
+  has_term_ = attributes->CutValue(kTerm, &term_);
+  has_scheme_ = attributes->CutValue(kScheme, &scheme_);
+  has_label_ = attributes->CutValue(kLabel, &label_);
+  AddUnknownAttributes(attributes);
+}
+
+void AtomCategory::SerializeAttributes(Attributes* attributes) const {
+  Element::SerializeAttributes(attributes);
+  if (has_scheme()) {
+    attributes->SetValue(kScheme, get_scheme());
+  }
+  if (has_term()) {
+    attributes->SetValue(kTerm, get_term());
+  }
+  if (has_label()) {
+    attributes->SetValue(kLabel, get_label());
+  }
+}
+
+void AtomCategory::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+}
+
+
 // <atom:content>
 AtomContent::AtomContent()
   : has_src_(false),
@@ -128,6 +174,10 @@ AtomCommon::AtomCommon()
     has_updated_(false) {
 }
 
+void AtomCommon::add_category(const AtomCategoryPtr& category) {
+  AddComplexChild(category, &category_array_);
+}
+
 void AtomCommon::add_link(const AtomLinkPtr& link) {
   AddComplexChild(link, &link_array_);
 }
@@ -148,6 +198,9 @@ void AtomCommon::AddElement(const ElementPtr& element) {
     case Type_atomUpdated:
       has_updated_ = element->SetString(&updated_);
       break;
+    case Type_AtomCategory:
+      add_category(AsAtomCategory(element));
+      break;
     case Type_AtomLink:
       add_link(AsAtomLink(element));
       break;
@@ -167,6 +220,7 @@ void AtomCommon::Serialize(Serializer& serializer) const {
   if (has_updated()) {
     serializer.SaveFieldById(Type_atomUpdated, get_updated());
   }
+  serializer.SaveElementArray(category_array_);
   serializer.SaveElementArray(link_array_);
 }
 
