@@ -1,0 +1,5 @@
+
+On Mac OSX this presumes http://www.wxwidgets.org/ configured with
+--enable-monolithic and with default (/usr/local) install path.
+This is known to work with wxWidgets 2.8.10 on Mac OSX 10.5.8.
+
