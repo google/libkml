@@ -18,6 +18,7 @@ libkmlconvenience_la_SOURCES = \
 	feature_list.cc \
 	google_doc_list.cc \
 	google_maps_data.cc \
+	google_picasa_web.cc \
 	google_spreadsheets.cc \
 	http_client.cc \
 	kmz_check_links.cc
@@ -32,6 +33,7 @@ libkmlconvenienceinclude_HEADERS = \
 	feature_list.h \
 	google_doc_list.h \
 	google_maps_data.h \
+	google_picasa_web.h \
 	google_spreadsheets.h \
 	gpx_trk_pt_handler.h \
 	http_client.h \
@@ -45,6 +47,7 @@ TESTS = atom_util_test \
 	feature_list_test \
 	google_doc_list_test \
 	google_maps_data_test \
+	google_picasa_web_test \
 	google_spreadsheets_test \
 	gpx_trk_pt_handler_test \
 	http_client_test \
@@ -103,6 +106,14 @@ google_doc_list_test_LDADD = libkmlconvenience.la \
 google_maps_data_test_SOURCES = google_maps_data_test.cc
 google_maps_data_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 google_maps_data_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+google_picasa_web_test_SOURCES = google_picasa_web_test.cc
+google_picasa_web_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+google_picasa_web_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
