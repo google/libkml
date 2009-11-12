@@ -64,6 +64,8 @@ int main(int argc, char** argv) {
   // get the user's list of maps.
   boost::scoped_ptr<GoogleMapsData> google_maps_data(
       GoogleMapsData::Create(curl_http_client));
+
+again:
   kmldom::AtomFeedPtr meta_feed = google_maps_data->GetMetaFeed();
   if (!meta_feed.get()) {
     std::cerr << "GetMetaFeed failed" << std::endl;
@@ -73,7 +75,17 @@ int main(int argc, char** argv) {
   std::cout << "You have " << meta_feed->get_entry_array_size() << " maps."
             << std::endl;
 
-again:
+  // For each <entry> in the <feed>...
+  for (size_t e = 0; e < meta_feed->get_entry_array_size(); ++e) {
+    const kmldom::AtomEntryPtr& entry = meta_feed->get_entry_array_at(e);
+    // Print the <title>:
+    std::cout << "[title] " << entry->get_title() << std::endl;
+    std::string feature_feed_uri;
+    if (GoogleMapsData::GetFeatureFeedUri(entry, &feature_feed_uri)) {
+      std::cout << " [feature feed] " << feature_feed_uri << std::endl;
+    }
+  }
+
   std::cout << "Map title: ";
   // Use std::getline here to capture the entire line.
   std::getline(std::cin, map_title);
