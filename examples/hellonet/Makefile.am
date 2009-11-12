@@ -7,8 +7,9 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = getgmapkml getgsheetkml kmlwalk kmzfetch listfeed listgmaps \
-		resolvestyle uploadgmap xsdprint
+noinst_PROGRAMS = getgmapkml getgsheetkml kmlwalk kmzfetch listfeed listgdocs \
+		listgmaps listgphotos resolvestyle uploadgmap uploadgsheet \
+		xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -55,8 +56,24 @@ listfeed_LDADD = \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
+listgdocs_SOURCES = listgdocs.cc
+listgdocs_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
 listgmaps_SOURCES = listgmaps.cc
 listgmaps_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+listgphotos_SOURCES = listgphotos.cc
+listgphotos_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
@@ -73,6 +90,14 @@ resolvestyle_LDADD = \
 
 uploadgmap_SOURCES = uploadgmap.cc
 uploadgmap_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+uploadgsheet_SOURCES = uploadgsheet.cc
+uploadgsheet_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
