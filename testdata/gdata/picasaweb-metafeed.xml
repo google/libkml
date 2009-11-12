@@ -1,0 +1,819 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  From an actual Google Picasa Web Albums API meta (albums) feed.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:app="http://www.w3.org/2007/app"
+  xmlns:gphoto="http://schemas.google.com/photos/2007" xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:gd="http://schemas.google.com/g/2005"
+  gd:etag="W/&quot;CkcFSXs7cSp7ImA9WxNbEE0.&quot;">
+  <id>http://picasaweb.google.com/data/feed/user/ben.gardenfield</id>
+  <updated>2009-11-12T04:26:58.509Z</updated>
+  <category scheme="http://schemas.google.com/g/2005#kind"
+    term="http://schemas.google.com/photos/2007#user"/>
+  <title>ben.gardenfield</title>
+  <subtitle/>
+  <icon>http://lh4.ggpht.com/_KmQjrZ_ACBc/AAAA7lsnQJA/AAAAAAAAAAA/_sOudLlbYsY/s64-c/ben.gardenfield.jpg</icon>
+  <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield"/>
+  <link rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield"/>
+  <link rel="alternate" type="text/html" href="http://picasaweb.google.com/ben.gardenfield"/>
+  <link rel="http://schemas.google.com/photos/2007#slideshow" type="application/x-shockwave-flash"
+    href="http://picasaweb.google.com/s/c/bin/slideshow.swf?host=picasaweb.google.com&amp;RGB=0x000000&amp;feed=http%3A%2F%2Fpicasaweb.google.com%2Fdata%2Ffeed%2Fapi%2Fuser%2Fben.gardenfield%3Falt%3Drss"/>
+  <link rel="self" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield?start-index=1&amp;max-results=1000"/>
+  <author>
+    <name>green-thumb</name>
+    <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+  </author>
+  <generator version="1.00" uri="http://picasaweb.google.com/">Picasaweb</generator>
+  <openSearch:totalResults>17</openSearch:totalResults>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+  <gphoto:user>ben.gardenfield</gphoto:user>
+  <gphoto:nickname>green-thumb</gphoto:nickname>
+  <gphoto:thumbnail>http://lh4.ggpht.com/_KmQjrZ_ACBc/AAAA7lsnQJA/AAAAAAAAAAA/_sOudLlbYsY/s64-c/ben.gardenfield.jpg</gphoto:thumbnail>
+  <gphoto:quotalimit>1073741824</gphoto:quotalimit>
+  <gphoto:quotacurrent>719218397</gphoto:quotacurrent>
+  <gphoto:maxPhotosPerAlbum>500</gphoto:maxPhotosPerAlbum>
+  <entry gd:etag="&quot;KnsiYD5REQ..&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5401835229645565361</id>
+    <published>2009-11-07T03:06:31.000Z</published>
+    <updated>2009-11-08T21:15:26.599Z</updated>
+    <app:edited>2009-11-08T21:15:26.599Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>sydney-manly-nov-09</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5401835229645565361"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/SydneyManlyNov09"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5401835229645565361"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5401835229645565361"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5401835229645565361/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5401835229645565361</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1257563191000</gphoto:timestamp>
+    <gphoto:numphotos>286</gphoto:numphotos>
+    <gphoto:numphotosremaining>214</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>96241558</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SvcshW427bE/AAAAAAAAC30/49Us7AftCZs/SydneyManlyNov09.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SvcshW427bE/AAAAAAAAC30/49Us7AftCZs/s160-c/SydneyManlyNov09.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">sydney-manly-nov-09</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;WCp7ImA0&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5391416077399944721</id>
+    <published>2009-10-05T19:39:27.000Z</published>
+    <updated>2009-10-11T19:28:51.378Z</updated>
+    <app:edited>2009-10-11T19:28:51.378Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>munich-09-10</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5391416077399944721"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/Munich0910"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391416077399944721"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391416077399944721"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391416077399944721/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5391416077399944721</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1254771567000</gphoto:timestamp>
+    <gphoto:numphotos>79</gphoto:numphotos>
+    <gphoto:numphotosremaining>421</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>26256681</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StIoW4HA7hE/AAAAAAAACf8/ZLbsVxhXCNM/Munich0910.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StIoW4HA7hE/AAAAAAAACf8/ZLbsVxhXCNM/s160-c/Munich0910.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">munich-09-10</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;WSp7ImA6&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5391407703914628289</id>
+    <published>2009-10-03T21:06:21.000Z</published>
+    <updated>2009-10-11T18:55:45.902Z</updated>
+    <app:edited>2009-10-11T18:55:45.902Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>mijas-09-10</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5391407703914628289"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/Mijas0910"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391407703914628289"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391407703914628289"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391407703914628289/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5391407703914628289</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1254603981000</gphoto:timestamp>
+    <gphoto:numphotos>58</gphoto:numphotos>
+    <gphoto:numphotosremaining>442</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>18485186</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StIgvecixME/AAAAAAAACak/H9Cdfa1fEho/Mijas0910.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StIgvecixME/AAAAAAAACak/H9Cdfa1fEho/s160-c/Mijas0910.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">mijas-09-10</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;KnsiYD9bHg..&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5391073910489697297</id>
+    <published>2009-09-29T17:17:40.000Z</published>
+    <updated>2009-10-10T21:51:03.109Z</updated>
+    <app:edited>2009-10-10T21:51:03.109Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>cadiz-ronda-sep09</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5391073910489697297"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/CadizRondaSep09"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391073910489697297"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391073910489697297"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5391073910489697297/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5391073910489697297</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1254244660000</gphoto:timestamp>
+    <gphoto:numphotos>326</gphoto:numphotos>
+    <gphoto:numphotosremaining>174</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>90900551</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StDxKJCdTBE/AAAAAAAACV4/e8trlak3bdE/CadizRondaSep09.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/StDxKJCdTBE/AAAAAAAACV4/e8trlak3bdE/s160-c/CadizRondaSep09.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">cadiz-ronda-sep09</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;KnsiYD1fEQ..&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5386539283323026545</id>
+    <published>2009-09-27T23:23:51.000Z</published>
+    <updated>2009-09-28T16:43:56.993Z</updated>
+    <app:edited>2009-09-28T16:43:56.993Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>marbella-09-09-28</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5386539283323026545"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/Marbella090928"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5386539283323026545"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5386539283323026545"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5386539283323026545/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5386539283323026545</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1254093831000</gphoto:timestamp>
+    <gphoto:numphotos>165</gphoto:numphotos>
+    <gphoto:numphotosremaining>335</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>57716622</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SsDU8Gcn_HE/AAAAAAAAB_M/cDqipDNKAF0/Marbella090928.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SsDU8Gcn_HE/AAAAAAAAB_M/cDqipDNKAF0/s160-c/Marbella090928.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">marbella-09-09-28</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;Wip7ImA6&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5359636961724674097</id>
+    <published>2009-06-27T16:41:26.000Z</published>
+    <updated>2009-07-18T04:07:54.300Z</updated>
+    <app:edited>2009-07-18T04:07:54.300Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Floating City near Siem Reap</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5359636961724674097"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/FloatingCityNearSiemReap"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359636961724674097"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359636961724674097"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359636961724674097/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5359636961724674097</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1246120886000</gphoto:timestamp>
+    <gphoto:numphotos>59</gphoto:numphotos>
+    <gphoto:numphotosremaining>441</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>16860350</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SmFBa4ynMDE/AAAAAAAABxg/eUwNS3uKCDw/FloatingCityNearSiemReap.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SmFBa4ynMDE/AAAAAAAABxg/eUwNS3uKCDw/s160-c/FloatingCityNearSiemReap.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Floating City near Siem Reap</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;USp7ImA5&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353103831368495329</id>
+    <published>2009-06-26T19:31:46.000Z</published>
+    <updated>2009-07-05T20:08:40.452Z</updated>
+    <app:edited>2009-07-05T20:08:40.452Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Ta Prohm</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353103831368495329"/>
+    <link rel="alternate" type="text/html" href="http://picasaweb.google.com/ben.gardenfield/TaProhm"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353103831368495329"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353103831368495329"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353103831368495329/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353103831368495329</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1246044706000</gphoto:timestamp>
+    <gphoto:numphotos>56</gphoto:numphotos>
+    <gphoto:numphotosremaining>444</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>56258835</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SkoLkpqAcOE/AAAAAAAABpY/7l6wBTcLRZo/TaProhm.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SkoLkpqAcOE/AAAAAAAABpY/7l6wBTcLRZo/s160-c/TaProhm.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Ta Prohm</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;Wip7ImA_&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353100272105805777</id>
+    <published>2009-06-26T18:38:55.000Z</published>
+    <updated>2009-06-30T12:55:10.140Z</updated>
+    <app:edited>2009-06-30T12:55:10.140Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Angkor Thom</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353100272105805777"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/AngkorThom"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353100272105805777"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353100272105805777"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353100272105805777/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353100272105805777</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1246041535000</gphoto:timestamp>
+    <gphoto:numphotos>32</gphoto:numphotos>
+    <gphoto:numphotosremaining>468</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>34150010</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SkoIVeXp19E/AAAAAAAABF4/kxXb76zJo9I/AngkorThom.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SkoIVeXp19E/AAAAAAAABF4/kxXb76zJo9I/s160-c/AngkorThom.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Angkor Thom</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;WCp7ImA_&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353097419729189985</id>
+    <published>2009-06-26T17:55:22.000Z</published>
+    <updated>2009-07-05T20:09:20.038Z</updated>
+    <app:edited>2009-07-05T20:09:20.038Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Bayon</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353097419729189985"/>
+    <link rel="alternate" type="text/html" href="http://picasaweb.google.com/ben.gardenfield/Bayon"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353097419729189985"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353097419729189985"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353097419729189985/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353097419729189985</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1246038922000</gphoto:timestamp>
+    <gphoto:numphotos>29</gphoto:numphotos>
+    <gphoto:numphotosremaining>471</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>28074641</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SkoFvccEvGE/AAAAAAAABpc/aIzNS2ck_DY/Bayon.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/SkoFvccEvGE/AAAAAAAABpc/aIzNS2ck_DY/s160-c/Bayon.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Bayon</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;Xyp7ImA1&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353066396923070593</id>
+    <published>2009-06-26T17:22:59.000Z</published>
+    <updated>2009-07-05T20:11:04.649Z</updated>
+    <app:edited>2009-07-05T20:11:04.649Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Angkor Wat</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353066396923070593"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/AngkorWat"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353066396923070593"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353066396923070593"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353066396923070593/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353066396923070593</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1246036979000</gphoto:timestamp>
+    <gphoto:numphotos>94</gphoto:numphotos>
+    <gphoto:numphotosremaining>406</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>79437337</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/SknphreuCIE/AAAAAAAABpg/vtwDHOnM-EY/AngkorWat.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/SknphreuCIE/AAAAAAAABpg/vtwDHOnM-EY/s160-c/AngkorWat.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Angkor Wat</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;XCp7ImA9&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5359635643499248081</id>
+    <published>2009-06-26T01:26:15.000Z</published>
+    <updated>2009-07-18T03:27:04.970Z</updated>
+    <app:edited>2009-07-18T03:27:04.970Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Phnom Penh takeoff</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5359635643499248081"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/PhnomPenhTakeoff"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359635643499248081"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359635643499248081"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5359635643499248081/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5359635643499248081</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1245979575000</gphoto:timestamp>
+    <gphoto:numphotos>11</gphoto:numphotos>
+    <gphoto:numphotosremaining>489</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>1481603</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SmFAOKBLedE/AAAAAAAABs4/LF4OBxyhTFU/PhnomPenhTakeoff.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SmFAOKBLedE/AAAAAAAABs4/LF4OBxyhTFU/s160-c/PhnomPenhTakeoff.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Phnom Penh takeoff</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;YDsqeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353357613135444001</id>
+    <published>2009-06-23T07:00:00.000Z</published>
+    <updated>2009-07-05T20:04:54.983Z</updated>
+    <app:edited>2009-07-05T20:04:54.983Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Field Trip</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353357613135444001"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/FieldTrip"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357613135444001"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357613135444001"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357613135444001/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353357613135444001</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1245740400000</gphoto:timestamp>
+    <gphoto:numphotos>198</gphoto:numphotos>
+    <gphoto:numphotosremaining>302</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>57398938</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SkryYsaSOCE/AAAAAAAABpM/Rq_mQrkiuRE/FieldTrip.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SkryYsaSOCE/AAAAAAAABpM/Rq_mQrkiuRE/s160-c/FieldTrip.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Field Trip</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;KnsiYD1bFQ..&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353055026156695633</id>
+    <published>2009-06-22T20:48:00.000Z</published>
+    <updated>2009-07-05T20:12:09.625Z</updated>
+    <app:edited>2009-07-05T20:12:09.625Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Phnom Penh</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353055026156695633"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/PhnomPenh"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353055026156695633"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353055026156695633"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353055026156695633/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353055026156695633</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1245703680000</gphoto:timestamp>
+    <gphoto:numphotos>121</gphoto:numphotos>
+    <gphoto:numphotosremaining>379</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>85591681</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SknfL0EwcFE/AAAAAAAABpk/1WWlxkivRk4/PhnomPenh.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SknfL0EwcFE/AAAAAAAABpk/1WWlxkivRk4/s160-c/PhnomPenh.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Phnom Penh</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;YDkqeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353357001423431505</id>
+    <published>2009-06-22T07:00:00.000Z</published>
+    <updated>2009-07-05T20:06:10.441Z</updated>
+    <app:edited>2009-07-05T20:06:10.441Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Killing Fields</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353357001423431505"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/KillingFields"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357001423431505"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357001423431505"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353357001423431505/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353357001423431505</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1245654000000</gphoto:timestamp>
+    <gphoto:numphotos>93</gphoto:numphotos>
+    <gphoto:numphotosremaining>407</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>28756973</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/Skrx1Fmxp1E/AAAAAAAABpU/poDbAoujl0A/KillingFields.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/Skrx1Fmxp1E/AAAAAAAABpU/poDbAoujl0A/s160-c/KillingFields.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Killing Fields</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;KnsiYDhYFA..&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5353341029351904625</id>
+    <published>2009-06-22T02:46:10.000Z</published>
+    <updated>2009-07-01T05:24:28.587Z</updated>
+    <app:edited>2009-07-01T05:24:28.587Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>cambo-geo</title>
+    <summary/>
+    <rights>public</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5353341029351904625"/>
+    <link rel="alternate" type="text/html" href="http://picasaweb.google.com/ben.gardenfield/CamboGeo"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353341029351904625"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353341029351904625"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5353341029351904625/acl"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5353341029351904625</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:timestamp>1245638770000</gphoto:timestamp>
+    <gphoto:numphotos>115</gphoto:numphotos>
+    <gphoto:numphotosremaining>385</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>38198558</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SkrjTZALVXE/AAAAAAAABmg/RYXGpeecdM4/CamboGeo.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/SkrjTZALVXE/AAAAAAAABmg/RYXGpeecdM4/s160-c/CamboGeo.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">cambo-geo</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;YDoqeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5335715514789456289</id>
+    <published>2009-05-14T16:21:17.000Z</published>
+    <updated>2009-05-15T00:28:06.653Z</updated>
+    <app:edited>2009-05-15T00:28:06.653Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>Drop Box</title>
+    <summary>Default album for newly uploaded photos.</summary>
+    <rights>private</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5335715514789456289?authkey=Gv1sRgCLTux4v_qLqSeg"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/DropBox?authkey=Gv1sRgCLTux4v_qLqSeg"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5335715514789456289?authkey=Gv1sRgCLTux4v_qLqSeg"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5335715514789456289?authkey=Gv1sRgCLTux4v_qLqSeg"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5335715514789456289/acl?authkey=Gv1sRgCLTux4v_qLqSeg"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5335715514789456289</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>private</gphoto:access>
+    <gphoto:timestamp>1242318077000</gphoto:timestamp>
+    <gphoto:numphotos>5</gphoto:numphotos>
+    <gphoto:numphotosremaining>495</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>46820</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/SgxE_amQ6aE/AAAAAAAAAes/We_K81ZkbSs/DropBox.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain">Default album for newly uploaded photos.</media:description>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh5.ggpht.com/_KmQjrZ_ACBc/SgxE_amQ6aE/AAAAAAAAAes/We_K81ZkbSs/s160-c/DropBox.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">Drop Box</media:title>
+    </media:group>
+  </entry>
+  <entry gd:etag="&quot;Xip7ImA-&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/ben.gardenfield/albumid/5333881821628355409</id>
+    <published>2009-05-09T17:45:36.000Z</published>
+    <updated>2009-07-04T18:55:17.505Z</updated>
+    <app:edited>2009-07-04T18:55:17.505Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#album"/>
+    <title>green-thumbcafe</title>
+    <summary/>
+    <rights>private</rights>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/ben.gardenfield/albumid/5333881821628355409?authkey=Gv1sRgCKSTtvzE386g-xF"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/ben.gardenfield/green-thumbcafe?authkey=Gv1sRgCKSTtvzE386g-xF"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5333881821628355409?authkey=Gv1sRgCKSTtvzE386g-xF"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5333881821628355409?authkey=Gv1sRgCKSTtvzE386g-xF"/>
+    <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/ben.gardenfield/albumid/5333881821628355409/acl?authkey=Gv1sRgCKSTtvzE386g-xF"/>
+    <author>
+      <name>green-thumb</name>
+      <uri>http://picasaweb.google.com/ben.gardenfield</uri>
+    </author>
+    <gphoto:id>5333881821628355409</gphoto:id>
+    <gphoto:location/>
+    <gphoto:access>private</gphoto:access>
+    <gphoto:timestamp>1241891136000</gphoto:timestamp>
+    <gphoto:numphotos>26</gphoto:numphotos>
+    <gphoto:numphotosremaining>474</gphoto:numphotosremaining>
+    <gphoto:bytesUsed>3362053</gphoto:bytesUsed>
+    <gphoto:user>ben.gardenfield</gphoto:user>
+    <gphoto:nickname>green-thumb</gphoto:nickname>
+    <media:group>
+      <media:content
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SgXBQbQSU1E/AAAAAAAABow/95xH2U4muUk/green-thumbcafe.jpg"
+        type="image/jpeg" medium="image"/>
+      <media:credit>green-thumb</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh4.ggpht.com/_KmQjrZ_ACBc/SgXBQbQSU1E/AAAAAAAABow/95xH2U4muUk/s160-c/green-thumbcafe.jpg"
+        height="160" width="160"/>
+      <media:title type="plain">green-thumbcafe</media:title>
+    </media:group>
+  </entry>
+</feed>
