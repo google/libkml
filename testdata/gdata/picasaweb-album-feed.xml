@@ -1,0 +1,399 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Based on an actual Google Picasa Web Albums album feed.
+  Most original <entry>'s are stripped out.  Those that
+  remain are the full <entry>.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:exif="http://schemas.google.com/photos/exif/2007"
+  xmlns:app="http://www.w3.org/2007/app" xmlns:gphoto="http://schemas.google.com/photos/2007"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
+  xmlns:gd="http://schemas.google.com/g/2005" xmlns:gml="http://www.opengis.net/gml"
+  xmlns:georss="http://www.georss.org/georss"
+  gd:etag="W/&quot;DUQARHc7eip7ImA9WxNWEkU.&quot;">
+  <id>http://picasaweb.google.com/data/feed/user/bent.hagemark/albumid/5391407703914628289</id>
+  <updated>2009-10-11T18:55:45.902Z</updated>
+  <category scheme="http://schemas.google.com/g/2005#kind"
+    term="http://schemas.google.com/photos/2007#album"/>
+  <title>mijas-09-10</title>
+  <subtitle/>
+  <rights>public</rights>
+  <icon>http://lh5.ggpht.com/_KmQjrZ_ACBc/StIgvecixME/AAAAAAAACak/H9Cdfa1fEho/s160-c/Mijas0910.jpg</icon>
+  <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289"/>
+  <link rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289"/>
+  <link rel="alternate" type="text/html" href="http://picasaweb.google.com/bent.hagemark/Mijas0910"/>
+  <link rel="http://schemas.google.com/photos/2007#slideshow" type="application/x-shockwave-flash"
+    href="http://picasaweb.google.com/s/c/bin/slideshow.swf?host=picasaweb.google.com&amp;RGB=0x000000&amp;feed=http%3A%2F%2Fpicasaweb.google.com%2Fdata%2Ffeed%2Fapi%2Fuser%2Fbent.hagemark%2Falbumid%2F5391407703914628289%3Falt%3Drss"/>
+  <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+    href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289"/>
+  <link rel="http://schemas.google.com/acl/2007#accessControlList" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/acl"/>
+  <link rel="self" type="application/atom+xml"
+    href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289?start-index=1&amp;max-results=1000"/>
+  <author>
+    <name>oobie</name>
+    <uri>http://picasaweb.google.com/bent.hagemark</uri>
+  </author>
+  <generator version="1.00" uri="http://picasaweb.google.com/">Picasaweb</generator>
+  <openSearch:totalResults>58</openSearch:totalResults>
+  <openSearch:startIndex>1</openSearch:startIndex>
+  <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+  <gphoto:id>5391407703914628289</gphoto:id>
+  <gphoto:location/>
+  <gphoto:access>public</gphoto:access>
+  <gphoto:timestamp>1254603981000</gphoto:timestamp>
+  <gphoto:numphotos>58</gphoto:numphotos>
+  <gphoto:numphotosremaining>442</gphoto:numphotosremaining>
+  <gphoto:bytesUsed>18485186</gphoto:bytesUsed>
+  <gphoto:user>bent.hagemark</gphoto:user>
+  <gphoto:nickname>oobie</gphoto:nickname>
+  <gphoto:allowPrints>true</gphoto:allowPrints>
+  <gphoto:allowDownloads>true</gphoto:allowDownloads>
+  <entry gd:etag="&quot;YD0qeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407738794724018</id>
+    <published>2009-10-11T18:15:34.000Z</published>
+    <updated>2009-10-11T18:15:34.747Z</updated>
+    <app:edited>2009-10-11T18:15:34.747Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#photo"/>
+    <title>DSC_1253.JPG</title>
+    <summary/>
+    <content type="image/jpeg"
+      src="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIgxgYmyrI/AAAAAAAACW0/8AImTUOokvw/DSC_1253.JPG"/>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407738794724018"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/bent.hagemark/Mijas0910#5391407738794724018"/>
+    <link rel="http://schemas.google.com/photos/2007#canonical" type="text/html"
+      href="http://picasaweb.google.com/lh/photo/SppIOLHAOwi_JdtC6TwGXA"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407738794724018"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407738794724018"/>
+    <link rel="edit-media" type="image/jpeg"
+      href="http://picasaweb.google.com/data/media/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407738794724018"/>
+    <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+      href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289&amp;iid=5391407738794724018"/>
+    <gphoto:id>5391407738794724018</gphoto:id>
+    <gphoto:albumid>5391407703914628289</gphoto:albumid>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:width>1000</gphoto:width>
+    <gphoto:height>664</gphoto:height>
+    <gphoto:size>306309</gphoto:size>
+    <gphoto:checksum/>
+    <gphoto:timestamp>1254572447000</gphoto:timestamp>
+    <gphoto:imageVersion>2413</gphoto:imageVersion>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <exif:tags>
+      <exif:fstop>10.0</exif:fstop>
+      <exif:exposure>0.0025</exif:exposure>
+      <exif:flash>false</exif:flash>
+      <exif:focallength>46.0</exif:focallength>
+      <exif:iso>200</exif:iso>
+      <exif:time>1254572447000</exif:time>
+      <exif:imageUniqueID>2bba77e07b3f93b8325920a82288904d</exif:imageUniqueID>
+    </exif:tags>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIgxgYmyrI/AAAAAAAACW0/8AImTUOokvw/DSC_1253.JPG"
+        height="664" width="1000" type="image/jpeg" medium="image"/>
+      <media:credit>oobie</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIgxgYmyrI/AAAAAAAACW0/8AImTUOokvw/s72/DSC_1253.JPG"
+        height="48" width="72"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIgxgYmyrI/AAAAAAAACW0/8AImTUOokvw/s144/DSC_1253.JPG"
+        height="96" width="144"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIgxgYmyrI/AAAAAAAACW0/8AImTUOokvw/s288/DSC_1253.JPG"
+        height="192" width="288"/>
+      <media:title type="plain">DSC_1253.JPG</media:title>
+    </media:group>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>36.5948752 -4.6382817</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+  <entry gd:etag="&quot;YD0qeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407898314993426</id>
+    <published>2009-10-11T18:16:11.000Z</published>
+    <updated>2009-10-11T18:16:11.620Z</updated>
+    <app:edited>2009-10-11T18:16:11.620Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#photo"/>
+    <title>DSC_1257.JPG</title>
+    <summary/>
+    <content type="image/jpeg"
+      src="http://lh6.ggpht.com/_KmQjrZ_ACBc/StIg6ypM7xI/AAAAAAAACXE/2z8o-ceN-WI/DSC_1257.JPG"/>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407898314993426"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/bent.hagemark/Mijas0910#5391407898314993426"/>
+    <link rel="http://schemas.google.com/photos/2007#canonical" type="text/html"
+      href="http://picasaweb.google.com/lh/photo/8FPIdGnSNXoxE-5vA3o0yw"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407898314993426"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407898314993426"/>
+    <link rel="edit-media" type="image/jpeg"
+      href="http://picasaweb.google.com/data/media/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391407898314993426"/>
+    <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+      href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289&amp;iid=5391407898314993426"/>
+    <gphoto:id>5391407898314993426</gphoto:id>
+    <gphoto:albumid>5391407703914628289</gphoto:albumid>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:width>1000</gphoto:width>
+    <gphoto:height>664</gphoto:height>
+    <gphoto:size>353117</gphoto:size>
+    <gphoto:checksum/>
+    <gphoto:timestamp>1254572641000</gphoto:timestamp>
+    <gphoto:imageVersion>2417</gphoto:imageVersion>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <exif:tags>
+      <exif:fstop>8.0</exif:fstop>
+      <exif:exposure>0.0040</exif:exposure>
+      <exif:flash>false</exif:flash>
+      <exif:focallength>18.0</exif:focallength>
+      <exif:iso>200</exif:iso>
+      <exif:time>1254572641000</exif:time>
+      <exif:imageUniqueID>8928ba835e3295b9a9ec7199ddf44093</exif:imageUniqueID>
+    </exif:tags>
+    <media:group>
+      <media:content
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/StIg6ypM7xI/AAAAAAAACXE/2z8o-ceN-WI/DSC_1257.JPG"
+        height="664" width="1000" type="image/jpeg" medium="image"/>
+      <media:credit>oobie</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/StIg6ypM7xI/AAAAAAAACXE/2z8o-ceN-WI/s72/DSC_1257.JPG"
+        height="48" width="72"/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/StIg6ypM7xI/AAAAAAAACXE/2z8o-ceN-WI/s144/DSC_1257.JPG"
+        height="96" width="144"/>
+      <media:thumbnail
+        url="http://lh6.ggpht.com/_KmQjrZ_ACBc/StIg6ypM7xI/AAAAAAAACXE/2z8o-ceN-WI/s288/DSC_1257.JPG"
+        height="192" width="288"/>
+      <media:title type="plain">DSC_1257.JPG</media:title>
+    </media:group>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>36.5942926 -4.6379643</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+  <entry gd:etag="&quot;YD0qeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408073958011170</id>
+    <published>2009-10-11T18:16:52.000Z</published>
+    <updated>2009-10-11T18:16:52.203Z</updated>
+    <app:edited>2009-10-11T18:16:52.203Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#photo"/>
+    <title>DSC_1263.JPG</title>
+    <summary/>
+    <content type="image/jpeg"
+      src="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhFA9wsSI/AAAAAAAACXc/-Cp7XB2lonQ/DSC_1263.JPG"/>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408073958011170"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/bent.hagemark/Mijas0910#5391408073958011170"/>
+    <link rel="http://schemas.google.com/photos/2007#canonical" type="text/html"
+      href="http://picasaweb.google.com/lh/photo/pw5Fn1KjZJAONLMV7qMGew"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408073958011170"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408073958011170"/>
+    <link rel="edit-media" type="image/jpeg"
+      href="http://picasaweb.google.com/data/media/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408073958011170"/>
+    <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+      href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289&amp;iid=5391408073958011170"/>
+    <gphoto:id>5391408073958011170</gphoto:id>
+    <gphoto:albumid>5391407703914628289</gphoto:albumid>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:width>1000</gphoto:width>
+    <gphoto:height>664</gphoto:height>
+    <gphoto:size>417807</gphoto:size>
+    <gphoto:checksum/>
+    <gphoto:timestamp>1254572964000</gphoto:timestamp>
+    <gphoto:imageVersion>2423</gphoto:imageVersion>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <exif:tags>
+      <exif:fstop>10.0</exif:fstop>
+      <exif:exposure>0.0025</exif:exposure>
+      <exif:flash>false</exif:flash>
+      <exif:focallength>18.0</exif:focallength>
+      <exif:iso>200</exif:iso>
+      <exif:time>1254572964000</exif:time>
+      <exif:imageUniqueID>dd6278501d6dd6614a6ea6a372a220de</exif:imageUniqueID>
+    </exif:tags>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhFA9wsSI/AAAAAAAACXc/-Cp7XB2lonQ/DSC_1263.JPG"
+        height="664" width="1000" type="image/jpeg" medium="image"/>
+      <media:credit>oobie</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhFA9wsSI/AAAAAAAACXc/-Cp7XB2lonQ/s72/DSC_1263.JPG"
+        height="48" width="72"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhFA9wsSI/AAAAAAAACXc/-Cp7XB2lonQ/s144/DSC_1263.JPG"
+        height="96" width="144"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhFA9wsSI/AAAAAAAACXc/-Cp7XB2lonQ/s288/DSC_1263.JPG"
+        height="192" width="288"/>
+      <media:title type="plain">DSC_1263.JPG</media:title>
+    </media:group>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>36.5937561 -4.6388724</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+  <entry gd:etag="&quot;YD0qeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408463124245698</id>
+    <published>2009-10-11T18:18:22.000Z</published>
+    <updated>2009-10-11T18:18:22.137Z</updated>
+    <app:edited>2009-10-11T18:18:22.137Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#photo"/>
+    <title>DSC_1273.JPG</title>
+    <summary/>
+    <content type="image/jpeg"
+      src="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhbquOLMI/AAAAAAAACYI/x1rQH0u56Vw/DSC_1273.JPG"/>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408463124245698"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/bent.hagemark/Mijas0910#5391408463124245698"/>
+    <link rel="http://schemas.google.com/photos/2007#canonical" type="text/html"
+      href="http://picasaweb.google.com/lh/photo/InbRIDZwWLeFgzdgp563NA"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408463124245698"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408463124245698"/>
+    <link rel="edit-media" type="image/jpeg"
+      href="http://picasaweb.google.com/data/media/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391408463124245698"/>
+    <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+      href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289&amp;iid=5391408463124245698"/>
+    <gphoto:id>5391408463124245698</gphoto:id>
+    <gphoto:albumid>5391407703914628289</gphoto:albumid>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:width>1000</gphoto:width>
+    <gphoto:height>664</gphoto:height>
+    <gphoto:size>394940</gphoto:size>
+    <gphoto:checksum/>
+    <gphoto:timestamp>1254573577000</gphoto:timestamp>
+    <gphoto:imageVersion>2434</gphoto:imageVersion>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <exif:tags>
+      <exif:fstop>9.0</exif:fstop>
+      <exif:exposure>0.003125</exif:exposure>
+      <exif:flash>false</exif:flash>
+      <exif:focallength>55.0</exif:focallength>
+      <exif:iso>200</exif:iso>
+      <exif:time>1254573577000</exif:time>
+      <exif:imageUniqueID>9fb23ec308cc7cd2fb215de19a46c1a4</exif:imageUniqueID>
+    </exif:tags>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhbquOLMI/AAAAAAAACYI/x1rQH0u56Vw/DSC_1273.JPG"
+        height="664" width="1000" type="image/jpeg" medium="image"/>
+      <media:credit>oobie</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhbquOLMI/AAAAAAAACYI/x1rQH0u56Vw/s72/DSC_1273.JPG"
+        height="48" width="72"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhbquOLMI/AAAAAAAACYI/x1rQH0u56Vw/s144/DSC_1273.JPG"
+        height="96" width="144"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIhbquOLMI/AAAAAAAACYI/x1rQH0u56Vw/s288/DSC_1273.JPG"
+        height="192" width="288"/>
+      <media:title type="plain">DSC_1273.JPG</media:title>
+    </media:group>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>36.5928372 -4.638877</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+  <entry gd:etag="&quot;YD0qeyI.&quot;">
+    <id>http://picasaweb.google.com/data/entry/user/bent.hagemark/albumid/5391407703914628289/photoid/5391409535852007634</id>
+    <published>2009-10-11T18:22:32.000Z</published>
+    <updated>2009-10-11T18:22:32.025Z</updated>
+    <app:edited>2009-10-11T18:22:32.025Z</app:edited>
+    <category scheme="http://schemas.google.com/g/2005#kind"
+      term="http://schemas.google.com/photos/2007#photo"/>
+    <title>DSC_1308.JPG</title>
+    <summary/>
+    <content type="image/jpeg"
+      src="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIiaG8c0NI/AAAAAAAACac/GgaQDAx_7NQ/DSC_1308.JPG"/>
+    <link rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/feed/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391409535852007634"/>
+    <link rel="alternate" type="text/html"
+      href="http://picasaweb.google.com/bent.hagemark/Mijas0910#5391409535852007634"/>
+    <link rel="http://schemas.google.com/photos/2007#canonical" type="text/html"
+      href="http://picasaweb.google.com/lh/photo/HgG1BvN7psMierNgazQ7mQ"/>
+    <link rel="self" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391409535852007634"/>
+    <link rel="edit" type="application/atom+xml"
+      href="http://picasaweb.google.com/data/entry/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391409535852007634"/>
+    <link rel="edit-media" type="image/jpeg"
+      href="http://picasaweb.google.com/data/media/api/user/bent.hagemark/albumid/5391407703914628289/photoid/5391409535852007634"/>
+    <link rel="http://schemas.google.com/photos/2007#report" type="text/html"
+      href="http://picasaweb.google.com/lh/reportAbuse?uname=bent.hagemark&amp;aid=5391407703914628289&amp;iid=5391409535852007634"/>
+    <gphoto:id>5391409535852007634</gphoto:id>
+    <gphoto:albumid>5391407703914628289</gphoto:albumid>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:width>1000</gphoto:width>
+    <gphoto:height>664</gphoto:height>
+    <gphoto:size>330970</gphoto:size>
+    <gphoto:checksum/>
+    <gphoto:timestamp>1254578543000</gphoto:timestamp>
+    <gphoto:imageVersion>2471</gphoto:imageVersion>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <exif:tags>
+      <exif:fstop>5.6</exif:fstop>
+      <exif:exposure>0.0020</exif:exposure>
+      <exif:flash>false</exif:flash>
+      <exif:focallength>55.0</exif:focallength>
+      <exif:iso>200</exif:iso>
+      <exif:time>1254578543000</exif:time>
+      <exif:imageUniqueID>162c37e645fe9720248bbdc58becc91c</exif:imageUniqueID>
+    </exif:tags>
+    <media:group>
+      <media:content
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIiaG8c0NI/AAAAAAAACac/GgaQDAx_7NQ/DSC_1308.JPG"
+        height="664" width="1000" type="image/jpeg" medium="image"/>
+      <media:credit>oobie</media:credit>
+      <media:description type="plain"/>
+      <media:keywords/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIiaG8c0NI/AAAAAAAACac/GgaQDAx_7NQ/s72/DSC_1308.JPG"
+        height="48" width="72"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIiaG8c0NI/AAAAAAAACac/GgaQDAx_7NQ/s144/DSC_1308.JPG"
+        height="96" width="144"/>
+      <media:thumbnail
+        url="http://lh3.ggpht.com/_KmQjrZ_ACBc/StIiaG8c0NI/AAAAAAAACac/GgaQDAx_7NQ/s288/DSC_1308.JPG"
+        height="192" width="288"/>
+      <media:title type="plain">DSC_1308.JPG</media:title>
+    </media:group>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>36.5950068 -4.6372198</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+</feed>
