@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  From: http://georss.org/gml, "Boat trip / hike"
+-->
+<feed xmlns="http://www.w3.org/2005/Atom"
+  xmlns:georss="http://www.georss.org/georss"
+  xmlns:gml="http://www.opengis.net/gml">
+  <title>Dino's Mt. Washington trip</title>
+  <link href="http://www.myisp.com/dbv/"/>
+  <updated>2005-12-13T18:30:02Z</updated>
+  <author>
+    <name>Dino Bravo</name>
+    <email>dbv@example.org</email>
+  </author>
+  <id>http://www.myisp.com/dbv/</id>
+  <georss:where>
+    <gml:LineString>
+      <gml:posList>
+        45.256 -110.45
+        46.46 -109.48
+        43.84 -109.86
+        45.8 -109.2
+      </gml:posList>
+    </gml:LineString>
+  </georss:where>
+  <entry>
+    <title>Setting off</title>
+    <link href="http://www.myisp.com/dbv/1"/>
+    <id>http://www.myisp.com/dbv/1</id>
+    <updated>2005-08-17T07:02:32Z</updated>
+    <content>getting ready to take the mountain!</content>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>45.256 -110.45</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+  <entry>
+    <title>Crossing Muddy Creek</title>
+    <link href="http://www.myisp.com/dbv/2"/>
+    <id>http://www.myisp.com/dbv/2</id>
+    <updated>2005-08-15T07:02:32Z</updated>
+    <content>Check out the salamanders here</content>
+    <georss:where>
+      <gml:Point>
+        <gml:pos>45.94 -74.377</gml:pos>
+      </gml:Point>
+    </georss:where>
+  </entry>
+</feed>
