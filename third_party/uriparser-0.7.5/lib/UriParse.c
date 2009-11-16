@@ -2175,6 +2175,8 @@ UriBool URI_FUNC(_TESTING_ONLY_ParseIpSix)(const URI_CHAR * text) {
 	const URI_CHAR * const afterIpSix = text + URI_STRLEN(text);
 	const URI_CHAR * res;
 
+        parser.uri = 0;  /* Initialize to 0 to avoid compiler warning. */
+
 	URI_FUNC(ResetParserState)(&parser);
 	URI_FUNC(ResetUri)(&uri);
 	parser.uri = &uri;

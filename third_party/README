@@ -7,3 +7,5 @@ with other projects that might statically link both libkml and its
 dependencies with other libraries dependent on minizip. These can be seen by
 diffing r655 with r656.
 
+There is one local modification to the uriparser code to avoid a compiler
+warning on some recent flavors of GCC. Diff r706 with r705 for details.
