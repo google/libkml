@@ -96,19 +96,19 @@ TEST_F(ColorTest, TestConstruction) {
   expected = "000000ff";
   ASSERT_EQ(expected, color_->to_string_abgr());
 
-  // Only the last eight chars are used for construction from string. Extra
-  // chars at the start of the input string are ignored.
+  // Only the first eight chars are used for construction from string. Extra
+  // chars at the end of the input string are ignored.
   const string kTenCharsGiven("aabbccddee");
   color_.reset(new Color32(kTenCharsGiven));
-  expected = "bbccddee";
+  expected = "aabbccdd";
   ASSERT_EQ(expected, color_->to_string_abgr());
 
-  // The input string here has only two valid hex values in the last eight
-  // chars ( the "a" and "e" in "or value") and those are the only chars that
+  // The input string here has two valid hex values in the first eight chars.
+  // ( the "a" and "c" in "Not a c") and those are the only chars that
   // won't be replaced with zeroes.
-  const string kBadString("This isn't even close to a color value");
+  const string kBadString("Not a color value");
   color_.reset(new Color32(kBadString));
-  expected = "0000a00e";
+  expected = "0000a0c0";
   ASSERT_EQ(expected, color_->to_string_abgr());
 }
 
@@ -190,6 +190,16 @@ TEST_F(ColorTest, TestSetFromUint32Argb) {
   ASSERT_EQ(static_cast<uint32_t>(0x11), color_->get_red());
   ASSERT_EQ(static_cast<uint32_t>(0x22), color_->get_green());
   ASSERT_EQ(static_cast<uint32_t>(0x33), color_->get_blue());
+}
+
+TEST_F(ColorTest, TestSetColorArgbFromString) {
+  // The first 8 characters are a valid color (green). The remainder of the
+  // string is garbage. Assert we correctly set the color.
+  const string kLongStr("01234567nowSomeNonsense");
+  const string kStr("01234567");
+  color_.reset(new Color32());
+  color_->set_color_abgr(kLongStr);
+  ASSERT_EQ(kStr, color_->to_string_abgr());
 }
 
 }  // end namespace kmlbase
