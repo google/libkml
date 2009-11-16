@@ -126,7 +126,10 @@ class Color32 {
   // Sets the color from a string of AABBGGRR color.
   void set_color_abgr(const string& color_abgr) {
     uint32_t out = 0;
-    for(size_t i = 0; i < color_abgr.size(); ++i) {
+    // Don't loop over the entire string. We consider only the first
+    // 8 characters significant.
+    size_t length = color_abgr.size() >= 8 ? 8 : color_abgr.size();
+    for(size_t i = 0; i < length; ++i) {
       out = out * 16;
       if (color_abgr[i] >= '0' && color_abgr[i] <= '9') {
         out += color_abgr[i] - '0';
