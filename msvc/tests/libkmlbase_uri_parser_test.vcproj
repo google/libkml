@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include"
+				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.5\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,9 +63,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libkmlbase.lib uriparser-debug.lib gtest.lib"
+				AdditionalDependencies="libkmlbase.lib uriparser.lib gtest.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\Debug;..\..\third_party\uriparser-0.7.1.win32\debug;..\..\third_party\uriparser-0.7.1;..\..\third_party\googletest-r108.win32\debug"
+				AdditionalLibraryDirectories="..\Debug;..\..\third_party\uriparser-0.7.5.win32\debug;..\..\third_party\uriparser-0.7.5;..\..\third_party\googletest-r108.win32\debug"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -121,7 +121,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.1\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include"
+				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.5\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -140,9 +140,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libkmlbase.lib uriparser-release.lib gtest.lib"
+				AdditionalDependencies="libkmlbase.lib uriparser.lib gtest.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="..\Release;..\..\third_party\uriparser-0.7.1.win32\release;..\..\third_party\googletest-r108.win32\release"
+				AdditionalLibraryDirectories="..\Release;..\..\third_party\uriparser-0.7.5.win32\release;..\..\third_party\googletest-r108.win32\release"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
