@@ -79,18 +79,14 @@ void Overlay::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Overlay] >>
-Visitor::Status Overlay::StartVisit(Visitor* v) {
-  return v->VisitOverlay(OverlayPtr(this));
+void Overlay::Accept(Visitor* visitor) {
+  visitor->VisitOverlay(OverlayPtr(this));
 }
 
-void Overlay::EndVisit(Visitor* v) {
-  v->VisitOverlayEnd(OverlayPtr(this));
-}
-
-void Overlay::AcceptChildren(Visitor* v) {
-  Feature::AcceptChildren(v);
-  if (has_icon() && !get_icon()->Accept(v)) {
-    clear_icon();
+void Overlay::AcceptChildren(VisitorDriver* driver) {
+  Feature::AcceptChildren(driver);
+  if (has_icon()) {
+    driver->Visit(get_icon());
   }
 }
 // << Visitor Api End [Overlay] <<
@@ -206,21 +202,17 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [GroundOverlay] >>
-Visitor::Status GroundOverlay::StartVisit(Visitor* v) {
-  return v->VisitGroundOverlay(GroundOverlayPtr(this));
+void GroundOverlay::Accept(Visitor* visitor) {
+  visitor->VisitGroundOverlay(GroundOverlayPtr(this));
 }
 
-void GroundOverlay::EndVisit(Visitor* v) {
-  v->VisitGroundOverlayEnd(GroundOverlayPtr(this));
-}
-
-void GroundOverlay::AcceptChildren(Visitor* v) {
-  Overlay::AcceptChildren(v);
-  if (has_latlonbox() && !get_latlonbox()->Accept(v)) {
-    clear_latlonbox();
+void GroundOverlay::AcceptChildren(VisitorDriver* driver) {
+  Overlay::AcceptChildren(driver);
+  if (has_latlonbox()) {
+    driver->Visit(get_latlonbox());
   }
-  if (has_gx_latlonquad() && !get_gx_latlonquad()->Accept(v)) {
-    clear_gx_latlonquad();
+  if (has_gx_latlonquad()) {
+    driver->Visit(get_gx_latlonquad());
   }
 }
 // << Visitor Api End [GroundOverlay] <<
@@ -396,24 +388,20 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [PhotoOverlay] >>
-Visitor::Status PhotoOverlay::StartVisit(Visitor* v) {
-  return v->VisitPhotoOverlay(PhotoOverlayPtr(this));
+void PhotoOverlay::Accept(Visitor* visitor) {
+  visitor->VisitPhotoOverlay(PhotoOverlayPtr(this));
 }
 
-void PhotoOverlay::EndVisit(Visitor* v) {
-  v->VisitPhotoOverlayEnd(PhotoOverlayPtr(this));
-}
-
-void PhotoOverlay::AcceptChildren(Visitor* v) {
-  Overlay::AcceptChildren(v);
-  if (has_viewvolume() && !get_viewvolume()->Accept(v)) {
-    clear_viewvolume();
+void PhotoOverlay::AcceptChildren(VisitorDriver* driver) {
+  Overlay::AcceptChildren(driver);
+  if (has_viewvolume()) {
+    driver->Visit(get_viewvolume());
   }
-  if (has_imagepyramid() && !get_imagepyramid()->Accept(v)) {
-    clear_imagepyramid();
+  if (has_imagepyramid()) {
+    driver->Visit(get_imagepyramid());
   }
-  if (has_point() && !get_point()->Accept(v)) {
-    clear_point();
+  if (has_point()) {
+    driver->Visit(get_point());
   }
 }
 // << Visitor Api End [PhotoOverlay] <<
@@ -489,27 +477,23 @@ void ScreenOverlay::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [ScreenOverlay] >>
-Visitor::Status ScreenOverlay::StartVisit(Visitor* v) {
-  return v->VisitScreenOverlay(ScreenOverlayPtr(this));
+void ScreenOverlay::Accept(Visitor* visitor) {
+  visitor->VisitScreenOverlay(ScreenOverlayPtr(this));
 }
 
-void ScreenOverlay::EndVisit(Visitor* v) {
-  v->VisitScreenOverlayEnd(ScreenOverlayPtr(this));
-}
-
-void ScreenOverlay::AcceptChildren(Visitor* v) {
-  Overlay::AcceptChildren(v);
-  if (has_overlayxy() && !get_overlayxy()->Accept(v)) {
-    clear_overlayxy();
+void ScreenOverlay::AcceptChildren(VisitorDriver* driver) {
+  Overlay::AcceptChildren(driver);
+  if (has_overlayxy()) {
+    driver->Visit(get_overlayxy());
   }
-  if (has_screenxy() && !get_screenxy()->Accept(v)) {
-    clear_screenxy();
+  if (has_screenxy()) {
+    driver->Visit(get_screenxy());
   }
-  if (has_rotationxy() && !get_rotationxy()->Accept(v)) {
-    clear_rotationxy();
+  if (has_rotationxy()) {
+    driver->Visit(get_rotationxy());
   }
-  if (has_size() && !get_size()->Accept(v)) {
-    clear_size();
+  if (has_size()) {
+    driver->Visit(get_size());
   }
 }
 // << Visitor Api End [ScreenOverlay] <<

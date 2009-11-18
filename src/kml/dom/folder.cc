@@ -43,14 +43,9 @@ void Folder::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Folder] >>
-Visitor::Status Folder::StartVisit(Visitor* v) {
-  return v->VisitFolder(FolderPtr(this));
+void Folder::Accept(Visitor* visitor) {
+  visitor->VisitFolder(FolderPtr(this));
 }
-
-void Folder::EndVisit(Visitor* v) {
-  v->VisitFolderEnd(FolderPtr(this));
-}
-
 // << Visitor Api End [Folder] <<
 
 }  // end namespace kmldom

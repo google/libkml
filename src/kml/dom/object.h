@@ -31,6 +31,7 @@
 #include "kml/dom/element.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/visitor.h"
+#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmlbase {
@@ -74,8 +75,7 @@ class Object : public Element {
   // >> Visitor Api Start [Object] >>
   // This section contains auto-generated code to implement a visitor pattern.
   // See <some document> for more information.
-  virtual Visitor::Status StartVisit(Visitor* v);
-  virtual void EndVisit(Visitor* v);
+  virtual void Accept(Visitor* visitor);
   // << Visitor Api End [Object] <<
  protected:
   // Object is abstract, derived class access only.

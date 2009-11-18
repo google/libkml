@@ -174,9 +174,9 @@ class AtomCategory : public BasicElement<Type_AtomCategory> {
   virtual ~AtomCategory();
 
   // term=
-  const std::string& get_term() const { return term_; }
+  const string& get_term() const { return term_; }
   bool has_term() const { return has_term_; }
-  void set_term(const std::string& value) {
+  void set_term(const string& value) {
     term_ = value;
     has_term_ = true;
   }
@@ -186,9 +186,9 @@ class AtomCategory : public BasicElement<Type_AtomCategory> {
   }
 
   // scheme=
-  const std::string& get_scheme() const { return scheme_; }
+  const string& get_scheme() const { return scheme_; }
   bool has_scheme() const { return has_scheme_; }
-  void set_scheme(const std::string& value) {
+  void set_scheme(const string& value) {
     scheme_ = value;
     has_scheme_ = true;
   }
@@ -198,9 +198,9 @@ class AtomCategory : public BasicElement<Type_AtomCategory> {
   }
 
   // label=
-  const std::string& get_label() const { return label_; }
+  const string& get_label() const { return label_; }
   bool has_label() const { return has_label_; }
-  void set_label(const std::string& value) {
+  void set_label(const string& value) {
     label_ = value;
     has_label_ = true;
   }
@@ -219,11 +219,11 @@ class AtomCategory : public BasicElement<Type_AtomCategory> {
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
   bool has_term_;
-  std::string term_;
+  string term_;
   bool has_scheme_;
-  std::string scheme_;
+  string scheme_;
   bool has_label_;
-  std::string label_;
+  string label_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(AtomCategory);
 };
 

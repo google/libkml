@@ -2,7 +2,7 @@ SUBDIRS = java python
 
 AM_CPPFLAGS = -I$(top_srcdir)/src \
 	      -I$(top_srcdir)/third_party/boost_1_34_1 \
-	      -I$(top_srcdir)/third_party/uriparser-0.7.1/include
+	      -I$(top_srcdir)/third_party/uriparser-0.7.5/include
 
 COMMONLIBS = $(top_builddir)/src/kml/engine/libkmlengine.la \
              $(top_builddir)/src/kml/dom/libkmldom.la \

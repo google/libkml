@@ -40,6 +40,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/visitor.h"
+#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 #include "kml/base/xml_element.h"
 
@@ -164,41 +165,26 @@ class Element : public kmlbase::XmlElement {
 
   // >> Visitor Api Start >>
   // Experimental visitor API - subject to change.
-  //
-  // Eventually these could be made pure virtual once all concrete classes
-  // implement the StartVisit/EndVisit methods.
-  virtual Visitor::Status StartVisit(Visitor* v);
-  virtual void EndVisit(Visitor* v);
+  virtual void Accept(Visitor* visitor);
 
   // This needs to be implemented by subclasses with child elements and must
-  // call its parent's implementation first.
-  virtual void AcceptChildren(Visitor* v);
-
-  // Accepts the given visitor for this node. When a visitor is accepted by an
-  // element it will have the appropriate VisitXxx() method invoked for the node
-  // type. Depending on the status returned by VisitXxx() the child nodes may be
-  // visited or the element could be removed from its parent.
-  // Note that VisitEnd() will only be called if the VisitXxx() method returned
-  // Visitor::CONTINUE.
-  //
-  // Returns false if this node should be removed from its parent.
-  bool Accept(Visitor* v);
+  // call its parent's implementation first. The default implementation does
+  // nothing.
+  virtual void AcceptChildren(VisitorDriver* driver) {
+    /* Inlinable for efficiency */
+  }
 
  protected:
   // Allows subclasses to easily visit repeated fields.
-  template <class NODE>
-  static void AcceptRepeated(std::vector<NODE>* nodes, Visitor* v) {
-    // NOTE: This implementation is currently O(n^2) and could be made linear.
-    typename std::vector<NODE>::iterator it;
-    for (it = nodes->begin(); it != nodes->end(); ) {
-      if ((*it)->Accept(v)) {
-        ++it;
-      } else {
-        it = nodes->erase(it);
-      }
+  template <class T>
+  static void AcceptRepeated(std::vector<T>* elements, VisitorDriver* driver) {
+    typename std::vector<T>::iterator it;
+    for (it = elements->begin(); it != elements->end(); ++it) {
+      driver->Visit(*it);
     }
   }
   // << Visitor Api End <<
+
  protected:
   // Element is an abstract base class and is never created directly.
   Element();

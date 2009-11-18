@@ -57,18 +57,14 @@ void Placemark::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Placemark] >>
-Visitor::Status Placemark::StartVisit(Visitor* v) {
-  return v->VisitPlacemark(PlacemarkPtr(this));
+void Placemark::Accept(Visitor* visitor) {
+  visitor->VisitPlacemark(PlacemarkPtr(this));
 }
 
-void Placemark::EndVisit(Visitor* v) {
-  v->VisitPlacemarkEnd(PlacemarkPtr(this));
-}
-
-void Placemark::AcceptChildren(Visitor* v) {
-  Feature::AcceptChildren(v);
-  if (has_geometry() && !get_geometry()->Accept(v)) {
-    clear_geometry();
+void Placemark::AcceptChildren(VisitorDriver* driver) {
+  Feature::AcceptChildren(driver);
+  if (has_geometry()) {
+    driver->Visit(get_geometry());
   }
 }
 // << Visitor Api End [Placemark] <<

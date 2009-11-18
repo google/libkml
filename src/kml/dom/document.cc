@@ -60,18 +60,14 @@ void Document::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Document] >>
-Visitor::Status Document::StartVisit(Visitor* v) {
-  return v->VisitDocument(DocumentPtr(this));
+void Document::Accept(Visitor* visitor) {
+  visitor->VisitDocument(DocumentPtr(this));
 }
 
-void Document::EndVisit(Visitor* v) {
-  v->VisitDocumentEnd(DocumentPtr(this));
-}
-
-void Document::AcceptChildren(Visitor* v) {
-  Container::AcceptChildren(v);
-  Element::AcceptRepeated<SchemaPtr>(&schema_array_, v);
-  Element::AcceptRepeated<StyleSelectorPtr>(&styleselector_array_, v);
+void Document::AcceptChildren(VisitorDriver* driver) {
+  Container::AcceptChildren(driver);
+  Element::AcceptRepeated<SchemaPtr>(&schema_array_, driver);
+  Element::AcceptRepeated<StyleSelectorPtr>(&styleselector_array_, driver);
 }
 // << Visitor Api End [Document] <<
 

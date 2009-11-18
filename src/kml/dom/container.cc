@@ -77,17 +77,13 @@ FeaturePtr Container::DeleteFeatureById(const string& id) {
 }
 
 // >> Visitor Api Start [Container] >>
-Visitor::Status Container::StartVisit(Visitor* v) {
-  return v->VisitContainer(ContainerPtr(this));
+void Container::Accept(Visitor* visitor) {
+  visitor->VisitContainer(ContainerPtr(this));
 }
 
-void Container::EndVisit(Visitor* v) {
-  v->VisitContainerEnd(ContainerPtr(this));
-}
-
-void Container::AcceptChildren(Visitor* v) {
-  Feature::AcceptChildren(v);
-  Element::AcceptRepeated<FeaturePtr>(&feature_array_, v);
+void Container::AcceptChildren(VisitorDriver* driver) {
+  Feature::AcceptChildren(driver);
+  Element::AcceptRepeated<FeaturePtr>(&feature_array_, driver);
 }
 // << Visitor Api End [Container] <<
 
