@@ -71,30 +71,30 @@ TEST_F(AtomCategoryTest, TestType) {
 }
 
 TEST_F(AtomCategoryTest, TestParseScheme) {
-  const std::string kScheme("http://schemas.google.com/g/2005#kind");
+  const string kScheme("http://schemas.google.com/g/2005#kind");
   // ParseKml calls AddElement.
   atomcategory_ = AsAtomCategory(
-      ParseKml(std::string("<atom:category scheme='") + kScheme + "'/>"));
+      ParseKml(string("<atom:category scheme='") + kScheme + "'/>"));
   ASSERT_TRUE(atomcategory_);
   ASSERT_TRUE(atomcategory_->has_scheme());
   ASSERT_EQ(kScheme, atomcategory_->get_scheme());
 }
 
 TEST_F(AtomCategoryTest, TestParseLabel) {
-  const std::string kLabel("document");
+  const string kLabel("document");
   // ParseKml calls AddElement.
   atomcategory_ = AsAtomCategory(
-      ParseKml(std::string("<atom:category label='") + kLabel + "'/>"));
+      ParseKml(string("<atom:category label='") + kLabel + "'/>"));
   ASSERT_TRUE(atomcategory_);
   ASSERT_TRUE(atomcategory_->has_label());
   ASSERT_EQ(kLabel, atomcategory_->get_label());
 }
 
 TEST_F(AtomCategoryTest, TestParseTerm) {
-  const std::string kTerm("item");
+  const string kTerm("item");
   // ParseKml calls AddElement.
   atomcategory_ = AsAtomCategory(
-      ParseKml(std::string("<atom:category term='") + kTerm + "'/>"));
+      ParseKml(string("<atom:category term='") + kTerm + "'/>"));
   ASSERT_TRUE(atomcategory_);
   ASSERT_TRUE(atomcategory_->has_term());
   ASSERT_EQ(kTerm, atomcategory_->get_term());

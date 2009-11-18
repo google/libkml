@@ -91,7 +91,7 @@ bool AtomUtil::LinkIsOfRel(const kmldom::AtomLinkPtr& link,
 
 // static
 kmldom::AtomCategoryPtr AtomUtil::FindCategoryByScheme(
-    const kmldom::AtomCommon& atom_common, const std::string& scheme) {
+    const kmldom::AtomCommon& atom_common, const string& scheme) {
   size_t category_size = atom_common.get_category_array_size();
   for (size_t i = 0; i < category_size; ++i) {
     const kmldom::AtomCategoryPtr& category =

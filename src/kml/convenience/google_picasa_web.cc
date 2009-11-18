@@ -63,7 +63,7 @@ const char* GooglePicasaWeb::get_metafeed_uri() {
   return kPicasaWebMetaFeedUri;
 }
 
-static std::string GetScope() {
+static string GetScope() {
   if (const char* scope = getenv("GOOGLE_PICASA_WEB_SCOPE")) {
     return scope;
   }
@@ -78,13 +78,13 @@ GooglePicasaWeb::GooglePicasaWeb()
 GooglePicasaWeb::~GooglePicasaWeb() {
 }
 
-bool GooglePicasaWeb::GetMetaFeedXml(std::string* atom_feed) const {
+bool GooglePicasaWeb::GetMetaFeedXml(string* atom_feed) const {
   return http_client_->SendRequest(HTTP_GET, scope_ + kPicasaWebMetaFeedUri,
                                    NULL, NULL, atom_feed);
 }
 
 kmldom::AtomFeedPtr GooglePicasaWeb::GetMetaFeed() const {
-  std::string meta_feed;
+  string meta_feed;
   if (GetMetaFeedXml(&meta_feed)) {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(meta_feed, NULL));
   }

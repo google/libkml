@@ -72,7 +72,7 @@ public:
                             const StringVector& atts);
   virtual void EndElement(const string& namespaced_name);
   virtual void CharData(const string& s);
-  virtual void StartNamespace(const string& prefix, const std::string& uri);
+  virtual void StartNamespace(const string& prefix, const string& uri);
   virtual void EndNamespace(const string& prefix);
 
 private:
