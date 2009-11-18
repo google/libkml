@@ -32,6 +32,7 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/networklinkcontrol.h"
 #include "kml/dom/visitor.h"
+#include "kml/dom/visitor_driver.h"
 
 namespace kmlbase {
 class Attributes;
@@ -80,9 +81,8 @@ class Kml : public BasicElement<Type_kml> {
   // >> Visitor Api Start [Kml] >>
   // This section contains auto-generated code to implement a visitor pattern.
   // See <some document> for more information.
-  virtual Visitor::Status StartVisit(Visitor* v);
-  virtual void EndVisit(Visitor* v);
-  virtual void AcceptChildren(Visitor* v);
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
   // << Visitor Api End [Kml] <<
  private:
   friend class KmlFactory;

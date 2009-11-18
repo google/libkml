@@ -1,4 +1,4 @@
-// Copyright 2008, Google Inc. All rights reserved.
+// Copyright 2009, Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -23,53 +23,42 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef KML_DOM_PLACEMARK_H__
-#define KML_DOM_PLACEMARK_H__
+// WARNING: THE VISITOR API IMPLEMENTED IN THIS CLASS IS EXPERIMENTAL AND
+// SUBJECT TO CHANGE WITHOUT WARNING.
 
-#include "kml/dom/feature.h"
-#include "kml/dom/geometry.h"
-#include "kml/dom/kml22.h"
-#include "kml/dom/kml_ptr.h"
 #include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
-#include "kml/base/util.h"
+
+#include "kml/dom/kmldom.h"
+#include "kml/dom/kml_cast.h"
 
 namespace kmldom {
 
-class Placemark : public Feature {
- public:
-  virtual ~Placemark();
-  virtual KmlDomType Type() const { return Type_Placemark; }
-  virtual bool IsA(KmlDomType type) const {
-    return type == Type_Placemark || Feature::IsA(type);
-  }
+VisitorDriver::VisitorDriver() { }
 
-  const GeometryPtr& get_geometry() const { return geometry_; }
-  bool has_geometry() const { return geometry_ != NULL; }
-  void set_geometry(const GeometryPtr& geometry) {
-    SetComplexChild(geometry, &geometry_);
-  }
-  void clear_geometry() {
-    set_geometry(NULL);
-  }
+VisitorDriver::~VisitorDriver() { }
 
-  // >> Visitor Api Start [Placemark] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
-  virtual void Accept(Visitor* visitor);
-  virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Placemark] <<
- private:
-  friend class KmlFactory;
-  Placemark();
-  friend class KmlHandler;
-  virtual void AddElement(const ElementPtr& element);
-  friend class Serializer;
-  virtual void Serialize(Serializer& serializer) const;
-  GeometryPtr geometry_;
-  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Placemark);
-};
+
+SimplePreorderDriver::SimplePreorderDriver(Visitor* visitor)
+    : visitor_(visitor) {
+}
+
+SimplePreorderDriver::~SimplePreorderDriver() { }
+
+void SimplePreorderDriver::Visit(const ElementPtr& element) {
+  element->Accept(visitor_);
+  element->AcceptChildren(this);
+}
+
+
+SimplePostorderDriver::SimplePostorderDriver(Visitor* visitor)
+    : visitor_(visitor) {
+}
+
+SimplePostorderDriver::~SimplePostorderDriver() { }
+
+void SimplePostorderDriver::Visit(const ElementPtr& element) {
+  element->AcceptChildren(this);
+  element->Accept(visitor_);
+}
 
 }  // namespace kmldom
-
-#endif  // KML_DOM_PLACEMARK_H__

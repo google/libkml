@@ -192,42 +192,38 @@ void Feature::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Feature] >>
-Visitor::Status Feature::StartVisit(Visitor* v) {
-  return v->VisitFeature(FeaturePtr(this));
+void Feature::Accept(Visitor* visitor) {
+  visitor->VisitFeature(FeaturePtr(this));
 }
 
-void Feature::EndVisit(Visitor* v) {
-  v->VisitFeatureEnd(FeaturePtr(this));
-}
-
-void Feature::AcceptChildren(Visitor* v) {
-  Object::AcceptChildren(v);
-  if (has_atomauthor() && !get_atomauthor()->Accept(v)) {
-    clear_atomauthor();
+void Feature::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  if (has_atomauthor()) {
+    driver->Visit(get_atomauthor());
   }
-  if (has_atomlink() && !get_atomlink()->Accept(v)) {
-    clear_atomlink();
+  if (has_atomlink()) {
+    driver->Visit(get_atomlink());
   }
-  if (has_xaladdressdetails() && !get_xaladdressdetails()->Accept(v)) {
-    clear_xaladdressdetails();
+  if (has_xaladdressdetails()) {
+    driver->Visit(get_xaladdressdetails());
   }
-  if (has_snippet() && !get_snippet()->Accept(v)) {
-    clear_snippet();
+  if (has_snippet()) {
+    driver->Visit(get_snippet());
   }
-  if (has_abstractview() && !get_abstractview()->Accept(v)) {
-    clear_abstractview();
+  if (has_abstractview()) {
+    driver->Visit(get_abstractview());
   }
-  if (has_timeprimitive() && !get_timeprimitive()->Accept(v)) {
-    clear_timeprimitive();
+  if (has_timeprimitive()) {
+    driver->Visit(get_timeprimitive());
   }
-  if (has_styleselector() && !get_styleselector()->Accept(v)) {
-    clear_styleselector();
+  if (has_styleselector()) {
+    driver->Visit(get_styleselector());
   }
-  if (has_region() && !get_region()->Accept(v)) {
-    clear_region();
+  if (has_region()) {
+    driver->Visit(get_region());
   }
-  if (has_extendeddata() && !get_extendeddata()->Accept(v)) {
-    clear_extendeddata();
+  if (has_extendeddata()) {
+    driver->Visit(get_extendeddata());
   }
 }
 // << Visitor Api End [Feature] <<

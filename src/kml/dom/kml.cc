@@ -81,21 +81,17 @@ void Kml::Serialize(Serializer& serializer) const {
 }
 
 // >> Visitor Api Start [Kml] >>
-Visitor::Status Kml::StartVisit(Visitor* v) {
-  return v->VisitKml(KmlPtr(this));
+void Kml::Accept(Visitor* visitor) {
+  visitor->VisitKml(KmlPtr(this));
 }
 
-void Kml::EndVisit(Visitor* v) {
-  v->VisitKmlEnd(KmlPtr(this));
-}
-
-void Kml::AcceptChildren(Visitor* v) {
-  Element::AcceptChildren(v);
-  if (has_networklinkcontrol() && !get_networklinkcontrol()->Accept(v)) {
-    clear_networklinkcontrol();
+void Kml::AcceptChildren(VisitorDriver* driver) {
+  Element::AcceptChildren(driver);
+  if (has_networklinkcontrol()) {
+    driver->Visit(get_networklinkcontrol());
   }
-  if (has_feature() && !get_feature()->Accept(v)) {
-    clear_feature();
+  if (has_feature()) {
+    driver->Visit(get_feature());
   }
 }
 // << Visitor Api End [Kml] <<

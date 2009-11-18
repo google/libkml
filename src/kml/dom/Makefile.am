@@ -54,7 +54,8 @@ libkmldom_la_SOURCES = \
 	xal.cc \
 	xml_serializer.cc \
 	xsd.cc \
-	visitor.cc
+	visitor.cc \
+	visitor_driver.cc
 
 libkmldomincludedir = $(includedir)/kml/dom
 libkmldominclude_HEADERS = \
@@ -104,7 +105,8 @@ libkmldominclude_HEADERS = \
 	gx_tour.h \
 	vec2.h \
 	xal.h \
-	visitor.h
+	visitor.h \
+	visitor_driver.h
 
 EXTRA_DIST = \
 	kml_handler.h \
@@ -166,7 +168,8 @@ TESTS = abstractlatlonbox_test \
 	xal_test \
 	xml_serializer_test \
 	xsd_test \
-	visitor_test
+	visitor_test \
+	visitor_driver_test
 
 
 check_PROGRAMS = $(TESTS)
@@ -469,6 +472,12 @@ xsd_test_LDADD= libkmldom.la \
 visitor_test_SOURCES = visitor_test.cc
 visitor_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 visitor_test_LDADD= libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+visitor_driver_test_SOURCES = visitor_driver_test.cc
+visitor_driver_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+visitor_driver_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la
 

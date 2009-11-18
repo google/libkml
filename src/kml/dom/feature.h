@@ -40,6 +40,7 @@
 #include "kml/dom/timeprimitive.h"
 #include "kml/dom/xal.h"
 #include "kml/dom/visitor.h"
+#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
@@ -250,9 +251,8 @@ class Feature : public Object {
   // >> Visitor Api Start [Feature] >>
   // This section contains auto-generated code to implement a visitor pattern.
   // See <some document> for more information.
-  virtual Visitor::Status StartVisit(Visitor* v);
-  virtual void EndVisit(Visitor* v);
-  virtual void AcceptChildren(Visitor* v);
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
   // << Visitor Api End [Feature] <<
 
  protected:
