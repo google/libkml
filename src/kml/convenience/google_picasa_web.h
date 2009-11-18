@@ -76,14 +76,14 @@ class GooglePicasaWeb {
 
   static const char* get_metafeed_uri();
 
-  const std::string& get_scope() const {
+  const string& get_scope() const {
     return scope_;
   }
 
   // This returns the "meta feed" for the authenticated user.  The result is an
   // Atom <feed> containing an <entry> for each of the user's albums.  See:
   // http://code.google.com/apis/picasaweb/docs/2.0/developers_guide_protocol.html#ListAlbums
-  bool GetMetaFeedXml(std::string* atom_feed) const;
+  bool GetMetaFeedXml(string* atom_feed) const;
 
   // This calls GetMetaFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetMetaFeed() const;
@@ -92,7 +92,7 @@ class GooglePicasaWeb {
   // Use static Create().
   GooglePicasaWeb();
   boost::scoped_ptr<HttpClient> http_client_;
-  const std::string scope_;
+  const string scope_;
 };
 
 }  // end namespace kmlconvenience

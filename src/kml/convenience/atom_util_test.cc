@@ -183,9 +183,9 @@ TEST(AtomUtilTest, TestFindCategoryByScheme) {
   kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
   kmldom::AtomEntryPtr entry = factory->CreateAtomEntry();
   kmldom::AtomCategoryPtr category = factory->CreateAtomCategory();
-  const std::string kScheme("http://schemas.google.com/g/2005#kind");
+  const string kScheme("http://schemas.google.com/g/2005#kind");
   category->set_scheme(kScheme);
-  const std::string kLabel("document");
+  const string kLabel("document");
   category->set_label(kLabel);
   entry->add_category(category);
   kmldom::AtomCategoryPtr got_category = AtomUtil::FindCategoryByScheme(
