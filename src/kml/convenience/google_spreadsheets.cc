@@ -91,8 +91,20 @@ kmldom::AtomFeedPtr GoogleSpreadsheets::GetMetaFeed() const {
     return kmldom::AsAtomFeed(kmldom::ParseAtom(meta_feed, NULL));
   }
   return NULL;
-
-
 }
+
+// http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key={resource_id}&exportFormat={format}
+bool GoogleSpreadsheets::DownloadSpreadsheet(const kmldom::AtomEntryPtr& entry,
+                                             const string& format,
+                                             string* spreadsheet_data) {
+  string resource_id;
+  if (!AtomUtil::GetGdResourceId(entry, &resource_id)) {
+    return false;
+  }
+  const string uri = scope_ + "/feeds/download/spreadsheets/Export?key=" +
+      resource_id + "&exportFormat=" + format;
+  return http_client_->SendRequest(HTTP_GET, uri, NULL, NULL, spreadsheet_data);
+}
+
 
 }  // end namespace kmlconvenience

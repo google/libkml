@@ -184,4 +184,55 @@ AtomEntryPtr AtomUtil::FindEntryByTitle(const kmldom::AtomFeedPtr& feed,
   return NULL;
 }
 
+// static
+kmldom::AtomFeedPtr AtomUtil::GetAndParseFeed(const string& feed_uri,
+                                              const HttpClient& http_client) {
+  string feed_xml;
+  if (http_client.SendRequest(HTTP_GET, feed_uri, NULL, NULL, &feed_xml)) {
+    return kmldom::AsAtomFeed(kmldom::ParseAtom(feed_xml, NULL));
+  }
+  return NULL;
+}
+
+// Parse a string of this form: <namempace|key>val</namespace|key>.
+// TODO: put this in kmlbase as a general facility.
+static bool HackParseElement(const string& element, string* key, string* val) {
+  size_t pipe = element.find('|');
+  if (pipe == string::npos) {
+    return false;
+  }
+  size_t gt = element.find('>', pipe + 1);
+  if (gt == string::npos) {
+    return false;
+  }
+  size_t lt = element.find('<', gt + 1);
+  if (lt == string::npos) {
+    return false;
+  }
+  *key = element.substr(pipe + 1, gt - pipe - 1);
+  *val = element.substr(gt + 1, lt - gt - 1);
+  return true;
+}
+
+// Look for something about like this in the <atom:entry>'s unknown (unparsed)
+// elements array:
+// <gd:resourceId>document:0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy</gd:resourceId>
+bool AtomUtil::GetGdResourceId(const kmldom::AtomEntryPtr& entry,
+                               string* resource_id) {
+  // Since libkml does not presently know about the gd namespace we look for
+  // this element in the unknown elements list.
+  size_t num_un = entry->get_unknown_elements_array_size();
+  for (size_t i = 0; i < num_un; ++i) {
+    string tag;
+    string content;
+    if (HackParseElement(entry->get_unknown_elements_array_at(i), &tag,
+                         &content) &&
+        tag == "resourceId") {
+      *resource_id = content;
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // end namespace kmlconvenience

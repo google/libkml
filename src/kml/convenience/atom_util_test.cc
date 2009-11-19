@@ -33,6 +33,15 @@
 #include "kml/dom.h"
 #include "kml/engine/location_util.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
+
 namespace kmlconvenience {
 
 TEST(AtomUtilTest, TestCreateBasicEntry) {
@@ -192,6 +201,41 @@ TEST(AtomUtilTest, TestFindCategoryByScheme) {
       *entry, "kind");
   ASSERT_TRUE(got_category.get());
   ASSERT_EQ(kLabel, got_category->get_label());
+}
+
+TEST(AtomUtilTest, TestGetAndParseFeed) {
+  TestDataHttpClient test_data_http_client;
+  kmldom::AtomFeedPtr feed = AtomUtil::GetAndParseFeed(
+      "http://example.com/gdata/picasaweb-metafeed.xml",
+      test_data_http_client);
+  ASSERT_TRUE(feed);
+  ASSERT_EQ(
+      string("http://picasaweb.google.com/data/feed/user/ben.gardenfield"),
+      feed->get_id());
+  ASSERT_EQ(static_cast<size_t>(17), feed->get_entry_array_size());
+
+  ASSERT_FALSE(AtomUtil::GetAndParseFeed("http://example.com/no/such/file",
+                                         test_data_http_client));
+  // This is an Atom <entry>.
+  ASSERT_FALSE(AtomUtil::GetAndParseFeed(
+      "http://example.com/gmaps/create-map-result.xml",
+      test_data_http_client));
+}
+
+TEST(AtomUtilTest, TestGetGdResourceId) {
+  TestDataHttpClient test_data_http_client;
+  kmldom::AtomFeedPtr feed = AtomUtil::GetAndParseFeed(
+      "http://example.com/gdata/doclist-metafeed.xml",
+      test_data_http_client);
+  ASSERT_TRUE(feed);
+  ASSERT_EQ(static_cast<size_t>(4), feed->get_entry_array_size());
+  string resource_id;
+  // The 0th <atom:entry> in doclist-metafeed.xml has this child:
+  // <gd:resourceId>document:0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy</gd:resourceId>
+  ASSERT_TRUE(AtomUtil::GetGdResourceId(feed->get_entry_array_at(0),
+                                        &resource_id));
+  ASSERT_EQ(string("document:0ARX2bBe7ATEpZHg1a3poY18xOWNwZ2NuN2Qy"),
+            resource_id);
 }
 
 }  // end namespace kmlconvenience

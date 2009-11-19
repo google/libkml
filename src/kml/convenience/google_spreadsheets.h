@@ -82,6 +82,12 @@ class GoogleSpreadsheets {
   // This calls GetMetaFeedXml and returns the parsed result.
   kmldom::AtomFeedPtr GetMetaFeed() const;
 
+  // This downloads the Google Spreadsheet described by the entry in the
+  // format requested, "csv" for example.  For the full list see:
+  // http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html#DownloadingSpreadsheets
+  bool DownloadSpreadsheet(const kmldom::AtomEntryPtr& entry,
+                           const string& format, string* spreadsheet_data);
+
  private:
   // Use static Create().
   GoogleSpreadsheets();

@@ -35,6 +35,8 @@
 
 namespace kmlconvenience {
 
+class HttpClient;
+
 // This class is an API of Atom (RFC 4287) utility functions especially with
 // particular emphasis on wrapping KML.
 class AtomUtil {
@@ -105,6 +107,19 @@ class AtomUtil {
   // relation if such is found in the <atom:feed>.
   static void GetFeedFeatures(const kmldom::AtomFeedPtr& feed,
                               kmldom::ContainerPtr container);
+
+  // This fetches and parses the given <atom:feed> at the given URL.  NULL is
+  // returned on any fetch or parse errors.  The HttpClient is expected to be
+  // "logged in" as appropriate for the URL.
+  static kmldom::AtomFeedPtr GetAndParseFeed(const string& feed_url,
+                                             const HttpClient& http_client);
+
+  // If the <atom:entry> has a <gd:resourceId> true is returned.  Also return
+  // the value of this element if a resource_id string is supplied.
+  // Note: the gd:resourceId is a Google Data API extension to Atom.
+  static bool GetGdResourceId(const kmldom::AtomEntryPtr& entry,
+                              string* resource_id);
+
 };
 
 }  // end namespace kmlconvenience
