@@ -28,6 +28,7 @@
 
 #include <vector>
 #include "kml/base/file.h"
+#include "kml/base/net_cache_test_util.h"
 #include "kml/convenience/http_client.h"
 
 namespace kmlconvenience {
@@ -88,6 +89,24 @@ class LoggingHttpClient : public HttpClient {
 
  private:
   HttpRequestVector* request_log_;
+};
+
+// This HttpClient fetches the URI using kmlbase::TestDataNetFetcher which
+// reads the testdata file named by the path portion of the URI.
+class TestDataHttpClient : public HttpClient {
+ public:
+  TestDataHttpClient()
+    : HttpClient("TestDataHttpClient") {
+  }
+  virtual bool SendRequest(HttpMethodEnum http_method,
+                           const string& request_uri,
+                           const StringPairVector* request_headers,
+                           const string* post_data,
+                           string* response) const {
+    return test_data_net_fetcher_.FetchUrl(request_uri, response);
+  }
+ private:
+  kmlbase::TestDataNetFetcher test_data_net_fetcher_;
 };
 
 }  // end namespace kmlconvenience
