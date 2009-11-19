@@ -30,6 +30,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 #include "kml/base/file.h"
+#include "kml/convenience/atom_util.h"
 #include "kml/convenience/http_client.h"
 #include "kml/convenience/http_client_test_util.h"
 
@@ -107,6 +108,36 @@ TEST_F(GoogleSpreadsheetsTest, TestGetMetaFeed) {
   ASSERT_EQ(string("oz"), atom_feed->get_entry_array_at(0)->get_title());
   ASSERT_EQ(string("gplex"),
       atom_feed->get_entry_array_at(1)->get_title());
+}
+
+TEST_F(GoogleSpreadsheetsTest, TestDownloadSpreadsheet) {
+  // Fetch a feed which has an entry which has a gd:resourceId.
+  TestDataHttpClient test_data_http_client;
+  kmldom::AtomFeedPtr feed = AtomUtil::GetAndParseFeed(
+      "http://example.com/gdata/doclist-metafeed.xml",
+      test_data_http_client);
+  ASSERT_TRUE(feed);
+
+  HttpRequestVector request_log;
+  google_spreadsheets_.reset(
+      GoogleSpreadsheets::Create(new LoggingHttpClient(&request_log)));
+  string spreadsheet_data;
+  // This asserts that 1) the DownloadSpreadsheet method exists with the
+  // advertised signature and 2) that true can be returned if the entry
+  // specified holds a gd:resourceId.  Given that nothing is actually fetched
+  // there's little else to check.
+  ASSERT_TRUE(google_spreadsheets_->DownloadSpreadsheet(
+      feed->get_entry_array_at(0), "csv", &spreadsheet_data));
+  // That DownloadSpreadsheet is implemented as one HTTP GET is arguably and
+  // implementation detail...
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(HTTP_GET, request_log[0].http_method_);
+
+  // Verify that false is returned on an entry with no gd:resourceId.
+  kmldom::AtomEntryPtr entry =
+      kmldom::KmlFactory::GetFactory()->CreateAtomEntry();
+  ASSERT_FALSE(google_spreadsheets_->DownloadSpreadsheet(entry, "csv",
+                                                         &spreadsheet_data));
 }
 
 }  // end namespace kmlconvenience
