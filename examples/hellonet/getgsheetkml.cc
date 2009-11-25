@@ -80,13 +80,14 @@ static bool ParseGsxElement(const std::string& element, std::string* key,
 //   <gsx:latitude>-12.6704922515546</gsx:latitude>
 // <entry>
 // See: http://code.google.com/apis/spreadsheets/data/3.0/developers_guide_protocol.html#ListFeeds
-// TODO: add any other columns as ExtendedData/Data items.
 // TODO: create a more general form suitable for inclusion in the library itself
 kmldom::PlacemarkPtr CreatePlacemarkFromEntry(
     const kmldom::AtomEntryPtr& entry) {
   std::string name;
   std::string longitude;
   std::string latitude;
+  kmldom::ExtendedDataPtr extended_data =
+      kmldom::KmlFactory::GetFactory()->CreateExtendedData();
   size_t usize = entry->get_unknown_elements_array_size();
   for (size_t u = 0; u < usize; ++u) {
     const std::string& us = entry->get_unknown_elements_array_at(u);
@@ -99,13 +100,19 @@ kmldom::PlacemarkPtr CreatePlacemarkFromEntry(
         longitude = val;
       } else if (key == "latitude") {
         latitude = val;
+      } else {
+        extended_data->add_data(kmlconvenience::CreateDataNameValue(key, val));
       }
     }
   }
   if (!name.empty() && !longitude.empty() && !latitude.empty()) {
-    return kmlconvenience::CreatePointPlacemark(
+    kmldom::PlacemarkPtr placemark = kmlconvenience::CreatePointPlacemark(
         name, strtod(latitude.c_str(), NULL), strtod(longitude.c_str(), NULL));
+    if (extended_data->get_data_array_size() > 0) {
+      placemark->set_extendeddata(extended_data);
+    }
     // TODO: set <atom:link> back to this spreadsheet cell.
+    return placemark;
   }
   return NULL;
 }
