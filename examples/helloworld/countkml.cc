@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
   // If the file was KMZ, extract the KML file.
   std::string kml;
   if (KmzFile::IsKmz(file_data)) {
-    boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromString(argv[1]));
+    boost::scoped_ptr<KmzFile> kmz_file(KmzFile::OpenFromString(file_data));
     if (!kmz_file.get()) {
       cout << "Failed opening KMZ file" << endl;
       return 1;
