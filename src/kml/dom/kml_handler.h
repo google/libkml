@@ -74,6 +74,7 @@ private:
                                  const kmlbase::StringVector& atts);
   void InsertUnknownEndElement(const string& name);
   unsigned int skip_depth_;
+  unsigned int in_description_;
 
   // This calls the NewElement() method of each ParserObserver.  If any
   // ParserObserver::NewElement() returns false this immediately returns false.

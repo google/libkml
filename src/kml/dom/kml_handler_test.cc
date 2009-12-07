@@ -28,13 +28,24 @@
 #include "kml/dom/kml_handler.h"
 #include <stdlib.h>  // For calloc() and free().
 #include "boost/scoped_ptr.hpp"
+#include "kml/base/file.h"
 #include "kml/dom/element.h"
 #include "kml/dom/kml_cast.h"
+#include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/placemark.h"
 #include "kml/dom/parser.h"
 #include "kml/dom/parser_observer.h"
 #include "gtest/gtest.h"
+
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
 
 namespace kmldom {
 
@@ -463,9 +474,43 @@ TEST_F(KmlHandlerTest, InhibitingEndElement) {
   ASSERT_TRUE(point->has_coordinates());
 }
 
+TEST_F(KmlHandlerTest, TestParserHandlesGrossDescriptions) {
+  // HTML markup in <description> MUST be wrapped with CDATA elements like so:
+  // <description><![CDATA[<h1>title</h1>]]></description>
+  // However, the web has files with markup like this:
+  // <description><table><tr>...</tr><table></description>
+  // Historically, Google Earth has preserved the author's intent with this
+  // type of invalid markup. And hence, we try to as well.
+  const string kInvalidDescriptions(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "invalid_descriptions.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(kInvalidDescriptions, &data));
+  ElementPtr root = Parse(data, NULL);
+  ASSERT_TRUE(root);
+  KmlPtr kml = AsKml(root);
+  ASSERT_TRUE(kml);
+  DocumentPtr document = AsDocument(kml->get_feature());
+  ASSERT_TRUE(document);
+  ASSERT_EQ(static_cast<size_t>(3), document->get_feature_array_size());
+
+  PlacemarkPtr placemark0 = AsPlacemark(document->get_feature_array_at(0));
+  const string kExpected0("<b>bold</b>");
+  ASSERT_EQ(kExpected0, placemark0->get_description());
+
+  PlacemarkPtr placemark1 = AsPlacemark(document->get_feature_array_at(1));
+  const string kExpected1("foo<b>bold</b>bar");
+  ASSERT_EQ(kExpected1, placemark1->get_description());
+
+  PlacemarkPtr placemark2 = AsPlacemark(document->get_feature_array_at(2));
+  const string kExpected2("<description>foo<b>bold</b>bar</description>");
+  ASSERT_EQ(kExpected2, placemark2->get_description());
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
+
