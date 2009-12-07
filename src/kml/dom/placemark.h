@@ -30,11 +30,12 @@
 #include "kml/dom/geometry.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
+
+class Visitor;
+class VisitorDriver;
 
 class Placemark : public Feature {
  public:
@@ -53,12 +54,10 @@ class Placemark : public Feature {
     set_geometry(NULL);
   }
 
-  // >> Visitor Api Start [Placemark] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Placemark] <<
+
  private:
   friend class KmlFactory;
   Placemark();

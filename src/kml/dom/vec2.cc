@@ -97,4 +97,8 @@ void Vec2::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
 }
 
+void Vec2::Accept(Visitor* visitor) {
+  visitor->VisitVec2(Vec2Ptr(this));
+}
+
 }  // end namespace kmldom

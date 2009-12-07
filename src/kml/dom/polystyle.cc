@@ -68,4 +68,8 @@ void PolyStyle::Serialize(Serializer& serializer) const {
   }
 }
 
+void PolyStyle::Accept(Visitor* visitor) {
+  visitor->VisitPolyStyle(PolyStylePtr(this));
+}
+
 }  // end namespace kmldom

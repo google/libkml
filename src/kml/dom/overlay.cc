@@ -78,18 +78,12 @@ void Overlay::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [Overlay] >>
-void Overlay::Accept(Visitor* visitor) {
-  visitor->VisitOverlay(OverlayPtr(this));
-}
-
 void Overlay::AcceptChildren(VisitorDriver* driver) {
   Feature::AcceptChildren(driver);
   if (has_icon()) {
     driver->Visit(get_icon());
   }
 }
-// << Visitor Api End [Overlay] <<
 
 LatLonBox::LatLonBox()
   : rotation_(0.0),
@@ -121,6 +115,10 @@ void LatLonBox::Serialize(Serializer& serializer) const {
   }
 }
 
+void LatLonBox::Accept(Visitor* visitor) {
+  visitor->VisitLatLonBox(LatLonBoxPtr(this));
+}
+
 GxLatLonQuad::GxLatLonQuad() {
   set_xmlns(kmlbase::XMLNS_GX22);
 }
@@ -140,6 +138,17 @@ void GxLatLonQuad::Serialize(Serializer& serializer) const {
   Object::Serialize(serializer);
   if (has_coordinates()) {
     serializer.SaveElement(get_coordinates());
+  }
+}
+
+void GxLatLonQuad::Accept(Visitor* visitor) {
+  visitor->VisitGxLatLonQuad(GxLatLonQuadPtr(this));
+}
+
+void GxLatLonQuad::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  if (has_coordinates()) {
+    driver->Visit(get_coordinates());
   }
 }
 
@@ -201,7 +210,6 @@ void GroundOverlay::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [GroundOverlay] >>
 void GroundOverlay::Accept(Visitor* visitor) {
   visitor->VisitGroundOverlay(GroundOverlayPtr(this));
 }
@@ -215,7 +223,6 @@ void GroundOverlay::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_gx_latlonquad());
   }
 }
-// << Visitor Api End [GroundOverlay] <<
 
 ViewVolume::ViewVolume()
   : leftfov_(0.0),
@@ -278,6 +285,10 @@ void ViewVolume::Serialize(Serializer& serializer) const {
   }
 }
 
+void ViewVolume::Accept(Visitor* visitor) {
+  visitor->VisitViewVolume(ViewVolumePtr(this));
+}
+
 ImagePyramid::ImagePyramid()
   : tilesize_(256),
     has_tilesize_(false),
@@ -329,6 +340,10 @@ void ImagePyramid::Serialize(Serializer& serializer) const {
   if (has_gridorigin()) {
     serializer.SaveEnum(Type_gridOrigin, get_gridorigin());
   }
+}
+
+void ImagePyramid::Accept(Visitor* visitor) {
+  visitor->VisitImagePyramid(ImagePyramidPtr(this));
 }
 
 PhotoOverlay::PhotoOverlay()
@@ -387,7 +402,6 @@ void PhotoOverlay::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [PhotoOverlay] >>
 void PhotoOverlay::Accept(Visitor* visitor) {
   visitor->VisitPhotoOverlay(PhotoOverlayPtr(this));
 }
@@ -404,23 +418,38 @@ void PhotoOverlay::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_point());
   }
 }
-// << Visitor Api End [PhotoOverlay] <<
 
 OverlayXY::OverlayXY() {}
 
 OverlayXY::~OverlayXY() {}
 
+void OverlayXY::Accept(Visitor* visitor) {
+  visitor->VisitOverlayXY(OverlayXYPtr(this));
+}
+
 ScreenXY::ScreenXY() {}
 
 ScreenXY::~ScreenXY() {}
+
+void ScreenXY::Accept(Visitor* visitor) {
+  visitor->VisitScreenXY(ScreenXYPtr(this));
+}
 
 RotationXY::RotationXY() {}
 
 RotationXY::~RotationXY() {}
 
+void RotationXY::Accept(Visitor* visitor) {
+  visitor->VisitRotationXY(RotationXYPtr(this));
+}
+
 Size::Size() {}
 
 Size::~Size() {}
+
+void Size::Accept(Visitor* visitor) {
+  visitor->VisitSize(SizePtr(this));
+}
 
 ScreenOverlay::ScreenOverlay()
   : rotation_(0.0),
@@ -476,7 +505,6 @@ void ScreenOverlay::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [ScreenOverlay] >>
 void ScreenOverlay::Accept(Visitor* visitor) {
   visitor->VisitScreenOverlay(ScreenOverlayPtr(this));
 }
@@ -496,6 +524,5 @@ void ScreenOverlay::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_size());
   }
 }
-// << Visitor Api End [ScreenOverlay] <<
 
 }  // end namespace kmldom

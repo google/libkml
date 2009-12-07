@@ -191,22 +191,8 @@ void Feature::Serialize(Serializer& serializer) const {
   Feature::SerializeAfterStyleSelector(serializer);
 }
 
-// >> Visitor Api Start [Feature] >>
-void Feature::Accept(Visitor* visitor) {
-  visitor->VisitFeature(FeaturePtr(this));
-}
-
 void Feature::AcceptChildren(VisitorDriver* driver) {
   Object::AcceptChildren(driver);
-  if (has_atomauthor()) {
-    driver->Visit(get_atomauthor());
-  }
-  if (has_atomlink()) {
-    driver->Visit(get_atomlink());
-  }
-  if (has_xaladdressdetails()) {
-    driver->Visit(get_xaladdressdetails());
-  }
   if (has_snippet()) {
     driver->Visit(get_snippet());
   }
@@ -226,6 +212,5 @@ void Feature::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_extendeddata());
   }
 }
-// << Visitor Api End [Feature] <<
 
 }  // namespace kmldom

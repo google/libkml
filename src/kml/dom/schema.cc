@@ -85,6 +85,10 @@ void SimpleField::Serialize(Serializer& serializer) const {
   }
 }
 
+void SimpleField::Accept(Visitor* visitor) {
+  visitor->VisitSimpleField(SimpleFieldPtr(this));
+}
+
 // <Schema>
 Schema::Schema()
     : has_name_(false) {
@@ -123,6 +127,15 @@ void Schema::AddElement(const ElementPtr& element) {
 void Schema::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   serializer.SaveElementArray(simplefield_array_);
+}
+
+void Schema::Accept(Visitor* visitor) {
+  visitor->VisitSchema(SchemaPtr(this));
+}
+
+void Schema::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  Element::AcceptRepeated<SimpleFieldPtr>(&simplefield_array_, driver);
 }
 
 }  // end namespace kmldom

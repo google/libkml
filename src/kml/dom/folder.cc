@@ -42,10 +42,8 @@ void Folder::Serialize(Serializer& serializer) const {
   Container::Serialize(serializer);
 }
 
-// >> Visitor Api Start [Folder] >>
 void Folder::Accept(Visitor* visitor) {
   visitor->VisitFolder(FolderPtr(this));
 }
-// << Visitor Api End [Folder] <<
 
 }  // end namespace kmldom

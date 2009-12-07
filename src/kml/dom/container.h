@@ -29,13 +29,12 @@
 #include <vector>
 #include "kml/dom/feature.h"
 #include "kml/dom/kml22.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
 
 class Serializer;
+class VisitorDriver;
 
 // OGC KML 2.2 Standard: 9.6 kml:AbstractContainerGroup
 // OGC KML 2.2 XSD: <element name="AbstractContainerGroup"...
@@ -62,12 +61,9 @@ class Container : public Feature {
   // Note: This method is a special mostly for use with Update/Delete.
   FeaturePtr DeleteFeatureById(const string& id);
 
-  // >> Visitor Api Start [Container] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
-  virtual void Accept(Visitor* visitor);
+  // Visitor API methods, see visitor.h.
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Container] <<
+
  protected:
   // Container is abstract.
   Container();

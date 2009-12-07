@@ -32,10 +32,11 @@
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/schema.h"
 #include "kml/dom/styleselector.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 
 namespace kmldom {
+
+class Visitor;
+class VisitorDriver;
 
 class Document : public Container {
  public:
@@ -76,12 +77,10 @@ class Document : public Container {
   // KML Spec/XSD is incorrect in that it gives any Feature this array
   // behaviour. Any Feature other than Document may have only ONE StyleSelector.
 
-  // >> Visitor Api Start [Document] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Document] <<
+
  private:
   friend class KmlFactory;
   Document();

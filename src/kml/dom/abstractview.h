@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #ifndef KML_DOM_ABSTRACTVIEW_H__
@@ -30,6 +30,9 @@
 #include "kml/dom/gx_timeprimitive.h"
 
 namespace kmldom {
+
+class Visitor;
+class VisitorDriver;
 
 // OGC KML 2.2 Standard: 14.1 kml:AbstractViewGroup
 // OGC KML 2.2 XSD: <element name="AbstractViewGroup"...
@@ -52,6 +55,9 @@ class AbstractView : public Object {
   void clear_gx_timeprimitive() {
     set_gx_timeprimitive(NULL);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void AcceptChildren(VisitorDriver* driver);
 
  protected:
   // AbstractView is abstract.
@@ -233,6 +239,9 @@ class LookAt : public AbstractViewCommon {
     has_range_ = false;
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   LookAt();
@@ -269,6 +278,9 @@ class Camera : public AbstractViewCommon {
     roll_ = 0.0;
     has_roll_ = false;
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;

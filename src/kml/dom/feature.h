@@ -39,11 +39,11 @@
 #include "kml/dom/styleselector.h"
 #include "kml/dom/timeprimitive.h"
 #include "kml/dom/xal.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
+
+class VisitorDriver;
 
 // OGC KML 2.2 Standard: 9.1 kml:AbstractFeatureGroup
 // OGC KML 2.2 XSD: <element name="AbstractFeatureGroup"...
@@ -248,12 +248,8 @@ class Feature : public Object {
     has_gx_balloonvisibility_ = false;
   }
 
-  // >> Visitor Api Start [Feature] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
-  virtual void Accept(Visitor* visitor);
+  // Visitor API methods, see visitor.h.
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Feature] <<
 
  protected:
   // Feature is abstract.

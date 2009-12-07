@@ -75,6 +75,17 @@ void Pair::Serialize(Serializer& serializer) const {
   }
 }
 
+void Pair::Accept(Visitor* visitor) {
+  visitor->VisitPair(PairPtr(this));
+}
+
+void Pair::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  if (has_styleselector()) {
+    driver->Visit(get_styleselector());
+  }
+}
+
 // <StyleMap>
 StyleMap::StyleMap() {}
 
@@ -95,6 +106,15 @@ void StyleMap::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   StyleSelector::Serialize(serializer);
   serializer.SaveElementArray(pair_array_);
+}
+
+void StyleMap::Accept(Visitor* visitor) {
+  visitor->VisitStyleMap(StyleMapPtr(this));
+}
+
+void StyleMap::AcceptChildren(VisitorDriver* driver) {
+  StyleSelector::AcceptChildren(driver);
+  Element::AcceptRepeated<PairPtr>(&pair_array_, driver);
 }
 
 }  // end namespace kmldom

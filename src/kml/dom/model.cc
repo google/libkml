@@ -80,6 +80,10 @@ void Location::Serialize(Serializer& serializer) const {
   }
 }
 
+void Location::Accept(Visitor* visitor) {
+  visitor->VisitLocation(LocationPtr(this));
+}
+
 Orientation::Orientation()
   : heading_(0.0), has_heading_(false),
     tilt_(0.0), has_tilt_(false),
@@ -120,6 +124,10 @@ void Orientation::Serialize(Serializer& serializer) const {
   if (has_roll()) {
     serializer.SaveFieldById(Type_roll, get_roll());
   }
+}
+
+void Orientation::Accept(Visitor* visitor) {
+  visitor->VisitOrientation(OrientationPtr(this));
 }
 
 Scale::Scale()
@@ -165,6 +173,10 @@ void Scale::Serialize(Serializer& serializer) const {
   }
 }
 
+void Scale::Accept(Visitor* visitor) {
+  visitor->VisitScale(ScalePtr(this));
+}
+
 Alias::Alias()
   : has_targethref_(false), has_sourcehref_(false)
 {}
@@ -198,6 +210,10 @@ void Alias::Serialize(Serializer& serializer) const {
   }
 }
 
+void Alias::Accept(Visitor* visitor) {
+  visitor->VisitAlias(AliasPtr(this));
+}
+
 ResourceMap::ResourceMap() {}
 
 ResourceMap::~ResourceMap() {}
@@ -221,6 +237,15 @@ void ResourceMap::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   serializer.SaveElementArray(alias_array_);
+}
+
+void ResourceMap::Accept(Visitor* visitor) {
+  visitor->VisitResourceMap(ResourceMapPtr(this));
+}
+
+void ResourceMap::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  Element::AcceptRepeated<AliasPtr>(&alias_array_, driver);
 }
 
 Model::Model() {}
@@ -275,6 +300,29 @@ void Model::Serialize(Serializer& serializer) const {
   }
   if (has_resourcemap()) {
     serializer.SaveElement(get_resourcemap());
+  }
+}
+
+void Model::Accept(Visitor* visitor) {
+  visitor->VisitModel(ModelPtr(this));
+}
+
+void Model::AcceptChildren(VisitorDriver* driver) {
+  AltitudeGeometryCommon::AcceptChildren(driver);
+  if (has_location()) {
+    driver->Visit(get_location());
+  }
+  if (has_orientation()) {
+    driver->Visit(get_orientation());
+  }
+  if (has_scale()) {
+    driver->Visit(get_scale());
+  }
+  if (has_link()) {
+    driver->Visit(get_link());
+  }
+  if (has_resourcemap()) {
+    driver->Visit(get_resourcemap());
   }
 }
 

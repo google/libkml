@@ -39,7 +39,6 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/dom/visitor.h"
 #include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 #include "kml/base/xml_element.h"
@@ -51,6 +50,7 @@ class Attributes;
 namespace kmldom {
 
 class Serializer;
+class Visitor;
 class Xsd;
 
 // This is a KML-specific implementation of the somewhat abstracted
@@ -163,8 +163,9 @@ class Element : public kmlbase::XmlElement {
   virtual bool SetEnum(int* val) { return false; }
   virtual bool SetString(string* val) { return false; }
 
-  // >> Visitor Api Start >>
-  // Experimental visitor API - subject to change.
+  // Accepts the visitor for this element (this must be overridden for each
+  // element type).
+  // TODO(dbeaumont): Make pure virtual when all sub-classes implement Accept().
   virtual void Accept(Visitor* visitor);
 
   // This needs to be implemented by subclasses with child elements and must
@@ -173,17 +174,6 @@ class Element : public kmlbase::XmlElement {
   virtual void AcceptChildren(VisitorDriver* driver) {
     /* Inlinable for efficiency */
   }
-
- protected:
-  // Allows subclasses to easily visit repeated fields.
-  template <class T>
-  static void AcceptRepeated(std::vector<T>* elements, VisitorDriver* driver) {
-    typename std::vector<T>::iterator it;
-    for (it = elements->begin(); it != elements->end(); ++it) {
-      driver->Visit(*it);
-    }
-  }
-  // << Visitor Api End <<
 
  protected:
   // Element is an abstract base class and is never created directly.
@@ -215,6 +205,15 @@ class Element : public kmlbase::XmlElement {
       return true;
     }
     return false;
+  }
+
+  // Allows subclasses to easily visit repeated fields.
+  template <class T>
+  static void AcceptRepeated(std::vector<T>* elements, VisitorDriver* driver) {
+    typename std::vector<T>::iterator it;
+    for (it = elements->begin(); it != elements->end(); ++it) {
+      driver->Visit(*it);
+    }
   }
 
  private:

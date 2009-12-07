@@ -80,7 +80,6 @@ void Kml::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [Kml] >>
 void Kml::Accept(Visitor* visitor) {
   visitor->VisitKml(KmlPtr(this));
 }
@@ -94,6 +93,5 @@ void Kml::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_feature());
   }
 }
-// << Visitor Api End [Kml] <<
 
 }  // end namespace kmldom

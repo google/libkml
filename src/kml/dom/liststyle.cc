@@ -93,6 +93,10 @@ void ItemIcon::Serialize(Serializer& serializer) const {
   }
 }
 
+void ItemIcon::Accept(Visitor* visitor) {
+  visitor->VisitItemIcon(ItemIconPtr(this));
+}
+
 // <ListStyle>
 ListStyle::ListStyle()
   : listitemtype_(LISTITEMTYPE_CHECK), has_listitemtype_(false),
@@ -138,6 +142,15 @@ void ListStyle::Serialize(Serializer& serializer) const {
   if (has_maxsnippetlines()) {
     serializer.SaveFieldById(Type_maxSnippetLines, get_maxsnippetlines());
   }
+}
+
+void ListStyle::Accept(Visitor* visitor) {
+  visitor->VisitListStyle(ListStylePtr(this));
+}
+
+void ListStyle::AcceptChildren(VisitorDriver* driver) {
+  SubStyle::AcceptChildren(driver);
+  Element::AcceptRepeated<ItemIconPtr>(&itemicon_array_, driver);
 }
 
 }  // end namespace kmldom

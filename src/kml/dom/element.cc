@@ -163,11 +163,9 @@ ElementSerializer::~ElementSerializer() {
   serializer_.End();
 }
 
-// >> Visitor Api Start >>
 void Element::Accept(Visitor* visitor) {
   visitor->VisitElement(ElementPtr(this));
 }
-// << Visitor Api End <<
 
 Field::Field(KmlDomType type_id)
   : Element(type_id), xsd_(*Xsd::GetSchema()) {

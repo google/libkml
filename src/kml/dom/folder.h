@@ -28,12 +28,11 @@
 
 #include "kml/dom/container.h"
 #include "kml/dom/kml22.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 
 namespace kmldom {
 
 class Serializer;
+class Visitor;
 
 // <Folder>
 class Folder : public Container {
@@ -44,11 +43,9 @@ class Folder : public Container {
     return type == Type_Folder || Container::IsA(type);
   }
 
-  // >> Visitor Api Start [Folder] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
-  // << Visitor Api End [Folder] <<
+
  private:
   friend class KmlFactory;
   Folder();

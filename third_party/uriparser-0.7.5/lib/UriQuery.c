@@ -336,8 +336,12 @@ UriBool URI_FUNC(AppendQueryItem)(URI_TYPE(QueryList) ** prevNext,
 void URI_FUNC(FreeQueryList)(URI_TYPE(QueryList) * queryList) {
 	while (queryList != NULL) {
 		URI_TYPE(QueryList) * nextBackup = queryList->next;
-		free(queryList->key);
-		free(queryList->value);
+                /* queryList->key and ->value are both const pointers to
+                 * URI_CHAR. Calling free on a const pointer with a recent GCC
+                 * will trigger a warning about discarding qualifiers. We cast
+                 * to URI_CHAR* here to suppress the warning. */
+		free((URI_CHAR*)queryList->key);
+		free((URI_CHAR*)queryList->value);
 		free(queryList);
 		queryList = nextBackup;
 	}

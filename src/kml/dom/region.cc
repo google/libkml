@@ -86,6 +86,10 @@ void LatLonAltBox::Serialize(Serializer& serializer) const {
   }
 }
 
+void LatLonAltBox::Accept(Visitor* visitor) {
+  visitor->VisitLatLonAltBox(LatLonAltBoxPtr(this));
+}
+
 Lod::Lod()
   : minlodpixels_(0.0), has_minlodpixels_(false),
     maxlodpixels_(-1.0), has_maxlodpixels_(false),
@@ -135,6 +139,10 @@ void Lod::Serialize(Serializer& serializer) const {
   }
 }
 
+void Lod::Accept(Visitor* visitor) {
+  visitor->VisitLod(LodPtr(this));
+}
+
 Region::Region() {
 }
 
@@ -165,6 +173,20 @@ void Region::Serialize(Serializer& serializer) const {
   }
   if (has_lod()) {
     serializer.SaveElement(get_lod());
+  }
+}
+
+void Region::Accept(Visitor* visitor) {
+  visitor->VisitRegion(RegionPtr(this));
+}
+
+void Region::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  if (has_latlonaltbox()) {
+    driver->Visit(get_latlonaltbox());
+  }
+  if (has_lod()) {
+    driver->Visit(get_lod());
   }
 }
 

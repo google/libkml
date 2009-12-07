@@ -81,7 +81,6 @@ void NetworkLink::Serialize(Serializer& serializer) const {
   }
 }
 
-// >> Visitor Api Start [NetworkLink] >>
 void NetworkLink::Accept(Visitor* visitor) {
   visitor->VisitNetworkLink(NetworkLinkPtr(this));
 }
@@ -92,6 +91,5 @@ void NetworkLink::AcceptChildren(VisitorDriver* driver) {
     driver->Visit(get_link());
   }
 }
-// << Visitor Api End [NetworkLink] <<
 
 }  // end namespace kmldom

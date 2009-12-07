@@ -1,9 +1,9 @@
 // Copyright 2008, Google Inc. All rights reserved.
 //
-// Redistribution and use in source and binary forms, with or without 
+// Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //
-//  1. Redistributions of source code must retain the above copyright notice, 
+//  1. Redistributions of source code must retain the above copyright notice,
 //     this list of conditions and the following disclaimer.
 //  2. Redistributions in binary form must reproduce the above copyright notice,
 //     this list of conditions and the following disclaimer in the documentation
@@ -13,14 +13,14 @@
 //     specific prior written permission.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 // SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 // PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 // OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // This file contains the declarations for the abstract Geometry element
@@ -82,6 +82,8 @@
 namespace kmldom {
 
 class Serializer;
+class Visitor;
+class VisitorDriver;
 
 // <coordinates>
 class Coordinates : public BasicElement<Type_coordinates> {
@@ -118,6 +120,9 @@ class Coordinates : public BasicElement<Type_coordinates> {
   void Clear() {
     coordinates_array_.clear();
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -239,6 +244,9 @@ class CoordinatesGeometryCommon : public ExtrudeGeometryCommon {
     set_coordinates(NULL);
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void AcceptChildren(VisitorDriver* driver);
+
  protected:
   CoordinatesGeometryCommon();
   // Parser support
@@ -257,6 +265,9 @@ class Point : public CoordinatesGeometryCommon {
   virtual bool IsA(KmlDomType type) const {
     return type == Type_Point || Geometry::IsA(type);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -307,6 +318,9 @@ class LineString : public LineCommon {
     return type == Type_LineString || Geometry::IsA(type);
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   LineString();
@@ -321,6 +335,9 @@ class LinearRing : public LineCommon {
   virtual bool IsA(KmlDomType type) const {
     return type == Type_LinearRing || Geometry::IsA(type);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -347,6 +364,9 @@ class BoundaryCommon : public Element {
   // Parser support
   virtual void AddElement(const ElementPtr& element);
 
+  // Visitor API methods, see visitor.h.
+  virtual void AcceptChildren(VisitorDriver* driver);
+
  protected:
   BoundaryCommon();
   virtual void Serialize(Serializer& serializer) const;
@@ -365,6 +385,9 @@ class OuterBoundaryIs : public BoundaryCommon {
     return type == Type_outerBoundaryIs;
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   OuterBoundaryIs();
@@ -379,6 +402,9 @@ class InnerBoundaryIs : public BoundaryCommon {
   virtual bool IsA(KmlDomType type) const {
     return type == Type_innerBoundaryIs;
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -432,6 +458,10 @@ class Polygon : public ExtrudeGeometryCommon {
     return innerboundaryis_array_[index];
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
+
  private:
   friend class KmlFactory;
   Polygon();
@@ -468,6 +498,10 @@ class MultiGeometry : public Geometry {
   const GeometryPtr& get_geometry_array_at(size_t index) const {
     return geometry_array_[index];
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
 
  private:
   friend class KmlFactory;
