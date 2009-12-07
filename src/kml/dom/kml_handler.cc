@@ -46,6 +46,7 @@ namespace kmldom {
 KmlHandler::KmlHandler(parser_observer_vector_t& observers)
   : kml_factory_(*KmlFactory::GetFactory()),
     skip_depth_(0),
+    in_description_(0),
     observers_(observers) {
 }
 
@@ -62,6 +63,14 @@ void KmlHandler::StartElement(const string& name,
   // 3) unknown element: save XML as a string inside the parent element.
   // No matter what an Element is pushed onto the stack and we always gather
   // character data.
+
+  // See the comment towards the end of this function about permitting "raw"
+  // HTML inside <description> elements. This check will catch an instance
+  // of a <description> inside a <description> and permit us to handle it
+  // correctly as unknown text.
+  if (in_description_ > 0 && name.length() == 11 && name == "description") {
+    in_description_++;
+  }
 
   if (skip_depth_ > 0) {
     // We're already inside an unknown element. Stringify the next element and
@@ -118,6 +127,17 @@ void KmlHandler::StartElement(const string& name,
   }
   // This is a known element.  Push onto parse stack and gather content.
   stack_.push(element);
+
+  // We need to permit parsing of un-CDATA'd markup inside <description>
+  // elements. We bump the skip counter here as if we'd encountered an unknown
+  // element, but only after we've allowed the description ElementPtr to be
+  // pushed onto the stack. In EndElement we'll check for the closing of
+  // description and decrement the skip counter before anything else happens.
+  if (element->Type() == Type_description) {
+    skip_depth_++;
+    in_description_++;
+  }
+
   // Call the NewElement() method of each ParserObserver.  The whole parse
   // terminates if and when any observer's NewElement() returns false.
   if (!CallNewElementObservers(observers_, element)) {
@@ -137,6 +157,14 @@ bool KmlHandler::CallNewElementObservers(
 }
 
 void KmlHandler::EndElement(const string& name) {
+  // See the comment towards the end of StartElement about handling "raw" HTML
+  // inside <description> elements. Here we are checking to see if (1) we're
+  // inside a closing </description> element and (2) if we're at the end of any
+  // possible series of nested description elements.
+  if (name.length() == 11 && name == "description" && --in_description_ == 0) {
+    skip_depth_--;
+  }
+
   if (skip_depth_ > 0) {
     // We're inside an unknown element. Build the closing tag, decrement
     // the skip counter and then check if we're back to known KML.
@@ -264,3 +292,4 @@ void KmlHandler::InsertUnknownEndElement(const string& name) {
 }
 
 }  // end namespace kmldom
+

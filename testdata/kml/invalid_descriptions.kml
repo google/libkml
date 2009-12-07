@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+These <description> elements are NOT valid. They are meant ONLY as a test
+of the parser's ability to choke down and make sense of bad data where the
+author's intent is obvious. (This kind of data does unfortunately exist out
+there in the wlld.)
+
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <Placemark id="bad_description0">
+    <name>bad_description0</name>
+    <!-- Simple case of un-CDATA'd elements -->
+    <description><b>bold</b></description>
+  </Placemark>
+  <Placemark id="bad_description1">
+    <name>bad_description1</name>
+    <!-- The "foo" here is valid description markup. The parser should
+    preserve the order of the valid markup and the invalid elements. -->
+    <description>foo<b>bold</b>bar</description>
+  </Placemark>
+  <Placemark id="bad_description2">
+    <name>bad_description2</name>
+    <!-- Nested descriptions should be handled. -->
+    <description><description>foo<b>bold</b>bar</description></description>
+  </Placemark>
+</Document>
+</kml>
+
