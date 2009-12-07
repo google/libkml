@@ -89,4 +89,30 @@ void Style::Serialize(Serializer& serializer) const {
   }
 }
 
+void Style::Accept(Visitor* visitor) {
+  visitor->VisitStyle(StylePtr(this));
+}
+
+void Style::AcceptChildren(VisitorDriver* driver) {
+  StyleSelector::AcceptChildren(driver);
+  if (has_iconstyle()) {
+    driver->Visit(get_iconstyle());
+  }
+  if (has_labelstyle()) {
+    driver->Visit(get_labelstyle());
+  }
+  if (has_linestyle()) {
+    driver->Visit(get_linestyle());
+  }
+  if (has_polystyle()) {
+    driver->Visit(get_polystyle());
+  }
+  if (has_balloonstyle()) {
+    driver->Visit(get_balloonstyle());
+  }
+  if (has_liststyle()) {
+    driver->Visit(get_liststyle());
+  }
+}
+
 }  // end namespace kmldom

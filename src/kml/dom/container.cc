@@ -76,15 +76,9 @@ FeaturePtr Container::DeleteFeatureById(const string& id) {
   return NULL;
 }
 
-// >> Visitor Api Start [Container] >>
-void Container::Accept(Visitor* visitor) {
-  visitor->VisitContainer(ContainerPtr(this));
-}
-
 void Container::AcceptChildren(VisitorDriver* driver) {
   Feature::AcceptChildren(driver);
   Element::AcceptRepeated<FeaturePtr>(&feature_array_, driver);
 }
-// << Visitor Api End [Container] <<
 
 }  // end namespace kmldom

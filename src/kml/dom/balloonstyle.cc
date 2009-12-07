@@ -88,4 +88,8 @@ void BalloonStyle::Serialize(Serializer& serializer) const {
   }
 }
 
+void BalloonStyle::Accept(Visitor* visitor) {
+  visitor->VisitBalloonStyle(BalloonStylePtr(this));
+}
+
 }  // end namespace kmldom

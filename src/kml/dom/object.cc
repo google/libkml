@@ -71,10 +71,5 @@ void Object::SerializeAttributes(Attributes* attributes) const {
   }
 }
 
-// >> Visitor Api Start [Object] >>
-void Object::Accept(Visitor* visitor) {
-  visitor->VisitObject(ObjectPtr(this));
-}
-// << Visitor Api End [Object] <<
 
 }  // namespace kmldom

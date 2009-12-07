@@ -78,6 +78,10 @@ void BasicLink::Serialize(Serializer& serializer) const {
   }
 }
 
+void BasicLink::Accept(Visitor* visitor) {
+  visitor->VisitBasicLink(BasicLinkPtr(this));
+}
+
 // Construct with defaults as per KML standard.
 AbstractLink::AbstractLink()
   : refreshmode_(REFRESHMODE_ONCHANGE),
@@ -159,13 +163,25 @@ Link::Link() {}
 
 Link::~Link() {}
 
+void Link::Accept(Visitor* visitor) {
+  visitor->VisitLink(LinkPtr(this));
+}
+
 Icon::Icon() {}
 
 Icon::~Icon() {}
 
+void Icon::Accept(Visitor* visitor) {
+  visitor->VisitIcon(IconPtr(this));
+}
+
 Url::Url() {}
 
 Url::~Url() {}
+
+void Url::Accept(Visitor* visitor) {
+  visitor->VisitUrl(UrlPtr(this));
+}
 
 IconStyleIcon::IconStyleIcon() {}
 
@@ -174,6 +190,10 @@ IconStyleIcon::~IconStyleIcon() {}
 void IconStyleIcon::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   BasicLink::Serialize(serializer);
+}
+
+void IconStyleIcon::Accept(Visitor* visitor) {
+  visitor->VisitIconStyleIcon(IconStyleIconPtr(this));
 }
 
 }  // end namespace kmldom

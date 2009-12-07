@@ -45,6 +45,7 @@ libkmldom_la_SOURCES = \
 	styleselector.cc \
 	substyle.cc \
 	timeprimitive.cc \
+	gx_timeprimitive.cc \
 	gx_tour.cc \
 	vec2.cc \
 	kml_handler.cc \
@@ -428,7 +429,7 @@ unknown_test_LDADD= libkmldom.la \
 	$(top_builddir)/third_party/libgtest.la
 
 kml_handler_test_SOURCES = kml_handler_test.cc
-kml_handler_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+kml_handler_test_CXXFLAGS =  -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 kml_handler_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest.la

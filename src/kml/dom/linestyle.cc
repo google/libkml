@@ -61,4 +61,8 @@ void LineStyle::Serialize(Serializer& serializer) const {
   }
 }
 
+void LineStyle::Accept(Visitor* visitor) {
+  visitor->VisitLineStyle(LineStylePtr(this));
+}
+
 }  // end namespace kmldom

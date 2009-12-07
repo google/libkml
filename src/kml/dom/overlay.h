@@ -40,12 +40,12 @@
 #include "kml/dom/link.h"
 #include "kml/dom/object.h"
 #include "kml/dom/vec2.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 
 namespace kmldom {
 
 class Serializer;
+class Visitor;
+class VisitorDriver;
 
 // OGC KML 2.2 Standard: 11.1 kml:AbstractOverlayGroup
 // OGC KML 2.2 XSD: <element name="AbstractOverlayGroup"...
@@ -99,12 +99,9 @@ class Overlay : public Feature {
     set_icon(NULL);
   }
 
-  // >> Visitor Api Start [Overlay] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
-  virtual void Accept(Visitor* visitor);
+  // Visitor API methods, see visitor.h.
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Overlay] <<
+
  protected:
   // Overlay is abstract.
   Overlay();
@@ -145,6 +142,9 @@ class LatLonBox : public AbstractLatLonBox {
     has_rotation_ = false;
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   LatLonBox();
@@ -179,6 +179,10 @@ class GxLatLonQuad : public Object {
   void clear_coordinates() {
     set_coordinates(NULL);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
 
  private:
   friend class KmlFactory;
@@ -268,12 +272,9 @@ class GroundOverlay : public Overlay {
     set_gx_latlonquad(NULL);
   }
 
-  // >> Visitor Api Start [GroundOverlay] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [GroundOverlay] <<
 
  private:
   friend class KmlFactory;
@@ -304,6 +305,9 @@ class OverlayXY : public Vec2 {
     return type == Type_overlayXY || Vec2::IsA(type);
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   OverlayXY();
@@ -318,6 +322,9 @@ class ScreenXY : public Vec2 {
   virtual bool IsA(KmlDomType type) const {
     return type == Type_screenXY || Vec2::IsA(type);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -334,6 +341,9 @@ class RotationXY : public Vec2 {
     return type == Type_rotationXY || Vec2::IsA(type);
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   RotationXY();
@@ -348,6 +358,9 @@ class Size : public Vec2 {
   virtual bool IsA(KmlDomType type) const {
     return type == Type_size || Vec2::IsA(type);
   }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
 
  private:
   friend class KmlFactory;
@@ -420,12 +433,9 @@ class ScreenOverlay : public Overlay {
     has_rotation_ = false;
   }
 
-  // >> Visitor Api Start [ScreenOverlay] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [ScreenOverlay] <<
 
  private:
   friend class KmlFactory;
@@ -532,6 +542,9 @@ class ViewVolume : public Object {
     has_near_ = false;
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   ViewVolume();
@@ -625,6 +638,9 @@ class ImagePyramid : public Object {
     has_gridorigin_ = false;
   }
 
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
  private:
   friend class KmlFactory;
   ImagePyramid();
@@ -714,12 +730,9 @@ class PhotoOverlay : public Overlay {
     has_shape_ = false;
   }
 
-  // >> Visitor Api Start [PhotoOverlay] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [PhotoOverlay] <<
 
  private:
   friend class KmlFactory;

@@ -84,6 +84,10 @@ void SimpleData::Serialize(Serializer& serializer) const {
   }
 }
 
+void SimpleData::Accept(Visitor* visitor) {
+  visitor->VisitSimpleData(SimpleDataPtr(this));
+}
+
 // <SchemaData>
 SchemaData::SchemaData()
   : has_schemaurl_(false) {
@@ -124,6 +128,15 @@ void SchemaData::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Object::Serialize(serializer);
   serializer.SaveElementArray(simpledata_array_);
+}
+
+void SchemaData::Accept(Visitor* visitor) {
+  visitor->VisitSchemaData(SchemaDataPtr(this));
+}
+
+void SchemaData::AcceptChildren(VisitorDriver* driver) {
+  Object::AcceptChildren(driver);
+  Element::AcceptRepeated<SimpleDataPtr>(&simpledata_array_, driver);
 }
 
 // <Data>
@@ -177,6 +190,10 @@ void Data::Serialize(Serializer& serializer) const {
   }
 }
 
+void Data::Accept(Visitor* visitor) {
+  visitor->VisitData(DataPtr(this));
+}
+
 // <ExtendedData>
 ExtendedData::ExtendedData() {
   set_xmlns(kmlbase::XMLNS_KML22);
@@ -204,6 +221,16 @@ void ExtendedData::Serialize(Serializer& serializer) const {
   serializer.SaveElementArray(schemadata_array_);
 }
 
+void ExtendedData::Accept(Visitor* visitor) {
+  visitor->VisitExtendedData(ExtendedDataPtr(this));
+}
+
+void ExtendedData::AcceptChildren(VisitorDriver* driver) {
+  Element::AcceptChildren(driver);
+  Element::AcceptRepeated<DataPtr>(&data_array_, driver);
+  Element::AcceptRepeated<SchemaDataPtr>(&schemadata_array_, driver);
+}
+
 // <Metadata>
 Metadata::Metadata() {
   set_xmlns(kmlbase::XMLNS_KML22);
@@ -214,6 +241,10 @@ Metadata::~Metadata() {
 
 void Metadata::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
+}
+
+void Metadata::Accept(Visitor* visitor) {
+  visitor->VisitMetadata(MetadataPtr(this));
 }
 
 }  // end namespace kmldom

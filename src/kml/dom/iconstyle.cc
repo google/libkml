@@ -87,4 +87,18 @@ void IconStyle::Serialize(Serializer& serializer) const {
   }
 }
 
+void IconStyle::Accept(Visitor* visitor) {
+  visitor->VisitIconStyle(IconStylePtr(this));
+}
+
+void IconStyle::AcceptChildren(VisitorDriver* driver) {
+  ColorStyle::AcceptChildren(driver);
+  if (has_icon()) {
+    driver->Visit(get_icon());
+  }
+  if (has_hotspot()) {
+    driver->Visit(get_hotspot());
+  }
+}
+
 }  // end namespace kmldom

@@ -32,11 +32,12 @@
 #include "kml/dom/link.h"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 #include "kml/base/util.h"
 
 namespace kmldom {
+
+class Visitor;
+class VisitorDriver;
 
 // <NetworkLink>
 class NetworkLink : public Feature {
@@ -82,12 +83,9 @@ class NetworkLink : public Feature {
     set_link(NULL);
   }
 
-  // >> Visitor Api Start [NetworkLink] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [NetworkLink] <<
 
  private:
   friend class KmlFactory;

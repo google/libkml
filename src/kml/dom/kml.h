@@ -31,8 +31,6 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/networklinkcontrol.h"
-#include "kml/dom/visitor.h"
-#include "kml/dom/visitor_driver.h"
 
 namespace kmlbase {
 class Attributes;
@@ -41,6 +39,8 @@ class Attributes;
 namespace kmldom {
 
 class Serializer;
+class Visitor;
+class VisitorDriver;
 
 // <kml>
 class Kml : public BasicElement<Type_kml> {
@@ -78,12 +78,10 @@ class Kml : public BasicElement<Type_kml> {
     set_feature(NULL);
   }
 
-  // >> Visitor Api Start [Kml] >>
-  // This section contains auto-generated code to implement a visitor pattern.
-  // See <some document> for more information.
+  // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
-  // << Visitor Api End [Kml] <<
+
  private:
   friend class KmlFactory;
   Kml();

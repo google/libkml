@@ -29,6 +29,7 @@
 #ifndef KML_DOM_VISITOR_DRIVER_H__
 #define KML_DOM_VISITOR_DRIVER_H__
 
+#include "kml/base/util.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/visitor.h"
 
@@ -54,6 +55,7 @@ class VisitorDriver {
   // However there is no requirement that either of these actually occur and
   // the driver is free to implement whatever semantics it chooses.
   virtual void Visit(const ElementPtr& element) = 0;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(VisitorDriver);
 };
 
 // A simple driver implementation that invokes a single visitor in pre-order
@@ -61,13 +63,14 @@ class VisitorDriver {
 // hierarchy before that element's children are visited.
 class SimplePreorderDriver : public VisitorDriver {
  public:
-  SimplePreorderDriver(Visitor* visitor);
+  explicit SimplePreorderDriver(Visitor* visitor);
   virtual ~SimplePreorderDriver();
 
   virtual void Visit(const ElementPtr& element);
 
  private:
   Visitor* visitor_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimplePreorderDriver);
 };
 
 
@@ -76,13 +79,14 @@ class SimplePreorderDriver : public VisitorDriver {
 // hierarchy after that element's children have been visited.
 class SimplePostorderDriver : public VisitorDriver {
  public:
-  SimplePostorderDriver(Visitor* visitor);
+  explicit SimplePostorderDriver(Visitor* visitor);
   virtual ~SimplePostorderDriver();
 
   virtual void Visit(const ElementPtr& element);
 
  private:
   Visitor* visitor_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimplePostorderDriver);
 };
 
 }  // namespace kmldom
