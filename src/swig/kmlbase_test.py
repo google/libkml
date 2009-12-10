@@ -72,7 +72,7 @@ class BasicColor32TestCase(unittest.TestCase):
     # Bad construction.
     nonsense = "This isn't even close to a color value"
     color = kmlbase.Color32(nonsense)
-    assert "0000a00e" == color.to_string_abgr()
+    assert "00000000" == color.to_string_abgr()
 
     # Getters in default state.
     color = kmlbase.Color32()
@@ -146,7 +146,7 @@ class BasicVec3TestCase(unittest.TestCase):
 
 class BasicVersionTestCase(unittest.TestCase):
   def runTest(self):
-    assert "1.0.1" == kmlbase.Version_GetString()
+    assert "1.2.0" == kmlbase.Version_GetString()
 
 def suite():
   suite = unittest.TestSuite()
