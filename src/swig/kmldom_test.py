@@ -1282,6 +1282,8 @@ class SimpleSchemaDataTestCase(unittest.TestCase):
   def testDefault(self):
     assert kmldom.AsObject(self.schemadata)
     assert kmldom.AsSchemaData(self.schemadata)
+    assert not self.schemadata.has_schemaurl()
+    assert "" == self.schemadata.get_schemaurl()
     assert not self.schemadata.has_id()
     assert 0 == self.schemadata.get_simpledata_array_size()
 

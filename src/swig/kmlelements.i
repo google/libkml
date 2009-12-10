@@ -1418,6 +1418,11 @@ public:
 %nodefaultctor SchemaData;
 class SchemaData : public Object {
 public:
+  // schemaUrl=
+  const std::string& get_schemaurl();
+  bool has_schemaurl();
+  void set_schemaurl(const std::string& value);
+  void clear_schemaurl();
   // <SimpleData>...
   void add_simpledata(SimpleDataPtr simpledata);
   const size_t get_simpledata_array_size();
