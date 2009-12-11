@@ -9,7 +9,7 @@ endif
 
 noinst_PROGRAMS = getgmapkml getgsheetcsv getgsheetkml kmlwalk kmzfetch \
 		listfeed listgdocs listgmaps listgphotos resolvestyle \
-		uploadgmap uploadgsheet xsdprint
+		searchgmap uploadgmap uploadgsheet xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
@@ -90,6 +90,14 @@ listgphotos_LDADD = \
 
 resolvestyle_SOURCES = resolvestyle.cc
 resolvestyle_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+searchgmap_SOURCES = searchgmap.cc
+searchgmap_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
