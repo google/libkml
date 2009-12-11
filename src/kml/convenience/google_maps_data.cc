@@ -85,6 +85,10 @@ const string& GoogleMapsData::get_scope() const {
   return scope_;
 }
 
+HttpClient* GoogleMapsData::get_http_client() const {
+  return http_client_.get();
+}
+
 bool GoogleMapsData::GetMetaFeedXml(string* atom_feed) const {
   return http_client_->SendRequest(HTTP_GET, scope_ + kMetaFeedUri, NULL, NULL,
                                    atom_feed);
@@ -254,6 +258,76 @@ int GoogleMapsData::PostPlacemarks(const kmldom::FeaturePtr& root_feature,
     }
   }
   return placemark_count;
+}
+
+// The Google Maps Data API Search Feeds section documents the search feed uri
+// as based on the feature feed uri.
+// See: http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#Search.
+// A feature feed is of this form:
+//   http://maps.google.com/maps/feeds/features/userID/mapID/full
+// A search feed is of this form:
+//   http://maps.google.com/maps/feeds/features/userID/mapID/snippet?searchParameters
+
+// static
+bool GoogleMapsData::GetSearchFeedUri(const kmldom::AtomEntryPtr& map_entry,
+                                      string* search_feed_uri) {
+  string feature_feed_uri;
+  if (!GetFeatureFeedUri(map_entry, &feature_feed_uri)) {
+    return false;
+  }
+  size_t last_slash = feature_feed_uri.find_last_of('/');
+  if (last_slash == string::npos) {
+    return false;
+  }
+  if (search_feed_uri) {
+    *search_feed_uri = feature_feed_uri.substr(0, last_slash+1) + "snippet";
+  }
+  return true;
+}
+
+// TODO: abstract the overall search URL and use UriParser
+bool GoogleMapsData::GetSearchFeed(const string& search_feed_uri,
+                                   const string& search_parameters,
+                                   string* atom_feed) {
+  // TODO: enhance kmlbase::UriParser to provide support for
+  // http://uriparser.sourceforge.net/doc/html/#querystrings
+  const string uri = search_feed_uri + "?" + search_parameters;
+  return http_client_->SendRequest(HTTP_GET, uri, NULL, NULL, atom_feed);
+}
+
+// static
+void GoogleMapsData::AppendBoxParameter(const double north, const double south,
+                               const double east, const double west,
+                               string* search_parameters) {
+  if (!search_parameters) {
+    return;
+  }
+  search_parameters->append("box=" + kmlbase::ToString(west) + "," +
+                                      kmlbase::ToString(south) + "," +
+                                      kmlbase::ToString(east) + "," +
+                                      kmlbase::ToString(north));
+}
+
+// static
+void GoogleMapsData::AppendBoxParameterFromBbox(const kmlengine::Bbox& bbox,
+                                       string* search_parameters) {
+  AppendBoxParameter(bbox.get_north(), bbox.get_south(), bbox.get_east(),
+                     bbox.get_west(), search_parameters);
+}
+
+kmldom::AtomFeedPtr GoogleMapsData::SearchMapByBbox(
+    const kmldom::AtomEntryPtr& map_entry, const kmlengine::Bbox& bbox) {
+  string search_feed_uri;
+  if (!GetSearchFeedUri(map_entry, &search_feed_uri)) {
+    return NULL;
+  }
+  string search_parameters;
+  AppendBoxParameterFromBbox(bbox, &search_parameters);
+  string atom_feed;
+  if (!GetSearchFeed(search_feed_uri, search_parameters, &atom_feed)) {
+    return NULL;
+  }
+  return kmldom::AsAtomFeed(kmldom::ParseAtom(atom_feed, NULL));
 }
 
 }  // end namespace kmlconvenience

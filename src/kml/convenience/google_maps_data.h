@@ -36,6 +36,11 @@
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 
+// TODO: move Bbox to kmlbase
+namespace kmlengine {
+class Bbox;
+}
+
 namespace kmlconvenience {
 
 class HttpClient;
@@ -66,11 +71,18 @@ class GoogleMapsData {
   static GoogleMapsData* Create(HttpClient* http_client);
   ~GoogleMapsData();
 
+  // This returns the Google Maps Data service name.  This is the name that
+  // should be used with ClientLogin authentication.
   static const char* get_service_name();
 
+  // This returns the pathname portion of the Google Maps Data "meta feed".
   static const char* get_metafeed_uri();
 
+  // This returns the scope (hostname:port).
   const string& get_scope() const;
+
+  // This returns the HttpClient.  Ownership is retained by this class.
+  HttpClient* get_http_client() const;
 
   // This returns the "meta feed" for the authenticated user.  The result is an
   // Atom <feed> containing an <entry> for each of the user's maps.  See:
@@ -146,6 +158,36 @@ class GoogleMapsData {
   // TODO:
   // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#DeletingFeatures
 
+  // This gets the feed representing a search over the specified map.
+  // Use GetSearchFeedUri to get the search_feed_uri for a map.
+  // Construct the search_parameters using AppendBoxParameter(), etc.
+  // http://code.google.com/apis/maps/documentation/mapsdata/developers_guide_protocol.html#Search
+  bool GetSearchFeed(const string& search_feed_uri,
+                     const string& search_parameters,
+                     string* atom_feed);
+
+  // This returns the search feed URI for the given map.
+  static bool GetSearchFeedUri(const kmldom::AtomEntryPtr& map_entry,
+                               string* search_feed_uri);
+
+  // This is a convenience to format "bbox=w,s,e,n" search parameters.
+  static void AppendBoxParameter(const double north, const double south,
+                                 const double east, const double west,
+                                 string* search_parameters);
+
+  // This is a convenience to format "bbox=w,s,e,n" search parameters.
+  static void AppendBoxParameterFromBbox(const kmlengine::Bbox& bbox,
+                                         string* search_parameters);
+
+  // This returns a feed to features of the map within the bbox.
+  kmldom::AtomFeedPtr SearchMapByBbox(const kmldom::AtomEntryPtr& map_entry,
+                                      const kmlengine::Bbox& bbox);
+
+  // TODO: implement these queries
+  // "mq" "mq"
+  // "lat,lon" "lat
+  // "radius"
+  // "sortby"
  private:
   // Use static Create().
   GoogleMapsData();
