@@ -93,11 +93,12 @@ TEST_F(GoogleMapsDataTest, TestGetConstants) {
 TEST_F(GoogleMapsDataTest, TestBasicCreate) {
   const string kScope = "http://host.com:123";
   ASSERT_EQ(0, setenv("GOOGLE_MAPS_DATA_SCOPE", kScope.c_str(), 1));
-  google_maps_data_.reset(
-      GoogleMapsData::Create(new HttpClient("TestBasicCreate")));
+  HttpClient* http_client = new HttpClient("TestBasicCreate");
+  google_maps_data_.reset(GoogleMapsData::Create(http_client));
   // An HttpClient was supplied so a GoogleMapsData was created.
   ASSERT_TRUE(google_maps_data_.get());
   ASSERT_EQ(kScope, google_maps_data_->get_scope());
+  ASSERT_EQ(http_client, google_maps_data_->get_http_client());
 }
 
 // This tests that the GoogleMapsData instance destroys the HttpClient when
@@ -416,6 +417,70 @@ TEST_F(GoogleMapsDataTest, TestPostPlacemarksOnKmlSamples) {
     ASSERT_EQ(kmldom::Type_Placemark, feature->Type());
   }
 }
+
+TEST_F(GoogleMapsDataTest, TestGetSearchFeed) {
+  // Create a GoogleMapsData instance with an HttpClient which simply logs
+  // all requests.
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  const string uri("http://host.com/user1/map2");
+  const string params("box=122.175598,37.399217,-122.056783,37.470595");
+  string atom_feed;
+  ASSERT_TRUE(google_maps_data_->GetSearchFeed(uri, params, &atom_feed));
+  // Verify that this caused one HTTP GET of the expect query uri.
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(uri + "?" + params, request_log[0].request_uri_);
+  ASSERT_EQ(HTTP_GET, request_log[0].http_method_);
+}
+
+TEST_F(GoogleMapsDataTest, TestGetSearchFeedUri) {
+  kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
+  kmldom::AtomContentPtr content = factory->CreateAtomContent();
+  const string kBase("http://maps.google.com/maps/feeds/features/201/007/");
+  content->set_src(kBase + "full");
+  kmldom::AtomEntryPtr map = factory->CreateAtomEntry();
+  map->set_content(content);
+  string search_feed_uri;
+  ASSERT_TRUE(GoogleMapsData::GetSearchFeedUri(map, &search_feed_uri));
+  ASSERT_EQ(kBase + "snippet", search_feed_uri);
+}
+
+TEST_F(GoogleMapsDataTest, TestSearchMapByBbox) {
+  // Create a GoogleMapsData instance with an HttpClient which simply logs
+  // all requests.
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  // Create a map entry with feature feed.
+  kmldom::KmlFactory* factory = kmldom::KmlFactory::GetFactory();
+  kmldom::AtomContentPtr content = factory->CreateAtomContent();
+  const string kBase("http://maps.google.com/maps/feeds/features/201/007/");
+  content->set_src(kBase + "full");
+  kmldom::AtomEntryPtr map = factory->CreateAtomEntry();
+  map->set_content(content);
+  kmlengine::Bbox bbox(48.72, 21.36, -72.03, -126.75);
+  kmldom::AtomFeedPtr feed = google_maps_data_->SearchMapByBbox(map, bbox);
+  // Verify that this caused one HTTP GET of the expect query uri.
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(kBase + "snippet?box=-126.75,21.36,-72.03,48.72",
+            request_log[0].request_uri_);
+  ASSERT_EQ(HTTP_GET, request_log[0].http_method_);
+}
+
+TEST_F(GoogleMapsDataTest, TestAppendBoxParameter) {
+  string query;
+  GoogleMapsData::AppendBoxParameter(2.2,1.1,4.4,3.3, &query);
+  ASSERT_EQ(std::string("box=3.3,1.1,4.4,2.2"), query);
+}
+
+TEST_F(GoogleMapsDataTest, TestAppendBoxParameterFromBbox) {
+  string query;
+  kmlengine::Bbox bbox(2.2,1.1,4.4,3.3);
+  GoogleMapsData::AppendBoxParameterFromBbox(bbox, &query);
+  ASSERT_EQ(std::string("box=3.3,1.1,4.4,2.2"), query);
+}
+
 
 }  // end namespace kmlconvenience
 
