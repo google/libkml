@@ -69,6 +69,7 @@ TEST_F(CoordinatesTest, TestAddLatLng) {
   Vec3 vec3 = coordinates_->get_coordinates_array_at(0);
   ASSERT_DOUBLE_EQ(kLat, vec3.get_latitude());
   ASSERT_DOUBLE_EQ(kLon, vec3.get_longitude());
+  ASSERT_FALSE(vec3.has_altitude());
   ASSERT_DOUBLE_EQ(0.0, vec3.get_altitude());
 }
 
