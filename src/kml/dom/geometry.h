@@ -96,7 +96,7 @@ class Coordinates : public BasicElement<Type_coordinates> {
   }
 
   void add_latlng(double latitude, double longitude) {
-    coordinates_array_.push_back(kmlbase::Vec3(longitude, latitude, 0.0));
+    coordinates_array_.push_back(kmlbase::Vec3(longitude, latitude));
   }
 
   void add_vec3(const kmlbase::Vec3& vec3) {
