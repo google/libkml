@@ -121,7 +121,7 @@ again:
   // Dig out the KML features in the feed and put them in a <Document>.
   kmldom::KmlPtr kml = kmldom::KmlFactory::GetFactory()->CreateKml();
   kmldom::ContainerPtr container =
-      GoogleMapsData::CreateDocumentOfMapFeatures(feature_feed);
+      google_maps_data->CreateDocumentOfMapFeatures(feature_feed);
   kml->set_feature(container);
 
   std::cout << "There are " << container->get_feature_array_size()
