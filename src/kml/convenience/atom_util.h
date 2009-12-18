@@ -114,6 +114,11 @@ class AtomUtil {
   static kmldom::AtomFeedPtr GetAndParseFeed(const string& feed_url,
                                              const HttpClient& http_client);
 
+  // This fetches and parses the given feed's rel="next" link if it has one.
+  // The HttpClient is expected to be "logged in" as appropriate for the URL.
+  static kmldom::AtomFeedPtr GetNextFeed(const kmldom::AtomFeedPtr& feed,
+                                         const HttpClient& http_client);
+
   // If the <atom:entry> has a <gd:resourceId> true is returned.  Also return
   // the value of this element if a resource_id string is supplied.
   // Note: the gd:resourceId is a Google Data API extension to Atom.

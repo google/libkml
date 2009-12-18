@@ -133,7 +133,7 @@ class GoogleMapsData {
                        kmldom::ContainerPtr container);
 
   // Creates a <Document>, sets the <atom:link> and calls GetMapKml.
-  static kmldom::DocumentPtr CreateDocumentOfMapFeatures(
+  kmldom::DocumentPtr CreateDocumentOfMapFeatures(
       const kmldom::AtomFeedPtr& feature_feed);
 
   // This adds a new feature to a map.  This is simply an HTTP POST to the

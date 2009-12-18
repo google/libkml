@@ -222,6 +222,22 @@ TEST(AtomUtilTest, TestGetAndParseFeed) {
       test_data_http_client));
 }
 
+TEST(AtomUtilTest, TestGetNextFeed) {
+  TestDataHttpClient test_data_http_client;
+  kmldom::AtomFeedPtr feed = AtomUtil::GetAndParseFeed(
+      "http://example.com/gdata/feed0.xml",
+      test_data_http_client);
+  ASSERT_TRUE(feed);
+  // feed0.xml points to feed1.xml
+  kmldom::AtomFeedPtr next = AtomUtil::GetNextFeed(feed, test_data_http_client);
+  ASSERT_TRUE(next);
+  ASSERT_EQ(static_cast<size_t>(1), next->get_link_array_size());
+  kmldom::AtomLinkPtr link = next->get_link_array_at(0);
+  ASSERT_TRUE(link);
+  // feed1.xml points to feed2.xml
+  ASSERT_EQ(string("gdata/feed2.xml"), link->get_href());
+}
+
 TEST(AtomUtilTest, TestGetGdResourceId) {
   TestDataHttpClient test_data_http_client;
   kmldom::AtomFeedPtr feed = AtomUtil::GetAndParseFeed(

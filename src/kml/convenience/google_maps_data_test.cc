@@ -161,8 +161,12 @@ TEST_F(GoogleMapsDataTest, TestCreateDocumentOfMapFeatures) {
   const kmldom::AtomFeedPtr feature_feed =
      AsAtomFeed(kmldom::ParseAtom(feature_feed_xml, NULL));
   ASSERT_TRUE(feature_feed.get());
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new OneFileHttpClient(
+          string(DATADIR) + "/gmaps/metafeed.xml")));
+  ASSERT_TRUE(google_maps_data_.get());
   const kmldom::ContainerPtr container =
-      GoogleMapsData::CreateDocumentOfMapFeatures(feature_feed);
+      google_maps_data_->CreateDocumentOfMapFeatures(feature_feed);
   ASSERT_TRUE(container.get());
   ASSERT_EQ(static_cast<size_t>(4), container->get_feature_array_size());
   // entry 0 is a Point Placemark with IconStyle.
