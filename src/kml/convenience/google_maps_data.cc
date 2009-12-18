@@ -175,7 +175,12 @@ kmldom::DocumentPtr GoogleMapsData::CreateDocumentOfMapFeatures(
   kmldom::DocumentPtr document =
       kmldom::KmlFactory::GetFactory()->CreateDocument();
   // TODO: set <atom:link>
-  GetMapKml(feature_feed, document);
+
+  kmldom::AtomFeedPtr this_feed = feature_feed;
+  do {
+    GetMapKml(this_feed, document);
+  } while (this_feed = AtomUtil::GetNextFeed(this_feed, *http_client_));
+  
   return document;
 }
 

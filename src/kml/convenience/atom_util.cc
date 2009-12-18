@@ -194,6 +194,16 @@ kmldom::AtomFeedPtr AtomUtil::GetAndParseFeed(const string& feed_uri,
   return NULL;
 }
 
+// static
+kmldom::AtomFeedPtr AtomUtil::GetNextFeed(const kmldom::AtomFeedPtr& feed,
+                                          const HttpClient& http_client) {
+  string next_feed_url;
+  if (kmlconvenience::AtomUtil::FindRelUrl(*feed, "next", &next_feed_url)) {
+    return GetAndParseFeed(next_feed_url, http_client);
+  }
+  return NULL;
+}
+
 // Parse a string of this form: <namempace|key>val</namespace|key>.
 // TODO: put this in kmlbase as a general facility.
 static bool HackParseElement(const string& element, string* key, string* val) {
