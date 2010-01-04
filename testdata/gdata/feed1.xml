@@ -1,0 +1,10 @@
+<!-- This is feed1.xml -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <link rel="next" href="gdata/feed2.xml"/>
+  <entry>
+    <id>feed1:entry0</id>
+  </entry>
+  <entry>
+    <id>feed1:entry1</id>
+  </entry>
+</feed>
