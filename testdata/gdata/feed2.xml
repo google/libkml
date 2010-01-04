@@ -1,0 +1,6 @@
+<!-- This is feed2.xml -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>feed2:entry0</id>
+  </entry>
+</feed>
