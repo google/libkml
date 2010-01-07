@@ -380,6 +380,33 @@ TEST_F(CoordinatesTest, TestSerializeMany) {
   }
 }
 
+// Coordinate tuples must be separated by a space. However, the world is
+// imperfect and thus we try to do the right thing with this:
+// <coordinates>1,2,3,4,5,6,7,8,9</coordinates>, where the "right thing" is
+// to take it as three lng,lat,alt tuples. This is Google Earth's behavior.
+TEST_F(CoordinatesTest, TestCommaSeparators) {
+  coordinates_->Parse("1,2,3,4,5,6,7,8,9");
+  ASSERT_EQ(static_cast<size_t>(3), coordinates_->get_coordinates_array_size());
+  ASSERT_DOUBLE_EQ(2.0,
+                   coordinates_->get_coordinates_array_at(0).get_latitude());
+  ASSERT_DOUBLE_EQ(1.0,
+                   coordinates_->get_coordinates_array_at(0).get_longitude());
+  ASSERT_DOUBLE_EQ(3.0,
+                   coordinates_->get_coordinates_array_at(0).get_altitude());
+  ASSERT_DOUBLE_EQ(5.0,
+                   coordinates_->get_coordinates_array_at(1).get_latitude());
+  ASSERT_DOUBLE_EQ(4.0,
+                   coordinates_->get_coordinates_array_at(1).get_longitude());
+  ASSERT_DOUBLE_EQ(6.0,
+                   coordinates_->get_coordinates_array_at(1).get_altitude());
+  ASSERT_DOUBLE_EQ(8.0,
+                   coordinates_->get_coordinates_array_at(2).get_latitude());
+  ASSERT_DOUBLE_EQ(7.0,
+                   coordinates_->get_coordinates_array_at(2).get_longitude());
+  ASSERT_DOUBLE_EQ(9.0,
+                   coordinates_->get_coordinates_array_at(2).get_altitude());
+}
+
 // Test Point.
 class PointTest : public testing::Test {
  protected:

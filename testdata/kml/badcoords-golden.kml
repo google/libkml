@@ -1,0 +1,13 @@
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Placemark>
+    <name>Continental Convergent Boundary</name>
+    <LineString>
+      <coordinates>
+        -55.8097,-60.700099,0
+        -55.0666,-60.7630997,0
+        -54.308998,-60.9776,0
+        -54.300701,-61.5102,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+</kml>

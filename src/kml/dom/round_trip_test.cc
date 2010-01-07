@@ -54,6 +54,7 @@ static struct {
   { "kml", "all-itemicon-states-input.kml", "all-itemicon-states-golden.kml" },
   { "kml", "all-arrays.kml", "all-arrays-golden.kml" },
   { "kml", "all-altitudemodes.kml", "all-altitudemodes-golden.kml" },
+  { "kml", "badcoords.kml", "badcoords-golden.kml" },
   { "gx", "all-gx-altitudemodes.kml", "all-gx-altitudemodes-golden.kml" },
   { "gx", "all-gx.kml", "all-gx-golden.kml" }
 };
