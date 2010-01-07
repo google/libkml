@@ -84,6 +84,14 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
   bool done = false;
   char* endp = const_cast<char*>(cstr);
 
+  // Ignore any commas at the start of our scan. This will cause this:
+  // <coordinates>1,2,3,4,5</coordinates> to be treated as:
+  // <coordinates>1,2,3 4,5</coordinates>, which is how Google Earth treats
+  // the misuse of commas as separators.
+  if (*endp == ',') {
+    ++endp;
+  }
+
   // Longitude first.  strtod() eats leading whitespace.
   vec->set(0, strtod(endp, &endp));
   if (endp) {

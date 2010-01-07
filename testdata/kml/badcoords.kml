@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<!-- This is a snippet of malformed KML found in the wild. The coordinates in
+the LineString are not separated by spaces, as required by the KML standard.
+However, Google Earth has always treated a,b,c,d,e,f coordinate strings as if
+they were lng,lat,alt tuples separated by commas. libkml emulates this
+forgiving interpretation. -->
+<Placemark>
+  <name>Continental Convergent Boundary</name>
+    <LineString>
+      <coordinates>-55.809700,-60.700099,0,-55.066600,-60.7630997,0,-54.308998,-60.977600,0,-54.300701,-61.510200,0</coordinates>
+    </LineString>
+</Placemark>
+</kml>
