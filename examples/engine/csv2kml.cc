@@ -23,92 +23,91 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// This creates a KML file from a CSV file whose lines are in this form:
-//  score|lat|lon|name|description[|style_url]
-// A Point Placemark is created for each line in the CSV file.
-// This program ignores the score and any style_url in the CSV file.
+// This creates a KML file from a CSV file whose first row is a schema such as:
+//  name,latitude,longitude,description,a,b,c
+// And each of whose lines look like:
+//  hello,37.1,-111.123,how are you,1,2,3
+// A Point Placemark is created for each line in the CSV file.  This example
+// prints an error for and drops each line not exactly matching the schema.
 // For very very large CSV files see: examples/regionator/csvregionator.cc.
 // For very very large KML files see: streamkml.cc.
 
-#include <stdlib.h>
-#include <fstream>
 #include <iostream>
 #include <string>
-#include <vector>
-#include "boost/scoped_ptr.hpp"
+#include "kml/base/csv_splitter.h"
 #include "kml/base/file.h"
 #include "kml/base/string_util.h"
+#include "kml/convenience/csv_parser.h"
 #include "kml/convenience/convenience.h"
 #include "kml/dom.h"
 #include "kml/engine.h"
 
-using kmlbase::SplitStringUsing;
 using kmlbase::File;
-using kmlbase::ToString;
 using kmlconvenience::CreatePointPlacemark;
-using kmldom::DocumentPtr;
+using kmlconvenience::CsvParser;
+using kmlconvenience::CsvParserHandler;
+using kmlconvenience::CsvParserStatus;
+using kmldom::ContainerPtr;
+using kmldom::FolderPtr;
 using kmldom::KmlFactory;
 using kmldom::KmlPtr;
 using kmldom::PlacemarkPtr;
 using kmlengine::KmlFile;
+using kmlengine::KmlFilePtr;
 
-PlacemarkPtr CsvLineToPlacemark(const std::string& csv_line) {
-  if (csv_line.empty()) {
-    return NULL;
+// This CsvParserHandler saves all "OK" Placemarks to the passed Container.
+class ContainerSaver : public CsvParserHandler {
+ public:
+  ContainerSaver(ContainerPtr container)
+    : container_(container) {
   }
-  std::vector<std::string> csv_parts;
-  SplitStringUsing(csv_line, "|", &csv_parts);
-  if (csv_parts.size() < 5) {
-    std::cerr << "Skipping bad csv line: " << csv_line << std::endl;
-    return NULL;
-  }
-  const double lat = strtod(csv_parts[1].c_str(), NULL);
-  const double lon = strtod(csv_parts[2].c_str(), NULL);
-  PlacemarkPtr placemark = CreatePointPlacemark(csv_parts[3], lat, lon);
-  placemark->set_description(csv_parts[4]);
-  return placemark;
-}
 
-int CsvFileToKmlFile(const char* csv_filename, const char* kml_filename) {
-  KmlFactory* kml_factory = KmlFactory::GetFactory();
-  DocumentPtr document = kml_factory->CreateDocument();
-  document->set_name(csv_filename);
-
-  std::ifstream csv_file;
-  csv_file.open(csv_filename);
-  for (int line_count = 0; csv_file.good(); ++line_count) {
-    std::string csv_line;
-    getline(csv_file, csv_line);
-    if (PlacemarkPtr placemark = CsvLineToPlacemark(csv_line)) {
-      placemark->set_id(std::string("line") + ToString(line_count));
-      document->add_feature(placemark);
+  virtual bool HandleLine(int line, CsvParserStatus status, PlacemarkPtr p) {
+    if (status == kmlconvenience::CSV_PARSER_STATUS_OK) {
+      container_->add_feature(p);
+    } else {
+      std::cerr << "Error on line " << line << std::endl;
     }
+    return true;
   }
 
-  KmlPtr kml = KmlFactory::GetFactory()->CreateKml();
-  kml->set_feature(document);
-
-  boost::scoped_ptr<KmlFile> kml_file(KmlFile::CreateFromImport(kml));
-  if (!kml_file.get()) {
-    return 1;
-  }
-
-  document->set_description(
-     ToString(document->get_feature_array_size()) + " Placemarks." + "<br/>" +
-     "From CSV file: " + csv_filename + ".\n");
-
-  std::string xml;
-  kml_file->SerializeToString(&xml);
-  return File::WriteStringToFile(xml, kml_filename) ? 1 : 0;
-}
+ private:
+  ContainerPtr container_;
+};
 
 int main(int argc, char** argv) {
   if (argc != 3) {
     std::cerr << "usage: " << argv[0] << "input.csv output.kml" << std::endl;
     return 1;
   }
-  return CsvFileToKmlFile(argv[1], argv[2]);
+
+  std::string csv_data;
+  if (!kmlbase::File::ReadFileToString(argv[1], &csv_data)) {
+    std::cerr << "Read failed: " << argv[1] << std::endl;
+    return 1;
+  }
+  kmlbase::CsvSplitter csv_splitter(csv_data);
+
+  // Create a <Folder> and a ContainerSaver to write to it.
+  FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver container_saver(folder);
+
+  // Call the CsvParser in strict mode to convert each line of CSV data into
+  // a Placemark saved into the supplied Folder.
+  if (!kmlconvenience::CsvParser::ParseCsv(&csv_splitter, &container_saver)) {
+    std::cerr << "ParseCsv failed: " << argv[1] << std::endl;
+    return 1;
+  }
+
+  std::cout << "Feature count " << folder->get_feature_array_size()
+            << std::endl;
+
+  // Import to kmlengine::KmlFile to get a nice xml header and xml namespace on
+  // the root element.
+  kmldom::KmlPtr kml = kmldom::KmlFactory::GetFactory()->CreateKml();
+  kml->set_feature(folder);
+  KmlFilePtr kml_file = KmlFile::CreateFromImport(kml);
+  std::string xml;
+  kml_file->SerializeToString(&xml);
+  return File::WriteStringToFile(xml, argv[2]) ? 1 : 0;
 }
-
-
-
