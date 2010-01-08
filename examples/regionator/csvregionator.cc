@@ -24,25 +24,59 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Build a Region-based NetworkLink hierarchy from a CSV file.
-// Each line of the input.csv is in this format:
-//   score|lat|lon|name|description[|style_url]
+// This creates a KML file from a CSV file whose first row is a schema such as:
+//  Score,Name,Latitude,Longitude,Description,a,b,c
+// And each of whose lines look like:
+//  123,hello,37.1,-111.123,how are you,1,2,3
+//  456,hi,37.2,-111.124,very fine thank you,2,3,4
+// A Point Placemark is created for each line in the CSV file.  This example
+// prints an error for and drops each line not exactly matching the schema.
 
 #include <iostream>
 #include <string>
+#include "kml/base/csv_splitter.h"
+#include "kml/base/file.h"
 #include "kml/dom.h"
 #include "kml/convenience/convenience.h"
-#include "kml/convenience/csv_file.h"
+#include "kml/convenience/csv_parser.h"
 #include "kml/engine.h"
 #include "kml/regionator/feature_list_region_handler.h"
 #include "kml/regionator/regionator.h"
 
+using kmlbase::File;
+using kmldom::PlacemarkPtr;
 using kmldom::RegionPtr;
-using kmlconvenience::CsvFile;
+using kmlconvenience::CsvParser;
+using kmlconvenience::CsvParserHandler;
+using kmlconvenience::CsvParserStatus;
 using kmlconvenience::FeatureList;
 using kmlengine::Bbox;
 using kmlregionator::FeatureListRegionHandler;
 using kmlregionator::RegionHandler;
 using kmlregionator::Regionator;
+
+// This CsvParserHandler saves each "OK" Placemark to the given FeatureList.
+class FeatureListSaver : public kmlconvenience::CsvParserHandler {
+ public:
+  FeatureListSaver(FeatureList* feature_list)
+    : feature_list_(feature_list) {
+  }
+
+  // This is the method called from within the CsvParser for each line in the
+  // input CSV.  In this implementation we save all Placemarks from good lines
+  // and noisily skip over imperfect lines.
+  virtual bool HandleLine(int line, CsvParserStatus status, PlacemarkPtr p) {
+    if (status == kmlconvenience::CSV_PARSER_STATUS_OK) {
+      feature_list_->PushBack(p);
+    } else {
+      std::cerr << "Error on line " << line << std::endl;
+    }
+    return true;
+  }
+
+ private:
+  FeatureList* feature_list_;
+};
 
 int main(int argc, char** argv) {
   if (argc != 3) {
@@ -53,10 +87,22 @@ int main(int argc, char** argv) {
   const char* csv_filename = argv[1];
   const char* output_dir = argv[2];
 
-  // Parse the CSV file into a FeatureList of Point Placemarks sorted by score.
+  string csv_data;
+  if (!File::ReadFileToString(csv_filename, &csv_data)) {
+    std::cerr << "Read failed: " << csv_filename << std::endl;
+    return 1;
+  }
+  kmlbase::CsvSplitter csv_splitter(csv_data);
+
+  // Parse the CSV data into a FeatureList of Point Placemarks sorted by the
+  // ExtendedData/Data element named "Score".
   FeatureList feature_list;
-  CsvFile placemarks(&feature_list);
-  placemarks.ParseCsvFile(csv_filename);
+  FeatureListSaver feature_saver(&feature_list);
+  if (!CsvParser::ParseCsv(&csv_splitter, &feature_saver)) {
+    std::cerr << "Parse failed: " << csv_filename << std::endl;
+    return 1;
+  }
+  std::cout << "Feature count: " << feature_list.Size() << std::endl;
   feature_list.Sort();
 
   // Give the FeatureList to the FeatureListRegionHandler.
