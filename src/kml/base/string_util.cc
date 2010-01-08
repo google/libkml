@@ -104,4 +104,20 @@ bool StringEndsWith(const string& str, const string& end) {
   return end.size() < str.size() && str.substr(str.size() - end.size()) == end;
 }
 
+bool StringCaseEqual(const string& a, const string& b) {
+#ifdef WIN32
+# define strncasecmp(s1, s2, n) __strncasecmp (s1, s2, n)
+#endif
+  return a.size() == b.size() && strncasecmp(a.data(), b.data(), a.size()) == 0;
+}
+
+bool StringToDouble(const string& number, double* output) {
+  // TODO: see if this really a number
+  if (output) {
+    // TODO: consider protobuf's NoLocaleStrtod.
+    *output = strtod(number.c_str(), NULL);
+  }
+  return true;
+}
+
 }  // end namespace kmlbase

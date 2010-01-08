@@ -174,6 +174,38 @@ TEST(StringUtilTest, TestEndsWith) {
   ASSERT_TRUE(StringEndsWith("foo", "foo"));
 }
 
+TEST(StringUtilTest, TestStringCaseEqual) {
+  ASSERT_TRUE(StringCaseEqual("foo", "Foo"));
+  ASSERT_TRUE(StringCaseEqual("foo", "fOO"));
+  ASSERT_TRUE(StringCaseEqual("FOO", "Foo"));
+  ASSERT_TRUE(StringCaseEqual("foo", "foo"));
+  ASSERT_TRUE(StringCaseEqual("FOO", "FOO"));
+  ASSERT_TRUE(StringCaseEqual("THIS SOFTWARE IS", "This software is"));
+  ASSERT_FALSE(StringCaseEqual("this", "is not this"));
+  ASSERT_FALSE(StringCaseEqual("this ", "this"));
+  ASSERT_FALSE(StringCaseEqual("this ", " this"));
+}
+
+TEST(StringUtilTest, TestStringToDouble) {
+  double val;
+
+  ASSERT_TRUE(StringToDouble("3.1415", &val));
+  ASSERT_TRUE(StringToDouble("3.1415", NULL));
+  ASSERT_DOUBLE_EQ(3.1415, val);
+
+  ASSERT_TRUE(StringToDouble("52.566571", &val));
+  ASSERT_TRUE(StringToDouble("52.566571", NULL));
+  ASSERT_DOUBLE_EQ(52.566571, val);
+
+  ASSERT_TRUE(StringToDouble("-1.680006", &val));
+  ASSERT_TRUE(StringToDouble("-1.680006", NULL));
+  ASSERT_DOUBLE_EQ(-1.680006, val);
+
+  ASSERT_TRUE(StringToDouble(".1", &val));
+  ASSERT_TRUE(StringToDouble(".1", NULL));
+  ASSERT_DOUBLE_EQ(.1, val);
+}
+
 }  // end namespace kmlbase
 
 int main(int argc, char** argv) {
