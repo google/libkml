@@ -104,6 +104,16 @@ void SplitStringUsing(const string& input, const string& split_string,
 // str or end are empty or if end is longer than str.
 bool StringEndsWith(const string& str, const string& end);
 
+// This returns true if the two strings are case-insensitively equal.
+// "foo" == "Foo" == "FOO" == "foo" in this regard.
+bool StringCaseEqual(const string& a, const string& b);
+
+// This converts the string representation of the number to a double.  If the
+// string is not numeric false is returned, else true.  It is safe to pass NULL
+// as the output argument in which case this function becomes a simple "is this
+// a number" check.
+bool StringToDouble(const string& number, double* output);
+
 }  // end namespace kmlbase
 
 #endif  // KML_BASE_STRING_UTIL_H__

@@ -14,7 +14,7 @@ libkmlbase_la_LDFLAGS = -lexpat
 lib_LTLIBRARIES = libkmlbase.la
 libkmlbase_la_SOURCES = \
 	attributes.cc \
-	color32.h \
+	csv_splitter.cc \
 	date_time.cc \
 	expat_handler_ns.cc \
 	expat_parser.cc \
@@ -38,6 +38,7 @@ libkmlbase_la_LIBADD = \
 libkmlbaseincludedir = $(includedir)/kml/base
 libkmlbaseinclude_HEADERS = \
 	attributes.h \
+	csv_splitter.h \
 	date_time.h \
 	color32.h \
 	expat_handler.h \
@@ -71,6 +72,7 @@ DATA_DIR = $(top_srcdir)/testdata
 TESTS = \
 	attributes_test \
 	color32_test \
+	csv_splitter_test \
 	date_time_test \
 	expat_handler_ns_test \
 	expat_parser_test \
@@ -102,6 +104,11 @@ color32_test_SOURCES = color32_test.cc
 color32_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 color32_test_LDADD = libkmlbase.la \
 		     $(top_builddir)/third_party/libgtest.la
+
+csv_splitter_test_SOURCES = csv_splitter_test.cc
+csv_splitter_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+csv_splitter_test_LDADD = libkmlbase.la \
+			$(top_builddir)/third_party/libgtest.la
 
 date_time_test_SOURCES = date_time_test.cc
 date_time_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
