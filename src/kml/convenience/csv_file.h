@@ -25,6 +25,7 @@
 
 // This file contains the implementation of the Csv class for parsing CSV
 // files and generating Point Placemark KML.
+// NOTE: The CsvFile class is deprecated.  Use CsvParser in new code.
 
 #include <vector>
 #include "kml/base/util.h"
@@ -40,6 +41,7 @@ class FeatureList;
 //   csv_file.ParseCsvFile("input.csv");
 // A FeatureList can be used with the FeatureListRegionHandler or directly
 // with a KML Container.  See feature_list.h for more information.
+// NOTE: This class is deprecated.  Use CsvParser in new code.
 class CsvFile {
  public:
   CsvFile(kmlconvenience::FeatureList* feature_list)
