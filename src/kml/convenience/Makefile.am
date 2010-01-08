@@ -7,6 +7,8 @@ AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -pedantic -fno-r
 AM_TEST_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -ansi -fno-rtti -DGTEST_HAS_RTTI=0
 endif
 
+# These header files are added to the distribution such that it can be built,
+# but these header files should not be used in application code.
 EXTRA_DIST = \
 	http_client_test_util.h
 
@@ -15,6 +17,7 @@ libkmlconvenience_la_SOURCES = \
 	atom_util.cc \
 	convenience.cc \
 	csv_file.cc \
+	csv_parser.cc \
 	feature_list.cc \
 	google_doc_list.cc \
 	google_maps_data.cc \
@@ -29,6 +32,7 @@ libkmlconvenienceinclude_HEADERS = \
 	atom_util.h \
 	convenience.h \
 	csv_file.h \
+	csv_parser.h \
 	element_counter.h \
 	feature_list.h \
 	google_doc_list.h \
@@ -42,6 +46,7 @@ libkmlconvenienceinclude_HEADERS = \
 DATA_DIR = $(top_srcdir)/testdata
 TESTS = atom_util_test \
         csv_file_test \
+        csv_parser_test \
 	convenience_test \
 	element_counter_test \
 	feature_list_test \
@@ -74,6 +79,14 @@ convenience_test_LDADD = libkmlconvenience.la \
 csv_file_test_SOURCES = csv_file_test.cc
 csv_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 csv_file_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+csv_parser_test_SOURCES = csv_parser_test.cc
+csv_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+csv_parser_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
