@@ -475,14 +475,14 @@ TEST_F(GoogleMapsDataTest, TestSearchMapByBbox) {
 TEST_F(GoogleMapsDataTest, TestAppendBoxParameter) {
   string query;
   GoogleMapsData::AppendBoxParameter(2.2,1.1,4.4,3.3, &query);
-  ASSERT_EQ(std::string("box=3.3,1.1,4.4,2.2"), query);
+  ASSERT_EQ(string("box=3.3,1.1,4.4,2.2"), query);
 }
 
 TEST_F(GoogleMapsDataTest, TestAppendBoxParameterFromBbox) {
   string query;
   kmlengine::Bbox bbox(2.2,1.1,4.4,3.3);
   GoogleMapsData::AppendBoxParameterFromBbox(bbox, &query);
-  ASSERT_EQ(std::string("box=3.3,1.1,4.4,2.2"), query);
+  ASSERT_EQ(string("box=3.3,1.1,4.4,2.2"), query);
 }
 
 
