@@ -144,7 +144,17 @@ TEST(StringUtilTest, TestFromString) {
   ASSERT_EQ(true, val);
   FromString("1", &val);
   ASSERT_EQ(true, val);
+  FromString("1\n", &val);
+  ASSERT_EQ(true, val);
+  FromString("\n1\n", &val);
+  ASSERT_EQ(true, val);
   FromString("false", &val);
+  ASSERT_EQ(false, val);
+  FromString("\nfalse", &val);
+  ASSERT_EQ(false, val);
+  FromString("false\n", &val);
+  ASSERT_EQ(false, val);
+  FromString("\nfalse\n", &val);
   ASSERT_EQ(false, val);
   FromString("0", &val);
   ASSERT_EQ(false, val);
@@ -204,6 +214,29 @@ TEST(StringUtilTest, TestStringToDouble) {
   ASSERT_TRUE(StringToDouble(".1", &val));
   ASSERT_TRUE(StringToDouble(".1", NULL));
   ASSERT_DOUBLE_EQ(.1, val);
+}
+
+TEST(StringUtilTest, TestSkipWhitespace) {
+  const string kSpaceHello(" hello");
+  ASSERT_EQ(static_cast<size_t>(1),
+            SkipLeadingWhitespace(kSpaceHello.data(),
+                                  kSpaceHello.data() + kSpaceHello.size()));
+  const string kNlHello("\nhello");
+  ASSERT_EQ(static_cast<size_t>(1),
+            SkipLeadingWhitespace(kNlHello.data(),
+                                  kNlHello.data() + kNlHello.size()));
+  const string kCrHello("\rhello");
+  ASSERT_EQ(static_cast<size_t>(1),
+            SkipLeadingWhitespace(kCrHello.data(),
+                                  kCrHello.data() + kCrHello.size()));
+  const string kTabHello("\thello");
+  ASSERT_EQ(static_cast<size_t>(1),
+            SkipLeadingWhitespace(kTabHello.data(),
+                                  kTabHello.data() + kTabHello.size()));
+  const string kWsHello("\r \t \n  hello");
+  ASSERT_EQ(static_cast<size_t>(7),
+            SkipLeadingWhitespace(kWsHello.data(),
+                                  kWsHello.data() + kWsHello.size()));
 }
 
 }  // end namespace kmlbase

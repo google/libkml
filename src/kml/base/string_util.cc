@@ -69,7 +69,9 @@ void SplitStringUsing(const string& input, const string& split_string,
 template<>
 void FromString(const string& str, bool* out) {
   if (out) {
-    *out = str == "true" || str == "1";
+    size_t skip_ws = SkipLeadingWhitespaceString(str);
+    *out = (str.compare(skip_ws, 4, "true") == 0)
+            || (str.compare(skip_ws, 1, "1") == 0);
   }
 }
 
@@ -119,6 +121,20 @@ bool StringToDouble(const string& number, double* output) {
     *output = strtod(number.c_str(), NULL);
   }
   return true;
+}
+
+size_t SkipLeadingWhitespace(const char* begin, const char* end) {
+  const char* cp = begin;
+  for (; cp < end; cp++) {
+    if (!isspace(*cp)) {
+      break;
+    }
+  }
+  return cp - begin;
+}
+
+size_t SkipLeadingWhitespaceString(const string& str) {
+  return SkipLeadingWhitespace(str.data(), str.data() + str.size());
 }
 
 }  // end namespace kmlbase
