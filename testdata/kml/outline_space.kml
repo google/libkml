@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This test file is derived from a real-world file whose bool fields include
+  whitespace.  This practice is not recommended, but libkml does support it.
+-->
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+<Style>
+<PolyStyle id="polystyle-d">
+<fill>
+0
+</fill>
+<outline>
+1
+</outline>
+</PolyStyle>
+</Style>
+<Placemark>
+<name>D50027/Q53
+</name>
+<Style>
+<PolyStyle id="polystyle-p">
+<fill>0
+</fill>
+<outline>1
+</outline>
+</PolyStyle>
+</Style>
+<description>ID: 0x6ab12354107956b7:0xe1462d52d4a18860
+</description>
+<Snippet>TYPE_AU_LAND_PARCEL 0x6ab12354107956b7:0xe1462d52d4a18860
+</Snippet>
+<MultiGeometry>
+<Point>
+<coordinates>138.4744880,-35.2268885
+</coordinates>
+</Point>
+<Polygon>
+<outerBoundaryIs>
+<LinearRing>
+<coordinates>138.4749954,-35.2275562 138.4750684,-35.2275167 138.4752217,-35.2270192 138.4759562,-35.2264405 138.4759619,-35.2264332 138.4757817,-35.2263376 138.4746928,-35.2262208 138.4730142,-35.2271963 138.4730711,-35.2274503 138.4749954,-35.2275562
+</coordinates>
+</LinearRing>
+</outerBoundaryIs>
+</Polygon>
+</MultiGeometry>
+</Placemark>
+</Document>
+</kml>
