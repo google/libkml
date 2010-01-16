@@ -114,6 +114,12 @@ bool StringCaseEqual(const string& a, const string& b);
 // a number" check.
 bool StringToDouble(const string& number, double* output);
 
+// This returns the offset to the first non-whitespace character.
+size_t SkipLeadingWhitespace(const char* begin, const char* end);
+
+// This returns the offset to the first non-whitespace character.
+size_t SkipLeadingWhitespaceString(const string& str);
+
 }  // end namespace kmlbase
 
 #endif  // KML_BASE_STRING_UTIL_H__
