@@ -507,6 +507,25 @@ TEST_F(KmlHandlerTest, TestParserHandlesGrossDescriptions) {
   ASSERT_EQ(kExpected2, placemark2->get_description());
 }
 
+TEST_F(KmlHandlerTest, TestParserHandlesBoolWhitespace) {
+  const string kOutlineSpace(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "outline_space.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(kOutlineSpace, &data));
+  ElementPtr root = Parse(data, NULL);
+  ASSERT_TRUE(root);
+  DocumentPtr document = AsDocument(AsKml(root)->get_feature());
+  StylePtr style = AsStyle(document->get_styleselector_array_at(0));
+  PolyStylePtr polystyle = style->get_polystyle();
+  ASSERT_EQ(false, polystyle->get_fill());
+  ASSERT_EQ(true, polystyle->get_outline());
+  PlacemarkPtr placemark = AsPlacemark(document->get_feature_array_at(0));
+  polystyle = AsStyle(placemark->get_styleselector())->get_polystyle();
+  ASSERT_EQ(false, polystyle->get_fill());
+  ASSERT_EQ(true, polystyle->get_outline());
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
