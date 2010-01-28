@@ -75,6 +75,7 @@ private:
   void InsertUnknownEndElement(const string& name);
   unsigned int skip_depth_;
   unsigned int in_description_;
+  unsigned int nesting_depth_;
 
   // This calls the NewElement() method of each ParserObserver.  If any
   // ParserObserver::NewElement() returns false this immediately returns false.

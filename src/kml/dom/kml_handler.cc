@@ -41,12 +41,22 @@
 
 using kmlbase::Attributes;
 
+// The maximum nesting depth we permit. Depths beyond this are treated as
+// errors. Override it with a -DLIBKML_MAX_NESTING_DEPTH preprocessor
+// instruction.
+// TODO: some flags-like solution would be preferable.
+static const unsigned int kMaxNestingDepth = 100;
+#ifdef LIBKML_MAX_NESTING_DEPTH
+kMaxNestingDepth = LIBKML_MAX_NESTING_DEPTH;
+#endif
+
 namespace kmldom {
 
 KmlHandler::KmlHandler(parser_observer_vector_t& observers)
   : kml_factory_(*KmlFactory::GetFactory()),
     skip_depth_(0),
     in_description_(0),
+    nesting_depth_(0),
     observers_(observers) {
 }
 
@@ -57,6 +67,11 @@ KmlHandler::~KmlHandler() {
 
 void KmlHandler::StartElement(const string& name,
                               const kmlbase::StringVector& attrs) {
+  // Check that we're not nested beyond the max permissible depth.
+  if (++nesting_depth_ > kMaxNestingDepth) {
+    XML_StopParser(get_parser(), XML_TRUE);
+    return;
+  }
   // 3 possibilities:
   // 1) complex element: create an Element.
   // 2) simple element: create a Field
@@ -157,6 +172,7 @@ bool KmlHandler::CallNewElementObservers(
 }
 
 void KmlHandler::EndElement(const string& name) {
+  --nesting_depth_;
   // See the comment towards the end of StartElement about handling "raw" HTML
   // inside <description> elements. Here we are checking to see if (1) we're
   // inside a closing </description> element and (2) if we're at the end of any
