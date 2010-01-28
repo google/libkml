@@ -104,10 +104,24 @@ TEST(CsvSplitterTest, TestCrFile) {
   int count = 0;
   StringVector cols;
   ASSERT_TRUE(csv_splitter.SplitCurrentLine(&cols));
-  ASSERT_EQ(static_cast<size_t>(5), cols.size());
+  ASSERT_EQ(string("name"), cols[0]);
+  ASSERT_EQ(string("address"), cols[1]);
+  ASSERT_EQ(string("Website"), cols[2]);
+  ASSERT_EQ(string("Type"), cols[3]);
+  ASSERT_EQ(string("Size"), cols[4]);
+  cols.clear();
   while (csv_splitter.SplitCurrentLine(&cols)) {
-    ++count;
+    ASSERT_EQ(static_cast<size_t>(5), cols.size());
+    if (++count != 2966) {
+      cols.clear();
+    }
   }
+  ASSERT_EQ(string("Zion Bible College"), cols[0]);
+  ASSERT_EQ(string("320 South Main Street, Haverhill, Massachusetts 01835"),
+            cols[1]);
+  ASSERT_EQ(string("www.zbc.edu"), cols[2]);
+  ASSERT_EQ(string("4-year, Private not-for-profit"), cols[3]);
+  ASSERT_EQ(string("247"), cols[4]);
   ASSERT_EQ(2966, count);
 }
 

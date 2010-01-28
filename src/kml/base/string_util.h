@@ -100,6 +100,17 @@ inline string ToString(T value) {
 void SplitStringUsing(const string& input, const string& split_string,
                       std::vector<string>* output);
 
+// This processes the given "-escaped string as specified here:
+//   http://www.gdal.org/ogr/drv_csv.html
+// For example:
+// ["The ""big"" cheese."] -> [The "big" cheese.]
+// ["First point"] -> [First point]
+// ["White Bear Lake, MN, USA"] -> [White Bear Lake, MN, USA]
+void SplitQuotedUsing(const char* begin, size_t nbytes,const char split_char,
+                             std::vector<string>* output);
+void SplitQuotedUsingFromString(const string& input, const char split_char,
+                             std::vector<string>* output);
+
 // Returns true if end appears at the end of str.  Returns false if either of
 // str or end are empty or if end is longer than str.
 bool StringEndsWith(const string& str, const string& end);
@@ -113,6 +124,9 @@ bool StringCaseEqual(const string& a, const string& b);
 // as the output argument in which case this function becomes a simple "is this
 // a number" check.
 bool StringToDouble(const string& number, double* output);
+
+// This returns true if number starts with [-][.][0123456789].
+bool IsDecimalDoubleString(const string& number);
 
 // This returns the offset to the first non-whitespace character.
 size_t SkipLeadingWhitespace(const char* begin, const char* end);
