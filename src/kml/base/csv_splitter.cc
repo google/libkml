@@ -27,6 +27,8 @@
 
 #include "kml/base/csv_splitter.h"
 
+#include "kml/base/string_util.h"
+
 namespace kmlbase {
 
 CsvSplitter::CsvSplitter(const string& csv_data)
@@ -55,7 +57,7 @@ bool CsvSplitter::SplitCurrentLine(StringVector* cols) {
   size_t this_end;
   current_line_ = FindNextLine(&this_end);
   if (cols) {
-    SplitStringUsing(csv_data_.substr(this_begin, this_end - this_begin), ",",
+    SplitQuotedUsing(csv_data_.data() + this_begin, this_end - this_begin, ',',
                      cols);
   }
   return true;

@@ -115,12 +115,29 @@ bool StringCaseEqual(const string& a, const string& b) {
 }
 
 bool StringToDouble(const string& number, double* output) {
-  // TODO: see if this really a number
+  if (!IsDecimalDoubleString(number)) {
+    return false;
+  }
   if (output) {
     // TODO: consider protobuf's NoLocaleStrtod.
     *output = strtod(number.c_str(), NULL);
   }
   return true;
+}
+
+bool IsDecimalDoubleString(const string& number) {
+  if (number.empty()) {
+    return false;
+  }
+  char* cp = const_cast<char*>(number.data());
+  const char* end = cp + number.size();
+  if (*cp == '-' && ++cp == end) {
+    return false;
+  }
+  if (*cp == '.' && ++cp == end) {
+    return false;
+  }
+  return isdigit(*cp);
 }
 
 size_t SkipLeadingWhitespace(const char* begin, const char* end) {
@@ -135,6 +152,69 @@ size_t SkipLeadingWhitespace(const char* begin, const char* end) {
 
 size_t SkipLeadingWhitespaceString(const string& str) {
   return SkipLeadingWhitespace(str.data(), str.data() + str.size());
+}
+
+// Derived from and compatible with google3's SplitCSVLineWithDelimiter.
+void SplitQuotedUsing(const char* input, size_t nbytes, const char delimiter,
+                      std::vector<string>* cols) {
+  if (input == NULL) {
+    return;
+  }
+  // Copy the line to a buffer we can write into.
+  char *copy = (char*)malloc(nbytes + 1);
+  memcpy(copy, static_cast<const void*>(input), nbytes);
+  copy[nbytes] = 0;
+
+  char* end;
+  char* start;
+
+  const char* end_of_line = copy + nbytes;
+  for (char* line = copy; line < end_of_line; line++) {
+    // Skip leading whitespace, unless said whitespace is the delimiter.
+    while (isspace(*line) && *line != delimiter)
+      ++line;
+
+    if (*line == '"' && delimiter == ',') {     // Quoted value...
+      start = ++line;
+      end = start;
+      for (; *line; line++) {
+        if (*line == '"') {
+          line++;
+          if (*line != '"')  // [""] is an escaped ["]
+            break;           // but just ["] is end of value
+        }
+        *end++ = *line;
+      }
+      // All characters after the closing quote and before the comma
+      // are ignored.
+      line = strchr(line, delimiter);
+      if (!line) line = const_cast<char*>(end_of_line);
+    } else {
+      start = line;
+      line = strchr(line, delimiter);
+      if (!line) line = const_cast<char*>(end_of_line);
+      // Skip all trailing whitespace, unless said whitespace is the delimiter.
+      for (end = line;
+           end > start && isspace(end[-1]) && end[-1] != delimiter; --end)
+        ;
+    }
+    const bool need_another_column =
+      (*line == delimiter) && (line == end_of_line - 1);
+    *end = '\0';
+    cols->push_back(start);
+    // If line was something like [paul,] (comma is the last character
+    // and is not proceeded by whitespace or quote) then we are about
+    // to eliminate the last column (which is empty). This would be
+    // incorrect.
+    if (need_another_column)
+      cols->push_back(end);
+  }
+  free(copy);
+}
+
+void SplitQuotedUsingFromString(const string& linestr, const char delimiter,
+                                std::vector<string>* cols) {
+  SplitQuotedUsing(linestr.data(), linestr.size(), delimiter, cols);
 }
 
 }  // end namespace kmlbase

@@ -216,6 +216,40 @@ TEST(StringUtilTest, TestStringToDouble) {
   ASSERT_DOUBLE_EQ(.1, val);
 }
 
+TEST(StringUtilTest, TestIsDecimalDoubleString) {
+  // Empty string doesn't crash and returns false.
+  ASSERT_FALSE(IsDecimalDoubleString(""));
+  const string empty;
+  ASSERT_FALSE(IsDecimalDoubleString(empty.data()));
+
+  // Leading space not allowed.
+  ASSERT_FALSE(IsDecimalDoubleString(" 123"));
+  ASSERT_FALSE(IsDecimalDoubleString("\t123"));
+  ASSERT_FALSE(IsDecimalDoubleString("\n123"));
+  ASSERT_FALSE(IsDecimalDoubleString("\r123"));
+  // Leading printable not allowed.
+  ASSERT_FALSE(IsDecimalDoubleString("x123"));
+  ASSERT_FALSE(IsDecimalDoubleString("b123"));
+  ASSERT_FALSE(IsDecimalDoubleString(",123"));
+  // Lack of digit after - and/or . not allowed.
+  ASSERT_FALSE(IsDecimalDoubleString("."));
+  ASSERT_FALSE(IsDecimalDoubleString(".-"));
+  ASSERT_FALSE(IsDecimalDoubleString(".-5"));
+  ASSERT_FALSE(IsDecimalDoubleString("..5"));
+  ASSERT_FALSE(IsDecimalDoubleString("-"));
+  ASSERT_FALSE(IsDecimalDoubleString("--2"));
+  ASSERT_FALSE(IsDecimalDoubleString("-."));
+  ASSERT_FALSE(IsDecimalDoubleString("--."));
+  ASSERT_FALSE(IsDecimalDoubleString("-.z"));
+
+  // [-][.][0123456789] allowed.
+  ASSERT_TRUE(IsDecimalDoubleString("123"));
+  ASSERT_TRUE(IsDecimalDoubleString(".123"));
+  ASSERT_TRUE(IsDecimalDoubleString("-123"));
+  ASSERT_TRUE(IsDecimalDoubleString("-.123"));
+  ASSERT_TRUE(IsDecimalDoubleString("-123.123"));
+}
+
 TEST(StringUtilTest, TestSkipWhitespace) {
   const string kSpaceHello(" hello");
   ASSERT_EQ(static_cast<size_t>(1),
@@ -237,6 +271,85 @@ TEST(StringUtilTest, TestSkipWhitespace) {
   ASSERT_EQ(static_cast<size_t>(7),
             SkipLeadingWhitespace(kWsHello.data(),
                                   kWsHello.data() + kWsHello.size()));
+}
+
+TEST(StringUtilTest, TestSplitQuotedUsing) {
+  const string kStuff("\"a\",\"b\",\"c\"");
+  std::vector<string> output;
+  SplitQuotedUsingFromString(kStuff, ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+  ASSERT_EQ(string("b"), output[1]);
+  ASSERT_EQ(string("c"), output[2]);
+
+  const string kStuffDq("\"a,a\",\"b\"\"\",\"c\"");
+  output.clear();
+  SplitQuotedUsingFromString(kStuffDq, ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_EQ(string("a,a"), output[0]);
+  ASSERT_EQ(string("b\""), output[1]);
+  ASSERT_EQ(string("c"), output[2]);
+
+  const string kUnbalanced("\"a\"junk,b,c");
+  output.clear();
+  SplitQuotedUsingFromString(kUnbalanced, ',', &output);
+
+  output.clear();
+  SplitQuotedUsingFromString("a", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(1), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+
+  output.clear();
+  SplitQuotedUsingFromString("\"b,b\"", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(1), output.size());
+  ASSERT_EQ(string("b,b"), output[0]);
+
+  output.clear();
+  SplitQuotedUsingFromString("\"c\"\"x\"\"", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(1), output.size());
+  ASSERT_EQ(string("c\"x\""), output[0]);
+
+  output.clear();
+  SplitQuotedUsingFromString("\"c\"\"x\"\"", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(1), output.size());
+  ASSERT_EQ(string("c\"x\""), output[0]);
+
+  const string kDqAndNot("a,\"b,b\",\"c\"\"x\"\"");
+  output.clear();
+  SplitQuotedUsingFromString(kDqAndNot, ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+  ASSERT_EQ(string("b,b"), output[1]);
+  ASSERT_EQ(string("c\"x\""), output[2]);
+
+  output.clear();
+  SplitQuotedUsingFromString("a,b,c", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+  ASSERT_EQ(string("b"), output[1]);
+  ASSERT_EQ(string("c"), output[2]);
+
+  output.clear();
+  SplitQuotedUsingFromString("a,,c", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+  ASSERT_TRUE(output[1].empty());
+  ASSERT_EQ(string("c"), output[2]);
+
+  output.clear();
+  SplitQuotedUsingFromString(",,", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(3), output.size());
+  ASSERT_TRUE(output[0].empty());
+  ASSERT_TRUE(output[1].empty());
+  ASSERT_TRUE(output[2].empty());
+
+  output.clear();
+  SplitQuotedUsingFromString("a,b,c,", ',', &output);
+  ASSERT_EQ(static_cast<size_t>(4), output.size());
+  ASSERT_EQ(string("a"), output[0]);
+  ASSERT_EQ(string("b"), output[1]);
+  ASSERT_EQ(string("c"), output[2]);
+  ASSERT_TRUE(output[3].empty());
 }
 
 }  // end namespace kmlbase
