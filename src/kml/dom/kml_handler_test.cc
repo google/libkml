@@ -526,6 +526,39 @@ TEST_F(KmlHandlerTest, TestParserHandlesBoolWhitespace) {
   ASSERT_EQ(true, polystyle->get_outline());
 }
 
+// 100 nested folders is equal to our default nesting limit.
+TEST_F(KmlHandlerTest, TestMaxNestingOf100Folders) {
+  const string k100Folders(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "100_nested_folders.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(k100Folders, &data));
+  ElementPtr root = Parse(data, NULL);
+  ASSERT_TRUE(root);  // Parse succeeded.
+}
+
+// 101 nested folders exceeds our default nesting limit of 100.
+TEST_F(KmlHandlerTest, TestMaxNestingOf101Folders) {
+  const string k101Folders(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "101_nested_folders.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(k101Folders, &data));
+  ElementPtr root = Parse(data, NULL);
+  ASSERT_FALSE(root);  // Parse was stopped.
+}
+
+// 101 nested elements exceeds our default nesting limit of 100.
+TEST_F(KmlHandlerTest, TestMaxNestingOf101Elements) {
+  const string k101Elements(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "101_nested_elements.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(k101Elements, &data));
+  ElementPtr root = Parse(data, NULL);
+  ASSERT_FALSE(root);  // Parse was stopped.
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
