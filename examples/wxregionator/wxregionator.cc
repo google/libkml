@@ -27,15 +27,42 @@
 // application.
 
 #include "wxregionator.h"
+#include <kml/base/csv_splitter.h>
+#include <kml/base/file.h>
 #include <kml/dom.h>
 #include <kml/convenience/convenience.h>
-#include <kml/convenience/csv_file.h>
+#include <kml/convenience/csv_parser.h>
 #include <kml/engine.h>
 #include <kml/regionator/feature_list_region_handler.h>
 #include <kml/regionator/regionator.h>
 #include <wx/dir.h>
 #include <wx/file.h>
 #include <wx/progdlg.h>
+
+// This CsvParserHandler saves each "OK" Placemark to the given FeatureList.
+// Non-OK lines are quietly ignored.
+class FeatureListSaver : public kmlconvenience::CsvParserHandler {
+ public:
+  FeatureListSaver(kmlconvenience::FeatureList* feature_list)
+    : feature_list_(feature_list) {
+  }
+
+  // This is the method called from within the CsvParser for each line in the
+  // input CSV.  In this implementation we save all Placemarks from good lines
+  // and quietly skip over imperfect lines.
+  virtual bool HandleLine(int line, kmlconvenience::CsvParserStatus status,
+                          kmldom::PlacemarkPtr p) {
+    if (status == kmlconvenience::CSV_PARSER_STATUS_OK &&
+        kmlengine::GetFeatureLatLon(p, NULL, NULL)) {
+      feature_list_->PushBack(p);
+    }
+    // TODO: how to indicate an error on a given line?
+    return true;  // Always advance to the next line of CSV data.
+  }
+
+ private:
+  kmlconvenience::FeatureList* feature_list_;
+};
 
 // IDs for the controls and menu commands.
 enum {
@@ -134,11 +161,21 @@ void MainFrame::GenerateRbnl(wxCommandEvent& event) {
     return;
   }
 
+  string csv_data;
+  if (!kmlbase::File::ReadFileToString(input_file_ctrl_->GetPath().c_str(),
+                                       &csv_data)) {
+    // TODO: how to indicate file read error?
+    return;
+  }
+  kmlbase::CsvSplitter csv_splitter(csv_data);
+
   // Parse the CSV file into a FeatureList of Point Placemarks sorted by score.
   kmlconvenience::FeatureList feature_list;
-  kmlconvenience::CsvFile placemarks(&feature_list);
-  // TODO: ParseCsvFile should return a bool?
-  placemarks.ParseCsvFile(input_file_ctrl_->GetPath().c_str());
+  FeatureListSaver feature_saver(&feature_list);
+  if (!kmlconvenience::CsvParser::ParseCsv(&csv_splitter, &feature_saver)) {
+    // TODO: how to indicate CSV parse error?
+    return;
+  }
   feature_list.Sort();
 
   // Give the FeatureList to the FeatureListRegionHandler.
