@@ -40,7 +40,11 @@ CsvSplitter::~CsvSplitter() {}
 
 size_t CsvSplitter::FindNextLine(size_t* this_end) const {
   size_t nl = csv_data_.find_first_of("\r\n", current_line_);
-  if (nl != string::npos) {
+  if (nl == string::npos) {
+    if (this_end) {
+      *this_end = csv_data_.size();
+    }
+  } else {
     if (this_end) {
       *this_end = nl;
     }

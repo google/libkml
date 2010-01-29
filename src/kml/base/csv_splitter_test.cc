@@ -66,6 +66,27 @@ TEST(CsvSplitterTest, TestSimpleSplitCurrentLine) {
   ASSERT_TRUE(cols.empty());
 }
 
+TEST(CsvSplitterTest, TestFindNextLineNoLastNewline) {
+  CsvSplitter csv_splitter("hi,there\nhow,are,you?");
+  size_t this_end;
+  size_t next_begin = csv_splitter.FindNextLine(&this_end);
+  ASSERT_EQ(static_cast<size_t>(8), this_end);
+  ASSERT_EQ(static_cast<size_t>(9), next_begin);
+  StringVector cols;
+  ASSERT_TRUE(csv_splitter.SplitCurrentLine(&cols));
+  ASSERT_EQ(static_cast<size_t>(2), cols.size());
+}
+
+TEST(CsvSplitterTest, TestSplitCurrentLineNoLastNewLine) {
+  CsvSplitter csv_splitter("hi,there\nhow,are,you?");
+  StringVector cols;
+  ASSERT_TRUE(csv_splitter.SplitCurrentLine(&cols));
+  ASSERT_EQ(static_cast<size_t>(2), cols.size());
+  cols.clear();
+  ASSERT_TRUE(csv_splitter.SplitCurrentLine(&cols));
+  ASSERT_EQ(static_cast<size_t>(3), cols.size());
+}
+
 // Test line FindNextLine on a file with \r\n line endings.
 TEST(CsvSplitterTest, TestCrNlFile) {
   const string kCrNlCsv =
