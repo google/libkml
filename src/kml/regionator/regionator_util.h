@@ -35,6 +35,10 @@
 #include "kml/dom.h"
 #include "kml/regionator/regionator_qid.h"
 
+namespace kmlengine {
+class Bbox;
+}
+
 namespace kmlregionator {
 
 // Creates a copy of the given LatLonAltBox.
@@ -45,6 +49,11 @@ kmldom::LodPtr CloneLod(const kmldom::LodPtr& orig);
 
 // Creates a deep copy of the given Region.
 kmldom::RegionPtr CloneRegion(const kmldom::RegionPtr& orig);
+
+// This sets the bounds of the output aligned_llb to the lowest level node
+// in a quadtree rooted at n=180, s=-180, e=180, w=-180.
+bool CreateAlignedAbstractLatLonBox(const kmldom::AbstractLatLonBoxPtr& llb,
+                                    kmldom::AbstractLatLonBoxPtr aligned_llb);
 
 // Creates a Region whose LatLonAltBox is the specified quadrant of
 // that in the parent.  The created Region's Lod is cloned from the parent.

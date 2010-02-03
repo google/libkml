@@ -279,6 +279,31 @@ TEST_F(RegionatorUtilTest, TestGetCenter) {
   ASSERT_EQ(0.0, lon);
 }
 
+TEST_F(RegionatorUtilTest, TestCreateAlignedAbstractLatLonBox) {
+  kmldom::LatLonAltBoxPtr target = factory_->CreateLatLonAltBox();
+  target->set_north(1);
+  target->set_south(-1);
+  target->set_east(1);
+  target->set_west(-1);
+  kmldom::LatLonAltBoxPtr aligned = factory_->CreateLatLonAltBox();
+  ASSERT_TRUE(CreateAlignedAbstractLatLonBox(target, aligned));
+  ASSERT_EQ(180, aligned->get_north());
+  ASSERT_EQ(-180, aligned->get_south());
+  ASSERT_EQ(180, aligned->get_east());
+  ASSERT_EQ(-180, aligned->get_west());
+
+  target->set_north(37.786807);  // Lincoln Park 3
+  target->set_south(37.781563);  // Lincoln Park 7
+  target->set_east(-122.494135);  // Lincoln Park 18
+  target->set_west(-122.504031);  // Lincoln Park 5
+  aligned = factory_->CreateLatLonAltBox();
+  ASSERT_TRUE(CreateAlignedAbstractLatLonBox(target, aligned));
+  ASSERT_EQ(37.79296875, aligned->get_north());
+  ASSERT_EQ(37.7490234375, aligned->get_south());
+  ASSERT_EQ(-122.4755859375, aligned->get_east());
+  ASSERT_EQ(-122.51953125, aligned->get_west());
+}
+
 }  // end namespace kmlregionator
 
 int main(int argc, char** argv) {
