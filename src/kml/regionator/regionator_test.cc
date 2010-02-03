@@ -165,6 +165,54 @@ TEST_F(RegionatorTest, FourLevelPointRegionatorTest) {
   ASSERT_EQ(static_cast<size_t>(85), kml_file_map_.size());
 }
 
+class LoggingRegionHandler : public RegionHandler {
+ public:
+  LoggingRegionHandler(int max_regions,
+                       std::vector<kmldom::RegionPtr>* region_vector)
+    : max_regions_(max_regions),
+      region_count_(0),
+      region_vector_(region_vector) {
+  }
+
+  // RegionHandler::HasData()
+  virtual bool HasData(const RegionPtr& region) {
+    if (++region_count_ > max_regions_) {
+      return false;
+    }
+    region_vector_->push_back(region);
+    return true;
+  }
+
+  // RegionHandler::GetFeature()
+  virtual kmldom::FeaturePtr GetFeature(const kmldom::RegionPtr& region) {
+    return NULL;
+  }
+
+  // RegionHandler::SaveKml()
+  virtual void SaveKml(const kmldom::KmlPtr& kml, const string& filename) {
+  }
+
+ private:
+  const int max_regions_;
+  int region_count_;
+  std::vector<kmldom::RegionPtr>* region_vector_;
+};
+
+TEST_F(RegionatorTest, SimpleRegionateAligned) {
+  std::vector<kmldom::RegionPtr> region_vector;
+  LoggingRegionHandler rha(1, &region_vector);
+
+  const kmldom::RegionPtr region = kmlconvenience::CreateRegion2d(1, -1, 1, -1,
+                                                                  128, 1024);
+  ASSERT_TRUE(Regionator::RegionateAligned(rha, region, NULL));
+  ASSERT_EQ(static_cast<size_t>(1), region_vector.size());
+  const kmldom::LatLonAltBoxPtr llab = region_vector[0]->get_latlonaltbox();
+  ASSERT_EQ(180, llab->get_north());
+  ASSERT_EQ(-180, llab->get_south());
+  ASSERT_EQ(180, llab->get_east());
+  ASSERT_EQ(-180, llab->get_west());
+}
+
 }  // end namespace kmlregionator
 
 int main(int argc, char** argv) {

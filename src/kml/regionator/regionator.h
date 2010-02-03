@@ -54,6 +54,15 @@ public:
   // has completed.
   bool Regionate(const char* output_directory);
 
+  // This method "regionates" using the given RegionHandler and region.  The
+  // region is first aligned to the lowest level region in a quadtree rooted
+  // at n=180, s=-180, e=180, w=-180.  All output files are saved to the
+  // given directory if a non-NULL pointer is supplied.  Regionation progresses
+  // the same whether nor not an output directory is supplied.
+  static bool RegionateAligned(RegionHandler& rhandler,
+                               const kmldom::RegionPtr& region,
+                               const char* output_directory);
+
 private:
   kmldom::RegionPtr root_region_;
   // This calls _Regionate() for the given child of the parent Region.
