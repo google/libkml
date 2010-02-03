@@ -189,6 +189,42 @@ TEST_F(BboxTest, TestExpandFromBbox) {
   VerifyBounds(another_bbox, kNorth, kSouth, kEast, kWest);
 }
 
+TEST_F(BboxTest, TestSetNSEW) {
+  Bbox b;
+  b.set_north(37.786807);
+  ASSERT_EQ(37.786807, b.get_north());
+  b.set_south(37.781563);
+  ASSERT_EQ(37.781563, b.get_south());
+  b.set_east(-122.494135);
+  ASSERT_EQ(-122.494135, b.get_east());
+  b.set_west(-122.504031);
+  ASSERT_EQ(-122.504031, b.get_west());
+}
+
+TEST_F(BboxTest, TestAlignBbox) {
+  Bbox b;
+  b.set_north(37.786807);  // Lincoln Park 3
+  b.set_south(37.781563);  // Lincoln Park 7
+  b.set_east(-122.494135);  // Lincoln Park 18
+  b.set_west(-122.504031);  // Lincoln Park 5
+  Bbox qt(180, -180, 180, -180);
+  b.AlignBbox(&qt, 24);
+  ASSERT_EQ(37.79296875, qt.get_north());
+  ASSERT_EQ(37.7490234375, qt.get_south());
+  ASSERT_EQ(-122.4755859375, qt.get_east());
+  ASSERT_EQ(-122.51953125, qt.get_west());
+}
+
+TEST_F(BboxTest, TestContainedByBox) {
+  Bbox r(180, -180, 180, -180);
+  Bbox a(1,-1,1,-1);
+  ASSERT_TRUE(a.ContainedByBox(180, -180, 180, -180));
+  ASSERT_TRUE(a.ContainedByBbox(r));
+  Bbox b(1000,-1,1,-1);
+  ASSERT_FALSE(b.ContainedByBox(180, -180, 180, -180));
+  ASSERT_FALSE(b.ContainedByBbox(r));
+}
+
 }  // end namespace kmlengine
 
 int main(int argc, char** argv) {
