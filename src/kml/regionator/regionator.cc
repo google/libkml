@@ -133,4 +133,21 @@ bool Regionator::Regionate(const char* output_directory) {
   return true;
 }
 
+// static
+bool Regionator::RegionateAligned(RegionHandler& rhandler,
+                                  const RegionPtr& region,
+                                  const char* output_directory) {
+  kmldom::LatLonAltBoxPtr llab = CloneLatLonAltBox(region->get_latlonaltbox());
+  if (!CreateAlignedAbstractLatLonBox(region->get_latlonaltbox(), llab)) {
+    return false;
+  }
+  kmldom::RegionPtr aligned_region =
+      kmldom::KmlFactory::GetFactory()->CreateRegion();
+  aligned_region->set_latlonaltbox(llab);
+  aligned_region->set_lod(CloneLod(region->get_lod()));
+  boost::scoped_ptr<Regionator> regionator(new Regionator(rhandler,
+                                                          aligned_region));
+  return regionator->Regionate(output_directory);
+}
+
 }  // end namespace kmlregionator
