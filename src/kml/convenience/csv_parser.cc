@@ -51,8 +51,13 @@ bool CsvParser::ParseCsv(kmlbase::CsvSplitter* csv_splitter,
   }
   boost::scoped_ptr<CsvParser> csv_parser(
       new CsvParser(csv_splitter, csv_parser_handler));
-  return CSV_PARSER_STATUS_OK == csv_parser->SetSchema(schema) &&
-        csv_parser->ParseCsvData();
+  CsvParserStatus schema_status = csv_parser->SetSchema(schema);
+  // Send the schema parsing status out just like any other line.
+  if (schema_status != CSV_PARSER_STATUS_OK) {
+    csv_parser_handler->HandleLine(1, schema_status, NULL);
+    return false;
+  }
+  return csv_parser->ParseCsvData();
 }
 
 // private
@@ -107,7 +112,7 @@ CsvParserStatus CsvParser::CsvLineToPlacemark(
       kmlbase::StringToDouble(csv_line[lon_col_], &lon)) {
     placemark->set_geometry(CreatePointLatLon(lat, lon));
   } else {
-    return CSV_PARSER_STATUS_NO_LAT_LON;
+    return CSV_PARSER_STATUS_BAD_LAT_LON;
   }
   if (name_col_ != npos) {
     placemark->set_name(csv_line[name_col_]);

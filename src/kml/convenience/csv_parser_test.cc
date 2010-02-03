@@ -138,6 +138,65 @@ TEST(CsvParserTest, TestSetSchemaMixedCase) {
   ASSERT_EQ("WomensPar", csv_schema.find(9)->second);
 }
 
+// This test verifies that schema errors are properly detected.
+TEST(CsvParserTest, TestSetSchemaErrors) {
+  kmlbase::StringVector schema;
+  boost::scoped_ptr<CsvParser> csv_parser(new CsvParser(NULL, NULL));
+  ASSERT_EQ(CSV_PARSER_STATUS_BLANK_LINE, csv_parser->SetSchema(schema));
+
+  schema.clear();
+  schema.push_back("fish");
+  schema.push_back("birds");
+  csv_parser.reset(new CsvParser(NULL, NULL));
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, csv_parser->SetSchema(schema));
+
+  schema.clear();
+  schema.push_back("fish");
+  schema.push_back("longitude");
+  csv_parser.reset(new CsvParser(NULL, NULL));
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, csv_parser->SetSchema(schema));
+
+  schema.clear();
+  schema.push_back("birds");
+  schema.push_back("latitude");
+  csv_parser.reset(new CsvParser(NULL, NULL));
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, csv_parser->SetSchema(schema));
+}
+
+// This test verifies that schema errors are properly reported to the
+// supplied CsvParserHandler.
+TEST(CsvParserTest, TestParseCsvSetSchemaErrors) {
+  boost::scoped_ptr<kmlbase::CsvSplitter> csv_splitter(
+      new kmlbase::CsvSplitter("\n1,2,3,a,b,c\n"));
+  ContainerSaver::ErrorLog log;
+  ContainerSaver container_saver(NULL, &log);
+  ASSERT_FALSE(CsvParser::ParseCsv(csv_splitter.get(), &container_saver));
+  ASSERT_EQ(static_cast<size_t>(1), log.size());
+  ASSERT_EQ(1, log[0].first);  // Schema is always line 1.
+  ASSERT_EQ(CSV_PARSER_STATUS_BLANK_LINE, log[0].second);
+
+  csv_splitter.reset(new kmlbase::CsvSplitter("a,b\n1,2,3,a,b,c\n"));
+  log.clear();
+  ASSERT_FALSE(CsvParser::ParseCsv(csv_splitter.get(), &container_saver));
+  ASSERT_EQ(static_cast<size_t>(1), log.size());
+  ASSERT_EQ(1, log[0].first);  // Schema is always line 1.
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, log[0].second);
+
+  csv_splitter.reset(new kmlbase::CsvSplitter("latitude,b\n1,2,3,a,b,c\n"));
+  log.clear();
+  ASSERT_FALSE(CsvParser::ParseCsv(csv_splitter.get(), &container_saver));
+  ASSERT_EQ(static_cast<size_t>(1), log.size());
+  ASSERT_EQ(1, log[0].first);  // Schema is always line 1.
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, log[0].second);
+
+  csv_splitter.reset(new kmlbase::CsvSplitter("longitude,b\n1,2,3,a,b,c\n"));
+  log.clear();
+  ASSERT_FALSE(CsvParser::ParseCsv(csv_splitter.get(), &container_saver));
+  ASSERT_EQ(static_cast<size_t>(1), log.size());
+  ASSERT_EQ(1, log[0].first);  // Schema is always line 1.
+  ASSERT_EQ(CSV_PARSER_STATUS_NO_LAT_LON, log[0].second);
+}
+
 // This test verifies full parse of a simple single line CSV file.
 TEST(CsvParserTest, TestParseCsvDataOneLine) {
   kmlbase::CsvSplitter csv_data("name,latitude,longitude\n"
@@ -203,6 +262,24 @@ TEST(CsvParserTest, TestCsvLineToPlacemarkWithExtendedData) {
   ASSERT_EQ(kHt, ed->get_data_array_at(1)->get_value());
 }
 
+TEST(CsvParserTest, TestCsvLineToPlacemarkWithQuotedData) {
+  kmlbase::CsvSplitter csv_data("longitude,latitude\n"
+                                "\"1.1\",\"-3.3\"\n"
+                                "2.2,\"-4.4\"\n"
+                                "\"2.2\",-4.4\n");
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver container_saver(folder, NULL);
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_data, &container_saver));
+  ASSERT_EQ(static_cast<size_t>(3), folder->get_feature_array_size());
+  kmldom::PlacemarkPtr placemark =
+      kmldom::AsPlacemark(folder->get_feature_array_at(0));
+  ASSERT_TRUE(CheckPointLatLon(placemark, -3.3, 1.1));
+  placemark = kmldom::AsPlacemark(folder->get_feature_array_at(1));
+  ASSERT_TRUE(CheckPointLatLon(placemark, -4.4, 2.2));
+  placemark = kmldom::AsPlacemark(folder->get_feature_array_at(2));
+  ASSERT_TRUE(CheckPointLatLon(placemark, -4.4, 2.2));
+}
+
 // This verifies the CsvParser on a test file.
 TEST(CsvParserTest, TestLincolnParkGc) {
   kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
@@ -257,6 +334,45 @@ TEST(CsvParserTest, TestBadLineError) {
   kmldom::PlacemarkPtr placemark =
       kmldom::AsPlacemark(folder->get_feature_array_at(0));
   ASSERT_TRUE(CheckPointLatLon(placemark, 1.1, -2.2));
+}
+
+TEST(CsvParserTest, TestCsvLineToPlacemarkErrors) {
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver::ErrorLog log;
+  ContainerSaver container_saver(folder, &log);
+  // Create a CsvSplitter over some CSV data with a minimally acceptible
+  // schema and lines that are bad in different ways.
+  kmlbase::CsvSplitter csv_splitter("name,latitude,longitude\n"
+                                    "this,is,fairly,bad\n"
+                                    "bad\n"
+                                    "name,1.1\n"
+                                    "name,1.1,bad longitude\n"
+                                    "name,bad latitude,-3.3\n"
+                                    "name,1.1,-2.2\n");
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_splitter, &container_saver));
+  // There's one good line.
+  ASSERT_EQ(static_cast<size_t>(1), folder->get_feature_array_size());
+  // There are three bad lines.
+  ASSERT_EQ(static_cast<size_t>(5), log.size());
+
+  // "this,is,fairly,bad" has too many columns
+  ASSERT_EQ(2, log[0].first);
+  ASSERT_EQ(CSV_PARSER_STATUS_INVALID_DATA, log[0].second);
+
+  // "bad" has too few columns
+  ASSERT_EQ(3, log[1].first);
+  ASSERT_EQ(CSV_PARSER_STATUS_INVALID_DATA, log[1].second);
+
+  // "name,1.1" has too few columns
+  ASSERT_EQ(4, log[2].first);
+  ASSERT_EQ(CSV_PARSER_STATUS_INVALID_DATA, log[2].second);
+
+  // "name,1.1,bad longitude\n"
+  ASSERT_EQ(5, log[3].first);
+  ASSERT_EQ(CSV_PARSER_STATUS_BAD_LAT_LON, log[3].second);
+
+  ASSERT_EQ(6, log[4].first);
+  ASSERT_EQ(CSV_PARSER_STATUS_BAD_LAT_LON, log[4].second);
 }
 
 }  // end namespace kmlconvenience
