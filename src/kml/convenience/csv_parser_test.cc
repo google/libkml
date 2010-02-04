@@ -318,6 +318,48 @@ TEST(CsvParserTest, TestLincolnParkGc) {
   ASSERT_DOUBLE_EQ(-2204.970429, lon_sum);
 }
 
+// This is a list of errors in lincoln-park-gc-errors.csv:
+static const struct {
+  const int line_number;
+  const CsvParserStatus status;
+} kLincolnParkGcErrors[] = {
+  { 2, CSV_PARSER_STATUS_INVALID_DATA },
+  { 4, CSV_PARSER_STATUS_INVALID_DATA },
+  { 5, CSV_PARSER_STATUS_BAD_LAT_LON },
+  { 6, CSV_PARSER_STATUS_INVALID_DATA },
+  { 7, CSV_PARSER_STATUS_BAD_LAT_LON },
+  { 8, CSV_PARSER_STATUS_INVALID_DATA },
+  { 9, CSV_PARSER_STATUS_BAD_LAT_LON },
+  { 10, CSV_PARSER_STATUS_INVALID_DATA },
+  { 11, CSV_PARSER_STATUS_BAD_LAT_LON },
+  { 12, CSV_PARSER_STATUS_INVALID_DATA },
+  { 13, CSV_PARSER_STATUS_INVALID_DATA },
+  { 17, CSV_PARSER_STATUS_INVALID_DATA },
+};
+
+// This verifies the CsvParser on a test file with known bad lines.
+TEST(CsvParserTest, TestLincolnParkGcErrors) {
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver::ErrorLog log;
+  ContainerSaver container_saver(folder, &log);
+  string csv_data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(
+      kmlbase::File::JoinPaths(DATADIR,
+          kmlbase::File::JoinPaths("csv", "lincoln-park-gc-errors.csv")),
+      &csv_data));
+  kmlbase::CsvSplitter csv_splitter(csv_data);
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_splitter, &container_saver));
+  ASSERT_EQ(static_cast<size_t>(13), folder->get_feature_array_size());
+  ASSERT_EQ(static_cast<size_t>(12), log.size());
+
+  size_t nerrs = sizeof(kLincolnParkGcErrors)/sizeof(kLincolnParkGcErrors[0]);
+  ASSERT_EQ(nerrs, log.size());
+  for (size_t i = 0; i < nerrs; ++i) {
+    ASSERT_EQ(kLincolnParkGcErrors[i].line_number, log[i].first);
+    ASSERT_EQ(kLincolnParkGcErrors[i].status, log[i].second);
+  }
+}
+
 // This verifies that a bad data line is detected.
 TEST(CsvParserTest, TestBadLineError) {
   kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
