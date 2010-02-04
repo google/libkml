@@ -27,6 +27,7 @@
 
 #include "kml/base/string_util.h"
 #include <stdlib.h>  // strtod()
+#include <string.h>  // memcpy, strchr
 #include <strings.h>  // strncasecmp
 
 namespace kmlbase {
@@ -109,7 +110,7 @@ bool StringEndsWith(const string& str, const string& end) {
 
 bool StringCaseEqual(const string& a, const string& b) {
 #ifdef WIN32
-# define strncasecmp(s1, s2, n) __strncasecmp (s1, s2, n)
+# define strncasecmp(s1, s2, n) _strnicmp (s1, s2, n)
 #endif
   return a.size() == b.size() && strncasecmp(a.data(), b.data(), a.size()) == 0;
 }
