@@ -111,14 +111,19 @@ int main(int argc, char** argv) {
   // Create a root Region based on the bounding box of the FeatureList.
   Bbox bbox;
   feature_list.ComputeBoundingBox(&bbox);
-  // TODO snap
   RegionPtr root = kmlconvenience::CreateRegion2d(bbox.get_north(),
                                                   bbox.get_south(),
                                                   bbox.get_east(),
                                                   bbox.get_west(),
                                                   256, -1);
 
-  // Create a Regionator instance and walk the hierarchy starting at root.
-  Regionator regionator(feature_list_region_handler, root);
-  regionator.Regionate(output_dir);
+  // Create a Regionator instance and walk the hierarchy starting at root.  The
+  // output is aligned to a quadtree rooted at n=180, s=-180, e=180, w=-180.
+  if (!Regionator::RegionateAligned(feature_list_region_handler, root,
+                                    output_dir)) {
+    std::cerr << "Regionation failed" << std::endl;
+    return 1;
+  }
+
+  return 0;
 }
