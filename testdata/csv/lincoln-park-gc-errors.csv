@@ -1,0 +1,26 @@
+Name,Longitude,Latitude,BlueYardage,WhiteYardage,MensHandicap,MensPar,RedYardage,WomensHandicap,WomensPar
+# This line is considered empty and will count as an error.  Next line is fine:
+1,-122.494783,37.782353,316,299,3,4,281,3,4
+# The following line has a spurious comma offsetting the lat,lon:
+2,,-122.497593,37.783407,257,245,11,4,231,13
+# The following line has junk for longitude.
+3,Junk is not longitude,37.786807,156,140,15,3,133,15,3
+# The following line has junk for latitude.
+4,-122.501712,fish exist,321,313,7,4,304,11,4
+# The following line has junk for latitude and longitude.
+5,x,y,359,344,1,4,336,1,4
+# This line is missing a few fields at the end.
+6,-122.50144,37.784124,285,267,17,4
+7,-122.500827,37.781563,334,325,9,4,314,9,4
+8,-122.497507,37.781833,170,163,13,3,150,17,3
+9,-122.49572,37.782458,309,294,5,4,279,5,4
+# The back nine is fine.
+10,-122.499431,37.782269,268,256,18,4,246,12,4
+11,-122.499748,37.784402,265,260,14,4,247,10,4
+12,-122.497511,37.783743,203,193,6,3,177,14,3
+13,-122.498759,37.785548,500,486,8,5,464,2,5
+14,-122.494481,37.783491,259,251,12,4,242,8,4
+15,-122.496357,37.784873,282,277,16,4,272,6,4
+16,-122.498096,37.786048,239,229,4,3,219,16,4
+17,-122.496866,37.786266,240,230,10,3,318,18,4
+18,-122.494135,37.785832,383,376,2,4,368,4,4
