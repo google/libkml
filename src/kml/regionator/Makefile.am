@@ -17,6 +17,7 @@ libkmlregionator_la_SOURCES = \
 # These header files will be installed in $(includedir)/kml/regionator
 libkmlregionatorincludedir = $(includedir)/kml/regionator
 libkmlregionatorinclude_HEADERS = \
+	feature_list_regionator.h \
 	feature_list_region_handler.h \
 	region_handler.h \
 	regionator.h \
