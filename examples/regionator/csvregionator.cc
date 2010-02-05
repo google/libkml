@@ -40,19 +40,16 @@
 #include "kml/convenience/convenience.h"
 #include "kml/convenience/csv_parser.h"
 #include "kml/engine.h"
-#include "kml/regionator/feature_list_region_handler.h"
+#include "kml/regionator/feature_list_regionator.h"
 #include "kml/regionator/regionator.h"
 
 using kmlbase::File;
 using kmldom::PlacemarkPtr;
-using kmldom::RegionPtr;
 using kmlconvenience::CsvParser;
 using kmlconvenience::CsvParserHandler;
 using kmlconvenience::CsvParserStatus;
 using kmlconvenience::FeatureList;
-using kmlengine::Bbox;
-using kmlregionator::FeatureListRegionHandler;
-using kmlregionator::RegionHandler;
+using kmlregionator::FeatureListRegionator;
 using kmlregionator::Regionator;
 
 // This CsvParserHandler saves each "OK" Placemark to the given FeatureList.
@@ -76,6 +73,16 @@ class FeatureListSaver : public kmlconvenience::CsvParserHandler {
 
  private:
   FeatureList* feature_list_;
+};
+
+class CsvRegionator {
+ public:
+  // This is the signature of the PM::RegionatorProgress in
+  // FeatureListRegionator.
+  bool RegionatorProgress(unsigned int completed, unsigned int total) {
+    std::cout << completed << "/" << total << std::endl;
+    return true;  // Always continue regionating.
+  }
 };
 
 int main(int argc, char** argv) {
@@ -103,24 +110,14 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::cout << "Feature count: " << feature_list.Size() << std::endl;
-  feature_list.Sort();
 
-  // Give the FeatureList to the FeatureListRegionHandler.
-  FeatureListRegionHandler feature_list_region_handler(&feature_list);
+  CsvRegionator progress;
 
-  // Create a root Region based on the bounding box of the FeatureList.
-  Bbox bbox;
-  feature_list.ComputeBoundingBox(&bbox);
-  RegionPtr root = kmlconvenience::CreateRegion2d(bbox.get_north(),
-                                                  bbox.get_south(),
-                                                  bbox.get_east(),
-                                                  bbox.get_west(),
-                                                  256, -1);
-
-  // Create a Regionator instance and walk the hierarchy starting at root.  The
-  // output is aligned to a quadtree rooted at n=180, s=-180, e=180, w=-180.
-  if (!Regionator::RegionateAligned(feature_list_region_handler, root,
-                                    output_dir)) {
+  // Give the FeatureList to the FeatureListRegionator which walks the
+  // hierarchy starting at root.  The output is aligned to a quadtree rooted
+  // at n=180, s=-180, e=180, w=-180.
+  if (!FeatureListRegionator<CsvRegionator>::Regionate(&feature_list, 10,
+                                                       &progress, output_dir)) {
     std::cerr << "Regionation failed" << std::endl;
     return 1;
   }
