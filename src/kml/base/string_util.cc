@@ -138,7 +138,7 @@ bool IsDecimalDoubleString(const string& number) {
   if (*cp == '.' && ++cp == end) {
     return false;
   }
-  return isdigit(*cp);
+  return static_cast<bool>(isdigit(*cp));
 }
 
 size_t SkipLeadingWhitespace(const char* begin, const char* end) {
