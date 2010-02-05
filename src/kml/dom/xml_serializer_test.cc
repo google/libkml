@@ -92,20 +92,26 @@ TEST_F(XmlSerializerTest, TestSaveStringFieldById) {
 }
 
 TEST_F(XmlSerializerTest, TestCdataHandling) {
-  // If the parser sees <![CDATA ... ]]> around the character data of an
-  // element, it will preserve it. MaybeQuoteString() contains logic to
-  // determine if we should wrap XML-invalid field characters.
+  // The underlying parser itself won't pass CDATA sections through to
+  // element char data, but it is possible that raw CDATA will be passed
+  // through directly by feature->set_name() or similar. If the serializer
+  // sees this, we entity-escape the entire string to prevent the output
+  // of invalid XML. Otherwise, if we see any invalid characters in the string,
+  // we wrap them with CDATA.
   struct TestStruct {
     const string chardata;
     const string expected;
   } testdata[] = {
     {"simple text", "<name>simple text</name>\n"},
-    {"<![CDATA[...]]>", "<name><![CDATA[...]]></name>\n"},
+    {"<![CDATA[...]]>", "<name>&lt;![CDATA[...]]&gt;</name>\n"},
     {"invalid & char", "<name><![CDATA[invalid & char]]></name>\n"},
     {"invalid ' char", "<name><![CDATA[invalid ' char]]></name>\n"},
     {"invalid < char", "<name><![CDATA[invalid < char]]></name>\n"},
     {"invalid > char", "<name><![CDATA[invalid > char]]></name>\n"},
-    {"invalid \" char", "<name><![CDATA[invalid \" char]]></name>\n"}
+    {"invalid \" char", "<name><![CDATA[invalid \" char]]></name>\n"},
+    {"goo <![CDATA[goo]]> goo", "<name>goo &lt;![CDATA[goo]]&gt; goo</name>\n"},
+    {"<x><![CDATA[goo]]></x>",
+     "<name>&lt;x&gt;&lt;![CDATA[goo]]&gt;&lt;/x&gt;</name>\n"}
   };
 
   const size_t size = sizeof(testdata) / sizeof(testdata[0]);
@@ -124,8 +130,19 @@ TEST_F(XmlSerializerTest, TestCdataEscaping) {
   placemark_->set_name("<i>One</i> two");
   string xml = SerializePretty(placemark_);
   string expected("<Placemark>\n  "
-                       "<name><![CDATA[<i>One</i> two]]></name>\n"
-                       "</Placemark>\n");
+                  "<name><![CDATA[<i>One</i> two]]></name>\n"
+                  "</Placemark>\n");
+  ASSERT_EQ(expected, xml);
+}
+
+TEST_F(XmlSerializerTest, TestCdataPassedBySetter) {
+  string crazy_name("foo <b> goo <![CDATA[xxx<i>yyy</i>xxx]]> </b> goo");
+  placemark_->set_name(crazy_name);
+  string xml = SerializePretty(placemark_);
+  string expected("<Placemark>\n"
+                  "  <name>foo &lt;b&gt; goo &lt;![CDATA["
+                  "xxx&lt;i&gt;yyy&lt;/i&gt;xxx]]&gt; &lt;/b&gt; goo</name>\n"
+                  "</Placemark>\n");
   ASSERT_EQ(expected, xml);
 }
 
