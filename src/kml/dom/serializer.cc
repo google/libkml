@@ -43,7 +43,6 @@ static string EnityEscapeXml(const string& xml) {
   map[">"] = "&gt;";
   map["'"] = "&apos;";
   map["\""] = "&quot;";
-  kmlbase::StringMap::const_iterator itr = map.begin();
   return kmlbase::CreateExpandedStrings(xml, map, "", "");
 }
 
