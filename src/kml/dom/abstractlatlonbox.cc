@@ -28,9 +28,11 @@
 
 namespace kmldom {
 
+// Defaults http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd for
+// <north>, <south>, <east>, and <west>.
 AbstractLatLonBox::AbstractLatLonBox()
-  : north_(0.0), has_north_(false), south_(0.0), has_south_(false),
-    east_(0.0), has_east_(false), west_(0.0), has_west_(false)
+  : north_(180.0), has_north_(false), south_(-180.0), has_south_(false),
+    east_(180.0), has_east_(false), west_(-180.0), has_west_(false)
 {}
 
 AbstractLatLonBox::~AbstractLatLonBox() {}
