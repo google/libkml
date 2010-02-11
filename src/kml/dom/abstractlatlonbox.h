@@ -56,7 +56,7 @@ class AbstractLatLonBox : public Object {
     has_north_ = true;
   }
   void clear_north() {
-    north_ = 0.0;
+    north_ = 180.0;
     has_north_ = false;
   }
 
@@ -72,7 +72,7 @@ class AbstractLatLonBox : public Object {
     has_south_ = true;
   }
   void clear_south() {
-    south_ = 0.0;
+    south_ = -180.0;
     has_south_ = false;
   }
 
@@ -88,7 +88,7 @@ class AbstractLatLonBox : public Object {
     has_east_ = true;
   }
   void clear_east() {
-    east_ = 0.0;
+    east_ = 180.0;
     has_east_ = false;
   }
 
@@ -104,7 +104,7 @@ class AbstractLatLonBox : public Object {
     has_west_ = true;
   }
   void clear_west() {
-    west_ = 0.0;
+    west_ = -180.0;
     has_west_ = false;
   }
 
