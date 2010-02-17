@@ -7,14 +7,23 @@ if GCC
 AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
 endif
 
-noinst_PROGRAMS = getgmapkml getgsheetcsv getgsheetkml kmlwalk kmzfetch \
-		listfeed listgdocs listgmaps listgphotos resolvestyle \
-		searchgmap uploadgmap uploadgsheet xsdprint
+noinst_PROGRAMS = csvurl2gmap getgmapkml getgsheetcsv getgsheetkml \
+		gsheet2gmap kmlwalk kmzfetch listfeed listgdocs listgmaps \
+		listgphotos resolvestyle searchgmap uploadgmap uploadgmapcsv \
+		uploadgmapkml uploadgsheet xsdprint
 
 noinst_LTLIBRARIES = libcurlfetch.la
 
 libcurlfetch_la_SOURCES = curlfetch.cc
 libcurlfetch_la_LIBADD = -lcurl
+
+csvurl2gmap_SOURCES = csvurl2gmap.cc
+csvurl2gmap_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
 
 getgmapkml_SOURCES = getgmapkml.cc
 getgmapkml_LDADD = \
@@ -34,6 +43,14 @@ getgsheetcsv_LDADD = \
 
 getgsheetkml_SOURCES = getgsheetkml.cc
 getgsheetkml_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+gsheet2gmap_SOURCES = gsheet2gmap.cc
+gsheet2gmap_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
@@ -106,6 +123,22 @@ searchgmap_LDADD = \
 
 uploadgmap_SOURCES = uploadgmap.cc
 uploadgmap_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+uploadgmapcsv_SOURCES = uploadgmapcsv.cc
+uploadgmapcsv_LDADD = \
+        libcurlfetch.la \
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la
+
+uploadgmapkml_SOURCES = uploadgmapkml.cc
+uploadgmapkml_LDADD = \
         libcurlfetch.la \
 	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
