@@ -188,6 +188,22 @@ class GoogleMapsData {
   // "lat,lon" "lat
   // "radius"
   // "sortby"
+
+  // This creates a new map and adds a feature for each line of CSV data.
+  // See kmlconvenience::CsvParser for details about the CSV format.  This
+  // method is strict: the map will not be created if any of the CSV lines
+  // are bad.
+  kmldom::AtomEntryPtr PostCsv(const string& title, const string& csv_data,
+                               string* errors);
+
+  // This creates a new map and adds a feature for each KML feature.  Note
+  // that not all OGC KML 2.2 Feature's are recognized by the Google Maps
+  // Data API: the unrecognized Feature's are quietly ignored and not added
+  // to the Google My Map.  At present support is limited to <Placemark>.
+  // On success the standard Google Maps Data <atom:entry> for the new map
+  // is returned.  On failure NULL is returned.
+  kmldom::AtomEntryPtr PostKml(const string& title, const string& kml_data);
+
  private:
   // Use static Create().
   GoogleMapsData();

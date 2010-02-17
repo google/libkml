@@ -485,6 +485,36 @@ TEST_F(GoogleMapsDataTest, TestAppendBoxParameterFromBbox) {
   ASSERT_EQ(string("box=3.3,1.1,4.4,2.2"), query);
 }
 
+TEST_F(GoogleMapsDataTest, TestPostCsvGood) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  const string csv_data("name,latitude,longitude\n"
+                        "hello,-11.968312,-77.066395\n");
+  string errors;
+  kmldom::AtomEntryPtr entry = google_maps_data_->PostCsv("title", csv_data,
+                                                          &errors);
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(HTTP_POST, request_log[0].http_method_);
+}
+
+TEST_F(GoogleMapsDataTest, TestPostCsvBad) {
+  // The TestDataHttpClient is used here to provide a way for the underlying
+  // HttpClient to fail such that we can asser the NULL return of PostCsv.
+  google_maps_data_.reset(GoogleMapsData::Create(new TestDataHttpClient()));
+  ASSERT_FALSE(google_maps_data_->PostCsv("title", "junk", NULL));
+}
+
+TEST_F(GoogleMapsDataTest, TestPostKml) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  const string kml("<kml><Placemark><name>hello</name></Placemark></kml>");
+  kmldom::AtomEntryPtr entry = google_maps_data_->PostKml("title", kml);
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(HTTP_POST, request_log[0].http_method_);
+  ASSERT_EQ(kml, request_log[0].post_data_);
+}
 
 }  // end namespace kmlconvenience
 

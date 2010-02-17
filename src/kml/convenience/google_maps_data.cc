@@ -180,7 +180,7 @@ kmldom::DocumentPtr GoogleMapsData::CreateDocumentOfMapFeatures(
   do {
     GetMapKml(this_feed, document);
   } while (this_feed = AtomUtil::GetNextFeed(this_feed, *http_client_));
-  
+
   return document;
 }
 
@@ -246,7 +246,7 @@ int GoogleMapsData::PostPlacemarks(const kmldom::FeaturePtr& root_feature,
   if (kmldom::Type_Placemark == root_feature->Type()) {
     return AddFeature(feature_feed_uri, root_feature, NULL) ? 1 : 0;
   }
- 
+
   // Dig out all <Placemarks>.  Everything else is ignored, essentially
   // flattening Container hierarchies.
   kmlengine::ElementVector placemarks;
@@ -333,6 +333,39 @@ kmldom::AtomFeedPtr GoogleMapsData::SearchMapByBbox(
     return NULL;
   }
   return kmldom::AsAtomFeed(kmldom::ParseAtom(atom_feed, NULL));
+}
+
+kmldom::AtomEntryPtr GoogleMapsData::PostCsv(const string& title,
+                                             const string& csv_data,
+                                             string* errors) {
+  kmlconvenience::StringPairVector headers;
+  kmlconvenience::HttpClient::PushHeader("Content-Type", "text/csv", &headers);
+  kmlconvenience::HttpClient::PushHeader("Slug:", title, &headers);
+  string map_entry_xml;
+  if (!http_client_->SendRequest(kmlconvenience::HTTP_POST,
+                                 scope_ + kMetaFeedUri, &headers, &csv_data,
+                                 &map_entry_xml)) {
+    return NULL;
+  }
+  if (errors) {
+    *errors = map_entry_xml;
+  }
+  return kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
+}
+
+kmldom::AtomEntryPtr GoogleMapsData::PostKml(const string& title,
+                                             const string& kml_data) {
+  kmlconvenience::StringPairVector headers;
+  kmlconvenience::HttpClient::PushHeader(
+      "Content-Type", "application/vnd.google-earth.kml+xml", &headers);
+  kmlconvenience::HttpClient::PushHeader("Slug:", title, &headers);
+  string map_entry_xml;
+  if (!http_client_->SendRequest(kmlconvenience::HTTP_POST,
+                                 scope_ + kMetaFeedUri, &headers, &kml_data,
+                                 &map_entry_xml)) {
+    return NULL;
+  }
+  return kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
 }
 
 }  // end namespace kmlconvenience
