@@ -516,6 +516,52 @@ TEST_F(GoogleMapsDataTest, TestPostKml) {
   ASSERT_EQ(kml, request_log[0].post_data_);
 }
 
+TEST_F(GoogleMapsDataTest, TestPostMedia) {
+  HttpRequestVector request_log;
+  google_maps_data_.reset(
+      GoogleMapsData::Create(new LoggingHttpClient(&request_log)));
+  const string slug("slug me");
+  const string content_type("anything");
+  const string data("this is the data");
+  string errors;
+  kmldom::AtomEntryPtr entry = google_maps_data_->PostMedia(slug, content_type,
+                                                            data, &errors);
+  ASSERT_EQ(static_cast<size_t>(1), request_log.size());
+  ASSERT_EQ(HTTP_POST, request_log[0].http_method_);
+  ASSERT_EQ(data, request_log[0].post_data_);
+  const StringPairVector& headers = request_log[0].request_headers_;
+  bool found_slug = false;
+  bool found_content_type = false;
+  // Don't require any particular order to the headers.
+  for (size_t i = 0; i < headers.size(); ++i) {
+    if (headers[i].first == "Slug") {
+      found_slug = true;
+      ASSERT_EQ(slug, headers[i].second);
+    } else if (headers[i].first == "Content-Type") {
+      found_content_type = true;
+      ASSERT_EQ(content_type, headers[i].second);
+    }
+  }
+  ASSERT_TRUE(found_slug);
+  ASSERT_TRUE(found_content_type);
+}
+
+TEST_F(GoogleMapsDataTest, TestGetKmlUri) {
+  // Find a map entry in a test file.
+  string maps_feed_xml;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(
+      string(DATADIR) + "/gmaps/metafeed.xml", &maps_feed_xml));
+  const kmldom::AtomFeedPtr feed =
+      kmldom::AsAtomFeed(kmldom::ParseAtom(maps_feed_xml, NULL));
+  ASSERT_TRUE(feed);
+
+  const string want("http://maps.google.com/maps/ms?msa=0&output=kml&msid="
+                    "201514259179526663268.0004687a1a3e44d72b6b4");
+  string got;
+  ASSERT_TRUE(GoogleMapsData::GetKmlUri(feed->get_entry_array_at(0), &got));
+  ASSERT_EQ(want, got);
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {

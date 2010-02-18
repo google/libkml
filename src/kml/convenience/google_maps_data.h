@@ -204,6 +204,20 @@ class GoogleMapsData {
   // is returned.  On failure NULL is returned.
   kmldom::AtomEntryPtr PostKml(const string& title, const string& kml_data);
 
+  // This is the common code for PostCsv and PostKml.  The slug and
+  // content_type arguments create the Slug: and Content-Type: headers
+  // respectively and the data is HTTP POST'ed returning a parsed Atom
+  // entry for the created map.  If the POST failed a NULL is returned and
+  // an error may be saved to the passed error string if one is supplied.
+  // At present Google Maps Data API supports CSV and KML.  Use of the
+  // PostCsv() and PostKml() are the recommended methods.
+  kmldom::AtomEntryPtr PostMedia(const string& slug,
+                                 const string& content_type,
+                                 const string& data,
+                                 string* errors);
+
+  static bool GetKmlUri(const kmldom::AtomEntryPtr& map_entry, string* kml_uri);
+
  private:
   // Use static Create().
   GoogleMapsData();
