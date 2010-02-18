@@ -85,9 +85,9 @@ int main(int argc, char** argv) {
   }
 
   // PostCsv succeeded: print the id of the new map.
-  std::string doc_feed_uri;
-  kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &doc_feed_uri);
-  std::cout << "Upload succeeded.  Doc feed URI: " << doc_feed_uri
+  std::string map_feed_uri;
+  kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &map_feed_uri);
+  std::cout << "Upload succeeded.  Map feed URI: " << map_feed_uri
             << std::endl;
 
   return 0;

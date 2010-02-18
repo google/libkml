@@ -23,8 +23,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#include <termios.h>
-#include <time.h>
 #include <iostream>
 #include <string>
 #include "boost/scoped_ptr.hpp"
@@ -32,25 +30,21 @@
 #include "prompt.h"
 #include "kml/base/file.h"
 #include "kml/dom.h"
-#include "kml/engine.h"
-#include "kml/convenience/atom_util.h"
-#include "kml/convenience/convenience.h"
 #include "kml/convenience/google_maps_data.h"
-#include "kml/convenience/http_client.h"
 
 using kmlconvenience::GoogleMapsData;
 
 int main(int argc, char** argv) {
   if (argc < 3) {
-    std::cout << "usage: " << argv[0] << " file.csv [title]" << std::endl;
+    std::cout << "usage: " << argv[0] << " file.csv title" << std::endl;
     return 1;
   }
-  const char* file_csv = argv[0];
-  const char* title = argc == 3 ? argv[2] : file_csv;
+  const char* csv_file = argv[1];
+  const char* title = argv[2];
 
   std::string csv_data;
-  if (!kmlbase::File::ReadFileToString(argv[1], &csv_data)) {
-    std::cerr << "Read failed: " << argv[1] << std::endl;
+  if (!kmlbase::File::ReadFileToString(csv_file, &csv_data)) {
+    std::cerr << "Read failed: " << csv_file << std::endl;
     return 1;
   }
 
@@ -82,11 +76,10 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  // PostCsv succeeded: print the id of the new map.
-  std::string doc_feed_uri;
-  kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &doc_feed_uri);
-  std::cout << "Upload succeeded.  Doc feed URI: " << doc_feed_uri
-            << std::endl;
+  // PostCsv succeeded: print the link to the KML of the new map.
+  std::string kml_uri;
+  google_maps_data->GetKmlUri(map_entry, &kml_uri);
+  std::cout << "Upload succeeded.  Map KML URI: " << kml_uri << std::endl;
 
   return 0;
 }

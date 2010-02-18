@@ -80,10 +80,10 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  std::string doc_feed_uri;
-  kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &doc_feed_uri);
-  std::cout << "Upload succeeded.  Doc feed URI: " << doc_feed_uri
-            << std::endl;
+  // PostKml succeeded: print the link to the KML of the new map.
+  std::string kml_uri;
+  google_maps_data->GetKmlUri(map_entry, &kml_uri);
+  std::cout << "Upload succeeded.  Map KML URI: " << kml_uri << std::endl;
 
   return 0;
 }
