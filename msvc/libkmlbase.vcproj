@@ -156,6 +156,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\csv_splitter.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\date_time.cc"
 				>
 			</File>
@@ -177,6 +181,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\math_util.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\mimetypes.cc"
 				>
 			</File>
 			<File
@@ -234,6 +242,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\base\csv_splitter.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\base\date_time.h"
 				>
 			</File>
@@ -263,6 +275,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\base\memory_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\base\mimetypes.h"
 				>
 			</File>
 			<File

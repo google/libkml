@@ -200,6 +200,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\dom\gx_timeprimitive.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\dom\gx_tour.cc"
 				>
 			</File>
@@ -333,6 +337,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\dom\vec2.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\visitor.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\visitor_driver.cc"
 				>
 			</File>
 			<File
@@ -559,6 +571,14 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\dom\vec2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\visitor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\dom\visitor_driver.h"
 				>
 			</File>
 			<File
