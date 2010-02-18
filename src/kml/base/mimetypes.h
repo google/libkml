@@ -31,6 +31,7 @@
 namespace kmlbase {
 
 extern const char* kAtomMimeType;
+extern const char* kCsvMimeType;
 extern const char* kKmlMimeType;
 extern const char* kKmzMimeType;
 
