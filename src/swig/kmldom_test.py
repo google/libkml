@@ -946,13 +946,13 @@ class SimpleLatLonBoxTestCase(unittest.TestCase):
     assert kmldom.AsLatLonBox(self.latlonbox)
     assert not self.latlonbox.has_id()  # Object-ness
     assert not self.latlonbox.has_north()
-    assert 0.0 == self.latlonbox.get_north()
+    assert 180.0 == self.latlonbox.get_north()
     assert not self.latlonbox.has_south()
-    assert 0.0 == self.latlonbox.get_south()
+    assert -180.0 == self.latlonbox.get_south()
     assert not self.latlonbox.has_east()
-    assert 0.0 == self.latlonbox.get_east()
+    assert 180.0 == self.latlonbox.get_east()
     assert not self.latlonbox.has_west()
-    assert 0.0 == self.latlonbox.get_west()
+    assert -180.0 == self.latlonbox.get_west()
 
   def testSetClear(self):
     north = 42.42
