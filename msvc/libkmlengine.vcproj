@@ -248,6 +248,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\style_inliner.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\style_merger.cc"
 				>
 			</File>
@@ -330,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\id_mapper_internal.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\kml_cache.h"
 				>
 			</File>
@@ -343,6 +351,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\kml_uri.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\kml_uri_internal.h"
 				>
 			</File>
 			<File
@@ -390,6 +402,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\engine\style_inliner.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\style_inliner_internal.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\engine\style_merger.h"
 				>
 			</File>
@@ -399,6 +419,10 @@
 			</File>
 			<File
 				RelativePath="..\src\kml\engine\style_splitter.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\engine\style_splitter_internal.h"
 				>
 			</File>
 			<File

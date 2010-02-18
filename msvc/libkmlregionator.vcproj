@@ -186,6 +186,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\regionator\feature_list_regionator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\regionator\region_handler.h"
 				>
 			</File>

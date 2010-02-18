@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.5\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;..\..\third_party\expat.win32"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;DATADIR=\&quot;..\\..\\testdata\&quot;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -122,7 +122,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\..\src;..\..\third_party\boost_1_34_1;..\..\third_party\uriparser-0.7.5\include;..\..\third_party\googletest-r108;..\..\third_party\googletest-r108\include;..\..\third_party\expat.win32"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;DATADIR=\&quot;..\\..\\testdata\&quot;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				PrecompiledHeaderThrough=""

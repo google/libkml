@@ -28,7 +28,6 @@
 #include "kml/base/string_util.h"
 #include <stdlib.h>  // strtod()
 #include <string.h>  // memcpy, strchr
-#include <strings.h>  // strncasecmp
 
 namespace kmlbase {
 

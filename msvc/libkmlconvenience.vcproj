@@ -152,6 +152,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\kml\convenience\atom_util.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\convenience\convenience.cc"
 				>
 			</File>
@@ -160,7 +164,31 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\convenience\csv_parser.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\convenience\feature_list.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_doc_list.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_maps_data.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_picasa_web.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_spreadsheets.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\http_client.cc"
 				>
 			</File>
 			<File
@@ -186,11 +214,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\src\kml\convenience\atom_util.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\convenience\convenience.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\kml\convenience\csv_file.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\csv_parser.h"
 				>
 			</File>
 			<File
@@ -202,7 +238,31 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\kml\convenience\google_doc_list.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_maps_data.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_picasa_web.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\google_spreadsheets.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\kml\convenience\gpx_trk_pt_handler.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\http_client.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\kml\convenience\http_client_test_util.h"
 				>
 			</File>
 			<File
