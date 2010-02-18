@@ -160,14 +160,14 @@ EXTRA_DIST = \
 	$(googletest)/include/gtest/internal/gtest-string.h \
 	$(googletest)/include/gtest/internal/gtest-type-util.h \
 	$(uriparser)/COPYING \
-	$(uriparser).win32/debug/uriparser-debug.lib \
-	$(uriparser).win32/release/uriparser-release.lib \
+	$(uriparser).win32/debug/uriparser.lib \
+	$(uriparser).win32/release/uriparser.lib \
 	$(uriparser)/include/uriparser/Uri.h \
 	$(uriparser)/include/uriparser/UriBase.h \
 	$(uriparser)/include/uriparser/UriDefsAnsi.h \
 	$(uriparser)/include/uriparser/UriDefsConfig.h \
 	$(uriparser)/include/uriparser/UriDefsUnicode.h \
-	$(uriparser)/include/uriparser/UriIp4.h
+	$(uriparser)/include/uriparser/UriIp4.h \
 	zlib-1.2.3/zconf.h \
 	zlib-1.2.3/zlib.h \
 	zlib-1.2.3/contrib/minizip/crypt.h \
