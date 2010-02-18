@@ -29,6 +29,7 @@
 
 #include <vector>
 #include "kml/base/mimetypes.h"
+#include "kml/base/string_util.h"
 #include "kml/convenience/atom_util.h"
 #include "kml/convenience/http_client.h"
 #include "kml/dom.h"
@@ -335,15 +336,17 @@ kmldom::AtomFeedPtr GoogleMapsData::SearchMapByBbox(
   return kmldom::AsAtomFeed(kmldom::ParseAtom(atom_feed, NULL));
 }
 
-kmldom::AtomEntryPtr GoogleMapsData::PostCsv(const string& title,
-                                             const string& csv_data,
-                                             string* errors) {
+kmldom::AtomEntryPtr GoogleMapsData::PostMedia(const string& slug,
+                                               const string& content_type,
+                                               const string& data,
+                                               string* errors) {
   kmlconvenience::StringPairVector headers;
-  kmlconvenience::HttpClient::PushHeader("Content-Type", "text/csv", &headers);
-  kmlconvenience::HttpClient::PushHeader("Slug:", title, &headers);
+  kmlconvenience::HttpClient::PushHeader("Content-Type", content_type,
+                                         &headers);
+  kmlconvenience::HttpClient::PushHeader("Slug", slug, &headers);
   string map_entry_xml;
   if (!http_client_->SendRequest(kmlconvenience::HTTP_POST,
-                                 scope_ + kMetaFeedUri, &headers, &csv_data,
+                                 scope_ + kMetaFeedUri, &headers, &data,
                                  &map_entry_xml)) {
     return NULL;
   }
@@ -353,19 +356,53 @@ kmldom::AtomEntryPtr GoogleMapsData::PostCsv(const string& title,
   return kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
 }
 
+kmldom::AtomEntryPtr GoogleMapsData::PostCsv(const string& title,
+                                             const string& csv_data,
+                                             string* errors) {
+  return PostMedia(title, kmlbase::kCsvMimeType, csv_data, errors);
+}
+
 kmldom::AtomEntryPtr GoogleMapsData::PostKml(const string& title,
                                              const string& kml_data) {
-  kmlconvenience::StringPairVector headers;
-  kmlconvenience::HttpClient::PushHeader(
-      "Content-Type", "application/vnd.google-earth.kml+xml", &headers);
-  kmlconvenience::HttpClient::PushHeader("Slug:", title, &headers);
-  string map_entry_xml;
-  if (!http_client_->SendRequest(kmlconvenience::HTTP_POST,
-                                 scope_ + kMetaFeedUri, &headers, &kml_data,
-                                 &map_entry_xml)) {
-    return NULL;
+  return PostMedia(title, kmlbase::kKmlMimeType, kml_data, NULL);
+}
+
+// static
+bool GoogleMapsData::GetKmlUri(const kmldom::AtomEntryPtr& map_entry,
+                               string* kml_uri) {
+  // Until such time the <atom:entry> contains a rel="kml" or similar we crack
+  // apart the rel="self" and create the Google My Maps KML export link.
+  // See: http://code.google.com/apis/maps/documentation/mapsdata/reference.html#Feeds
+  // This is the form of the rel="self" href:
+  // http://maps.google.com/maps/feeds/maps/${user_id}/full/${map_id}
+  std::string rel_self;
+  if (!map_entry ||
+      !kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &rel_self)) {
+    return false;
   }
-  return kmldom::AsAtomEntry(kmldom::ParseAtom(map_entry_xml, NULL));
+
+  const size_t mfm_size = 17;  // strlen("/maps/feeds/maps/")
+  size_t mfm = rel_self.find("/maps/feeds/maps/");
+  if (mfm == string::npos) {
+    return false;
+  }
+
+  kmlbase::StringVector user_map;
+  kmlbase::SplitStringUsing(rel_self.substr(mfm + mfm_size), "/", &user_map);
+  if (user_map.size() != 3) {
+    return false;
+  }
+
+  // Until such time Google Maps Data API itself provides a raw KML media
+  // export we use the "View in Google Earth" link in Google My Maps.
+  // http://maps.google.com/maps/ms?msa=0&output=kml&msid=${user_id}.${map_id}
+  if (kml_uri) {
+    *kml_uri = string("http://maps.google.com/maps/ms?msa=0&output=kml&msid=")
+      + user_map[0] + "." + user_map[2];
+  }
+
+  return true;
+
 }
 
 }  // end namespace kmlconvenience
