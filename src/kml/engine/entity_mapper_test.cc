@@ -23,20 +23,32 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-// TODO: file comment.
+// This file contains the unit tests for the EntityMapper class.
 
 #include "kml/engine/entity_mapper.h"
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
+#include "kml/base/file.h"
 
+// The following define is a convenience for testing inside Google.
+#ifdef GOOGLE_INTERNAL
+#include "kml/base/google_internal_test.h"
+#endif
+
+#ifndef DATADIR
+#error *** DATADIR must be defined! ***
+#endif
+
+using kmlbase::File;
 using kmldom::DocumentPtr;
-using kmldom::PlacemarkPtr;
 using kmldom::FeaturePtr;
 using kmldom::KmlFactory;
+using kmldom::KmlPtr;
+using kmldom::PlacemarkPtr;
 
 namespace kmlengine {
 
-class EntitiesTest : public testing::Test {
+class EntityMapperTest : public testing::Test {
  protected:
   KmlFilePtr kml_file_;
 };
@@ -99,7 +111,7 @@ const static struct {
   {"holeYardage", "234"},
 };
 
-TEST_F(EntitiesTest, TestGetEntityFields) {
+TEST_F(EntityMapperTest, TestGetEntityFields) {
   string errs;
   kml_file_ = KmlFile::CreateFromParse(kEntityKml, NULL);
   ASSERT_TRUE(kml_file_);
@@ -161,7 +173,7 @@ const static struct {
   },
 };
 
-TEST_F(EntitiesTest, TestCreateExpandedEntities) {
+TEST_F(EntityMapperTest, TestCreateExpandedEntities) {
   kml_file_ = KmlFile::CreateFromParse(kEntityKml, NULL);
   DocumentPtr doc = kmldom::AsDocument(kml_file_->get_root());
   PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
@@ -176,6 +188,109 @@ TEST_F(EntitiesTest, TestCreateExpandedEntities) {
     ASSERT_EQ(
         kReplacments[i].expanded_text,
         CreateExpandedEntities(kReplacments[i].raw_text, entity_map));
+  }
+}
+
+TEST_F(EntityMapperTest, TestAltMarkupData) {
+  const string kDataKml = (
+    "<Placemark>"
+    "<ExtendedData>"
+    "<Data name=\"data1\">"
+    "<displayName>1st display name</displayName>"
+    "<value>1st</value>"
+    "</Data>"
+    "<Data name=\"data2\">"
+    "<displayName>2nd display name</displayName>"
+    "<value>2nd</value>"
+    "</Data>"
+    "<!-- The below are legal, but are in Google Earth they are overridden by"
+    "the Feature's name and description for the balloon text replacements. -->"
+    "<Data name=\"name\"><value>data name</value></Data>"
+    "<Data name=\"description\"><value>data description</value></Data>"
+    "</ExtendedData>"
+    "</Placemark>"
+  );
+  const struct {
+    const char* key;
+    const char* value;
+  } kKeyValues[] = {
+    {
+      "1st display name",
+      "1st",
+    },
+    {
+      "2nd display name",
+      "2nd",
+    },
+    {
+      "name",
+      "data name",
+    },
+    {
+      "description",
+      "data description",
+    },
+  };
+
+  kml_file_ = KmlFile::CreateFromParse(kDataKml, NULL);
+  ASSERT_TRUE(kml_file_);
+  PlacemarkPtr p = kmldom::AsPlacemark(kml_file_->get_root());
+  ASSERT_TRUE(p);
+  kmlbase::StringMap entity_map;
+  kmlbase::StringPairVector alt_markup_map;
+  EntityMapper entity_mapper(kml_file_, &entity_map, &alt_markup_map);
+  entity_mapper.GetEntityFields(p);
+  ASSERT_EQ(static_cast<size_t>(6), entity_map.size());
+  ASSERT_EQ(static_cast<size_t>(4), alt_markup_map.size());
+  for (int i = 0; i < 4; i++) {
+    ASSERT_EQ(kKeyValues[i].key, alt_markup_map[i].first);
+    ASSERT_EQ(kKeyValues[i].value, alt_markup_map[i].second);
+  }
+  // If GetEntityFields is called multiple times, the StringMap is overwritten
+  // and the StringPairVector is appended to.
+  entity_mapper.GetEntityFields(p);
+  ASSERT_EQ(static_cast<size_t>(6), entity_map.size());
+  ASSERT_EQ(static_cast<size_t>(8), alt_markup_map.size());
+  entity_mapper.GetEntityFields(p);
+  ASSERT_EQ(static_cast<size_t>(6), entity_map.size());
+  ASSERT_EQ(static_cast<size_t>(12), alt_markup_map.size());
+}
+
+TEST_F(EntityMapperTest, TestAltMarkupSchemaData) {
+  const struct {
+    const char* key;
+    const char* value;
+  } kSchemaDataMappings[] = {
+    {
+      "s_name:simple field display name 1",
+      "one",
+    },
+    {
+      "s_name:sfield2",
+      "2",
+    },
+  };
+
+  const string kSchemaDataKml = string(DATADIR) + "/kml/schemadata.kml";
+  string data;
+  string errors;
+  ASSERT_TRUE(File::ReadFileToString(kSchemaDataKml, &data));
+  kml_file_ = KmlFile::CreateFromParse(data, &errors);
+  ASSERT_FALSE(data.empty());
+  ASSERT_TRUE(errors.empty());
+  ASSERT_TRUE(kml_file_);
+  KmlPtr kml = kmldom::AsKml(kml_file_->get_root());
+  DocumentPtr doc = kmldom::AsDocument(kml->get_feature());
+  PlacemarkPtr p = kmldom::AsPlacemark(doc->get_feature_array_at(0));
+  ASSERT_TRUE(p);
+  kmlbase::StringMap entity_map;
+  kmlbase::StringPairVector alt_markup_map;
+  EntityMapper entity_mapper(kml_file_, &entity_map, &alt_markup_map);
+  entity_mapper.GetEntityFields(p);
+  ASSERT_EQ(static_cast<size_t>(2), alt_markup_map.size());
+  for (int i = 0; i < 2; i++) {
+    ASSERT_EQ(kSchemaDataMappings[i].key, alt_markup_map[i].first);
+    ASSERT_EQ(kSchemaDataMappings[i].value, alt_markup_map[i].second);
   }
 }
 

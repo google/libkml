@@ -31,11 +31,12 @@
 #include "kml/engine/kml_uri.h"
 
 using kmlbase::StringMap;
+using kmlbase::StringPairVector;
 using kmldom::DataPtr;
 using kmldom::ExtendedDataPtr;
 using kmldom::FeaturePtr;
-using kmldom::SchemaPtr;
 using kmldom::SchemaDataPtr;
+using kmldom::SchemaPtr;
 using kmldom::SimpleDataPtr;
 using kmldom::SimpleFieldPtr;
 using kmldom::Xsd;
@@ -45,7 +46,14 @@ namespace kmlengine {
 static const char kDisplayNamePfx[] = "/displayName";
 
 EntityMapper::EntityMapper(const KmlFilePtr& kml_file, StringMap* string_map)
-    : kml_file_(kml_file), entity_map_(string_map) {}
+    : kml_file_(kml_file), entity_map_(string_map),
+      alt_markup_map_(NULL) {}
+
+EntityMapper::EntityMapper(const KmlFilePtr& kml_file, StringMap* string_map,
+                           StringPairVector* alt_markup_map)
+    : kml_file_(kml_file), entity_map_(string_map),
+      alt_markup_map_(alt_markup_map) {}
+
 EntityMapper::~EntityMapper() {}
 
 void EntityMapper::GetEntityFields(const FeaturePtr& feature) {
@@ -117,6 +125,15 @@ void EntityMapper::GatherDataFields(const DataPtr& data) {
         data->get_displayname();
     }
   }
+  if (alt_markup_map_ && data->has_name()) {
+    if (data->has_displayname()) {
+      alt_markup_map_->push_back(
+          std::make_pair(data->get_displayname(), data->get_value()));
+    } else {
+      alt_markup_map_->push_back(
+          std::make_pair(data->get_name(), data->get_value()));
+    }
+  }
 }
 
 // Private.
@@ -137,6 +154,9 @@ void EntityMapper::GatherSchemaDataFields(const SchemaDataPtr& schemadata) {
                                   schema);
         }
         schemadata_prefix_ = schema->get_name() + schemadata_prefix_;
+        if (alt_markup_map_) {
+          PopulateSimpleFieldNameMap(schema);
+        }
       }
     }
   }
@@ -163,7 +183,38 @@ void EntityMapper::GatherSimpleDataFields(const SimpleDataPtr& simpledata) {
     (*entity_map_)[schemadata_prefix_ + simpledata->get_name()] =
       simpledata->get_text();
   }
+  // If there is a schemaUrl, the names we will use for display are in
+  // the populated map. If there isn't, the map is empty and we'll use the
+  // name attr of the SimpleData element.
+  if (alt_markup_map_) {
+    if (simplefield_name_map_.empty()) {
+      alt_markup_map_->push_back(
+          std::make_pair(simpledata->get_name(), simpledata->get_text()));
+    } else {
+      alt_markup_map_->push_back(
+          std::make_pair(simplefield_name_map_[simpledata->get_name()],
+                         simpledata->get_text()));
+    }
+  }
 }
+
+// Private.
+void EntityMapper::PopulateSimpleFieldNameMap(const SchemaPtr& schema) {
+  for (size_t i = 0; i < schema->get_simplefield_array_size(); ++i) {
+    SimpleFieldPtr simplefield =
+      kmldom::AsSimpleField(schema->get_simplefield_array_at(i));
+    if (simplefield->has_name()) {
+      if (simplefield->has_displayname()) {
+        simplefield_name_map_[simplefield->get_name()] =
+          schema->get_name() + ":" + simplefield->get_displayname();
+      } else {
+        simplefield_name_map_[simplefield->get_name()] =
+          schema->get_name() + ":" + simplefield->get_name();
+      }
+    }
+  }
+}
+
 
 string CreateExpandedEntities(const string & in,
                                    const StringMap& entity_map) {

@@ -38,6 +38,7 @@ namespace kmlbase {
 typedef std::map<string, string> StringMap;
 typedef std::map<string, string>::value_type StringPair;
 typedef std::vector<string> StringVector;
+typedef std::vector< std::pair<string, string> > StringPairVector;
 
 // Binary-to-ASCII hex conversion.
 void b2a_hex(uint32_t i, char* out);
@@ -78,9 +79,9 @@ class StringMapIterator {
 // end: "]"
 // replaced string: "this is your cooler string"
 string CreateExpandedStrings(const string& in,
-                                  const StringMap& string_map,
-                                  const string& start,
-                                  const string& end);
+                             const StringMap& string_map,
+                             const string& start,
+                             const string& end);
 
 // This converts from string to any T of int, bool or double.
 template<typename T>

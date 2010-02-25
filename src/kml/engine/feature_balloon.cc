@@ -33,6 +33,7 @@
 #include "kml/engine/style_merger.h"
 
 using kmlbase::StringMap;
+using kmlbase::StringPairVector;
 using kmldom::BalloonStylePtr;
 using kmldom::FeaturePtr;
 using kmldom::StylePtr;
@@ -40,9 +41,9 @@ using kmldom::StylePtr;
 namespace kmlengine {
 
 string CreateBalloonText(const KmlFilePtr& kml_file,
-                              const FeaturePtr& feature) {
+                         const FeaturePtr& feature) {
   // First we merge the feature's styles so we have access to the BalloonStyle.
-  // TODO: clarify if a highl;ight state can be used to define the balloon
+  // TODO: clarify if a highlight state can be used to define the balloon
   // style.
   StylePtr style = CreateResolvedStyle(feature, kml_file,
                                        kmldom::STYLESTATE_NORMAL);
@@ -50,7 +51,8 @@ string CreateBalloonText(const KmlFilePtr& kml_file,
   // Create a vector of strings and fill it with the Feature's entities and
   // their replacements.
   StringMap entity_map;
-  EntityMapper entity_mapper(kml_file, &entity_map);
+  StringPairVector alt_markup_map;
+  EntityMapper entity_mapper(kml_file, &entity_map, &alt_markup_map);
   entity_mapper.GetEntityFields(feature);
 
   // If we have BalloonStyle/text, expand its entities and return the result.
@@ -75,11 +77,17 @@ string CreateBalloonText(const KmlFilePtr& kml_file,
     text += CreateExpandedEntities(feature->get_description(), entity_map);
   }
 
-  // TODO: $[geDirections].
-
-  // TODO:
   // If we have neither a BalloonStyle/text nor a description, we try to
   // build the balloon from any Data and/or SchemaData elements.
+  if (feature->has_extendeddata()) {
+    text.append("\n<table border=\"1\">\n");
+    StringPairVector::const_iterator itr;
+    for (itr = alt_markup_map.begin(); itr != alt_markup_map.end(); ++itr) {
+      text.append("<tr><td>" + itr->first + "</td><td>" + itr->second +
+                  "</tr>\n");
+    }
+    text.append("</table>\n");
+  }
 
   return text;
 }

@@ -39,9 +39,9 @@ void b2a_hex(uint32_t i, char* out) {
 }
 
 string CreateExpandedStrings(const string& in,
-                                  const StringMap& string_map,
-                                  const string& start,
-                                  const string& end) {
+                             const StringMap& string_map,
+                             const string& start,
+                             const string& end) {
   string out(in);
   StringMap::const_iterator itr = string_map.begin();
   for (itr = string_map.begin(); itr != string_map.end(); ++itr)  {
