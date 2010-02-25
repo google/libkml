@@ -375,7 +375,7 @@ bool GoogleMapsData::GetKmlUri(const kmldom::AtomEntryPtr& map_entry,
   // See: http://code.google.com/apis/maps/documentation/mapsdata/reference.html#Feeds
   // This is the form of the rel="self" href:
   // http://maps.google.com/maps/feeds/maps/${user_id}/full/${map_id}
-  std::string rel_self;
+  string rel_self;
   if (!map_entry ||
       !kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &rel_self)) {
     return false;
