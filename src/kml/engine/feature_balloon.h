@@ -43,11 +43,28 @@
 
 namespace kmlengine {
 
-// Composite the markup for a Feature's "description balloon" and return it as
-// an HTML-formatted string. It is the responsibility of the caller to ensure
-// that feature exists within kml_file.
+// Returns the markup for a Feature's "description balloon" (or "info window",
+// in Google Maps-speak) as an HTML-formatted string. The text is composited
+// from the KML roughly as follows:
+// - The feature's styles are resolved and merged
+// - All entity references are expanded to their full form. For more
+// information on entity references, see:
+// http://code.google.com/apis/kml/documentation/kmlreference.html#text
+// - If a <BalloonStyle> and <description> are supplied, the description with
+// expanded entities is returned. Otherwise, a default name and description
+// balloon is created, identical to that shown by Google Earth 5.1 and earlier.
+// - If no <description> is supplied but the feature has <ExtendedData>, a
+// description is created from that ExtendedData similar to Google Earth's
+// behavior. The format is:
+// data_displayname | data_value (if displayName)
+// data_name | data_value (if  not displayName)
+// schema_name:simplefield_displayName | simpledata_value (if displayName)
+// schema_name:simplefield_name | simpledata_value (if not displayName)
+//
+// It is the caller's responsibility to ensure that the feature exists within
+// the kml_file.
 string CreateBalloonText(const KmlFilePtr& kml_file,
-                              const kmldom::FeaturePtr& feature);
+                         const kmldom::FeaturePtr& feature);
 
 }  // end namespace kmlengine
 

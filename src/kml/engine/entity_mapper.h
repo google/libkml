@@ -37,11 +37,20 @@
 namespace kmlengine {
 
 // The EntityMapper walks through a given FeaturePtr in a given KmlFile
-// and builds a map of any replacable entities and their replacement text.
+// and stores to the supplied StringMap any replacable entities and their
+// replacement text. If a StringPairVector is supplied, it stores a mapping
+// of any <ExtendedData> items and their values. (The utility of this latter
+// is seen in Google Earth's behavior if asked to show the description balloon
+// for a feature with <ExtendedData> but no <description>. It creates an
+// HTML table of name-value pairs from the <ExtendedData> structure.)
+//
 // For an overview of how this is used within KML, see:
+// http://code.google.com/apis/kml/documentation/kmlreference.html#text
 // http://code.google.com/apis/kml/documentation/extendeddata.html
+//
 // Usage:
 // kmlbase::StringMap your_entity_map;
+// kmlbase::StringPairVector your_alt_text;
 // EntityMapper entity_mapper(kml_file, &your_entity_map);
 // entity_mapper.GetEntityFields(your_feature_ptr);
 class EntityMapper {
@@ -50,13 +59,30 @@ class EntityMapper {
   // It is the caller's responsibility to ensure that the pointer to the
   // StringMap instance is not NULL.
   EntityMapper(const KmlFilePtr& kml_file, kmlbase::StringMap* string_map);
+
+  // In addition to the string_map, this constructor also takes a pointer to
+  // a StringPairVector which, if non-NULL, will be filled with a mapping
+  // of name-value pairs of the ExtendedData items if present. This is
+  // really a convenience to simulate the historical behavior of Google Earth
+  // which, if given a Feature which has no <description> but does have
+  // <ExtendedData>, will display a table of Data or SchemaData names together
+  // with their values.
+  EntityMapper(const KmlFilePtr& kml_file, kmlbase::StringMap* string_map,
+               kmlbase::StringPairVector* alt_markup_map);
+
   ~EntityMapper();
 
-  // Fills the given StringMap with a mapping of all replaceable entities
-  // in the given feature to their replacment text. The StringMap is not
-  // modified in any way before being written into. It is the caller's
-  // responsibilty to ensure that the FeaturePtr exists within the KmlFile
-  // from which the class was instantiated.
+  // Fills the StringMap supplied in the constructor with a mapping of all
+  // replaceable entities in the given feature to their replacment text. The
+  // StringMap is not modified in any way before being written into. If a
+  // StringPairVector was supplied in the constructor, information from
+  // any <ExtendedData> in the feature is stored there as described above. The
+  // StringPairVector is not modified before writing. Note that this means
+  // that this function is not idempotent if a StringPairVector has been
+  // supplied; the StringMap will be overwritten, but the StringPairVector
+  // will be created twice if this function is called twice.
+  // It is the caller's responsibilty to ensure that the FeaturePtr exists
+  // within the KmlFile from which the class was instantiated.
   void GetEntityFields(const kmldom::FeaturePtr& feature);
 
  private:
@@ -68,8 +94,11 @@ class EntityMapper {
   void GatherSimpleFieldFields(const kmldom::SimpleFieldPtr& simplefield,
                                const kmldom::SchemaPtr& schema);
   void GatherSimpleDataFields(const kmldom::SimpleDataPtr& simpledata);
+  void PopulateSimpleFieldNameMap(const kmldom::SchemaPtr& schema);
   const KmlFilePtr kml_file_;
   kmlbase::StringMap* entity_map_;
+  kmlbase::StringPairVector* alt_markup_map_;
+  kmlbase::StringMap simplefield_name_map_;
   string schemadata_prefix_;
 };
 
@@ -78,8 +107,8 @@ class EntityMapper {
 // $[xxx] entity format before searching the string. Returns a new string with
 // the replaced entities. The entity_map is typically built with the
 // EntityMapper class declared in this file.
-string CreateExpandedEntities(const string & in,
-                                   const kmlbase::StringMap& entity_map);
+string CreateExpandedEntities(const string& in,
+                              const kmlbase::StringMap& entity_map);
 
 }  // end namespace kmlengine
 

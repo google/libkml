@@ -93,5 +93,78 @@
     </Placemark>
   </Document>
 
+  <Placemark id="default-data">
+    <name>default data</name>
+    <ExtendedData>
+      <Data name="data1">
+        <displayName>1st display name</displayName>
+        <value>1st</value>
+      </Data>
+      <Data name="data2">
+        <displayName>2nd display name</displayName>
+        <value>2nd</value>
+      </Data>
+      <!-- The below are legal, but are overridden by the Feature's name and
+      description for the balloon text replacements. -->
+      <Data name="name"><value>data name</value></Data>
+      <Data name="description"><value>data description</value></Data>
+    </ExtendedData>
+    <Point><coordinates>-122.000,36.996</coordinates></Point>
+  </Placemark>
+
+  <Document>
+    <name/>
+    <open>1</open>
+    <Schema name="s_name" id="s_id1">
+      <SimpleField type="string" name="sfield1">
+        <displayName>simple field display name 1</displayName>
+      </SimpleField>
+      <SimpleField type="int" name="sfield2">
+        <!-- deliberately no <displayName> -->
+      </SimpleField>
+    </Schema>
+    <Placemark id="default-schemadata">
+      <name>default schemadatadata</name>
+      <ExtendedData>
+        <SchemaData schemaUrl="#s_id1">
+          <SimpleData name="sfield1">one</SimpleData>
+          <SimpleData name="sfield2">2</SimpleData>
+        </SchemaData>
+      </ExtendedData>
+      <Point><coordinates>-122.000,36.995</coordinates></Point>
+    </Placemark>
+  </Document>
+
+  <Document>
+    <name/>
+    <open>1</open>
+    <Schema name="s_name" id="s_id2">
+      <SimpleField type="string" name="sfield1">
+        <displayName>simple field display name 1</displayName>
+      </SimpleField>
+      <SimpleField type="int" name="sfield2">
+        <!-- deliberately no <displayName> -->
+      </SimpleField>
+    </Schema>
+    <Placemark id="default-data-and-schemadata">
+      <name>default data and schemadatadata</name>
+      <ExtendedData>
+        <Data name="data1">
+          <displayName>1st display name</displayName>
+          <value>1st</value>
+        </Data>
+        <Data name="data2">
+          <displayName>2nd display name</displayName>
+          <value>2nd</value>
+        </Data>
+        <SchemaData schemaUrl="#s_id2">
+          <SimpleData name="sfield1">one</SimpleData>
+          <SimpleData name="sfield2">2</SimpleData>
+        </SchemaData>
+      </ExtendedData>
+      <Point><coordinates>-122.000,36.994</coordinates></Point>
+    </Placemark>
+  </Document>
+
 </Document>
 </kml>

@@ -20,4 +20,5 @@ EXTRA_DIST = \
     kmlsamples.kml \
     model-macky.kml \
     outline_space.kml \
-    photooverlay-zermatt.kml
+    photooverlay-zermatt.kml \
+    schemadata.kml

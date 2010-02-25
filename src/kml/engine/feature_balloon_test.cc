@@ -27,8 +27,8 @@
 
 #include "kml/engine/feature_balloon.h"
 #include "boost/scoped_ptr.hpp"
-#include "kml/base/file.h"
 #include "gtest/gtest.h"
+#include "kml/base/file.h"
 #include "kml/engine/kml_file.h"
 
 // The following define is a convenience for testing inside Google.
@@ -165,7 +165,7 @@ TEST_F(FeatureBalloonTest, TestComplexCreateBalloonText) {
 }
 
 // A struct of the Feature ID from which we'll pull the KML content, and the
-// expected balloon text.
+// expected balloon text. This maps to testdata/balloon/all-balloons.kml.
 const static struct {
   const char* featureid;
   const char* balloontext;
@@ -211,7 +211,35 @@ const static struct {
   {
   "extendeddata-schemadata",
   "She was called Balloon Girl and she had just turned 23"
-  }
+  },
+  {
+  "default-data",
+  "<h3>default data</h3><br/><br/>\n"
+  "<table border=\"1\">\n"
+  "<tr><td>1st display name</td><td>1st</tr>\n"
+  "<tr><td>2nd display name</td><td>2nd</tr>\n"
+  "<tr><td>name</td><td>data name</tr>\n"
+  "<tr><td>description</td><td>data description</tr>\n"
+  "</table>\n"
+  },
+  {
+  "default-schemadata",
+  "<h3>default schemadatadata</h3><br/><br/>\n"
+  "<table border=\"1\">\n"
+  "<tr><td>s_name:simple field display name 1</td><td>one</tr>\n"
+  "<tr><td>s_name:sfield2</td><td>2</tr>\n"
+  "</table>\n"
+  },
+  {
+  "default-data-and-schemadata",
+  "<h3>default data and schemadatadata</h3><br/><br/>\n"
+  "<table border=\"1\">\n"
+  "<tr><td>1st display name</td><td>1st</tr>\n"
+  "<tr><td>2nd display name</td><td>2nd</tr>\n"
+  "<tr><td>s_name:simple field display name 1</td><td>one</tr>\n"
+  "<tr><td>s_name:sfield2</td><td>2</tr>\n"
+  "</table>\n"
+  },
 };
 
 TEST_F(FeatureBalloonTest, TestAllBalloonsFile) {

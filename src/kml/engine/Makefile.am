@@ -139,7 +139,7 @@ clone_test_LDADD = libkmlengine.la \
 	$(top_builddir)/third_party/libgtest.la
 
 entity_mapper_test_SOURCES = entity_mapper_test.cc
-entity_mapper_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
+entity_mapper_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 entity_mapper_test_LDADD= libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
