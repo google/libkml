@@ -146,7 +146,7 @@ class BasicVec3TestCase(unittest.TestCase):
 
 class BasicVersionTestCase(unittest.TestCase):
   def runTest(self):
-    assert "1.2.0" == kmlbase.Version_GetString()
+    assert "1.3.0" == kmlbase.Version_GetString()
 
 def suite():
   suite = unittest.TestSuite()
