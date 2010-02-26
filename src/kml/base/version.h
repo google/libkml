@@ -37,7 +37,7 @@ namespace kmlbase {
 // your code and libkml.  It is the intention that these values match those
 // used in the configure.ac file's AC_INIT.
 #define LIBKML_MAJOR_VERSION 1
-#define LIBKML_MINOR_VERSION 2
+#define LIBKML_MINOR_VERSION 3
 #define LIBKML_MICRO_VERSION 0
 
 // This API provides the version info this library was compiled with.
