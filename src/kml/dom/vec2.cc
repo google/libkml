@@ -54,12 +54,18 @@ static const char kYUnits[] = "yunits";
 
 // Look up the given attribute and convert it to an enum val of the given
 // enum type.  For example, attr_name="xunits" and enum_type=Type_units.
+// This matches the behavior in kmldom::Field::SetEnum.
+// NOTE: This would be a general purpose method if any other KML elements
+// had attributes of enum type.
 static bool CutEnumAttr(Attributes* attributes, const string attr_name,
                             int enum_type, int* enum_val) {
   string attr_val;
   if (attributes->CutValue(attr_name, &attr_val)) {
-    *enum_val = Xsd::GetSchema()->EnumId(enum_type, attr_val);
-    return true;
+    int val = Xsd::GetSchema()->EnumId(enum_type, attr_val);
+    if (val != -1) {
+      *enum_val = val;
+      return true;
+    }
   }
   return false;
 }
