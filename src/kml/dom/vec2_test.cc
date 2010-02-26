@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/vec2.h"
+#include "kml/base/attributes.h"
 #include "boost/scoped_ptr.hpp"
 #include "gtest/gtest.h"
 
@@ -93,6 +94,34 @@ TEST_F(Vec2Test, TestSetGetHasClear) {
   vec2_->clear_y();
   vec2_->clear_xunits();
   vec2_->clear_yunits();
+}
+
+class DerivedVec2 : public Vec2 {
+ public:
+  // Publicize Vec2's protected ParseAttributes.
+  void DoParseAttributes(kmlbase::Attributes* attributes) {
+    ParseAttributes(attributes);
+  }
+};
+
+TEST_F(Vec2Test, TestParseUnknownUnits) {
+  const char* k42 = "42";
+  const char* kMinus42 = "-42";
+  const char* attrs[] = { "x", k42,
+                          "xunits", "will-never-be-a-valid-units-enum",
+                          "y", kMinus42,
+                          "yunits", "will-never-be-a-valid-units-enum",
+                          0 };
+  boost::scoped_ptr<DerivedVec2> dv2(new DerivedVec2);
+  // Element::ParseAttributes takes ownership of passed Atributes.
+  dv2->DoParseAttributes(kmlbase::Attributes::Create(attrs));
+  // An unknown attribute enum value is full ignored.
+  ASSERT_FALSE(dv2->has_xunits());
+  ASSERT_FALSE(dv2->has_yunits());
+  ASSERT_TRUE(dv2->has_x());
+  ASSERT_EQ(string(k42), kmlbase::ToString(dv2->get_x()));
+  ASSERT_TRUE(dv2->has_y());
+  ASSERT_EQ(string(kMinus42), kmlbase::ToString(dv2->get_y()));
 }
 
 }  // end namespace kmldom
