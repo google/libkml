@@ -56,10 +56,24 @@ class Container : public Feature {
     return feature_array_[index];
   }
 
-  // If a Feature with the given id exists in this Container remove it from
-  // the container and return it.  If no such Feature exists NULL is returned.
-  // Note: This method is a special mostly for use with Update/Delete.
+  // The following two methods delete a Feature from the Container.  If the
+  // id='ed or index'ed Feature exists a pointer to it is returned and it is
+  // removed from the Container.  This Feature can be used by client code as
+  // as normal including use in any client code container; however it cannot
+  // be added back to any dom parent.  At present the only way to detach a
+  // Feature to be moved elsewhere in the dom is to clone it: see
+  // kmlengine::Clone().  To effect a full delete the caller simply ignores
+  // the returned pointer and normal smart pointer semantics deletes the
+  // feature and all of its children.  If no such Feature exists NULL is
+  // returned.
+
+  // This variant of DeleteFeature is method is a special mostly for use with
+  // Update/Delete.  See above for general comments about DeleteFeature*().
   FeaturePtr DeleteFeatureById(const string& id);
+
+  // Delete a Feature from the Container by offset.  See above for general
+  // comments about DeleteFeature*().
+  FeaturePtr DeleteFeatureAt(size_t index);
 
   // Visitor API methods, see visitor.h.
   virtual void AcceptChildren(VisitorDriver* driver);

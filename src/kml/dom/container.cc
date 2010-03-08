@@ -76,6 +76,20 @@ FeaturePtr Container::DeleteFeatureById(const string& id) {
   return NULL;
 }
 
+FeaturePtr Container::DeleteFeatureAt(size_t i) {
+  // See comment in DeleteFeatureById w.r.t. dis-parenting.
+  if (i >= feature_array_.size()) {
+    return NULL;
+  }
+  FeaturePtr f = feature_array_[i];
+  // When feature_array_ is STL vector this copies each FeaturePtr after i
+  // which is just a pointer-sized item (assuming boost::intrusive_ptr as
+  // the Ptr, but this does cause ref count traffic.  Thus deque might be a
+  // better choice for feature_array_.
+  feature_array_.erase(feature_array_.begin() + i);
+  return f;
+}
+
 void Container::AcceptChildren(VisitorDriver* driver) {
   Feature::AcceptChildren(driver);
   Element::AcceptRepeated<FeaturePtr>(&feature_array_, driver);
