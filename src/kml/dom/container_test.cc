@@ -131,11 +131,40 @@ TEST_F(ContainerTest, TestDeleteFeatureByIdMany) {
   for (size_t i = 0; i < new_size; ++i) {
     ASSERT_EQ(CreateId(2*i + 1), container_->get_feature_array_at(i)->get_id());
   }
-  // Verfiy the deleted features are all even.
+  // Verify the deleted features are all even.
   for (size_t i = 0; i < deleted_features.size(); ++i) {
     ASSERT_EQ(CreateId(2*i), deleted_features[i]->get_id());
   }
   // TODO: Verify deleted features are dis-parented.
+}
+
+TEST_F(ContainerTest, TestDeleteFeatureAt) {
+  const size_t kNumFeatures(123);
+  for (size_t i = 0; i < kNumFeatures; ++i) {
+    container_->add_feature(CreateFeature(i));
+  }
+  ASSERT_EQ(kNumFeatures, container_->get_feature_array_size());
+  // Attempt to delete Features off the end.
+  ASSERT_FALSE(container_->DeleteFeatureAt(kNumFeatures));
+  ASSERT_FALSE(container_->DeleteFeatureAt(kNumFeatures + 1001));
+  // Delete the even numbered Features.
+  std::vector<FeaturePtr> deleted_features;
+  for (size_t i = kNumFeatures-1;; i -= 2) {
+    deleted_features.push_back(container_->DeleteFeatureAt(i));
+    if (i == 0) {
+      break;
+    }
+  }
+  const size_t new_size = container_->get_feature_array_size();
+  ASSERT_EQ(kNumFeatures - deleted_features.size(), new_size);
+  // Verify the container only has the odd features.
+  for (size_t i = 0; i < new_size; ++i) {
+    ASSERT_EQ(CreateId(2*i + 1), container_->get_feature_array_at(i)->get_id());
+  }
+  // Verify the deleted features are all even.
+  for (size_t i = 0; i < deleted_features.size(); ++i) {
+    ASSERT_EQ(CreateId(kNumFeatures - 2*i - 1), deleted_features[i]->get_id());
+  }
 }
 
 }  // end namespace kmldom
