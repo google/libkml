@@ -32,6 +32,45 @@
 // to preserve all unknown (non-KML) elements found during the parse, and
 // will serialize those elements after the known elements on output.
 
+// As of libkml 1.3, we also attempt to parse old (KML 2.0, 2.1 era)
+// <Schema> usage found in files created by Google Earth Pro's "GIS Ingest"
+// module (created by Google Earth 5.1 and earlier). These files used the
+// <Schema> element to subclass the Placemark element and extend it by
+// naming typed children in SimpleField elements. This practice was never
+// standardized, so we attempt to coerce the nonstandard markup into
+// equivalent and valid KML that preserves the data and its typing. This
+// implementation only works when the <Schema> element appears before
+// any of the children it defines. Conveniently, this is also Google Earth's
+// exact behavior.
+//
+// In short, we turn this:
+// <Document>
+//   <Schema parent="Placemark" name="S_521_525_SSSSS">
+//     <SimpleField type="string" name="Foo"></SimpleField>
+//   </Schema>
+//   <S_521_525_SSSSS>
+//     <Foo>foo 1</Foo>
+//   </S_521_525_SSSSS>
+// </Document>
+//
+// into this:
+//
+//   <Document>
+//     <Schema id="S_521_525_SSSSS_id" name="S_521_525_SSSSS">
+//       <SimpleField name="Foo" type="string"/>
+//     </Schema>
+//     <Placemark>
+//       <ExtendedData>
+//         <SchemaData schemaUrl="S_521_525_SSSSS_id">
+//           <SimpleData name="Foo">foo 1</SimpleData>
+//         </SchemaData>
+//       </ExtendedData>
+//     </Placemark>
+//   </Document>
+//
+// Both of those when loaded into Google Earth 4.0 or later produce equivalent
+// data displays and interaction models.
+
 #ifndef KML_DOM_KML_HANDLER_H__
 #define KML_DOM_KML_HANDLER_H__
 
@@ -76,6 +115,13 @@ private:
   unsigned int skip_depth_;
   unsigned int in_description_;
   unsigned int nesting_depth_;
+  // TODO: these next four are for the purpose of handling old-style <Schema>
+  // usage. Instead of creating these by default, we could move them into
+  // a separate class created only when needed.
+  bool in_old_schema_placemark_;
+  string old_schema_name_;
+  kmlbase::StringVector simplefield_name_vec_;
+  std::vector<SimpleDataPtr> simpledata_vec_;
 
   // This calls the NewElement() method of each ParserObserver.  If any
   // ParserObserver::NewElement() returns false this immediately returns false.
@@ -96,6 +142,34 @@ private:
   bool CallAddChildObservers(const parser_observer_vector_t& observers,
                              const ElementPtr& parent,
                              const ElementPtr& child);
+
+  // Looks in attrs to find the attributes of an old KML 2.0/2.1
+  // <Schema parent="Placemark" name="..."> element. Writes the value of the
+  // name attribute to old_schema_name.
+  static void FindOldSchemaParentName(const kmlbase::StringVector& attrs,
+                                      string* old_schema_name);
+
+  // Returns true if name matches the name of a child declared in an
+  // old Schema element. Appends a SimpleData element from the name
+  // and character data to simpledata_vec for later reparenting.
+  static bool ParseOldSchemaChild(
+      const string& name,
+      const kmlbase::StringVector& simplefield_name_vec,
+      std::vector<SimpleDataPtr>* simpledata_vec);
+
+  // Handle reaching the closing old-style </Schema> tag.
+  static void HandleOldSchemaEndElement(
+      const SchemaPtr& schema,
+      const string& old_schema_name,
+      kmlbase::StringVector* simplefield_name_vec);
+
+  // Handle reaching the closing of the element discovered by
+  // FindOldSchemaParentName.
+  void HandleOldSchemaParentEndElement(
+      const PlacemarkPtr& placemark,
+      const string& old_schema_name,
+      const KmlFactory& kml_factory,
+      const std::vector<SimpleDataPtr> simpledata_vec);
 
   const parser_observer_vector_t& observers_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(KmlHandler);

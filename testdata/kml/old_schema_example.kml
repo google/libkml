@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This is an example taken from a real KML file generated
+by Google Earth Pro 5.1 from a SHP file. This markup is
+NOT valid KML, but libkml does parse it.
+-->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <Schema parent="Placemark" name="S_521_525_SSSSS">
+    <SimpleField type="string" name="Foo"></SimpleField>
+    <SimpleField type="string" name="Bar"></SimpleField>
+  </Schema>
+  <S_521_525_SSSSS>
+    <name>1</name>
+    <Foo>foo 1</Foo>
+    <Bar>bar 1</Bar>
+    <Point>
+      <coordinates>-122,37</coordinates>
+    </Point>
+  </S_521_525_SSSSS>
+  <S_521_525_SSSSS>
+    <name>2</name>
+    <Foo>foo 2</Foo>
+    <Bar>bar 2</Bar>
+  </S_521_525_SSSSS>
+</Document>
+</kml>
+
