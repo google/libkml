@@ -19,6 +19,7 @@ EXTRA_DIST = \
     invalid_descriptions.kml \
     kmlsamples.kml \
     model-macky.kml \
+    old_schema_example.kml \
     outline_space.kml \
     photooverlay-zermatt.kml \
     schemadata.kml

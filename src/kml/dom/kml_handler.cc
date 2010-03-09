@@ -33,13 +33,16 @@
 // 4a) call AddChild() for each ParserObserver.
 
 #include "kml/dom/kml_handler.h"
+#include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
 #include "kml/dom/element.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/parser_observer.h"
 #include "kml/dom/xsd.h"
 
 using kmlbase::Attributes;
+using kmlbase::StringVector;
 
 // The maximum nesting depth we permit. Depths beyond this are treated as
 // errors. Override it with a -DLIBKML_MAX_NESTING_DEPTH preprocessor
@@ -57,6 +60,7 @@ KmlHandler::KmlHandler(parser_observer_vector_t& observers)
     skip_depth_(0),
     in_description_(0),
     nesting_depth_(0),
+    in_old_schema_placemark_(false),
     observers_(observers) {
 }
 
@@ -66,7 +70,7 @@ KmlHandler::~KmlHandler() {
 }
 
 void KmlHandler::StartElement(const string& name,
-                              const kmlbase::StringVector& attrs) {
+                              const StringVector& attrs) {
   // Check that we're not nested beyond the max permissible depth.
   if (++nesting_depth_ > kMaxNestingDepth) {
     XML_StopParser(get_parser(), XML_TRUE);
@@ -96,6 +100,19 @@ void KmlHandler::StartElement(const string& name,
     return;
   }
 
+  // If we see <Schema parent=""> then we attempt to parse the old Schema
+  // usage outlined in the header. The name of the schema is stored in the
+  // old_schema_name_ string.
+  // Yes, this means that we'll only do this kind of parse if the Schema
+  // defines its children before they appear. But, as mentioned in the header,
+  // this is exactly Google Earth's behavior. Likewise, only one <Schema>
+  // element is used to define a subclass of Placemark. In the case of
+  // multiple Schema elements appearing at the top of the file, the last
+  // one wins.
+  if (name.length() == 6 && name == "Schema") {
+    FindOldSchemaParentName(attrs, &old_schema_name_);
+  }
+
   // Push a string onto the stack we'll use to manage the gathering of
   // character data.
   string element_char_data;
@@ -103,7 +120,15 @@ void KmlHandler::StartElement(const string& name,
 
   ElementPtr element;
 
-  KmlDomType type_id = (KmlDomType)Xsd::GetSchema()->ElementId(name);
+  KmlDomType type_id =
+    static_cast<KmlDomType>(Xsd::GetSchema()->ElementId(name));
+
+  // If we're parsing old Schema usage, we force the creation of a Placemark.
+  if (!old_schema_name_.empty() && name == old_schema_name_) {
+    // Treat this as a Placemark.
+    type_id = Type_Placemark;
+  }
+
   XsdType xsd_type = Xsd::GetSchema()->ElementType(type_id);
   if ((xsd_type == XSD_COMPLEX_TYPE) &&
       (element = kml_factory_.CreateElementById(type_id))) {
@@ -124,7 +149,15 @@ void KmlHandler::StartElement(const string& name,
     }
   } else if (xsd_type == XSD_SIMPLE_TYPE) {
     element = kml_factory_.CreateFieldById(type_id);
+  } else if (xsd_type == XSD_UNKNOWN && !old_schema_name_.empty()) {
+    // We might be parsing one of the children of the old schema usage.
+    in_old_schema_placemark_ = ParseOldSchemaChild(name, simplefield_name_vec_,
+                                                   &simpledata_vec_);
+    if (in_old_schema_placemark_) {
+      return;
+    }
   }
+
   if (!element) {
     if (stack_.empty()) {
       // Root element is not known.  XML_TRUE causes XML_Parse() to return
@@ -203,6 +236,18 @@ void KmlHandler::EndElement(const string& name) {
     return;
   }
 
+  // If we're parsing an old Schema placemark child, store the character data
+  // gathered into the SimpleData element we put on a stack in StartElement.
+  if (in_old_schema_placemark_ && simpledata_vec_.size() > 0) {
+    // TODO: the pretty serialization of SimpleData will produce some
+    // ugly (but harmless) whitespace and unnecessary line breaks. Fix this in
+    // the serializer.
+    simpledata_vec_.back()->set_text(char_data_.top());
+    char_data_.pop();
+    in_old_schema_placemark_ = false;
+    return;
+  }
+
   // The top of the stack is the begin of the element ending here.
   ElementPtr child = stack_.top();
 
@@ -217,6 +262,23 @@ void KmlHandler::EndElement(const string& name) {
       child->Type() == Type_SimpleData) {
     // These are effectively complex elements, but with character data.
     child->AddElement(child);  // "Parse yourself"
+  }
+
+  // Check if we're parsing old-style Schema KML. If we are, and if this
+  // EndElement is the closing </Schema>, give the schema an id (by appending
+  // "_id" to its name) and walk through its <SimpleField> children to
+  // discover what element name we should special-case in StartElement.
+
+  // Handle the case of reaching the closing of an old-style </Schema>.
+  if (!old_schema_name_.empty()) {
+    if (name.length() == 6 && name == "Schema") {
+      HandleOldSchemaEndElement(AsSchema(child), old_schema_name_,
+                                &simplefield_name_vec_);
+    } else if (name == old_schema_name_) {
+      // Or that of its Placemark substitute.
+      HandleOldSchemaParentEndElement(AsPlacemark(child), old_schema_name_,
+                                      kml_factory_, simpledata_vec_);
+    }
   }
 
   // If stack_.size() == 1 this is the root element: leave it alone.
@@ -285,7 +347,7 @@ ElementPtr KmlHandler::PopRoot() {
 
 // Private.
 void KmlHandler::InsertUnknownStartElement(const string& name,
-                                       const kmlbase::StringVector& atts) {
+                                           const StringVector& atts) {
   string& top = char_data_.top();
   top.append("<");
   top.append(name);
@@ -305,6 +367,83 @@ void KmlHandler::InsertUnknownEndElement(const string& name) {
   top.append("</");
   top.append(name);
   top.append(">");
+}
+
+// Static, private.
+void KmlHandler::FindOldSchemaParentName(const StringVector& attrs,
+                                         string* old_schema_name) {
+  boost::scoped_ptr<Attributes> schema_attrs(Attributes::Create(attrs));
+  if (schema_attrs.get() && old_schema_name &&
+      schema_attrs->FindValue("parent", NULL)) {
+    schema_attrs->FindValue("name", old_schema_name);
+  }
+}
+
+// Static, private.
+bool KmlHandler::ParseOldSchemaChild(
+    const string& name,
+    const StringVector& simplefield_name_vec,
+    std::vector<SimpleDataPtr>* simpledata_vec) {
+  // We'll iterate through a vector of possible names (created in
+  // EndElement) and check to see if we have a match. If we do, we'll make
+  // a SimpleData element and put it on a stack for later re-parenting to
+  // an ExtendedData element (again in EndElement).
+  if (!simpledata_vec) {
+    return false;
+  }
+  StringVector::const_iterator itr = simplefield_name_vec.begin();
+  for (; itr != simplefield_name_vec.end(); itr++) {
+    if (name == *itr) {
+      // Treat this as a SimpleData element.
+      SimpleDataPtr simpledata = KmlFactory::GetFactory()->CreateSimpleData();
+      simpledata->set_name(name);
+      simpledata_vec->push_back(simpledata);
+      return true;
+    }
+  }
+  return false;
+}
+
+// Static, private.
+void KmlHandler::HandleOldSchemaEndElement(
+    const SchemaPtr& schema,
+    const string& old_schema_name,
+    StringVector* simplefield_name_vec) {
+  if (!simplefield_name_vec) {
+    return;
+  }
+  schema->set_id(old_schema_name + "_id");
+  // TODO: nuke the parent="Placemark" attr.
+  for (size_t i = 0; i < schema->get_simplefield_array_size(); i++) {
+    if (const SimpleFieldPtr& simplefield =
+        AsSimpleField(schema->get_simplefield_array_at(i))) {
+      if (simplefield->has_name()) {
+        simplefield_name_vec->push_back(simplefield->get_name());
+      }
+    }
+  }
+}
+
+// Static, private.
+void KmlHandler::HandleOldSchemaParentEndElement(
+    const PlacemarkPtr& placemark,
+    const string& old_schema_name,
+    const KmlFactory& kml_factory,
+    const std::vector<SimpleDataPtr> simpledata_vec) {
+  // We've reached the closing tag of the old placemark substitute
+  // element. Take the SimpleData elements we've been creating from its
+  // children and hand them to an ExtendedData, then give that to the
+  // parent placemark.
+  ExtendedDataPtr extendeddata = kml_factory.CreateExtendedData();
+  SchemaDataPtr schemadata = kml_factory.CreateSchemaData();
+  schemadata->set_schemaurl(old_schema_name + "_id");
+  std::vector<SimpleDataPtr>::const_iterator itr =
+    simpledata_vec.begin();
+  for (; itr != simpledata_vec.end(); itr++) {
+    schemadata->add_simpledata(*itr);
+  }
+  extendeddata->add_schemadata(schemadata);
+  placemark->set_extendeddata(extendeddata);
 }
 
 }  // end namespace kmldom

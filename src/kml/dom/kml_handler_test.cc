@@ -165,7 +165,7 @@ class SimpleNewElementObserver : public ParserObserver {
   }
 
   // ParserObserver::NewElement().  Append the new element to our vector.
-  virtual bool NewElement(const kmldom::ElementPtr& element) {
+  virtual bool NewElement(const ElementPtr& element) {
     if (new_element_vector_->size() == max_elements_) {
       return false;  // Terminates parse.
     }
@@ -195,8 +195,8 @@ class SimpleAddChildObserver : public ParserObserver {
 
   // Default implementation of NewElement() returns true.
 
-  virtual bool AddChild(const kmldom::ElementPtr& parent,
-                        const kmldom::ElementPtr& child) {
+  virtual bool AddChild(const ElementPtr& parent,
+                        const ElementPtr& child) {
     if (parent_vector_->size() == max_elements_) {
       return false;  // Terminate parse.
     }
@@ -422,8 +422,8 @@ class FeatureCollector : public ParserObserver {
   // request that the parser not give this feature to the given parent.
   // All other parent-child relationships are preserved (such as all children
   // of the collected feature).
-  virtual bool EndElement(const kmldom::ElementPtr& parent,
-                          const kmldom::ElementPtr& child) {
+  virtual bool EndElement(const ElementPtr& parent,
+                          const ElementPtr& child) {
     if (child->IsA(Type_Feature) && !child->IsA(Type_Container)) {
       element_vector_->push_back(child);
       return false;
@@ -557,6 +557,203 @@ TEST_F(KmlHandlerTest, TestMaxNestingOf101Elements) {
   ASSERT_TRUE(kmlbase::File::ReadFileToString(k101Elements, &data));
   ElementPtr root = Parse(data, NULL);
   ASSERT_FALSE(root);  // Parse was stopped.
+}
+
+// KML 2.0 and 2.1 permitted the extension of Placemark by defining a
+// substitution element and possible children. This didn't make it to
+// OGC KML 2.2, but these files exist in surprising numbers, so we try our
+// best to parse it sanely into standard KML.
+//
+// This is a test of turning testdata/kml/old_schema_example.kml into this:
+//
+// <?xml version="1.0" encoding="utf-8"?>
+// <kml xmlns="http://www.opengis.net/kml/2.2">
+//   <Document>
+//     <Schema id="S_521_525_SSSSS_id" name="S_521_525_SSSSS">
+//       <SimpleField name="Foo" type="string"/>
+//       <SimpleField name="Bar" type="string"/>
+//     </Schema>
+//     <Placemark>
+//       <name>1</name>
+//       <ExtendedData>
+//         <SchemaData schemaUrl="S_521_525_SSSSS_id">
+//           <SimpleData name="Foo">foo 1</SimpleData>
+//           <SimpleData name="Bar">bar 1</SimpleData>
+//         </SchemaData>
+//       </ExtendedData>
+//       <Point>
+//         <coordinates>
+//           -122,37,0
+//         </coordinates>
+//       </Point>
+//     </Placemark>
+//     <Placemark>
+//       <name>2</name>
+//       <ExtendedData>
+//         <SchemaData schemaUrl="S_521_525_SSSSS_id">
+//           <SimpleData name="Foo">foo 2</SimpleData>
+//           <SimpleData name="Bar">bar 2</SimpleData>
+//         </SchemaData>
+//       </ExtendedData>
+//     </Placemark>
+//   </Document>
+// </kml>
+TEST_F(KmlHandlerTest, TestHandlesOldSchemaUsage) {
+  const string kOldSchemaKml(
+      kmlbase::File::JoinPaths(DATADIR, kmlbase::File::JoinPaths(
+          "kml", "old_schema_example.kml")));
+  string data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(kOldSchemaKml, &data));
+  string errors;
+  ElementPtr root = Parse(data, &errors);
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
+  const KmlPtr kml = AsKml(root);
+  ASSERT_TRUE(kml);
+  ASSERT_TRUE(kml->has_feature());
+  const DocumentPtr document = AsDocument(kml->get_feature());
+  ASSERT_TRUE(document);
+  ASSERT_EQ(static_cast<size_t>(1), document->get_schema_array_size());
+  const SchemaPtr schema = AsSchema(document->get_schema_array_at(0));
+  ASSERT_TRUE(schema);
+  ASSERT_EQ("S_521_525_SSSSS_id", schema->get_id());
+  ASSERT_EQ("S_521_525_SSSSS", schema->get_name());
+  ASSERT_EQ(static_cast<size_t>(2), schema->get_simplefield_array_size());
+  const SimpleFieldPtr simplefield0 =
+    AsSimpleField(schema->get_simplefield_array_at(0));
+  ASSERT_TRUE(simplefield0);
+  ASSERT_EQ("Foo", simplefield0->get_name());
+  ASSERT_EQ("string", simplefield0->get_type());
+  const SimpleFieldPtr simplefield1 =
+    AsSimpleField(schema->get_simplefield_array_at(1));
+  ASSERT_TRUE(simplefield1);
+  ASSERT_EQ("Bar", simplefield1->get_name());
+  ASSERT_EQ("string", simplefield1->get_type());
+  ASSERT_EQ(static_cast<size_t>(2), document->get_feature_array_size());
+
+  const PlacemarkPtr placemark0 =
+    AsPlacemark(document->get_feature_array_at(0));
+  ASSERT_EQ("1", placemark0->get_name());
+  ASSERT_TRUE(placemark0->has_extendeddata());
+  const ExtendedDataPtr extendeddata0 =
+    AsExtendedData(placemark0->get_extendeddata());
+  ASSERT_TRUE(extendeddata0);
+  ASSERT_EQ(static_cast<size_t>(1), extendeddata0->get_schemadata_array_size());
+  const SchemaDataPtr schemadata0 =
+    AsSchemaData(extendeddata0->get_schemadata_array_at(0));
+  ASSERT_TRUE(schemadata0);
+  ASSERT_EQ("S_521_525_SSSSS_id", schemadata0->get_schemaurl());
+  ASSERT_EQ(static_cast<size_t>(2), schemadata0->get_simpledata_array_size());
+  const SimpleDataPtr simpledata00 =
+    AsSimpleData(schemadata0->get_simpledata_array_at(0));
+  ASSERT_TRUE(simpledata00);
+  ASSERT_EQ("Foo", simpledata00->get_name());
+  ASSERT_EQ("foo 1", simpledata00->get_text());
+  const SimpleDataPtr simpledata01 =
+    AsSimpleData(schemadata0->get_simpledata_array_at(1));
+  ASSERT_TRUE(simpledata01);
+  ASSERT_EQ("Bar", simpledata01->get_name());
+  ASSERT_EQ("bar 1", simpledata01->get_text());
+
+  const PlacemarkPtr placemark1 =
+    AsPlacemark(document->get_feature_array_at(1));
+  ASSERT_EQ("2", placemark1->get_name());
+  ASSERT_TRUE(placemark1->has_extendeddata());
+  const ExtendedDataPtr extendeddata1 =
+    AsExtendedData(placemark1->get_extendeddata());
+  ASSERT_TRUE(extendeddata1);
+  ASSERT_EQ(static_cast<size_t>(1), extendeddata1->get_schemadata_array_size());
+  const SchemaDataPtr schemadata1 =
+    AsSchemaData(extendeddata1->get_schemadata_array_at(0));
+  ASSERT_TRUE(schemadata1);
+  ASSERT_EQ("S_521_525_SSSSS_id", schemadata1->get_schemaurl());
+  ASSERT_EQ(static_cast<size_t>(2), schemadata1->get_simpledata_array_size());
+  const SimpleDataPtr simpledata10 =
+    AsSimpleData(schemadata1->get_simpledata_array_at(0));
+  ASSERT_TRUE(simpledata10);
+  ASSERT_EQ("Foo", simpledata10->get_name());
+  ASSERT_EQ("foo 2", simpledata10->get_text());
+  const SimpleDataPtr simpledata11 =
+    AsSimpleData(schemadata1->get_simpledata_array_at(1));
+  ASSERT_TRUE(simpledata11);
+  ASSERT_EQ("Bar", simpledata11->get_name());
+  ASSERT_EQ("bar 2", simpledata11->get_text());
+}
+
+// This verifies that a ParserObsever sees a <Placemark> when old
+// KML 2.0/2.1 <Schema> usages is parsed.
+TEST_F(KmlHandlerTest, TestOldSchemaParserObserver) {
+  const string kOldSchemaKml = (
+    "<Document>"
+    "<Schema parent=\"Placemark\" name=\"S_521_525_SSSSS\">"
+    "<SimpleField type=\"string\" name=\"Foo\"></SimpleField>"
+    "</Schema>"
+    "<S_521_525_SSSSS>"
+    "<Foo>foo 1</Foo>"
+    "</S_521_525_SSSSS>"
+    "</Document>");
+
+  element_vector_t element_vector;
+  size_t max_elements = 100;
+  SimpleNewElementObserver simple_new_element_observer(&element_vector,
+                                                       max_elements);
+  Parser parser;
+  parser.AddObserver(&simple_new_element_observer);
+  string errors;
+  ElementPtr root = parser.Parse(kOldSchemaKml, &errors);
+  ASSERT_TRUE(root);
+  ASSERT_TRUE(errors.empty());
+  // NewElement() is called only 4 times; The logic that handles the old
+  // <Schema> knows to look for <Foo> as a child, and the handing there is
+  // special-cased; StartElement() returns before the observer for <Foo> is
+  // called.
+  ASSERT_EQ(static_cast<size_t>(4), element_vector.size());
+  ASSERT_EQ(Type_Placemark, element_vector.at(3)->Type());
+}
+
+// Verify the handling of old-style <Schema> parsing directly in
+// StartElement and EndElement.
+TEST_F(KmlHandlerTest, TestOldSchemaHandling) {
+  kml_handler_->StartElement("Document", atts_);
+  atts_.push_back("parent");
+  atts_.push_back("Placemark");
+  atts_.push_back("name");
+  const string kOldStyleSchemaName("OldStyleSchemaName");
+  atts_.push_back(kOldStyleSchemaName);
+  kml_handler_->StartElement("Schema", atts_);
+  atts_.clear();
+  atts_.push_back("type");
+  atts_.push_back("string");
+  atts_.push_back("name");
+  const string kOldStyleSchemaChild("OldStyleSchemaChild");
+  atts_.push_back(kOldStyleSchemaChild);
+  kml_handler_->StartElement("SimpleField", atts_);
+  kml_handler_->EndElement("SimpleField");
+  kml_handler_->EndElement("Schema");
+  atts_.clear();
+  kml_handler_->StartElement(kOldStyleSchemaName, atts_);
+  kml_handler_->StartElement(kOldStyleSchemaChild, atts_);
+  const string kOldStyleSchemaChildCharData("char data");
+  kml_handler_->CharData(kOldStyleSchemaChildCharData);
+  kml_handler_->EndElement(kOldStyleSchemaChild);
+  kml_handler_->EndElement(kOldStyleSchemaName);
+  ElementPtr root = kml_handler_->PopRoot();
+  ASSERT_TRUE(root);
+  ASSERT_EQ(Type_Document, root->Type());
+  // A Placemark was created from OldStyleSchemaName.
+  ASSERT_EQ(Type_Placemark, AsDocument(root)->get_feature_array_at(0)->Type());
+  PlacemarkPtr placemark =
+    AsPlacemark(AsDocument(root)->get_feature_array_at(0));
+  // The OldStyleSchemaChild was converted into an ExtendedData structure.
+  ASSERT_TRUE(placemark->has_extendeddata());
+  ExtendedDataPtr extendeddata = AsExtendedData(placemark->get_extendeddata());
+  ASSERT_EQ(static_cast<size_t>(1), extendeddata->get_schemadata_array_size());
+  SchemaDataPtr schemadata = extendeddata->get_schemadata_array_at(0);
+  ASSERT_EQ(kOldStyleSchemaName + "_id", schemadata->get_schemaurl());
+  ASSERT_EQ(static_cast<size_t>(1), schemadata->get_simpledata_array_size());
+  SimpleDataPtr simpledata = schemadata->get_simpledata_array_at(0);
+  ASSERT_EQ(kOldStyleSchemaChild, simpledata->get_name());
+  ASSERT_EQ(kOldStyleSchemaChildCharData, simpledata->get_text());
 }
 
 }  // end namespace kmldom
