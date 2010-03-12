@@ -54,8 +54,17 @@ class KmzCache : public kmlbase::NetCache<KmzFile> {
   }
 
   // This is the main KML Engine internal method to perform a KMZ-aware fetch.
-  // KmlUri encodes the fetch base and target.
-  bool DoFetch(KmlUri* kml_uri, string* content);
+  // KmlUri encodes the fetch base and target.  The data fetched is stored to
+  // the content string.  False is returned if kml_uri or content are NULL or
+  // if the fetch fails.  If a fetched_url arg is supplied the actual URL
+  // fetched is stored there.
+  bool DoFetchAndReturnUrl(KmlUri* kml_uri, string* content,
+                           string* fetched_url);
+
+  // This wrapper is supplied for backwards compat.
+  bool DoFetch(KmlUri* kml_uri, string* content) {
+    return DoFetchAndReturnUrl(kml_uri, content, NULL);
+  }
 
   // This is basically an internal helper method to perform a simple lookup
   // of a file within a KMZ.  If the KmlUri describes a KMZ file in the cache

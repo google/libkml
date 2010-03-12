@@ -45,14 +45,14 @@ KmlFilePtr KmlCache::FetchKmlRelative(const string& base,
     // Failed to create KmlUri likely due to bad url or href.
     return NULL;
   }
-  const string& url = kml_uri->get_url();
+  string url = kml_uri->get_url();
   // If there's a KmlFile cached for this URL just return it and we're done.
   if (KmlFilePtr kml_file = kml_file_cache_->LookUp(url)) {
     return kml_file;
   }
   // No KmlFile cached for this URL.  Fetch the KML through the KMZ cache.
   string content;
-  if (kmz_file_cache_->DoFetch(kml_uri.get(), &content)) {
+  if (kmz_file_cache_->DoFetchAndReturnUrl(kml_uri.get(), &content, &url)) {
     // The KML content was found within in a fetched and/or cached KMZ.
     // Parse it into a KmlFile for it and cache it.
     KmlFilePtr kml_file = KmlFile::CreateFromStringWithUrl(content, url, this);

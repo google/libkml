@@ -95,6 +95,10 @@ TEST_F(KmzCacheTest, TestDefaultState) {
   kml_uri_.reset(KmlUri::CreateRelative(kBase, kNoSuchUrl));
   ASSERT_TRUE(kml_uri_.get());
   ASSERT_FALSE(kmz_cache_->DoFetch(kml_uri_.get(), NULL));
+  ASSERT_FALSE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), NULL, NULL));
+  ASSERT_FALSE(kmz_cache_->DoFetchAndReturnUrl(NULL, NULL, NULL));
+  string dummy;
+  ASSERT_FALSE(kmz_cache_->DoFetchAndReturnUrl(NULL, &dummy, NULL));
   kml_uri_->set_path_in_kmz("no-such-path");
   ASSERT_FALSE(kmz_cache_->FetchFromCache(kml_uri_.get(), NULL));
   ASSERT_FALSE(kmz_cache_->LookUp(kNoSuchUrl));
@@ -142,6 +146,12 @@ TEST_F(KmzCacheTest, TestBasicFetchUrl) {
   ASSERT_TRUE(kml_uri_.get());
   string got_kml_data;
   ASSERT_TRUE(kmz_cache_->DoFetch(kml_uri_.get(), &got_kml_data));
+  string got_kml_data2;
+  string fetched_url;
+  ASSERT_TRUE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), &got_kml_data2,
+                                              &fetched_url));
+  ASSERT_EQ(got_kml_data, got_kml_data2);
+  ASSERT_EQ(kml_uri_->get_url(), fetched_url);
 
   // Read the data for that URL directly.
   string want_kml_data;
@@ -252,6 +262,38 @@ TEST_F(KmzCacheTest, TestOverflowCacheWithFetchUrl) {
   for (size_t i = 1; i < kMockKmzNetSize; ++i) {
     VerifyContentInCache(kMockKmzNet[i].url, mock_net_data[i]);
   }
+}
+
+TEST_F(KmzCacheTest, VerifyReturnedUrlDoFetchAndReturnUrl) {
+  string content;
+  string fetched_url;
+
+  // hier.kmz has a within.kml inside.
+  kml_uri_.reset(
+      KmlUri::CreateRelative("http://ignored.com/kmz/hier.kmz/doc.kml",
+                             "within.kml"));
+  ASSERT_TRUE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), &content,
+                                              &fetched_url));
+  ASSERT_EQ("http://ignored.com/kmz/hier.kmz/within.kml", fetched_url);
+
+  // hier.kmz does not have an outside.kml, but it does exist.
+  kml_uri_.reset(
+      KmlUri::CreateRelative("http://ignored.com/kmz/hier.kmz/doc.kml",
+                             "outside.kml"));
+  ASSERT_TRUE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), &content,
+                                              &fetched_url));
+  ASSERT_EQ("http://ignored.com/kmz/outside.kml", fetched_url);
+
+  kml_uri_.reset(
+      KmlUri::CreateRelative("http://ignored.com/kmz/hier.kmz/doc.kml",
+                             "no-such-file-inside-or-out"));
+  ASSERT_FALSE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), &content, NULL));
+}
+
+TEST_F(KmzCacheTest, DoFetchAndReturnUrlFailsOnBadKmlUri) {
+  kml_uri_.reset(KmlUri::CreateRelative("no-scheme/junk", "bad"));
+  string content;
+  ASSERT_FALSE(kmz_cache_->DoFetchAndReturnUrl(kml_uri_.get(), &content, NULL));
 }
 
 }  // end namespace kmlengine

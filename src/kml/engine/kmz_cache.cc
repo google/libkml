@@ -74,7 +74,8 @@ namespace kmlengine {
 // resolved: http://example.com/path/file.kmz/a/images/0.jpg
 // OR
 // resolved: http://example.com/images/0.jpg
-bool KmzCache::DoFetch(KmlUri* kml_uri, string* content) {
+bool KmzCache::DoFetchAndReturnUrl(KmlUri* kml_uri, string* content,
+                                   string* fetched_url) {
   if (!kml_uri || !content) {
     return false;
   }
@@ -83,6 +84,9 @@ bool KmzCache::DoFetch(KmlUri* kml_uri, string* content) {
   if (!kml_uri->is_kmz()) {
     if (MemoryFilePtr file = memory_file_cache_->Fetch(kml_uri->get_url())) {
       *content = file->get_content();
+      if (fetched_url) {
+        *fetched_url = kml_uri->get_url();
+      }
       return true;
     }
     return false;  // Network fetch for this URL failed.
@@ -100,6 +104,9 @@ bool KmzCache::DoFetch(KmlUri* kml_uri, string* content) {
   // KMZ.  This is expected to be a very lightweight operation especially if
   // the target does not exist in the KMZ file.
   if (FetchFromCache(kml_uri, content)) {
+    if (fetched_url) {
+      *fetched_url = kml_uri->get_url();
+    }
     return true;
   }
   // Fall through if the target in the KmlUri was not within the KMZ.
@@ -108,8 +115,13 @@ bool KmzCache::DoFetch(KmlUri* kml_uri, string* content) {
   // PATH/foo.kmz + bar.jpg can mean either PATH/foo.kmz/bar.jpg
   // OR PATH/bar.jpg.  The following attempts the latter.
   boost::scoped_ptr<KmlUri> kmz_relative(
-      KmlUri::CreateRelative(kml_uri->get_kmz_url(),
-      kml_uri->get_target()));
+      KmlUri::CreateRelative(kml_uri->get_kmz_url(), kml_uri->get_target()));
+  if (!kmz_relative.get()) {
+    return false;
+  }
+  if (fetched_url) {
+    *fetched_url = kmz_relative->get_url();
+  }
   return DoFetch(kmz_relative.get(), content);
 }
 
