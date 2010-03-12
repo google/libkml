@@ -9,10 +9,12 @@ EXTRA_DIST = \
 	doc.kmz \
 	dummy.png \
 	dummy2.png \
+	hier.kmz \
 	model-macky.kmz \
 	multikml-doc.kmz \
 	multikml-nodoc.kmz \
 	nokml.kmz \
+	outside.kml \
 	overflow_bad_offset.kmz \
 	overflow_corrupted_stack.kmz \
 	overflow_unzOpenCurrentFile.kmz \
