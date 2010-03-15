@@ -13,3 +13,20 @@ test.csv:
   name: FEATURE_NAME
   description: ELEVATION + COUNTY_NAME + STATE_ALPHA
 
+california.recovery.csv:
+  Derived from http://www.recovery.ca.gov/newmap/data/recovery_map_projects.xls
+  http://www.recovery.ca.gov/HTML/About/conditionsofuse.shtml#ownership:
+  "In general, information presented on this web site, unless otherwise
+   indicated, is considered in the public domain. It may be distributed
+   or copied as permitted by law."
+
+colleges.csv:
+  This is CSV output from Microsoft Excel on Mac and uses \r line breaks.
+
+crnl.csv:
+  This is CSV output from Microsoft Excel on Windows and uses \r\n line breaks.
+
+lincoln-park-gc.csv:
+  This is CSV output from Google Spreadsheets and uses \n line breaks.
+
+
