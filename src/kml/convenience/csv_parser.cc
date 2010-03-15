@@ -39,6 +39,15 @@ namespace kmlconvenience {
 
 static const size_t npos = -1;
 
+static const char* kDefaultStyleUrlBase = "style.kml";
+
+// These basenames are prepended to help ensure the
+// id is a valid xml id.  Ids in the wild are often
+// numbers and while digits are valid in an xml id
+// a leading digit is not.
+static const char* kFeatureIdBase = "feature-";
+static const char* kStyleIdBase = "style-";
+
 // static
 bool CsvParser::ParseCsv(kmlbase::CsvSplitter* csv_splitter,
                      CsvParserHandler* csv_parser_handler) {
@@ -68,7 +77,10 @@ CsvParser::CsvParser(kmlbase::CsvSplitter* csv_splitter,
     name_col_(npos),
     description_col_(npos),
     lat_col_(npos),
-    lon_col_(npos) {
+    lon_col_(npos),
+    feature_id_(npos),
+    style_id_(npos),
+    style_url_base_(kDefaultStyleUrlBase) {
 }
 
 // private
@@ -87,6 +99,10 @@ CsvParserStatus CsvParser::SetSchema(const kmlbase::StringVector& csv_schema) {
       lat_col_ = i;
     } else if (kmlbase::StringCaseEqual(this_col, "longitude")) {
       lon_col_ = i;
+    } else if (kmlbase::StringCaseEqual(this_col, "feature-id")) {
+      feature_id_ = i;
+    } else if (kmlbase::StringCaseEqual(this_col, "style-id")) {
+      style_id_ = i;
     } else {
       csv_schema_[i] = this_col;
     }
@@ -119,6 +135,13 @@ CsvParserStatus CsvParser::CsvLineToPlacemark(
   }
   if (description_col_ != npos) {
     placemark->set_description(csv_line[description_col_]);
+  }
+  if (feature_id_ != npos && !csv_line[feature_id_].empty()) {
+    placemark->set_id(kFeatureIdBase + csv_line[feature_id_]);
+  }
+  if (style_id_ != npos && !csv_line[style_id_].empty()) {
+    placemark->set_styleurl(style_url_base_ + "#" + kStyleIdBase +
+                            csv_line[style_id_]);
   }
   // Walk the actual line cols to handle non-strict mode.
   for (size_t i = 0; i < csv_line.size(); ++i) {
