@@ -16,6 +16,7 @@ EXTRA_DIST = \
     badcoords.kml \
     billion.kml \
     ge-point.kml \
+    golf-style.kml \
     invalid_descriptions.kml \
     kmlsamples.kml \
     model-macky.kml \
