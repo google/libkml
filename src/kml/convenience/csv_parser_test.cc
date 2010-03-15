@@ -417,6 +417,90 @@ TEST(CsvParserTest, TestCsvLineToPlacemarkErrors) {
   ASSERT_EQ(CSV_PARSER_STATUS_BAD_LAT_LON, log[4].second);
 }
 
+TEST(CsvParserTest, TestFeatureId) {
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver container_saver(folder, NULL);
+  kmlbase::CsvSplitter csv_splitter("feature-id,latitude,longitude\n"
+                                    "abc,1.1,-2.2\n");
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_splitter, &container_saver));
+  ASSERT_EQ(static_cast<size_t>(1), folder->get_feature_array_size());
+  const kmldom::PlacemarkPtr p =
+      kmldom::AsPlacemark(folder->get_feature_array_at(0));
+  ASSERT_TRUE(p);
+  ASSERT_TRUE(p->has_id());
+  ASSERT_EQ(string("feature-abc"), p->get_id());
+  ASSERT_TRUE(CheckPointLatLon(p, 1.1, -2.2));
+}
+
+TEST(CsvParserTest, TestStyleId) {
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver container_saver(folder, NULL);
+  kmlbase::CsvSplitter csv_splitter("feature-id,latitude,longitude,style-id\n"
+                                    "abc,1.1,-2.2,big\n"
+                                    "xyz,-1.1,2.2,little\n");
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_splitter, &container_saver));
+  ASSERT_EQ(static_cast<size_t>(2), folder->get_feature_array_size());
+  kmldom::PlacemarkPtr p = kmldom::AsPlacemark(folder->get_feature_array_at(0));
+  ASSERT_TRUE(p);
+  ASSERT_TRUE(p->has_id());
+  ASSERT_EQ(string("feature-abc"), p->get_id());
+  ASSERT_TRUE(p->has_styleurl());
+  ASSERT_EQ(string("style.kml#style-big"), p->get_styleurl());
+  ASSERT_TRUE(CheckPointLatLon(p, 1.1, -2.2));
+  p = kmldom::AsPlacemark(folder->get_feature_array_at(1));
+  ASSERT_TRUE(p);
+  ASSERT_TRUE(p->has_id());
+  ASSERT_EQ(string("feature-xyz"), p->get_id());
+  ASSERT_TRUE(p->has_styleurl());
+  ASSERT_EQ(string("style.kml#style-little"), p->get_styleurl());
+  ASSERT_TRUE(CheckPointLatLon(p, -1.1, 2.2));
+}
+
+// This verifies the CsvParser on a test file with both feature-id and style-id
+// columns.
+TEST(CsvParserTest, TestGnisAk101) {
+  kmldom::FolderPtr folder = kmldom::KmlFactory::GetFactory()->CreateFolder();
+  ContainerSaver container_saver(folder, NULL);
+  string csv_data;
+  ASSERT_TRUE(kmlbase::File::ReadFileToString(
+      kmlbase::File::JoinPaths(DATADIR,
+          kmlbase::File::JoinPaths("csv", "gnis-ak-first-101.csv")),
+      &csv_data));
+  kmlbase::CsvSplitter csv_splitter(csv_data);
+  ASSERT_TRUE(CsvParser::ParseCsv(&csv_splitter, &container_saver));
+  ASSERT_EQ(static_cast<size_t>(101), folder->get_feature_array_size());
+  double lat_sum = 0;
+  double lon_sum = 0;
+  for (size_t i = 0; i < 18; ++i) {
+    const kmldom::PlacemarkPtr& p =
+        kmldom::AsPlacemark(folder->get_feature_array_at(i));
+    ASSERT_TRUE(p);
+    ASSERT_TRUE(p->has_extendeddata());
+    const kmldom::ExtendedDataPtr ed = p->get_extendeddata();
+    ASSERT_EQ(static_cast<size_t>(14), ed->get_data_array_size());
+    double lat, lon;
+    ASSERT_TRUE(kmlengine::GetFeatureLatLon(p, &lat, &lon));
+    lat_sum += lat;
+    lon_sum += lon;
+    ASSERT_EQ("STATE_ALPHA", ed->get_data_array_at(0)->get_name());
+    ASSERT_EQ("STATE_NUMERIC", ed->get_data_array_at(1)->get_name());
+    ASSERT_EQ("COUNTY_NAME", ed->get_data_array_at(2)->get_name());
+    ASSERT_EQ("COUNTY_NUMERIC", ed->get_data_array_at(3)->get_name());
+    ASSERT_EQ("PRIMARY_LAT_DMS", ed->get_data_array_at(4)->get_name());
+    ASSERT_EQ("PRIM_LONG_DMS", ed->get_data_array_at(5)->get_name());
+    ASSERT_EQ("SOURCE_LAT_DMS", ed->get_data_array_at(6)->get_name());
+    ASSERT_EQ("SOURCE_LONG_DMS", ed->get_data_array_at(7)->get_name());
+    ASSERT_EQ("SOURCE_LAT_DEC", ed->get_data_array_at(8)->get_name());
+    ASSERT_EQ("SOURCE_LONG_DEC", ed->get_data_array_at(9)->get_name());
+    ASSERT_EQ("ELEVATION", ed->get_data_array_at(10)->get_name());
+    ASSERT_EQ("MAP_NAME", ed->get_data_array_at(11)->get_name());
+    ASSERT_EQ("DATE_CREATED", ed->get_data_array_at(12)->get_name());
+    ASSERT_EQ("DATE_EDITED", ed->get_data_array_at(13)->get_name());
+  }
+  ASSERT_DOUBLE_EQ(1132.8488888, lat_sum);
+  ASSERT_DOUBLE_EQ(-2631.3841665, lon_sum);
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {

@@ -101,6 +101,13 @@ class CsvParser {
   // This internal method sets the schema for subsequent lines of CSV data.
   // This sets the mappings from column to field.  The "name" and "description"
   // columns specify which columns become <Placemark> <name> and <description>.
+  // The "feature-id" column provides the <Placemark>'s id= attribute with
+  // "feature-" prepended; that is, if a row's feature-id column has "123"
+  // the following KML is generated: <Placemark id="feature-123">.  The
+  // "style-id" column provides the <Placemark>'s styleUrl with
+  // "style.kml#style-" prepended; that is, if a row's style-id column has
+  // "front" the following KML is generated:
+  // <styleUrl>style.kml#style-front</styleUrl>
   // The "latitude" and "longitude" columns specify which columns are used
   // for the latitude and longitude of the <Point>.  All other columns specify
   // <ExtendedData>/<Data> names.  The csv_schema must contain at least
@@ -125,6 +132,9 @@ class CsvParser {
   size_t description_col_;
   size_t lat_col_;
   size_t lon_col_;
+  size_t feature_id_;
+  size_t style_id_;
+  string style_url_base_;
   kmldom::KmlFactory* kml_factory_;
   CsvSchema csv_schema_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(CsvParser);
