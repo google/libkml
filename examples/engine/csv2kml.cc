@@ -77,7 +77,7 @@ class ContainerSaver : public CsvParserHandler {
 
 int main(int argc, char** argv) {
   if (argc != 3) {
-    std::cerr << "usage: " << argv[0] << "input.csv output.kml" << std::endl;
+    std::cerr << "usage: " << argv[0] << " input.csv output.kml" << std::endl;
     return 1;
   }
 
