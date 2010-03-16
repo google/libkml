@@ -370,39 +370,15 @@ kmldom::AtomEntryPtr GoogleMapsData::PostKml(const string& title,
 // static
 bool GoogleMapsData::GetKmlUri(const kmldom::AtomEntryPtr& map_entry,
                                string* kml_uri) {
-  // Until such time the <atom:entry> contains a rel="kml" or similar we crack
-  // apart the rel="self" and create the Google My Maps KML export link.
-  // See: http://code.google.com/apis/maps/documentation/mapsdata/reference.html#Feeds
-  // This is the form of the rel="self" href:
-  // http://maps.google.com/maps/feeds/maps/${user_id}/full/${map_id}
-  string rel_self;
+  string alt;
   if (!map_entry ||
-      !kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "self", &rel_self)) {
+      !kmlconvenience::AtomUtil::FindRelUrl(*map_entry, "alternate", &alt)) {
     return false;
   }
-
-  const size_t mfm_size = 17;  // strlen("/maps/feeds/maps/")
-  size_t mfm = rel_self.find("/maps/feeds/maps/");
-  if (mfm == string::npos) {
-    return false;
-  }
-
-  kmlbase::StringVector user_map;
-  kmlbase::SplitStringUsing(rel_self.substr(mfm + mfm_size), "/", &user_map);
-  if (user_map.size() != 3) {
-    return false;
-  }
-
-  // Until such time Google Maps Data API itself provides a raw KML media
-  // export we use the "View in Google Earth" link in Google My Maps.
-  // http://maps.google.com/maps/ms?msa=0&output=kml&msid=${user_id}.${map_id}
   if (kml_uri) {
-    *kml_uri = string("http://maps.google.com/maps/ms?msa=0&output=kml&msid=")
-      + user_map[0] + "." + user_map[2];
+    *kml_uri = alt + "&output=kml";
   }
-
   return true;
-
 }
 
 }  // end namespace kmlconvenience
