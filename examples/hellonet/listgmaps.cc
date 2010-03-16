@@ -74,8 +74,9 @@ int main(int argc, char** argv) {
     for (size_t l = 0; l < entry->get_link_array_size(); ++l) {
       // For each <link> in the entry...
       const kmldom::AtomLinkPtr& link = entry->get_link_array_at(l);
-      // Print the href=:
-      std::cout << " [link] " << link->get_href() << std::endl;
+      // Print the rel= and href=.
+      std::cout << " [rel ] " << link->get_rel() << std::endl;
+      std::cout << " [href] " << link->get_href() << std::endl;
     }
   }
 
