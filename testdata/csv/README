@@ -1,3 +1,19 @@
+gnis-ak-first-101.csv:
+  This is the first 101 features from AK_Features_20091002.txt
+  available here: http://geonames.usgs.gov/domestic/download_data.htm
+  The |'s from the original have been replaced with ,'s,
+  and these "headings" have been changed:
+    FEATURE_ID -> FEATURE-ID
+    FEATURE_NAME -> NAME
+    FEATURE_CLASS -> STYLE-ID
+    PRIM_LAT_DEC -> LATITUDE
+    PRIM_LONG_DEC -> LONGITUDE
+
+  This data is in the public domain as described here:
+  http://www.usgs.gov/laws/info_policies.html.
+
+  "Credit: U.S. Geological Survey"
+  
 test.csv:
 
   The format of test.csv is as follows:
@@ -13,20 +29,5 @@ test.csv:
   name: FEATURE_NAME
   description: ELEVATION + COUNTY_NAME + STATE_ALPHA
 
-california.recovery.csv:
-  Derived from http://www.recovery.ca.gov/newmap/data/recovery_map_projects.xls
-  http://www.recovery.ca.gov/HTML/About/conditionsofuse.shtml#ownership:
-  "In general, information presented on this web site, unless otherwise
-   indicated, is considered in the public domain. It may be distributed
-   or copied as permitted by law."
-
-colleges.csv:
-  This is CSV output from Microsoft Excel on Mac and uses \r line breaks.
-
-crnl.csv:
-  This is CSV output from Microsoft Excel on Windows and uses \r\n line breaks.
-
-lincoln-park-gc.csv:
-  This is CSV output from Google Spreadsheets and uses \n line breaks.
-
+  NOTE: this .csv is deprecated, see kml/convenience/csv_parser.h
 

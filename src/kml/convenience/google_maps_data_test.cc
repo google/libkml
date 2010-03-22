@@ -555,8 +555,8 @@ TEST_F(GoogleMapsDataTest, TestGetKmlUri) {
       kmldom::AsAtomFeed(kmldom::ParseAtom(maps_feed_xml, NULL));
   ASSERT_TRUE(feed);
 
-  const string want("http://maps.google.com/maps/ms?msa=0&output=kml&msid="
-                    "201514259179526663268.0004687a1a3e44d72b6b4");
+  const string want("http://maps.google.com/maps/ms?msa=0&msid="
+                    "201514259179526663268.0004687a1a3e44d72b6b4&output=kml");
   string got;
   ASSERT_TRUE(GoogleMapsData::GetKmlUri(feed->get_entry_array_at(0), &got));
   ASSERT_EQ(want, got);
