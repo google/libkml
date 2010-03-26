@@ -115,6 +115,9 @@ CsvParserStatus CsvParser::SetSchema(const kmlbase::StringVector& csv_schema) {
 
 CsvParserStatus CsvParser::CsvLineToPlacemark(
     kmlbase::StringVector& csv_line, kmldom::PlacemarkPtr placemark) const {
+  if (csv_line.size() > 0 && csv_line[0].size() > 0 && csv_line[0][0] == '#') {
+    return CSV_PARSER_STATUS_COMMENT;
+  }
   if (csv_line.size() != schema_size_) {
     return CSV_PARSER_STATUS_INVALID_DATA;
   }
