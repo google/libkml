@@ -42,7 +42,8 @@ enum CsvParserStatus {
   CSV_PARSER_STATUS_BLANK_LINE,
   CSV_PARSER_STATUS_NO_LAT_LON,
   CSV_PARSER_STATUS_BAD_LAT_LON,
-  CSV_PARSER_STATUS_INVALID_DATA
+  CSV_PARSER_STATUS_INVALID_DATA,
+  CSV_PARSER_STATUS_COMMENT
 };
 
 // This class is used as the output and error reporting mechanism for the
