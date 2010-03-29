@@ -62,6 +62,14 @@ TEST_F(RegionatorQidTest, TestCreateChild) {
   ASSERT_EQ(static_cast<size_t>(2), se.depth());
 }
 
+TEST_F(RegionatorQidTest, TestIsRoot) {
+  Qid nw = root_.CreateChild(NW);
+  Qid se = root_.CreateChild(SE);
+  ASSERT_EQ(true,root_.IsRoot());
+  ASSERT_EQ(false,nw.IsRoot());
+  ASSERT_EQ(false,se.IsRoot());
+}
+
 // This tests a few more normal usage scenarios.
 TEST_F(RegionatorQidTest, TestCreateChildVarious) {
   Qid q0123("q0123");

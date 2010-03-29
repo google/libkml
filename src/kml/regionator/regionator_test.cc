@@ -213,6 +213,16 @@ TEST_F(RegionatorTest, SimpleRegionateAligned) {
   ASSERT_EQ(-180, llab->get_west());
 }
 
+TEST_F(RegionatorTest, SetRootFilenameTest) {
+  PointRegionHandler depth2(2, &kml_file_map_);
+  Regionator rtor(depth2, kmlconvenience::CreateRegion2d(10,0,10,0,128,-1));
+  rtor.SetRootFilename("pickle.kml");
+  rtor.Regionate(NULL);
+  ASSERT_EQ(kmldom::Type_kml, kml_file_map_["pickle.kml"]->Type());
+  ASSERT_EQ(kmldom::Type_kml, kml_file_map_["2.kml"]->Type());
+}
+
+
 }  // end namespace kmlregionator
 
 int main(int argc, char** argv) {
