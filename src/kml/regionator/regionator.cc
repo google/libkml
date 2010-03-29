@@ -45,7 +45,7 @@ namespace kmlregionator {
 // A Regionator instance is created from a class derived from RegionHandler
 // and descends over a Region hierarchy as specified.
 Regionator::Regionator(RegionHandler& rhandler, const RegionPtr& region)
-    : rhandler_(rhandler), region_count_(0) {
+    : rhandler_(rhandler), region_count_(0), root_filename_(0) {
   root_region_ = CloneRegion(region);
   root_region_->set_id(Qid::CreateRoot().str());
 }
@@ -58,6 +58,9 @@ Regionator::~Regionator() {
 // give Region.
 string Regionator::RegionFilename(const RegionPtr& region) {
   Qid qid(region->get_id());
+  if (root_filename_ && qid.IsRoot()) {
+    return root_filename_;
+  }
   std::stringstream str;
   str << qid_map_[qid.str()];
   return str.str() + ".kml";
@@ -121,7 +124,7 @@ bool Regionator::_Regionate(const RegionPtr& region) {
     filename = kmlbase::File::JoinPaths(output_directory_, filename);
   }
   rhandler_.SaveKml(kml, filename);
-  
+
   return true;  // This region has data.
 }
 

@@ -63,6 +63,10 @@ public:
                                const kmldom::RegionPtr& region,
                                const char* output_directory);
 
+  // By default, the resulting root filename will be "1.kml".  Provide an
+  // override for that name with this method.
+  void SetRootFilename(const char *filename) { root_filename_ = filename; }
+
 private:
   kmldom::RegionPtr root_region_;
   // This calls _Regionate() for the given child of the parent Region.
@@ -81,6 +85,7 @@ private:
   int region_count_;
   std::map<string,int> qid_map_;
   char* output_directory_;
+  const char* root_filename_;
 };
 
 }  // end namespace kmlregionator

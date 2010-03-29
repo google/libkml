@@ -41,6 +41,8 @@ enum quadrant_t {
   SE
 };
 
+const char* const kRootName = "q0";
+
 // A Qid is simply a number to identify a Region.  There are methods on a Qid
 // to create Qid's for the four children of a Region.
 class Qid {
@@ -48,7 +50,7 @@ public:
   Qid() {}
   Qid(const string& qid) : qid_(qid) {}
   static Qid CreateRoot() {
-    return Qid("q0");
+    return Qid(kRootName);
   }
   Qid CreateChild(quadrant_t quadrant) const {
     std::stringstream ss;
@@ -60,6 +62,9 @@ public:
   }
   const string& str() const {
     return qid_;
+  }
+  bool IsRoot() {
+    return qid_ == kRootName;
   }
 private:
   string qid_;
