@@ -471,7 +471,7 @@ TEST(CsvParserTest, TestGnisAk101) {
   ASSERT_EQ(static_cast<size_t>(101), folder->get_feature_array_size());
   double lat_sum = 0;
   double lon_sum = 0;
-  for (size_t i = 0; i < 18; ++i) {
+  for (size_t i = 0; i < 101; ++i) {
     const kmldom::PlacemarkPtr& p =
         kmldom::AsPlacemark(folder->get_feature_array_at(i));
     ASSERT_TRUE(p);
@@ -497,8 +497,8 @@ TEST(CsvParserTest, TestGnisAk101) {
     ASSERT_EQ("DATE_CREATED", ed->get_data_array_at(12)->get_name());
     ASSERT_EQ("DATE_EDITED", ed->get_data_array_at(13)->get_name());
   }
-  ASSERT_DOUBLE_EQ(1132.8488888, lat_sum);
-  ASSERT_DOUBLE_EQ(-2631.3841665, lon_sum);
+  ASSERT_DOUBLE_EQ(6337.5438887, lat_sum);
+  ASSERT_DOUBLE_EQ(-15130.5061107, lon_sum);
 }
 
 }  // end namespace kmlconvenience

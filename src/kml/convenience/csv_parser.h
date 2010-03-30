@@ -100,15 +100,16 @@ class CsvParser {
   }
 
   // This internal method sets the schema for subsequent lines of CSV data.
-  // This sets the mappings from column to field.  The "name" and "description"
-  // columns specify which columns become <Placemark> <name> and <description>.
-  // The "feature-id" column provides the <Placemark>'s id= attribute with
-  // "feature-" prepended; that is, if a row's feature-id column has "123"
-  // the following KML is generated: <Placemark id="feature-123">.  The
-  // "style-id" column provides the <Placemark>'s styleUrl with
-  // "style.kml#style-" prepended; that is, if a row's style-id column has
-  // "front" the following KML is generated:
-  // <styleUrl>style.kml#style-front</styleUrl>
+  // This sets the mappings from column to field.  Here is how the data for
+  // each column is used.  VAL is substituted for the value in the cell:
+  //   name - <name>VAL</name>
+  //   feature-id - <Placemark id="feature-VAL">
+  //   description - <description>VAL</description>
+  //   style-id - <styleUrl>style.kml#style-VAL</styleUrl>
+  //   latitude - <Point><coordinates>xxx,VAL</coordinates></Point>
+  //   longitude - <Point><coordinates>VAL,xxx</coordinates></Point>
+  //   other - <Data name="other"><value>VAL</value></Data>
+  //   # - comment causes CSV_PARSER_STATUS_COMMENT for that line
   // The "latitude" and "longitude" columns specify which columns are used
   // for the latitude and longitude of the <Point>.  All other columns specify
   // <ExtendedData>/<Data> names.  The csv_schema must contain at least
