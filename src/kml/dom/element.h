@@ -216,6 +216,20 @@ class Element : public kmlbase::XmlElement {
     }
   }
 
+  // This is the internal implementation of the various DeleteTAt() methods.
+  template <class T>
+  static T DeleteFromArrayAt(std::vector<T>* array, size_t i) {
+    if (!array || i >= array->size()) {
+      return NULL;
+    }
+    T e = (*array)[i];
+    array->erase(array->begin() + i);
+    // TODO: notify e's XmlFile about the delete (kmlengine::KmlFile, for
+    // example would want to remove e from its internal maps).
+    // TODO: disparent e
+    return e;
+  }
+
  private:
   KmlDomType type_id_;
   string char_data_;

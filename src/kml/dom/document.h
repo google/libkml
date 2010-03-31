@@ -59,6 +59,10 @@ class Document : public Container {
     return schema_array_[index];
   }
 
+  SchemaPtr DeleteSchemaAt(size_t index) {
+    return Element::DeleteFromArrayAt(&schema_array_, index);
+  }
+
   // <Style> and <StyleMap>
   void add_styleselector(const StyleSelectorPtr& styleselector) {
     AddComplexChild(styleselector, &styleselector_array_);
@@ -70,6 +74,10 @@ class Document : public Container {
 
   const StyleSelectorPtr& get_styleselector_array_at(size_t index) const {
     return styleselector_array_[index];
+  }
+
+  StyleSelectorPtr DeleteStyleSelectorAt(size_t index) {
+    return Element::DeleteFromArrayAt(&styleselector_array_, index);
   }
 
   // Note: If Document contains a StyleSelector, it is appended to Document's

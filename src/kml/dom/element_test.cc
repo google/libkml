@@ -78,9 +78,16 @@ class TestElement : public Element {
   void add_child(const ComplexChildPtr& child) {
     AddComplexChild(child, &child_array_);
   }
+  size_t get_child_array_size() const {
+    return child_array_.size();
+  }
   // This method exemplifies how a complex array child is accessed.
   const ComplexChildPtr& get_child_array_at(int i) const {
     return child_array_[i];
+  }
+  // This method exemplifies how an array item is deleted.
+  ComplexChildPtr DeleteChildAt(size_t i) {
+    return Element::DeleteFromArrayAt(&child_array_, i);
   }
   // This method exemplifies how attributes are parsed.
   virtual void ParseAttributes(Attributes* attributes) {
@@ -459,6 +466,37 @@ TEST_F(ElementTest, TestSerializeMisplaced) {
   ASSERT_EQ(3, misplaced_serializer.get_id_vector()[0]);
   ASSERT_EQ(2, misplaced_serializer.get_id_vector()[1]);
   ASSERT_EQ(1, misplaced_serializer.get_id_vector()[2]);
+}
+
+TEST_F(ElementTest, TestDeleteFromArrayAt) {
+  const size_t kNumChildren(123);
+  for (size_t i = 0; i < kNumChildren; ++i) {
+    element_->add_child(new ComplexChild(i));
+  }
+  ASSERT_EQ(kNumChildren, element_->get_child_array_size());
+  // Attempt to delete Features off the end.
+  ASSERT_FALSE(element_->DeleteChildAt(kNumChildren));
+  ASSERT_FALSE(element_->DeleteChildAt(kNumChildren + 1001));
+  // Delete the even numbered children.
+  std::vector<ComplexChildPtr> deleted_children;
+  for (size_t i = kNumChildren-1;; i -= 2) {
+    deleted_children.push_back(element_->DeleteChildAt(i));
+    if (i == 0) {
+      break;
+    }
+  }
+  const size_t new_size = element_->get_child_array_size();
+  ASSERT_EQ(kNumChildren - deleted_children.size(), new_size);
+  // Verify the element only has the odd children.
+  for (size_t i = 0; i < new_size; ++i) {
+    ASSERT_EQ(static_cast<int>(2*i + 1),
+              element_->get_child_array_at(i)->id());
+  }
+  // Verify the deleted children are all even.
+  for (size_t i = 0; i < deleted_children.size(); ++i) {
+    ASSERT_EQ(static_cast<int>(kNumChildren - 2*i - 1),
+              deleted_children[i]->id());
+  }
 }
 
 class ElementSerializerTest : public testing::Test {
