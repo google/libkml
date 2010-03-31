@@ -98,6 +98,31 @@ TEST_F(DocumentTest, TestParseSerialize) {
   ASSERT_EQ(kDocument, kmldom::SerializeRaw(kmldom::Parse(kDocument, NULL)));
 }
 
+TEST_F(DocumentTest, TestDeleteSchemaAndStyleSelectorAt) {
+  // This is mostly just to test that these methods exist.  See element_test.cc
+  // for a full test of the underlying Element::DeleteFromArrayAt method.
+
+  // Verify proper return for out of range index.
+  ASSERT_FALSE(document_->DeleteSchemaAt(0));
+  ASSERT_FALSE(document_->DeleteStyleSelectorAt(0));
+
+  StylePtr orig_style(KmlFactory::GetFactory()->CreateStyle());
+  orig_style->set_id("style0");
+  document_->add_styleselector(orig_style);
+  StyleSelectorPtr got_style = document_->DeleteStyleSelectorAt(0);
+  ASSERT_TRUE(got_style);
+  ASSERT_EQ(orig_style->get_id(), got_style->get_id());
+  ASSERT_FALSE(document_->DeleteStyleSelectorAt(0));
+
+  SchemaPtr orig_schema(KmlFactory::GetFactory()->CreateSchema());
+  orig_schema->set_name("schema0");
+  document_->add_schema(orig_schema);
+  SchemaPtr got_schema = document_->DeleteSchemaAt(0);
+  ASSERT_TRUE(got_schema);
+  ASSERT_EQ(orig_schema->get_name(), got_schema->get_name());
+  ASSERT_FALSE(document_->DeleteSchemaAt(0));
+}
+
 }  // end namespace kmldom
 
 int main(int argc, char** argv) {
