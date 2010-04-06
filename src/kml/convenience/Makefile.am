@@ -40,6 +40,7 @@ libkmlconvenienceinclude_HEADERS = \
 	google_picasa_web.h \
 	google_spreadsheets.h \
 	gpx_trk_pt_handler.h \
+	kml_feature_list_saver.h \
 	http_client.h \
 	kmz_check_links.h
 
@@ -55,6 +56,7 @@ TESTS = atom_util_test \
 	google_picasa_web_test \
 	google_spreadsheets_test \
 	gpx_trk_pt_handler_test \
+	kml_feature_list_saver_test \
 	http_client_test \
 	kmz_check_links_test
 
@@ -152,6 +154,14 @@ http_client_test_SOURCES = http_client_test.cc
 http_client_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 http_client_test_LDADD = http_client.o \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/third_party/libgtest.la
+
+kml_feature_list_saver_test_SOURCES = kml_feature_list_saver_test.cc
+kml_feature_list_saver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
+kml_feature_list_saver_test_LDADD = libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/base/libkmlbase.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/third_party/libgtest.la
 
 kmz_check_links_test_SOURCES = kmz_check_links_test.cc
