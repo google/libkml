@@ -1,0 +1,6003 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The data here is based on testdata/csv/gnis-ak-first-101.csv -->
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <StyleMap id="style-Basin">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff0000ff</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Bay">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff1f00ff</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Cape">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff1f00ef</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Cemetery">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff2f00ef</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Church">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff2f00df</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Crater">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff3f00df</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Gut">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff3f00cf</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Island">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff4f00cf</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Lake">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff4f00bf</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Locale">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff5f00bf</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Park">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff5f00af</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Pillar">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff6f00af</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Populated-Place">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff6f009f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Range">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff7f009f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Ridge">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff7f008f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-School">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff8f008f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Sea">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff8f007f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Spring">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff9f007f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Stream">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ff9f006f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Summit">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ffaf006f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Unknown">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ffaf005f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Valley">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ffbf005f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <StyleMap id="style-Woods">
+      <Pair>
+        <key>normal</key>
+        <Style>
+          <IconStyle>
+            <color>ffbf004f</color>
+            <scale>0.8</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>
+            </Icon>
+          </IconStyle>
+          <LabelStyle>
+            <scale>0</scale>
+          </LabelStyle>
+        </Style>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <Style>
+          <IconStyle>
+            <scale>1.2</scale>
+            <Icon>
+              <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle_highlight.png</href>
+            </Icon>
+          </IconStyle>
+        </Style>
+      </Pair>
+    </StyleMap>
+    <Placemark id="feature-247074">
+      <name>Pacific Ocean</name>
+      <styleUrl>#style-Sea</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>CA</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>06</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Mendocino</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>045</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>391837N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1235041W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Mendocino</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/19/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>06/19/2007</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -123.8447222,39.3102778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397640">
+      <name>Cape Hinchinbrook</name>
+      <styleUrl>#style-Cape</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Valdez-Cordova (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>261</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>601405N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1463830W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>7</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Cordova A-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>02/05/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.6416667,60.2347222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397641">
+      <name>Delenia Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Valdez-Cordova (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>261</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>602022N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1480818W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Seward B-4</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -148.1383333,60.3394444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397642">
+      <name>Alaskaland</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645022N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474612W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>134</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.77,64.8394444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397643">
+      <name>Badger Road Baptist Church</name>
+      <styleUrl>#style-Church</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644900N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473358W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>139</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5661111,64.8166667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397644">
+      <name>Barnes Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>650005N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1471738W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>650049N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1472244W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.0136111</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.3788889</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>373</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Livengood A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.2938889,65.0013889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397645">
+      <name>Barnette School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645019N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474339W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7275,64.8386111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397646">
+      <name>Bentley Park</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645011N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474139W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>130</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6941667,64.8363889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397647">
+      <name>Big Horn</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644328N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1471842W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>154</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks C-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.3116667,64.7244444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397648">
+      <name>Birch Hill Cemetery</name>
+      <styleUrl>#style-Cemetery</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645142N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474011W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>187</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6697222,64.8616667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397649">
+      <name>Birch School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645046N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473558W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>137</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5994444,64.8461111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397650">
+      <name>Chena River Campground</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645022N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474829W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>135</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8080556,64.8394444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397651">
+      <name>Chena River State Recreation Area</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645500N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1462000W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>225</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Big Delta D-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>03/30/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.3333333,64.9166667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397652">
+      <name>Chena School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644939N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473957W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6658333,64.8275,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397653">
+      <name>Clay Street Cemetery</name>
+      <styleUrl>#style-Cemetery</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645030N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474217W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>133</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7047222,64.8416667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397654">
+      <name>Creamers Field State Game Refuge</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645215N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474400W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>137</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7333333,64.8708333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397655">
+      <name>Denali School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645024N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474450W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7472222,64.84,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397656">
+      <name>Dream Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>650349N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1470804W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>650345N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1470727W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.0625</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.1241667</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>316</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Livengood A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.1344444,65.0636111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397657">
+      <name>Emily Ticasua Ivanhoff Brown Elementary School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644931N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473138W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>151</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5272222,64.8252778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397658">
+      <name>Ester</name>
+      <styleUrl>#style-Populated-Place</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645050N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1480052W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>224</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>12/01/2008</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -148.0144444,64.8472222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397659">
+      <name>Fairbanks Country Club</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645239N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474921W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>171</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8225,64.8775,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397660">
+      <name>Fox Spring</name>
+      <styleUrl>#style-Spring</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645752N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473726W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>243</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6238889,64.9644444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397661">
+      <name>Glass Park</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645013N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474058W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6827778,64.8369444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397662">
+      <name>Gold Hill Substation</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645116N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1475515W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>190</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.9208333,64.8544444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397663">
+      <name>Grace and Truth Chapel</name>
+      <styleUrl>#style-Church</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645716N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473739W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>224</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6275,64.9544444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397664">
+      <name>Harding Lake State Recreation Area</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>642626N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1465150W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>224</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Big Delta B-6</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.8638889,64.4405556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397665">
+      <name>Hunter School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644958N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474344W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7288889,64.8327778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397666">
+      <name>Immaculate Conception School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645107N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474247W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>132</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7130556,64.8519444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397667">
+      <name>Joy School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645142N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474319W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7219444,64.8616667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397668">
+      <name>Kiwanis Park</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645028N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474541W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>135</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7613889,64.8411111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397669">
+      <name>Lathrop High School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645010N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474351W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7308333,64.8361111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397670">
+      <name>Liwa Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645246N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473518W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>187</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5883333,64.8794444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397671">
+      <name>Mount Lulu Fairbanks</name>
+      <styleUrl>#style-Summit</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645648N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473200W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>540</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5333333,64.9466667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397672">
+      <name>Main Junior High School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645024N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474308W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7188889,64.84,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397673">
+      <name>McNair Woods</name>
+      <styleUrl>#style-Woods</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644932N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473414W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>137</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5705556,64.8255556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397674">
+      <name>McKinley School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644926N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474043W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.6786111,64.8238889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397675">
+      <name>Monroe High School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645104N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474247W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7130556,64.8511111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397676">
+      <name>Monterey Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644917N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473712W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.62,64.8213889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397677">
+      <name>Morgan Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644738N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1475358W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>132</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8994444,64.7938889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397678">
+      <name>Nordale School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645048N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474124W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>136</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.69,64.8466667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397679">
+      <name>Pearl Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>650005N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1471738W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>645842N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1471810W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>64.9783333</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.3027778</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>373</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Livengood A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.2938889,65.0013889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397680">
+      <name>Salcha River State Recreation Site</name>
+      <styleUrl>#style-Park</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>642813N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1465515W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>197</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Big Delta B-6</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.9208333,64.4702778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397681">
+      <name>Ski Boot Hill</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645443N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474404W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>293</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.7344444,64.9119444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397682">
+      <name>Snow Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>650300N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1470831W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>650324N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1470637W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.0566667</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.1102778</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>264</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Livengood A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.1419444,65.05,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397683">
+      <name>Thirtymile Slough</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>644544N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1472033W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>644429N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1471946W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>64.7413889</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.3294444</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>144</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.3425,64.7622222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397684">
+      <name>Tungsten Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645712N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473230W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>645704N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1473151W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>64.9511111</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.5308333</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>372</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5416667,64.9533333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397685">
+      <name>Two Rivers</name>
+      <styleUrl>#style-Locale</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645220N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1470218W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>231</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.0383333,64.8722222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397686">
+      <name>University Park School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645109N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474846W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>137</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8127778,64.8525,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397687">
+      <name>Woodriver Elementary School</name>
+      <styleUrl>#style-School</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645020N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1475208W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>137</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Fairbanks D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8688889,64.8388889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397688">
+      <name>Baptist Pond</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613612N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1493545W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>101</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.5958333,61.6033333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397689">
+      <name>Bear Paw Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613645N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494515W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>88</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.7541667,61.6125,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397690">
+      <name>Birch Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613730N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494730W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>74</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.7916667,61.625,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397691">
+      <name>Bruns Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613358N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1493700W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>96</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.6166667,61.5661111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397692">
+      <name>Dusk Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613900N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1492500W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>147</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.4166667,61.65,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397693">
+      <name>Fuller Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613645N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1493630W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>104</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.6083333,61.6125,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397694">
+      <name>Johnson Pond</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613410N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494300W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>63</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.7166667,61.5694444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397695">
+      <name>Lazy Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Anchorage</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>020</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>611500N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494900W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>53</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage B-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.8166667,61.25,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397696">
+      <name>Maruro Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613600N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494700W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>73</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.7833333,61.6,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397697">
+      <name>Whale Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613305N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494500W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>74</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.75,61.5513889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397698">
+      <name>Woody Lake</name>
+      <styleUrl>#style-Lake</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>613415N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1494430W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>58</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-8</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -149.7416667,61.5708333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397699">
+      <name>Flat Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Prince of Wales-Hyder (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>198</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>550530N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1324140W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>4</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Craig A-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -132.6944444,55.0916667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397700">
+      <name>Turn Rock</name>
+      <styleUrl>#style-Pillar</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Prince of Wales-Hyder (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>198</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>551000N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1325450W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Craig A-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -132.9138889,55.1666667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397701">
+      <name>Abbot Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>565615N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1584026W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>565629N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1584001W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>56.9413889</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-158.6669444</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>4</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Chignik D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -158.6738889,56.9375,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397702">
+      <name>Abbott Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>565626N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1583958W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>565614N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1583704W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>56.9372222</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-158.6177778</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>13</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Chignik D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -158.6661111,56.9405556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397704">
+      <name>Akulikutak River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Bethel (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>050</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>604505N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1611714W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>602947N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1603117W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>60.4963889</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-160.5213889</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>6</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Bethel D-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -161.2872222,60.7513889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397708">
+      <name>Althorp Peninsula</name>
+      <styleUrl>#style-Cape</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Hoonah-Angoon (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>105</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>580453N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1361857W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>267</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Mount Fairweather A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -136.3158333,58.0813889,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397709">
+      <name>Derickson Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>565931N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1564302W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>48</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Sutwik Island D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -156.7172222,56.9919444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397712">
+      <name>Ananiuliak Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Aleutians West (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>016</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>530015N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1685353W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>6</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Umnak A-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>02/20/2008</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -168.8980556,53.0041667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397715">
+      <name>Arsenic Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Bethel (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>050</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>600002N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1600857W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>600125N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1600643W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>60.0236111</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-160.1119444</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>548</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Bethel A-4</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -160.1491667,60.0005556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397727">
+      <name>Brinckman Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Denali</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>068</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>635030N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1480000W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>635154N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1480220W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>63.865</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-148.0388889</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1135</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Healy D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -148,63.8416667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397728">
+      <name>Brinkman Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Denali</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>068</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>634932N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1475856W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>635031N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1480005W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>63.8419444</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-148.0013889</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>837</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Healy D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.9822222,63.8255556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397733">
+      <name>Canyon Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>632626N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1560921W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>633143N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1555508W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>63.5286111</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-155.9188889</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>138</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Ophir B-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -156.1558333,63.4405556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397734">
+      <name>Cape Menshikof</name>
+      <styleUrl>#style-Cape</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>573122N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1574915W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>5</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Ugashik C-6</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>07/30/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -157.8208333,57.5227778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397742">
+      <name>Deacons Rock</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>665952N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1430207W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>164</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Black River D-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -143.0352778,66.9977778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397743">
+      <name>Don Sheldon Amphitheater</name>
+      <styleUrl>#style-Basin</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>630046N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1504000W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1695</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Mount McKinley A-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>03/06/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -150.6666667,63.0127778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397744">
+      <name>Durants Cove</name>
+      <styleUrl>#style-Bay</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>594242N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1540222W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>14</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Iliamna C-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -154.0394444,59.7116667,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397761">
+      <name>Fish Ranch Bay</name>
+      <styleUrl>#style-Bay</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>555946N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1584454W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Stepovak Bay D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -158.7483333,55.9961111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397762">
+      <name>Fishrack Bay</name>
+      <styleUrl>#style-Bay</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Lake and Peninsula</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>164</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>560027N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1584438W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Chignik A-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -158.7438889,56.0075,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397763">
+      <name>Foggy Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>North Slope</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>185</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>701450N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474904W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>6</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Beechey Point A-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.8177778,70.2472222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397764">
+      <name>Foggy Island</name>
+      <styleUrl>#style-Island</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>North Slope</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>185</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>701629N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1474612W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Beechey Point B-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.77,70.2747222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397769">
+      <name>Golovnin Sound</name>
+      <styleUrl>#style-Bay</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Nome (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>180</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>643114N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1630101W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>0</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Solomon C-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -163.0169444,64.5205556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397770">
+      <name>Granite Mountains</name>
+      <styleUrl>#style-Unknown</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Southeast Fairbanks (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>240</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>634650N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1452359W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1502</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Mount Hayes D-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -145.3997222,63.7805556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397771">
+      <name>Horn Mountain</name>
+      <styleUrl>#style-Ridge</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>615848N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473045W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1653</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage D-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5125,61.98,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397772">
+      <name>Horn Mountains</name>
+      <styleUrl>#style-Ridge</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>615936N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1472123W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1379</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage D-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.3563889,61.9933333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397773">
+      <name>Horn Mountains</name>
+      <styleUrl>#style-Ridge</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>620012N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473028W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1491</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Talkeetna Mountains A-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5077778,62.0033333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397774">
+      <name>Horn Mountains</name>
+      <styleUrl>#style-Ridge</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>620130N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1472239W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1678</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Talkeetna Mountains A-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.3775,62.025,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397776">
+      <name>Ikathiwik Crater</name>
+      <styleUrl>#style-Crater</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Bethel (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>050</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>601340N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1661411W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>144</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Nunivak Island A-4</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -166.2363889,60.2277778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397784">
+      <name>Kinaruk River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Bethel (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>050</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>603533N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1641943W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>603445N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1641458W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>60.5791667</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-164.2494444</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>3</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Baird Inlet C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>02/20/2008</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -164.3286111,60.5925,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397787">
+      <name>Kings Mountain</name>
+      <styleUrl>#style-Summit</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>614453N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1483035W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1675</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Anchorage C-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -148.5097222,61.7480556,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397792">
+      <name>Kugrupaga River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Nome (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>180</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>655224N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1663005W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>654501N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1661516W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.7502778</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-166.2544444</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>34</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Teller D-4</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -166.5013889,65.8733333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397793">
+      <name>Kushluk River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Bethel (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>050</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>604441N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1611509W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>603507N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1605042W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>60.5852778</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-160.845</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>7</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Bethel C-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>06/08/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -161.2525,60.7447222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397796">
+      <name>Kuyungsik River</name>
+      <styleUrl>#style-Gut</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Wade Hampton (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>270</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>612900N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1643613W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>6</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Marshall B-7</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -164.6036111,61.4833333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397798">
+      <name>Magitchlie Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>633227N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1581230W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>640528N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1582234W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>64.0911111</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-158.3761111</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>28</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Ophir C-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>07/21/2009</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -158.2083333,63.5408333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397800">
+      <name>Marshall Gulch</name>
+      <styleUrl>#style-Valley</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>650421N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1473210W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>650424N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1473002W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.0733333</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-147.5005556</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>271</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Livengood A-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -147.5361111,65.0725,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397808">
+      <name>Middle Fork Chena River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Fairbanks North Star</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>090</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>645628N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1461505W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>650532N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1444325W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>65.0922222</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-144.7236111</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>252</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Big Delta D-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>01/01/2000</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.2513889,64.9411111,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397810">
+      <name>Moose Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Matanuska-Susitna</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>170</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>624416N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1462913W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>624501N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1462950W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>62.7502778</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-146.4972222</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>803</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Gulkana C-5</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -146.4869444,62.7377778,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397812">
+      <name>Munsatli Mountains</name>
+      <styleUrl>#style-Unknown</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>634212N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1530036W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>575</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Medfra C-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -153.01,63.7033333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397813">
+      <name>Narogurum River</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Dillingham (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>070</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>592228N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1600031W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>593001N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1595440W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>59.5002778</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-159.9111111</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>43</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Goodnews Bay B-3</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -160.0086111,59.3744444,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397814">
+      <name>Mount Kubugakli</name>
+      <styleUrl>#style-Summit</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Kodiak Island</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>150</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>575309N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1550803W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>725</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Karluk D-4</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -155.1341667,57.8858333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397815">
+      <name>Alaska Range</name>
+      <styleUrl>#style-Range</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>623500N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1530500W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value/>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value/>
+        </Data>
+        <Data name="ELEVATION">
+          <value>1555</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>McGrath C-1</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value>02/20/2008</value>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -153.0833333,62.5833333,0
+        </coordinates>
+      </Point>
+    </Placemark>
+    <Placemark id="feature-1397821">
+      <name>North Fork Bonanza Creek</name>
+      <styleUrl>#style-Stream</styleUrl>
+      <ExtendedData>
+        <Data name="STATE_ALPHA">
+          <value>AK</value>
+        </Data>
+        <Data name="STATE_NUMERIC">
+          <value>02</value>
+        </Data>
+        <Data name="COUNTY_NAME">
+          <value>Yukon-Koyukuk (CA)</value>
+        </Data>
+        <Data name="COUNTY_NUMERIC">
+          <value>290</value>
+        </Data>
+        <Data name="PRIMARY_LAT_DMS">
+          <value>663944N</value>
+        </Data>
+        <Data name="PRIM_LONG_DMS">
+          <value>1503956W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DMS">
+          <value>664600N</value>
+        </Data>
+        <Data name="SOURCE_LONG_DMS">
+          <value>1494128W</value>
+        </Data>
+        <Data name="SOURCE_LAT_DEC">
+          <value>66.7666667</value>
+        </Data>
+        <Data name="SOURCE_LONG_DEC">
+          <value>-149.6911111</value>
+        </Data>
+        <Data name="ELEVATION">
+          <value>260</value>
+        </Data>
+        <Data name="MAP_NAME">
+          <value>Bettles C-2</value>
+        </Data>
+        <Data name="DATE_CREATED">
+          <value>03/31/1981</value>
+        </Data>
+        <Data name="DATE_EDITED">
+          <value/>
+        </Data>
+      </ExtendedData>
+      <Point>
+        <coordinates>
+          -150.6655556,66.6622222,0
+        </coordinates>
+      </Point>
+    </Placemark>
+  </Document>
+</kml>
