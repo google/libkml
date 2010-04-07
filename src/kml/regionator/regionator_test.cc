@@ -38,6 +38,7 @@
 
 namespace kmlregionator {
 
+using kmldom::AtomLinkPtr;
 using kmldom::DocumentPtr;
 using kmldom::FeaturePtr;
 using kmldom::FolderPtr;
@@ -216,12 +217,25 @@ TEST_F(RegionatorTest, SimpleRegionateAligned) {
 TEST_F(RegionatorTest, SetRootFilenameTest) {
   PointRegionHandler depth2(2, &kml_file_map_);
   Regionator rtor(depth2, kmlconvenience::CreateRegion2d(10,0,10,0,128,-1));
-  rtor.SetRootFilename("pickle.kml");
+  const string kPickleKml("pickle.kml");
+  rtor.SetRootFilename(kPickleKml.c_str());
   rtor.Regionate(NULL);
-  ASSERT_EQ(kmldom::Type_kml, kml_file_map_["pickle.kml"]->Type());
-  ASSERT_EQ(kmldom::Type_kml, kml_file_map_["2.kml"]->Type());
+  ASSERT_EQ(kmldom::Type_kml, kml_file_map_[kPickleKml]->Type());
+  const string k2Kml("2.kml");
+  ASSERT_EQ(kmldom::Type_kml, kml_file_map_[k2Kml]->Type());
+  DocumentPtr d = kmldom::AsDocument(kml_file_map_[kPickleKml]->get_feature());
+  ASSERT_TRUE(d);
+  ASSERT_TRUE(d->has_atomlink());
+  AtomLinkPtr link = d->get_atomlink();
+  ASSERT_EQ(string(kPickleKml), link->get_href());
+  ASSERT_EQ(string("self"), link->get_rel());
+  d = kmldom::AsDocument(kml_file_map_[k2Kml]->get_feature());
+  ASSERT_TRUE(d);
+  ASSERT_TRUE(d->has_atomlink());
+  link = d->get_atomlink();
+  ASSERT_EQ(string(kPickleKml), link->get_href());
+  ASSERT_EQ(string("up"), link->get_rel());
 }
-
 
 }  // end namespace kmlregionator
 
