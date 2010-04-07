@@ -51,7 +51,11 @@ public:
   // details on how this class calls out to the RegionHandler.
   // The default output directory (output_directory == NULL) is the
   // current working directory of the caller. Returns true when regionation
-  // has completed.
+  // has completed.  Each generated KML file has a rel="up" link to the root
+  // KML file.  The root KML file has a rel="self" link.  See SetRootFilename
+  // for the name of the root KML file.  Since data presented via Region-based
+  // NetworkLinks used in this manner compounds it is of interest to "reach up"
+  // all the way to the root upon discovering any descendant node.
   bool Regionate(const char* output_directory);
 
   // This method "regionates" using the given RegionHandler and region.  The
@@ -64,7 +68,8 @@ public:
                                const char* output_directory);
 
   // By default, the resulting root filename will be "1.kml".  Provide an
-  // override for that name with this method.
+  // override for that name with this method.  This file is also added as the
+  // <atom:link> of every descendent kml.
   void SetRootFilename(const char *filename) { root_filename_ = filename; }
 
 private:

@@ -29,7 +29,9 @@
 #include "kml/regionator/regionator.h"
 #include <sstream>
 #include "kml/base/file.h"
+#include "kml/base/mimetypes.h"
 #include "kml/base/util.h"
+#include "kml/convenience/atom_util.h"
 #include "kml/dom.h"
 #include "kml/regionator/regionator_qid.h"
 #include "kml/regionator/regionator_util.h"
@@ -101,6 +103,15 @@ bool Regionator::_Regionate(const RegionPtr& region) {
   // Region.
   DocumentPtr document = CreateRegionDocument(region);
   document->set_name(region->get_id());
+
+  // Add an <atom:link> for each node.  The root gets a "self" relation.
+  // All other nodes get an "up" relation whose href is the root KML file.
+  // up: "A URI that refers to a parent document in a hierarchy of documents."
+  // See: http://www.iana.org/assignments/link-relations/link-relations.xhtml
+  document->set_atomlink(kmlconvenience::AtomUtil::CreateBasicLink(
+    root_filename_ ? root_filename_ : "1.kml",
+    qid.IsRoot() ? "self" : "up",
+    kmlbase::kKmlMimeType));
 
   // Create a NetworkLink to the KML file for each child region with data.
   for (size_t i = 0; i < children.size(); ++i) {
