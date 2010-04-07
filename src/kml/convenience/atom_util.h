@@ -46,6 +46,12 @@ class AtomUtil {
   static kmldom::AtomEntryPtr CreateBasicEntry(const string& title,
                                                const string& summary);
 
+  // This creates an <atom:link> with the specified values of href=, rel=,
+  // and type=.
+  static kmldom::AtomLinkPtr CreateBasicLink(const string& href,
+                                             const string& rel,
+                                             const string& type);
+
   // This creates an <atom:entry> from and for the KML Feature.  The
   // <atom:entry>'s <atom:title> is set from the Feature's <name> and the
   // <atom:summary> is set from the Feature's <description>.
