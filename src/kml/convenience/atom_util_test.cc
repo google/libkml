@@ -254,6 +254,17 @@ TEST(AtomUtilTest, TestGetGdResourceId) {
             resource_id);
 }
 
+TEST(AtomUtilTest, TestCreateBasicLink) {
+  const string href("a.kml");
+  const string rel("self");
+  const string type("application/vnd.google-earth.kml+xml");
+  kmldom::AtomLinkPtr link = AtomUtil::CreateBasicLink(href, rel, type);
+  ASSERT_TRUE(link);
+  ASSERT_EQ(href, link->get_href());
+  ASSERT_EQ(rel, link->get_rel());
+  ASSERT_EQ(type, link->get_type());
+}
+
 }  // end namespace kmlconvenience
 
 int main(int argc, char** argv) {

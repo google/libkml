@@ -53,6 +53,17 @@ AtomEntryPtr AtomUtil::CreateBasicEntry(const string& title,
 }
 
 // static
+AtomLinkPtr AtomUtil::CreateBasicLink(const string& href,
+                                      const string& rel,
+                                      const string& type) {
+  AtomLinkPtr link = KmlFactory::GetFactory()->CreateAtomLink();
+  link->set_href(href);
+  link->set_rel(rel);
+  link->set_type(type);
+  return link;
+}
+
+// static
 kmldom::AtomEntryPtr AtomUtil::CreateEntryForFeature(
     const FeaturePtr& feature) {
   if (!feature.get()) {
