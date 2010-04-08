@@ -23,8 +23,10 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef SRC_KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
-#define SRC_KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
+// This file contains the implementation of the KmlFeatureListSaver class.
+
+#ifndef KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
+#define KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
 
 #include "kml/convenience/feature_list.h"
 #include "kml/dom.h"
@@ -32,6 +34,19 @@
 
 namespace kmlconvenience {
 
+// This ParserObserver saves the non-Container Features in the input KML
+// to the given FeatureList and the shared style selectors to the given
+// SharedStyleMap if one is supplied.  If a style_base is supplied any Feature
+// with a in-file relative reference is saved to the FeatureList with the
+// given string as the base.  The SharedStyleMap and style_base are optional.
+// Example usage:
+//  FeatureList feature_list;
+//  SharedStyleMap shared_style_map;
+//  KmlFeatureListSaver kml_saver(&feature_list, &shared_style_map, "s.kml");
+//  Parser parser;
+//  parser.AddObserver(&kml_saver);
+//  string errors;
+//  parser.Parse(kml, &errors);
 class KmlFeatureListSaver : public kmldom::ParserObserver {
  public:
   KmlFeatureListSaver(FeatureList* feature_list,
@@ -93,4 +108,4 @@ class KmlFeatureListSaver : public kmldom::ParserObserver {
 
 }  // end namespace kmlconvenience
 
-#endif  // SRC_KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
+#endif  // KML_CONVENIENCE_KML_FEATURE_LIST_SAVER_H__
