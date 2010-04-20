@@ -137,8 +137,3 @@ TEST_F(ExpatHandlerNsTest, TestExpatParserDefaultAndPrefixed) {
 }
 
 }  // end namespace kmlbase
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

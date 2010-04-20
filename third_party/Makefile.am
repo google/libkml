@@ -6,7 +6,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
 	      -I$(top_srcdir)/third_party/googletest-r108/include
 
 lib_LTLIBRARIES = libminizip.la liburiparser.la
-noinst_LTLIBRARIES = libgtest.la
+noinst_LTLIBRARIES = libgtest.la libgtest_main.la
 
 libminizip_la_SOURCES = \
 	zlib-1.2.3/contrib/minizip/unzip.c \
@@ -86,6 +86,9 @@ libgtest_la_SOURCES = \
 	$(googletest)/src/gtest-port.cc \
 	$(googletest)/src/gtest-test-part.cc \
 	$(googletest)/src/gtest-typed-test.cc
+
+libgtest_main_la_SOURCES = $(googletest)/src/gtest_main.cc
+libgtest_main_la_LIBADD = libgtest.la
 
 EXTRA_DIST = \
 	expat.win32/expat.h \

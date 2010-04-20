@@ -68,7 +68,7 @@ atom_util_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 convenience_test_SOURCES = convenience_test.cc
 convenience_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
@@ -76,7 +76,7 @@ convenience_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 csv_file_test_SOURCES = csv_file_test.cc
 csv_file_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -84,7 +84,7 @@ csv_file_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 csv_parser_test_SOURCES = csv_parser_test.cc
 csv_parser_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -92,7 +92,7 @@ csv_parser_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 element_counter_test_SOURCES = element_counter_test.cc
 element_counter_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -100,7 +100,7 @@ element_counter_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 feature_list_test_SOURCES = feature_list_test.cc
 feature_list_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
@@ -108,7 +108,7 @@ feature_list_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 google_doc_list_test_SOURCES = google_doc_list_test.cc
 google_doc_list_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -116,7 +116,7 @@ google_doc_list_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 google_maps_data_test_SOURCES = google_maps_data_test.cc
 google_maps_data_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -124,7 +124,7 @@ google_maps_data_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 google_picasa_web_test_SOURCES = google_picasa_web_test.cc
 google_picasa_web_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -132,7 +132,7 @@ google_picasa_web_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 google_spreadsheets_test_SOURCES = google_spreadsheets_test.cc
 google_spreadsheets_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -140,7 +140,7 @@ google_spreadsheets_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 gpx_trk_pt_handler_test_SOURCES = gpx_trk_pt_handler_test.cc
 gpx_trk_pt_handler_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -148,13 +148,13 @@ gpx_trk_pt_handler_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 http_client_test_SOURCES = http_client_test.cc
 http_client_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 http_client_test_LDADD = http_client.o \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 kml_feature_list_saver_test_SOURCES = kml_feature_list_saver_test.cc
 kml_feature_list_saver_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
@@ -170,6 +170,6 @@ kmz_check_links_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 CLEANFILES = check_PROGRAMS

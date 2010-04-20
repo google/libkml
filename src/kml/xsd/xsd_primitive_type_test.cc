@@ -63,8 +63,3 @@ TEST_F(XsdPrimitiveTypeTest, TestXsdPrimitiveTypeNameId) {
 }
 
 }  // end namespace kmlxsd
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

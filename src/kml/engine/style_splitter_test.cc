@@ -359,8 +359,3 @@ TEST_F(StyleSplitterTest, TestMultipleFeatures) {
   style_splitter_->EndElement();
 #endif
 }  // end namespace kmlengine
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

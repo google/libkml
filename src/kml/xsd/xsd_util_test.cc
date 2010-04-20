@@ -59,11 +59,6 @@ TEST_F(XsdUtilTest, TestCreateXsdSchema) {
   ASSERT_TRUE(schema);
   ASSERT_EQ(kPrefix, schema->get_target_namespace_prefix());
   ASSERT_EQ(kTargetNamespace, schema->get_target_namespace());
-} 
+}
 
 }  // end namespace kmlxsd
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}

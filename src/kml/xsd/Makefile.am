@@ -49,54 +49,54 @@ xsd_complex_type_test_SOURCES = xsd_complex_type_test.cc
 xsd_complex_type_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_complex_type_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_file_test_SOURCES = xsd_file_test.cc
 xsd_file_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_file_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_element_test_SOURCES = xsd_element_test.cc
 xsd_element_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_element_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_handler_test_SOURCES = xsd_handler_test.cc
 xsd_handler_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 xsd_handler_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_primitive_type_test_SOURCES = xsd_primitive_type_test.cc
 xsd_primitive_type_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_primitive_type_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_schema_test_SOURCES = xsd_schema_test.cc
 xsd_schema_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_schema_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_simple_type_test_SOURCES = xsd_simple_type_test.cc
 xsd_simple_type_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_simple_type_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xsd_util_test_SOURCES = xsd_util_test.cc
 xsd_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xsd_util_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 xst_parser_test_SOURCES = xst_parser_test.cc
 xst_parser_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
 xst_parser_test_LDADD = libkmlxsd.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 CLEANFILES = check_PROGRAMS
