@@ -38,7 +38,7 @@ feature_list_region_handler_test_LDADD = libkmlregionator.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 regionator_test_SOURCES = regionator_test.cc
 regionator_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
@@ -47,7 +47,7 @@ regionator_test_LDADD = libkmlregionator.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 regionator_qid_test_SOURCES = regionator_qid_test.cc
 regionator_qid_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
@@ -56,7 +56,7 @@ regionator_qid_test_LDADD = libkmlregionator.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 regionator_util_test_SOURCES = regionator_util_test.cc
 regionator_util_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
@@ -65,6 +65,6 @@ regionator_util_test_LDADD = libkmlregionator.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 CLEANFILES = check_PROGRAMS

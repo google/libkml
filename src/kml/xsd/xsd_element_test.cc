@@ -133,8 +133,3 @@ TEST_F(XsdElementTest, TestGetTypeId) {
 }
 
 }  // end namespace kmlxsd
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
-}
