@@ -13,7 +13,23 @@ gnis-ak-first-101.csv:
   http://www.usgs.gov/laws/info_policies.html.
 
   "Credit: U.S. Geological Survey"
-  
+
+california.recovery.csv:
+  Derived from http://www.recovery.ca.gov/newmap/data/recovery_map_projects.xls
+  http://www.recovery.ca.gov/HTML/About/conditionsofuse.shtml#ownership:
+  "In general, information presented on this web site, unless otherwise
+   indicated, is considered in the public domain. It may be distributed
+   or copied as permitted by law."
+
+colleges.csv:
+  This is CSV output from Microsoft Excel on Mac and uses \r line breaks.
+
+crnl.csv:
+  This is CSV output from Microsoft Excel on Windows and uses \r\n line breaks.
+
+lincoln-park-gc.csv:
+  This is CSV output from Google Spreadsheets and uses \n line breaks.
+ 
 test.csv:
 
   The format of test.csv is as follows:
@@ -30,4 +46,3 @@ test.csv:
   description: ELEVATION + COUNTY_NAME + STATE_ALPHA
 
   NOTE: this .csv is deprecated, see kml/convenience/csv_parser.h
-
