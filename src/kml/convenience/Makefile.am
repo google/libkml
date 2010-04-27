@@ -162,7 +162,7 @@ kml_feature_list_saver_test_LDADD = libkmlconvenience.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/third_party/libgtest.la
+	$(top_builddir)/third_party/libgtest_main.la
 
 kmz_check_links_test_SOURCES = kmz_check_links_test.cc
 kmz_check_links_test_CXXFLAGS = -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
