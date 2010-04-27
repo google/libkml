@@ -58,15 +58,44 @@ private:
   XML_Parser parser_;
 };
 
-}  // end namespace kmlbase
+const int kBitMask = 0x3f;
+const int kByteMask = 0x80;
+const int kMask2Bytes = 0xc0;
+const int kMask3Bytes = 0xe0;
+
+// Convert an XML_Char buffer to a UTF-8 encoded string.   Even
+// if Expat is compiled with Unicode, XML_Char will point to a UTF-16
+// encoded character.  It's not known in practice if Expat will actually
+// allow surrogate pairs,  but our interface is a pointer in case we find
+// an exception to the Unicode's book assertion that no interesting languages
+// are represented outside the first 64K Unicode characters.
+inline void xmlchar_to_utf8(const XML_Char *input, string* buffer) {
+  if (!input || !buffer)
+    return;
+
+  const int c = *input;
+  // Rely on constant folding and inlining to make this fast when not
+  // built with XML_UNICODE; this function should optimize down to an
+  // inlined buffer.push_back().
+  if (sizeof(XML_Char) == 1 || c < 0x80) {
+    buffer->push_back(static_cast<char>(c));
+  } else if (c < 0x800) {
+    buffer->push_back(kMask2Bytes | c >> 6);
+    buffer->push_back(kByteMask | (c & kBitMask));
+  } else if (c < 0xd800 || c > 0xdbff) {
+    buffer->push_back(kMask3Bytes | c >> 12);
+    buffer->push_back(kByteMask | ((c >> 6) & kBitMask));
+    buffer->push_back(kByteMask | (c & kBitMask));
+  } else {
+    // Handle UTF-16 surrogate pairs here.  We 'handle' them by dropping them.
+  }
+}
 
 inline string xml_char_to_string(const XML_Char *input) {
   string output;
 
-  // This is technically wrong, but only for cases uninteresting for KML as
-  // we only ever have single-byte encodings.
   for (const XML_Char *p = input; input && *p; p++) {
-    output.append((const char *)p, 1);
+    xmlchar_to_utf8(p, &output);
   }
   return output;
 }
@@ -84,9 +113,11 @@ inline void xml_char_to_string_vec(const XML_Char **input,
 inline string xml_char_to_string_n(const XML_Char *input, size_t length) {
   string output;
   while (length--) {
-    output.append((const char *)input++, 1);
+    xmlchar_to_utf8(input++, &output);
   }
   return output;
 }
+
+}  // end namespace kmlbase
 
 #endif  // KML_BASE_EXPAT_HANDLER_H__
