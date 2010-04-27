@@ -49,6 +49,11 @@ string CreateExpandedStrings(const string& in,
     size_t start_pos = out.find(candidate);
     while (start_pos != string::npos) {
       out.replace(start_pos, candidate.size(), itr->second);
+      // Avoid an infinite loop if the value contains the key. Allow the first
+      // replacement to happen, then bail.
+      if (itr->second.find(itr->first) != string::npos) {
+        break;
+      }
       start_pos = out.find(candidate, start_pos + candidate.size());
     }
   }
