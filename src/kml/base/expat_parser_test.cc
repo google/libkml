@@ -230,6 +230,57 @@ TEST_F(ExpatParserTest, TestEntitiesStopParser) {
   ASSERT_EQ(string("<Placemark>"), handler_.get_xml());
 }
 
+TEST_F(ExpatParserTest, TestUnicode) {
+  const string kUnicodeKml(
+      "<Placemark>"
+      "<name>"
+      "one\xe2\x80\x93two" // A UTF-8 encoded en-dash.
+      "</name>"
+      "</Placemark>"
+  );
+  ASSERT_TRUE(ExpatParser::ParseString(kUnicodeKml, &handler_, &errors_, false));
+  ASSERT_TRUE(errors_.empty());
+  // If this roundtrip fails, expect problems in the XML_UNICODE paths.
+  ASSERT_EQ(kUnicodeKml, handler_.get_xml());
+}
+
+TEST_F(ExpatParserTest, TestUnicodeToUtf8) {
+  // Verify no crash on null inputs.
+  string result_string;
+  const XML_Char input_buffer = 'a';
+
+  xmlchar_to_utf8(&input_buffer, NULL);
+  xmlchar_to_utf8(NULL, &result_string);
+  ASSERT_TRUE(result_string.empty());
+  xmlchar_to_utf8(NULL, NULL);
+
+  xmlchar_to_utf8(&input_buffer, &result_string);
+  ASSERT_EQ("a", result_string);
+
+  // Requires this file be built with the same flags used to build libexpat.
+#if XML_UNICODE
+  ASSERT_TRUE(sizeof(XML_Char) > 1);
+
+  // Verify successful two byte encoding.
+  result_string.clear();
+  const XML_Char kutf8_small_g = 0x262;
+  xmlchar_to_utf8(&kutf8_small_g, &result_string);
+  ASSERT_EQ("\xc9\xa2", result_string);
+
+  // Verify three byte encoding.
+  result_string.clear();
+  const XML_Char kutf8_degree_celsius = 0x2103;
+  xmlchar_to_utf8(&kutf8_degree_celsius, &result_string);
+  ASSERT_EQ("\xe2\x84\x83", result_string);
+#else
+  // Verify we don't mangle UTF-8 start if we're just passing through.
+  result_string.clear();
+  const XML_Char kutf8 = 0xe2 ;
+  xmlchar_to_utf8(&kutf8, &result_string);
+  ASSERT_EQ("\xe2", result_string);
+#endif  // XML_UNICODE
+}
+
 TEST_F(ExpatParserTest, TestXmlUnicodeHandlers) {
   // The contrived-looking array approach here is so we're safe with either
   // sane build options or XML_UNICODE.
@@ -237,10 +288,9 @@ TEST_F(ExpatParserTest, TestXmlUnicodeHandlers) {
   const XML_Char kXMLChar2[] = {'<', 'C', '>', '<', 'D', '>', 0 };
   const XML_Char kEmptyString[] = { 0 };
   string s1;
-  s1 = xml_char_to_string(kXMLChar);
   // Ensure roundrip is OK.  If this fails, suspect XML_UNICODE mismatches
   // in linked expat lib and this source.
-  ASSERT_EQ(kXMLChar, xml_char_to_string(kXMLChar));
+  ASSERT_EQ("<A><B>", xml_char_to_string(kXMLChar));
 
   // Check null inputs.
   s1 = xml_char_to_string(NULL);
