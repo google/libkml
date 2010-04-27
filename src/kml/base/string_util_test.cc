@@ -72,6 +72,16 @@ TEST(StringUtilTest, TestBasicReplacements) {
   ASSERT_EQ(expected, CreateExpandedStrings(in, sm, kStart, kEnd));
 }
 
+// Verify that a replacement value containing its key doesn't cause an
+// infinite loop in CreateExpandedStrings.
+TEST(StringUtilTest, TestReplacementValueContainsKey) {
+  StringMap sm;
+  sm["description"] = "abcdefghi012345$[description]";
+  const string kIn("abcdefghi012345$[description]");
+  const string kExpected("abcdefghi012345abcdefghi012345$[description]");
+  ASSERT_EQ(kExpected, CreateExpandedStrings(kIn, sm, "$[", "]"));
+}
+
 TEST(StringUtilTest, TestSplitStringUsing) {
   const string kHi("hi");
   const string kHow("how");
