@@ -358,8 +358,8 @@ extern int ZEXPORT libkml_unzSetOffset (unzFile file, uLong pos);
 /* These declarations are from the proposed iomem_simple package at
  * http://code.trak.dk. See iomem_simple.c in this directory.
  */
-extern unzFile ZEXPORT unzAttach  OF((voidpf stream, zlib_filefunc_def*));
-extern voidpf  ZEXPORT unzDetach  OF((unzFile*));
+extern unzFile ZEXPORT libkml_unzAttach OF((voidpf stream, zlib_filefunc_def*));
+extern voidpf  ZEXPORT libkml_unzDetach OF((unzFile*));
 
 
 #ifdef __cplusplus
