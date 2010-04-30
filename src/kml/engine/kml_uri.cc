@@ -202,6 +202,9 @@ bool KmzSplit(const string& kml_url, string* kmz_url,
   }
   if (kmz_path && kml_url.size() > kmz + 4) {
     *kmz_path = kml_url.substr(kmz + 4 + 1);  // one past / after ".kmz/"
+  } else if (kmz_path && kmz == kml_url.size() - 4) {
+    // kml_url was just a kmz file
+    kmz_path->clear();
   }
   return true;
 }

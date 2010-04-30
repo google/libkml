@@ -193,6 +193,15 @@ TEST_F(KmlUriTest, TestKmzSplit) {
   ASSERT_EQ(kKmzPath, path_in_kmz);
 }
 
+TEST_F(KmlUriTest, TestKmzSplitNoFilename) {
+  const string kUrl("http://example.com/path/archive.kmz");
+  string fetchable_url;
+  string path_in_kmz("this will be replaced by an empty string");
+  ASSERT_TRUE(KmzSplit(kUrl, &fetchable_url, &path_in_kmz));
+  ASSERT_EQ(kUrl, fetchable_url);
+  ASSERT_TRUE(path_in_kmz.empty());
+}
+
 TEST_F(KmlUriTest, TestBasicResolveModelTargetHref) {
   // Verify behavior for a common case.
   const string kBase("http://host.com/dir/foo.kmz/doc.kml");
