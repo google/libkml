@@ -123,6 +123,11 @@ bool SplitUriPath(const string& uri, string* path);
 // output string is supplied a uri w/o the fragment is stored there.
 bool GetFetchableUri(const string& uri, string* fetchable_uri);
 
+// Given a url of the form scheme:authority/path/file.kmz/file/in/kmz this
+// function splits out the fetchable subfile in the KMZ archive, writing the
+// fetchable KMZ URL to kmz_url and the archived file to kmz_path. If the
+// fetchable URL does not end in .kmz it returns false. If there is no subfile
+// to split out, it sets kmz_path to an empty string.
 bool KmzSplit(const string& kml_url, string* kmz_url,
               string* kmz_path);
 
