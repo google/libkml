@@ -171,11 +171,12 @@ const string KmlFile::CreateXmlHeader() const {
   return string("<?xml version=\"1.0\" encoding=\"" + encoding_ + "\"?>\n");
 }
 
-bool KmlFile::SerializeToString(string* xml_output) const {
+bool KmlFile::SerializeToOstream(std::ostream* xml_output) const {
   if (!xml_output || !get_root()) {
     return false;
   }
-  xml_output->append(CreateXmlHeader());
+  const string xml_header = CreateXmlHeader();
+  xml_output->write(xml_header.data(), xml_header.size());
 
   // Find all xml namespaces known to libkml used by all elements descending
   // from the root and insert the appropriate xmlns attributes to the root
@@ -184,7 +185,16 @@ bool KmlFile::SerializeToString(string* xml_output) const {
   FindAndInsertXmlNamespaces(get_root());
   
   // Append the serialization to the XML header.
-  xml_output->append(kmldom::SerializePretty(get_root()));
+  kmldom::SerializeToOstream(get_root(), true, xml_output);
+  return true;
+}
+
+bool KmlFile::SerializeToString(string* xml_output) const {
+  if (!xml_output) {
+    return false;
+  }
+  std::ostringstream oss;
+  *xml_output = SerializeToOstream(&oss) ? oss.str() : string("");
   return true;
 }
 
