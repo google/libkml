@@ -70,16 +70,27 @@ static string ParseSerialize(const string& kml) {
   return kmldom::SerializePretty(kmldom::Parse(kml, NULL));
 }
 
+static string ParseOstreamSerialize(const string& kml) {
+  std::ostringstream oss;
+  kmldom::SerializeToOstream(kmldom::Parse(kml, NULL), true, &oss);
+  return oss.str();
+}
+
 TEST(RoundTripTest, RunTestCases) {
   size_t size = sizeof(kTestCases)/sizeof(kTestCases[0]);
   for (size_t i = 0; i < size; ++i) {
     const char* subdir = kTestCases[i].subdir;
     const char* input_kml = kTestCases[i].input_kml;
     const char* golden_kml = kTestCases[i].golden_kml;
-    string actual_kml = ParseSerialize(ReadTestCase(subdir, input_kml));
+    const string test_case_kml = ReadTestCase(subdir, input_kml);
+    string actual_kml = ParseSerialize(test_case_kml);
     EXPECT_FALSE(actual_kml.empty()) << input_kml;
-    string expected_kml = ReadTestCase(subdir, golden_kml);
+    const string expected_kml = ReadTestCase(subdir, golden_kml);
     EXPECT_FALSE(expected_kml.empty()) << golden_kml;
+    EXPECT_EQ(expected_kml, actual_kml);
+
+    actual_kml = ParseOstreamSerialize(test_case_kml);
+    EXPECT_FALSE(actual_kml.empty()) << input_kml;
     EXPECT_EQ(expected_kml, actual_kml);
   }
 }
