@@ -29,6 +29,7 @@
 #ifndef KML_DOM_KML_FUNCS_H__
 #define KML_DOM_KML_FUNCS_H__
 
+#include <ostream>
 #include "kml/dom/element.h"
 #include "kml/dom/kml_ptr.h"
 
@@ -61,6 +62,13 @@ string SerializePretty(const ElementPtr& root);
 // hierarchy rooted at the given Element.  "raw" is no indentation white space
 // and no newlines.
 string SerializeRaw(const ElementPtr& root);
+
+// This function is the public API for emitting the XML of an element
+// hierarchy.  The comments for SerializePretty() vs SerializeRaw() describe
+// the behavior of the "pretty" flag.  If root or xml are null this method
+// does nothing and immediately returns.
+// TODO: there are some performance issues with this at present
+void SerializeToOstream(const ElementPtr& root, bool pretty, std::ostream* xml);
 
 }  // end namespace kmldom
 
