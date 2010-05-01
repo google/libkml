@@ -28,6 +28,7 @@
 #ifndef KML_ENGINE_KML_FILE_H__
 #define KML_ENGINE_KML_FILE_H__
 
+#include <ostream>
 #include <vector>
 #include "boost/scoped_ptr.hpp"
 #include "kml/base/attributes.h"
@@ -98,6 +99,9 @@ class KmlFile : public kmlbase::XmlFile {
   //    ...
   //    </kml>
   bool SerializeToString(string* xml_output) const;
+
+  // This does as SerializeToString() except to an ostream.
+  bool SerializeToOstream(std::ostream* xml_output) const;
 
   // This returns the XML header including the encoding:
   // The default is this: "<?version="1.0" encoding="utf-8"?>
