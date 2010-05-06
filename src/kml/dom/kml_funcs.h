@@ -67,7 +67,6 @@ string SerializeRaw(const ElementPtr& root);
 // hierarchy.  The comments for SerializePretty() vs SerializeRaw() describe
 // the behavior of the "pretty" flag.  If root or xml are null this method
 // does nothing and immediately returns.
-// TODO: there are some performance issues with this at present
 void SerializeToOstream(const ElementPtr& root, bool pretty, std::ostream* xml);
 
 }  // end namespace kmldom
