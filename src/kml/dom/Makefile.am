@@ -53,7 +53,6 @@ libkmldom_la_SOURCES = \
 	parser.cc \
 	serializer.cc \
 	xal.cc \
-	xml_ostream_serializer.cc \
 	xml_serializer.cc \
 	xsd.cc \
 	visitor.cc \
@@ -115,7 +114,6 @@ EXTRA_DIST = \
 	kml_handler_ns.h \
 	serializer.h \
 	stats_serializer.h \
-	xml_ostream_serializer.h \
 	xml_serializer.h \
 	xsd.h \
 	kml22.cc
@@ -169,7 +167,6 @@ TESTS = abstractlatlonbox_test \
 	gx_timeprimitive_test \
 	gx_tour_test \
 	xal_test \
-	xml_ostream_serializer_test \
 	xml_serializer_test \
 	xsd_test \
 	visitor_test \
@@ -458,12 +455,6 @@ serializer_test_LDADD= libkmldom.la \
 xal_test_SOURCES = xal_test.cc
 xal_test_CXXFLAGS =  -DDATADIR=\"$(DATA_DIR)\" $(AM_TEST_CXXFLAGS)
 xal_test_LDADD= libkmldom.la \
-	$(top_builddir)/src/kml/base/libkmlbase.la \
-	$(top_builddir)/third_party/libgtest_main.la
-
-xml_ostream_serializer_test_SOURCES = xml_ostream_serializer_test.cc
-xml_ostream_serializer_test_CXXFLAGS = $(AM_TEST_CXXFLAGS)
-xml_ostream_serializer_test_LDADD= libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/third_party/libgtest_main.la
 
