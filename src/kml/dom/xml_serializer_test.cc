@@ -1,4 +1,4 @@
-// Copyright 2008, Google Inc. All rights reserved.
+// Copyright 2010, Google Inc. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without 
 // modification, are permitted provided that the following conditions are met:
@@ -27,6 +27,8 @@
 // the SerializePretty and SerializeRaw public API functions.
 
 #include "kml/dom/xml_serializer.h"
+#include <sstream>
+#include "boost/scoped_ptr.hpp"
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
@@ -40,17 +42,18 @@ namespace kmldom {
 class XmlSerializerTest : public testing::Test {
  protected:
   virtual void SetUp() {
-    xml_serializer_ = new XmlSerializer("","");
+    string_adapter_.reset(new StringAdapter(&output_));
+    xml_serializer_.reset(
+        new XmlSerializer<StringAdapter>("", "",
+                                                  string_adapter_.get()));
     placemark_ = KmlFactory::GetFactory()->CreatePlacemark();
   }
 
-  // Called after each test.
-  virtual void TearDown() {
-    delete xml_serializer_;
-    // PlacemarkPtr's destructor releases the underlying Placemark storage.
-  }
-
-  XmlSerializer* xml_serializer_;
+  boost::scoped_ptr<XmlSerializer<StringAdapter> > xml_serializer_;
+  // If string were strictly std::string we could instead use
+  // std::ostringstream.
+  string output_;
+  boost::scoped_ptr<StringAdapter> string_adapter_;
   PlacemarkPtr placemark_;
 };
 
@@ -61,23 +64,13 @@ TEST_F(XmlSerializerTest, TestToString) {
   ASSERT_EQ("42", ToString(dna));
 }
 
-TEST_F(XmlSerializerTest, TestWriteString) {
-  // Write string clears ptr before writing, does not append.
-  string output("foo");
-  xml_serializer_->WriteString(&output);
-  const string expected_result("");
-  ASSERT_EQ(expected_result, output);
-}
-
 TEST_F(XmlSerializerTest, TestSaveEmptyStringFieldById) {
   // Assert that the <name/> field serializes as expected.
   const int type_id = Type_name;
   const string expected_result("<name/>");
   const string empty;
   xml_serializer_->SaveFieldById(type_id, empty);
-  string output;
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(expected_result, output);
+  ASSERT_EQ(expected_result, output_);
 }
 
 TEST_F(XmlSerializerTest, TestSaveStringFieldById) {
@@ -86,9 +79,7 @@ TEST_F(XmlSerializerTest, TestSaveStringFieldById) {
   const string txt("some feature name");
   const string expected_result("<name>some feature name</name>");
   xml_serializer_->SaveFieldById(type_id, txt);
-  string output;
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(expected_result, output);
+  ASSERT_EQ(expected_result, output_);
 }
 
 TEST_F(XmlSerializerTest, TestCdataHandling) {
@@ -117,11 +108,10 @@ TEST_F(XmlSerializerTest, TestCdataHandling) {
   const size_t size = sizeof(testdata) / sizeof(testdata[0]);
 
   for (size_t i = 0; i < size; ++i) {
-    XmlSerializer s_("\n","");
-    string output;
+    output_.clear();
+    XmlSerializer<StringAdapter> s_("\n","", string_adapter_.get());
     s_.SaveFieldById(Type_name, testdata[i].chardata);
-    s_.WriteString(&output);
-    ASSERT_EQ(testdata[i].expected, output);
+    ASSERT_EQ(testdata[i].expected, output_);
   }
 }
 
@@ -146,50 +136,42 @@ TEST_F(XmlSerializerTest, TestCdataPassedBySetter) {
   ASSERT_EQ(expected, xml);
 }
 
+
 TEST_F(XmlSerializerTest, TestSaveBoolFieldByIdAsBool) {
   // Assert that <open> is serialized correctly.
   const bool bool_state = true;
   string expected_result("<open>1</open>");
-  string output;
   // A parsed bool is serialized as an int:
   xml_serializer_->SaveFieldById(Type_open, bool_state);
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(expected_result, output);
+  ASSERT_EQ(expected_result, output_);
 }
 
 TEST_F(XmlSerializerTest, TestSaveBoolFieldByIdAsInt) {
   // Assert that <open> is serialized correctly.
   const unsigned int int_state = 1;
   string expected_result("<open>1</open>");
-  string output;
   // A parsed int is serialized as an int:
   xml_serializer_->SaveFieldById(Type_open, int_state);
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(expected_result, output);
+  ASSERT_EQ(expected_result, output_);
 }
 
 TEST_F(XmlSerializerTest, TestSaveContent) {
   // Ensure a simple string is serialized exactly.
   const string s("tom, dick");
   xml_serializer_->SaveContent(s, false);
-  string output;
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(s, output);
+  ASSERT_EQ(s, output_);
   // SaveContent will append continued calls.
   string t(" and harry");
   xml_serializer_->SaveContent(t, false);
   string expected_result(s + t);
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(expected_result, output);
+  ASSERT_EQ(expected_result, output_);
 }
 
 TEST_F(XmlSerializerTest, TestSaveColor) {
   const kmlbase::Color32 kRed(0xff0000ff);
   const string kExpected("<color>ff0000ff</color>");
   xml_serializer_->SaveColor(Type_color, kRed);
-  string output;
-  xml_serializer_->WriteString(&output);
-  ASSERT_EQ(kExpected, output);
+  ASSERT_EQ(kExpected, output_);
 }
 
 TEST_F(XmlSerializerTest, TestPrecision) {
@@ -269,6 +251,28 @@ TEST_F(XmlSerializerTest, TestSerializeNull) {
   const string empty;
   ASSERT_EQ(empty, SerializePretty(NULL));
   ASSERT_EQ(empty, SerializeRaw(NULL));
+}
+
+TEST_F(XmlSerializerTest, BasicSerializePrettyToOstream) {
+  kmldom::CoordinatesPtr coordinates =
+      kmldom::KmlFactory::GetFactory()->CreateCoordinates();
+  coordinates->add_latlng(1,2);
+  kmldom::PointPtr point = kmldom::KmlFactory::GetFactory()->CreatePoint();
+  point->set_coordinates(coordinates);
+  placemark_->set_geometry(point);
+  placemark_->set_id("pm123");
+  placemark_->set_name("placemark name");
+  XmlSerializer<StringAdapter>::Serialize(placemark_, "\r", " ",
+                                                    string_adapter_.get());
+  const string want("<Placemark id=\"pm123\">\r"
+                    " <name>placemark name</name>\r"
+                    " <Point>\r"
+                    "  <coordinates>\r"
+                    "   2,1,0\r"
+                    "  </coordinates>\r"
+                    " </Point>\r"
+                    "</Placemark>\r");
+  ASSERT_EQ(want, output_);
 }
 
 }  // end namespace kmldom
