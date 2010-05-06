@@ -47,10 +47,10 @@ string SerializePretty(const ElementPtr& root) {
   if (!root) {
     return string("");
   }
-  XmlSerializer serializer("\n", "  ");
-  root->Serialize(serializer);
   string xml;
-  serializer.WriteString(&xml);
+  StringAdapter string_adapter(&xml);
+  XmlSerializer<StringAdapter> serializer("\n", "  ", &string_adapter);
+  root->Serialize(serializer);
   return xml;
 }
 
@@ -61,96 +61,11 @@ string SerializeRaw(const ElementPtr& root) {
   if (!root) {
     return string("");
   }
-  XmlSerializer serializer("", "");
-  root->Serialize(serializer);
   string xml;
-  serializer.WriteString(&xml);
+  StringAdapter string_adapter(&xml);
+  XmlSerializer<StringAdapter> serializer("", "", &string_adapter);
+  root->Serialize(serializer);
   return xml;
-}
-
-// Construct the XmlSerializer with the given strings for newline and indent.
-// Use "" for no newline and/or indent.
-XmlSerializer::XmlSerializer(const char* newline, const char* indent)
-  : newline_(newline),
-    indent_(indent) {
-}
-
-// This emits the begin tag of the given element: "<Placemark id="foo">.
-void XmlSerializer::BeginById(int type_id, const Attributes& attributes) {
-  const string& tag_name = xsd_.ElementName(type_id);
-  Indent();
-  string attrs;
-  attributes.Serialize(&attrs);
-  xml_.push_back("<" + tag_name + attrs + ">" + newline_);
-  tag_stack_.push(tag_name);
-}
-
-// This emits the end tag of the current element: "</Placemark>".
-// If there were no child elements nor any character data the begin tag
-// is replaced with a nil tag: "<Placemark>" -> "<Placemark/>".
-void XmlSerializer::End() {
-  string tag = tag_stack_.top();
-  tag_stack_.pop();
-  string& last_xml = xml_[xml_.size()-1];
-  // Is the most recent item pushed out our begin tag?
-  string::size_type tag_size = tag.size() + 1;  // "<" + tag
-  // If there were attributes this counts on a space after the tag,
-  // else a ">".
-  if ((last_xml.compare(0, tag_size, "<" + tag) == 0) &&
-     ((last_xml[tag_size] == '>') || (last_xml[tag_size] == ' '))) {
-    // Yes, rewrite it to end with "/>"
-    // Chop off the ">" and any newline_ (newline_ is always non-NULL).
-    string::size_type length = last_xml.size() - 1 - strlen(newline_);
-    // Re-assign with a "/>" + newline.
-    last_xml.assign(last_xml.substr(0, length) + "/>" + newline_);
-  } else {  // There's content after the begin tag so close as normal.
-    Indent();
-    xml_.push_back("</" + tag + ">" + newline_);
-  }
-}
-
-// This emits a field.  All fields reduce to this method.
-void XmlSerializer::SaveStringFieldById(int type_id, string value) {
-  string tagName = Xsd::GetSchema()->ElementName(type_id);
-  Indent();
-  if (value.empty()) {
-    xml_.push_back("<" + tagName + "/>" + newline_);
-  } else {
-    xml_.push_back("<" + tagName + ">" + MaybeQuoteString(value) +
-                   "</" + tagName + ">" + newline_);
-  }
-}
-
-// This is used to emit raw character data content.  Honor request to emit
-// content unescaped if maybe_quote requests.
-void XmlSerializer::SaveContent(const string& content, bool maybe_quote) {
-  if (maybe_quote) {
-    xml_.push_back(MaybeQuoteString(content));
-  } else {
-    xml_.push_back(content);
-  }
-}
-
-void XmlSerializer::SaveColor(int type_id, const kmlbase::Color32& color) {
-  SaveFieldById(type_id, color.to_string_abgr());
-}
-
-// This emits the white space specified by indent_.
-void XmlSerializer::Indent() {
-  size_t depth = tag_stack_.size();
-  while (depth--) {
-    xml_.push_back(indent_);
-  }
-}
-
-// This emits the state of the serializer to the given string.
-void XmlSerializer::WriteString(string* output) {
-  if (output) {
-    output->clear();
-    for (size_t i = 0; i < xml_.size(); ++i) {
-      *output += xml_[i];
-    }
-  }
 }
 
 }  // namespace kmldom
