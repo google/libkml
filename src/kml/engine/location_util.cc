@@ -109,7 +109,7 @@ bool GetGeometryBounds(const GeometryPtr& geometry, Bbox* bbox) {
     return GetCoordinatesParentBounds(linearring, bbox);
   } else if (PolygonPtr polygon = AsPolygon(geometry)) {
     return polygon->has_outerboundaryis() &&
-        polygon->get_outerboundaryis()->has_linearring(),
+        polygon->get_outerboundaryis()->has_linearring() &&
         GetCoordinatesParentBounds(
             polygon->get_outerboundaryis()->get_linearring(), bbox);
   } else if (ModelPtr model = AsModel(geometry)) {

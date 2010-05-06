@@ -37,11 +37,15 @@ using kmldom::CoordinatesPtr;
 using kmldom::KmlFactory;
 using kmldom::LatLonBoxPtr;
 using kmldom::LatLonAltBoxPtr;
+using kmldom::LinearRingPtr;
+using kmldom::LineStringPtr;
 using kmldom::LocationPtr;
 using kmldom::ModelPtr;
+using kmldom::MultiGeometryPtr;
 using kmldom::PhotoOverlayPtr;
 using kmldom::PlacemarkPtr;
 using kmldom::PointPtr;
+using kmldom::PolygonPtr;
 
 // The following define is a convenience for testing inside Google.
 #ifdef GOOGLE_INTERNAL
@@ -182,12 +186,10 @@ static const struct {
     "kml", "kmlsamples.kml", "purple-line-placemark", true, 36.0944767260255,
     36.086463123013, -112.265654928602, -112.269526855561,
     true, 36.09046992451925, -112.2675908920815 },
-#if 0  // TODO
   {  // A Polygon with only an outerBoundaryIs.
     "kml", "kmlsamples.kml", "b41", true, 37.4228181532365, 37.4220817196725,
     -122.08509907149, -122.086016227378,
     true, 37.4224499364545, -122.085557649434 },
-#endif
   {  // A Polygon with holes.
     "kml", "kmlsamples.kml", "pentagon", true, 38.872910162817, 38.868757801256,
     -77.0531553685479, -77.0584405629039,
@@ -207,18 +209,37 @@ static const struct {
     true, 45.968226693, 45.968226693, 7.71792711000002, 7.71792711000002,
     true, 45.968226693, 7.71792711000002
   },
-#if 0  // TODO
-  {  // GroundOverlay
+#if 0
+  {  // TODO: GroundOverlay
+    "kml", "kmlsamples.kml", "large-groundoverlay",
+    true, 45.968226693, 45.968226693, 7.71792711000002, 7.71792711000002,
+    true, 45.968226693, 7.71792711000002
   },
+#endif
   {  // A Folder with multiple Point Placemarks.
+    "kml", "kmlsamples.kml", "placemarks-folder",
+    true, 37.4222899014025, 37.4215692786755, -122.082203542568,
+    -122.085766700618,
+    true, 37.421929590039, -122.083985121593
   },
   {  // A Folder with multiple LineString Placemarks.
+    "kml", "kmlsamples.kml", "paths-folder",
+    true, 36.1067787047714, 36.0795495214565, -112.080622229595,
+    -112.269526855561,
+    true, 36.09316411311395, -112.175074542578
   },
   {  // A Folder with multiple Polygon Placemarks.
+    "kml", "kmlsamples.kml", "google-campus-folder",
+    true, 37.4228181532365, 37.4212932884059, -122.082850226966,
+    -122.086016227378,
+    true, 37.4220557208212, -122.084433227172
   },
   {  // A Document with multiple Folders each with multiple Features.
+    "kml", "kmlsamples.kml", "root-document",
+    true, 38.872910162817, 36.0795495214565, -77.0531553685479,
+    -122.086016227378,
+    true, 37.476229842136746, -99.569585797962958
   }
-#endif
 };
 
 TEST(LocationUtilTest, RunTestCases) {
@@ -253,10 +274,36 @@ TEST(LocationUtilTest, RunTestCases) {
     ASSERT_EQ(kTestCases[i].has_loc, GetFeatureLatLon(feature, NULL, NULL));
     if (kTestCases[i].has_loc) {
       // If has_loc then the test case lat,lon are valid to test.
-      ASSERT_EQ(kTestCases[i].lat, lat);
-      ASSERT_EQ(kTestCases[i].lon, lon);
+      ASSERT_DOUBLE_EQ(kTestCases[i].lat, lat);
+      ASSERT_DOUBLE_EQ(kTestCases[i].lon, lon);
     }
   }
+}
+
+// Test GetGeometryBounds on null/empty args.
+TEST(LocationUtilTest, TestGetGeometryBoundsNullEmpty) {
+  ASSERT_FALSE(GetGeometryBounds(NULL, NULL));
+  KmlFactory* kml_factory = KmlFactory::GetFactory();
+  Bbox bbox;
+  PointPtr point = kml_factory->CreatePoint();
+  ASSERT_FALSE(GetGeometryBounds(point, NULL));
+  ASSERT_FALSE(GetGeometryBounds(point, &bbox));
+  LineStringPtr linestring = kml_factory->CreateLineString();
+  ASSERT_FALSE(GetGeometryBounds(linestring, NULL));
+  ASSERT_FALSE(GetGeometryBounds(linestring, &bbox));
+  LinearRingPtr linearring = kml_factory->CreateLinearRing();
+  ASSERT_FALSE(GetGeometryBounds(linearring, NULL));
+  ASSERT_FALSE(GetGeometryBounds(linearring, &bbox));
+  PolygonPtr poly = kml_factory->CreatePolygon();
+  ASSERT_FALSE(GetGeometryBounds(poly, &bbox));  // Issue 148
+  poly->set_outerboundaryis(kml_factory->CreateOuterBoundaryIs());
+  ASSERT_FALSE(GetGeometryBounds(poly, &bbox));
+  ModelPtr model = kml_factory->CreateModel();
+  ASSERT_FALSE(GetGeometryBounds(model, NULL));
+  ASSERT_FALSE(GetGeometryBounds(model, &bbox));
+  MultiGeometryPtr multigeometry = kml_factory->CreateMultiGeometry();
+  ASSERT_FALSE(GetGeometryBounds(multigeometry, NULL));
+  ASSERT_FALSE(GetGeometryBounds(multigeometry, &bbox));
 }
 
 }  // end namespace kmlengine
