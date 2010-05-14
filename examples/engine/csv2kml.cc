@@ -66,7 +66,12 @@ class ContainerSaver : public CsvParserHandler {
     if (status == kmlconvenience::CSV_PARSER_STATUS_OK) {
       container_->add_feature(p);
     } else {
-      std::cerr << "Error on line " << line << std::endl;
+      if (line == 1 && status == kmlconvenience::CSV_PARSER_STATUS_NO_LAT_LON) {
+        std::cerr << "Schema line must have both \"latitude\" and "
+          <<  "\"longitude\"." << std::endl;
+      } else {
+        std::cerr << "Error on line " << line << std::endl;
+      }
     }
     return true;
   }
