@@ -250,20 +250,28 @@ static XsdElement kKml22Elements[] = {
   { "gx:AnimatedUpdate", XSD_COMPLEX_TYPE },
   { "gx:FlyTo", XSD_COMPLEX_TYPE },
   { "gx:LatLonQuad", XSD_COMPLEX_TYPE },
+  { "gx:MultiTrack", XSD_COMPLEX_TYPE },
   { "gx:Playlist", XSD_COMPLEX_TYPE },
   { "gx:SoundCue", XSD_COMPLEX_TYPE },
   { "gx:TimeSpan", XSD_COMPLEX_TYPE },
   { "gx:TimeStamp", XSD_COMPLEX_TYPE },
   { "gx:Tour", XSD_COMPLEX_TYPE },
   { "gx:TourControl", XSD_COMPLEX_TYPE },
+  { "gx:Track", XSD_COMPLEX_TYPE },
   { "gx:Wait", XSD_COMPLEX_TYPE },
 
   // Google extension simple elements
   { "gx:altitudeMode", XSD_SIMPLE_TYPE },
+  { "gx:angles", XSD_SIMPLE_TYPE },
   { "gx:balloonVisibility", XSD_SIMPLE_TYPE },
+  { "gx:coord", XSD_SIMPLE_TYPE },
   { "gx:duration", XSD_SIMPLE_TYPE },
   { "gx:flyToMode", XSD_SIMPLE_TYPE },
+  { "gx:h", XSD_SIMPLE_TYPE },
   { "gx:playMode", XSD_SIMPLE_TYPE },
+  { "gx:w", XSD_SIMPLE_TYPE },
+  { "gx:x", XSD_SIMPLE_TYPE },
+  { "gx:y", XSD_SIMPLE_TYPE },
 
   { "</Unknown>", XSD_UNKNOWN }  // Mark the end appropriately.
 };

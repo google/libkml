@@ -142,5 +142,56 @@
     <GroundOverlay>
       <gx:LatLonQuad/>
     </GroundOverlay>
+    <Placemark>
+      <gx:MultiTrack>
+        <gx:Track id="gx_track_0"/>
+        <gx:Track id="gx_track_1"/>
+        <gx:Track id="gx_track_2"/>
+      </gx:MultiTrack>
+    </Placemark>
+    <Placemark>
+      <gx:Track>
+        <altitudeMode>absolute</altitudeMode>
+        <when>2010-02-07T19:57:44Z</when>
+        <when>2010-02-07T19:57:45Z</when>
+        <gx:coord>-122.250671 37.514194 14.08</gx:coord>
+        <gx:coord>-122.250671 37.514194 9.27</gx:coord>
+        <gx:angles>1 2 3</gx:angles>
+        <gx:angles>4 5 6</gx:angles>
+        <Model>
+          <Location>
+            <longitude>0</longitude>
+            <latitude>0</latitude>
+            <altitude>0</altitude>
+          </Location>
+          <Orientation>
+            <heading>180</heading>
+            <tilt>0</tilt>
+            <roll>0</roll>
+          </Orientation>
+          <Scale>
+            <x>1</x>
+            <y>1</y>
+            <z>1</z>
+          </Scale>
+          <Link>
+            <href>files/Untitled_0.dae</href>
+          </Link>
+          <ResourceMap/>
+        </Model>
+      </gx:Track>
+    </Placemark>
+    <Placemark>
+      <Style>
+        <IconStyle>
+          <Icon>
+            <gx:w>1</gx:w>
+            <gx:h>2.1</gx:h>
+            <gx:x>3.2</gx:x>
+            <gx:y>4.3</gx:y>
+          </Icon>
+        </IconStyle>
+      </Style>
+    </Placemark>
   </Document>
 </kml>

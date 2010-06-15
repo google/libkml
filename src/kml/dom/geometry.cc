@@ -448,4 +448,119 @@ void MultiGeometry::AcceptChildren(VisitorDriver* driver) {
   Element::AcceptRepeated<GeometryPtr>(&geometry_array_, driver);
 }
 
+GxTrack::GxTrack() {
+  set_xmlns(kmlbase::XMLNS_GX22);
+}
+
+GxTrack::~GxTrack() {}
+
+void GxTrack::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  switch (element->Type()) {
+    case Type_when:
+      add_when(element->get_char_data());
+      break;
+    case Type_GxAngles:
+      Parse(element->get_char_data(), &gx_angles_array_);
+      break;
+    case Type_GxCoord:
+      Parse(element->get_char_data(), &gx_coord_array_);
+      break;
+    case Type_Model:
+      set_model(AsModel(element));
+      break;
+    default:
+      AltitudeGeometryCommon::AddElement(element);
+  }
+}
+
+void GxTrack::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  Geometry::Serialize(serializer);
+  if (has_altitudemode()) {
+    serializer.SaveEnum(Type_altitudeMode, get_altitudemode());
+  }
+  if (has_gx_altitudemode()) {
+    serializer.SaveEnum(Type_GxAltitudeMode, get_gx_altitudemode());
+  }
+  for (size_t i = 0; i < when_array_.size(); i++) {
+    serializer.SaveStringFieldById(Type_when, when_array_[i]);
+  }
+  const Attributes dummy;
+  for (size_t i = 0; i < gx_coord_array_.size(); i++) {
+    serializer.SaveSimpleVec3(Type_GxCoord, gx_coord_array_.at(i), " ");
+  }
+  for (size_t i = 0; i < gx_angles_array_.size(); i++) {
+    serializer.SaveSimpleVec3(Type_GxAngles, gx_angles_array_.at(i), " ");
+  }
+  if (has_model()) {
+    serializer.SaveElement(get_model());
+  }
+}
+
+void GxTrack::Accept(Visitor* visitor) {
+  visitor->VisitGxTrack(GxTrackPtr(this));
+}
+
+void GxTrack::AcceptChildren(VisitorDriver* driver) {
+  AltitudeGeometryCommon::AcceptChildren(driver);
+  if (has_model()) {
+    driver->Visit(get_model());
+  }
+}
+
+void GxTrack::Parse(const string& char_data, std::vector<Vec3>* out) {
+  if (!out) {
+    return;
+  }
+  // TODO: this is a little heavy. Optimization along the lines of
+  // Coordinates::Parse may be required.
+  std::vector<string> s;
+  kmlbase::SplitStringUsing(char_data, " ", &s);
+  kmlbase::Vec3 vec;
+  for (size_t i = 0; i < s.size(); i++) {
+    vec.set(i, strtod(s[i].c_str(), NULL));
+  }
+  out->push_back(vec);
+}
+
+GxMultiTrack::GxMultiTrack() {
+  set_xmlns(kmlbase::XMLNS_GX22);
+}
+
+GxMultiTrack::~GxMultiTrack() {}
+
+void GxMultiTrack::add_gx_track(const GxTrackPtr& gx_track) {
+  AddComplexChild(gx_track, &gx_track_array_);
+}
+
+void GxMultiTrack::AddElement(const ElementPtr& element) {
+  if (!element) {
+    return;
+  }
+  if (element->IsA(Type_GxTrack)) {
+    add_gx_track(AsGxTrack(element));
+    return;
+  }
+  Geometry::AddElement(element);
+}
+
+void GxMultiTrack::Serialize(Serializer& serializer) const {
+  ElementSerializer element_serializer(*this, serializer);
+  Geometry::Serialize(serializer);
+  serializer.SaveElementGroupArray(gx_track_array_, Type_GxTrack);
+}
+
+void GxMultiTrack::Accept(Visitor* visitor) {
+  visitor->VisitGxMultiTrack(GxMultiTrackPtr(this));
+}
+
+void GxMultiTrack::AcceptChildren(VisitorDriver* driver) {
+  Geometry::AcceptChildren(driver);
+  Element::AcceptRepeated<GxTrackPtr>(&gx_track_array_, driver);
+}
+
 }  // end namespace kmldom
+

@@ -148,4 +148,11 @@ TEST(Vec3Test, TestAssign2d) {
   ASSERT_EQ(0, copy2d.get_altitude());
 }
 
+TEST(Vec3Test, TestHeadingPitchRoll) {
+  Vec3 vec3(0.1, 1.2, 2.3);
+  ASSERT_EQ(0.1, vec3.get_heading());
+  ASSERT_EQ(1.2, vec3.get_pitch());
+  ASSERT_EQ(2.3, vec3.get_roll());
+}
+
 }  // end namespace kmlbase

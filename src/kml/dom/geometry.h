@@ -514,6 +514,115 @@ class MultiGeometry : public Geometry {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(MultiGeometry);
 };
 
+// <gx:Track>
+class GxTrack : public AltitudeGeometryCommon {
+ public:
+  virtual ~GxTrack();
+  static KmlDomType ElementType() { return Type_GxTrack; }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const {
+    return type == ElementType() || Geometry::IsA(type);
+  }
+
+  // <when>
+  size_t get_when_array_size() {
+    return when_array_.size();
+  }
+  void add_when(const string& when) {
+    when_array_.push_back(when);
+  }
+  const string& get_when_array_at(size_t index) const {
+    return when_array_[index];
+  }
+
+  // <gx:coord>
+  size_t get_gx_coord_array_size() {
+    return gx_coord_array_.size();
+  }
+  void add_gx_coord(const kmlbase::Vec3& gx_coord) {
+    gx_coord_array_.push_back(gx_coord);
+  }
+  const kmlbase::Vec3& get_gx_coord_array_at(size_t index) const {
+    return gx_coord_array_[index];
+  }
+
+  // <gx:angles>
+  size_t get_gx_angles_array_size() {
+    return gx_angles_array_.size();
+  }
+  void add_gx_angles(const kmlbase::Vec3& gx_angles) {
+    gx_angles_array_.push_back(gx_angles);
+  }
+  const kmlbase::Vec3& get_gx_angles_array_at(size_t index) const {
+    return gx_angles_array_[index];
+  }
+
+  // <Model>
+  const ModelPtr& get_model() const { return model_; }
+  void set_model(const ModelPtr& model) {
+    SetComplexChild(model, &model_);
+  }
+  bool has_model() const { return model_ != NULL; }
+  void clear_model() { set_model(NULL); }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
+
+  // Internal methods used in parser.  Public for unittest purposes.
+  // See .cc for more details.
+  void Parse(const string& char_data, std::vector<kmlbase::Vec3>* out);
+
+ private:
+  friend class KmlFactory;
+  GxTrack();
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  std::vector<string> when_array_;
+  std::vector<kmlbase::Vec3> gx_coord_array_;
+  std::vector<kmlbase::Vec3> gx_angles_array_;
+  ModelPtr model_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxTrack);
+};
+
+// <gx:MultiTrack>
+class GxMultiTrack : public Geometry {
+ public:
+  virtual ~GxMultiTrack();
+  static KmlDomType ElementType() { return Type_GxMultiTrack; }
+  virtual KmlDomType Type() const { return ElementType(); }
+  virtual bool IsA(KmlDomType type) const {
+    return type == ElementType() || Geometry::IsA(type);
+  }
+
+  void add_gx_track(const GxTrackPtr& gx_track);
+
+  size_t get_gx_track_array_size() const {
+    return gx_track_array_.size();
+  }
+
+  const GxTrackPtr& get_gx_track_array_at(size_t index) const {
+    return gx_track_array_[index];
+  }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+  virtual void AcceptChildren(VisitorDriver* driver);
+
+ private:
+  friend class KmlFactory;
+  GxMultiTrack();
+  friend class KmlHandler;
+  virtual void AddElement(const ElementPtr& element);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  std::vector<GxTrackPtr> gx_track_array_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxMultiTrack);
+};
+
 }  // namespace kmldom
 
 #endif  // KML_DOM_GEOMETRY_H__
+

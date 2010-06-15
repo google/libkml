@@ -280,6 +280,9 @@ TEST(KmlFactoryTest, TestFactory) {
   e = factory->CreateGxLatLonQuad();
   ASSERT_EQ(Type_GxLatLonQuad, e->Type());
 
+  e = factory->CreateGxMultiTrack();
+  ASSERT_EQ(Type_GxMultiTrack, e->Type());
+
   e = factory->CreateGxPlaylist();
   ASSERT_EQ(Type_GxPlaylist, e->Type());
 
@@ -294,6 +297,9 @@ TEST(KmlFactoryTest, TestFactory) {
 
   e = factory->CreateGxTour();
   ASSERT_EQ(Type_GxTour, e->Type());
+
+  e = factory->CreateGxTrack();
+  ASSERT_EQ(Type_GxTrack, e->Type());
 
   e = factory->CreateGxTourControl();
   ASSERT_EQ(Type_GxTourControl, e->Type());

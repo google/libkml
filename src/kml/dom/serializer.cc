@@ -96,6 +96,15 @@ void Serializer::SaveVec3(const kmlbase::Vec3& vec3) {
               ToString(vec3.get_latitude()) + "," +
               ToString(vec3.get_altitude()) + "\n", false); 
   // TODO: here's where we can use has_altitude() to avoid emitting that.
+  // TODO: just call the following SaveSimpleVec3.
+}
+
+void Serializer::SaveSimpleVec3(int type_id, const kmlbase::Vec3& vec3,
+                                const string& delimiter) {
+  string char_data = ToString(vec3.get_longitude()) + delimiter +
+                     ToString(vec3.get_latitude()) + delimiter +
+                     ToString(vec3.get_altitude());
+  SaveStringFieldById(type_id, char_data);
 }
 
 }  // namespace kmldom

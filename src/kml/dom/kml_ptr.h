@@ -132,6 +132,7 @@ class XalThoroughfare;
 class GxAnimatedUpdate;
 class GxFlyTo;
 class GxLatLonQuad;
+class GxMultiTrack;
 class GxPlaylist;
 class GxSoundCue;
 class GxTimeSpan;
@@ -140,6 +141,7 @@ class GxTimePrimitive;
 class GxTour;
 class GxTourControl;
 class GxTourPrimitive;
+class GxTrack;
 class GxWait;
 
 typedef boost::intrusive_ptr<Element> ElementPtr;
@@ -245,6 +247,7 @@ typedef boost::intrusive_ptr<XalThoroughfare> XalThoroughfarePtr;
 typedef boost::intrusive_ptr<GxAnimatedUpdate> GxAnimatedUpdatePtr;
 typedef boost::intrusive_ptr<GxFlyTo> GxFlyToPtr;
 typedef boost::intrusive_ptr<GxLatLonQuad> GxLatLonQuadPtr;
+typedef boost::intrusive_ptr<GxMultiTrack> GxMultiTrackPtr;
 typedef boost::intrusive_ptr<GxPlaylist> GxPlaylistPtr;
 typedef boost::intrusive_ptr<GxSoundCue> GxSoundCuePtr;
 typedef boost::intrusive_ptr<GxTimeSpan> GxTimeSpanPtr;
@@ -252,6 +255,7 @@ typedef boost::intrusive_ptr<GxTimeStamp> GxTimeStampPtr;
 typedef boost::intrusive_ptr<GxTour> GxTourPtr;
 typedef boost::intrusive_ptr<GxTourControl> GxTourControlPtr;
 typedef boost::intrusive_ptr<GxTourPrimitive> GxTourPrimitivePtr;
+typedef boost::intrusive_ptr<GxTrack> GxTrackPtr;
 typedef boost::intrusive_ptr<GxWait> GxWaitPtr;
 
 }  // end namespace kmldom

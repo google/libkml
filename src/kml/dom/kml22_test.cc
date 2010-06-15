@@ -33,7 +33,7 @@
 namespace kmldom {
 
 // Yes, must exactly match kml22.h
-static const int kNumberOfComplexElements = 88;
+static const int kNumberOfComplexElements = 90;
 
 class Kml22Test : public testing::Test {
  protected:

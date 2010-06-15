@@ -416,6 +416,14 @@ TEST_F(IconStyleIconTest, TestType) {
 TEST_F(IconStyleIconTest, TestDefaults) {
   ASSERT_EQ(string(""), iconstyleicon_->get_href());
   ASSERT_FALSE(iconstyleicon_->has_href());
+  ASSERT_FALSE(iconstyleicon_->has_gx_w());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_w());
+  ASSERT_FALSE(iconstyleicon_->has_gx_h());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_h());
+  ASSERT_FALSE(iconstyleicon_->has_gx_x());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_x());
+  ASSERT_FALSE(iconstyleicon_->has_gx_y());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_y());
 }
 
 // Verify setting default makes has_xxx() true:
@@ -423,23 +431,63 @@ TEST_F(IconStyleIconTest, TestSetToDefaultValues) {
   // Verify default state:
   iconstyleicon_->set_href(iconstyleicon_->get_href());
   ASSERT_TRUE(iconstyleicon_->has_href());
+  iconstyleicon_->set_gx_w(0.0);
+  ASSERT_TRUE(iconstyleicon_->has_gx_w());
+  iconstyleicon_->set_gx_h(0.0);
+  ASSERT_TRUE(iconstyleicon_->has_gx_h());
+  iconstyleicon_->set_gx_x(0.0);
+  ASSERT_TRUE(iconstyleicon_->has_gx_x());
+  iconstyleicon_->set_gx_y(0.0);
+  ASSERT_TRUE(iconstyleicon_->has_gx_y());
 }
 
 // Verify set, get, has, clear:
 TEST_F(IconStyleIconTest, TestSetGetHasClear) {
   // Non-default values:
   string href("href");
+  double gx_w = 0.1;
+  double gx_h = 1.1;
+  double gx_x = 2.1;
+  double gx_y = 3.1;
 
   // Set all fields:
   iconstyleicon_->set_href(href);
+  iconstyleicon_->set_gx_w(gx_w);
+  iconstyleicon_->set_gx_h(gx_h);
+  iconstyleicon_->set_gx_x(gx_x);
+  iconstyleicon_->set_gx_y(gx_y);
 
   // Verify getter and has_xxx():
   ASSERT_TRUE(iconstyleicon_->has_href());
+  ASSERT_TRUE(iconstyleicon_->has_gx_w());
+  ASSERT_TRUE(iconstyleicon_->has_gx_h());
+  ASSERT_TRUE(iconstyleicon_->has_gx_x());
+  ASSERT_TRUE(iconstyleicon_->has_gx_y());
 
   ASSERT_EQ(href, iconstyleicon_->get_href());
+  ASSERT_DOUBLE_EQ(gx_w, iconstyleicon_->get_gx_w());
+  ASSERT_DOUBLE_EQ(gx_h, iconstyleicon_->get_gx_h());
+  ASSERT_DOUBLE_EQ(gx_x, iconstyleicon_->get_gx_x());
+  ASSERT_DOUBLE_EQ(gx_y, iconstyleicon_->get_gx_y());
 
   // Clear all fields:
   iconstyleicon_->clear_href();
+  iconstyleicon_->clear_gx_w();
+  iconstyleicon_->clear_gx_h();
+  iconstyleicon_->clear_gx_x();
+  iconstyleicon_->clear_gx_y();
+
+  // Verify return to default values.
+  ASSERT_EQ(string(""), iconstyleicon_->get_href());
+  ASSERT_FALSE(iconstyleicon_->has_href());
+  ASSERT_FALSE(iconstyleicon_->has_gx_w());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_w());
+  ASSERT_FALSE(iconstyleicon_->has_gx_h());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_h());
+  ASSERT_FALSE(iconstyleicon_->has_gx_x());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_x());
+  ASSERT_FALSE(iconstyleicon_->has_gx_y());
+  ASSERT_DOUBLE_EQ(0.0, iconstyleicon_->get_gx_y());
 }
 
 // Verify the Serialize method.

@@ -161,6 +161,11 @@ void Visitor::VisitGxLatLonQuad(
   VisitObject(element);
 }
 
+void Visitor::VisitGxMultiTrack(
+    const GxMultiTrackPtr& element) {
+  VisitGeometry(element);
+}
+
 void Visitor::VisitGxPlaylist(
     const GxPlaylistPtr& element) {
   VisitObject(element);
@@ -194,6 +199,11 @@ void Visitor::VisitGxTourControl(
 void Visitor::VisitGxTourPrimitive(
     const GxTourPrimitivePtr& element) {
   VisitObject(element);
+}
+
+void Visitor::VisitGxTrack(
+    const GxTrackPtr& element) {
+  VisitGeometry(element);
 }
 
 void Visitor::VisitGxWait(

@@ -85,6 +85,15 @@ class Vec3 {
     has_altitude_ = false;
   }
 
+  // This class does double-duty as the representation of both gx:coord and
+  // gx:angles. In the future we might need to split these out as separate
+  // classes. For instance, the initial specifiction of these new elements
+  // is unclear on how too few or too many tuples should be handled. For now
+  // we treat them exactly as the old-style coordinates.
+  double get_heading() const { return get_longitude(); }
+  double get_pitch() const { return get_latitude(); }
+  double get_roll() const { return get_altitude(); }
+
   // Operator overrides.
   bool operator==(const Vec3& vec3) const {
     return vec_[0] == vec3.get_longitude() &&

@@ -124,12 +124,14 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
   case Type_GxAnimatedUpdate: return CreateGxAnimatedUpdate();
   case Type_GxFlyTo: return CreateGxFlyTo();
   case Type_GxLatLonQuad: return CreateGxLatLonQuad();
+  case Type_GxMultiTrack: return CreateGxMultiTrack();
   case Type_GxPlaylist: return CreateGxPlaylist();
   case Type_GxSoundCue: return CreateGxSoundCue();
   case Type_GxTimeSpan: return CreateGxTimeSpan();
   case Type_GxTimeStamp: return CreateGxTimeStamp();
   case Type_GxTour: return CreateGxTour();
   case Type_GxTourControl: return CreateGxTourControl();
+  case Type_GxTrack: return CreateGxTrack();
   case Type_GxWait: return CreateGxWait();
 
   default: return NULL;
@@ -464,6 +466,10 @@ GxLatLonQuad* KmlFactory::CreateGxLatLonQuad() const {
   return new GxLatLonQuad();
 }
 
+GxMultiTrack* KmlFactory::CreateGxMultiTrack() const {
+  return new GxMultiTrack();
+}
+
 GxPlaylist* KmlFactory::CreateGxPlaylist() const {
   return new GxPlaylist();
 }
@@ -486,6 +492,10 @@ GxTour* KmlFactory::CreateGxTour() const {
 
 GxTourControl* KmlFactory::CreateGxTourControl() const {
   return new GxTourControl();
+}
+
+GxTrack* KmlFactory::CreateGxTrack() const {
+  return new GxTrack();
 }
 
 GxWait* KmlFactory::CreateGxWait() const {

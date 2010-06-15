@@ -27,6 +27,7 @@
 
 #include "kml/dom/serializer.h"
 #include "kml/base/attributes.h"
+#include "kml/base/string_util.h"
 #include "kml/dom/kml_funcs.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml22.h"
@@ -35,6 +36,8 @@
 #include "gtest/gtest.h"
 
 using kmlbase::Attributes;
+using kmlbase::ToString;
+using kmlbase::Vec3;
 
 namespace kmldom {
 
@@ -77,6 +80,8 @@ class MaximalSerializer : public Serializer {
   virtual void SaveStringFieldById(int type_id, string value) {}
   virtual void SaveContent(const string& content, bool maybe_quote) {}
   virtual void SaveVec3(const kmlbase::Vec3& vec3) {}
+  virtual void SaveSimpleVec3(int type_id, const kmlbase::Vec3& vec3,
+                              const string& delimiter) {}
   virtual void Indent() {}
   virtual void SaveColor(int type_id, const kmlbase::Color32& color) {}
   virtual void BeginElementArray(int type_id, size_t element_count) {}
@@ -369,6 +374,40 @@ TEST_F(SerializerTest, TestSaveElementArray) {
   ASSERT_EQ(Type_Schema, int_vector[4]);
   // EndElementArray(Type_Schema)
   ASSERT_EQ(Type_Schema, int_vector[5]);
+}
+
+// This class implements SaveSimpleVec3 only.
+typedef std::pair<int, string> DelimitedVec3;
+typedef std::vector<DelimitedVec3> DelimitedVec3Vector;
+class SaveVec3SimpleSerializer : public Serializer {
+ public:
+  virtual void SaveSimpleVec3(int type_id, const kmlbase::Vec3& vec3,
+                              const string& delimiter) {
+    string char_data = ToString(vec3.get_longitude()) + delimiter +
+                       ToString(vec3.get_latitude()) + delimiter +
+                       ToString(vec3.get_altitude());
+    delimited_vec3_vector_.push_back(std::make_pair(type_id, char_data));
+  }
+
+  const DelimitedVec3Vector& get_delimited_vec3_vector() const {
+    return delimited_vec3_vector_;
+  }
+ 
+ private:
+  DelimitedVec3Vector delimited_vec3_vector_;
+};
+
+TEST_F(SerializerTest, TestSaveSimpleVec3) {
+  SaveVec3SimpleSerializer serializer;
+  Vec3 vec3(1, 2, 3);
+  serializer.SaveSimpleVec3(Type_GxCoord, vec3, "-");
+  serializer.SaveSimpleVec3(Type_GxAngles, vec3, "|");
+  const DelimitedVec3Vector& vec = serializer.get_delimited_vec3_vector();
+  ASSERT_EQ(static_cast<size_t>(2), vec.size()); 
+  ASSERT_EQ(Type_GxCoord, vec[0].first);
+  ASSERT_EQ("1-2-3", vec[0].second);
+  ASSERT_EQ(Type_GxAngles, vec[1].first);
+  ASSERT_EQ("1|2|3", vec[1].second);
 }
 
 }  // end namespace kmldom
