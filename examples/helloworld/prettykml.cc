@@ -35,7 +35,6 @@
 #include "kml/engine.h"
 #include "kml/base/file.h"
 
-using kmldom::ElementPtr;
 using kmlengine::KmlFile;
 using kmlengine::KmlFilePtr;
 using std::cout;
@@ -62,10 +61,8 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  // Serialize it and output to stdout.
-  std::string output;
-  kml_file->SerializeToString(&output);
-  cout << output;
+  // Serialize it to stdout.
+  kml_file->SerializeToOstream(&cout);
 
   return 0;
 }
