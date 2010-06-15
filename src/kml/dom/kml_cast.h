@@ -195,6 +195,8 @@ inline const XalThoroughfarePtr AsXalThoroughfare(const ElementPtr& element) {
   return ElementCast<XalThoroughfare>(element);
 }
 
+// gx
+
 inline const GxAnimatedUpdatePtr AsGxAnimatedUpdate(const ElementPtr element) {
   return ElementCast<GxAnimatedUpdate>(element);
 }
@@ -205,6 +207,10 @@ inline const GxFlyToPtr AsGxFlyTo(const ElementPtr element) {
 
 inline const GxLatLonQuadPtr AsGxLatLonQuad(const ElementPtr element) {
   return ElementCast<GxLatLonQuad>(element);
+}
+
+inline const GxMultiTrackPtr AsGxMultiTrack(const ElementPtr element) {
+  return ElementCast<GxMultiTrack>(element);
 }
 
 inline const GxPlaylistPtr AsGxPlaylist(const ElementPtr element) {
@@ -233,6 +239,10 @@ inline const GxTourControlPtr AsGxTourControl(const ElementPtr element) {
 
 inline const GxTourPrimitivePtr AsGxTourPrimitive(const ElementPtr element) {
   return ElementCast<GxTourPrimitive>(element);
+}
+
+inline const GxTrackPtr AsGxTrack(const ElementPtr element) {
+  return ElementCast<GxTrack>(element);
 }
 
 inline const GxWaitPtr AsGxWait(const ElementPtr element) {

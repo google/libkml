@@ -125,12 +125,14 @@ class KmlFactory {
   GxAnimatedUpdate* CreateGxAnimatedUpdate() const;
   GxFlyTo* CreateGxFlyTo() const;
   GxLatLonQuad* CreateGxLatLonQuad() const;
+  GxMultiTrack* CreateGxMultiTrack() const;
   GxPlaylist* CreateGxPlaylist() const;
   GxSoundCue* CreateGxSoundCue() const;
   GxTimeSpan* CreateGxTimeSpan() const;
   GxTimeStamp* CreateGxTimeStamp() const;
   GxTour* CreateGxTour() const;
   GxTourControl* CreateGxTourControl() const;
+  GxTrack* CreateGxTrack() const;
   GxWait* CreateGxWait() const;
 
  private:

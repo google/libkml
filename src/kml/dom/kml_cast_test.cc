@@ -143,6 +143,8 @@ TEST_F(KmlCastTest, TestCasts) {
       factory->CreateElementById(Type_GxFlyTo)));
   ASSERT_TRUE(AsGxLatLonQuad(
       factory->CreateElementById(Type_GxLatLonQuad)));
+  ASSERT_TRUE(AsGxMultiTrack(
+      factory->CreateElementById(Type_GxMultiTrack)));
   ASSERT_TRUE(AsGxPlaylist(
       factory->CreateElementById(Type_GxPlaylist)));
   ASSERT_TRUE(AsGxSoundCue(
@@ -161,6 +163,8 @@ TEST_F(KmlCastTest, TestCasts) {
       factory->CreateElementById(Type_GxTourControl)));
   ASSERT_TRUE(AsGxTourPrimitive(
       factory->CreateElementById(Type_GxFlyTo)));
+  ASSERT_TRUE(AsGxTrack(
+      factory->CreateElementById(Type_GxTrack)));
   ASSERT_TRUE(AsGxWait(
       factory->CreateElementById(Type_GxWait)));
 }
