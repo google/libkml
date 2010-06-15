@@ -59,10 +59,7 @@ class FeatureStreamer : public kmldom::ParserObserver {
         std::cout << feature_count_ << " " << feature->get_name();
         std::cout << std::endl;
       }
-      double lat, lon;
-      if (GetFeatureLatLon(feature, &lat, &lon) && lat && lon) {
-        bbox_.ExpandLatLon(lat, lon);
-      }
+      GetFeatureBounds(feature, &bbox_);
       // Do not add this feature to the DOM (note that this discards both
       // <Documents> and <Folders>).
       return false;
