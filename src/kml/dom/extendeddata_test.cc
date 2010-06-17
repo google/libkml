@@ -126,6 +126,23 @@ TEST_F(SchemaDataTest, TestLists) {
   for (size_t i = 0; i < schemadata_->get_simpledata_array_size(); ++i) {
     ASSERT_EQ(Type_SimpleData,schemadata_->get_simpledata_array_at(i)->Type());
   }
+
+  ASSERT_EQ(static_cast<size_t>(0),
+            schemadata_->get_gx_simplearraydata_array_size());
+  // Add three <GxSimpleArrayData> elements:
+  schemadata_->add_gx_simplearraydata(
+      KmlFactory::GetFactory()->CreateGxSimpleArrayData());
+  schemadata_->add_gx_simplearraydata(
+      KmlFactory::GetFactory()->CreateGxSimpleArrayData());
+  schemadata_->add_gx_simplearraydata(
+      KmlFactory::GetFactory()->CreateGxSimpleArrayData());
+  // We have three items in the array:
+  ASSERT_EQ(static_cast<size_t>(3),
+            schemadata_->get_gx_simplearraydata_array_size());
+  for (size_t i = 0; i < schemadata_->get_simpledata_array_size(); ++i) {
+    ASSERT_EQ(Type_GxSimpleArrayData,
+              schemadata_->get_gx_simplearraydata_array_at(i)->Type());
+  }
 }
 
 // <Data>

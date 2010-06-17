@@ -89,6 +89,17 @@ void SimpleField::Accept(Visitor* visitor) {
   visitor->VisitSimpleField(SimpleFieldPtr(this));
 }
 
+// <GxSimpleArrayField>
+GxSimpleArrayField::GxSimpleArrayField() {
+  set_xmlns(kmlbase::XMLNS_GX22);
+}
+
+GxSimpleArrayField::~GxSimpleArrayField() {}
+
+void GxSimpleArrayField::Accept(Visitor* visitor) {
+  visitor->VisitGxSimpleArrayField(GxSimpleArrayFieldPtr(this));
+}
+
 // <Schema>
 Schema::Schema()
     : has_name_(false) {
@@ -117,16 +128,22 @@ void Schema::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
-  if (SimpleFieldPtr simplefield = AsSimpleField(element)) {
-    add_simplefield(simplefield);
-  } else {
-    Object::AddElement(element);
+  switch (element->Type()) {
+    case Type_SimpleField:
+      add_simplefield(AsSimpleField(element));
+      break;
+    case Type_GxSimpleArrayField:
+      add_gx_simplearrayfield(AsGxSimpleArrayField(element));
+      break;
+    default:
+      Object::AddElement(element);
   }
 }
 
 void Schema::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   serializer.SaveElementArray(simplefield_array_);
+  serializer.SaveElementArray(gx_simplearrayfield_array_);
 }
 
 void Schema::Accept(Visitor* visitor) {
@@ -136,6 +153,8 @@ void Schema::Accept(Visitor* visitor) {
 void Schema::AcceptChildren(VisitorDriver* driver) {
   Object::AcceptChildren(driver);
   Element::AcceptRepeated<SimpleFieldPtr>(&simplefield_array_, driver);
+  Element::AcceptRepeated<GxSimpleArrayFieldPtr>(&gx_simplearrayfield_array_,
+                                                 driver);
 }
 
 }  // end namespace kmldom

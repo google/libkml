@@ -147,6 +147,10 @@ TEST_F(KmlCastTest, TestCasts) {
       factory->CreateElementById(Type_GxMultiTrack)));
   ASSERT_TRUE(AsGxPlaylist(
       factory->CreateElementById(Type_GxPlaylist)));
+  ASSERT_TRUE(AsGxSimpleArrayField(
+      factory->CreateElementById(Type_GxSimpleArrayField)));
+  ASSERT_TRUE(AsGxSimpleArrayData(
+      factory->CreateElementById(Type_GxSimpleArrayData)));
   ASSERT_TRUE(AsGxSoundCue(
       factory->CreateElementById(Type_GxSoundCue)));
   ASSERT_TRUE(AsGxTimeSpan(

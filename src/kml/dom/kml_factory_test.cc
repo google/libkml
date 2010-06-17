@@ -286,6 +286,12 @@ TEST(KmlFactoryTest, TestFactory) {
   e = factory->CreateGxPlaylist();
   ASSERT_EQ(Type_GxPlaylist, e->Type());
 
+  e = factory->CreateGxSimpleArrayData();
+  ASSERT_EQ(Type_GxSimpleArrayData, e->Type());
+
+  e = factory->CreateGxSimpleArrayField();
+  ASSERT_EQ(Type_GxSimpleArrayField, e->Type());
+
   e = factory->CreateGxSoundCue();
   ASSERT_EQ(Type_GxSoundCue, e->Type());
 

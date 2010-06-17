@@ -127,6 +127,8 @@ class KmlFactory {
   GxLatLonQuad* CreateGxLatLonQuad() const;
   GxMultiTrack* CreateGxMultiTrack() const;
   GxPlaylist* CreateGxPlaylist() const;
+  GxSimpleArrayData* CreateGxSimpleArrayData() const;
+  GxSimpleArrayField* CreateGxSimpleArrayField() const;
   GxSoundCue* CreateGxSoundCue() const;
   GxTimeSpan* CreateGxTimeSpan() const;
   GxTimeStamp* CreateGxTimeStamp() const;
