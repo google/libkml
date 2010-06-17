@@ -93,6 +93,54 @@ class SimpleData : public BasicElement<Type_SimpleData> {
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleData);
 };
 
+// <gx:SimpleArrayData>
+class GxSimpleArrayData : public BasicElement<Type_GxSimpleArrayData> {
+ public:
+  virtual ~GxSimpleArrayData();
+
+  // name=
+  const string& get_name() const { return name_; }
+  bool has_name() const { return has_name_; }
+  void set_name(const string& value) {
+    name_ = value;
+    has_name_ = true;
+  }
+  void clear_name() {
+    name_.clear();
+    has_name_ = false;
+  }
+
+  // char data
+  const string& get_gx_value() const { return gx_value_; }
+  bool has_gx_value() const { return has_gx_value_; }
+  void set_gx_value(const string& value) {
+    gx_value_ = value;
+    has_gx_value_ = true;
+  }
+  void clear_gx_value() {
+    gx_value_.clear();
+    has_gx_value_ = false;
+  }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
+ private:
+  friend class KmlFactory;
+  GxSimpleArrayData();
+  friend class KmlHandler;
+  virtual void ParseAttributes(kmlbase::Attributes* attributes);
+  virtual void AddElement(const ElementPtr& child);
+  friend class Serializer;
+  virtual void Serialize(Serializer& serializer) const;
+  virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
+  string name_;
+  bool has_name_;
+  string gx_value_;
+  bool has_gx_value_;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxSimpleArrayData);
+};
+
 // <SchemaData>
 class SchemaData : public Object {
  public:
@@ -127,6 +175,20 @@ class SchemaData : public Object {
     return simpledata_array_[index];
   }
 
+  void add_gx_simplearraydata(
+      const GxSimpleArrayDataPtr& gx_simplearraydata) {
+    AddComplexChild(gx_simplearraydata, &gx_simplearraydata_array_);
+  }
+
+  size_t get_gx_simplearraydata_array_size() const {
+    return gx_simplearraydata_array_.size();
+  }
+
+  const GxSimpleArrayDataPtr& get_gx_simplearraydata_array_at(
+      size_t index) const {
+    return gx_simplearraydata_array_[index];
+  }
+
   // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
@@ -144,6 +206,7 @@ class SchemaData : public Object {
   string schemaurl_;
   bool has_schemaurl_;
   std::vector<SimpleDataPtr> simpledata_array_;
+  std::vector<GxSimpleArrayDataPtr> gx_simplearraydata_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SchemaData);
 };
 

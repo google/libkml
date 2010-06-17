@@ -167,7 +167,7 @@ TEST(UnknownTest, TestSaveUnknown) {
       ++complex_count;
     }
   }
-  ASSERT_EQ(87, complex_count);  // Yes, must exactly match kml22.h
+  ASSERT_EQ(89, complex_count);  // Yes, must exactly match kml22.h
 }
 
 }  // end namespace kmldom

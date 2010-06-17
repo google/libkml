@@ -1192,21 +1192,31 @@ TEST_F(GxMultiTrackTest, TestType) {
 TEST_F(GxMultiTrackTest, TestDefaults) {
   ASSERT_FALSE(gx_multitrack_->has_id());
   ASSERT_FALSE(gx_multitrack_->has_targetid());
+  ASSERT_FALSE(gx_multitrack_->has_gx_interpolate());
+  ASSERT_FALSE(gx_multitrack_->get_gx_interpolate());
   ASSERT_EQ(static_cast<size_t>(0), gx_multitrack_->get_gx_track_array_size());
 }
 
 TEST_F(GxMultiTrackTest, TestSetGet) {
+  gx_multitrack_->set_gx_interpolate(true);
+  ASSERT_TRUE(gx_multitrack_->has_gx_interpolate());
+  ASSERT_TRUE(gx_multitrack_->get_gx_interpolate());
+  gx_multitrack_->clear_gx_interpolate();
+  ASSERT_FALSE(gx_multitrack_->has_gx_interpolate());
+  ASSERT_FALSE(gx_multitrack_->get_gx_interpolate());
   gx_multitrack_->add_gx_track(KmlFactory::GetFactory()->CreateGxTrack());
   gx_multitrack_->add_gx_track(KmlFactory::GetFactory()->CreateGxTrack());
   ASSERT_EQ(static_cast<size_t>(2), gx_multitrack_->get_gx_track_array_size());
 }
 
 TEST_F(GxMultiTrackTest, TestSerialize) {
+  gx_multitrack_->set_gx_interpolate(true);
   gx_multitrack_->add_gx_track(KmlFactory::GetFactory()->CreateGxTrack());
   gx_multitrack_->add_gx_track(KmlFactory::GetFactory()->CreateGxTrack());
   gx_multitrack_->set_id("x");
   const string kExpected(
     "<gx:MultiTrack id=\"x\">"
+    "<gx:interpolate>1</gx:interpolate>"
     "<gx:Track/>"
     "<gx:Track/>"
     "</gx:MultiTrack>"

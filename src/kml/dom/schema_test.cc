@@ -85,6 +85,60 @@ TEST_F(SimpleFieldTest, TestSetGetHasClear) {
 
 }
 
+// <GxSimpleArrayField>
+class GxSimpleArrayFieldTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    gx_simplearrayfield_ = KmlFactory::GetFactory()->CreateGxSimpleArrayField();
+  }
+
+  GxSimpleArrayFieldPtr gx_simplearrayfield_;
+};
+
+TEST_F(GxSimpleArrayFieldTest, TestType) {
+  ASSERT_EQ(Type_GxSimpleArrayField, gx_simplearrayfield_->Type());
+  ASSERT_TRUE(gx_simplearrayfield_->IsA(Type_GxSimpleArrayField));
+}
+
+TEST_F(GxSimpleArrayFieldTest, TestDefaults) {
+  ASSERT_EQ(string(""), gx_simplearrayfield_->get_type());
+  ASSERT_FALSE(gx_simplearrayfield_->has_type());
+  ASSERT_EQ(string(""), gx_simplearrayfield_->get_name());
+  ASSERT_FALSE(gx_simplearrayfield_->has_name());
+  ASSERT_EQ(string(""), gx_simplearrayfield_->get_displayname());
+  ASSERT_FALSE(gx_simplearrayfield_->has_displayname());
+}
+
+TEST_F(GxSimpleArrayFieldTest, TestSetToDefaultValues) {
+  gx_simplearrayfield_->set_type(gx_simplearrayfield_->get_type());
+  ASSERT_TRUE(gx_simplearrayfield_->has_type());
+  gx_simplearrayfield_->set_name(gx_simplearrayfield_->get_name());
+  ASSERT_TRUE(gx_simplearrayfield_->has_name());
+  gx_simplearrayfield_->set_displayname(gx_simplearrayfield_->get_displayname());
+  ASSERT_TRUE(gx_simplearrayfield_->has_displayname());
+}
+
+TEST_F(GxSimpleArrayFieldTest, TestSetGetHasClear) {
+  string type("tom");
+  gx_simplearrayfield_->set_type(type);
+  ASSERT_TRUE(gx_simplearrayfield_->has_type());
+  ASSERT_TRUE(type == gx_simplearrayfield_->get_type());
+  gx_simplearrayfield_->clear_type();
+
+  string name("tom");
+  gx_simplearrayfield_->set_name(name);
+  ASSERT_TRUE(gx_simplearrayfield_->has_name());
+  ASSERT_TRUE(name == gx_simplearrayfield_->get_name());
+  gx_simplearrayfield_->clear_name();
+
+  string displayname("dick");
+  gx_simplearrayfield_->set_displayname(displayname);
+  ASSERT_TRUE(gx_simplearrayfield_->has_displayname());
+  ASSERT_TRUE(displayname == gx_simplearrayfield_->get_displayname());
+  gx_simplearrayfield_->clear_displayname();
+
+}
+
 // <Schema>
 class SchemaTest : public testing::Test {
  protected:
@@ -127,7 +181,22 @@ TEST_F(SchemaTest, TestSetGetHasClear) {
   ASSERT_TRUE(schema_->has_id());
   ASSERT_TRUE(id == schema_->get_id());
   schema_->clear_id();
+}
 
+TEST_F(SchemaTest, TestArrays) {
+  ASSERT_EQ(static_cast<size_t>(0), schema_->get_simplefield_array_size());
+  schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
+  schema_->add_simplefield(KmlFactory::GetFactory()->CreateSimpleField());
+  ASSERT_EQ(static_cast<size_t>(2), schema_->get_simplefield_array_size());
+
+  ASSERT_EQ(static_cast<size_t>(0),
+            schema_->get_gx_simplearrayfield_array_size());
+  schema_->add_gx_simplearrayfield(
+      KmlFactory::GetFactory()->CreateGxSimpleArrayField());
+  schema_->add_gx_simplearrayfield(
+      KmlFactory::GetFactory()->CreateGxSimpleArrayField());
+  ASSERT_EQ(static_cast<size_t>(2),
+            schema_->get_gx_simplearrayfield_array_size());
 }
 
 TEST_F(SchemaTest, TestLists) {

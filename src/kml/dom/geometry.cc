@@ -526,7 +526,8 @@ void GxTrack::Parse(const string& char_data, std::vector<Vec3>* out) {
   out->push_back(vec);
 }
 
-GxMultiTrack::GxMultiTrack() {
+GxMultiTrack::GxMultiTrack()
+  : gx_interpolate_(false), has_gx_interpolate_(false) {
   set_xmlns(kmlbase::XMLNS_GX22);
 }
 
@@ -540,6 +541,10 @@ void GxMultiTrack::AddElement(const ElementPtr& element) {
   if (!element) {
     return;
   }
+  if (element->Type() == Type_GxInterpolate) {
+    has_gx_interpolate_ = element->SetBool(&gx_interpolate_);
+    return;
+  }
   if (element->IsA(Type_GxTrack)) {
     add_gx_track(AsGxTrack(element));
     return;
@@ -550,6 +555,9 @@ void GxMultiTrack::AddElement(const ElementPtr& element) {
 void GxMultiTrack::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   Geometry::Serialize(serializer);
+  if (has_gx_interpolate_) {
+    serializer.SaveFieldById(Type_GxInterpolate, gx_interpolate_);
+  }
   serializer.SaveElementGroupArray(gx_track_array_, Type_GxTrack);
 }
 

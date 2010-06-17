@@ -82,15 +82,17 @@ class SimpleField : public BasicElement<Type_SimpleField> {
   // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
 
- private:
-  friend class KmlFactory;
+ protected:
   SimpleField();
-  friend class KmlHandler;
   virtual void AddElement(const ElementPtr& element);
   virtual void ParseAttributes(kmlbase::Attributes* attributes);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
+
+ private:
+  friend class KmlFactory;
+  friend class KmlHandler;
   string type_;
   bool has_type_;
   string name_;
@@ -98,6 +100,25 @@ class SimpleField : public BasicElement<Type_SimpleField> {
   string displayname_;
   bool has_displayname_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(SimpleField);
+};
+
+// <gx:SimpleArrayField>
+class GxSimpleArrayField : public SimpleField {
+ public:
+  virtual ~GxSimpleArrayField();
+  virtual KmlDomType Type() const { return Type_GxSimpleArrayField; }
+  virtual bool IsA(KmlDomType type) const {
+    return type == Type_GxSimpleArrayField || SimpleField::IsA(type);
+  }
+
+  // Visitor API methods, see visitor.h.
+  virtual void Accept(Visitor* visitor);
+
+ private:
+  friend class KmlFactory;
+  GxSimpleArrayField();
+  friend class KmlHandler;
+  LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxSimpleArrayField);
 };
 
 // <Schema>
@@ -134,6 +155,20 @@ class Schema : public Object {
     return simplefield_array_[index];
   }
 
+  void add_gx_simplearrayfield(
+      const GxSimpleArrayFieldPtr& gx_simplearrayfield) {
+    AddComplexChild(gx_simplearrayfield, &gx_simplearrayfield_array_);
+  }
+
+  size_t get_gx_simplearrayfield_array_size() const {
+    return gx_simplearrayfield_array_.size();
+  }
+
+  const GxSimpleArrayFieldPtr& get_gx_simplearrayfield_array_at(
+      size_t index) const {
+    return gx_simplearrayfield_array_[index];
+  }
+
   // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
@@ -150,6 +185,7 @@ class Schema : public Object {
   string name_;
   bool has_name_;
   std::vector<SimpleFieldPtr> simplefield_array_;
+  std::vector<GxSimpleArrayFieldPtr> gx_simplearrayfield_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(Schema);
 };
 

@@ -84,7 +84,6 @@ class Serializer {
   virtual void SaveVec3(const kmlbase::Vec3& vec3);
 
   // Save a Vec3 with a specified delimiter and with an optional newline char.
-  // XXX
   virtual void SaveSimpleVec3(int type_id, const kmlbase::Vec3& vec3,
                               const string& delimiter);
 

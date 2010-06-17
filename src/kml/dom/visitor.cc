@@ -171,6 +171,16 @@ void Visitor::VisitGxPlaylist(
   VisitObject(element);
 }
 
+void Visitor::VisitGxSimpleArrayData(
+    const GxSimpleArrayDataPtr& element) {
+  VisitElement(element);
+}
+
+void Visitor::VisitGxSimpleArrayField(
+    const GxSimpleArrayFieldPtr& element) {
+  VisitSimpleField(element);
+}
+
 void Visitor::VisitGxSoundCue(
     const GxSoundCuePtr& element) {
   VisitGxTourPrimitive(element);

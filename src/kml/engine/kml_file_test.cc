@@ -464,7 +464,8 @@ TEST_F(KmlFileTest, TestBasicSerializeToOstream) {
       "    <atom:author/>\n"
       "  </gx:Tour>\n"
       "</Document>\n";
-  ASSERT_EQ(kExpected, oss.str());
+  const string kActual = oss.str();
+  ASSERT_EQ(kExpected, kActual);
 }
 
 }  // end namespace kmlengine

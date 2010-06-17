@@ -217,6 +217,16 @@ inline const GxPlaylistPtr AsGxPlaylist(const ElementPtr element) {
   return ElementCast<GxPlaylist>(element);
 }
 
+inline const GxSimpleArrayFieldPtr AsGxSimpleArrayField(
+    const ElementPtr element) {
+  return ElementCast<GxSimpleArrayField>(element);
+}
+
+inline const GxSimpleArrayDataPtr AsGxSimpleArrayData(
+    const ElementPtr element) {
+  return ElementCast<GxSimpleArrayData>(element);
+}
+
 inline const GxSoundCuePtr AsGxSoundCue(const ElementPtr element) {
   return ElementCast<GxSoundCue>(element);
 }

@@ -597,6 +597,17 @@ class GxMultiTrack : public Geometry {
     return type == ElementType() || Geometry::IsA(type);
   }
 
+  bool get_gx_interpolate() const { return gx_interpolate_; }
+  bool has_gx_interpolate() const { return has_gx_interpolate_; }
+  void set_gx_interpolate(bool value) {
+    gx_interpolate_ = value;
+    has_gx_interpolate_ = true;
+  }
+  void clear_gx_interpolate() {
+    gx_interpolate_ = false;  // Default <gx:interpolate> is false.
+    has_gx_interpolate_ = false;
+  }
+
   void add_gx_track(const GxTrackPtr& gx_track);
 
   size_t get_gx_track_array_size() const {
@@ -618,6 +629,8 @@ class GxMultiTrack : public Geometry {
   virtual void AddElement(const ElementPtr& element);
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
+  bool gx_interpolate_;
+  bool has_gx_interpolate_;
   std::vector<GxTrackPtr> gx_track_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxMultiTrack);
 };

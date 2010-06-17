@@ -155,6 +155,12 @@ class Visitor {
   virtual void VisitGxPlaylist(
       const GxPlaylistPtr& element);
 
+  virtual void VisitGxSimpleArrayData(
+      const GxSimpleArrayDataPtr& element);
+
+  virtual void VisitGxSimpleArrayField(
+      const GxSimpleArrayFieldPtr& element);
+
   virtual void VisitGxSoundCue(
       const GxSoundCuePtr& element);
 
