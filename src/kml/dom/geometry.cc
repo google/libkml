@@ -471,6 +471,9 @@ void GxTrack::AddElement(const ElementPtr& element) {
     case Type_Model:
       set_model(AsModel(element));
       break;
+    case Type_ExtendedData:
+      set_extendeddata(AsExtendedData(element));
+      break;
     default:
       AltitudeGeometryCommon::AddElement(element);
   }
@@ -498,6 +501,9 @@ void GxTrack::Serialize(Serializer& serializer) const {
   if (has_model()) {
     serializer.SaveElement(get_model());
   }
+  if (has_extendeddata()) {
+    serializer.SaveElement(get_extendeddata());
+  }
 }
 
 void GxTrack::Accept(Visitor* visitor) {
@@ -508,6 +514,9 @@ void GxTrack::AcceptChildren(VisitorDriver* driver) {
   AltitudeGeometryCommon::AcceptChildren(driver);
   if (has_model()) {
     driver->Visit(get_model());
+  }
+  if (has_extendeddata()) {
+    driver->Visit(get_extendeddata());
   }
 }
 

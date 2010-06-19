@@ -1073,6 +1073,7 @@ TEST_F(GxTrackTest, TestDefaults) {
   ASSERT_EQ(static_cast<size_t>(0), gx_track_->get_gx_coord_array_size());
   ASSERT_EQ(static_cast<size_t>(0), gx_track_->get_gx_angles_array_size());
   ASSERT_FALSE(gx_track_->has_model());
+  ASSERT_FALSE(gx_track_->has_extendeddata());
 }
 
 TEST_F(GxTrackTest, TestSetGet) {
@@ -1105,6 +1106,11 @@ TEST_F(GxTrackTest, TestSetGet) {
   ASSERT_TRUE(gx_track_->has_model());
   gx_track_->clear_model();
   ASSERT_FALSE(gx_track_->has_model());
+  // <ExtendedData>
+  gx_track_->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
+  ASSERT_TRUE(gx_track_->has_extendeddata());
+  gx_track_->clear_extendeddata();
+  ASSERT_FALSE(gx_track_->has_extendeddata());
 }
 
 TEST_F(GxTrackTest, TestParse) {
@@ -1118,6 +1124,7 @@ TEST_F(GxTrackTest, TestParse) {
     "<gx:angles>-1.1 7.2 10.3</gx:angles>"
     "<gx:angles>-1.4 7.5 10.6</gx:angles>"
     "<Model/>"
+    "<ExtendedData/>"
     "</gx:Track>"
   );
   string errors;
@@ -1138,6 +1145,7 @@ TEST_F(GxTrackTest, TestParse) {
   ASSERT_TRUE(Vec3(-1.1, 7.2, 10.3) == gx_track->get_gx_angles_array_at(0));
   ASSERT_TRUE(Vec3(-1.4, 7.5, 10.6) == gx_track->get_gx_angles_array_at(1));
   ASSERT_TRUE(gx_track->has_model());
+  ASSERT_TRUE(gx_track->has_extendeddata());
 }
 
 TEST_F(GxTrackTest, TestSerialize) {
@@ -1156,6 +1164,7 @@ TEST_F(GxTrackTest, TestSerialize) {
   gx_track_->add_gx_angles(angles0);
   gx_track_->add_gx_angles(angles1);
   gx_track_->set_model(KmlFactory::GetFactory()->CreateModel());
+  gx_track_->set_extendeddata(KmlFactory::GetFactory()->CreateExtendedData());
 
   const string kExpected(
     "<gx:Track>"
@@ -1167,6 +1176,7 @@ TEST_F(GxTrackTest, TestSerialize) {
     "<gx:angles>-1.1 7.2 10.3</gx:angles>"
     "<gx:angles>-1.4 7.5 10.6</gx:angles>"
     "<Model/>"
+    "<ExtendedData/>"
     "</gx:Track>"
   );
   ASSERT_EQ(kExpected, SerializeRaw(gx_track_));
