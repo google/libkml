@@ -206,10 +206,14 @@
         <ExtendedData>
           <SchemaData schemaUrl="#schema_id">
             <gx:SimpleArrayData name="SAD_1">
-              <gx:value>SAD value for SAF 1</gx:value>
+              <gx:value>1st SAD value for SAF 1</gx:value>
+              <gx:value>2nd SAD value for SAF 1</gx:value>
+              <gx:value>3rd SAD value for SAF 1</gx:value>
             </gx:SimpleArrayData>
             <gx:SimpleArrayData name="SAD_2">
               <gx:value>2</gx:value>
+              <gx:value>3</gx:value>
+              <gx:value>4</gx:value>
             </gx:SimpleArrayData>
           </SchemaData>
         </ExtendedData>

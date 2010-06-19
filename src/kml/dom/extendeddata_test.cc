@@ -316,4 +316,59 @@ TEST_F(MetadataTest, TestParseSerialize) {
   ASSERT_EQ(kMetadata, SerializeRaw(metadata_));
 }
 
+class GxSimpleArrayDataTest : public testing::Test {
+ protected:
+  virtual void SetUp() {
+    gx_simplearraydata_ = KmlFactory::GetFactory()->CreateGxSimpleArrayData();
+  }
+
+  GxSimpleArrayDataPtr gx_simplearraydata_;
+};
+
+TEST_F(GxSimpleArrayDataTest, TestDefaults) {
+  ASSERT_FALSE(gx_simplearraydata_->has_name());
+  ASSERT_EQ("", gx_simplearraydata_->get_name());
+  ASSERT_EQ(static_cast<size_t>(0),
+            gx_simplearraydata_->get_gx_value_array_size());
+}
+
+TEST_F(GxSimpleArrayDataTest, TestSetGetHasClear) {
+  const string kName("name");
+  gx_simplearraydata_->set_name(kName);
+  const string kValue0("v0");
+  const string kValue1("v1");
+  const string kValue2("v2");
+  gx_simplearraydata_->add_gx_value(kValue0);
+  gx_simplearraydata_->add_gx_value(kValue1);
+  gx_simplearraydata_->add_gx_value(kValue2);
+  ASSERT_TRUE(gx_simplearraydata_->has_name());
+  ASSERT_EQ(kName, gx_simplearraydata_->get_name());
+  ASSERT_EQ(static_cast<size_t>(3),
+            gx_simplearraydata_->get_gx_value_array_size());
+  ASSERT_EQ(kValue0, gx_simplearraydata_->get_gx_value_array_at(0));
+  ASSERT_EQ(kValue1, gx_simplearraydata_->get_gx_value_array_at(1));
+  ASSERT_EQ(kValue2, gx_simplearraydata_->get_gx_value_array_at(2));
+}
+
+TEST_F(GxSimpleArrayDataTest, TestParseSerialize) {
+  const string kKml(
+      "<gx:SimpleArrayData name=\"myname\">"
+      "<gx:value>v1</gx:value>"
+      "<gx:value>v2</gx:value>"
+      "<gx:value>v3</gx:value>"
+      "</gx:SimpleArrayData>");
+  ElementPtr root = Parse(kKml, NULL);
+  ASSERT_TRUE(root);
+  const GxSimpleArrayDataPtr gx_simplearraydata = AsGxSimpleArrayData(root);
+  ASSERT_TRUE(gx_simplearraydata);
+  ASSERT_TRUE(gx_simplearraydata->has_name());
+  ASSERT_EQ("myname", gx_simplearraydata->get_name());
+  ASSERT_EQ(static_cast<size_t>(3),
+            gx_simplearraydata->get_gx_value_array_size());
+  ASSERT_EQ("v1", gx_simplearraydata->get_gx_value_array_at(0));
+  ASSERT_EQ("v2", gx_simplearraydata->get_gx_value_array_at(1));
+  ASSERT_EQ("v3", gx_simplearraydata->get_gx_value_array_at(2));
+  ASSERT_EQ(kKml, SerializeRaw(gx_simplearraydata));
+}
+
 }  // end namespace kmldom

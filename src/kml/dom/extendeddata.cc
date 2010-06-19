@@ -90,8 +90,7 @@ void SimpleData::Accept(Visitor* visitor) {
 ///////////////////////////////////////////////
 // <GxSimpleArrayData>
 GxSimpleArrayData::GxSimpleArrayData()
-  : has_name_(false),
-    has_gx_value_(false) {
+  : has_name_(false) {
   set_xmlns(kmlbase::XMLNS_GX22);
 }
 
@@ -119,7 +118,7 @@ void GxSimpleArrayData::AddElement(const ElementPtr& element) {
     return;
   }
   if (element->Type() == Type_GxValue) {
-    has_gx_value_ = element->SetString(&gx_value_);
+    add_gx_value(element->get_char_data());
   } else {
     Element::AddElement(element);
   }
@@ -127,8 +126,8 @@ void GxSimpleArrayData::AddElement(const ElementPtr& element) {
 
 void GxSimpleArrayData::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
-  if (has_gx_value()) {
-    serializer.SaveFieldById(Type_GxValue, get_gx_value());
+  for (size_t i = 0; i < gx_value_array_.size(); i++) {
+    serializer.SaveFieldById(Type_GxValue, get_gx_value_array_at(i));
   }
 }
 

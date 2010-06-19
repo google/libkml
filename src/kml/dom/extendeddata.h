@@ -110,16 +110,17 @@ class GxSimpleArrayData : public BasicElement<Type_GxSimpleArrayData> {
     has_name_ = false;
   }
 
-  // char data
-  const string& get_gx_value() const { return gx_value_; }
-  bool has_gx_value() const { return has_gx_value_; }
-  void set_gx_value(const string& value) {
-    gx_value_ = value;
-    has_gx_value_ = true;
+  // <gx:value>
+  void add_gx_value(const string& value) {
+    gx_value_array_.push_back(value);
   }
-  void clear_gx_value() {
-    gx_value_.clear();
-    has_gx_value_ = false;
+
+  size_t get_gx_value_array_size() const {
+    return gx_value_array_.size();
+  }
+
+  const string& get_gx_value_array_at(size_t index) const {
+    return gx_value_array_[index];
   }
 
   // Visitor API methods, see visitor.h.
@@ -136,8 +137,7 @@ class GxSimpleArrayData : public BasicElement<Type_GxSimpleArrayData> {
   virtual void SerializeAttributes(kmlbase::Attributes* attributes) const;
   string name_;
   bool has_name_;
-  string gx_value_;
-  bool has_gx_value_;
+  std::vector<string> gx_value_array_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxSimpleArrayData);
 };
 
