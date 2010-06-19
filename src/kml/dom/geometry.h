@@ -565,6 +565,16 @@ class GxTrack : public AltitudeGeometryCommon {
   bool has_model() const { return model_ != NULL; }
   void clear_model() { set_model(NULL); }
 
+  // <ExtendedData>
+  const ExtendedDataPtr& get_extendeddata() const { return extendeddata_; }
+  bool has_extendeddata() const { return extendeddata_ != NULL; }
+  void set_extendeddata(const ExtendedDataPtr& extendeddata) {
+    SetComplexChild(extendeddata, &extendeddata_);
+  }
+  void clear_extendeddata() {
+    set_extendeddata(NULL);
+  }
+
   // Visitor API methods, see visitor.h.
   virtual void Accept(Visitor* visitor);
   virtual void AcceptChildren(VisitorDriver* driver);
@@ -584,6 +594,7 @@ class GxTrack : public AltitudeGeometryCommon {
   std::vector<kmlbase::Vec3> gx_coord_array_;
   std::vector<kmlbase::Vec3> gx_angles_array_;
   ModelPtr model_;
+  ExtendedDataPtr  extendeddata_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(GxTrack);
 };
 
