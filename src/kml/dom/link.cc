@@ -187,10 +187,10 @@ void Url::Accept(Visitor* visitor) {
 }
 
 IconStyleIcon::IconStyleIcon()
-  : gx_w_(0.0), has_gx_w_(false),
-    gx_h_(0.0), has_gx_h_(false),
-    gx_x_(0.0), has_gx_x_(false),
-    gx_y_(0.0), has_gx_y_(false) {
+  : gx_x_(0.0), has_gx_x_(false),
+    gx_y_(0.0), has_gx_y_(false),
+    gx_w_(0.0), has_gx_w_(false),
+    gx_h_(0.0), has_gx_h_(false) {
 }
 
 IconStyleIcon::~IconStyleIcon() {}
@@ -200,17 +200,17 @@ void IconStyleIcon::AddElement(const ElementPtr& element) {
     return;
   }
   switch (element->Type()) {
-    case Type_GxW:
-      has_gx_w_ = element->SetDouble(&gx_w_);
-      break;
-    case Type_GxH:
-      has_gx_h_ = element->SetDouble(&gx_h_);
-      break;
     case Type_GxX:
       has_gx_x_ = element->SetDouble(&gx_x_);
       break;
     case Type_GxY:
       has_gx_y_ = element->SetDouble(&gx_y_);
+      break;
+    case Type_GxW:
+      has_gx_w_ = element->SetDouble(&gx_w_);
+      break;
+    case Type_GxH:
+      has_gx_h_ = element->SetDouble(&gx_h_);
       break;
     default:
       BasicLink::AddElement(element);
@@ -220,17 +220,17 @@ void IconStyleIcon::AddElement(const ElementPtr& element) {
 void IconStyleIcon::Serialize(Serializer& serializer) const {
   ElementSerializer element_serializer(*this, serializer);
   BasicLink::Serialize(serializer);
-  if (has_gx_w_) {
-    serializer.SaveFieldById(Type_GxW, gx_w_);
-  }
-  if (has_gx_h_) {
-    serializer.SaveFieldById(Type_GxH, gx_h_);
-  }
   if (has_gx_x_) {
     serializer.SaveFieldById(Type_GxX, gx_x_);
   }
   if (has_gx_y_) {
     serializer.SaveFieldById(Type_GxY, gx_y_);
+  }
+  if (has_gx_w_) {
+    serializer.SaveFieldById(Type_GxW, gx_w_);
+  }
+  if (has_gx_h_) {
+    serializer.SaveFieldById(Type_GxH, gx_h_);
   }
 }
 

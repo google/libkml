@@ -255,10 +255,10 @@
       <Style>
         <IconStyle>
           <Icon>
-            <gx:w>1.0</gx:w>
-            <gx:h>2.1</gx:h>
             <gx:x>3.2</gx:x>
             <gx:y>4.3</gx:y>
+            <gx:w>1.0</gx:w>
+            <gx:h>2.1</gx:h>
           </Icon>
         </IconStyle>
       </Style>

@@ -27,6 +27,9 @@
 // This is not intended for use in application code.  See update.h for info
 // about kmlengine::ProcessUpdate().
 
+#ifndef KML_ENGINE_UPDATE_PROCESSOR_H__
+#define KML_ENGINE_UPDATE_PROCESSOR_H__
+
 #include "kml/base/string_util.h"
 #include "kml/dom/kml_ptr.h"
 
@@ -74,3 +77,5 @@ class UpdateProcessor {
 };
 
 }  // end namespace kmlengine
+
+#endif  //  KML_ENGINE_UPDATE_PROCESSOR_H__

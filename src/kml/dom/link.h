@@ -287,38 +287,6 @@ class IconStyleIcon : public BasicLink {
     return type == Type_IconStyleIcon || BasicLink::IsA(type);
   }
 
-  // <gx:w>
-  double get_gx_w() const {
-    return gx_w_;
-  }
-  bool has_gx_w() const {
-    return has_gx_w_;
-  }
-  void set_gx_w(const double w) {
-    gx_w_ = w;
-    has_gx_w_= true;
-  }
-  void clear_gx_w() {
-    gx_w_= 0.0;
-    has_gx_w_ = false;
-  }
-
-  // <gx:h>
-  double get_gx_h() const {
-    return gx_h_;
-  }
-  bool has_gx_h() const {
-    return has_gx_h_;
-  }
-  void set_gx_h(const double h) {
-    gx_h_ = h;
-    has_gx_h_= true;
-  }
-  void clear_gx_h() {
-    gx_h_= 0.0;
-    has_gx_h_ = false;
-  }
-
   // <gx:x>
   double get_gx_x() const {
     return gx_x_;
@@ -351,6 +319,38 @@ class IconStyleIcon : public BasicLink {
     has_gx_y_ = false;
   }
 
+  // <gx:w>
+  double get_gx_w() const {
+    return gx_w_;
+  }
+  bool has_gx_w() const {
+    return has_gx_w_;
+  }
+  void set_gx_w(const double w) {
+    gx_w_ = w;
+    has_gx_w_= true;
+  }
+  void clear_gx_w() {
+    gx_w_= 0.0;
+    has_gx_w_ = false;
+  }
+
+  // <gx:h>
+  double get_gx_h() const {
+    return gx_h_;
+  }
+  bool has_gx_h() const {
+    return has_gx_h_;
+  }
+  void set_gx_h(const double h) {
+    gx_h_ = h;
+    has_gx_h_= true;
+  }
+  void clear_gx_h() {
+    gx_h_= 0.0;
+    has_gx_h_ = false;
+  }
+
   virtual void AddElement(const ElementPtr& element);
 
   // Visitor API methods, see visitor.h.
@@ -361,14 +361,14 @@ class IconStyleIcon : public BasicLink {
   IconStyleIcon();
   friend class Serializer;
   virtual void Serialize(Serializer& serializer) const;
-  double gx_w_;
-  bool has_gx_w_;
-  double gx_h_;
-  bool has_gx_h_;
   double gx_x_;
   bool has_gx_x_;
   double gx_y_;
   bool has_gx_y_;
+  double gx_w_;
+  bool has_gx_w_;
+  double gx_h_;
+  bool has_gx_h_;
   LIBKML_DISALLOW_EVIL_CONSTRUCTORS(IconStyleIcon);
 };
 
