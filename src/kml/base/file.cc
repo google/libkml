@@ -51,7 +51,10 @@ bool File::ReadFileToString(const string& filename, string* output) {
   char buffer[kBufferSize];
   while (!input_file.eof() && input_file.good()) {
     input_file.read(buffer, kBufferSize);
-    output->append(buffer, input_file.gcount());
+    // Guard zero read sizess for MSVC 2010.
+    if (input_file.gcount() > 0) {
+      output->append(buffer, static_cast<size_t>(input_file.gcount()));
+    }
   }
   return true;
 }
