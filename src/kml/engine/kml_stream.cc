@@ -55,7 +55,10 @@ KmlStream* KmlStream::ParseFromIstream(
     if (void* buf = parser.GetInternalBuffer(kBufSize)) {
       std::streamsize read_size =
           input->read(static_cast<char*>(buf), kBufSize).gcount();
-      if (!parser.ParseInternalBuffer(read_size, errors, input->eof())) {
+      // Guard negative read sizes for MSVC 2010.
+      if (read_size < 0 ||
+          !parser.ParseInternalBuffer(static_cast<size_t>(read_size),
+                                      errors, input->eof())) {
         return NULL;  // Parse error
       }
     } else {
