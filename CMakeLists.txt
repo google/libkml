@@ -358,16 +358,15 @@ ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
 #INSTALL(FILES ${__files14}
 #    DESTINATION include/kml/third_party/zlib-1.2.3/contrib/minizip
 #    COMPONENT Development)
-#
-#IF(NOT OTB_USE_EXTERNAL_BOOST)
-#FILE(GLOB __files15 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1/boost/config/compiler/*.hpp")
-#INSTALL(FILES ${__files15}
-#    DESTINATION include/kml/third_party/boost_1_34_1/boost/config/compiler
-#    COMPONENT Development)
-#FILE(GLOB __files16 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1/boost/config/abi/*.hpp")
-#INSTALL(FILES ${__files16}
-#    DESTINATION include/kml/third_party/boost_1_34_1/boost/config/abi
-#    COMPONENT Development)
-#ENDIF(NOT OTB_USE_EXTERNAL_BOOST)
-#
-#ENDIF(NOT OTB_INSTALL_NO_DEVELOPMENT)
+
+IF(NOT LIBKML_USE_EXTERNAL_BOOST)
+FILE(GLOB __files15 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1/boost/config/compiler/*.hpp")
+INSTALL(FILES ${__files15}
+    DESTINATION include/kml/third_party/boost_1_34_1/boost/config/compiler
+    COMPONENT Development)
+FILE(GLOB __files16 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1/boost/config/abi/*.hpp")
+INSTALL(FILES ${__files16}
+    DESTINATION include/kml/third_party/boost_1_34_1/boost/config/abi
+    COMPONENT Development)
+ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
+
