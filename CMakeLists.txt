@@ -170,36 +170,37 @@ SET(libzlib_la_SOURCES
 	${libzlib_la_SOURCES_DIR}/unzip.c
 	${libzlib_la_SOURCES_DIR}/ioapi.c
 	${libzlib_la_SOURCES_DIR}/zip.c
+	${libzlib_la_SOURCES_DIR}/iomem_simple.c
 )
 
 # Only for Windows Visual Studio and Mac OSX
 SET(libzlib_src_la_SOURCES "")
-IF(WIN32)
-  IF(NOT BORLAND)
+#IF(WIN32)
+#  IF(NOT BORLAND)
 #    IF(NOT CYGWIN)
-      IF(NOT MINGW)
-        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-        SET(libzlib_src_la_SOURCES
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
-      ENDIF(NOT MINGW)
+#      IF(NOT MINGW)
+#        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
+#        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
+#        SET(libzlib_src_la_SOURCES
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
+#      ENDIF(NOT MINGW)
 #    ENDIF(NOT CYGWIN)
-  ENDIF(NOT BORLAND)
-ENDIF(WIN32)
-IF(APPLE)
-        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-        SET(libzlib_src_la_SOURCES
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
-                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
-ENDIF(APPLE)
+#  ENDIF(NOT BORLAND)
+#ENDIF(WIN32)
+#IF(APPLE)
+#        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
+#        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
+#        SET(libzlib_src_la_SOURCES
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
+#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
+#ENDIF(APPLE)
 
-
+#
 SET(liburiparser_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/lib")
 INCLUDE_DIRECTORIES(${liburiparser_la_SOURCES_DIR})
 SET( liburiparser_la_SOURCES
