@@ -14,9 +14,13 @@ SET(libkml_VERSION_STRING "${libkml_VERSION_MAJOR}.${libkml_VERSION_MINOR}.${lib
 # Allow sources in subdirectories to see the include files.
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
+
+OPTION(LIBKML_USE_EXTERNAL_BOOST "Use external Boost" OFF)
+
 IF(NOT LIBKML_USE_EXTERNAL_BOOST)
   INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1)
 ELSE(NOT LIBKML_USE_EXTERNAL_BOOST)
+  FIND_PACKAGE(Boost REQUIRED)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/include)
@@ -172,52 +176,18 @@ SET(libzlib_la_SOURCES
 	${libzlib_la_SOURCES_DIR}/iomem_simple.c
 )
 
-# Only for Windows Visual Studio and Mac OSX
 SET(libzlib_src_la_SOURCES "")
 
-IF(WIN32 OR WIN64)
-  SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
+SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
+FIND_PACKAGE(EXPAT REQUIRED)
 
-  IF(WIN64)
-    SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL)
-  ENDIF(WIN64)
+IF(NOT EXPAT_FOUND)
+  MESSAGE(FATAL_ERROR "Expat required")
+ENDIF(NOT EXPAT_FOUND)
 
-  IF(NOT LIBKML_USE_EXTERNAL_EXPAT)
-    INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.win32")
-    LINK_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.win32")
-  ELSE(NOT LIBKML_USE_EXTERNAL_EXPAT)
-    FIND_PACKAGE(EXPAT REQUIRED)
-    INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
-  ENDIF(NOT LIBKML_USE_EXTERNAL_EXPAT)
+INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
+LINK_DIRECTORIES(${EXPAT_LIB_DIRS})
 
-ENDIF(WIN32 OR WIN64)
-
-#IF(WIN32)
-#  IF(NOT BORLAND)
-#    IF(NOT CYGWIN)
-#      IF(NOT MINGW)
-#        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-#        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-#        SET(libzlib_src_la_SOURCES
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
-#      ENDIF(NOT MINGW)
-#    ENDIF(NOT CYGWIN)
-#  ENDIF(NOT BORLAND)
-#ENDIF(WIN32)
-#IF(APPLE)
-#        INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-#        SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
-#        SET(libzlib_src_la_SOURCES
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
-#                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
-#ENDIF(APPLE)
-
-#
 SET(liburiparser_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/lib")
 INCLUDE_DIRECTORIES(${liburiparser_la_SOURCES_DIR})
 SET( liburiparser_la_SOURCES
@@ -293,12 +263,6 @@ IF(NOT LIBKML_INSTALL_NO_LIBRARIES)
     ARCHIVE DESTINATION lib COMPONENT Development)
 ENDIF(NOT LIBKML_INSTALL_NO_LIBRARIES)
 
-#IF(NOT OTB_INSTALL_NO_DEVELOPMENT)
-#
-#  INSTALL(FILES ${__files1} ${__files2}
-#    DESTINATION ${OTB_INSTALL_INCLUDE_DIR_CM24}/BasicFilters
-#    COMPONENT Development)
-#
 FILE(GLOB __files0 "${CMAKE_CURRENT_SOURCE_DIR}/src/kml/*.h")
 INSTALL(FILES ${__files0} DESTINATION include/kml COMPONENT Development)
 
@@ -349,19 +313,19 @@ INSTALL(FILES ${__files11}
     DESTINATION include/kml/third_party/boost_1_34_1/boost/config/platform
     COMPONENT Development)
 ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
-#
-#FILE(GLOB __files12 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/*.h")
-#INSTALL(FILES ${__files12}
-#    DESTINATION include/kml/third_party/zlib-1.2.3
-#    COMPONENT Development)
-#FILE(GLOB __files13 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/*.h")
-#INSTALL(FILES ${__files13}
-#    DESTINATION include/kml/third_party/zlib-1.2.3/contrib
-#    COMPONENT Development)
-#FILE(GLOB __files14 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/minizip/*.h")
-#INSTALL(FILES ${__files14}
-#    DESTINATION include/kml/third_party/zlib-1.2.3/contrib/minizip
-#    COMPONENT Development)
+
+FILE(GLOB __files12 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/*.h")
+INSTALL(FILES ${__files12}
+    DESTINATION include/kml/third_party/zlib-1.2.3
+    COMPONENT Development)
+FILE(GLOB __files13 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/*.h")
+INSTALL(FILES ${__files13}
+    DESTINATION include/kml/third_party/zlib-1.2.3/contrib
+    COMPONENT Development)
+FILE(GLOB __files14 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/minizip/*.h")
+INSTALL(FILES ${__files14}
+    DESTINATION include/kml/third_party/zlib-1.2.3/contrib/minizip
+    COMPONENT Development)
 
 IF(NOT LIBKML_USE_EXTERNAL_BOOST)
 FILE(GLOB __files15 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1/boost/config/compiler/*.hpp")
