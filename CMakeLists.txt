@@ -181,18 +181,10 @@ IF(WIN32)
         INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
         SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
         SET(libzlib_src_la_SOURCES
-                ${libzlib_src_la_SOURCES_DIR}/adler32.c
-                ${libzlib_src_la_SOURCES_DIR}/compress.c
-                ${libzlib_src_la_SOURCES_DIR}/crc32.c
-                ${libzlib_src_la_SOURCES_DIR}/deflate.c
-                ${libzlib_src_la_SOURCES_DIR}/inflate.c
-                ${libzlib_src_la_SOURCES_DIR}/gzio.c
-                ${libzlib_src_la_SOURCES_DIR}/infback.c
-                ${libzlib_src_la_SOURCES_DIR}/inffast.c
-                ${libzlib_src_la_SOURCES_DIR}/inftrees.c
-                ${libzlib_src_la_SOURCES_DIR}/trees.c
-                ${libzlib_src_la_SOURCES_DIR}/uncompr.c
-                ${libzlib_src_la_SOURCES_DIR}/zutil.c )
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
       ENDIF(NOT MINGW)
 #    ENDIF(NOT CYGWIN)
   ENDIF(NOT BORLAND)
@@ -201,18 +193,10 @@ IF(APPLE)
         INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
         SET(libzlib_src_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3.src")
         SET(libzlib_src_la_SOURCES
-                ${libzlib_src_la_SOURCES_DIR}/adler32.c
-                ${libzlib_src_la_SOURCES_DIR}/compress.c
-                ${libzlib_src_la_SOURCES_DIR}/crc32.c
-                ${libzlib_src_la_SOURCES_DIR}/deflate.c
-                ${libzlib_src_la_SOURCES_DIR}/inflate.c
-                ${libzlib_src_la_SOURCES_DIR}/gzio.c
-                ${libzlib_src_la_SOURCES_DIR}/infback.c
-                ${libzlib_src_la_SOURCES_DIR}/inffast.c
-                ${libzlib_src_la_SOURCES_DIR}/inftrees.c
-                ${libzlib_src_la_SOURCES_DIR}/trees.c
-                ${libzlib_src_la_SOURCES_DIR}/uncompr.c
-                ${libzlib_src_la_SOURCES_DIR}/zutil.c )
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/unzip.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/ioapi.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/iomem_simple.c
+                ${libzlib_src_la_SOURCES_DIR}/contrib/minizip/nzip.c)
 ENDIF(APPLE)
 
 
