@@ -15,14 +15,29 @@ SET(libkml_VERSION_STRING "${libkml_VERSION_MAJOR}.${libkml_VERSION_MINOR}.${lib
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/src)
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party)
 
-OPTION(LIBKML_USE_EXTERNAL_BOOST "Use external Boost" OFF)
+#
+IF(UNIX)
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" CACHE INTERNAL "Required on unix systems")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fPIC" CACHE INTERNAL "Required on unix systems")
+ENDIF(UNIX)
 
+# Boost is required.
+SET(LIBKML_USE_EXTERNAL_BOOST OFF CACHE BOOL "Use external Boost")
 IF(NOT LIBKML_USE_EXTERNAL_BOOST)
   INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1)
 ELSE(NOT LIBKML_USE_EXTERNAL_BOOST)
   FIND_PACKAGE(Boost REQUIRED)
   INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
+
+# Expat is required.
+SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
+FIND_PACKAGE(EXPAT REQUIRED)
+
+INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
+LINK_DIRECTORIES(${EXPAT_LIB_DIRS})
+
+# uriparser is required.
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/include)
 
 SET(libkmlbase_la_SOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/kml/base)
@@ -33,10 +48,10 @@ SET(libkmlbase_la_SOURCES
   ${libkmlbase_la_SOURCES_DIR}/date_time.cc
   ${libkmlbase_la_SOURCES_DIR}/expat_parser.cc
   ${libkmlbase_la_SOURCES_DIR}/expat_handler_ns.cc
-	${libkmlbase_la_SOURCES_DIR}/file.cc
+  ${libkmlbase_la_SOURCES_DIR}/file.cc
   ${libkmlbase_la_SOURCES_DIR}/math_util.cc
   ${libkmlbase_la_SOURCES_DIR}/mimetypes.cc
-	${libkmlbase_la_SOURCES_DIR}/referent.cc
+  ${libkmlbase_la_SOURCES_DIR}/referent.cc
   ${libkmlbase_la_SOURCES_DIR}/string_util.cc
   ${libkmlbase_la_SOURCES_DIR}/time_util.cc
   ${libkmlbase_la_SOURCES_DIR}/uri_parser.cc
@@ -44,14 +59,14 @@ SET(libkmlbase_la_SOURCES
   ${libkmlbase_la_SOURCES_DIR}/xml_namespaces.cc
   ${libkmlbase_la_SOURCES_DIR}/zip_file.cc
 )
+
 IF(UNIX)
-        SET(libkmlbase_la_SOURCES ${libkmlbase_la_SOURCES}
-	${libkmlbase_la_SOURCES_DIR}/file_posix.cc )
+	SET(libkmlbase_la_SOURCES ${libkmlbase_la_SOURCES} ${libkmlbase_la_SOURCES_DIR}/file_posix.cc )
 ELSE(UNIX)
-        SET(libkmlbase_la_SOURCES ${libkmlbase_la_SOURCES}
-	${libkmlbase_la_SOURCES_DIR}/file_win32.cc
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h )
+	SET(libkmlbase_la_SOURCES ${libkmlbase_la_SOURCES}
+			${libkmlbase_la_SOURCES_DIR}/file_win32.cc
+			${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.cpp
+			${CMAKE_CURRENT_SOURCE_DIR}/src/stdafx.h )
 ENDIF(UNIX)
 
 SET(libkmlconvenience_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src/kml/convenience")
@@ -163,8 +178,6 @@ SET(libkmlregionator_la_SOURCES
 	${libkmlregionator_la_SOURCES_DIR}/regionator_util.cc
 )
 
-
-# Build libkml library
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3")
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib")
 SET(libzlib_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/minizip")
@@ -177,13 +190,6 @@ SET(libzlib_la_SOURCES
 )
 
 SET(libzlib_src_la_SOURCES "")
-
-SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
-FIND_PACKAGE(EXPAT REQUIRED)
-
-IF(NOT EXPAT_FOUND)
-  MESSAGE(FATAL_ERROR "Expat required")
-ENDIF(NOT EXPAT_FOUND)
 
 INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
 LINK_DIRECTORIES(${EXPAT_LIB_DIRS})
