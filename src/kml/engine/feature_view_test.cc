@@ -27,6 +27,7 @@
 
 #include "kml/engine/feature_view.h"
 #include "gtest/gtest.h"
+#include "kml/engine/bbox.h"
 #include "kml/engine/kml_file.h"
 
 using kmldom::CoordinatesPtr;
@@ -134,6 +135,20 @@ TEST(FeatureViewTest, TestComputeFeatureLookAtFolder) {
   ASSERT_DOUBLE_EQ(5.0, lookat->get_longitude());
   // The range encompasses 0,0 to 10,10 for our field of view.
   ASSERT_NEAR(1494183.4444, lookat->get_range(), 0.0001);
+}
+
+TEST(FeatureViewTest, TestComputeBboxLookAt) {
+  Bbox bbox(36.59062, 34.98788, -82.00043, -90.06512);
+  kmldom::LookAtPtr lookat = ComputeBboxLookAt(bbox);
+  ASSERT_TRUE(lookat);
+  // These fields are expected to be set to these values.
+  ASSERT_DOUBLE_EQ(-86.032775, lookat->get_longitude());
+  ASSERT_DOUBLE_EQ(35.78925, lookat->get_latitude());
+  ASSERT_DOUBLE_EQ(712928.68603440293, lookat->get_range());
+  // These fields are not set by ComputeBboxLookAt.
+  ASSERT_FALSE(lookat->has_altitude());
+  ASSERT_FALSE(lookat->has_heading());
+  ASSERT_FALSE(lookat->has_tilt());
 }
 
 }  // end namespace kmlengine

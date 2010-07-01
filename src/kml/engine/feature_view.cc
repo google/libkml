@@ -53,6 +53,10 @@ LookAtPtr ComputeFeatureLookAt(const FeaturePtr& feature) {
   if (!GetFeatureBounds(feature, &bbox)) {
     return NULL;
   }
+  return ComputeBboxLookAt(bbox);
+}
+
+LookAtPtr ComputeBboxLookAt(const Bbox& bbox) {
   // The distance from the center point to the northern bound.
   const double d_north = kmlbase::DistanceBetweenPoints(
       bbox.GetCenterLat(), bbox.GetCenterLon(),
