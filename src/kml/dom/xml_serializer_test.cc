@@ -253,6 +253,29 @@ TEST_F(XmlSerializerTest, TestSerializeNull) {
   ASSERT_EQ(empty, SerializeRaw(NULL));
 }
 
+// This test verifies that SerializeRaw remains compatible with some slightly
+// unfortunate and non-obvious behavior in libkml 1.2.  In libkml 1.2 the
+// serialization of <coordinates> _always_ emits lon,lat,alt and always
+// uses "\n" to separate each tuple _even_ using SerializeRaw.
+TEST_F(XmlSerializerTest, SerializeRawCoordinates) {
+  placemark_ = AsPlacemark(ParseKml(
+      "<Placemark>"
+      "  <LineString>"
+      "    <coordinates>1.2,3.4,5.6 9.8,7.6</coordinates>"
+      "  </LineString>"
+      "</Placemark>"));
+  ASSERT_TRUE(placemark_);
+  const string want(
+      "<Placemark>"
+      "<LineString>"
+      "<coordinates>1.2,3.4,5.6\n"
+      "9.8,7.6,0\n"
+      "</coordinates>"
+      "</LineString>"
+      "</Placemark>");
+  ASSERT_EQ(want, SerializeRaw(placemark_));
+}
+
 TEST_F(XmlSerializerTest, BasicSerializePrettyToOstream) {
   kmldom::CoordinatesPtr coordinates =
       kmldom::KmlFactory::GetFactory()->CreateCoordinates();

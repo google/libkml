@@ -170,7 +170,15 @@ class XmlSerializer : public Serializer {
     output_->put(',');
     val = kmlbase::ToString(vec3.get_altitude());
     output_->write(val.data(), val.size());
-    Newline();
+    // In libkml 1.2 a "\n" was baked into Serializer::SaveVec3.  We emit an
+    // explicit "\n" for compatibility instead of calling Newline() because
+    // Newline() could be an empty string which would effectively concatenate
+    // coordinates items in SerializeRaw.
+    if (newline_.empty()) {
+      output_->write("\n", 1);
+    } else {
+      Newline();
+    }
   }
 
   // Save a Color32 value as its AABBGGRR representation.
