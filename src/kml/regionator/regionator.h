@@ -62,7 +62,9 @@ public:
   // region is first aligned to the lowest level region in a quadtree rooted
   // at n=180, s=-180, e=180, w=-180.  All output files are saved to the
   // given directory if a non-NULL pointer is supplied.  Regionation progresses
-  // the same whether nor not an output directory is supplied.
+  // the same whether nor not an output directory is supplied.  This also
+  // adds a <LookAt> to the root node for the bounds of the data set as
+  // described by the region used here.
   static bool RegionateAligned(RegionHandler& rhandler,
                                const kmldom::RegionPtr& region,
                                const char* output_directory);
@@ -71,6 +73,13 @@ public:
   // override for that name with this method.  This file is also added as the
   // <atom:link> of every descendent kml.
   void SetRootFilename(const char *filename) { root_filename_ = filename; }
+
+  // This <Region>'s <LatLonAltBox> is used as the basis for the <LookAt>
+  // added to the root node of the generated hierarchy.  Without this there
+  // is no explicit <LookAt>.
+  void SetNaturalRegion(const kmldom::RegionPtr& region) {
+    natural_region_ = region;
+  }
 
 private:
   kmldom::RegionPtr root_region_;
@@ -91,6 +100,7 @@ private:
   std::map<string,int> qid_map_;
   char* output_directory_;
   const char* root_filename_;
+  kmldom::RegionPtr natural_region_;
 };
 
 }  // end namespace kmlregionator
