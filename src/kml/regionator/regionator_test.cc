@@ -237,4 +237,25 @@ TEST_F(RegionatorTest, SetRootFilenameTest) {
   ASSERT_EQ(string("up"), link->get_rel());
 }
 
+TEST_F(RegionatorTest, SetNaturalRegionTest) {
+  PointRegionHandler depth2(2, &kml_file_map_);
+  const double north(36.59062);
+  const double south(34.98788);
+  const double east(-82.00043);
+  const double west(-90.06512);
+  RegionPtr region =
+      kmlconvenience::CreateRegion2d(north,south,east,west,128,-1);
+  Regionator rtor(depth2, region);
+  rtor.SetNaturalRegion(region);
+  rtor.Regionate(NULL);
+  kmldom::KmlPtr kml = kml_file_map_["1.kml"];
+  ASSERT_TRUE(kml);
+  ASSERT_TRUE(kml->has_feature());
+  kmldom::LookAtPtr lookat =
+      kmldom::AsLookAt(kml->get_feature()->get_abstractview());
+  ASSERT_TRUE(lookat);
+  ASSERT_DOUBLE_EQ(35.78925, lookat->get_latitude());
+  ASSERT_DOUBLE_EQ(-86.032775, lookat->get_longitude());
+}
+
 }  // end namespace kmlregionator

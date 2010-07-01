@@ -33,6 +33,8 @@
 #include "kml/base/util.h"
 #include "kml/convenience/atom_util.h"
 #include "kml/dom.h"
+#include "kml/engine/bbox.h"
+#include "kml/engine/feature_view.h"
 #include "kml/regionator/regionator_qid.h"
 #include "kml/regionator/regionator_util.h"
 
@@ -126,6 +128,16 @@ bool Regionator::_Regionate(const RegionPtr& region) {
   }
   document->add_feature(feature);
 
+  // Supply the root node of the RbNL hierarchy with a <LookAt> to the natural
+  // bounds of the data if such bounds were supplied using SetNaturalRegion().
+  if (natural_region_ && qid.IsRoot()) {
+    if (kmldom::LatLonAltBoxPtr llab = natural_region_->get_latlonaltbox()) {
+      kmlengine::Bbox bbox(llab->get_north(), llab->get_south(),
+                           llab->get_east(), llab->get_west());
+      document->set_abstractview(kmlengine::ComputeBboxLookAt(bbox));
+    }
+  }
+
   // Create the root element for the KML file and set the Document as the root
   // feature.  Hand the completed KML file to the RegionHandler for it to save.
   KmlPtr kml = kmldom::KmlFactory::GetFactory()->CreateKml();
@@ -161,6 +173,7 @@ bool Regionator::RegionateAligned(RegionHandler& rhandler,
   aligned_region->set_lod(CloneLod(region->get_lod()));
   boost::scoped_ptr<Regionator> regionator(new Regionator(rhandler,
                                                           aligned_region));
+  regionator->SetNaturalRegion(region);
   return regionator->Regionate(output_directory);
 }
 
