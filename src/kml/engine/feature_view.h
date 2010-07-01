@@ -33,6 +33,8 @@
 
 namespace kmlengine {
 
+class Bbox;
+
 // Returns a <LookAt> element computed from the spatial extents of a feature.
 // The LookAt's altitude, heading and tilt are set to 0.0, and the altitudeMode
 // is set to relativeToGroud. The range is computed such that the feature will
@@ -40,6 +42,10 @@ namespace kmlengine {
 // minimum of 1,000 meters. Returns NULL if the feature has no specified
 // AbstractView and none can be computed.
 kmldom::LookAtPtr ComputeFeatureLookAt(const kmldom::FeaturePtr& feature);
+
+// Returns a <LookAt> element computed from the spatial extents of a Bbox.
+// See ComputeFeatureLookAt for the details of how the LookAt is created.
+kmldom::LookAtPtr ComputeBboxLookAt(const Bbox& bbox);
 
 }  // end namespace kmlengine
 
