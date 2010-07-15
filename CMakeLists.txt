@@ -32,10 +32,20 @@ ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
 
 # Expat is required.
 SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
-FIND_PACKAGE(EXPAT REQUIRED)
 
+# 1. the find way:
+#FIND_PACKAGE(EXPAT)
+
+# 2. the build your own way:
+IF(NOT BUILD_SHARED_LIBS)
+  ADD_DEFINITIONS(-DXML_STATIC)
+ENDIF()
+ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src)
+SET(EXPAT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src/lib")
+SET(EXPAT_LIBRARIES expat) # CMake target name in the build-your-own case
+
+# Both ways:
 INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
-LINK_DIRECTORIES(${EXPAT_LIB_DIRS})
 
 # uriparser is required.
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/include)
@@ -178,6 +188,10 @@ SET(libkmlregionator_la_SOURCES
 	${libkmlregionator_la_SOURCES_DIR}/regionator_util.cc
 )
 
+IF(BUILD_SHARED_LIBS)
+  ADD_DEFINITIONS(-DZLIB_DLL)
+  ADD_DEFINITIONS(-DZLIB_INTERNAL)
+ENDIF()
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3")
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib")
 SET(libzlib_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.3/contrib/minizip")
@@ -190,9 +204,6 @@ SET(libzlib_la_SOURCES
 )
 
 SET(libzlib_src_la_SOURCES "")
-
-INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
-LINK_DIRECTORIES(${EXPAT_LIB_DIRS})
 
 SET(liburiparser_la_SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.7.5/lib")
 INCLUDE_DIRECTORIES(${liburiparser_la_SOURCES_DIR})
@@ -343,4 +354,3 @@ INSTALL(FILES ${__files16}
     DESTINATION include/kml/third_party/boost_1_34_1/boost/config/abi
     COMPONENT Development)
 ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
-
