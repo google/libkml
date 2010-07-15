@@ -34,15 +34,17 @@ ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
 SET(LIBKML_USE_EXTERNAL_EXPAT ON CACHE BOOL "Use external expat")
 
 # 1. the find way:
-#FIND_PACKAGE(EXPAT)
-
-# 2. the build your own way:
-IF(NOT BUILD_SHARED_LIBS)
-  ADD_DEFINITIONS(-DXML_STATIC)
-ENDIF()
-ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src)
-SET(EXPAT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src/lib")
-SET(EXPAT_LIBRARIES expat) # CMake target name in the build-your-own case
+if(UNIX)
+  FIND_PACKAGE(EXPAT)
+else(UNIX)
+  # 2. the build your own way:
+  IF(NOT BUILD_SHARED_LIBS)
+    ADD_DEFINITIONS(-DXML_STATIC)
+  ENDIF()
+  ADD_SUBDIRECTORY(${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src)
+  SET(EXPAT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src/lib")
+  SET(EXPAT_LIBRARIES expat) # CMake target name in the build-your-own case
+endif(UNIX)
 
 # Both ways:
 INCLUDE_DIRECTORIES(${EXPAT_INCLUDE_DIRS})
