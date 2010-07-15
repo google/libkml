@@ -13,8 +13,8 @@ IF(WIN32)
   ADD_DEFINITIONS(-DCOMPILED_FROM_DSP)
 ElSE (WIN32)
   IF(UNIX)
-    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/expat_config.h.in
-                   ${CMAKE_BINARY_DIR}/expat_config.h)
+    CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/third_party/expat.src/expat_config.h.in
+                   ${CMAKE_BINARY_DIR}/third_party/expat.src/expat_config.h)
     ADD_DEFINITIONS(-DHAVE_EXPAT_CONFIG_H)
   ENDIF(UNIX)
   IF(APPLE)
