@@ -356,3 +356,11 @@ INSTALL(FILES ${__files16}
     DESTINATION include/kml/third_party/boost_1_34_1/boost/config/abi
     COMPONENT Development)
 ENDIF(NOT LIBKML_USE_EXTERNAL_BOOST)
+
+IF(UNIX)
+ELSE(UNIX)
+  FILE(GLOB __files17 "${CMAKE_CURRENT_SOURCE_DIR}/third_party/expat.src/lib/*.h")
+  INSTALL(FILES ${__files17}
+      DESTINATION include/kml/third_party/expat.src
+      COMPONENT Development)
+ENDIF(UNIX)
