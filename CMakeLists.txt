@@ -21,6 +21,9 @@ IF(UNIX)
   SET(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -fPIC" CACHE INTERNAL "Required on unix systems")
 ENDIF(UNIX)
 
+# Currently there are some issues with building KML as shared library.
+SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build kML as static library." FORCE)
+
 # Boost is required.
 OPTION(LIBKML_USE_EXTERNAL_BOOST "Use external Boost" OFF)
 IF(NOT LIBKML_USE_EXTERNAL_BOOST)
