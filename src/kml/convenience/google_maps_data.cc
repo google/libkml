@@ -180,7 +180,7 @@ kmldom::DocumentPtr GoogleMapsData::CreateDocumentOfMapFeatures(
   kmldom::AtomFeedPtr this_feed = feature_feed;
   do {
     GetMapKml(this_feed, document);
-  } while (this_feed = AtomUtil::GetNextFeed(this_feed, *http_client_));
+  } while ((this_feed = AtomUtil::GetNextFeed(this_feed, *http_client_)));
 
   return document;
 }
