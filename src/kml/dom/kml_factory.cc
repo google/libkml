@@ -27,6 +27,7 @@
 #include "kml/dom/kml22.h"
 #include "kml/dom/kml_ptr.h"
 #include "kml/dom/kmldom.h"
+#include "kml/dom/xsd.h"
 
 namespace kmldom {
 
@@ -138,6 +139,11 @@ ElementPtr KmlFactory::CreateElementById(KmlDomType id) const {
 
   default: return NULL;
   }
+}
+
+ElementPtr KmlFactory::CreateElementFromName(const string& element_name) const {
+  return CreateElementById(
+      static_cast<KmlDomType>(Xsd::GetSchema()->ElementId(element_name)));
 }
 
 Field* KmlFactory::CreateFieldById(KmlDomType type_id) const {

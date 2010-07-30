@@ -39,6 +39,7 @@ class KmlFactory {
 
   // Factory functions used by the parser to create any KML element.
   ElementPtr CreateElementById(KmlDomType id) const;
+  ElementPtr CreateElementFromName(const string& element_name) const;
   Field* CreateFieldById(KmlDomType type_id) const;
 
   // Factory functions to create all KML complex elements.
