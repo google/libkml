@@ -24,6 +24,7 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "kml/dom/kml_factory.h"
+#include "kml/dom/kml_cast.h"
 #include "kml/dom/kmldom.h"
 #include "gtest/gtest.h"
 
@@ -312,6 +313,17 @@ TEST(KmlFactoryTest, TestFactory) {
 
   e = factory->CreateGxWait();
   ASSERT_EQ(Type_GxWait, e->Type());
+}
+
+TEST(KmlFactoryTest, TestCreateElementFromName) {
+  KmlFactory* kf = KmlFactory::GetFactory();
+  ASSERT_FALSE(kf->CreateElementFromName(""));
+  ASSERT_FALSE(kf->CreateElementFromName("complete junk"));
+  ASSERT_FALSE(kf->CreateElementFromName("<Placemark"));
+
+  ASSERT_TRUE(kmldom::AsPlacemark(kf->CreateElementFromName("Placemark")));
+  ASSERT_TRUE(kmldom::AsAtomAuthor(kf->CreateElementFromName("atom:author")));
+  ASSERT_TRUE(kmldom::AsGxTour(kf->CreateElementFromName("gx:Tour")));
 }
 
 }  // end namespace kmldom
