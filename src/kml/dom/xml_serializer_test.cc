@@ -298,4 +298,13 @@ TEST_F(XmlSerializerTest, BasicSerializePrettyToOstream) {
   ASSERT_EQ(want, output_);
 }
 
+TEST_F(XmlSerializerTest, TestGetElementName) {
+  ASSERT_EQ(string(""), GetElementName(NULL));
+  ASSERT_EQ(string("Placemark"), GetElementName(placemark_));
+  ASSERT_EQ(string("atom:author"),
+            GetElementName(KmlFactory::GetFactory()->CreateAtomAuthor()));
+  ASSERT_EQ(string("gx:Tour"),
+            GetElementName(KmlFactory::GetFactory()->CreateGxTour()));
+}
+
 }  // end namespace kmldom

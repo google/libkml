@@ -69,6 +69,11 @@ string SerializeRaw(const ElementPtr& root);
 // does nothing and immediately returns.
 void SerializeToOstream(const ElementPtr& root, bool pretty, std::ostream* xml);
 
+// This function is the public API for returning the element's tag name, for
+// example "Placemark" for <Placemark> and "NetworkLink" for <NetworkLink>.
+// If element is NULL or otherwise invalid an empty string is returned.
+string GetElementName(const ElementPtr& element);
+
 }  // end namespace kmldom
 
 #endif  // KML_DOM_KML_FUNCS_H__
