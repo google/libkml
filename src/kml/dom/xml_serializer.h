@@ -211,7 +211,7 @@ class XmlSerializer : public Serializer {
     output_->write(quoted.data(), quoted.size());
   }
 
-  bool EmitStart(bool nil) {
+  bool EmitStart(bool is_nil) {
     if (!start_pending_) {
       return false;
     }
@@ -223,7 +223,7 @@ class XmlSerializer : public Serializer {
                      serialized_attributes_.size());
       serialized_attributes_.clear();
     }
-    if (nil) {
+    if (is_nil) {
       output_->write("/>", 2);
     } else {
       output_->put('>');
