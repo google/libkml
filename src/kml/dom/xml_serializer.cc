@@ -68,4 +68,8 @@ string SerializeRaw(const ElementPtr& root) {
   return xml;
 }
 
+string GetElementName(const ElementPtr& element) {
+  return element ?  Xsd::GetSchema()->ElementName(element->Type()) : string("");
+}
+
 }  // namespace kmldom
