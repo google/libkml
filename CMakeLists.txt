@@ -370,3 +370,16 @@ ELSE(UNIX)
       DESTINATION include/kml/third_party/expat.src
       COMPONENT Development)
 ENDIF(UNIX)
+
+# Setup the build export configuration.
+set(libkml_EXPORT_FILE "${libkml_BINARY_DIR}/KMLConfig.cmake" )
+configure_file("${libkml_SOURCE_DIR}/KMLConfig.cmake.in"
+               "${libkml_EXPORT_FILE}")
+
+# Setup the install export.
+set(libkml_EXPORT_INSTALL_FILE "${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake" )
+configure_file("${libkml_SOURCE_DIR}/KMLConfig-install.cmake.in"
+               "${libkml_EXPORT_INSTALL_FILE}"
+               @ONLY)
+
+INSTALL(FILES ${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake DESTINATION lib/cmake)
