@@ -27,6 +27,7 @@ SET(BUILD_SHARED_LIBS OFF CACHE BOOL "Build kML as static library." FORCE)
 # Boost is required.
 OPTION(LIBKML_USE_EXTERNAL_BOOST "Use external Boost" OFF)
 IF(NOT LIBKML_USE_EXTERNAL_BOOST)
+  set(Boost_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1)
   INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/third_party/boost_1_34_1)
 ELSE(NOT LIBKML_USE_EXTERNAL_BOOST)
   FIND_PACKAGE(Boost REQUIRED)
@@ -379,7 +380,6 @@ configure_file("${libkml_SOURCE_DIR}/KMLConfig.cmake.in"
 # Setup the install export.
 set(libkml_EXPORT_INSTALL_FILE "${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake" )
 configure_file("${libkml_SOURCE_DIR}/KMLConfig-install.cmake.in"
-               "${libkml_EXPORT_INSTALL_FILE}"
-               @ONLY)
+               "${libkml_EXPORT_INSTALL_FILE}")
 
 INSTALL(FILES ${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake DESTINATION lib/cmake)

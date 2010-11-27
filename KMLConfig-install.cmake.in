@@ -1,2 +1,6 @@
-set(KML_INCLUDE_DIRS ${libkml_INSTALL_DIR}/include;)
-set(KML_LIBRARY_DIR  ${libkml_INSTALL_DIR}/lib; ${libkml_BINRARY_DIR}/lib)
+set(KML_INCLUDE_DIRS
+  ${CMAKE_INSTALL_PREFIX}/include;
+  ${EXPAT_INCLUDE_DIRS};
+  ${Boost_INCLUDE_DIR})
+
+set(KML_LIBRARY_DIR  ${CMAKE_INSTALL_PREFIX}/lib)
