@@ -3,4 +3,8 @@ set(KML_INCLUDE_DIRS
   "${EXPAT_INCLUDE_DIRS}";
   "${Boost_INCLUDE_DIR}")
 
-set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}/lib")
+if(WIN32)
+  set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}/$(OutDir)")
+else(WIN32)
+  set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}/lib")
+endif(WIN32)
