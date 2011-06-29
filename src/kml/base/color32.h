@@ -127,12 +127,15 @@ class Color32 {
   void set_color_abgr(const string& color_abgr) {
     uint32_t out = 0;
     // Don't loop over the entire string. We consider only the first
-    // 8 characters significant. If the string starts with a "#" character,
-    // skip it. (Google Earth supports this usage, despite its not being
-    // common practice.)
+    // 8 non-whitespace characters significant. If the string starts with a "#"
+    // character, skip it. (Google Earth supports this usage, despite its not
+    // being common practice.)
     size_t offset = 0;
-    if (color_abgr.size() > 0 && color_abgr[0] == '#') {
-      offset = 1;
+    while (isspace(color_abgr[offset])) {
+      offset ++;
+    }
+    if (color_abgr.size() > 0 && color_abgr[offset] == '#') {
+      offset ++;
     }
     size_t length = color_abgr.size() >= 8 + offset ? 8 : color_abgr.size();
     for(size_t i = offset; i < length + offset; ++i) {
