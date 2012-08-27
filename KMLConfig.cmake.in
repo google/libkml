@@ -5,6 +5,8 @@ set(KML_INCLUDE_DIRS
 
 if(WIN32)
   set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}/$(OutDir)")
+  find_library(KML_LIBRARY kml PATHS "${libkml_BINARY_DIR}/$(OutDir) NO_DEFAULT_PATH)
 else(WIN32)
-  set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}/lib")
+  set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}")
+  find_library(KML_LIBRARY kml PATHS "${libkml_BINARY_DIR}" NO_DEFAULT_PATH)
 endif(WIN32)
