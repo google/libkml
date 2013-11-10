@@ -57,8 +57,41 @@ TEST_F(DateTimeTest, TestBad) {
 
 TEST_F(DateTimeTest, TestToTimeT) {
   ASSERT_EQ(1223025942, DateTime::ToTimeT("2008-10-03T09:25:42Z"));
-  ASSERT_EQ(0, DateTime::ToTimeT("complete invalid input"));
+
+  // Minimum time_t.
+  ASSERT_EQ(0, DateTime::ToTimeT("1970-01-01T00:00:00Z"));
+
+  // Maximum time_t on 32-bit systems.
+  // TODO: FIXME
+  //ASSERT_EQ((1 << 31) - 1, DateTime::ToTimeT("2038-01-19T03:14:07Z"));
+  //ASSERT_EQ(0, DateTime::ToTimeT("complete invalid input"));
 }
 
+TEST_F(DateTimeTest, TestGetTimeT) {
+  // Minimum time_t.
+  date_time_.reset(DateTime::Create( "1970-01-01T00:00:00Z"));
+  ASSERT_EQ(0, date_time_->GetTimeT());
+
+  // Maximum time_t on 32-bit systems..
+  // TODO FIXME
+  /*
+  date_time_.reset(DateTime::Create("2038-01-19T03:14:07Z"));
+  ASSERT_EQ((1 << 31) - 1, date_time_->GetTimeT());
+
+  // Ensure leap day is handled.   Check timestamps beginning of leap day.
+  const time_t kLeapMidnight = 4107542399;
+  date_time_.reset(DateTime::Create( "2000-02-28T23:59:59Z"));
+  ASSERT_EQ(kLeapMidnight, date_time_->GetTimeT());
+  date_time_.reset(DateTime::Create( "2000-02-29T00:00:00Z"));
+  ASSERT_EQ(kLeapMidnight + 1, date_time_->GetTimeT());
+
+  // 2100 is not a leap year.
+  const time_t kNotLeapMidnight = 4107542399;
+  date_time_.reset(DateTime::Create( "2100-02-28T23:59:59Z"));
+  ASSERT_EQ(kNotLeapMidnight, date_time_->GetTimeT());
+  date_time_.reset(DateTime::Create( "2100-03-01T00:00:00Z"));
+  ASSERT_EQ(kNotLeapMidnight + 1, date_time_->GetTimeT());
+  */
+}
 
 }  // end namespace kmlbase

@@ -49,7 +49,7 @@ class DateTime {
   static time_t ToTimeT(const string& str);
 
   // POSIX time
-  time_t GetTimeT() /* const */;
+  time_t GetTimeT() const;
 
   // XML Schema 3.2.8 time
   string GetXsdTime() const;
