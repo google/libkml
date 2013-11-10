@@ -31,11 +31,6 @@
 
 // TODO: fix this for real.
 #ifdef _WIN32
-time_t timegm(struct tm* tm) {
-  // Not yet implemented on this platform.
-  time_t not_implemented;
-  return not_implemented;
-}
 char* strptime(const char* buf, const char* format, struct tm* tm) {
   // Not yet implemented on this platform.
   return NULL;
@@ -60,8 +55,37 @@ time_t DateTime::ToTimeT(const string& str) {
   return date_time.get() ? date_time->GetTimeT() : 0;
 }
 
-time_t DateTime::GetTimeT() /* const */ {
-  return timegm(&tm_);
+// Overkill since all time_t's on a 32-bit that are divisible by four are
+// leap years, but this should handle the 2100 case (not a LY) on 64-bit
+// systems.
+static bool is_leap(int year) {
+  year += 1900;
+  return (year % 4) == 0 && ((year % 100) != 0 || (year % 400) == 0);
+}
+
+time_t DateTime::GetTimeT() const {
+  // Always return time as GMT; disregard local time, unlike  mktime(3).
+  // Faster (and less "obviously correct") implementations are possible.
+  static const unsigned ndays[2][12] ={
+    {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+    {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
+  time_t res = 0;
+
+  // This and is_leap() base from 1970, the epoch of a time_t.
+  for (int year = 70; year < tm_.tm_year; ++year)
+    res += is_leap(year) ? 366 : 365;
+
+  for (int month = 0; month < tm_.tm_mon; ++month)
+    res += ndays[is_leap(tm_.tm_year)][month];
+
+  res += tm_.tm_mday - 1;
+  res *= 24;
+  res += tm_.tm_hour;
+  res *= 60;
+  res += tm_.tm_min;
+  res *= 60;
+  res += tm_.tm_sec;
+  return res;
 }
 
 template<int N>
