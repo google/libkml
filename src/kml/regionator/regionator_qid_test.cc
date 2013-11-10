@@ -65,9 +65,9 @@ TEST_F(RegionatorQidTest, TestCreateChild) {
 TEST_F(RegionatorQidTest, TestIsRoot) {
   Qid nw = root_.CreateChild(NW);
   Qid se = root_.CreateChild(SE);
-  ASSERT_EQ(true,root_.IsRoot());
-  ASSERT_EQ(false,nw.IsRoot());
-  ASSERT_EQ(false,se.IsRoot());
+  ASSERT_TRUE(root_.IsRoot());
+  ASSERT_FALSE(nw.IsRoot());
+  ASSERT_FALSE(se.IsRoot());
 }
 
 // This tests a few more normal usage scenarios.
