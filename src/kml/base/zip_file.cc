@@ -25,6 +25,7 @@
 
 // This file contains the implementation of the ZipFile class.
 
+#include <exception>
 #include "kml/base/zip_file.h"
 #include "kml/base/file.h"
 #include "minizip/unzip.h"
