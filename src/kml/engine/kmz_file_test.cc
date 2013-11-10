@@ -88,7 +88,7 @@ TEST_F(KmzTest, TestOpenFromString) {
   // doc.kmz contains a simple doc.kml and is a valid zip archive.
   const string kGoodKmz = string(DATADIR) + "/kmz/doc.kmz";
   string kmz_file_data;
-  ASSERT_TRUE(File::ReadFileToString(kGoodKmz.c_str(), &kmz_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kGoodKmz, &kmz_file_data));
   ASSERT_FALSE(kmz_file_data.empty());
   kmz_file_.reset(KmzFile::OpenFromString(kmz_file_data));
   ASSERT_TRUE(kmz_file_);
@@ -99,7 +99,7 @@ TEST_F(KmzTest, TestOpenFromString) {
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const string kBadKmz = string(DATADIR) + "/kmz/nokml.kmz";
   kmz_file_data.clear();
-  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &kmz_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz, &kmz_file_data));
   ASSERT_FALSE(kmz_file_data.empty());
   kmz_file_.reset(KmzFile::OpenFromString(kmz_file_data));
   ASSERT_TRUE(kmz_file_);
@@ -245,7 +245,7 @@ TEST_F(KmzTest, TestWriteKmz) {
   ASSERT_FALSE(foo.empty());
   // Open the file into our KmzFile instance and assert the KML was written
   // correctly.
-  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+  ASSERT_TRUE(File::Exists(tempfile->name()));
   kmz_file_.reset(KmzFile::OpenFromFile(tempfile->name().c_str()));
   ASSERT_TRUE(kmz_file_);
   string kml_data;
@@ -293,7 +293,7 @@ TEST_F(KmzTest, TestAddFile) {
     ASSERT_FALSE(kmz->AddFile(kNewKml, "/also/invalid.kml"));
   }
   // KmzFile's destructor closes the file handle and cleans up.
-  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+  ASSERT_TRUE(File::Exists(tempfile->name()));
 
   // Verify that the archive we created contains the files in order.
   KmzFilePtr created(KmzFile::OpenFromFile(tempfile->name().c_str()));
@@ -332,7 +332,7 @@ TEST_F(KmzTest, TestAddFileList) {
     errs = kmz_file->AddFileList(kBaseDir, file_paths);
   }
   // KmzFile's destructor closes the file handle and cleans up.
-  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+  ASSERT_TRUE(File::Exists(tempfile->name()));
 
   // Although doc.kml has 5 href fields, two of them are outright
   // duplicates, another resolves to the same path as the dupes, and one is

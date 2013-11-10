@@ -178,7 +178,7 @@ TEST_F(ExpatParserTest, TestBillionLaughsAttack) {
   // Previously, this would hang libkml.
   const string kBadXml = string(DATADIR) + "/kml/billion.kml";
   string file_data;
-  ASSERT_TRUE(File::ReadFileToString(kBadXml.c_str(), &file_data));
+  ASSERT_TRUE(File::ReadFileToString(kBadXml, &file_data));
 
   ASSERT_FALSE(ExpatParser::ParseString(file_data, &handler_, &errors_, false));
   ASSERT_FALSE(errors_.empty());

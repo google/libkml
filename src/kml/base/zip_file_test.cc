@@ -52,7 +52,7 @@ TEST_F(ZipFileTest, TestOpenFromString) {
   // doc.kmz contains doc.kml and is a valid zip archive.
   const string kGoodKmz = string(DATADIR) + "/kmz/doc.kmz";
   string zip_file_data;
-  ASSERT_TRUE(File::ReadFileToString(kGoodKmz.c_str(), &zip_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kGoodKmz, &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_TRUE(zip_file_);
@@ -63,7 +63,7 @@ TEST_F(ZipFileTest, TestOpenFromString) {
   // nokml.kmz is a valid zip archive, but does not contain any KML files
   const string kBadKmz = string(DATADIR) + "/kmz/nokml.kmz";
   zip_file_data.clear();
-  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz, &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_TRUE(zip_file_);
@@ -215,7 +215,7 @@ TEST_F(ZipFileTest, TestAddEntry) {
     ASSERT_FALSE(zipfile->AddEntry(kNewKml, "/also/invalid.kml"));
   }
   // ZipFile's destructor closes the file handle and cleans up.
-  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+  ASSERT_TRUE(File::Exists(tempfile->name()));
 
   // Verify that the archive we created contains the files in order.
   boost::scoped_ptr<ZipFile> created(
@@ -243,7 +243,7 @@ TEST_F(ZipFileTest, TestAddEntryDupe) {
     const string kNewKml = "<Document><name/></Document>";
     ASSERT_TRUE(zipfile->AddEntry(kNewKml, "doc.kml"));
   }
-  ASSERT_TRUE(File::Exists(tempfile->name().c_str()));
+  ASSERT_TRUE(File::Exists(tempfile->name()));
   boost::scoped_ptr<ZipFile> created(
       ZipFile::OpenFromFile(tempfile->name().c_str()));
   ASSERT_TRUE(created.get());
@@ -259,7 +259,7 @@ TEST_F(ZipFileTest, TestAddEntryBad) {
   // is used instead.
   const string kGoodKmz = string(DATADIR) + "/kmz/doc.kmz";
   string zip_file_data;
-  ASSERT_TRUE(File::ReadFileToString(kGoodKmz.c_str(), &zip_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kGoodKmz, &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_TRUE(zip_file_.get());
@@ -272,7 +272,7 @@ TEST_F(ZipFileTest, TestBadPkZipData) {
   // by our underlying minizip library. Assert sane behavior.
   const string kBadKmz = string(DATADIR) + "/kmz/bad-pk-data.kmz";
   string zip_file_data;
-  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz, &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_FALSE(zip_file_->GetEntry("doc.kml", NULL));
@@ -284,7 +284,7 @@ TEST_F(ZipFileTest, TestBadTooLarge) {
   // size falsely as 4294967294 bytes.
   const string kBadKmz = string(DATADIR) + "/kmz/bad-too-large.kmz";
   string zip_file_data;
-  ASSERT_TRUE(File::ReadFileToString(kBadKmz.c_str(), &zip_file_data));
+  ASSERT_TRUE(File::ReadFileToString(kBadKmz, &zip_file_data));
   ASSERT_FALSE(zip_file_data.empty());
   zip_file_.reset(ZipFile::OpenFromString(zip_file_data));
   ASSERT_FALSE(zip_file_->GetEntry("hello.kml", NULL));

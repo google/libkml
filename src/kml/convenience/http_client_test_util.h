@@ -46,7 +46,7 @@ class OneFileHttpClient : public HttpClient {
                            const StringPairVector* request_headers,
                            const string* post_data,
                            string* response) const {
-    return kmlbase::File::ReadFileToString(fetch_me_.c_str(), response);
+    return kmlbase::File::ReadFileToString(fetch_me_, response);
   }
 
  private:
