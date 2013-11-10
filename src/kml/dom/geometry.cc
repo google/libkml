@@ -531,6 +531,7 @@ void GxTrack::Parse(const string& char_data, std::vector<Vec3>* out) {
   kmlbase::Vec3 vec;
   for (size_t i = 0; i < s.size(); i++) {
     vec.set(i, strtod(s[i].c_str(), NULL));
+    if (i > 2) break;
   }
   out->push_back(vec);
 }
@@ -580,4 +581,3 @@ void GxMultiTrack::AcceptChildren(VisitorDriver* driver) {
 }
 
 }  // end namespace kmldom
-

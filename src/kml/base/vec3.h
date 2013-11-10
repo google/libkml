@@ -37,51 +37,55 @@ class Vec3 {
  public:
   // Create an empty Vec3.
   Vec3() {
-    vec_[0] = vec_[1] = 0.0;
+    lon_ = lat_ = 0.0;
     clear_altitude();
   }
 
   // Create a 2d Vec3.
   Vec3(double longitude, double latitude) {
-    vec_[0] = longitude;
-    vec_[1] = latitude;
+    lon_ = longitude;
+    lat_ = latitude;
     clear_altitude();
   }
 
-  // Create a 2d Vec3.
+  // Create a 3d Vec3.
   Vec3(double longitude, double latitude, double altitude) {
-    vec_[0] = longitude;
-    vec_[1] = latitude;
+    lon_ = longitude;
+    lat_ = latitude;
     set_altitude(altitude);
   }
 
   void set(int i, double val) {
-    if (i == 2) {
+    if (i == 0) {
+      lon_ = val;
+    } else if (i == 1) {
+      lat_ = val;
+    } else if (i == 2) {
       set_altitude(val);
     } else {
-      vec_[i] = val;
+      // We should notify about incorrect usage.
     }
   }
 
   double get_longitude() const {
-    return vec_[0];
+    return lon_;
   }
   double get_latitude() const {
-    return vec_[1];
+    return lat_;
   }
 
   bool has_altitude() const {
     return has_altitude_;
   }
   double get_altitude() const {
-    return vec_[2];
+    return alt_;
   }
   void set_altitude(double altitude) {
-    vec_[2] = altitude;
+    alt_ = altitude;
     has_altitude_ = true;
   }
   void clear_altitude() {
-    vec_[2] = 0;
+    alt_ = 0;
     has_altitude_ = false;
   }
 
@@ -96,13 +100,13 @@ class Vec3 {
 
   // Operator overrides.
   bool operator==(const Vec3& vec3) const {
-    return vec_[0] == vec3.get_longitude() &&
-           vec_[1] == vec3.get_latitude() &&
-           vec_[2] == vec3.get_altitude();
+    return lon_ == vec3.get_longitude() &&
+           lat_ == vec3.get_latitude() &&
+           alt_ == vec3.get_altitude();
   }
 
  private:
-  double vec_[3];
+  double lon_, lat_, alt_;
   bool has_altitude_;
 };
 
