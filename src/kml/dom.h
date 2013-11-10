@@ -29,6 +29,7 @@
 #ifndef KML_DOM_H__
 #define KML_DOM_H__
 
+#include <exception>
 #include "kml/dom/kml_cast.h"
 #include "kml/dom/kml_factory.h"
 #include "kml/dom/kml_funcs.h"
