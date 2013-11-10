@@ -91,7 +91,7 @@
 #elif (__GNUC__ >= 4)
 /* GCC C/C++ 4.x.x */
 /* http://predef.sourceforge.net/precomp.html#sec13 */
-# define URI_INLINE __attribute__((always_inline))
+# define URI_INLINE __attribute__((always_inline)) inline
 #elif (__STDC_VERSION__ >= 199901L)
 /* C99, "inline" is a keyword */
 # define URI_INLINE inline

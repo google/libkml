@@ -84,7 +84,7 @@ int URI_FUNC(ToString)(URI_CHAR * dest, const URI_TYPE(Uri) * uri,
 
 
 
-static URI_INLINE int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
+static int URI_FUNC(ToStringEngine)(URI_CHAR * dest,
 		const URI_TYPE(Uri) * uri, int maxChars, int * charsWritten,
 		int * charsRequired) {
 	int written = 0;

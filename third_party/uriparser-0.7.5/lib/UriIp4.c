@@ -146,7 +146,7 @@ int URI_FUNC(ParseIpFourAddress)(unsigned char * octetOutput,
  * [decOctet]-><8>[decOctetThree]
  * [decOctet]-><9>[decOctetThree]
  */
-static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctet)(UriIp4Parser * parser,
+static const URI_CHAR * URI_FUNC(ParseDecOctet)(UriIp4Parser * parser,
 		const URI_CHAR * first, const URI_CHAR * afterLast) {
 	if (first >= afterLast) {
 		return NULL;
@@ -186,7 +186,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctet)(UriIp4Parser * parser
  * [decOctetOne]-><NULL>
  * [decOctetOne]->[DIGIT][decOctetThree]
  */
-static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetOne)(UriIp4Parser * parser,
+static const URI_CHAR * URI_FUNC(ParseDecOctetOne)(UriIp4Parser * parser,
 		const URI_CHAR * first, const URI_CHAR * afterLast) {
 	if (first >= afterLast) {
 		return afterLast;
@@ -226,7 +226,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetOne)(UriIp4Parser * par
  * [decOctetTwo]-><8>
  * [decOctetTwo]-><9>
 */
-static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetTwo)(UriIp4Parser * parser,
+static const URI_CHAR * URI_FUNC(ParseDecOctetTwo)(UriIp4Parser * parser,
 		const URI_CHAR * first, const URI_CHAR * afterLast) {
 	if (first >= afterLast) {
 		return afterLast;
@@ -263,7 +263,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetTwo)(UriIp4Parser * par
  * [decOctetThree]-><NULL>
  * [decOctetThree]->[DIGIT]
  */
-static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetThree)(UriIp4Parser * parser,
+static const URI_CHAR * URI_FUNC(ParseDecOctetThree)(UriIp4Parser * parser,
 		const URI_CHAR * first, const URI_CHAR * afterLast) {
 	if (first >= afterLast) {
 		return afterLast;
@@ -299,7 +299,7 @@ static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetThree)(UriIp4Parser * p
  * [decOctetFour]-><4>
  * [decOctetFour]-><5>
  */
-static URI_INLINE const URI_CHAR * URI_FUNC(ParseDecOctetFour)(UriIp4Parser * parser,
+static const URI_CHAR * URI_FUNC(ParseDecOctetFour)(UriIp4Parser * parser,
 		const URI_CHAR * first, const URI_CHAR * afterLast) {
 	if (first >= afterLast) {
 		return afterLast;
