@@ -489,7 +489,7 @@ int URI_FUNC(NormalizeSyntax)(URI_TYPE(Uri) * uri) {
 
 
 
-static URI_INLINE int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri, unsigned int inMask, unsigned int * outMask) {
+static int URI_FUNC(NormalizeSyntaxEngine)(URI_TYPE(Uri) * uri, unsigned int inMask, unsigned int * outMask) {
 	unsigned int doneMask = URI_NORMALIZED;
 	if (uri == NULL) {
 		if (outMask != NULL) {
