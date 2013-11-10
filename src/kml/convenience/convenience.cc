@@ -118,7 +118,8 @@ CoordinatesPtr CreateCoordinatesCircle(double lat, double lng,
                                        double radius, size_t segments) {
   CoordinatesPtr coords = KmlFactory::GetFactory()->CreateCoordinates();
   for (size_t i = 0; i < segments; ++i) {
-    coords->add_vec3(kmlbase::LatLngOnRadialFromPoint(lat, lng, radius, i));
+    coords->add_vec3(kmlbase::LatLngOnRadialFromPoint(
+        lat, lng, radius, static_cast<double>(i)));
   }
   return coords;
 }
