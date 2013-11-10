@@ -4,7 +4,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src \
 
 
 if GCC
-AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -fno-rtti
+AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -Wno-long-long -fno-rtti
 endif
 
 noinst_LTLIBRARIES = libhelloutil.la
@@ -26,8 +26,8 @@ circlegen_SOURCES = circlegen.cc
 circlegen_LDADD = \
 	$(top_builddir)/src/kml/base/libkmlbase.la \
 	$(top_builddir)/src/kml/dom/libkmldom.la \
-	$(top_builddir)/src/kml/engine/libkmlengine.la \
-	$(top_builddir)/src/kml/convenience/libkmlconvenience.la
+	$(top_builddir)/src/kml/convenience/libkmlconvenience.la \
+	$(top_builddir)/src/kml/engine/libkmlengine.la
 
 checklinks_SOURCES = checklinks.cc
 checklinks_LDADD = \
@@ -75,8 +75,8 @@ hellohref_LDADD = \
 
 hellokmz_SOURCES = hellokmz.cc
 hellokmz_LDADD = \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 helloregion_SOURCES = helloregion.cc
@@ -102,8 +102,8 @@ parsens_LDADD = \
 
 prettykml_SOURCES = prettykml.cc
 prettykml_LDADD = \
-	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/engine/libkmlengine.la \
+	$(top_builddir)/src/kml/dom/libkmldom.la \
 	$(top_builddir)/src/kml/base/libkmlbase.la
 
 printgeometry_SOURCES = printgeometry.cc

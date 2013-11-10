@@ -7,6 +7,7 @@ AC_INIT(libkml, 1.3.0, http://code.google.com/p/libkml/issues)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE(-Wall -Werror)
+m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 AC_PROG_CPP
 AC_PROG_CXX
@@ -143,6 +144,7 @@ AM_CONDITIONAL(WITH_JAVA, [test "x$JAVA" != x])
 
 dnl Shall we build the Python SWIG bindings?
 if test "x$SWIG" != x; then
+	saved_LIBS=$LIBS
 	AC_ARG_ENABLE(python,
 		      [AS_HELP_STRING([--disable-python],
 				      [do not generate Python SWIG bindings])])
@@ -176,7 +178,7 @@ if test "x$SWIG" != x; then
 					[AC_MSG_WARN([could not find the Python library. The Python bindings will not be built.])
 			PYTHON=
 			])
-			LIBS=''  # don't append -lpython here.
+			LIBS=$saved_LIBS  # don't append -lpython here.
 			CPPFLAGS="$current_CPPFLAGS"
 		fi
 	fi
@@ -190,6 +192,11 @@ AM_CONDITIONAL(HAVE_CURL, test "$CURL_LIBS")
 
 dnl automake will add -DHAVE_CONFIG_H to compiler flags.
 AM_CONFIG_HEADER([config.h]) 
+
+dnl At least on some newer flavours of linux we need to force the discovery
+dnl of the pthread lib to keep the googletest lib happy.
+AC_CHECK_LIB(pthread, pthread_create,,
+	[AC_MSG_WARN([pthread library cannot be found])])
 
 AC_CONFIG_FILES([
 	Makefile
@@ -232,8 +239,8 @@ AC_CONFIG_FILES([
 	testdata/gx/Makefile
 	testdata/kml/Makefile
 	testdata/kmz/Makefile
-        testdata/kmz/files/Makefile
-        testdata/kmz/kmzfiles/Makefile
+	testdata/kmz/files/Makefile
+	testdata/kmz/kmzfiles/Makefile
 	testdata/kmz/rumsey/Makefile
 	testdata/kmz/rumsey/kml/Makefile
 	testdata/kmz/rumsey/imagery/Makefile

@@ -28,7 +28,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <string>
 #include "kml/dom.h"
 
 using std::stringstream;
