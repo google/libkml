@@ -26,19 +26,12 @@
 #ifndef KML_BASE_UTIL_H__
 #define KML_BASE_UTIL_H__
 
-#ifndef _MSC_VER
-#include <stdint.h>  // For fixed-size interger typedefs in this file.
-#endif
-
-// A macro to disallow the evil copy constructor and assignment operator.
-// Should be used in the private: declarations for a class.
-#define LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TypeName) \
-  TypeName(const TypeName&);\
-  void operator=(const TypeName&)
-
-typedef unsigned int uint;
-// MSVC has no header for C99 typedefs.
-#ifdef _MSC_VER
+#if !defined(_MSC_VER) || (_MSC_VER >= 1600)
+// Visual Studio versions < 10 do not contain stdint. Assumes
+// all other platforms include this c99 standard header.
+# include <stdint.h>
+#else
+// MSVC versions prior to v10 have no header for C99 typedefs.
 typedef __int8  int8_t;
 typedef __int16 int16_t;
 typedef __int32 int32_t;
@@ -47,7 +40,15 @@ typedef unsigned __int8  uint8_t;
 typedef unsigned __int16 uint16_t;
 typedef unsigned __int32 uint32_t;
 typedef unsigned __int64 uint64_t;
-#endif  // _MSC_VER
+#endif
+
+typedef unsigned int uint;
+
+// A macro to disallow the evil copy constructor and assignment operator.
+// Should be used in the private: declarations for a class.
+#define LIBKML_DISALLOW_EVIL_CONSTRUCTORS(TypeName) \
+  TypeName(const TypeName&);\
+  void operator=(const TypeName&)
 
 #include <string>
 

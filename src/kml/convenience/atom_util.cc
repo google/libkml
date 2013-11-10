@@ -27,6 +27,8 @@
 
 #include "kml/convenience/atom_util.h"
 
+#include <exception>  // Required by boost::intrusive_ptr.
+
 #include "kml/base/string_util.h"
 #include "kml/convenience/http_client.h"
 #include "kml/dom.h"
