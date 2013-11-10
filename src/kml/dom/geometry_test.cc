@@ -1119,7 +1119,7 @@ TEST_F(GxTrackTest, TestParse) {
     "<altitudeMode>relativeToGround</altitudeMode>"
     "<when>2010-02-07T19:57:44Z</when>"
     "<when>2010-02-07T19:57:45Z</when>"
-    "<gx:coord>-122.1 37.2 100.3</gx:coord>"
+    "<gx:coord>-122.1 37.2 100.3       </gx:coord>"
     "<gx:coord>-122.4 37.5 100.6</gx:coord>"
     "<gx:angles>-1.1 7.2 10.3</gx:angles>"
     "<gx:angles>-1.4 7.5 10.6</gx:angles>"
@@ -1235,4 +1235,3 @@ TEST_F(GxMultiTrackTest, TestSerialize) {
 }
 
 }  // end namespace kmldom
-
