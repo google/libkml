@@ -33,6 +33,7 @@
 #ifndef KML_CONVENIENCE_GOOGLE_MAPS_DATA_H_
 #define KML_CONVENIENCE_GOOGLE_MAPS_DATA_H_
 
+#include <exception>
 #include "boost/scoped_ptr.hpp"
 #include "kml/dom.h"
 
