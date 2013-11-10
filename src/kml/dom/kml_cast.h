@@ -26,6 +26,8 @@
 #ifndef KML_DOM_KML_CAST_H__
 #define KML_DOM_KML_CAST_H__
 
+#include <exception>  // Needed by boost::instrusive_ptr.
+
 #include "kml/base/xml_element.h"
 #include "kml/dom/kmldom.h"
 #include "kml/dom/kml_ptr.h"
