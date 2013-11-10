@@ -151,23 +151,23 @@ TEST(StringUtilTest, TestFromString) {
 
   bool val;
   FromString("true", &val);
-  ASSERT_EQ(true, val);
+  ASSERT_TRUE(val);
   FromString("1", &val);
-  ASSERT_EQ(true, val);
+  ASSERT_TRUE(val);
   FromString("1\n", &val);
-  ASSERT_EQ(true, val);
+  ASSERT_TRUE(val);
   FromString("\n1\n", &val);
-  ASSERT_EQ(true, val);
+  ASSERT_TRUE(val);
   FromString("false", &val);
-  ASSERT_EQ(false, val);
+  ASSERT_FALSE(val);
   FromString("\nfalse", &val);
-  ASSERT_EQ(false, val);
+  ASSERT_FALSE(val);
   FromString("false\n", &val);
-  ASSERT_EQ(false, val);
+  ASSERT_FALSE(val);
   FromString("\nfalse\n", &val);
-  ASSERT_EQ(false, val);
+  ASSERT_FALSE(val);
   FromString("0", &val);
-  ASSERT_EQ(false, val);
+  ASSERT_FALSE(val);
 
   int fsc;
   FromString("137", &fsc);

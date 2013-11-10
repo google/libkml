@@ -1,6 +1,6 @@
 AM_CPPFLAGS = -I$(top_srcdir)/src \
               -I$(top_srcdir)/third_party/boost_1_34_1 \
-              -I$(top_srcdir)/third_party/googletest-r108/include \
+              -I$(top_srcdir)/third_party/gtest-1.7.0/include \
               -I$(top_srcdir)/third_party/uriparser-0.7.5/include \
               -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 

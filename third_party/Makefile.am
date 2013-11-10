@@ -1,9 +1,10 @@
 uriparser = uriparser-0.7.5
+googletest = gtest-1.7.0
 
 AM_CPPFLAGS = -I$(top_srcdir)/third_party/zlib-1.2.3/contrib \
 	      -I$(top_srcdir)/third_party/$(uriparser)/include \
-	      -I$(top_srcdir)/third_party/googletest-r108 \
-	      -I$(top_srcdir)/third_party/googletest-r108/include
+	      -I$(top_srcdir)/third_party/$(googletest) \
+	      -I$(top_srcdir)/third_party/$(googletest)/include
 
 lib_LTLIBRARIES = libminizip.la liburiparser.la
 noinst_LTLIBRARIES = libgtest.la libgtest_main.la
@@ -77,15 +78,8 @@ libboostconfigplatforminclude_HEADERS = \
 	$(boost)/config/platform/linux.hpp \
 	$(boost)/config/platform/macos.hpp
 
-googletest = googletest-r108
 libgtest_la_SOURCES = \
-	$(googletest)/src/gtest.cc \
-	$(googletest)/src/gtest-death-test.cc \
-	$(googletest)/src/gtest-filepath.cc \
-	$(googletest)/src/gtest-internal-inl.h \
-	$(googletest)/src/gtest-port.cc \
-	$(googletest)/src/gtest-test-part.cc \
-	$(googletest)/src/gtest-typed-test.cc
+	$(googletest)/src/gtest-all.cc
 
 libgtest_main_la_SOURCES = $(googletest)/src/gtest_main.cc
 libgtest_main_la_LIBADD = libgtest.la
