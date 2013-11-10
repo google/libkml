@@ -142,7 +142,7 @@ PlacemarkPtr CreateLineStringBox(const string& name, const RegionPtr& region) {
     coordinates->add_latlng(south, west);
     LineStringPtr linestring = factory->CreateLineString();
     linestring->set_coordinates(coordinates);
-    linestring->set_tessellate("1");
+    linestring->set_tessellate(true);
     placemark->set_geometry(linestring);
   }
   return placemark;
