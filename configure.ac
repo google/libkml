@@ -6,7 +6,7 @@ AC_PREREQ(2.57)
 AC_INIT(libkml, 1.3.0, http://code.google.com/p/libkml/issues)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
-AM_INIT_AUTOMAKE(-Wall -Werror)
+AM_INIT_AUTOMAKE(-Wall -Werror subdir-objects)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
 AC_PROG_CPP
