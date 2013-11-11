@@ -4,7 +4,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src \
 
 
 if GCC
-AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -Wno-long-long -fno-rtti
+AM_CXXFLAGS = -Wall -Werror -pedantic -Wno-long-long -fno-rtti
 endif
 
 noinst_LTLIBRARIES = libhelloutil.la
