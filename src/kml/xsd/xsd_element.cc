@@ -35,8 +35,6 @@ namespace kmlxsd {
 XsdElement::XsdElement()
   : abstract_(false),  // XSD default
     ref_(false),
-    min_occurs_(1),  // XSD default
-    max_occurs_(1), // XSD default
     type_id_(XsdPrimitiveType::XSD_INVALID) {
 }
 
