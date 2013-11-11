@@ -82,7 +82,8 @@ AC_CHECK_LIB(expat, XML_ParserCreate, [],
 AC_CHECK_HEADERS([float.h limits.h stdlib.h string.h])
 AC_CHECK_FUNCS([floor memset strstr])
 
-dnl If SWIG is available we will try to generate bindings.
+dnl If SWIG is available we will try to generate bindings. We need at least
+dnl 1.3.35 for boost::intrusive_ptr support.
 AC_ARG_ENABLE(swig,
 	[AS_HELP_STRING([--disable-swig],
 			[do not generate any SWIG language bindings])])
@@ -90,7 +91,8 @@ if test "x$enable_swig" != xno; then
 	AC_CHECK_PROG(SWIG, swig, swig)
 	if test "x$SWIG" != x; then
 		SWIG_VERSION=`swig -version 2>&1|grep Version|cut -d" " -f3`
-		if test ${SWIG_VERSION:4} -lt 35; then
+		SWIG_MAJOR=${SWIG_VERSION%%.*}
+		if test ${SWIG_MAJOR} = "1" -a ${SWIG_VERSION:4} -lt 35; then
 			AC_MSG_WARN([You have SWIG $SWIG_VERSION installed, but libkml requires at least SWIG 1.3.35. The bindings will not be built.])
 			SWIG=
 		fi
