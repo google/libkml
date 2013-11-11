@@ -99,8 +99,6 @@ public:
   bool ParseAttributes(const kmlbase::Attributes& attributes);
   bool abstract_;
   bool ref_;
-  int min_occurs_;
-  int max_occurs_;
   string default_;
   string name_;
   string type_;
