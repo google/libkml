@@ -3,7 +3,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/src \
               -I$(top_srcdir)/third_party/zlib-1.2.3/contrib
 
 if GCC
-AM_CXXFLAGS = -Wall -Werror -ansi -pedantic -Wno-long-long -fno-rtti
+AM_CXXFLAGS = -Wall -Werror -pedantic -Wno-long-long -fno-rtti
 endif
 
 noinst_PROGRAMS = csvregionator kmlregionator
