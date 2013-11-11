@@ -197,7 +197,6 @@ class TrkPtHandler : public kmlconvenience::GpxTrkPtHandler {
   FolderPtr trip_folder_;
   PointPtr point_;
   boost::scoped_ptr<DateTime> date_time_;
-  bool gather_char_data_;
   std::string char_data_;
   time_t last_time_;
   std::string last_date_;
