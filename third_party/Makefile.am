@@ -89,6 +89,10 @@ libgtest_la_SOURCES = \
 libgtest_main_la_SOURCES = gtest-1.7.0/src/gtest_main.cc
 libgtest_main_la_LIBADD = libgtest.la
 
+# TODO: add the new gtest libs for windows.
+#	gtest-1.7.0.win32/debug/gtest.lib \
+#	gtest-1.7.0.win32/release/gtest.lib \
+
 EXTRA_DIST = \
 	expat.win32/expat.h \
 	expat.win32/expat_external.h \
@@ -145,8 +149,6 @@ EXTRA_DIST = \
 	$(boost)/config/stdlib/sgi.hpp \
 	$(boost)/config/stdlib/stlport.hpp \
 	$(boost)/config/stdlib/vacpp.hpp \
-	gtest-1.7.0.win32/debug/gtest.lib \
-	gtest-1.7.0.win32/release/gtest.lib \
 	gtest-1.7.0/include/gtest/gtest.h \
 	gtest-1.7.0/include/gtest/gtest-death-test.h \
 	gtest-1.7.0/include/gtest/gtest-message.h \
