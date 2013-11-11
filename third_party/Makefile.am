@@ -162,6 +162,7 @@ EXTRA_DIST = \
 	gtest-1.7.0/include/gtest/internal/gtest-internal.h \
 	gtest-1.7.0/include/gtest/internal/gtest-port.h \
 	gtest-1.7.0/include/gtest/internal/gtest-string.h \
+	gtest-1.7.0/include/gtest/internal/gtest-tuple.h \
 	gtest-1.7.0/include/gtest/internal/gtest-type-util.h \
 	uriparser-0.7.5/COPYING \
 	uriparser-0.7.5.win32/debug/uriparser.lib \
