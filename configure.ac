@@ -6,6 +6,7 @@ AC_PREREQ(2.57)
 AC_INIT(libkml, 1.3.0, http://code.google.com/p/libkml/issues)
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE(-Wall -Werror subdir-objects)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
@@ -191,7 +192,7 @@ AC_CHECK_CURL(7.12.3)
 AM_CONDITIONAL(HAVE_CURL, test "$CURL_LIBS")
 
 dnl automake will add -DHAVE_CONFIG_H to compiler flags.
-AM_CONFIG_HEADER([config.h]) 
+AC_CONFIG_HEADER([config.h]) 
 
 dnl At least on some newer flavours of linux we need to force the discovery
 dnl of the pthread lib to keep the googletest lib happy.
