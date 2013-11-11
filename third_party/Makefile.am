@@ -149,21 +149,38 @@ EXTRA_DIST = \
 	$(boost)/config/stdlib/sgi.hpp \
 	$(boost)/config/stdlib/stlport.hpp \
 	$(boost)/config/stdlib/vacpp.hpp \
-	gtest-1.7.0/include/gtest/gtest.h \
 	gtest-1.7.0/include/gtest/gtest-death-test.h \
 	gtest-1.7.0/include/gtest/gtest-message.h \
+	gtest-1.7.0/include/gtest/gtest-param-test.h \
+	gtest-1.7.0/include/gtest/gtest-param-test.h.pump \
+	gtest-1.7.0/include/gtest/gtest-printers.h \
 	gtest-1.7.0/include/gtest/gtest-spi.h \
-	gtest-1.7.0/include/gtest/gtest_pred_impl.h \
-	gtest-1.7.0/include/gtest/gtest_prod.h \
 	gtest-1.7.0/include/gtest/gtest-test-part.h \
 	gtest-1.7.0/include/gtest/gtest-typed-test.h \
+	gtest-1.7.0/include/gtest/gtest.h \
+	gtest-1.7.0/include/gtest/gtest_pred_impl.h \
+	gtest-1.7.0/include/gtest/gtest_prod.h \
 	gtest-1.7.0/include/gtest/internal/gtest-death-test-internal.h \
 	gtest-1.7.0/include/gtest/internal/gtest-filepath.h \
 	gtest-1.7.0/include/gtest/internal/gtest-internal.h \
+	gtest-1.7.0/include/gtest/internal/gtest-linked_ptr.h \
+	gtest-1.7.0/include/gtest/internal/gtest-param-util-generated.h \
+	gtest-1.7.0/include/gtest/internal/gtest-param-util-generated.h.pump \
+	gtest-1.7.0/include/gtest/internal/gtest-param-util.h \
 	gtest-1.7.0/include/gtest/internal/gtest-port.h \
 	gtest-1.7.0/include/gtest/internal/gtest-string.h \
 	gtest-1.7.0/include/gtest/internal/gtest-tuple.h \
+	gtest-1.7.0/include/gtest/internal/gtest-tuple.h.pump \
 	gtest-1.7.0/include/gtest/internal/gtest-type-util.h \
+	gtest-1.7.0/include/gtest/internal/gtest-type-util.h.pump \
+	gtest-1.7.0/src/gtest-death-test.cc \
+	gtest-1.7.0/src/gtest-filepath.cc \
+	gtest-1.7.0/src/gtest-internal-inl.h \
+	gtest-1.7.0/src/gtest-port.cc \
+	gtest-1.7.0/src/gtest-printers.cc \
+	gtest-1.7.0/src/gtest-test-part.cc \
+	gtest-1.7.0/src/gtest-typed-test.cc \
+	gtest-1.7.0/src/gtest.cc \
 	uriparser-0.7.5/COPYING \
 	uriparser-0.7.5.win32/debug/uriparser.lib \
 	uriparser-0.7.5.win32/release/uriparser.lib \
