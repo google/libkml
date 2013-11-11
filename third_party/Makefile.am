@@ -91,7 +91,7 @@ libgtest_main_la_LIBADD = libgtest.la
 
 # TODO: add the new gtest libs for windows.
 #	gtest-1.7.0.win32/debug/gtest.lib \
-#	gtest-1.7.0.win32/release/gtest.lib \
+#	gtest-1.7.0.win32/release/gtest.lib
 
 EXTRA_DIST = \
 	expat.win32/expat.h \
