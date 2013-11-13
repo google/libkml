@@ -1,8 +1,7 @@
-#libkml
-
+![Awesome logo](bactrian128.png)
 [![Build Status](https://travis-ci.org/google/libkml.png?branch=master)](https://travis-ci.org/google/libkml)
 
-This is Google's reference implementation of [OGC KML 2.2](http://www.opengeospatial.org/standards/kml). It also includes implementations of Google's `gx:` extensions used by Google Earth and several utility libraries for working with other formats.
+This is Google's reference implementation of [OGC KML 2.2](http://www.opengeospatial.org/standards/kml). It also includes implementations of Google's `gx:` extensions used by Google Earth, as well as several utility libraries for working with other formats.
 
 All of our documentation is on the project wiki:
 http://code.google.com/p/libkml/w/list
