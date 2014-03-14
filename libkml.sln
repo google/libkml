@@ -1,17 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmldom", "src\libkmldom.vcproj", "{19484FD7-58B0-44DA-89CE-EADF0CF39E04}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmldom", "src\libkmldom.vcxproj", "{19484FD7-58B0-44DA-89CE-EADF0CF39E04}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlengine", "src\libkmlengine.vcproj", "{C7D291C3-46EC-441C-B7F1-911FD32CE185}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlengine", "src\libkmlengine.vcxproj", "{C7D291C3-46EC-441C-B7F1-911FD32CE185}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlregionator", "src\libkmlregionator.vcproj", "{2A7D7DC5-8AB2-4B4F-848A-2A81226F2BC2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlregionator", "src\libkmlregionator.vcxproj", "{2A7D7DC5-8AB2-4B4F-848A-2A81226F2BC2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlconvenience", "src\libkmlconvenience.vcproj", "{5E53C538-7B22-41FF-84AF-F08F0C019E7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlconvenience", "src\libkmlconvenience.vcxproj", "{5E53C538-7B22-41FF-84AF-F08F0C019E7B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlbase", "src\libkmlbase.vcproj", "{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlbase", "src\libkmlbase.vcxproj", "{DA5DEA8E-4DF5-4B36-BF1E-4760104149F0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlxsd", "src\libkmlxsd.vcproj", "{D5CD9019-3AC4-4223-82B2-E3A44A443395}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libkmlxsd", "src\libkmlxsd.vcxproj", "{D5CD9019-3AC4-4223-82B2-E3A44A443395}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

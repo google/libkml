@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C7D291C3-46EC-441C-B7F1-911FD32CE185}</ProjectGuid>
+    <RootNamespace>libkmlengine</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;..\third_party\zlib-1.2.3;..\third_party\zlib-1.2.3\contrib;..\third_party\uriparser-0.7.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <PrecompiledHeaderFile />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\kml\engine\clone.cc" />
+    <ClCompile Include="..\src\kml\engine\entity_mapper.cc" />
+    <ClCompile Include="..\src\kml\engine\feature_balloon.cc" />
+    <ClCompile Include="..\src\kml\engine\feature_view.cc" />
+    <ClCompile Include="..\src\kml\engine\feature_visitor.cc" />
+    <ClCompile Include="..\src\kml\engine\find.cc" />
+    <ClCompile Include="..\src\kml\engine\find_xml_namespaces.cc" />
+    <ClCompile Include="..\src\kml\engine\get_link_parents.cc" />
+    <ClCompile Include="..\src\kml\engine\get_links.cc" />
+    <ClCompile Include="..\src\kml\engine\href.cc" />
+    <ClCompile Include="..\src\kml\engine\id_mapper.cc" />
+    <ClCompile Include="..\src\kml\engine\kml_cache.cc" />
+    <ClCompile Include="..\src\kml\engine\kml_file.cc" />
+    <ClCompile Include="..\src\kml\engine\kml_stream.cc" />
+    <ClCompile Include="..\src\kml\engine\kml_uri.cc" />
+    <ClCompile Include="..\src\kml\engine\kmz_cache.cc" />
+    <ClCompile Include="..\src\kml\engine\kmz_file.cc" />
+    <ClCompile Include="..\src\kml\engine\link_util.cc" />
+    <ClCompile Include="..\src\kml\engine\location_util.cc" />
+    <ClCompile Include="..\src\kml\engine\merge.cc" />
+    <ClCompile Include="..\src\kml\engine\parse_old_schema.cc" />
+    <ClCompile Include="..\src\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\kml\engine\style_inliner.cc" />
+    <ClCompile Include="..\src\kml\engine\style_merger.cc" />
+    <ClCompile Include="..\src\kml\engine\style_resolver.cc" />
+    <ClCompile Include="..\src\kml\engine\style_splitter.cc" />
+    <ClCompile Include="..\src\kml\engine\update.cc" />
+    <ClCompile Include="..\src\kml\engine\update_processor.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\kml\engine\bbox.h" />
+    <ClInclude Include="..\src\kml\engine\clone.h" />
+    <ClInclude Include="..\src\kml\engine\engine_constants.h" />
+    <ClInclude Include="..\src\kml\engine\engine_types.h" />
+    <ClInclude Include="..\src\kml\engine\entity_mapper.h" />
+    <ClInclude Include="..\src\kml\engine\feature_balloon.h" />
+    <ClInclude Include="..\src\kml\engine\feature_view.h" />
+    <ClInclude Include="..\src\kml\engine\feature_visitor.h" />
+    <ClInclude Include="..\src\kml\engine\find.h" />
+    <ClInclude Include="..\src\kml\engine\find_xml_namespaces.h" />
+    <ClInclude Include="..\src\kml\engine\get_link_parents.h" />
+    <ClInclude Include="..\src\kml\engine\get_links.h" />
+    <ClInclude Include="..\src\kml\engine\href.h" />
+    <ClInclude Include="..\src\kml\engine\id_mapper.h" />
+    <ClInclude Include="..\src\kml\engine\id_mapper_internal.h" />
+    <ClInclude Include="..\src\kml\engine\kml_cache.h" />
+    <ClInclude Include="..\src\kml\engine\kml_file.h" />
+    <ClInclude Include="..\src\kml\engine\kml_stream.h" />
+    <ClInclude Include="..\src\kml\engine\kml_uri.h" />
+    <ClInclude Include="..\src\kml\engine\kml_uri_internal.h" />
+    <ClInclude Include="..\src\kml\engine\kmz_cache.h" />
+    <ClInclude Include="..\src\kml\engine\kmz_file.h" />
+    <ClInclude Include="..\src\kml\engine\link_util.h" />
+    <ClInclude Include="..\src\kml\engine\location_util.h" />
+    <ClInclude Include="..\src\kml\engine\merge.h" />
+    <ClInclude Include="..\src\kml\engine\object_id_parser_observer.h" />
+    <ClInclude Include="..\src\kml\engine\old_schema_parser_observer.h" />
+    <ClInclude Include="..\src\kml\engine\parse_old_schema.h" />
+    <ClInclude Include="..\src\kml\engine\schema_parser_observer.h" />
+    <ClInclude Include="..\src\kml\engine\shared_style_parser_observer.h" />
+    <ClInclude Include="..\src\stdafx.h" />
+    <ClInclude Include="..\src\kml\engine\style_inliner.h" />
+    <ClInclude Include="..\src\kml\engine\style_inliner_internal.h" />
+    <ClInclude Include="..\src\kml\engine\style_merger.h" />
+    <ClInclude Include="..\src\kml\engine\style_resolver.h" />
+    <ClInclude Include="..\src\kml\engine\style_splitter.h" />
+    <ClInclude Include="..\src\kml\engine\style_splitter_internal.h" />
+    <ClInclude Include="..\src\kml\engine\update.h" />
+    <ClInclude Include="..\src\kml\engine\update_processor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="debug\BuildLog.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libkmldom.vcxproj">
+      <Project>{19484fd7-58b0-44da-89ce-eadf0cf39e04}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

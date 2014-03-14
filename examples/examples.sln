@@ -1,17 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "createkml", "helloworld\createkml.vcproj", "{2D08AB30-4254-479F-9EF0-67E5C1EE2E64}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "createkml", "helloworld\createkml.vcxproj", "{2D08AB30-4254-479F-9EF0-67E5C1EE2E64}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parsekml", "helloworld\parsekml.vcproj", "{5ADB0151-CD72-4260-9A4A-5C2FA7D53F72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parsekml", "helloworld\parsekml.vcxproj", "{5ADB0151-CD72-4260-9A4A-5C2FA7D53F72}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prettykml", "helloworld\prettykml.vcproj", "{FC3E952B-9781-4DE5-A26B-A2D1DC8F9646}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "prettykml", "helloworld\prettykml.vcxproj", "{FC3E952B-9781-4DE5-A26B-A2D1DC8F9646}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sortplacemarks", "helloworld\sortplacemarks.vcproj", "{FCD0B93B-BBCE-452B-AE9D-D03427A04543}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sortplacemarks", "helloworld\sortplacemarks.vcxproj", "{FCD0B93B-BBCE-452B-AE9D-D03427A04543}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "printstyle", "engine\printstyle.vcproj", "{08F2DC19-28A2-4048-8706-9D8F03F659DA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "printstyle", "engine\printstyle.vcxproj", "{08F2DC19-28A2-4048-8706-9D8F03F659DA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "csvregionator", "regionator\csvregionator.vcproj", "{12044D18-00ED-4AA1-906E-48D5B12A877D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "csvregionator", "regionator\csvregionator.vcxproj", "{12044D18-00ED-4AA1-906E-48D5B12A877D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

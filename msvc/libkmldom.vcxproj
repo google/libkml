@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{19484FD7-58B0-44DA-89CE-EADF0CF39E04}</ProjectGuid>
+    <RootNamespace>libkmldom</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\third_party\expat.win32;..\third_party\boost_1_34_1;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <PrecompiledHeaderFile />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\kml\dom\abstractlatlonbox.cc" />
+    <ClCompile Include="..\src\kml\dom\abstractview.cc" />
+    <ClCompile Include="..\src\kml\dom\atom.cc" />
+    <ClCompile Include="..\src\kml\dom\balloonstyle.cc" />
+    <ClCompile Include="..\src\kml\dom\colorstyle.cc" />
+    <ClCompile Include="..\src\kml\dom\container.cc" />
+    <ClCompile Include="..\src\kml\dom\document.cc" />
+    <ClCompile Include="..\src\kml\dom\element.cc" />
+    <ClCompile Include="..\src\kml\dom\extendeddata.cc" />
+    <ClCompile Include="..\src\kml\dom\feature.cc" />
+    <ClCompile Include="..\src\kml\dom\folder.cc" />
+    <ClCompile Include="..\src\kml\dom\geometry.cc" />
+    <ClCompile Include="..\src\kml\dom\gx_timeprimitive.cc" />
+    <ClCompile Include="..\src\kml\dom\gx_tour.cc" />
+    <ClCompile Include="..\src\kml\dom\hotspot.cc" />
+    <ClCompile Include="..\src\kml\dom\iconstyle.cc" />
+    <ClCompile Include="..\src\kml\dom\kml.cc" />
+    <ClCompile Include="..\src\kml\dom\kml22.cc" />
+    <ClCompile Include="..\src\kml\dom\kml_cast.cc" />
+    <ClCompile Include="..\src\kml\dom\kml_factory.cc" />
+    <ClCompile Include="..\src\kml\dom\kml_handler.cc" />
+    <ClCompile Include="..\src\kml\dom\kml_handler_ns.cc" />
+    <ClCompile Include="..\src\kml\dom\labelstyle.cc" />
+    <ClCompile Include="..\src\kml\dom\linestyle.cc" />
+    <ClCompile Include="..\src\kml\dom\link.cc" />
+    <ClCompile Include="..\src\kml\dom\liststyle.cc" />
+    <ClCompile Include="..\src\kml\dom\model.cc" />
+    <ClCompile Include="..\src\kml\dom\networklink.cc" />
+    <ClCompile Include="..\src\kml\dom\networklinkcontrol.cc" />
+    <ClCompile Include="..\src\kml\dom\object.cc" />
+    <ClCompile Include="..\src\kml\dom\overlay.cc" />
+    <ClCompile Include="..\src\kml\dom\parser.cc" />
+    <ClCompile Include="..\src\kml\dom\placemark.cc" />
+    <ClCompile Include="..\src\kml\dom\polystyle.cc" />
+    <ClCompile Include="..\src\kml\dom\region.cc" />
+    <ClCompile Include="..\src\kml\dom\schema.cc" />
+    <ClCompile Include="..\src\kml\dom\serializer.cc" />
+    <ClCompile Include="..\src\kml\dom\snippet.cc" />
+    <ClCompile Include="..\src\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\src\kml\dom\style.cc" />
+    <ClCompile Include="..\src\kml\dom\stylemap.cc" />
+    <ClCompile Include="..\src\kml\dom\styleselector.cc" />
+    <ClCompile Include="..\src\kml\dom\substyle.cc" />
+    <ClCompile Include="..\src\kml\dom\timeprimitive.cc" />
+    <ClCompile Include="..\src\kml\dom\vec2.cc" />
+    <ClCompile Include="..\src\kml\dom\visitor.cc" />
+    <ClCompile Include="..\src\kml\dom\visitor_driver.cc" />
+    <ClCompile Include="..\src\kml\dom\xal.cc" />
+    <ClCompile Include="..\src\kml\dom\xml_serializer.cc" />
+    <ClCompile Include="..\src\kml\dom\xsd.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\kml\dom\abstractlatlonbox.h" />
+    <ClInclude Include="..\src\kml\dom\abstractview.h" />
+    <ClInclude Include="..\src\kml\dom\atom.h" />
+    <ClInclude Include="..\src\kml\dom\balloonstyle.h" />
+    <ClInclude Include="..\src\kml\dom\colorstyle.h" />
+    <ClInclude Include="..\src\kml\dom\container.h" />
+    <ClInclude Include="..\src\kml\dom\document.h" />
+    <ClInclude Include="..\src\kml\dom.h" />
+    <ClInclude Include="..\src\kml\dom\element.h" />
+    <ClInclude Include="..\src\kml\dom\extendeddata.h" />
+    <ClInclude Include="..\src\kml\dom\feature.h" />
+    <ClInclude Include="..\src\kml\dom\folder.h" />
+    <ClInclude Include="..\src\kml\dom\geometry.h" />
+    <ClInclude Include="..\src\kml\dom\gx_timeprimitive.h" />
+    <ClInclude Include="..\src\kml\dom\gx_tour.h" />
+    <ClInclude Include="..\src\kml\dom\hotspot.h" />
+    <ClInclude Include="..\src\kml\dom\iconstyle.h" />
+    <ClInclude Include="..\src\kml\dom\kml.h" />
+    <ClInclude Include="..\src\kml\dom\kml22.h" />
+    <ClInclude Include="..\src\kml\dom\kml_cast.h" />
+    <ClInclude Include="..\src\kml\dom\kml_factory.h" />
+    <ClInclude Include="..\src\kml\dom\kml_funcs.h" />
+    <ClInclude Include="..\src\kml\dom\kml_handler.h" />
+    <ClInclude Include="..\src\kml\dom\kml_handler_ns.h" />
+    <ClInclude Include="..\src\kml\dom\kml_ptr.h" />
+    <ClInclude Include="..\src\kml\dom\kmldom.h" />
+    <ClInclude Include="..\src\kml\dom\labelstyle.h" />
+    <ClInclude Include="..\src\kml\dom\linestyle.h" />
+    <ClInclude Include="..\src\kml\dom\link.h" />
+    <ClInclude Include="..\src\kml\dom\liststyle.h" />
+    <ClInclude Include="..\src\kml\dom\model.h" />
+    <ClInclude Include="..\src\kml\dom\networklink.h" />
+    <ClInclude Include="..\src\kml\dom\networklinkcontrol.h" />
+    <ClInclude Include="..\src\kml\dom\object.h" />
+    <ClInclude Include="..\src\kml\dom\overlay.h" />
+    <ClInclude Include="..\src\kml\dom\parser.h" />
+    <ClInclude Include="..\src\kml\dom\parser_observer.h" />
+    <ClInclude Include="..\src\kml\dom\placemark.h" />
+    <ClInclude Include="..\src\kml\dom\polystyle.h" />
+    <ClInclude Include="..\src\kml\dom\region.h" />
+    <ClInclude Include="..\src\kml\dom\schema.h" />
+    <ClInclude Include="..\src\kml\dom\serializer.h" />
+    <ClInclude Include="..\src\kml\dom\snippet.h" />
+    <ClInclude Include="..\src\kml\dom\stats_serializer.h" />
+    <ClInclude Include="..\src\stdafx.h" />
+    <ClInclude Include="..\src\kml\dom\style.h" />
+    <ClInclude Include="..\src\kml\dom\stylemap.h" />
+    <ClInclude Include="..\src\kml\dom\styleselector.h" />
+    <ClInclude Include="..\src\kml\dom\substyle.h" />
+    <ClInclude Include="..\src\kml\dom\timeprimitive.h" />
+    <ClInclude Include="..\src\kml\util\unit_test.h" />
+    <ClInclude Include="..\src\kml\dom\vec2.h" />
+    <ClInclude Include="..\src\kml\dom\visitor.h" />
+    <ClInclude Include="..\src\kml\dom\visitor_driver.h" />
+    <ClInclude Include="..\src\kml\dom\xal.h" />
+    <ClInclude Include="..\src\kml\dom\xml_serializer.h" />
+    <ClInclude Include="..\src\kml\dom\xsd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libkmlbase.vcxproj">
+      <Project>{da5dea8e-4df5-4b36-bf1e-4760104149f0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
