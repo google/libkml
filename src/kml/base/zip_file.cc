@@ -28,8 +28,11 @@
 #include <exception>
 #include "kml/base/zip_file.h"
 #include "kml/base/file.h"
-#include "minizip/unzip.h"
-#include "minizip/zip.h"
+
+#include "kml/base/contrib/minizip/unzip.h"
+#include "kml/base/contrib/minizip/iomem_simple.h"
+
+#include <minizip/zip.h>
 
 namespace kmlbase {
 
