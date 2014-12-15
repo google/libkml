@@ -1,0 +1,8 @@
+find_package(UriParser)
+mark_as_advanced(URIPARSER_INCLUDE_DIR)
+mark_as_advanced(URIPARSER_LIBRARY)
+if(URIPARSER_FOUND)
+  set(HAVE_SYSTEM_URIPARSER TRUE)
+else()
+  set(HAVE_SYSTEM_URIPARSER FALSE)
+endif()
