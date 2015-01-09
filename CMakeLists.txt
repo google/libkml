@@ -19,8 +19,8 @@ set(LIBKML_DATA_DIR  ${CMAKE_SOURCE_DIR}/testdata CACHE "Directory containing te
 #AM_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -pedantic -fno-rtti
 #AM_TEST_CXXFLAGS = -Wall -Wextra -Wno-unused-parameter -Werror -fno-rtti -DGTEST_HAS_RTTI=0
 if(CMAKE_COMPILER_IS_GNUCXX)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra -Wno-unused-parameter -Werror -pedantic -fno-rtti")
-set(TEST_FLAGS "-Wall -Wextra -Wno-unused-parameter -Werror -fno-rtti -DGTEST_HAS_RTTI=0")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-Wall -Wextra -Wno-unused-parameter -pedantic -fno-rtti")
+set(TEST_FLAGS "-Wall -Wextra -Wno-unused-parameter -fno-rtti -DGTEST_HAS_RTTI=0")
 endif()
 
 
@@ -48,10 +48,21 @@ if(HAVE_SYSTEM_BOOST)
   include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
+set(KML_DIR ${CMAKE_INSTALL_PREFIX})
+set(KML_INCLUDE_DIR ${KML_DIR}/include/kml)
+set(KML_BASE_INCLUDE_DIR ${KML_INCLUDE_DIR}/base)
+set(KML_DOM_INCLUDE_DIR ${KML_INCLUDE_DIR}/dom)
+set(KML_CONVENIENCE_INCLUDE_DIR ${KML_INCLUDE_DIR}/convenience)
+set(KML_REGIONATOR_INCLUDE_DIR ${KML_INCLUDE_DIR}/regionator)
+set(KML_ENGINE_INCLUDE_DIR ${KML_INCLUDE_DIR}/engine)
+set(KML_XSD_INCLUDE_DIR ${KML_INCLUDE_DIR}/xsd)
+set(KML_CONTRIB_INCLUDE_DIR ${KML_INCLUDE_DIR}/base/contrib)
+
 include_directories(${CMAKE_SOURCE_DIR}/src/)
 add_subdirectory(src)
 
 if(BUILD_TESTING)
+  enable_testing()
   include(ImportGoogleTest)
   include_directories(${GTEST_INCLUDE_DIR})
   include_directories(${CMAKE_SOURCE_DIR}/tests)
