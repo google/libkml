@@ -32,5 +32,5 @@ update_processor_test
 update_test)
 
 foreach(TEST ${TESTS})
-  build_test(${TEST} kmlengine)
+  build_test(engine ${TEST} kmlengine)
 endforeach()

@@ -20,9 +20,9 @@ xml_namespaces_test
 xmlns_test)
 
 foreach(TEST ${TESTS})
-  build_test(${TEST} kmlbase)
+  build_test(base ${TEST} kmlbase)
 endforeach()
 
-build_test(net_cache_test kmlbase ${URIPARSER_LIBRARY})
-build_test(uri_parser_test kmlbase ${URIPARSER_LIBRARY})
-build_test(zip_file_test kmlbase ${MINIZIP_LIBRARY})
+build_test(base net_cache_test kmlbase ${URIPARSER_LIBRARY})
+build_test(base uri_parser_test kmlbase ${URIPARSER_LIBRARY})
+build_test(base zip_file_test kmlbase ${MINIZIP_LIBRARY})

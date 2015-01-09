@@ -52,5 +52,5 @@ visitor_test
 visitor_driver_test)
 
 foreach(TEST ${TESTS})
-  build_test(${TEST} kmldom)
+  build_test(dom ${TEST} kmldom)
 endforeach()

@@ -4,5 +4,5 @@ regionator_qid_test
 regionator_util_test)
 
 foreach(TEST ${TESTS})
-  build_test(${TEST} kmlregionator)
+  build_test(regionator ${TEST} kmlregionator)
 endforeach()

@@ -19,10 +19,11 @@ macro(install_target _target)
 
 endmacro()
 
-function(build_test _target _libs)
+function(build_test _prefix _target _libs)
  set(_srcs ${_target}.cc)
 set(_extra_libs ${ARGN})
  add_executable(${_target} ${_srcs})
  add_dependencies(${_target} ${_libs} ${_extra_libs})
  target_link_libraries(${_target} ${_libs} ${_extra_libs} ${GTEST_LIBRARY})
+ add_test(ct_${_prefix}${_target} ${_target})
 endfunction()

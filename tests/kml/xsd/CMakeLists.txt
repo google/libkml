@@ -9,5 +9,5 @@ xsd_util_test
 xst_parser_test)
 
 foreach(TEST ${TESTS})
-  build_test(${TEST} kmlxsd)
+  build_test(xsd ${TEST} kmlxsd)
 endforeach()
