@@ -1,35 +1,35 @@
-set(TESTS bbox_test
-clone_test
-entity_mapper_test
-feature_balloon_test
-feature_visitor_test
-feature_view_test
-find_test
-find_xml_namespaces_test
-get_link_parents_test
-get_links_test
-href_test
-id_mapper_test
-kmz_cache_test
-kml_cache_test
-kml_file_test
-kml_stream_test
-kml_uri_test
-kmz_file_test
-link_util_test
-location_util_test
-merge_test
-object_id_parser_observer_test
-old_schema_parser_observer_test
-parse_old_schema_test
-schema_parser_observer_test
-shared_style_parser_observer_test
-style_inliner_test
-style_merger_test
-style_resolver_test
-style_splitter_test
-update_processor_test
-update_test)
+set(TESTS bbox
+clone
+entity_mapper
+feature_balloon
+feature_visitor
+feature_view
+find
+find_xml_namespaces
+get_link_parents
+get_links
+href
+id_mapper
+kmz_cache
+kml_cache
+kml_file
+kml_stream
+kml_uri
+kmz_file
+link_util
+location_util
+merge
+object_id_parser_observer
+old_schema_parser_observer
+parse_old_schema
+schema_parser_observer
+shared_style_parser_observer
+style_inliner
+style_merger
+style_resolver
+style_splitter
+update_processor
+update)
 
 foreach(TEST ${TESTS})
   build_test(engine ${TEST} kmlengine)
