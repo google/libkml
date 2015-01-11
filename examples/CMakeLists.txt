@@ -10,6 +10,8 @@ add_subdirectory(kml)
 # add_subdirectory(php)
 add_subdirectory(python)
 #add_subdirectory(ruby)
+add_subdirectory(regionator)
 # add_subdirectory(wxregionator)
 # add_subdirectory(wxviewer)
 add_subdirectory(xsd)
+
