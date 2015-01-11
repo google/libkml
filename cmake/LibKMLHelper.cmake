@@ -10,7 +10,6 @@ if(VERSION_STRING)
     VERSION   "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
     SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
 endif()
-
 endmacro()
 
 macro(install_target _target)
@@ -27,7 +26,7 @@ set(_extra_libs ${ARGN})
  add_executable(test_${_target} ${_src})
  add_dependencies(test_${_target} ${_libs} ${_extra_libs})
  target_link_libraries(test_${_target} ${_libs} ${_extra_libs} ${GTEST_LIBRARY})
- add_test(${prefix}_${_target} ${_target})
+ add_test(${_prefix}_${_target} ${CMAKE_BINARY_DIR}/bin/test_${_target})
 endfunction()
 
 function(build_example _target _libs)
