@@ -3,4 +3,4 @@
 # if GCC
 # AM_CXXFLAGS = -Wall -Werror -pedantic -Wno-long-long -fno-rtti
 # endif
-build_example(gpxtracktokml kmlengine)
+build_example(gpxtracktokml kmlconvenience)
