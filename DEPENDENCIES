@@ -17,4 +17,4 @@ Development:
 automake: www.gnu.org/software/automake 1.9.6
 autoconf: www.gnu.org/software/autoconf 2.59
 libtool: www.gnu.org/software/libtool 1.5
-
+cmake: www.cmake.org >= 2.8
