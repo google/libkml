@@ -1,4 +1,4 @@
-find_package(Boost)
+find_package(Boost REQUIRED)
 mark_as_advanced(Boost_DIR)
 if(Boost_FOUND)
   set(HAVE_SYSTEM_BOOST TRUE)
