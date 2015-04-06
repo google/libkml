@@ -1,4 +1,4 @@
-find_package(GoogleTest)
+find_package(GoogleTest REQUIRED)
 mark_as_advanced(GTEST_INCLUDE_DIR)
 mark_as_advanced(GTEST_LIBRARY)
 if(GTEST_FOUND)
