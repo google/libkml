@@ -6,14 +6,14 @@ set(VERSION_MINOR "3")
 set(VERSION_PATCH "0")
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-option(BUILD_TESTING  "Build testing." TRUE)
-option(BUILD_EXAMPLES  "Build examples." TRUE)
-option(INSTALL_EXAMPLES   "Install examples sources and executables"   FALSE)
-option(BUILD_SHARED_LIBS  "Build shared libs." TRUE)
+option(BUILD_TESTING  "Build testing." OFF)
+option(BUILD_EXAMPLES  "Build examples." OFF)
+option(INSTALL_EXAMPLES   "Install examples sources and executables" OFF)
+option(BUILD_SHARED_LIBS  "Build shared libs." ON)
 
-option(BUILD_SWIG        "Build swig bindings"   FALSE)
-option(BUILD_SWIG_PYTHON "Build python bindings" FALSE)
-option(BUILD_SWIG_JAVA   "Build java bindings"   FALSE)
+option(BUILD_SWIG        "Build swig bindings"   OFF)
+option(BUILD_SWIG_PYTHON "Build python bindings" OFF)
+option(BUILD_SWIG_JAVA   "Build java bindings"   OFF)
 
 set(LIBKML_DATA_DIR  ${CMAKE_SOURCE_DIR}/testdata CACHE "Directory containing test data" PATH)
 
