@@ -4,7 +4,6 @@ color32
 csv_splitter
 date_time
 expat_handler_ns
-expat_parser
 file
 math_util
 referent
@@ -26,3 +25,4 @@ endforeach()
 build_test(base net_cache kmlbase ${URIPARSER_LIBRARY})
 build_test(base uri_parser kmlbase ${URIPARSER_LIBRARY})
 build_test(base zip_file kmlbase ${MINIZIP_LIBRARY})
+build_test(base expat_parser kmlbase kmldom)
