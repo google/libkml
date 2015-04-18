@@ -109,6 +109,9 @@ string DateTime::GetXsdDateTime() const {
 
 // private
 DateTime::DateTime() {
+  //just some date to initialize tm_
+  strptime("14 Nov 1991 12:33:45", "%d %b %Y %H:%M:%S", &tm_);
+  tm_.tm_isdst = -1;
 }
 
 // private

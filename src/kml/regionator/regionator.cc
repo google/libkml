@@ -49,7 +49,11 @@ namespace kmlregionator {
 // A Regionator instance is created from a class derived from RegionHandler
 // and descends over a Region hierarchy as specified.
 Regionator::Regionator(RegionHandler& rhandler, const RegionPtr& region)
-    : rhandler_(rhandler), region_count_(0), root_filename_(0) {
+    : rhandler_(rhandler)
+    , region_count_(0)
+    , output_directory_(0)
+    , root_filename_(0)
+{
   root_region_ = CloneRegion(region);
   root_region_->set_id(Qid::CreateRoot().str());
 }
