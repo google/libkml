@@ -26,12 +26,11 @@
 // This file contains the KML 2.2 element names as found in the KML 2.2 XSD.
 
 #include "kml/dom/kml22.h"
-#include "kml/dom/xsd.h"
 
 namespace kmldom {
 
 // There is an entry here for each global <xs:element> in the KML 2.2 XSD
-static XsdElement kKml22Elements[] = {
+ XsdElement kKml22Elements[] = {
   { "<Unknown>", XSD_UNKNOWN },  // Reserve slot 0, note impossible tag name.
 
   // These are the abstract substitution group elements in the XSD.
@@ -282,31 +281,22 @@ static XsdElement kKml22Elements[] = {
 
 // There is an entry here for each enumeration in the XSD.
 // See the declaration of xsd_simple_type_enum_t for more details.
-static const char* kAltitudeModeEnums[] =
-  { "clampToGround", "relativeToGround", "absolute", NULL };
-static const char* kColorModeEnums[] = { "normal", "random", NULL };
-static const char* kDisplayModeEnums[] = { "default", "hide", NULL };
-static const char* kGridOriginEnums[] = { "lowerLeft", "upperLeft", NULL };
-static const char* kItemIconStateEnums[] =
-  { "open", "closed", "error", "fetching0", "fetching1", "fetching2", NULL };
-static const char* kListItemTypeEnums[] =
-  { "check", "radioFolder", "checkOffOnly", "checkHideChildren", NULL };
-static const char* kRefreshModeEnums[] =
-  { "onChange", "onInterval", "onExpire", NULL };
-static const char* kShapeEnums[] = { "rectangle", "cylinder", "sphere", NULL };
-static const char* kStyleStateEnums[] = { "normal", "highlight", NULL };
-static const char* kUnitsEnums[] =
-  { "fraction", "pixels", "insetPixels", NULL };
-static const char* kViewRefreshModeEnums[] =
-  { "never", "onRequest", "onStop", "onRegion", NULL };
-static const char* kGxAltitudeModeEnums[] =
-  { "clampToSeaFloor", "relativeToSeaFloor", NULL };
-static const char* kGxFlyToViewEnums[] =
-  { "bounce", "smooth", NULL };
-static const char* kGxPlayModeEnums[] =
-  { "pause", NULL };
+ const char* kAltitudeModeEnums[] = { "clampToGround", "relativeToGround", "absolute", NULL };
+ const char* kColorModeEnums[] = { "normal", "random", NULL };
+ const char* kDisplayModeEnums[] = { "default", "hide", NULL };
+ const char* kGridOriginEnums[] = { "lowerLeft", "upperLeft", NULL };
+ const char* kItemIconStateEnums[] = { "open", "closed", "error", "fetching0", "fetching1", "fetching2", NULL };
+ const char* kListItemTypeEnums[] = { "check", "radioFolder", "checkOffOnly", "checkHideChildren", NULL };
+ const char* kRefreshModeEnums[] = { "onChange", "onInterval", "onExpire", NULL };
+ const char* kShapeEnums[] = { "rectangle", "cylinder", "sphere", NULL };
+ const char* kStyleStateEnums[] = { "normal", "highlight", NULL };
+ const char* kUnitsEnums[] = { "fraction", "pixels", "insetPixels", NULL };
+ const char* kViewRefreshModeEnums[] = { "never", "onRequest", "onStop", "onRegion", NULL };
+ const char* kGxAltitudeModeEnums[] = { "clampToSeaFloor", "relativeToSeaFloor", NULL };
+ const char* kGxFlyToViewEnums[] = { "bounce", "smooth", NULL };
+ const char* kGxPlayModeEnums[] =  { "pause", NULL };
 
-static XsdSimpleTypeEnum kKml22Enums[] = {
+ XsdSimpleTypeEnum kKml22Enums[] = {
   { Type_altitudeMode, kAltitudeModeEnums },
   { Type_colorMode, kColorModeEnums },
   { Type_displayMode, kDisplayModeEnums },
@@ -320,7 +310,9 @@ static XsdSimpleTypeEnum kKml22Enums[] = {
   { Type_viewRefreshMode, kViewRefreshModeEnums },
   { Type_GxAltitudeMode, kGxAltitudeModeEnums },
   { Type_GxFlyToMode, kGxFlyToViewEnums },
-  { Type_GxPlayMode, kGxPlayModeEnums }
+  { Type_GxPlayMode, kGxPlayModeEnums },
 };
+
+int kKml22Enums_size = sizeof(kKml22Enums);
 
 }  // namespace kmldom

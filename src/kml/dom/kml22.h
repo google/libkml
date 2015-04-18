@@ -34,6 +34,8 @@
 #ifndef KML_DOM_KML22_H__
 #define KML_DOM_KML22_H__
 
+#include "kml/dom/xsd.h"
+
 namespace kmldom {
 
 // This list matches kml22_elements_[] exactly:
@@ -375,6 +377,25 @@ typedef enum {
   GX_PLAYMODE_PAUSE = 0
 } GxPlayModeEnum;
 
+ extern const char* kAltitudeModeEnums[];
+ extern const char* kColorModeEnums[];
+ extern const char* kDisplayModeEnums[];
+ extern const char* kGridOriginEnums[];
+ extern const char* kItemIconStateEnums[];
+ extern const char* kListItemTypeEnums[];
+ extern const char* kRefreshModeEnums[];
+ extern const char* kShapeEnums[];
+ extern const char* kStyleStateEnums[];
+ extern const char* kUnitsEnums[];
+ extern const char* kViewRefreshModeEnums[];
+ extern const char* kGxAltitudeModeEnums[];
+ extern const char* kGxFlyToViewEnums[];
+ extern const char* kGxPlayModeEnums[];
+ 
+ extern XsdElement kKml22Elements[];
+ extern XsdSimpleTypeEnum kKml22Enums[];
+ extern int kKml22Enums_size;
+ 
 }  // end namespace kmldom
 
 #endif  // KML_DOM_KML22_H__

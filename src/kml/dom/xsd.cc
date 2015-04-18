@@ -27,7 +27,6 @@
 
 #include "kml/dom/xsd.h"
 #include "kml/dom/kml22.h"
-#include "kml/dom/kml22.cc"
 
 namespace kmldom {
 
@@ -80,16 +79,15 @@ XsdType Xsd::ElementType(int id) const {
 }
 
 int Xsd::EnumId(int type_id, string enum_value) const {
-  const int size = sizeof(kKml22Enums)/sizeof(XsdSimpleTypeEnum);
-  for (int i = 0; i < size; ++i) {
-    XsdSimpleTypeEnum* simple = kKml22Enums + i;
-    if (simple->type_id == type_id) {
-      for (const char** enum_value_item = simple->enum_value_list;
+
+  for (int i = 0; i < kKml22Enums_size; ++i) {
+    if (kKml22Enums[i].type_id == type_id) {
+      for (const char** enum_value_item = kKml22Enums[i].enum_value_list;
            *enum_value_item;
            ++enum_value_item) {
         if (*enum_value_item == enum_value) {
           // enum id is simple offset into enum_value_list;
-          return static_cast<int>(enum_value_item - simple->enum_value_list);
+          return static_cast<int>(enum_value_item - kKml22Enums[i].enum_value_list);
         }
       }
     }
@@ -105,9 +103,9 @@ string Xsd::EnumValue(int type_id, int enum_id) const {
   if (enum_id < 0) {
     return string();
   }
-  for (XsdSimpleTypeEnum* simple = kKml22Enums; simple; ++simple) {
-    if (simple->type_id == type_id) {
-      return simple->enum_value_list[enum_id];
+  for (int i = 0; i < kKml22Enums_size; ++i) {  
+    if (kKml22Enums[i].type_id == type_id) {
+      return kKml22Enums[i].enum_value_list[enum_id];
     }
   }
   return string();
