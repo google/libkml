@@ -72,15 +72,18 @@ bool CsvParser::ParseCsv(kmlbase::CsvSplitter* csv_splitter,
 // private
 CsvParser::CsvParser(kmlbase::CsvSplitter* csv_splitter,
                      CsvParserHandler* csv_parser_handler)
-  : csv_splitter_(csv_splitter),
-    csv_parser_handler_(csv_parser_handler),
-    name_col_(npos),
-    description_col_(npos),
-    lat_col_(npos),
-    lon_col_(npos),
-    feature_id_(npos),
-    style_id_(npos),
-    style_url_base_(kDefaultStyleUrlBase) {
+  : csv_splitter_(csv_splitter)
+  , csv_parser_handler_(csv_parser_handler)
+  , schema_size_(0)
+  , name_col_(npos)
+  , description_col_(npos)
+  , lat_col_(npos)
+  , lon_col_(npos)
+  , feature_id_(npos)
+  , style_id_(npos)
+  , style_url_base_(kDefaultStyleUrlBase)
+  , kml_factory_(0)
+{
 }
 
 // private
