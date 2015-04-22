@@ -38,7 +38,7 @@ using kmlbase::XmlnsId;
 
 namespace kmlengine {
 
-static const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
+// static const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
 static const char kDefaultEncoding[] = "utf-8";
 
 // static

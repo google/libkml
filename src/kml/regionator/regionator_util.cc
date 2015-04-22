@@ -32,7 +32,7 @@
 
 namespace kmlregionator {
 
-static const int kAlignRegionMaxDepth = 24;
+// static const int kAlignRegionMaxDepth = 24;
 
 using kmldom::AbstractLatLonBoxPtr;
 using kmldom::CoordinatesPtr;
