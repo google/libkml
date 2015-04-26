@@ -2,4 +2,4 @@ language: cpp
 compiler:
   - gcc
   - clang
-script: cmake && make && make install
+script: mkdir build && cd build && cmake .. && make && make install
