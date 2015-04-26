@@ -122,7 +122,7 @@ bool Coordinates::ParseVec3(const char* cstr, char** nextp, Vec3* vec) {
     }
   }
   if (nextp) {
-    while (isspace(*endp)) {  // Eat the remaining whitespace before return.
+    while ((endp != NULL) && isspace(*endp)) {  // Eat the remaining whitespace before return.
       ++endp;
     }
     *nextp = endp;
