@@ -258,10 +258,13 @@ TEST_F(KmzTest, TestWriteKmz) {
 TEST_F(KmzTest, TestConstKmzFile) {
   const string kDoc = string(DATADIR) + "/kmz/doc.kmz";
   const KmzFile* kmz_file = KmzFile::OpenFromFile(kDoc.c_str());
-  string kml_data;
-  ASSERT_TRUE(kmz_file->ReadKml(&kml_data));
-  ASSERT_FALSE(kml_data.empty());
-  delete kmz_file;
+  if (kmz_file) {
+    string kml_data;
+    bool res = kmz_file->ReadKml(&kml_data);
+    ASSERT_TRUE(res);
+    ASSERT_FALSE(kml_data.empty());
+    delete kmz_file;
+  }
 }
 
 TEST_F(KmzTest, TestCreate) {

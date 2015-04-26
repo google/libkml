@@ -36,6 +36,8 @@
 #include "kml/engine/href.h"
 #include "kml/engine/kml_uri.h"
 
+#include <new>
+
 using kmlbase::File;
 using kmlbase::StringVector;
 using kmlbase::ZipFile;
@@ -54,7 +56,8 @@ KmzFile::~KmzFile() {}
 // Static.
 KmzFile* KmzFile::OpenFromFile(const char* kmz_filename) {
   if (ZipFile* zipfile = ZipFile::OpenFromFile(kmz_filename)) {
-    return new KmzFile(zipfile);
+    return new(std::nothrow) KmzFile(zipfile);
+     
   }
   return NULL;
 }
