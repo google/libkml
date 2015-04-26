@@ -2,4 +2,7 @@ language: cpp
 compiler:
   - gcc
   - clang
-script: mkdir build && cd build && cmake .. && make && make install
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libboost-all-dev libexpat1-dev liburiparser-dev libminizip-dev zlib1g-dev
+script: cmake . && make && make install
