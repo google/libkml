@@ -87,7 +87,8 @@ void BasicLink::Accept(Visitor* visitor) {
 
 // Construct with defaults as per KML standard.
 AbstractLink::AbstractLink()
-  : refreshmode_(REFRESHMODE_ONCHANGE),
+  : has_href_(false),
+    refreshmode_(REFRESHMODE_ONCHANGE),
     has_refreshmode_(false),
     refreshinterval_(4.0),
     has_refreshinterval_(false),
