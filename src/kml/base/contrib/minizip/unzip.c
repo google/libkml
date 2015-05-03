@@ -1642,9 +1642,12 @@ extern unzFile ZEXPORT libkml_unzAttach (stream, pzlib_filefunc_def)
     if (libkml_unz_copyright[0]!=' ')
         return NULL;
 
+    us.num_file = 0UL;
+    
     us.z_filefunc = *pzlib_filefunc_def;
 
     us.filestream= stream;
+    
     if (us.filestream==NULL)
         return NULL;
 
@@ -1709,8 +1712,8 @@ extern unzFile ZEXPORT libkml_unzAttach (stream, pzlib_filefunc_def)
     us.pfile_in_zip_read = NULL;
     us.encrypted = 0;
 
-
     s=(unz_s*)ALLOC(sizeof(unz_s));
+
     *s=us;
     libkml_unzGoToFirstFile((unzFile)s);
     return (unzFile)s;
