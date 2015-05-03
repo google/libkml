@@ -46,8 +46,17 @@ namespace kmlconvenience {
 // Overall usage: Derive a class from GpxTrkPtHandler with an implementation of
 // HandlePoint().
 class GpxTrkPtHandler : public kmlbase::ExpatHandler {
+
  public:
 
+    GpxTrkPtHandler()
+    : time_("")
+    , gather_char_data_(false)
+    , char_data_("")
+    {
+      
+    }
+  
   // ExpatHandler::StartElement()
   virtual void StartElement(const string& name,
                             const std::vector <string>& atts) {
@@ -107,6 +116,7 @@ class GpxTrkPtHandler : public kmlbase::ExpatHandler {
   };
 
  private:
+
   // A fresh Vec3 is created for each <trkpt>.
   boost::scoped_ptr<kmlbase::Vec3> vec3_;
   string time_;
