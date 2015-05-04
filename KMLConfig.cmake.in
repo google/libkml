@@ -4,4 +4,6 @@ set(KML_INCLUDE_DIRS
   "${Boost_INCLUDE_DIR}")
 
 set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}")
-find_library(KML_LIBRARY kml PATHS "${libkml_BINARY_DIR}" NO_DEFAULT_PATH)
+if(EXISTS "@KML_TARGETS_FILE@" AND NOT TARGET kml)
+  include("@KML_TARGETS_FILE@")
+endif()
