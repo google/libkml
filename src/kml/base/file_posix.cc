@@ -61,8 +61,10 @@ bool File::CreateNewTempFile(string* path) {
   if (!path) {
     return false;
   }
+  mode_t temp_umask = umask(S_IXUSR | S_IRWXG | S_IRWXO);
   char temp_path[] = "/tmp/libkmlXXXXXX";
   int fd = mkstemp(temp_path);
+  umask(temp_umask);
   if (fd == -1) {
     return false;
   }
