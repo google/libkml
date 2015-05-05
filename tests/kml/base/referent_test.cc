@@ -94,17 +94,19 @@ TEST_F(ReferentTest, TestReferent) {
 // This tests the intrusive_ptr_add_ref() and intrusive_ptr_release()
 // functions used by boost::intrusive_ptr.
 TEST_F(ReferentTest, TestIntrusivePointerFunctions) {
-  Referent* referent = new Referent;
-  ASSERT_EQ(0, referent->get_ref_count());
+  Referent* referent = new Referent();
+  EXPECT_EQ(0, referent->get_ref_count());  
   intrusive_ptr_add_ref(referent);
-  ASSERT_EQ(1, referent->get_ref_count());
+  EXPECT_EQ(1, referent->get_ref_count());  
   intrusive_ptr_add_ref(referent);
-  ASSERT_EQ(2, referent->get_ref_count());
-
+  EXPECT_EQ(2, referent->get_ref_count());
+  //coverity [freed_arg]
   intrusive_ptr_release(referent);
-  ASSERT_EQ(1, referent->get_ref_count());
+  //coverity [deref_arg]
+  EXPECT_EQ(1, referent->get_ref_count());
   // This deletes referent:
   intrusive_ptr_release(referent);
+  referent = NULL;
 }
 
 TEST_F(ReferentTest, TestDelete) {
