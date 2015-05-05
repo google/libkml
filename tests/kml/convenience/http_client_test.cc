@@ -124,7 +124,7 @@ TEST(HttpClientTest, Login) {
   HttpClient http_client(kAppName);
   // The default implementation of SendRequest does not return an Auth= token
   ASSERT_FALSE(http_client.Login(kServiceName, kEmail, kPasswd));
-};
+}
 
 TEST(HttpClientTest, LoginWithAuth) {
   // This HttpClient implementation fakes the Google ClientLogin response.
