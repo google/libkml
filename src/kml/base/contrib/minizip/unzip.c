@@ -154,6 +154,30 @@ typedef struct
 #    endif
 } unz_s;
 
+void init_unz_s(unz_s* un)
+{
+
+  un->filestream = NULL;
+  
+  un->byte_before_the_zipfile = 0UL;
+  un->num_file = 0UL;
+  un->pos_in_central_dir = 0UL;
+  un->current_file_ok = 0UL;
+
+  un->central_pos = 0UL;
+  un->size_central_dir  = 0UL;
+  un->offset_central_dir  = 0UL;
+
+  un->pfile_in_zip_read = NULL;
+      
+  un->encrypted = 0;
+#ifndef NOUNCRYPT
+  un->keys [0] = 0UL;
+  un->keys [1] = 0UL;
+  un->keys [2] = 0UL;
+  un->pcrc_32_tab = NULL;
+#endif
+}
 
 #ifndef NOUNCRYPT
 #include <minizip/crypt.h>
@@ -402,7 +426,10 @@ extern unzFile ZEXPORT libkml_unzOpen2 (path, pzlib_filefunc_def)
     zlib_filefunc_def* pzlib_filefunc_def;
 {
     unz_s us;
+    init_unz_s(&us);
+    
     unz_s *s;
+    
     uLong central_pos,uL;
 
     uLong number_disk;          /* number of the current dist, used for
@@ -491,7 +518,6 @@ extern unzFile ZEXPORT libkml_unzOpen2 (path, pzlib_filefunc_def)
     us.central_pos = central_pos;
     us.pfile_in_zip_read = NULL;
     us.encrypted = 0;
-
 
     s=(unz_s*)ALLOC(sizeof(unz_s));
     *s=us;
@@ -1626,6 +1652,8 @@ extern unzFile ZEXPORT libkml_unzAttach (stream, pzlib_filefunc_def)
     zlib_filefunc_def* pzlib_filefunc_def;
 {
     unz_s us;
+    init_unz_s(&us);
+    
     unz_s *s;
     uLong central_pos,uL;
 
