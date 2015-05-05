@@ -145,12 +145,15 @@ TEST_F(AttributesTest, TestClone) {
   attributes_->SetValue(kAttr1, kVal1);
   Attributes* clone = attributes_->Clone();
   string got_string;
-  ASSERT_TRUE(clone->GetValue(kAttr0, &got_string));
-  ASSERT_EQ(kVal0, got_string);
+  EXPECT_TRUE(clone->GetValue(kAttr0, &got_string));
+  EXPECT_EQ(kVal0, got_string);
+  
   double got_double;
-  ASSERT_TRUE(clone->GetValue(kAttr1, &got_double));
-  ASSERT_EQ(kVal1, got_double);
+  EXPECT_TRUE(clone->GetValue(kAttr1, &got_double));
+  EXPECT_EQ(kVal1, got_double);
+  
   delete clone;
+  clone = NULL;
 }
 
 TEST_F(AttributesTest, TestMerge) {
