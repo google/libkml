@@ -130,13 +130,25 @@ bool SplitUri(const string& uri, string* scheme, string* host,
   if (!uri_parser.get()) {
     return false;
   }
-  // These all ignore a NULL string arg.
-  uri_parser->GetScheme(scheme);
-  uri_parser->GetHost(host);
-  uri_parser->GetPort(port);
-  uri_parser->GetPath(path);
-  uri_parser->GetQuery(query);
-  uri_parser->GetFragment(fragment);
+
+  /*
+  splitUri method must return true even if below
+  Get* methods returns false.
+  i.e; this method checks if url is valid and
+  then try to find Scheme, host, port, path,
+  query and fragment. Even if one of them is false
+  that wont indicate the url can't be split
+  
+  As return value of below methods is irrelevent
+  we void cast them  to keep coverity checker 
+  from annoying us.
+  */
+  static_cast<void>(uri_parser->GetScheme(scheme));
+  static_cast<void>(uri_parser->GetHost(host));
+  static_cast<void>(uri_parser->GetPort(port));
+  static_cast<void>(uri_parser->GetPath(path));
+  static_cast<void>(uri_parser->GetQuery(query));
+  static_cast<void>(uri_parser->GetFragment(fragment));
   return true;
 }
 
@@ -169,14 +181,14 @@ bool GetFetchableUri(const string& uri, string* fetchable_uri) {
     return true;  // uri parsed fine, just not interested in output.
   }
   string scheme;
-  uri_parser->GetScheme(&scheme);
+  static_cast<void> (uri_parser->GetScheme(&scheme));
   string host;
-  uri_parser->GetHost(&host);
+  static_cast<void> (uri_parser->GetHost(&host));
 
   if (!scheme.empty() && !host.empty()) {
     fetchable_uri->append(scheme).append("://",3).append(host);
     string port;
-    uri_parser->GetPort(&port);
+    static_cast<void> (uri_parser->GetPort(&port));
     if (!port.empty()) {
       fetchable_uri->append(":",1).append(port);
     }
@@ -184,7 +196,7 @@ bool GetFetchableUri(const string& uri, string* fetchable_uri) {
   }
 
   string path;
-  uri_parser->GetPath(&path);
+  static_cast<void> (uri_parser->GetPath(&path));
   if (!path.empty()) {
     fetchable_uri->append(path);
   }
