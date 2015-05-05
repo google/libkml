@@ -68,7 +68,7 @@ bool GetFeatureBounds(const FeaturePtr& feature, Bbox* bbox) {
   } else if (ContainerPtr container = kmldom::AsContainer(feature)) {
     // TODO: unify feature hierarchy walking with public API for such
     size_t num_features = container->get_feature_array_size();
-    for (size_t i = 0; i < num_features; ++num_features) {
+    //    for (size_t i = 0; i < num_features; ++num_features) {
       bool has_bounds = false;  // Turns true on any Feature w/ bounds.
       for (size_t i = 0; i < num_features; ++i) {
         if (GetFeatureBounds(container->get_feature_array_at(i), bbox)) {
@@ -76,7 +76,7 @@ bool GetFeatureBounds(const FeaturePtr& feature, Bbox* bbox) {
         }
       }
       return has_bounds;
-    }
+      //}
   }
   // TODO: other GroundOverlay
   return false;
