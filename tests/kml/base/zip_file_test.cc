@@ -112,9 +112,12 @@ TEST_F(ZipFileTest, TestCreate) {
   ASSERT_TRUE(tempfile != NULL);
   // Create a KMZ file containing a KML file that is a placemark called
   // 'tmp kml'.
-  ASSERT_TRUE(ZipFile::Create(tempfile->name().c_str()));
+  ZipFile* zip_file = ZipFile::Create(tempfile->name().c_str());
+  EXPECT_TRUE(zip_file);
+  delete zip_file;
+  zip_file = NULL;
   // Now read the file, ensuring it was properly written.
-  ASSERT_TRUE(File::Exists(tempfile->name()));
+  EXPECT_TRUE(File::Exists(tempfile->name()));
 }
 
 TEST_F(ZipFileTest, TestIsZipData) {

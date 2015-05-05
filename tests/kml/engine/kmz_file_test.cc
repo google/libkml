@@ -261,8 +261,8 @@ TEST_F(KmzTest, TestConstKmzFile) {
   if (kmz_file) {
     string kml_data;
     bool res = kmz_file->ReadKml(&kml_data);
-    ASSERT_TRUE(res);
-    ASSERT_FALSE(kml_data.empty());
+    EXPECT_TRUE(res);
+    EXPECT_FALSE(kml_data.empty());
     delete kmz_file;
   }
 }

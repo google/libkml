@@ -334,11 +334,14 @@ void UriParserTest::VerifyUriResolution(const char* base, const char* relative,
                                         const char* want_result) {
   string got_result;
   if (want_result == NULL) {  // We're expecting resolution to fail.
-    ASSERT_FALSE(UriParser::CreateResolvedUri(base, relative));
+    ASSERT_EQ(NULL, UriParser::CreateResolvedUri(base, relative));
     return;
   }
-  uri_parser_.reset(UriParser::CreateResolvedUri(base, relative));
-  uri_parser_->ToString(&got_result);
+  UriParser *parser = UriParser::CreateResolvedUri(base, relative);
+  parser->ToString(&got_result);
+ delete parser;
+ parser = NULL;
+
   ASSERT_EQ(string(want_result), got_result);
 }
 
