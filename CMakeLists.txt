@@ -378,16 +378,12 @@ ELSE(UNIX)
       COMPONENT Development)
 ENDIF(UNIX)
 
-# Setup the build export configuration.
+# Setup the export configuration.
 export(TARGETS ${KML_TARGETS} FILE ${libkml_BINARY_DIR}/KMLTargets.cmake)
 set(libkml_EXPORT_FILE "${libkml_BINARY_DIR}/KMLConfig.cmake" )
 configure_file("${libkml_SOURCE_DIR}/KMLConfig.cmake.in"
-               "${libkml_EXPORT_FILE}")
+               "${libkml_EXPORT_FILE}"
+               @ONLY)
 
-# Setup the install export.
-set(libkml_EXPORT_INSTALL_FILE "${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake" )
-configure_file("${libkml_SOURCE_DIR}/KMLConfig-install.cmake.in"
-               "${libkml_EXPORT_INSTALL_FILE}")
-
-INSTALL(FILES ${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake DESTINATION lib/cmake)
+INSTALL(FILES ${libkml_BINARY_DIR}/KMLConfig.cmake DESTINATION lib/cmake)
 INSTALL(FILES ${libkml_BINARY_DIR}/KMLTargets.cmake DESTINATION lib/cmake)
