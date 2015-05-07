@@ -4,4 +4,6 @@ set(KML_INCLUDE_DIRS
   "${Boost_INCLUDE_DIR}")
 
 set(KML_LIBRARY_DIR  "${CMAKE_INSTALL_PREFIX}/lib")
-find_library(KML_LIBRARY kml PATHS "${CMAKE_INSTALL_PREFIX}/lib" NO_DEFAULT_PATH)
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/KMLTargets.cmake" AND NOT TARGET kml)
+  include("${CMAKE_CURRENT_LIST_DIR}/KMLTargets.cmake")
+endif()

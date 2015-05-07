@@ -4,6 +4,6 @@ set(KML_INCLUDE_DIRS
   "${Boost_INCLUDE_DIR}")
 
 set(KML_LIBRARY_DIR  "${libkml_BINARY_DIR}")
-if(EXISTS "@KML_TARGETS_FILE@" AND NOT TARGET kml)
-  include("@KML_TARGETS_FILE@")
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/KMLTargets.cmake" AND NOT TARGET kml)
+  include("${CMAKE_CURRENT_LIST_DIR}/KMLTargets.cmake")
 endif()
