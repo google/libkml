@@ -275,12 +275,14 @@ IF(WIN32)
 ENDIF(WIN32)
 
 ADD_LIBRARY(kml ${libkml_SOURCES} )
+LIST(APPEND KML_TARGETS kml)
 
-IF(NOT LIBKML_USE_EXTERNAL_KML)
+IF(NOT LIBKML_USE_EXTERNAL_EXPAT)
   TARGET_LINK_LIBRARIES(kml expat)
-ELSE (NOT LIBKML_USE_EXTERNAL_KML)
+  LIST(APPEND KML_TARGETS expat)
+ELSE (NOT LIBKML_USE_EXTERNAL_EXPAT)
   TARGET_LINK_LIBRARIES(kml ${EXPAT_LIBRARIES})
-ENDIF(NOT LIBKML_USE_EXTERNAL_KML)
+ENDIF(NOT LIBKML_USE_EXTERNAL_EXPAT)
 
 IF(LIBKML_LIBRARY_PROPERTIES)
   SET_TARGET_PROPERTIES(kml PROPERTIES ${LIBKML_LIBRARY_PROPERTIES})
@@ -376,14 +378,12 @@ ELSE(UNIX)
       COMPONENT Development)
 ENDIF(UNIX)
 
-# Setup the build export configuration.
+# Setup the export configuration.
+export(TARGETS ${KML_TARGETS} FILE ${libkml_BINARY_DIR}/KMLTargets.cmake)
 set(libkml_EXPORT_FILE "${libkml_BINARY_DIR}/KMLConfig.cmake" )
 configure_file("${libkml_SOURCE_DIR}/KMLConfig.cmake.in"
-               "${libkml_EXPORT_FILE}")
+               "${libkml_EXPORT_FILE}"
+               @ONLY)
 
-# Setup the install export.
-set(libkml_EXPORT_INSTALL_FILE "${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake" )
-configure_file("${libkml_SOURCE_DIR}/KMLConfig-install.cmake.in"
-               "${libkml_EXPORT_INSTALL_FILE}")
-
-INSTALL(FILES ${libkml_BINARY_DIR}/CMakeFiles/KMLConfig.cmake DESTINATION lib/cmake)
+INSTALL(FILES ${libkml_BINARY_DIR}/KMLConfig.cmake DESTINATION lib/cmake)
+INSTALL(FILES ${libkml_BINARY_DIR}/KMLTargets.cmake DESTINATION lib/cmake)
