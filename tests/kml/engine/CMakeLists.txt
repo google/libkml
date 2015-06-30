@@ -32,5 +32,8 @@ update_processor
 update)
 
 foreach(TEST ${TESTS})
-  build_test(engine ${TEST} kmlengine)
+  build_test(
+    GROUP engine
+    NAME ${TEST}
+    DEPENDS kmlengine)  
 endforeach()

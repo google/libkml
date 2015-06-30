@@ -1,10 +1,10 @@
 file(GLOB SRCS "*.cc" )
-build_target(kmlengine "${SRCS}" kmlbase;kmldom)
+file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
-file(GLOB include_files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-install(
-  FILES ${include_files}
-  DESTINATION ${KML_ENGINE_INCLUDE_DIR}
-  COMPONENT Development)
+build_target(
+  NAME kmlengine
+  SRCS ${SRCS}
+  INCS ${INCS}
+  DEPENDS kmlbase;kmldom)
 
-install_target(kmlengine)
+

@@ -3,4 +3,11 @@
 # if GCC
 # AM_CXXFLAGS = -Wall -Werror -pedantic -Wno-long-long -fno-rtti
 # endif
-build_example(gpxtracktokml kmlconvenience)
+build_example(
+  NAME gpxtracktokml
+  DEPENDS kmlconvenience)
+
+if(INSTALL_EXAMPLES)
+  file(GLOB eg_files "${CMAKE_CURRENT_SOURCE_DIR}/*.cc")
+  install(FILES ${eg_files}  DESTINATION examples/gpx)
+endif(INSTALL_EXAMPLES)

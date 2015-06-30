@@ -9,12 +9,11 @@ if(HAVE_SYSTEM_EXPAT)
 endif()
 
 file(GLOB SRCS "*.cc" )
-build_target(kmlbase "${SRCS}" kml_contrib ${EXPAT_LIBRARY} ${URIPARSER_LIBRARY})
+file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+build_target(
+  NAME kmlbase
+  SRCS ${SRCS}
+  INCS ${INCS}  
+  DEPENDS kml_contrib
+  LINKS ${EXPAT_LIBRARY} ${URIPARSER_LIBRARY})
 
-file(GLOB include_files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-install(
-  FILES ${include_files}
-  DESTINATION ${KML_BASE_INCLUDE_DIR}
-  COMPONENT Development)
-
-install_target(kmlbase)

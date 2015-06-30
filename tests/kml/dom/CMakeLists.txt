@@ -52,5 +52,9 @@ visitor
 visitor_driver)
 
 foreach(TEST ${TESTS})
-  build_test(dom ${TEST} kmldom)
+  build_test(
+    GROUP dom
+    NAME ${TEST}
+    DEPENDS kmldom)
 endforeach()
+

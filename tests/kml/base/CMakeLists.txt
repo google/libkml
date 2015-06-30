@@ -19,10 +19,31 @@ xml_namespaces
 xmlns)
 
 foreach(TEST ${TESTS})
-  build_test(base ${TEST} kmlbase)
+  build_test(
+    GROUP base
+    NAME ${TEST}
+    DEPENDS kmlbase)
 endforeach()
 
-build_test(base net_cache kmlbase ${URIPARSER_LIBRARY})
-build_test(base uri_parser kmlbase ${URIPARSER_LIBRARY})
-build_test(base zip_file kmlbase ${MINIZIP_LIBRARY})
-build_test(base expat_parser kmlbase kmldom)
+build_test(
+  GROUP base
+  NAME net_cache
+  LINKS ${URIPARSER_LIBRARY}
+  DEPENDS kmlbase)
+
+build_test(
+  GROUP base
+  NAME uri_parser
+  LINKS ${URIPARSER_LIBRARY}
+  DEPENDS kmlbase)
+
+build_test(
+  GROUP base
+  NAME zip_file
+  LINKS ${MINIZIP_LIBRARY}
+  DEPENDS kmlbase)
+
+build_test(
+  GROUP base
+  NAME expat_parser
+  DEPENDS kmlbase;kmldom)

@@ -12,5 +12,8 @@ kml_feature_list_saver
 kmz_check_links)
 
 foreach(TEST ${TESTS})
-  build_test(regionator ${TEST} kmlbase kmlengine kmldom kmlconvenience)
+  build_test(
+    GROUP regionator
+    NAME ${TEST}
+    DEPENDS kmlbase;kmlengine;kmldom;kmlconvenience)
 endforeach()

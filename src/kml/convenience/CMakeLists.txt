@@ -1,10 +1,8 @@
 file(GLOB SRCS "*.cc" )
-build_target(kmlconvenience "${SRCS}" kmlengine;kmldom;kmlbase)
+file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
-file(GLOB include_files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-install(
-  FILES ${include_files}
-  DESTINATION ${KML_CONVENIENCE_INCLUDE_DIR}
-  COMPONENT Development)
-
-install_target(kmlconvenience)
+build_target(
+  NAME kmlconvenience
+  SRCS ${SRCS}
+  INCS ${INCS}
+  DEPENDS kmlengine;kmldom;kmlbase)
