@@ -56,7 +56,7 @@ if(NOT HAVE_SYSTEM_URIPARSER)
   list(APPEND KMLBASE_DEPENDS uriparser )
 endif()
 
-include(ImportZLIB)
+#include(ImportZLIB)
 if(NOT HAVE_SYSTEM_ZLIB)
   set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8/include)
   include_directories(${ZLIB_INCLUDE_DIR})
