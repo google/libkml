@@ -39,35 +39,49 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_SOURCE_DIR}/cmake
     ${CMAKE_MODULE_PATH})
 
-include(ImportZLIB)
-include(ImportMiniZip)
+include(LibKMLHelper)
+
+set(KMLBASE_DEPENDS)
+
+
 include(ImportEXPAT)
 include(ImportBoost)
-include(ImportUriParser)
 
-include(LibKMLHelper)
+include(ImportUriParser)
+if(NOT HAVE_SYSTEM_URIPARSER)
+  set(URIPARSER_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.8.2/include)
+  include_directories(${URIPARSER_INCLUDE_DIR})
+  set(URIPARSER_LIBRARY uriparser)
+  add_subdirectory(third_party/uriparser-0.8.2)
+  list(APPEND KMLBASE_DEPENDS uriparser )
+endif()
+
+include(ImportZLIB)
+if(NOT HAVE_SYSTEM_ZLIB)
+  set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8/include)
+  include_directories(${ZLIB_INCLUDE_DIR})
+  set(ZLIB_LIBRARY zlib)
+  add_subdirectory(third_party/zlib-1.2.8)
+  list(APPEND KMLBASE_DEPENDS zlib)
+endif()
+
+include(ImportMiniZip)
+if(NOT HAVE_SYSTEM_MINIZIP)
+  set(MINIZIP_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8/contrib/minizip)
+  include_directories(${MINIZIP_INCLUDE_DIR})
+  set(MINIZIP_LIBRARY minizip)
+  add_subdirectory(third_party/zlib-1.2.8/contrib/minizip)
+  list(APPEND KMLBASE_DEPENDS minizip)
+endif()
+
 
 if(HAVE_SYSTEM_BOOST)
   message(STATUS "Found Boost: ${Boost_VERSION}")
   include_directories(${Boost_INCLUDE_DIRS})
 endif()
 
-set(KML_DIR ${CMAKE_INSTALL_PREFIX})
-#set(KML_SHARE_DIR ${KML_DIR}/share)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
-#set(KML_INCLUDE_DIR ${KML_DIR}/include/kml)
-
-# set(KML_BASE_INCLUDE_DIR ${KML_INCLUDE_DIR}/base)
-# set(KML_DOM_INCLUDE_DIR ${KML_INCLUDE_DIR}/dom)
-# set(KML_CONVENIENCE_INCLUDE_DIR ${KML_INCLUDE_DIR}/convenience)
-# set(KML_REGIONATOR_INCLUDE_DIR ${KML_INCLUDE_DIR}/regionator)
-# set(KML_ENGINE_INCLUDE_DIR ${KML_INCLUDE_DIR}/engine)
-# set(KML_XSD_INCLUDE_DIR ${KML_INCLUDE_DIR}/xsd)
-# set(KML_CONTRIB_INCLUDE_DIR ${KML_INCLUDE_DIR}/base/contrib)
-
-# set(KML_EXAMPLES_DIR ${KML_SHARE_DIR}/examples)
-
-include_directories(${CMAKE_SOURCE_DIR}/src/)
 add_subdirectory(src)
 
 if(BUILD_TESTING)
@@ -82,3 +96,4 @@ endif()
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
+

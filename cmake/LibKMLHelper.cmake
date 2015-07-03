@@ -1,6 +1,7 @@
 macro(build_target)
   cmake_parse_arguments(LIB  "" "NAME" "SRCS;INCS;LINKS;DEPENDS" ${ARGN} )
   add_library(${LIB_NAME} ${LIB_SRCS})
+
   foreach(LIB_DEPEND ${LIB_DEPENDS})
     add_dependencies(${LIB_NAME} ${LIB_DEPEND})
   endforeach()
@@ -10,7 +11,6 @@ macro(build_target)
       VERSION   "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
       SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
   endif()
-  set(kmlbase__INCLUDE_DIR "dd/ddfg")
   string(LENGTH ${LIB_NAME} ${LIB_NAME}_LEN)
   MATH(EXPR ${LIB_NAME}_END "${${LIB_NAME}_LEN} - 3")
   string(SUBSTRING ${LIB_NAME} 3 ${${LIB_NAME}_END} ${LIB_NAME}_INCLUDE_DIR)
@@ -43,3 +43,4 @@ function(build_example)
   add_dependencies(example_${EXAMPLE_NAME} ${EXAMPLE_DEPENDS})
   target_link_libraries(example_${EXAMPLE_NAME} ${EXAMPLE_LINKS} ${EXAMPLE_DEPENDS})
 endfunction(build_example)
+
