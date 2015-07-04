@@ -58,8 +58,9 @@ endif()
 
 include(ImportZLIB)
 if(NOT HAVE_SYSTEM_ZLIB)
-  set(ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8)
-    list(APPEND ZLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/third_party/zlib-1.2.8)
+  set( ZLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/third_party/zlib-1.2.8)
+  list(APPEND ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8)
+
   include_directories(${ZLIB_INCLUDE_DIR})
   set(ZLIB_LIBRARY zlib)
   add_subdirectory(third_party/zlib-1.2.8)
@@ -97,4 +98,3 @@ endif()
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
-
