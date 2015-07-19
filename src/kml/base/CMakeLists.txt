@@ -1,15 +1,19 @@
-add_subdirectory(contrib)
 
 if(HAVE_SYSTEM_EXPAT)
   include_directories(${EXPAT_INCLUDE_DIR})
 endif()
 
+list(APPEND KMLBASE_LINK_LIBS ${EXPAT_LIBRARY})
 
-file(GLOB SRCS "*.cc" )
+file(GLOB SRCS "*.cc" 
+  contrib/minizip/unzip.c
+  contrib/minizip/iomem_simple.c)
+
 file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+
 build_target(
   NAME kmlbase
   SRCS ${SRCS}
   INCS ${INCS}
   DEPENDS ${KMLBASE_DEPENDS}
-  LINKS ${EXPAT_LIBRARY} )
+  LINKS ${KMLBASE_LINK_LIBS} )

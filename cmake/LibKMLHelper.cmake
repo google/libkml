@@ -5,7 +5,7 @@ macro(build_target)
   foreach(LIB_DEPEND ${LIB_DEPENDS})
     add_dependencies(${LIB_NAME} ${LIB_DEPEND})
   endforeach()
-  target_link_libraries(${LIB_NAME} ${LIB_DEPENDS} ${LIB_LINKS})
+  target_link_libraries(${LIB_NAME} ${LIB_LINKS})
   if(VERSION_STRING)
     set_target_properties(${LIB_NAME} PROPERTIES
       VERSION   "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
@@ -44,3 +44,9 @@ function(build_example)
   target_link_libraries(example_${EXAMPLE_NAME} ${EXAMPLE_LINKS} ${EXAMPLE_DEPENDS})
 endfunction(build_example)
 
+
+macro(include_project_vars _project _lib)
+  set(${_project}_INCLUDE_DIR "${INSTALL_DIR}/${_project}/include" )
+  set(${_project}_LIBRARY "${INSTALL_DIR}/${_project}/lib/${_lib}" )
+  include_directories(${${_project}_INCLUDE_DIR})
+endmacro()

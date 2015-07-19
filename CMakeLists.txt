@@ -43,9 +43,13 @@ include(LibKMLHelper)
 
 set(KMLBASE_DEPENDS)
 
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release")
+endif()  
 
 include(ImportEXPAT)
 include(ImportBoost)
+include(ExternalProject)
 
 include(ImportUriParser)
 if(NOT HAVE_SYSTEM_URIPARSER)
@@ -56,32 +60,26 @@ if(NOT HAVE_SYSTEM_URIPARSER)
   list(APPEND KMLBASE_DEPENDS uriparser )
 endif()
 
+if(NOT INSTALL_DIR)
+  set(INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install")
+endif()
+
+set(KMLBASE_LINK_LIBS)
+set(KMLBASE_DEPENDS)
+
 include(ImportZLIB)
 if(NOT HAVE_SYSTEM_ZLIB)
-
-  set(ZLIB_LIBRARY zlib)
-  add_subdirectory(third_party/zlib-1.2.8)
-  list(APPEND KMLBASE_DEPENDS zlib)
-
-
-  set( ZLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/third_party/zlib-1.2.8)
-
-  list(APPEND ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8)
-  include_directories(${ZLIB_INCLUDE_DIR})
-   
-  message(STATUS "zlib_inc2x=${ZLIB_INCLUDE_DIR}")  
-
+  include(External_zlib)
+  list(APPEND KMLBASE_DEPENDS ZLIB)
+  list(APPEND KMLBASE_LINK_LIBS ${ZLIB_LIBRARY})
 endif()
 
-include(ImportMiniZip)
+include(ImportMinizip)
 if(NOT HAVE_SYSTEM_MINIZIP)
-  set(MINIZIP_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8/contrib)
-  include_directories(${MINIZIP_INCLUDE_DIR})
-  set(MINIZIP_LIBRARY minizip)
-  add_subdirectory(third_party/zlib-1.2.8/contrib/minizip)
-  list(APPEND KMLBASE_DEPENDS minizip)
+  include(External_minizip)
+  list(APPEND KMLBASE_DEPENDS MINIZIP)
+  list(APPEND KMLBASE_LINK_LIBS ${MINIZIP_LIBRARY})  
 endif()
-
 
 if(HAVE_SYSTEM_BOOST)
   message(STATUS "Found Boost: ${Boost_VERSION}")
