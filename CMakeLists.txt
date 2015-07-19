@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.5)
+cmake_minimum_required(VERSION 2.8)
 project(LibKML)
 
 set(VERSION_MAJOR "1")
@@ -51,21 +51,22 @@ include(ImportEXPAT)
 include(ImportBoost)
 include(ExternalProject)
 
-include(ImportUriParser)
-if(NOT HAVE_SYSTEM_URIPARSER)
-  set(URIPARSER_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/uriparser-0.8.2/include)
-  include_directories(${URIPARSER_INCLUDE_DIR})
-  set(URIPARSER_LIBRARY uriparser)
-  add_subdirectory(third_party/uriparser-0.8.2)
-  list(APPEND KMLBASE_DEPENDS uriparser )
-endif()
 
 if(NOT INSTALL_DIR)
   set(INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install")
 endif()
 
+set(PATCH_DIR ${CMAKE_SOURCE_DIR}/cmake/patches)
+
 set(KMLBASE_LINK_LIBS)
 set(KMLBASE_DEPENDS)
+
+include(ImportUriParser)
+if(NOT HAVE_SYSTEM_URIPARSER)
+  include(External_uriparser)
+  list(APPEND KMLBASE_DEPENDS URIPARSER)
+  list(APPEND KMLBASE_LINK_LIBS ${URIPARSER_LIBRARY})
+endif()
 
 include(ImportZLIB)
 if(NOT HAVE_SYSTEM_ZLIB)

@@ -3,8 +3,9 @@
    URL "https://docs.google.com/uc?export=download&id=0BzqbMPUw_a8uVHF3S2sxX21vNWM"
    URL_MD5 d5f74eff74e03e497ea60b2c43623416
    BINARY_DIR ${CMAKE_BINARY_DIR}/MINIZIP/build
-   DOWNLOAD_DIR ${DOWNLOAD_LOCATION}
-   DOWNLOAD_NAME kml-minizip.tar.gz   
+   DOWNLOAD_COMMAND wget https://docs.google.com/uc?export=download&id=0BzqbMPUw_a8uVHF3S2sxX21vNWM  -o kml-minizip.tar.gz WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/MINIZIP/src
+   EXTRACT_COMMAND ${CMAKE_COMMAND} -E tar xfz kml-minizip.tar.gz WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/MINIZIP/src
+  RESULT_VARIABLE rv)   
    DEPENDS ZLIB
    CMAKE_CACHE_ARGS
    -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR}/MINIZIP
