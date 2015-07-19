@@ -63,15 +63,21 @@ if(NOT HAVE_SYSTEM_ZLIB)
   add_subdirectory(third_party/zlib-1.2.8)
   list(APPEND KMLBASE_DEPENDS zlib)
 
-
-
-
 endif()
 
 include(ImportMiniZip)
 if(NOT HAVE_SYSTEM_MINIZIP)
 
-  message(STATUS "zlib_inc2=${ZLIB_INCLUDE_DIR}")
+  if(NOT HAVE_SYSTEM_ZLIB)
+
+    set( ZLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/third_party/zlib-1.2.8)
+
+list(APPEND ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8)
+include_directories(${ZLIB_INCLUDE_DIR})
+   
+  message(STATUS "zlib_inc2=${ZLIB_INCLUDE_DIR}")  
+  endif()
+  
 
   set(MINIZIP_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8/contrib)
   include_directories(${MINIZIP_INCLUDE_DIR})
