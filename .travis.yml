@@ -1,8 +1,9 @@
 language: cpp
 compiler:
   - gcc
+
 before_script:
     - sudo apt-get update -qq
     - sudo apt-get install -y libboost-all-dev libexpat1-dev
 
-script: cmake . && make
+script: mkdir build && cd build && cmake .. && make

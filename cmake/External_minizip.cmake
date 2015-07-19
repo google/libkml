@@ -13,7 +13,6 @@
    -DZLIB_LIBRARY:FILEPATH=${ZLIB_LIBRARY}
    -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS})
 
-
  include_project_vars(MINIZIP "libminizip.so")
 
 
