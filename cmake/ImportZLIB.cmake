@@ -1,4 +1,4 @@
-find_package(ZLIB)
+find_package(ZLIB 1.2.8)
 mark_as_advanced(ZLIB_INCLUDE_DIR)
 mark_as_advanced(ZLIB_LIBRARY)
 if(ZLIB_FOUND)
