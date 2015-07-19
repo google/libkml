@@ -6,4 +6,4 @@ before_script:
     - mkdir build
     - cd build
 
-script: cmake -DBUILD_TESTING=ON -DBUILD_EXAMPLES=ON .. && make
+script: cmake .. && make
