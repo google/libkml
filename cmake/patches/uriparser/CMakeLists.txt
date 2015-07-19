@@ -31,6 +31,9 @@ set(INCS
 include_directories(include)
 add_library(uriparser ${SRCS})
 
+install(TARGETS uriparser
+   DESTINATION lib)
+
 install(FILES ${INCS}
    DESTINATION include/uriparser/)
 
