@@ -246,3 +246,9 @@ endif()
 # endif()
 
 
+
+
+set( ZLIB_INCLUDE_DIR ${CMAKE_BINARY_DIR}/third_party/zlib-1.2.8)
+list(APPEND ZLIB_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/zlib-1.2.8)
+include_directories(${ZLIB_INCLUDE_DIR})
+message(STATUS "zlib_inc1=${ZLIB_INCLUDE_DIR}")
