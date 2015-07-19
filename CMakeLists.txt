@@ -48,7 +48,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()  
 
 include(ImportEXPAT)
-include(ImportBoost)
+
 include(ExternalProject)
 
 
@@ -63,30 +63,42 @@ set(KMLBASE_DEPENDS)
 
 
 include(ImportZLIB)
-if(NOT HAVE_SYSTEM_ZLIB)
+if(HAVE_SYSTEM_ZLIB)
+  include_directories(${ZLIB_INCLUDE_DIR})
+else()
   include(External_zlib)
   list(APPEND KMLBASE_DEPENDS ZLIB)
   list(APPEND KMLBASE_LINK_LIBS ${ZLIB_LIBRARY})
 endif()
 
 include(ImportMinizip)
-if(NOT HAVE_SYSTEM_MINIZIP)
+if(HAVE_SYSTEM_MINIZIP)
+  include_directories(${MINIZIP_INCLUDE_DIR})
+else()  
   include(External_minizip)
   list(APPEND KMLBASE_DEPENDS MINIZIP)
   list(APPEND KMLBASE_LINK_LIBS ${MINIZIP_LIBRARY})  
 endif()
 
 include(ImportUriParser)
-if(NOT HAVE_SYSTEM_URIPARSER)
+if(HAVE_SYSTEM_URIPARSER)
+  include_directories(${URIPARSER_INCLUDE_DIR})
+else()
   include(External_uriparser)
   list(APPEND KMLBASE_DEPENDS URIPARSER)
   list(APPEND KMLBASE_LINK_LIBS ${URIPARSER_LIBRARY})
 endif()
 
+include(ImportBoost)
 if(HAVE_SYSTEM_BOOST)
   message(STATUS "Found Boost: ${Boost_VERSION}")
   include_directories(${Boost_INCLUDE_DIRS})
+else()
+  include(External_boost)
+  list(APPEND KMLBASE_DEPENDS BOOST)
+  message(STATUS "Found Boost includes: ${Boost_INCLUDE_DIRS}")  
 endif()
+
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
