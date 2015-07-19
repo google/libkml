@@ -53,12 +53,10 @@ if(NOT INSTALL_DIR)
   set(INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install")
 endif()
 
-set(PATCH_DIR ${CMAKE_SOURCE_DIR}/cmake/patches)
-
 set(KMLBASE_LINK_LIBS)
 set(KMLBASE_DEPENDS)
 
-#include(ImportEXPAT)
+include(ImportEXPAT)
 if(HAVE_SYSTEM_EXPAT)
   include_directories(${EXPAT_INCLUDE_DIR})
 else()
@@ -72,7 +70,6 @@ if(HAVE_SYSTEM_ZLIB)
 else()
   include(External_zlib)
   list(APPEND KMLBASE_DEPENDS ZLIB)
-
 endif()
 
 include(ImportMinizip)
