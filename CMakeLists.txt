@@ -47,10 +47,7 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()  
 
-include(ImportEXPAT)
-
 include(ExternalProject)
-
 
 if(NOT INSTALL_DIR)
   set(INSTALL_DIR "${CMAKE_SOURCE_DIR}/../install")
@@ -61,6 +58,13 @@ set(PATCH_DIR ${CMAKE_SOURCE_DIR}/cmake/patches)
 set(KMLBASE_LINK_LIBS)
 set(KMLBASE_DEPENDS)
 
+#include(ImportEXPAT)
+if(HAVE_SYSTEM_EXPAT)
+  include_directories(${EXPAT_INCLUDE_DIR})
+else()
+  include(External_expat)
+  list(APPEND KMLBASE_DEPENDS EXPAT)
+endif()
 
 include(ImportZLIB)
 if(HAVE_SYSTEM_ZLIB)
@@ -68,7 +72,7 @@ if(HAVE_SYSTEM_ZLIB)
 else()
   include(External_zlib)
   list(APPEND KMLBASE_DEPENDS ZLIB)
-  list(APPEND KMLBASE_LINK_LIBS ${ZLIB_LIBRARY})
+
 endif()
 
 include(ImportMinizip)
@@ -77,7 +81,6 @@ if(HAVE_SYSTEM_MINIZIP)
 else()  
   include(External_minizip)
   list(APPEND KMLBASE_DEPENDS MINIZIP)
-  list(APPEND KMLBASE_LINK_LIBS ${MINIZIP_LIBRARY})  
 endif()
 
 include(ImportUriParser)
@@ -86,7 +89,6 @@ if(HAVE_SYSTEM_URIPARSER)
 else()
   include(External_uriparser)
   list(APPEND KMLBASE_DEPENDS URIPARSER)
-  list(APPEND KMLBASE_LINK_LIBS ${URIPARSER_LIBRARY})
 endif()
 
 include(ImportBoost)
@@ -98,6 +100,12 @@ else()
   list(APPEND KMLBASE_DEPENDS BOOST)
   message(STATUS "Found Boost includes: ${Boost_INCLUDE_DIRS}")  
 endif()
+
+
+list(APPEND KMLBASE_LINK_LIBS ${EXPAT_LIBRARY})
+list(APPEND KMLBASE_LINK_LIBS ${ZLIB_LIBRARY})
+list(APPEND KMLBASE_LINK_LIBS ${MINIZIP_LIBRARY})
+list(APPEND KMLBASE_LINK_LIBS ${URIPARSER_LIBRARY})
 
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
