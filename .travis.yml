@@ -7,4 +7,4 @@ before_script:
     - mkdir build
     - cd build
 
-script: cmake .. && make
+script: cmake -DCMAKE_INSTALL_PREFIX=../../install .. && make
