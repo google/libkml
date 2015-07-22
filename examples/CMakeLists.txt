@@ -2,7 +2,14 @@ add_subdirectory(domviewer)
 add_subdirectory(engine)
 add_subdirectory(gpx)
 add_subdirectory(gx)
-add_subdirectory(hellonet)
+
+find_package(CURL)
+if(NOT CURL_FOUND)
+  message(WARNING "Examples in hellonet directory are not built because curl was not found")
+else()
+  add_subdirectory(hellonet)
+endif()
+
 add_subdirectory(helloworld)
 
 add_subdirectory(java)
