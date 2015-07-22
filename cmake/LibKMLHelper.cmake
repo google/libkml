@@ -4,6 +4,11 @@ macro(build_target)
 
   foreach(LIB_DEPEND ${LIB_DEPENDS})
     add_dependencies(${LIB_NAME} ${LIB_DEPEND})
+    #well.. if the LIB_DEPEND is one of kml*
+    #then we need to link it with target lib
+    if(${LIB_DEPEND} MATCHES "^kml")
+      list(APPEND LIB_LINKS ${LIB_DEPEND})
+    endif()
   endforeach()
   target_link_libraries(${LIB_NAME} ${LIB_LINKS})
   if(VERSION_STRING)
@@ -19,7 +24,7 @@ macro(build_target)
     DESTINATION include/${${LIB_NAME}_INCLUDE_DIR})
 
   install_target(${LIB_NAME})
-  
+
 endmacro(build_target)
 
 macro(install_target _target)
@@ -46,7 +51,7 @@ endfunction(build_example)
 
 
 macro(include_project_vars _project _lib)
-  set(${_project}_INCLUDE_DIR "${INSTALL_DIR}/${_project}/include" )
-  set(${_project}_LIBRARY "${INSTALL_DIR}/${_project}/lib/${_lib}" )
+  set(${_project}_INCLUDE_DIR "${INSTALL_DIR}/include" )
+  set(${_project}_LIBRARY "${INSTALL_DIR}/lib/${_lib}" )
   include_directories(${${_project}_INCLUDE_DIR})
 endmacro()
