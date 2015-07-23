@@ -12,7 +12,4 @@ ExternalProject_Add(EXPAT
   -DBUILD_tools:BOOL=OFF
   -DBUILD_shared:BOOL=${BUILD_SHARED_LIBS})
 
-include_project_vars(EXPAT "libexpat.so")
-
-
-
+include_project_vars(EXPAT "libexpat")

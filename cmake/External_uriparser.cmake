@@ -10,6 +10,4 @@ ExternalProject_Add(URIPARSER
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
   -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS} )
 
-include_project_vars(URIPARSER "liburiparser.so")
-
-
+include_project_vars(URIPARSER "liburiparser")
