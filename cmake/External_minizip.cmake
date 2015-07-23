@@ -4,7 +4,7 @@ ExternalProject_Add(MINIZIP
   URL_MD5 d5f74eff74e03e497ea60b2c43623416
   BINARY_DIR ${CMAKE_BINARY_DIR}/MINIZIP/build
   DOWNLOAD_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/download-minizip.cmake
-  DEPENDS ZLIB
+  DEPENDS ${MINIZIP_DEPENDS}
   CMAKE_CACHE_ARGS
   -DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DIR}
   -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
@@ -22,10 +22,8 @@ file(WRITE ${CMAKE_BINARY_DIR}/download-minizip.cmake
   # no TIMEOUT
   STATUS status
   LOG log)
- execute_process(COMMAND ${CMAKE_COMMAND} -E tar xfz ${CMAKE_BINARY_DIR}/MINIZIP/src/kml-minizip.tar.gz -C ${CMAKE_BINARY_DIR}/MINIZIP/src)
- file(RENAME ${CMAKE_BINARY_DIR}/MINIZIP/src/minizip ${CMAKE_BINARY_DIR}/MINIZIP/src/MINIZIP)
+ execute_process(COMMAND \"${CMAKE_COMMAND}\" -E tar xfz \"${CMAKE_BINARY_DIR}/MINIZIP/src/kml-minizip.tar.gz\" -C \"${CMAKE_BINARY_DIR}/MINIZIP/src\")
+ file(RENAME \"${CMAKE_BINARY_DIR}/MINIZIP/src/minizip\" \"${CMAKE_BINARY_DIR}/MINIZIP/src/MINIZIP\")
 ")
 
-include_project_vars(MINIZIP "libminizip.so")
-
-
+include_project_vars(MINIZIP "libminizip")
