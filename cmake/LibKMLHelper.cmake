@@ -21,7 +21,7 @@ macro(build_target)
   string(SUBSTRING ${LIB_NAME} 3 ${${LIB_NAME}_END} ${LIB_NAME}_INCLUDE_DIR)
   install(
     FILES ${LIB_INCS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/${LIB_NAME})
+    DESTINATION ${INCLUDE_INSTALL_DIR}/${${LIB_NAME}_INCLUDE_DIR})
 
   install_target(${LIB_NAME})
 
