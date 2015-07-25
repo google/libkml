@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # The relative path to the directory that holds the build shared libraries.
 BUILT_LIB_DIR=../../build/src/swig/.libs
 echo "=== setting shared library path to built libraries dir: $BUILT_LIB_DIR"
