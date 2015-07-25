@@ -14,7 +14,7 @@ macro(build_target)
   if(VERSION_STRING)
     set_target_properties(${LIB_NAME} PROPERTIES
       VERSION   "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-      SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
+      SOVERSION "${VERSION_MAJOR}")
   endif()
   string(LENGTH ${LIB_NAME} ${LIB_NAME}_LEN)
   MATH(EXPR ${LIB_NAME}_END "${${LIB_NAME}_LEN} - 3")
