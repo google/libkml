@@ -21,7 +21,7 @@ macro(build_target)
   string(SUBSTRING ${LIB_NAME} 3 ${${LIB_NAME}_END} ${LIB_NAME}_INCLUDE_DIR)
   install(
     FILES ${LIB_INCS}
-    DESTINATION include/${${LIB_NAME}_INCLUDE_DIR})
+    DESTINATION ${INCLUDE_INSTALL_DIR})
 
   install_target(${LIB_NAME})
 
@@ -29,9 +29,9 @@ endmacro(build_target)
 
 macro(install_target _target)
   install(TARGETS ${_target}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib)
+    RUNTIME DESTINATION ${BIN_INSTALL_DIR}
+    LIBRARY DESTINATION ${LIB_INSTALL_DIR}
+    ARCHIVE DESTINATION ${LIB_INSTALL_DIR})
 endmacro(install_target)
 
 function(build_test)
