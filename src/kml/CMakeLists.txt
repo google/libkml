@@ -7,5 +7,5 @@ add_subdirectory(regionator)
 
 
 install(  FILES dom.h engine.h
-          DESTINATION include/kml
+          DESTINATION ${INCLUDE_INSTALL_DIR}/kml
           COMPONENT Development)
