@@ -33,6 +33,7 @@
 // Include the headers needed to build kmldom_wrap.cc.
 %{
 #include "kml/dom.h"
+#include "kml/dom/xsd.h"
 %}
 
 // Tell SWIG about boost::intrusive_ptr and the inheritance hierarchy
@@ -176,7 +177,11 @@ SWIG_INTRUSIVE_PTR_DERIVED(GxWait, kmldom::GxTourPrimitive,
 // Tell SWIG about C++ Standard Library std::string.
 %include "std_string.i"
 
+
+%include "kml/dom/xsd.h"
+
 // Tell SWIG about the kmldom type ids (Type_Placemark, etc).
+
 %include "kml/dom/kml22.h"
 
 // Tell SWIG about the intrusive_ptr typedefs.
