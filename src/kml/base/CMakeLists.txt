@@ -15,6 +15,9 @@ else()
   list(REMOVE_ITEM SRCS "${CMAKE_CURRENT_SOURCE_DIR}/file_win32.cc")
 endif()
 
+#supress W-long-long
+set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/zip_file.cc COMPILE_FLAGS "-Wno-long-long")
+
 file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 build_target(
