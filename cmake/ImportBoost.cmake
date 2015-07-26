@@ -1,7 +1,0 @@
-find_package(Boost)
-mark_as_advanced(Boost_DIR)
-if(Boost_FOUND)
-  set(HAVE_SYSTEM_BOOST TRUE)
-else()
-  set(HAVE_SYSTEM_BOOST FALSE)
-endif()
