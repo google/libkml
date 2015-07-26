@@ -11,9 +11,9 @@ option(BUILD_EXAMPLES  "Build examples." OFF)
 option(INSTALL_EXAMPLES   "Install examples sources and executables" OFF)
 option(BUILD_SHARED_LIBS  "Build shared libs." ON)
 
-option(BUILD_SWIG        "Build swig bindings"   OFF)
-option(BUILD_SWIG_PYTHON "Build python bindings" OFF)
-option(BUILD_SWIG_JAVA   "Build java bindings"   OFF)
+option(WITH_SWIG   "Build all swig bindings"   ON)
+option(WITH_PYTHON "Build python bindings" ON)
+option(WITH_JAVA   "Build java bindings"   ON)
 
 set(LIBKML_DATA_DIR  ${CMAKE_SOURCE_DIR}/testdata CACHE "Directory containing test data" PATH)
 
