@@ -26,8 +26,8 @@
 // This is the SWIG interface file for the KML Base module.
 // This was developed with SWIG version 1.3.35.
 
-%rename(__set__) *::operator=;
-%rename(__getitem__) *::operator[];
+//%rename(__set__) *::operator=;
+//%rename(__getitem__) *::operator[];
 %module kmlbase
 
 // Include the headers needed to build kmlengine_wrap.cc.
@@ -68,7 +68,7 @@ class Attributes {
   void SetString(const std::string& attr_name, const std::string& attr_val);
 };
 
-%rename(__cmp__) Color32::operator==;
+%rename(Color32_op_equal) Color32::operator==;
 
 class Color32 {
  public:

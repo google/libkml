@@ -16,8 +16,6 @@ if(WITH_PYTHON)
   #   OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
   #   OUTPUT_STRIP_TRAILING_WHITESPACE )
 
-
-
   file(GLOB IFILES "kml*.i")
   foreach(INTERFACE_FILE ${IFILES})
     get_filename_component(MODULE_NAME ${INTERFACE_FILE} NAME_WE)
@@ -72,23 +70,24 @@ if(WITH_JAVA)
 
   foreach(INTERFACE_FILE ${IFILES})
     get_filename_component(MODULE_NAME ${INTERFACE_FILE} NAME_WE)
-    set_source_files_properties(${INTERFACE_FILE} PROPERTIES CPLUSPLUS ON )
+    set_source_files_properties(${INTERFACE_FILE} PROPERTIES CPLUSPLUS ON)
     set_source_files_properties(${INTERFACE_FILE} PROPERTIES CMAKE_SWIG_FLAGS "-includeall  -DSWIGJAVA")
-    set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}JAVA_wrap.cxx COMPILE_FLAGS "-w" )
+    set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}JAVA_wrap.cxx COMPILE_FLAGS "-w")
     swig_add_module(${MODULE_NAME}_java java ${INTERFACE_FILE})
-    swig_link_libraries(${MODULE_NAME}_java kmlbase kmlengine kmldom )
+    swig_link_libraries(${MODULE_NAME}_java kmlbase kmlengine kmldom)
   endforeach()
 
   add_custom_target(LibKML_jar ALL DEPENDS LibKML.jar)
 
-  add_custom_command(OUTPUT LibKML.jar
+  add_custom_command(
+    OUTPUT LibKML.jar
     COMMENT "Creating jar file..."
     COMMAND ${Java_JAVAC_EXECUTABLE} -d ${JAVA_BINARY_DIRECTORY} ${JAVA_SOURCE_DIRECTORY}/*.java
     COMMAND ${Java_JAR_EXECUTABLE} cf ${CMAKE_CURRENT_BINARY_DIR}/LibKML.jar -C ${JAVA_BINARY_DIRECTORY} com
-    DEPENDS kmlbase_java kmldom_java  kmlengine_java kmlengine kmlbase kmldom )
+    DEPENDS LibKML_jar kmlbase_java kmldom_java kmlengine_java kmlengine kmlbase kmldom)
 
    # Get the location of the extension directory
-   string(REGEX REPLACE "include"  "jre/lib/ext" JAVA_EXTENSION_DIR ${JAVA_INCLUDE_PATH} )
+   string(REGEX REPLACE "include"  "jre/lib/ext" JAVA_EXTENSION_DIR ${JAVA_INCLUDE_PATH})
 
    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/LibKML.jar
      DESTINATION ${JAVA_INSTALL_DIR})
