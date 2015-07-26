@@ -6,22 +6,21 @@
 #  MINIZIP_FOUND       - TRUE if minizip is found
 
 
-if (MINIZIP_INCLUDE_DIR)
+if(MINIZIP_INCLUDE_DIR)
   #check cache
   set(MINIZIP_FIND_QUIETLY TRUE)
-endif ()
+endif()
 
-
-if (NOT MINIZIP_INCLUDE_DIR)
-    find_path(MINIZIP_INCLUDE_DIR NAMES unzip.h zip.h PATH_SUFFIXES minizip)
-endif ()
+if(NOT MINIZIP_INCLUDE_DIR)
+  find_path(MINIZIP_INCLUDE_DIR NAMES minizip/unzip.h minizip/zip.h)
+endif()
 
 find_library(MINIZIP_LIBRARY NAMES minizip)
 
-include( FindPackageHandleStandardArgs )
-find_package_handle_standard_args( MINIZIP DEFAULT_MSG MINIZIP_LIBRARY MINIZIP_INCLUDE_DIR )
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(MINIZIP DEFAULT_MSG MINIZIP_LIBRARY MINIZIP_INCLUDE_DIR )
 
-mark_as_advanced( MINIZIP_INCLUDE_DIR MINIZIP_LIBRARY )
+mark_as_advanced(MINIZIP_INCLUDE_DIR MINIZIP_LIBRARY)
 
 if(MINIZIP_FOUND)
   set(MINIZIP_INCLUDE_DIRS ${MINIZIP_INCLUDE_DIR})
