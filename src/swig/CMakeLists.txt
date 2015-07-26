@@ -11,10 +11,12 @@ if(WITH_PYTHON)
 
   include_directories(${PYTHON_INCLUDE_PATH})
 
-  # execute_process(COMMAND
-  #   python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)"
-  #   OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-  #   OUTPUT_STRIP_TRAILING_WHITESPACE )
+  if(NOT DEFINED PYTHON_INSTALL_DIR)
+    execute_process(COMMAND
+      ${PYTHON_EXECUTABLE} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)"
+      OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+      OUTPUT_STRIP_TRAILING_WHITESPACE )
+  endif(NOT DEFINED PYTHON_INSTALL_DIR)
 
   file(GLOB IFILES "kml*.i")
   foreach(INTERFACE_FILE ${IFILES})
