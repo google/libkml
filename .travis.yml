@@ -6,5 +6,7 @@ compiler:
 before_script:
     - mkdir build
     - cd build
+    - sudo apt-get update -qq
+    - sudo apt-get install swig python-dev
 
 script: cmake -DCMAKE_INSTALL_PREFIX=../../install .. && make
