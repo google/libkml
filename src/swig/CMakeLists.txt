@@ -12,10 +12,12 @@ find_package ( PythonInterp REQUIRED )
 
 include_directories(${PYTHON_INCLUDE_PATH})
 
-execute_process(COMMAND
-  python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)"
-  OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
-  OUTPUT_STRIP_TRAILING_WHITESPACE )
+# execute_process(COMMAND
+#   python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(True)"
+#   OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
+#   OUTPUT_STRIP_TRAILING_WHITESPACE )
+
+
 endif(WITH_PYTHON)
 
 # if(WITH_JAVA)
@@ -40,12 +42,12 @@ if(WITH_PYTHON)
 
     install(TARGETS
       _${MODULE_NAME}
-      DESTINATION ${PYTHON_SITE_PACKAGES} )
+      DESTINATION ${PYTHON_INSTALL_DIR})
 
     install(FILES
       ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}.py
       ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}.pyc
-      DESTINATION ${PYTHON_SITE_PACKAGES} )
+      DESTINATION ${PYTHON_INSTALL_DIR})
 
   endforeach()
 
