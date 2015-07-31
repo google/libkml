@@ -98,7 +98,7 @@ class Element : public kmlbase::XmlElement {
 
   // A derived class implements this to use with serialization.  See
   // class Serializer for more information.
-  virtual void Serialize(Serializer& serialize) const {}
+  virtual void Serialize(Serializer& /*serialize*/ ) const {}
 
   // A derived class uses this to use with serialization.  The derived
   // class adds its attributes to the given set and passes attributes
@@ -157,11 +157,11 @@ class Element : public kmlbase::XmlElement {
   void MergeXmlns(const kmlbase::Attributes& xmlns);
 
   // Permits polymorphic use of Field methods.
-  virtual bool SetBool(bool* val) { return false; }
-  virtual bool SetDouble(double* val) { return false; }
-  virtual bool SetInt(int* val) { return false; }
-  virtual bool SetEnum(int* val) { return false; }
-  virtual bool SetString(string* val) { return false; }
+  virtual bool SetBool(bool* /*val*/) { return false; }
+  virtual bool SetDouble(double* /*val*/) { return false; }
+  virtual bool SetInt(int* /*val*/) { return false; }
+  virtual bool SetEnum(int* /*val*/) { return false; }
+  virtual bool SetString(string* /*val*/) { return false; }
 
   // Accepts the visitor for this element (this must be overridden for each
   // element type).
@@ -171,7 +171,7 @@ class Element : public kmlbase::XmlElement {
   // This needs to be implemented by subclasses with child elements and must
   // call its parent's implementation first. The default implementation does
   // nothing.
-  virtual void AcceptChildren(VisitorDriver* driver) {
+  virtual void AcceptChildren(VisitorDriver* /*driver*/) {
     /* Inlinable for efficiency */
   }
 
