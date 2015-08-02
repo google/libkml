@@ -77,7 +77,7 @@ if(WITH_JAVA)
     set_source_files_properties( ${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}JAVA_wrap.cxx COMPILE_FLAGS "-w")
     swig_add_module(${MODULE_NAME}_swig_java java ${INTERFACE_FILE})
     swig_link_libraries(${MODULE_NAME}_swig_java ${MODULE_NAME})
-    install(TARGETS ${MODULE_NAME}_swig_java DESTINATION ${JAVA_INSTALL_DIR})
+    install(TARGETS ${MODULE_NAME}_swig_java DESTINATION ${LIB_INSTALL_DIR})
 
   endforeach()
 
