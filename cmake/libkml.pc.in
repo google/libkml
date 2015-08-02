@@ -1,0 +1,15 @@
+# pkg-config source file
+
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: LibKML
+Description: Reference implementation of OGC KML 2.2
+Version: @VERSION_STRING@
+##Requires: expat zlib boost
+##minizip 
+Conflicts:
+Libs: -L${libdir} -lkmlbase -lkmldom -lkmlengine -lkmlxsd -lkmlregionator
+Cflags: -I${includedir}
