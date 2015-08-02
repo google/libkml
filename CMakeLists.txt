@@ -127,6 +127,12 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_subdirectory(src)
 
+configure_file("${CMAKE_SOURCE_DIR}/cmake/libkml.pc.in"
+  "${CMAKE_BINARY_DIR}/libkml.pc" @ONLY)
+
+install(FILES ${CMAKE_BINARY_DIR}/libkml.pc
+   DESTINATION ${DATA_INSTALL_DIR})
+
 if(BUILD_TESTING)
   enable_testing()
   find_package(GoogleTest REQUIRED)
