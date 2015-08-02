@@ -1,6 +1,3 @@
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-
 if(WITH_PYTHON)
   find_package(PythonLibs REQUIRED)
   if(NOT PYTHONLIBS_FOUND)

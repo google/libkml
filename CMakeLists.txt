@@ -69,9 +69,7 @@ endif()
 
 include(ExternalProject)
 
-if(NOT INSTALL_DIR)
-  set(INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" CACHE "install directory " PATH)
-endif()
+set(INSTALL_DIR "${CMAKE_INSTALL_PREFIX}" CACHE "install directory " PATH)
 
 set(KMLBASE_LINK_LIBS "" CACHE INTERNAL "KMLBASE_LINK_LIBS")
 set(KMLBASE_DEPENDS "" CACHE INTERNAL "KMLBASE_DEPENDS")
@@ -120,6 +118,18 @@ else()
 endif()
 
 include_directories(${Boost_INCLUDE_DIRS})
+
+if(WITH_SWIG)
+  find_package(SWIG)
+  if(SWIG_EXECUTABLE)
+    include(${SWIG_USE_FILE})
+  else()
+    set(WITH_SWIG OFF)
+    set(WITH_PYTHON OFF)
+    set(WITH_JAVA OFF)
+    message(WARNING "Swig not found. Hence bindings will not be built")
+  endif()
+endif()
 
 list(APPEND KMLBASE_LINK_LIBS ${EXPAT_LIBRARY})
 list(APPEND KMLBASE_LINK_LIBS ${ZLIB_LIBRARY})
