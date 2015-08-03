@@ -16,7 +16,9 @@ else()
 endif()
 
 #supress W-long-long
-set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/zip_file.cc COMPILE_FLAGS "-Wno-long-long")
+if(NOT WIN32)
+  set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/zip_file.cc COMPILE_FLAGS "-Wno-long-long")
+endif()
 
 file(GLOB INCS "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
