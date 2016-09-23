@@ -41,7 +41,6 @@ namespace kmlbase {
 // LPCWSTR.
 static std::wstring Str2Wstr(const string& str) {
   std::wstring wstr(str.begin(), str.end());
-  std::copy(str.begin(), str.end(), wstr.begin());
   return wstr;
 }
 
