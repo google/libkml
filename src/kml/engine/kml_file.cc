@@ -38,8 +38,14 @@ using kmlbase::XmlnsId;
 
 namespace kmlengine {
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-variable"
+
 static const char kDefaultXmlns[] = "http://www.opengis.net/kml/2.2";
+#pragma clang diagnostic pop
+
 static const char kDefaultEncoding[] = "utf-8";
+
 
 // static
 KmlFile* KmlFile::CreateFromParse(const string& kml_or_kmz_data,
